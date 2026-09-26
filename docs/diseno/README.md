@@ -25,6 +25,15 @@
   primer sprint con UI compara contra ella. El atlas es el único diagrama dibujado a mano de la app
   (regla dura 8); el renderizador lo reproducirá con _golden files_.
 
+## Cómo se trazó la referencia del atlas
+
+El atlas es el único diagrama dibujado a mano de la app (regla dura 8). Sus cuatro lienzos (ancho y
+380 px, orquestación como franja y como capa) se trazaron con una **calculadora de geometría** que
+aplica las reglas de `diagramador-tokens.md` § 9 sobre la tabla de métricas de la fuente. La
+calculadora vive fuera del repo a propósito: no es el motor y no adelanta el paquete del
+diagramador antes de G-Diseño. El HTML de la página es autoría a mano; solo las regiones marcadas
+`<!-- inicio:… -->` llevan el SVG, la leyenda y la lectura en texto trazados.
+
 ## Plan de miradas
 
 | Mirada       | Artefacto(s)                                                                                                  | Orden                                     |
@@ -43,9 +52,9 @@
 
 ## Cobertura (se llena durante la etapa)
 
-| Página de la maqueta | Funcionalidad de la VISION | Estados que muestra |
-| -------------------- | -------------------------- | ------------------- |
-|                      |                            |                     |
+| Página de la maqueta    | Funcionalidad de la VISION                                                                        | Estados que muestra                                                                                                                                                                                                                                                  |
+| ----------------------- | ------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `atlas-nivel-1.html` ⭐ | C1 visión general · C5 semáforo de vigencia · C6 diagramador (nivel 1, leyenda, lectura en texto) | propuesta · por revisar · vencido · P4 una línea por modo · P9 orquestación como capa · ancho y 380 px · oscuro y claro · ES y EN · banda sin bloque («1 componente») · flujos agregados con varios modos · bloque con vista previa · ficha breve al tocar un bloque |
 
 ## Registro de G-Diseño (se llena al cerrar la etapa)
 

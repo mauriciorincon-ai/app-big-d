@@ -112,3 +112,55 @@ etapa agrega.
 - **No verificado desde aquí:** el contenido de `/diseno/` CON sesión (la sesión no tiene
   credenciales de Vercel). La evidencia indirecta es el build local idéntico: `out/diseno/`
   contiene `index.html`, `assets/` y las fuentes. Lo confirma el usuario al abrir el preview.
+
+## Fase 1 — Mirada 1: tokens del diagramador + atlas nivel 1 (2026-09-26)
+
+**Construido.**
+
+- `docs/diseno/atlas-nivel-1.html` ⭐: cuatro lienzos SVG (ancho y angosto × orquestación franja y
+  capa), cinco estados de sala (propuesta, por revisar, vencido, P4 una línea por modo, P9
+  orquestación como capa), leyenda generada, nota de marcas, lectura en texto (G10), ficha breve al
+  tocar un bloque, conmutadores de idioma y tema.
+- `docs/diseno/diagramador-tokens.md`: la propuesta para el CONTRATO v0.3.0 (P4, P5, P9, P10, P11,
+  paleta medida, glifos, marcas, modos, tipografía, geometría, idioma, animación, cambios al esquema,
+  textos EN).
+- `design-system.md` v0.1.
+- `docs/diseno/assets/`: `diagrama.css` (la capa CSS del diagrama, G13), `bigd.css` (producto),
+  `maqueta.css` y `maqueta.js` (sala), `fuentes/metricas.json` (prototipo de la tabla G15).
+
+**Cómo se trazó.** Calculadora de geometría en el scratchpad de la sesión (no versionada: no es el
+motor). Aplica las reglas de `diagramador-tokens.md` § 9 sobre `metricas.json` y reporta cruces
+D11, choques de etiquetas, textos que no caben e insignias que pisan. La página es autoría a mano;
+un inyector rellena solo las regiones `<!-- inicio:X -->`.
+
+**Decisiones nuevas de esta fase (se juzgan en la mirada 1).**
+
+| #   | Decisión                                                                                                                             | Por qué (medido)                                                                                                       |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------- |
+| D20 | Columna ancha de 144 u y canal de 54 u (el plan decía 136 y 64)                                                                      | «Almacenamiento» en negrita a 16 mide 126 u; no cabía en 136 con relleno                                               |
+| D21 | En el nivel 1, los flujos con una franja se escriben como referencias (flecha + marcador + nombre), no como líneas                   | Con líneas, el carril pedía 6 pistas y el canal de Gobierno 5: una maraña para un líder. Sin ellas, el carril baja a 2 |
+| D22 | Regreso entre columnas vecinas por su canal compartido (sale por la izquierda, entra por la derecha)                                 | El bucle Almacén ↔ Preparación deja de bajar al carril                                                                 |
+| D23 | En ancho, la cabecera de franja va a la IZQUIERDA; en angosto, cada banda es una fila «pregunta a la izquierda, bloque a la derecha» | Es la transpuesta exacta; en 380 px se lee como pregunta y respuesta                                                   |
+| D24 | Se marca la excepción: vigente y disponible no llevan marca en el diagrama                                                           | Las insignias en todos los bloques eran ruido                                                                          |
+| D25 | La insignia de vigencia va donde no hay puertos: borde superior en ancho, fila inferior en angosto                                   | En angosto chocaba con la madurez en la fila inferior de «Agentes» a 176 u; se ganaron 8 u con la cabecera a 14        |
+| D26 | Glifos: hexágono → escudo, pentágono → barras; marcador de _a demanda_: reloj → ida y vuelta; madurez: medidor                       | A 12 px círculo, hexágono y pentágono se confunden; «reloj» dice «a una hora», que es _por lotes_                      |
+| D27 | La geometría no depende del idioma (alturas con el texto más largo de ES y EN)                                                       | Un solo juego de cajas; G5 vale también entre idiomas                                                                  |
+| D28 | Letra mínima 14 u en ancho y 13 u en angosto; umbrales de disposición por ancho de contenedor                                        | Con 14 u, la variante de 7 columnas cabe en ancho desde 1198 px (con 13 u pedía 1291)                                  |
+
+**Hallazgo honesto sobre P4.** En este mapa, una línea por modo se lee tan bien como la etiqueta,
+también a 380 px. La propuesta sigue siendo la etiqueta por densidad (medido en la primera versión:
+4 entradas en 88 u pisaban dos marcadores), pero la decisión es del usuario.
+
+**Pasada de capturas (regla 10, desde la ronda 1).**
+
+| Pasada                   | Encuadres                                                                                                            | Medidas                                                                                   | Resultado |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | --------- |
+| Completa + simulación    | 120 (5 estados × 2 temas × 2 idiomas × 2 anchos + deuteranopía, protanopía, tritanopía y acromatopsia del idioma ES) | desplazamiento horizontal, texto fuera del lienzo, texto sobre caja ajena, fuente cargada | 0 fallas  |
+| Tras correcciones de CSS | 40                                                                                                                   | ídem                                                                                      | 0 fallas  |
+
+Leídas como imagen: propuesta oscuro ES 1280 y 380, claro EN 1280, vencido claro EN 1280, por
+revisar claro EN 380, P4 líneas oscuro ES 380, P9 capa oscuro ES 1440, deuteranopía oscuro y
+acromatopsia claro. **Corregido tras mirar:** las pestañas de nivel apilaban número y etiqueta (el
+selector `span` alcanzaba a los hijos) y la pestaña activa se lavaba; las muestras de línea de la
+leyenda heredaban el ancho del diagrama; «Varios modos» caía en la columna del marcador; los
+nombres de modo usaban la mono de los códigos; los enlaces de la barra medían 30 px de alto.
