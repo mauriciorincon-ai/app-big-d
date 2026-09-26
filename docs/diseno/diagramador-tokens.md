@@ -1,9 +1,9 @@
 ---
 documento: Gramática visual del diagramador — propuesta para el CONTRATO v0.3.0
-estado: propuesta (mirada 1, ronda 2: dirección visual por elegir)
+estado: propuesta (mirada 1, ronda 4: dirección B y Space Grotesk elegidas; pendiente la aprobación de la mirada)
 fecha: 2026-09-26
 contrato_base: reusables/diagramador/CONTRATO.md v0.2.0 (planeadora, solo lectura)
-referencia_visual: docs/diseno/atlas-direcciones.html (ronda 2) · docs/diseno/atlas-nivel-1.html (ronda 1, no aprobada)
+referencia_visual: docs/diseno/atlas-nivel-1.html (ronda 4; rondas 1–3 en el historial: f21519c · 5439920 · a05a217)
 autor: Etapa de Diseño de Big-D (piloto del reusable)
 ---
 
@@ -14,12 +14,11 @@ autor: Etapa de Diseño de Big-D (piloto del reusable)
 > que dice se ve dibujado en `docs/diseno/atlas-nivel-1.html`, trazado sobre la Plataforma Ejemplo
 > (ficticia) del contrato, en ancho y en 380 px, oscuro y claro, español e inglés.
 
-> **Ronda 2 (2026-09-26).** El usuario miró la ronda 1 y no la aprobó: «visualmente horrible; el
-> diagrama no lo quiero vertical sino horizontal y con desplazamiento lateral por si se hace muy
-> grande». Cambios ya aplicados aquí: **P5 lo decide el usuario** (§ 1: siempre horizontal, jamás se
-> transpone; § 9.2 queda retirado) y **la paleta pasa a un matiz propio por tipo** (§ 5, medida con
-> los mismos umbrales). La dirección visual (A carriles · B plano · C bloques, en
-> `atlas-direcciones.html`) está por elegir; con ella se reescriben §§ 4, 6–9 y 13 en la ronda 3.
+> **Rondas 2–4 (2026-09-26).** El usuario no aprobó la ronda 1 («visualmente horrible; el diagrama
+> no lo quiero vertical sino horizontal y con desplazamiento lateral»). Decisiones suyas ya
+> aplicadas: **P5 siempre horizontal** (§ 1), **dirección visual B «plano»** (elegida entre tres,
+> § 9), **Space Grotesk** (elegida entre tres, § 8) y la **paleta de un matiz por tipo** (§ 5). Lo
+> que sigue describe la referencia de la ronda 4.
 
 ## 0. Las decisiones, en una tabla
 
@@ -34,7 +33,7 @@ autor: Etapa de Diseño de Big-D (piloto del reusable)
 | —     | Glifos de tipo                           | Se mantienen 6; **hexágono pasa a escudo y pentágono a barras**                                                               | § 6     |
 | —     | Símbolos de estado                       | **Se dibujan, jamás se escriben**: la fuente no trae ✓ ✕ ▶ β (medido)                                                         | § 6.3   |
 | —     | Marcadores de modo                       | Se mantienen 3; **«reloj» de _a demanda_ pasa a «ida y vuelta»**                                                              | § 7     |
-| P11   | Fuente con tabla de métricas             | **Atkinson Hyperlegible Next** (y Mono), SIL OFL 1.1, variable 200–800                                                        | § 8     |
+| P11   | Fuente con tabla de métricas             | **Space Grotesk** (elegida por el usuario) y JetBrains Mono, SIL OFL 1.1, variables `wght`                                    | § 8     |
 | G11   | Tipografía y pisos                       | Letra mínima 12 u a escala 1 en todo ancho: el lienzo se desliza, jamás se escala (ronda 2)                                   | § 8.3   |
 | D2    | Geometría realizable por reglas          | Constantes y fórmulas en § 9; la referencia salió de ellas con **0 cruces D11**                                               | § 9     |
 | P10   | Densidad máxima por banda                | **Estimada: 6 nodos por banda** (`limites.nodos_por_banda_max`). Se mide en el piloto                                         | § 10    |
@@ -72,12 +71,10 @@ transpone ni se encoge: si no cabe en su contenedor, el lienzo se desliza de lad
 - **Cabecera a la izquierda en ancho.** Una franja es una fila: su cabecera ocupa el ancho de la
   primera columna más su canal (190 u), y sus elementos van en las ranuras alineadas con las
   columnas 2 en adelante. Así su texto nunca cruza un canal por donde pase una línea.
-- **En angosto.** Las franjas son filas como las capas, al final, con una barra lateral de 4 u y la
-  frase «Abarca todas las capas». Franjas laterales a 380 px dejarían 252 px para los nodos: se
-  descartan.
-- **D1 dice «perpendiculares al eje y lo abarcan entero».** En ancho se cumple al pie de la letra.
-  En angosto se cumple por la barra y la frase, no por la geometría. La planeadora debe decidir si
-  eso basta o si D1 se reescribe.
+- **En teléfono** es el mismo lienzo deslizado: la franja sigue abarcando todas las columnas,
+  aunque solo se vean dos a la vez; el rótulo «Transversales · abarcan todas las capas» lo dice.
+- **D1 dice «perpendiculares al eje y lo abarcan entero».** Se cumple al pie de la letra en todo
+  ancho, porque ya no hay disposición angosta.
 
 ## 3. P9 — Orquestación, ¿capa o transversal?
 
@@ -103,10 +100,9 @@ motor. La maqueta trae el estado **«P9: orquestación como capa»** para juzgar
 - **La etiqueta (chip).** Una píldora de 18 u de alto con los marcadores de sus modos en el orden
   de la gramática, de ancho `6 + 16 × k`. Todo flujo lleva la suya, también los de un solo modo,
   porque el modo es trazo **y** marcador (G7).
-- **Dónde va.** En el tramo horizontal más largo: en el carril exprés, centrada bajo la columna más
-  cercana a la mitad del tramo; en los demás, en el tramo de entrada, lejos de la punta de flecha
-  (9 u). En el canal lateral angosto la etiqueta se apila en vertical (18 u de ancho), porque allí
-  no hay sitio a lo ancho.
+- **Dónde va.** Entre columnas vecinas, en el centro del canal (corrida 4 u hacia el origen para
+  no tocar la punta). En el carril exprés, en su pista: la conexión más cercana la centra en su
+  tramo; la más lejana la pone en el tramo que queda libre tras el destino de la anterior.
 - **Si no cabe**, la calculadora lo reporta; no se dibuja encima de nada.
 
 ### 4.2 La alternativa medida: una línea por modo
@@ -116,17 +112,20 @@ aparece con la densidad.
 
 - Cada modo añade un puerto por borde y una punta de flecha. Un par con los 4 modos pone 4 líneas
   donde la propuesta pone 1.
-- **Medido:** en una versión anterior de la referencia, con las franjas dibujadas como líneas, el
-  Almacén central recibía 4 entradas en sus 88 u de alto y **dos marcadores se pisaban**. Con la
-  etiqueta, el mismo par ocupa un solo puerto.
+- **Medido (ronda 1):** con las franjas dibujadas como líneas, el Almacén central recibía 4 entradas
+  en sus 88 u de alto y **dos marcadores se pisaban**. Con la etiqueta, el mismo par ocupa un solo
+  puerto. En la dirección B las líneas de un par vecino se reparten a 22 u alrededor del centro
+  (ida primero, vuelta después): con 3 líneas ya ocupan 44 de las 104 u del bloque.
 
 Si el usuario prefiere la alternativa, el cambio es una opción del renderizador, no del dato.
 
 ### 4.3 Las franjas en el nivel 1: referencias, no líneas
 
-Los flujos que tocan una franja **no se dibujan como líneas en el nivel 1**. Se escriben junto al
-elemento de la franja, uno por renglón: flecha (hacia o desde), marcadores de modo y nombre del
-elemento con el que conecta. Ejemplo: «hacia · ida y vuelta · Almacén central».
+Los flujos que tocan una franja **no se dibujan como líneas en el nivel 1**. Se escriben como
+**referencias** dentro de la franja, cada una **alineada bajo la columna de la capa con la que
+conecta**: flecha (↑ envía hacia arriba, ↓ recibe), marcadores de modo y nombre del elemento.
+Así la referencia se lee como el cruce de la fila de la franja con la columna de la capa, sin
+línea. Ejemplo: en la franja Gobierno, bajo Almacenamiento, «↑ ⇄ Almacén central».
 
 - **Por qué.** Con las líneas, el carril exprés pedía 6 pistas y el canal junto a Gobierno 5
   (medido en la primera versión); para un líder era una maraña. Sin ellas, el carril baja a 2
@@ -140,8 +139,7 @@ elemento con el que conecta. Ejemplo: «hacia · ida y vuelta · Almacén centra
 
 Un flujo hacia atrás entre columnas contiguas **sale por la izquierda del origen y entra por la
 derecha del destino**, por el canal que comparten. El bucle Almacén ↔ Preparación se dibuja como
-dos flechas en su canal, sin bajar al carril. En angosto es el mismo par de conectores entre dos
-filas: uno baja y otro sube.
+dos flechas en su canal, sin bajar al carril, repartidas a 22 u alrededor del centro del bloque.
 
 ## 5. Paleta
 
@@ -250,7 +248,8 @@ EXT/EXT, OPE/OPS.
 
 ### 6.3 Marcas de estado: se dibujan, jamás se escriben (hallazgo medido)
 
-Atkinson Hyperlegible Next y Mono **no traen** ✓ ✕ ▶ ⇉ → β α (sí traen · • — « » ≤ ≥ ± ≈ −). Un
+Ninguna de las fuentes evaluadas trae completos ✓ ✕ ▶ ⇉ β α, y el subconjunto latino que se sirve
+de Space Grotesk y JetBrains Mono los excluye a propósito (sí trae · • — « » ≤ ≥ ± ≈ −). Un
 carácter fuera de la fuente cae en la fuente de respaldo del sistema: su ancho cambia entre
 navegadores y rompe G15 y el byte a byte de G1. Por eso **toda marca es un path**:
 
@@ -289,109 +288,90 @@ cambia el enum `marcador`: sale `reloj`, entra `ida-y-vuelta`.
 
 ## 8. Tipografía
 
-### 8.1 P11 — Atkinson Hyperlegible Next
+### 8.1 P11 — Space Grotesk y JetBrains Mono
 
-- **La familia.** Atkinson Hyperlegible Next para interfaz y diagrama; Atkinson Hyperlegible Mono
-  para huellas, semillas, identificadores y comandos. Del Braille Institute, sin marca de ningún
-  fabricante de datos.
-- **Licencia verificada en el paquete:** SIL OFL 1.1 (`METADATA.pb` del repositorio de Google
-  Fonts). Los `OFL.txt` viajan junto a cada archivo.
-- **Por qué esta.** Es la única de las evaluadas que distingue I/l/1 y O/0 **con sus glifos por
-  defecto**, sin rasgos OpenType, y la tabla de métricas de G15 no puede depender de rasgos. Trae ñ,
-  ¿, ¡ y tildes. Inter necesita `ss02`/`cv05` para distinguir; IBM Plex es marca de IBM; Source
-  Sans 3 distingue el cero solo con `zero`.
-- **Archivos.** Variables `wght` 200–800 en woff2 (48 KB + 26 KB), con huella SHA-256 en
-  `docs/diseno/assets/fuentes/cobertura.json`.
-- **Prototipo de la tabla G15.** `docs/diseno/assets/fuentes/metricas.json` guarda el avance de
-  cada carácter a peso 400 y 700 (unidades de em, 1000), más ascendente 984, descendente −316,
-  altura de mayúscula 668 y altura x 496. La referencia se trazó midiendo con esa tabla y un margen
-  del 3 %, sin kerning. El kerning de Atkinson es negativo en su mayoría, así que la suma es una
-  cota superior.
+- **Elección del usuario (mirada 1, ronda 3).** Entre tres candidatas SIL OFL con carácter
+  distinto —Manrope (geométrica), Space Grotesk (técnica), Onest (humanista)—, vistas en la misma
+  página y en el mismo mapa (un SVG por fuente, recalculado con las métricas de cada una), el
+  usuario eligió **Space Grotesk**. Atkinson Hyperlegible Next (rondas 1–2) la rechazó.
+- **La familia.** Space Grotesk (Florian Karsten) para interfaz y diagrama, variable `wght`
+  300–700; **JetBrains Mono** para huellas, semillas, fechas, códigos de tipo, números de capa y
+  comandos, variable `wght` 100–800. Ninguna es marca de un fabricante de datos.
+- **Licencia:** SIL OFL 1.1; `OFL-*.txt` junto a cada archivo.
+- **Legibilidad.** Space Grotesk distingue I/l/1 por la forma de la «l» con pie y el «1» con base, y
+  O/0 por el cero con punto en la mono; ñ, ¿, ¡, tildes y comillas latinas están en el
+  subconjunto. Los símbolos de estado siguen dibujados (§ 6.3).
+- **Archivos.** Subconjunto latino en woff2 (36 KB + 47 KB) con huella SHA-256 en `cobertura.json`
+  y tabla de avances a 400 y 700 en `metricas.json` (G15: `unidades_por_em` 1000, ascendente 984,
+  descendente −292, altura de mayúscula 700, altura de x 486).
 
-### 8.2 Tamaños
+### 8.2 Tamaños (dirección B)
 
-| Uso                     | Ancho (u)     | Angosto (u)   | Peso      |
-| ----------------------- | ------------- | ------------- | --------- |
-| Nombre de banda         | 16 / línea 20 | 14 / línea 18 | 700       |
-| Pregunta de banda       | 15 / línea 19 | 13 / línea 17 | 400       |
-| Nombre de bloque        | 16 / línea 20 | 15 / línea 19 | 700       |
-| «N componentes»         | 16            | 15            | 400       |
-| Referencias de franja   | 15            | 13            | 400       |
-| Madurez, «+N», insignia | 14            | 13            | 400 / 700 |
+| Uso                                    | Tamaño / línea (u)   | Peso      | Familia |
+| -------------------------------------- | -------------------- | --------- | ------- |
+| Número de capa, rótulo «Transversales» | 12, espaciado 0,1 em | 500       | mono    |
+| Nombre de capa                         | 17 / 21              | 700       | sans    |
+| Pregunta de capa                       | 14 / 19              | 400       | sans    |
+| Nombre de bloque                       | 16 / 20              | 700       | sans    |
+| «N componentes», madurez               | 13 / 18              | 400       | sans    |
+| Nombre de franja · pregunta de franja  | 15 / 19 · 13 / 17    | 700 · 400 | sans    |
+| Ficha compacta de franja               | 14 / 17 · 12 / 16    | 700 · 400 | sans    |
+| Referencia de franja                   | 13                   | 700       | sans    |
+| Insignia de vigencia                   | 12                   | 700       | mono    |
 
 ### 8.3 El piso de 12 px sin escalar
 
-La vista elige la disposición por el **ancho del contenedor**:
-`umbral = ancho del viewBox × 12 / letra mínima del lienzo`.
-
-| Lienzo         | viewBox | Letra mínima | Ancho desde                  |
-| -------------- | ------- | ------------ | ---------------------------- |
-| Ancho, 6 capas | 1200 u  | 14 u         | 1029 px                      |
-| Ancho, 7 capas | 1398 u  | 14 u         | 1198 px                      |
-| Angosto        | 348 u   | 13 u         | 321 px (teléfonos de 360 px) |
-
-Por debajo de 321 px el angosto baja del piso: se declara 360 px como el teléfono más estrecho
-soportado.
+El lienzo se pinta **a escala 1 en todo ancho** (P5, § 1): la letra mínima mide 12 px en pantalla
+siempre, y lo que no cabe se desliza. No hay umbral de contenedor ni disposición alternativa. Se
+retira la fórmula `umbral = viewBox × 12 / letra mínima` de la ronda 1.
 
 ## 9. Geometría
 
-### 9.1 Ancho
+### 9.1 Dirección B «plano» (la única disposición)
 
-| Constante            | Valor                                                                                                                                                           |
-| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Márgenes laterales   | 33 u                                                                                                                                                            |
-| Columna              | 144 u (texto a 6 u del borde: 132 u útiles; «Almacenamiento» en negrita mide 126 u)                                                                             |
-| Canal entre columnas | 54 u, 5 pistas cada 10 u desde 7 u                                                                                                                              |
-| viewBox              | `2 × 33 + n × 144 + (n − 1) × 54`                                                                                                                               |
-| Cabecera de capa     | altura fija = la mayor de la gramática en cualquier idioma: `10 + líneas del nombre × 20 + 4 + líneas de la pregunta × 19 + 10`                                 |
-| Bloque de nivel 1    | 144 × 88, esquina 6                                                                                                                                             |
-| Puertos              | adelante sale por la derecha y entra por la izquierda; atrás al revés. `k` puertos en un borde, en `y + round(88 × i / (k + 1))`, ordenados por columna del par |
-| Carril exprés        | bajo las columnas, pistas cada 22 u (cabe la etiqueta de 18 u)                                                                                                  |
-| Franja               | a todo lo ancho; altura = máx(cabecera, 88 + 24, 24 + 24 × referencias)                                                                                         |
+| Constante            | Valor                                                                                                                                            |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Márgenes laterales   | 8 u (el aire lo pone el marco de la página)                                                                                                      |
+| Columna              | 152 u; el texto usa todo el ancho de la columna («Almacenamiento» en 17/700 mide 129 u en Space Grotesk)                                         |
+| Canal entre columnas | 50 u, con una guía punteada en su mitad                                                                                                          |
+| viewBox              | `2 × 8 + n × 152 + (n − 1) × 50` → 1178 u con 6 capas, 1380 u con 7                                                                              |
+| Cabecera de capa     | `4 + 16 (número) + 6 + líneas del nombre × 21 + 6 + líneas de la pregunta × 19 + 18`, con las líneas máximas de la gramática en cualquier idioma |
+| Bloque de nivel 1    | 152 × 104, esquina 6, filete izquierdo de 4 u en el color del tipo, glifo antes del nombre                                                       |
+| Puertos vecinos      | adelante sale por la derecha y entra por la izquierda; atrás al revés; las líneas del par a 22 u alrededor del centro                            |
+| Carril exprés        | bajo los bloques, 2 pistas a 24 y 46 u del borde inferior; la conexión más lejana en la pista baja y con el puerto más a la izquierda            |
+| Franja               | a todo lo ancho, 80 u de alto, filete superior; cabecera de 200 u, ficha compacta de 180 × 60; referencias bajo la columna que tocan             |
+| Insignia de vigencia | píldora de 20 u montada sobre el borde superior del bloque, alineada a la derecha                                                                |
 
-**Reglas de ruteo:** adelante contiguo, por el canal compartido; atrás contiguo, § 4.4; todo lo
-demás baja al carril por el canal de salida, lo recorre y sube por el canal de entrada. Pistas por
-coloreo de intervalos, en orden determinista. **D11 por construcción:** los tramos verticales solo
-corren en canales y los horizontales solo en el carril o en tramos de entrada y salida.
+### 9.2 Angosto — RETIRADO
 
-### 9.2 Angosto (380 px, lienzo 348) — RETIRADO en la ronda 2
+No existe disposición angosta (P5, § 1): en teléfono el mismo lienzo se desliza de lado con índice
+de capas, sombras de borde y pista escrita (`assets/lienzo.js`). La geometría angosta de la ronda 1
+queda en el historial (f21519c).
 
-> Retirado por la decisión de P5 (§ 1): ya no existe disposición angosta. Se conserva la tabla
-> como registro de lo que la ronda 1 midió.
+### 9.3 Lo que midió la referencia (ronda 4)
 
-| Constante         | Valor                                                                                                                          |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| Cabecera de fila  | de 0 a 132 u (texto de 116 u; 112 u en franjas, tras la barra)                                                                 |
-| Bloque            | desde 132 u; ancho `348 − 10 − 12 × (T − 1) − 10 − 132` (184 u con T = 2) × 76                                                 |
-| Hueco entre filas | 30 u                                                                                                                           |
-| Filas contiguas   | conector vertical por el hueco, del borde inferior del de arriba al superior del de abajo, en `x + round(ancho × i / (k + 1))` |
-| No contiguas      | canal lateral derecho, pistas cada 12 u; puertos en el borde derecho, el más lejano arriba; los tramos cortos por dentro       |
-
-### 9.3 Lo que midió la referencia
-
-| Lienzo                          | viewBox    | Carril o canal | Cruces D11                     | Avisos |
-| ------------------------------- | ---------- | -------------- | ------------------------------ | ------ |
-| Ancho, orquestación transversal | 1200 × 694 | 2 pistas       | 0 (y 0 con una línea por modo) | 0      |
-| Ancho, orquestación capa        | 1398 × 572 | 2 pistas       | 0                              | 0      |
-| Angosto, transversal            | 348 × 1267 | 2 pistas       | 0 (y 0 con una línea por modo) | 0      |
-| Angosto, capa                   | 348 × 1233 | 2 pistas       | 0                              | 0      |
+| Lienzo                                   | viewBox    | Carril   | Cruces D11 | Avisos |
+| ---------------------------------------- | ---------- | -------- | ---------- | ------ |
+| Orquestación transversal, etiqueta       | 1178 × 648 | 2 pistas | 0          | 0      |
+| Orquestación transversal, línea por modo | 1178 × 648 | 2 pistas | 0          | 0      |
+| Orquestación como capa, etiqueta         | 1380 × 558 | 2 pistas | 0          | 0      |
 
 El arnés de capturas (`scripts/capturar-maqueta.mjs`) midió en Chromium 5 estados × 2 temas ×
-2 idiomas × 2 anchos: **0 desplazamientos horizontales, 0 textos fuera del lienzo, 0 textos
-encima de una caja ajena, fuente cargada**. Es la medida de G11 que la prueba del piloto repetirá
-en tres navegadores.
+2 idiomas × 2 anchos, más deuteranopía, protanopía, tritanopía y acromatopsia: **0 desplazamientos
+horizontales de página, 0 textos fuera del lienzo, 0 textos encima de una caja ajena, fuente
+cargada**. Es la medida de G11 que la prueba del piloto repetirá en tres navegadores.
 
 ## 10. P10 — Densidad por banda (estimada)
 
-- **Angosto:** la altura de una fila con `r` renglones de nodos es `16 + 76 × r + 16 × (r − 1)`.
-  Con 9 bandas de un renglón el lienzo mide unas 1270 u (medido). Un techo sensato de 2400 u, unas
-  tres pantallas, deja sitio a unos 13 renglones más en todo el mapa.
-- **Propuesta:** `limites.nodos_por_banda_max: 6`, dos renglones de 3 en el nivel 2 angosto, con
-  su carnada: siete nodos en una banda debe fallar.
+- **Nivel 2 en la dirección B:** los nodos de una banda se apilan en su columna de 152 u, uno por
+  renglón, con la altura del bloque de nivel 1 (104 u) como techo por nodo. Con 6 nodos la columna
+  mide unas 700 u más la cabecera: una pantalla y media de teléfono, deslizable en vertical.
+- **Propuesta:** `limites.nodos_por_banda_max: 6`, con su carnada: siete nodos en una banda debe
+  fallar. Se mide en el piloto con la referencia del nivel 2 (mirada 2).
 - **Nivel 1:** un bloque muestra un glifo por componente hasta 4 y luego «+N».
-- **G5 en angosto.** En el nivel 1 cada banda tiene un solo elemento y la altura de fila depende
-  solo de la gramática, así que G5 se cumple. En el nivel 2 la altura depende de los nodos: para
-  alinear lado a lado hay que reservar por banda el máximo de los mapas comparados. Se decide en el
+- **G5 (bandas alineadas lado a lado).** En el nivel 1 la altura de la fila depende solo de la
+  gramática, así que G5 se cumple. En el nivel 2 depende de los nodos: para alinear lado a lado hay
+  que reservar por banda el máximo de los mapas comparados. Se decide en el
   piloto.
 
 ## 11. Vigencia y madurez: se marca la excepción
@@ -402,8 +382,8 @@ en tres navegadores.
   _Vencido_: fondo lleno de tinta, marca y texto en el color del lienzo. El texto completo
   («por revisar · 34 días») va en la píldora del mapa, en la leyenda y en la lectura en texto.
   **Cambio a § 4.8:** dentro del lienzo basta la forma compacta.
-- **Dónde va la insignia:** donde no hay puertos. En ancho monta el borde superior del bloque; en
-  angosto va en su fila inferior.
+- **Dónde va la insignia:** donde no hay puertos: montada sobre el borde superior del bloque,
+  alineada a la derecha.
 - **El semáforo no usa matiz.** No reutiliza ningún color de capacidad y sobrevive en escala de
   grises y en colores forzados. El contrato dice «+ color»; aquí ese canal es el peso y el relleno
   de la tinta.
@@ -432,11 +412,13 @@ La nota de marcas se genera también:
 - Raíz `graphics-document document` con `<title>` por idioma; banda `group` con nombre y pregunta;
   elemento `graphics-symbol img`, enfocable, con nombre, frase y componentes; flujos y etiquetas
   `aria-hidden`.
-- **Foco:** borde de 3,5 u en tinta-1; se distingue por grosor, no por color.
+- **Foco y selección:** borde de 2 u en tinta-1 (el normal es de 1 u en `linea`); se distingue por
+  grosor y tinta, no por color.
 - **Colores forzados:** la hoja del diagrama pasa todo a `Canvas` y `CanvasText`; quedan glifo,
   trazo, marcador y texto.
-- **Lectura en texto (G10)** bajo el diagrama, con «Saltar el diagrama» antes. Al activar un bloque,
-  su línea aparece en una ficha breve.
+- **Lectura en texto (G10)** bajo el diagrama, plegada en un `details`. Al activar un bloque, su
+  línea aparece en una ficha breve bajo el lienzo. El lienzo es una región enfocable que se desplaza
+  con las flechas.
 
 ## 15. Animación del recorrido (G12)
 

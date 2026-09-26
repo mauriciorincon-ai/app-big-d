@@ -249,3 +249,31 @@ alternativas P4/P9; reescribir §§ 6–9 y 13 de la propuesta; borrar `atlas-di
 separadores «/» y «·» del cromo usaban `linea` como color de texto (tinta vetada, regla 5-b). Pasaron
 a `tinta-2`. El commit a05a217 salió con ese rojo por correr el push en la misma cadena que el test:
 corregido en el commit siguiente; la cadena ya no encadena push tras test.
+
+## Fase 1 — Mirada 1, ronda 4 (2026-09-26): consolidación
+
+**Mirada de la ronda 3 (registrada en el README antes de construir):** «Space Grotesk. Continua».
+Tipografía elegida; cromo nuevo sin objeción.
+
+| #   | Decisión                                                                                                                                                                                                                                                        | Razón                                                          |
+| --- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| D40 | **P11 = Space Grotesk + JetBrains Mono.** Se borran Manrope, Onest y Atkinson (woff2, licencias, entradas de cobertura y métricas); `fuentes.css` queda con dos caras                                                                                           | Elección del usuario; una fuente que no se usa es peso y ruido |
+| D41 | `assets/atlas.css` se parte en **`bigd.css` (base del producto)** y **`diagrama.css` (capa del diagrama, clases `db-*`)**; los viejos `bigd.css`, `diagrama.css`, `direcciones.css` y `atlas-direcciones.html` se borran                                        | Un solo cromo vigente; el diagrama sigue en hoja aparte (G13)  |
+| D42 | Los **estados vuelven en la dirección B**: por revisar y vencido (insignia sobre el borde superior + línea de estado en el encabezado), P4 una línea por modo (líneas del par a 22 u), P9 orquestación como capa (7 columnas, 1380 u: en 1280 px ya se desliza) | Lo que la ronda 1 mostraba y las rondas 2–3 dejaron fuera      |
+| D43 | Con **P9 como capa el índice gana la columna «Orquestación»** (`data-si="p9:capa"`) y cada botón lleva la x de ambos lienzos (`data-x-t`, `data-x-c`)                                                                                                           | El índice debe llevar a cada columna del lienzo visible        |
+
+**Construido:** `atlas-nivel-1.html` (101 KB; lienzos 1178 × 648, 1178 × 648 y 1380 × 558; 5
+estados) · `assets/bigd.css` · `assets/diagrama.css` (insignias, colores forzados) · `assets/fuentes.css`
+· `fuentes/` (2 woff2 + 2 OFL) · `cobertura.json` y `metricas.json` recortados · `index.html` de sala
+· `diagramador-tokens.md` §§ 0, 1, 2, 4, 6.3, 8, 9, 10, 11, 14 · `design-system.md` v0.2.0 §§ 3.3, 5, 11.
+
+**Verificado:** 144 encuadres (5 estados × 2 temas × 2 idiomas × 2 anchos + 4 simulaciones en ES,
+más la portada), 0 fallas de medida. En Chromium a 380 px: cada estado muestra solo su lienzo; «por
+revisar» pinta 2 insignias y «2 bloques por revisar»; «vencido» pinta 2 insignias y «1 vencido · 1
+por revisar»; «P9 capa» añade la columna 7 al índice y el botón «Orquestación» desplaza el lienzo a
+808 px; tocar el bloque punteado abre su ficha. Leídas como imagen: vencido oscuro ES 1280, P4
+líneas claro EN 1280. Sin correcciones tras mirar.
+
+**Plan de miradas:** sin cambios. La mirada 1 se presenta completa para aprobación (atlas nivel 1
+
+- tokens del diagramador); la mirada 2 no arranca sin ella.

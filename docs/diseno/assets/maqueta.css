@@ -7,7 +7,7 @@
   padding: 8px 16px;
   background: var(--sup-2);
   border-bottom: 2px dashed var(--linea);
-  font: 13px/1.4 var(--letra-mono, "Atkinson Hyperlegible Mono", monospace);
+  font: 13px/1.4 var(--letra-mono, monospace);
   color: var(--tinta-2);
 }
 .mq-bar .mq-t { color: var(--tinta-1); font-weight: 700; }
@@ -29,7 +29,7 @@
   padding: 8px 16px 10px;
   background: var(--sup-2);
   border-bottom: 1px solid var(--linea);
-  font: 14px/1.45 var(--letra, "Atkinson Hyperlegible Next", sans-serif);
+  font: 14px/1.45 var(--letra, sans-serif);
   color: var(--tinta-1);
 }
 .mq-nota p { margin: 0; max-width: 72ch; }

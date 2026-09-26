@@ -1,8 +1,8 @@
 ---
-version: 0.1.0
-estado: borrador — mirada 1, ronda 2 (Etapa de Diseño, F2a)
+version: 0.2.0
+estado: borrador — mirada 1, ronda 4 (Etapa de Diseño, F2a)
 fecha: 2026-09-26
-fuente_en_codigo: docs/diseno/assets/ (tokens.css GENERADO · bigd.css · diagrama.css)
+fuente_en_codigo: docs/diseno/assets/ (tokens.css GENERADO · bigd.css · diagrama.css · fuentes.css)
 gramatica_del_diagrama: docs/diseno/diagramador-tokens.md
 ---
 
@@ -65,22 +65,25 @@ cian (operación). Cada uno tiene su relleno tintado (`tipo-N-tinte`) para tarje
 
 ### 3.3 Tipografía
 
-| Rol                                           | Familia                    | Tamaño / línea                             | Peso      |
-| --------------------------------------------- | -------------------------- | ------------------------------------------ | --------- |
-| Título de página (h1)                         | Atkinson Hyperlegible Next | 26 / 31 en teléfono · 32 / 38 desde 720 px | 800       |
-| Sección (h2)                                  | Next                       | 20 / 26                                    | 700       |
-| Subsección (h3)                               | Next                       | 15 / 20                                    | 700       |
-| Cuerpo                                        | Next                       | 16 / 24                                    | 400       |
-| Secundario, migas, metadatos                  | Next                       | 14 / 20                                    | 400       |
-| Controles                                     | Next                       | 13 a 15                                    | 600       |
-| Huellas, fechas, versiones, comandos, códigos | Atkinson Hyperlegible Mono | 0,94 em                                    | 400 a 700 |
+**Space Grotesk** (interfaz y diagrama) y **JetBrains Mono** (huellas, fechas, versiones, códigos,
+comandos, números de capa, ojos de sección). Elegida por el usuario en la mirada 1 (ronda 3) entre
+Manrope, Space Grotesk y Onest; Atkinson Hyperlegible (rondas 1–2) fue rechazada. Ambas SIL OFL 1.1,
+variables `wght`, subconjunto latino servido desde el sitio.
 
-- **Por qué Atkinson:** distingue I/l/1 y O/0 sin rasgos OpenType, trae ñ ¿ ¡ y tildes, y es de
-  licencia libre (SIL OFL 1.1). Detalle en `diagramador-tokens.md` § 8.
+| Rol                                   | Familia        | Tamaño / línea                                        | Peso             |
+| ------------------------------------- | -------------- | ----------------------------------------------------- | ---------------- |
+| Título de página (h1)                 | Space Grotesk  | 32 / 35 en teléfono · 46 / 51 desde 720 px, −0,025 em | 800              |
+| Ojo de sección («ATLAS · NIVEL 1 …»)  | JetBrains Mono | 12, mayúsculas, +0,12 em                              | 600              |
+| Subtítulo                             | Space Grotesk  | 17 / 26                                               | 400              |
+| Cuerpo                                | Space Grotesk  | 16 / 25                                               | 400              |
+| Navegación, pestañas, leyenda         | Space Grotesk  | 14 a 15                                               | 400 · 700 activo |
+| Metadatos (vigencia, fechas, versión) | JetBrains Mono | 13 / 18                                               | 500              |
+| Pie                                   | JetBrains Mono | 12 / 19                                               | 500              |
+
 - **Sin cursiva:** solo se sirve la redonda. La cursiva sintética está prohibida.
-- **Caracteres fuera de la fuente, prohibidos en texto.** La fuente no trae ✓ ✕ ▶ → β: se dibujan
-  como SVG. Lo vigila el gate `maqueta-vocabulario`.
-- Diagrama: tamaños propios, con piso de 12 px renderizado (`diagramador-tokens.md` § 8.2).
+- **Caracteres fuera de la fuente, prohibidos en texto.** ✓ ✕ ▶ → β se dibujan como SVG. Lo vigila
+  el gate `maqueta-vocabulario` contra `fuentes/cobertura.json`.
+- Diagrama: tamaños propios, piso de 12 px a escala 1 (`diagramador-tokens.md` § 8.2).
 
 ### 3.4 Espacio, radios, filetes y sombras
 
@@ -117,20 +120,24 @@ Página: ancho máximo 1280 px; margen lateral 16 px en teléfono y 32 px desde 
 
 Vacío, carga y error se diseñan en las miradas 3 y 4, con la misma regla.
 
-## 5. Componentes canon (v0.1: los del atlas, nivel 1)
+## 5. Componentes canon (v0.2: los del atlas, nivel 1, dirección B)
 
-| Componente                                   | Anatomía                                                                              | Estados                                                  | Dónde se ve                        |
-| -------------------------------------------- | ------------------------------------------------------------------------------------- | -------------------------------------------------------- | ---------------------------------- |
-| **Barra de la app**                          | marca «Big-D» + sello de sección en mono · navegación · conmutadores de idioma y tema | sección actual (subrayado de 2 px y negrita) · pendiente | `atlas-nivel-1.html`               |
-| **Conmutador**                               | grupo de botones con borde de 1 px, 32 px de alto mínimo                              | presionado (`aria-pressed`) = lleno de tinta             | idioma ES/EN, tema Oscuro/Claro    |
-| **Selector de plataforma**                   | `details` + lista; orden **alfabético** declarado dentro de la lista                  | abierto · actual · «mapa pendiente»                      | cabeza del atlas                   |
-| **Pestañas de nivel**                        | 4 pestañas, número en mono; 2 × 2 en teléfono, en fila desde 720 px                   | actual · pendiente                                       | bajo el título                     |
-| **Píldora de vigencia**                      | marca dibujada + texto con días                                                       | vigente · por revisar · vencido                          | estado del mapa                    |
-| **Lienzo del atlas**                         | contenedor que elige disposición por su ancho (`container-type`)                      | ancho · angosto                                          | el diagrama                        |
-| **Ficha breve**                              | panel con borde; cabecera + botón «Cerrar»                                            | oculta · abierta tras tocar un bloque                    | bajo el diagrama                   |
-| **Leyenda**                                  | 4 grupos generados de la gramática + nota de marcas                                   | —                                                        | «Cómo leer el mapa»                |
-| **Lectura en texto**                         | lista ordenada banda → bloque → envíos                                                | —                                                        | al final, con «Saltar el diagrama» |
-| **Banda, bloque, flujo, etiqueta, insignia** | gramática del diagramador                                                             | ver `diagramador-tokens.md`                              | el diagrama                        |
+**Principio del cromo:** sin píldoras ni rellenos; lo activo se marca con **subrayado de 2 px y
+negrita**, lo secundario con `tinta-2`, las secciones con **filetes de 1 px** en `linea`. El aire
+hace la jerarquía.
+
+| Componente                                                       | Anatomía                                                                                                                           | Estados                                         | Dónde se ve             |
+| ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- | ----------------------- |
+| **Barra de la app**                                              | signo + «Big-D» + sello de sección en mono · navegación en texto · alternadores «ES / EN» y «Oscuro / Claro» en mono               | actual (subrayado 2 px + negrita) · pendiente   | `atlas-nivel-1.html`    |
+| **Alternador**                                                   | dos palabras en mono separadas por «/»; 36 px de alto mínimo                                                                       | presionado = negrita + subrayado                | idioma, tema            |
+| **Encabezado de página**                                         | ojo en mono · h1 · subtítulo · línea de metadatos en mono                                                                          | vigente · por revisar · vencido (marca + texto) | cabeza del atlas        |
+| **Botón de enlace**                                              | texto 600 con línea inferior de 1,5 px                                                                                             | —                                               | «Cambiar de plataforma» |
+| **Pestañas de nivel**                                            | fila con filete inferior; número en mono + nombre; se desliza en teléfono                                                          | actual · pendiente                              | bajo el encabezado      |
+| **Lienzo del atlas**                                             | marco de 1 px sobre `sup-1` con rejilla punteada; desplazamiento lateral; índice de capas, sombras de borde y pista cuando no cabe | cabe · desborda                                 | el diagrama             |
+| **Ficha breve**                                                  | bloque con filete izquierdo de 2 px sobre `sup-1`                                                                                  | oculta · abierta tras tocar un bloque           | bajo el lienzo          |
+| **Leyenda**                                                      | dos listas con filetes: glifo + código en mono + nombre; muestras de línea + marcador                                              | —                                               | bajo el lienzo          |
+| **Lectura en texto**                                             | `details` plegado con la lista banda → bloque → envíos                                                                             | plegada · abierta                               | al final                |
+| **Banda, bloque, flujo, etiqueta, franja, referencia, insignia** | gramática del diagramador, dirección B                                                                                             | ver `diagramador-tokens.md`                     | el diagrama             |
 
 **Llegan en la mirada 2 (`kit.html`):** nodo del nivel 2 con relleno tintado, ficha de nodo (hoja
 inferior y panel lateral), paso de recorrido, tarjeta de evidencia, control de peso con rango
@@ -191,7 +198,7 @@ corren con `pnpm test`: `paleta-diagramador` comprueba que de verdad no llegan a
 - **Tema:** atributo `data-theme` en `<html>` (`oscuro` | `claro`); sin atributo, manda
   `prefers-color-scheme` y, si no hay preferencia, oscuro.
 - **Fuentes:** los woff2 de `docs/diseno/assets/fuentes/` se sirven desde el mismo sitio. El
-  `layout.tsx` del estampado usa Geist por `next/font/google`: el S1 lo reemplaza por Atkinson,
+  `layout.tsx` del estampado usa Geist por `next/font/google`: el S1 lo reemplaza por Space Grotesk,
   porque la fuente del sitio debe ser la de la tabla de métricas (G15).
 - **Textos:** las cadenas ES/EN de la maqueta son la base del diccionario de la interfaz.
 
@@ -202,7 +209,8 @@ corren con `pnpm test`: `paleta-diagramador` comprueba que de verdad no llegan a
 
 ## 11. Registro de cambios
 
-| Versión | Fecha      | Cambio                                                                                                                                                                         |
-| ------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 0.1.1   | 2026-09-26 | Ronda 2 de la mirada 1: paleta de un matiz por tipo, claro en papel frío casi blanco; el diagrama es siempre horizontal (P5 del usuario). La dirección visual está por elegir. |
-| 0.1.0   | 2026-09-26 | Borrador para la mirada 1: personalidad, tesis, tokens de los dos temas, tipografía, espacio, movimiento, estados y los componentes del atlas nivel 1                          |
+| Versión | Fecha      | Cambio                                                                                                                                                                                                 |
+| ------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 0.2.0   | 2026-09-26 | Ronda 4 de la mirada 1: Space Grotesk + JetBrains Mono (elección del usuario), cromo sin píldoras (filetes, texto y aire), componentes del atlas en la dirección B, lienzo con desplazamiento lateral. |
+| 0.1.1   | 2026-09-26 | Ronda 2 de la mirada 1: paleta de un matiz por tipo, claro en papel frío casi blanco; el diagrama es siempre horizontal (P5 del usuario). La dirección visual está por elegir.                         |
+| 0.1.0   | 2026-09-26 | Borrador para la mirada 1: personalidad, tesis, tokens de los dos temas, tipografía, espacio, movimiento, estados y los componentes del atlas nivel 1                                                  |

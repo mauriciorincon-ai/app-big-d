@@ -8,7 +8,7 @@ import { archivosMaqueta, leer, textoVisible } from "./lib/maqueta";
 /**
  * Gate de VOCABULARIO Y GLIFOS de la maqueta (Etapa de Diseño; reglas duras 5, 8, 13 y 20).
  *
- * 1. Todo carácter visible existe en la fuente declarada (Atkinson Hyperlegible Next o Mono). Un
+ * 1. Todo carácter visible existe en las fuentes declaradas (Space Grotesk o JetBrains Mono). Un
  *    carácter fuera de ella cae en la fuente de respaldo del sistema: cambia de ancho entre
  *    navegadores (rompe G15 y el determinismo de G1) y es como entran los emojis. Los símbolos de
  *    estado (✓ ✕ ▶ β) se DIBUJAN como glifos SVG propios — D19.
@@ -43,7 +43,7 @@ describe("maqueta — vocabulario y glifos", () => {
 
   it("hay HTML que inspeccionar", () => expect(html.length).toBeGreaterThan(0));
 
-  it("todo carácter visible existe en Atkinson Hyperlegible (sin respaldo del sistema, sin emojis)", () => {
+  it("todo carácter visible existe en Space Grotesk o JetBrains Mono (sin respaldo del sistema, sin emojis)", () => {
     const fuera: string[] = [];
     for (const f of html)
       for (const ch of new Set(textoVisible(leer(f))))

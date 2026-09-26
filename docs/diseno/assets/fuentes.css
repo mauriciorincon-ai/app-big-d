@@ -1,11 +1,7 @@
 /* Fuentes de Big-D (P11). Todas SIL OFL 1.1 — licencias junto a los archivos. Servidas desde el
    mismo sitio: jamás desde un CDN (gate maqueta-autocontenida). `block`: nunca se pinta con respaldo.
-   Ronda 3 de la mirada 1: Atkinson Hyperlegible (ronda 1–2) fue rechazada por el usuario; quedan
-   tres candidatas para elegir —Manrope · Space Grotesk · Onest— y JetBrains Mono para códigos.
-   Atkinson sigue aquí solo para las páginas de registro de las rondas anteriores. */
-@font-face { font-family: "Manrope"; src: url("fuentes/manrope.woff2") format("woff2"); font-weight: 200 800; font-style: normal; font-display: block; }
+   Space Grotesk (interfaz y diagrama; elegida por el usuario en la mirada 1, ronda 3, entre Manrope,
+   Space Grotesk y Onest; Atkinson Hyperlegible, rondas 1–2, fue rechazada) y JetBrains Mono para
+   huellas, fechas, códigos y comandos. Subconjunto latino, variables `wght`. */
 @font-face { font-family: "Space Grotesk"; src: url("fuentes/space-grotesk.woff2") format("woff2"); font-weight: 300 700; font-style: normal; font-display: block; }
-@font-face { font-family: "Onest"; src: url("fuentes/onest.woff2") format("woff2"); font-weight: 100 900; font-style: normal; font-display: block; }
 @font-face { font-family: "JetBrains Mono"; src: url("fuentes/jetbrains-mono.woff2") format("woff2"); font-weight: 100 800; font-style: normal; font-display: block; }
-@font-face { font-family: "Atkinson Hyperlegible Next"; src: url("fuentes/atkinson-hyperlegible-next.woff2") format("woff2"); font-weight: 200 800; font-style: normal; font-display: block; }
-@font-face { font-family: "Atkinson Hyperlegible Mono"; src: url("fuentes/atkinson-hyperlegible-mono.woff2") format("woff2"); font-weight: 200 800; font-style: normal; font-display: block; }

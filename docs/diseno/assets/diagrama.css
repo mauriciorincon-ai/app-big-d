@@ -1,89 +1,46 @@
-/* Hoja del DIAGRAMA (propuesta G13 para el CONTRATO v0.3.0).
-   El SVG no lleva un solo color: referencia variables; los valores por tema viven en tokens.css
-   (generado). Un solo SVG sirve a los dos temas y a los colores forzados. El texto se dibuja en
-   Atkinson Hyperlegible Next, la fuente de la tabla de métricas (G15). */
+/* Big-D — capa CSS del DIAGRAMA (propuesta G13 para el contrato v0.3.0): un solo SVG sirve a los dos
+   temas porque todo color entra por variable. Clases `db-*` = dirección B «plano» elegida en la
+   mirada 1. La letra la hereda de la página (Space Grotesk); tabla de métricas en fuentes/metricas.json. */
+/* Diagrama B */
+.dir-svg text { font-family: var(--letra); }
+.dir-svg [tabindex]:focus { outline: none; }
+.db-guia { stroke: var(--linea); stroke-width: 1; stroke-dasharray: 2 5; fill: none; }
+.db-t-num { font: 500 12px var(--letra-mono); letter-spacing: 0.1em; fill: var(--tinta-2); }
+.db-t-banda { font-size: 17px; font-weight: 700; fill: var(--tinta-1); }
+.db-t-banda-franja { font-size: 15px; }
+.db-t-pregunta { font-size: 14px; fill: var(--tinta-2); }
+.db-t-pregunta-franja { font-size: 13px; }
+.db-t-nombre { font-size: 16px; font-weight: 700; fill: var(--tinta-1); }
+.db-t-nombre-compacto { font-size: 14px; }
+.db-t-meta { font-size: 13px; fill: var(--tinta-2); }
+.db-t-meta-compacta { font-size: 12px; }
+.db-t-ref { font-size: 13px; font-weight: 700; fill: var(--tinta-1); }
+.db-card { fill: var(--sup-2); stroke: var(--linea); stroke-width: 1; }
+.db-fantasma { stroke-dasharray: 5 4; stroke: var(--tinta-2); }
+.db-linea { fill: none; stroke: var(--tinta-2); stroke-width: 1.6; }
+.db-punta { fill: var(--tinta-2); }
+.db-chip rect { fill: var(--sup-1); stroke: var(--linea); stroke-width: 1; }
+.db-marca { color: var(--tinta-1); }
+.db-ref rect { fill: var(--sup-1); stroke: var(--linea); stroke-width: 1; }
+.db-franja-filete { stroke: var(--linea); stroke-width: 1; fill: none; }
+.db-elem { cursor: pointer; }
+.db-elem:focus-visible [data-caja], .db-elem[aria-current="true"] [data-caja] { stroke: var(--tinta-1); stroke-width: 2; }
+.db-modo-por-lotes .db-linea { stroke-dasharray: 8 5; }
+.db-modo-a-demanda .db-linea { stroke-dasharray: 0.1 5.5; stroke-linecap: round; stroke-width: 2.8; }
+.db-modo-haz .db-linea { stroke-width: 4; }
+.db-doble-ext { stroke-width: 6.5; }
+.db-doble-int { stroke: var(--sup-1); stroke-width: 2.5; }
+.db-madurez rect { fill: none; stroke: var(--tinta-2); stroke-width: 1.2; }
+.db-madurez .dg-madurez-nivel { fill: var(--tinta-2); stroke: none; }
+.db-c-tipo-1, .lg-tipo-1 { color: var(--tipo-1); } .db-c-tipo-2, .lg-tipo-2 { color: var(--tipo-2); } .db-c-tipo-3, .lg-tipo-3 { color: var(--tipo-3); } .db-c-tipo-4, .lg-tipo-4 { color: var(--tipo-4); }
+.db-c-tipo-5, .lg-tipo-5 { color: var(--tipo-5); } .db-c-tipo-6, .lg-tipo-6 { color: var(--tipo-6); } .db-c-tipo-7, .lg-tipo-7 { color: var(--tipo-7); } .db-c-tipo-8, .lg-tipo-8 { color: var(--tipo-8); }
+.db-f-tipo-1 { fill: var(--tipo-1); } .db-f-tipo-2 { fill: var(--tipo-2); } .db-f-tipo-3 { fill: var(--tipo-3); } .db-f-tipo-4 { fill: var(--tipo-4); }
+.db-f-tipo-5 { fill: var(--tipo-5); } .db-f-tipo-6 { fill: var(--tipo-6); } .db-f-tipo-7 { fill: var(--tipo-7); } .db-f-tipo-8 { fill: var(--tipo-8); }
 
-.dg {
-  display: block;
-  width: 100%;
-  height: auto;
-  font-family: "Atkinson Hyperlegible Next", sans-serif;
-  font-kerning: normal;
-}
-.dg text {
-  font-family: inherit;
-}
-
-/* Lienzo y bandas */
-.dg-lienzo { fill: var(--sup-1); }
-.dg-banda-fondo,
-.dg-franja-fondo { fill: var(--fondo); }
-.dg-franja-barra { fill: var(--tinta-1); }
-.dg-t-banda { font-size: 16px; font-weight: 700; fill: var(--tinta-1); }
-.dg-t-pregunta { font-size: 15px; font-weight: 400; fill: var(--tinta-2); }
-.dg-t-abarca { font-size: 13px; font-weight: 400; fill: var(--tinta-2); }
-
-/* Elementos de nivel 1: el bloque es neutro; el color vive en los glifos de sus componentes */
-.dg-bloque { fill: var(--sup-2); stroke: var(--tinta-2); stroke-width: 1.5; }
-.dg-fantasma { fill: none; stroke: var(--tinta-2); stroke-width: 1.5; stroke-dasharray: 5 4; }
-.dg-t-bloque { font-size: 16px; font-weight: 700; fill: var(--tinta-1); }
-.dg-t-fantasma { font-size: 16px; font-weight: 400; fill: var(--tinta-2); }
-.dg-t-mas,
-.dg-t-madurez,
-.dg-t-ref { font-size: 13px; font-weight: 400; fill: var(--tinta-2); }
-.dg-t-ref { fill: var(--tinta-1); }
-
-/* Tipos de nodo: el glifo pinta con currentColor */
-.dg-c-tipo-1 { color: var(--tipo-1); }
-.dg-c-tipo-2 { color: var(--tipo-2); }
-.dg-c-tipo-3 { color: var(--tipo-3); }
-.dg-c-tipo-4 { color: var(--tipo-4); }
-.dg-c-tipo-5 { color: var(--tipo-5); }
-.dg-c-tipo-6 { color: var(--tipo-6); }
-.dg-c-tipo-7 { color: var(--tipo-7); }
-.dg-c-tipo-8 { color: var(--tipo-8); }
-
-/* Flujos: SIEMPRE en tinta; el modo es trazo + marcador, jamás matiz (G7, D10) */
-.dg-linea { fill: none; stroke: var(--tinta-2); stroke-width: 2; stroke-linejoin: round; }
-.dg-modo-por-lotes .dg-linea { stroke-dasharray: 8 5; }
-.dg-modo-a-demanda .dg-linea { stroke-dasharray: 0.1 5.5; stroke-linecap: round; stroke-width: 2.8; }
-.dg-modo-haz .dg-linea { stroke-width: 4; }
-.dg-modo-sin-copia .dg-doble-ext { stroke-width: 6.5; }
-.dg-modo-sin-copia .dg-doble-int { stroke: var(--sup-1); stroke-width: 2.5; }
-.dg-punta { fill: var(--tinta-2); }
-.dg-chip rect { fill: var(--sup-2); stroke: var(--tinta-2); stroke-width: 1; }
-.dg-marca { color: var(--tinta-1); }
-
-/* Madurez (D19): medidor + palabra; «disponible» no se marca */
-.dg-madurez-caja { fill: none; stroke: var(--tinta-1); stroke-width: 1.2; }
-.dg-madurez-anunciado { stroke-dasharray: 2 1.5; }
-.dg-madurez-nivel { fill: var(--tinta-1); }
-.dg-madurez-tachado { stroke: var(--tinta-1); stroke-width: 1.2; }
-
-/* Vigencia (D9): tinta, sin matiz; «vigente» no se marca dentro del diagrama */
-.dg-t-insignia { font-size: 13px; font-weight: 700; }
-.dg-insignia-revisar rect { fill: var(--sup-2); stroke: var(--tinta-1); stroke-width: 2; }
-.dg-insignia-revisar .dg-insignia-marca { color: var(--tinta-1); }
-.dg-insignia-revisar .dg-t-insignia { fill: var(--tinta-1); }
-.dg-insignia-vencido rect { fill: var(--tinta-1); stroke: var(--tinta-1); stroke-width: 2; }
-.dg-insignia-vencido .dg-insignia-marca { color: var(--sup-1); }
-.dg-insignia-vencido .dg-t-insignia { fill: var(--sup-1); }
-
-/* Foco visible: grosor, no color (≥ 3:1 y distinto del estado normal) */
-.dg-elem { outline: none; cursor: pointer; }
-.dg-elem:focus-visible > rect[data-caja],
-.dg-elem[aria-current="true"] > rect[data-caja] { stroke: var(--tinta-1); stroke-width: 3.5; }
-
-/* Idioma: el motor emite un SVG por idioma; la maqueta pinta ambos y oculta uno */
-html[data-lang="es"] .dg [lang="en"],
-html[data-lang="en"] .dg [lang="es"] { display: none; }
-[data-oculto] { display: none !important; }
-
-/* Colores forzados: el color desaparece; quedan glifo, trazo, marcador y texto (G7) */
-@media (forced-colors: active) {
-  .dg-lienzo, .dg-banda-fondo, .dg-franja-fondo, .dg-bloque, .dg-chip rect { fill: Canvas; }
-  .dg-bloque, .dg-fantasma, .dg-chip rect, .dg-linea, .dg-madurez-caja { stroke: CanvasText; }
-  .dg-punta, .dg-madurez-nivel, .dg-t-banda, .dg-t-pregunta, .dg-t-bloque, .dg-t-fantasma, .dg-t-madurez, .dg-t-ref { fill: CanvasText; }
-  .dg-modo-sin-copia .dg-doble-int { stroke: Canvas; }
-  [class^="dg-c-tipo"], .dg-marca { color: CanvasText; }
-}
+.db-insignia rect { fill: var(--sup-2); stroke: var(--tinta-1); stroke-width: 1.5; }
+.db-insignia-marca { color: var(--tinta-1); }
+.db-t-insignia { font: 700 12px var(--letra-mono); fill: var(--tinta-1); }
+.db-insignia-vencido rect { fill: var(--tinta-1); }
+.db-insignia-vencido .db-insignia-marca { color: var(--sup-1); }
+.db-insignia-vencido .db-t-insignia { fill: var(--sup-1); }
+@media (forced-colors: active) { .db-card, .db-chip rect, .db-ref rect, .db-insignia rect { fill: Canvas; stroke: CanvasText; } .db-linea, .db-punta { stroke: CanvasText; } .db-punta { fill: CanvasText; } }

@@ -18,8 +18,6 @@
 - `<pantalla>.html` — una página por pantalla core del H1, HTML autocontenido (cero CDNs, cero
   frameworks), con sus estados, 380 px y desktop, oscuro y claro, español e inglés. Datos 100 %
   sintéticos: la Plataforma Ejemplo y el hospital ficticio.
-- `atlas-nivel-1.html` — ronda 3 de la mirada 1: dirección B con cromo nuevo y tres tipografías para elegir (`assets/atlas.css`, `assets/fuentes/`).
-- `atlas-direcciones.html` — ronda 2 (registro): las tres direcciones; el usuario eligió B.
 - `diagramador-tokens.md` — la propuesta de gramática visual del diagramador para el CONTRATO v0.3.0.
 - `assets/` — `tokens.{json,css}` (GENERADOS por `pnpm tokens`), fuentes con su licencia, hojas y
   el script de la barra de sala.
@@ -34,14 +32,16 @@ El atlas es el único diagrama dibujado a mano de la app (regla dura 8). Sus cua
 aplica las reglas de `diagramador-tokens.md` § 9 sobre la tabla de métricas de la fuente. La
 calculadora vive fuera del repo a propósito: no es el motor y no adelanta el paquete del
 diagramador antes de G-Diseño. El HTML de la página es autoría a mano; solo las regiones marcadas
-`<!-- inicio:… -->` llevan el SVG, la leyenda y la lectura en texto trazados.
+`<!-- inicio:… -->` llevan el SVG, la leyenda y la lectura en texto trazados. _(Ronda 1.)_
 
-**Ronda 2 (`atlas-direcciones.html`).** Tras la mirada del 2026-09-26 (ronda 1 no aprobada) el
-diagrama es **siempre horizontal**: jamás se encoge ni se transpone; si no cabe en su contenedor, el
-lienzo se desliza de lado (`assets/lienzo.js`: índice de capas, sombras de borde, pista «desliza»).
-Los tres lienzos (A carriles · B plano · C bloques) salen de la misma calculadora, con la misma data
-y los mismos glifos; cambia la forma de pintar (`assets/direcciones.css`). Lo que el usuario elija
-pasa a `bigd.css` / `diagrama.css` y a `diagramador-tokens.md` en la ronda 3; lo demás se borra.
+**Rondas 2–4.** Tras la mirada del 2026-09-26 el diagrama es **siempre horizontal** (jamás se
+encoge ni se transpone; si no cabe, `assets/lienzo.js` lo desliza con índice de capas, sombras de
+borde y pista escrita). La ronda 2 dio a elegir tres direcciones (A carriles · B plano · C bloques);
+el usuario eligió **B**. La ronda 3 dio a elegir tres tipografías con un SVG por fuente (Manrope ·
+Space Grotesk · Onest); el usuario eligió **Space Grotesk**. La ronda 4 consolida: la página entera
+se genera con la calculadora (`atlas-nivel-1.html`, tres lienzos: transversal con etiqueta, transversal
+con línea por modo, orquestación como capa) y la hoja base del producto es `assets/bigd.css` +
+`assets/diagrama.css`. Las rondas anteriores viven en el historial: f21519c · 5439920 · a05a217.
 
 ## Plan de miradas
 
@@ -59,6 +59,7 @@ pasa a `bigd.css` / `diagrama.css` y a `diagramador-tokens.md` en la ronda 3; lo
 | ---------- | ------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 2026-09-26 | `atlas-nivel-1.html` (ronda 1, abierto en local; el preview no le abrió) | «revisé la que está en local y la verdad no me gustó nada, visualmente horrible, y el diagrama no lo quiero vertical sino horizontal y con desplazamiento lateral por si se hace muy grande» — **no aprobado** | Nada todavía. Ronda 2 de la mirada 1: diagrama siempre horizontal con desplazamiento lateral (el usuario decide P5: jamás se transpone) y una dirección visual nueva. |
 | 2026-09-26 | `atlas-direcciones.html` (ronda 2, abierto en local)                     | «Me gusta plano B pero no sé por qué insistes con la misma tipografía y casi misma visual si ya te dije que estaba horrible visualmente» — **dirección B elegida; tipografía y cromo rechazados**              | Ronda 3 de la mirada 1: B con tipografías nuevas para elegir y cromo de página distinto.                                                                              |
+| 2026-09-26 | `atlas-nivel-1.html` (ronda 3, abierto en local)                         | «Space Grotesk. Continua» — **tipografía elegida: Space Grotesk** (JetBrains Mono para códigos); cromo nuevo sin objeción                                                                                      | Ronda 4 de la mirada 1: consolidación con Space Grotesk, estados de vigencia y alternativas P4/P9 en la dirección B.                                                  |
 
 ## Cobertura (se llena durante la etapa)
 
