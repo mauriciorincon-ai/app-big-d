@@ -80,9 +80,14 @@ async function medir(pagina, clave) {
       pisadas: [],
       fuente: true,
     };
-    // fonts.check() da verdadero también con una cara que FALLÓ: se exige la cara cargada.
+    // fonts.check() da verdadero también con una cara que FALLÓ: se exige la cara cargada, y la
+    // que se exige es la PRIMERA familia que el cuerpo de la página declara (la letra elegida).
+    const familia = getComputedStyle(document.body)
+      .fontFamily.split(",")[0]
+      .replace(/"/g, "")
+      .trim();
     out.fuente = [...document.fonts].some(
-      (f) => f.family.replace(/"/g, "") === "Atkinson Hyperlegible Next" && f.status === "loaded",
+      (f) => f.family.replace(/"/g, "") === familia && f.status === "loaded",
     );
     for (const svg of document.querySelectorAll("svg[data-lienzo]")) {
       if (!svg.getClientRects().length) continue; // oculto en este estado
@@ -155,6 +160,9 @@ for (const ruta of paginas) {
             },
             [estado, tema, idioma],
           );
+          // Un estado puede pedir una fuente que aún no se usó (font-display: block la carga al
+          // usarla): se espera a que todas las caras pedidas terminen antes de medir.
+          await pagina.evaluate(() => document.fonts.ready);
           const clave = `${nombre}__${estado || "unico"}__${tema}__${idioma}__${ancho}`;
           await medir(pagina, clave);
           if (salida && !bandera("solo-medir"))

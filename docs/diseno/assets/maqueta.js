@@ -83,7 +83,7 @@
   function activar(el) {
     var panel = document.getElementById("ficha-breve");
     if (!panel) return;
-    document.querySelectorAll('.dg-elem[aria-current="true"]').forEach(function (x) {
+    document.querySelectorAll('.dg-elem[aria-current="true"], .db-elem[aria-current="true"]').forEach(function (x) {
       x.removeAttribute("aria-current");
     });
     el.setAttribute("aria-current", "true");
@@ -94,9 +94,9 @@
   }
 
   document.addEventListener("click", function (ev) {
-    var t = ev.target.closest("button, .dg-elem");
+    var t = ev.target.closest("button, .dg-elem, .db-elem");
     if (!t) return;
-    if (t.classList.contains("dg-elem")) return activar(t);
+    if (t.classList.contains("dg-elem") || t.classList.contains("db-elem")) return activar(t);
     if (t.dataset.estado && t.closest(".mq-bar")) {
       ejes = {};
       html.dataset.estado = t.dataset.estado;
@@ -113,7 +113,7 @@
     aplicar();
   });
   document.addEventListener("keydown", function (ev) {
-    var t = ev.target.closest && ev.target.closest(".dg-elem");
+    var t = ev.target.closest && ev.target.closest(".dg-elem, .db-elem");
     if (t && (ev.key === "Enter" || ev.key === " ")) {
       ev.preventDefault();
       activar(t);

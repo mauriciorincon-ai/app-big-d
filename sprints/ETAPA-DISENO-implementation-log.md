@@ -214,3 +214,33 @@ ver qué pasa con sesión: pendiente de lo que el usuario vio al abrirlo.
 **Pendiente para la ronda 3 (tras la elección):** la dirección elegida pasa a `bigd.css` /
 `diagrama.css`; `atlas-nivel-1.html` se rehace con ella y recupera los estados (vigencia, P4, P9),
 la ficha breve y la lectura en texto; `diagramador-tokens.md` §§ 4, 6–9 y 13 se reescriben.
+
+## Fase 1 — Mirada 1, ronda 3 (2026-09-26)
+
+**Mirada de la ronda 2 (registrada en el README antes de construir):** «Me gusta plano B pero no sé
+por qué insistes con la misma tipografía y casi misma visual si ya te dije que estaba horrible
+visualmente». Dirección B elegida; Atkinson Hyperlegible y el cromo de página rechazados.
+
+| #   | Decisión                                                                                                                                                                                                                                                                                  | Razón                                                                                           |
+| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| D35 | **P11 se reabre: tres candidatas SIL OFL para elegir** — Manrope (geométrica), Space Grotesk (técnica), Onest (humanista) — y JetBrains Mono para códigos. Subconjunto latino en woff2 (30–50 KB), licencias, huella SHA-256, cobertura y tabla de métricas (G15) generadas con fonttools | El usuario rechazó Atkinson; la letra se elige mirando, no leyendo argumentos                   |
+| D36 | **Un SVG por tipografía**: el mapa se recalcula con las métricas de cada fuente (cortes de línea y anchos de referencia); el conmutador de sala cambia página y mapa a la vez                                                                                                             | G15: la geometría depende de la fuente; una sola geometría con tres fuentes desbordaría         |
+| D37 | **Cromo de página nuevo** (`assets/atlas.css`): sin píldoras ni rellenos; filetes, texto y aire; ojo en mono; conmutadores como texto; niveles y leyenda con filetes                                                                                                                      | «Casi misma visual»: el cromo de la ronda 2 heredaba el de la ronda 1                           |
+| D38 | `atlas-nivel-1.html` se **reemplaza** por la ronda 3 (la ronda 1 queda en el historial, f21519c); `atlas-direcciones.html` se conserva una ronda como registro                                                                                                                            | Dos atlas en la sala confunden; el elegido ocupa el nombre del entregable                       |
+| D39 | El arnés exige cargada la **primera familia que declara el cuerpo** (no un nombre fijo) y espera `document.fonts.ready` en cada estado                                                                                                                                                    | Con tres fuentes conmutables, el nombre fijo dejaba de ser un gate; se vio fallar (3 encuadres) |
+
+**Construido:** `atlas-nivel-1.html` (86 KB, tres lienzos de 1178 × 629) · `assets/atlas.css` ·
+`assets/fuentes/{manrope,space-grotesk,onest,jetbrains-mono}.woff2` + `OFL-*.txt` · `cobertura.json`
+y `metricas.json` ampliados · `fuentes.css` · `maqueta.js` (bloques `.db-elem`) · `maqueta.css`
+(mono por variable) · `scripts/capturar-maqueta.mjs` (D39).
+
+**Verificado:** 24 encuadres (3 tipografías × 2 temas × 2 idiomas × 380/1280), 0 fallas. Prueba en
+Chromium a 380 px: el conmutador deja `Space Grotesk` como familia del cuerpo y visible solo su SVG;
+el índice lleva a «Almacenamiento»; tocar «Almacén central» abre la ficha con su frase; la página
+mide 380 px. Leídas como imagen: Space Grotesk oscuro ES 1280, Manrope claro EN 1280, Onest oscuro
+ES 380. **Corregido tras mirar:** a 1280 px el mapa se pasaba 30 px y recortaba la capa 6
+(columnas 156 → 152, canal 52 → 50, relleno lateral 16 → 8).
+
+**Pendiente (ronda 4, tras elegir la letra):** quitar las fuentes no elegidas y Atkinson; endurecer
+el gate de vocabulario a la familia elegida; volver a poner los estados de vigencia y las
+alternativas P4/P9; reescribir §§ 6–9 y 13 de la propuesta; borrar `atlas-direcciones.html`.
