@@ -1,0 +1,11 @@
+/* Capa de ANIMACIÓN del recorrido (G12). Se carga solo con `media="(prefers-reduced-motion:
+   no-preference)"`: con movimiento reducido esta hoja no existe y el SVG es el mismo. Solo
+   propiedades baratas: stroke-dashoffset y opacity; nada cambia de forma ni de posición. */
+.rec[data-animando] .db-flujo .db-linea { transition: stroke-width 240ms ease, stroke 240ms ease; }
+.rec[data-animando] .db-nodo { transition: opacity 320ms ease; }
+.rec[data-animando] .db-flujo { transition: opacity 320ms ease; }
+.rec[data-paso]:not([data-paso="todos"])[data-animando] .db-flujo[data-flujo] .db-linea[style],
+.rec[data-animando] .dg-flujo-activo .db-linea { animation: dg-fluye 1.2s linear infinite; }
+@keyframes dg-fluye { from { stroke-dashoffset: 26; } to { stroke-dashoffset: 0; } }
+.rec[data-animando] .db-nodo .dg-paso-insignia rect { animation: dg-late 1.6s ease-in-out infinite; }
+@keyframes dg-late { 0%, 100% { stroke-width: 2; } 50% { stroke-width: 5; } }

@@ -1,9 +1,9 @@
 ---
 documento: Gramática visual del diagramador — propuesta para el CONTRATO v0.3.0
-estado: propuesta (mirada 1, ronda 4: dirección B y Space Grotesk elegidas; pendiente la aprobación de la mirada)
+estado: propuesta (mirada 1 aprobada 2026-09-26; ampliada con nivel 2, recorrido y lado a lado para la mirada 2)
 fecha: 2026-09-26
 contrato_base: reusables/diagramador/CONTRATO.md v0.2.0 (planeadora, solo lectura)
-referencia_visual: docs/diseno/atlas-nivel-1.html (ronda 4; rondas 1–3 en el historial: f21519c · 5439920 · a05a217)
+referencia_visual: docs/diseno/atlas-nivel-1.html · atlas-nivel-2.html · atlas-recorrido.html · lado-a-lado.html (rondas 1–3 de la mirada 1 en el historial: f21519c · 5439920 · a05a217)
 autor: Etapa de Diseño de Big-D (piloto del reusable)
 ---
 
@@ -132,8 +132,13 @@ línea. Ejemplo: en la franja Gobierno, bajo Almacenamiento, «↑ ⇄ Almacén 
   pistas y el dibujo cuenta el camino del dato. Es divulgación progresiva: el nivel 2 dibuja todo.
 - **Nada se pierde.** El modo sigue en marcador y la conexión en texto; la lectura en texto (G10)
   la repite.
-- **Cambio al contrato:** § 4.1 debe decir que en el nivel 1 un flujo agregado con una franja se
-  representa como referencia.
+- **También en el nivel 2 (mirada 2).** Los flujos entre un nodo de franja y un nodo de capa se
+  escriben como referencias en la franja, bajo la columna del nodo de capa; el nivel 2 dibuja como
+  líneas todos los flujos entre nodos de capas. Con las cuatro conexiones de franja del ejemplo
+  dibujadas, cada una cruzaría el carril exprés o un canal ya ocupado. En el recorrido, si un paso
+  toca una franja, su referencia se resalta como cualquier flujo.
+- **Cambio al contrato:** § 4.1 y § 4.2 deben decir que un flujo con una franja se representa
+  como referencia en los niveles 1 y 2.
 
 ### 4.4 Regreso entre columnas vecinas
 
@@ -348,6 +353,31 @@ No existe disposición angosta (P5, § 1): en teléfono el mismo lienzo se desli
 de capas, sombras de borde y pista escrita (`assets/lienzo.js`). La geometría angosta de la ronda 1
 queda en el historial (f21519c).
 
+### 9.2 bis · Nivel 2 y recorrido (mirada 2)
+
+| Constante                 | Valor                                                                                                                                                                                    |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Nodo                      | 152 × 84, esquina 6, filete de tipo de 4 u, glifo + nombre en 13/700 (≤ 3 líneas), fila inferior: madurez (si no es disponible) y «N fuentes»                                            |
+| Apilado                   | nodos de una banda en su columna, en el orden del mapa, a 40 u entre sí (cabe un flujo vertical con su etiqueta)                                                                         |
+| Puertos                   | `k` puertos en un borde en `y + alto × i / (k + 1)`, ordenados por la fila del otro extremo                                                                                              |
+| Vecinas con distinta fila | salida horizontal → pista vertical del canal (cada 10 u desde su mitad) → entrada horizontal; la etiqueta en el tramo de salida                                                          |
+| Misma columna             | línea vertical en la mitad del nodo; la etiqueta a 24 u a la derecha                                                                                                                     |
+| Saltos                    | salen por el borde inferior del nodo más bajo, van por el carril exprés (pistas a 24 y 46 u) y suben por el canal anterior al destino hasta entrar por la izquierda                      |
+| Franja                    | altura `máx(64, 20 + 44 × k + 8 × (k − 1))` con `k` nodos en fichas compactas de 168 × 44 apiladas; referencias en la fila de su nodo                                                    |
+| Recorrido                 | insignia de 24 u (30 si «6a») montada en la esquina superior izquierda del nodo; marca de rama a su derecha; estados por atributo `data-paso` del contenedor, CSS generado del recorrido |
+| Medido                    | 1178 × 756 u, **0 cruces D11**, 0 avisos; las 4 conexiones de franja como referencia                                                                                                     |
+
+### 9.2 ter · Lado a lado (mirada 2)
+
+| Constante   | Valor                                                                                                                                  |
+| ----------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Columnas    | las 9 bandas (capas y franjas), 118 u de ancho a 14 u; guía punteada entre capas y franjas; viewBox 1190 u                             |
+| Fila        | 26 u de rótulo (nombre de la plataforma + versión y vigencia en mono) + bloques de 118 × 64; filas a 14 u                              |
+| Bloque      | filete de tipo, glifo, nombre 12/700 (≤ 2 líneas), «N comp.» y madurez si no es disponible (si no caben las dos, manda la madurez)     |
+| Sin bloque  | caja punteada «sin componentes»                                                                                                        |
+| N           | tres plataformas por página (constante de vista), paginación; en < 900 px, una banda a la vez con las plataformas apiladas             |
+| Diferencias | píldora glifo + palabra bajo el bloque cambiado: nuevo (+), retirado (−, llena), renombrado (→), madurez (▮); lista explicativa debajo |
+
 ### 9.3 Lo que midió la referencia (ronda 4)
 
 | Lienzo                                   | viewBox    | Carril   | Cruces D11 | Avisos |
@@ -422,18 +452,19 @@ La nota de marcas se genera también:
 
 ## 15. Animación del recorrido (G12)
 
-Se propone aquí y se dibuja en la mirada 2 (`atlas-recorrido.html`).
+Implementada en la referencia (`atlas-recorrido.html`):
 
-- **El recorrido se lee sin animación.** Vista estática de todos los pasos por defecto; anterior y
-  siguiente cambian un atributo del contenedor (`data-paso`).
-- **La animación vive en `recorrido-animacion.css`**, enlazada con
-  `media="(prefers-reduced-motion: no-preference)"`. Con «reducir movimiento» la hoja no se aplica y
-  `document.getAnimations()` queda vacío. El SVG no cambia.
-- **Qué se anima:** un trazo de marcha sobre una **copia** del tramo que entra al paso activo (jamás
-  el patrón del modo) y un pulso de escala de 1 a 1,06 en el halo del paso activo, 1,2 s. Pausable;
-  nunca arranca solo.
-- **El paso activo, sin color:** borde de 4 u, halo, insignia numerada y «Paso n de N». Lo visitado
-  va a 3 u; lo pendiente, a opacidad 0,35. Una bifurcación lleva sufijos 6a y 6b.
+- **El controlador cambia un atributo** (`data-paso="todos|p1…p8"`) del contenedor; el CSS generado
+  del recorrido decide qué nodo es activo (borde 3 u), visitado (normal) o pendiente (opacidad 0,35) y
+  qué flujo se resalta. El SVG no cambia.
+- **Hoja aparte** `recorrido-animacion.css` cargada con `media="(prefers-reduced-motion:
+no-preference)"`: transiciones de opacidad y grosor (240–320 ms) y, mientras se reproduce, la
+  línea activa «fluye» con `stroke-dashoffset` (1,2 s). Con movimiento reducido la hoja no se carga
+  y el botón «Reproducir» no existe (medido en Chromium con `reducedMotion: reduce`).
+- **Vista estática por defecto:** todos los pasos numerados. La reproducción avanza un paso cada
+  2 s y se detiene al final; «Anterior», «Siguiente» y las flechas del teclado la detienen.
+- **Numeración con rama:** 1–5, 6a → 7a (tablero) y 6b (agente); el nodo que bifurca lleva la marca
+  «⇉» dibujada.
 
 ## 16. Cambios propuestos al esquema y a la gramática
 

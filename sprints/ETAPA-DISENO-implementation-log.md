@@ -279,3 +279,50 @@ líneas claro EN 1280. Sin correcciones tras mirar.
 - tokens del diagramador); la mirada 2 no arranca sin ella.
 
 **Mirada 1 aprobada (2026-09-26):** «lo abrí y apruebo», con la ronda 4 abierta en local. Registrada en `docs/diseno/README.md`. Fase 1 cerrada; la fase 2 (mirada 2) espera el «continúa».
+
+## Fase 2 — Mirada 2: design system completo, kit, nivel 2, recorrido, lado a lado (2026-09-26)
+
+Arrancó con el «continúa» del usuario tras la aprobación de la mirada 1.
+
+| #   | Decisión                                                                                                                                                                                 | Razón                                                                                                    |
+| --- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| D44 | **Las franjas siguen por referencia en el nivel 2**; solo los flujos entre nodos de capas se dibujan como líneas (propuesta § 4.3 ampliada; cambio a CONTRATO § 4.2)                     | Las 4 conexiones de franja del ejemplo cruzarían el carril o un canal ocupado; con referencias: 0 cruces |
+| D45 | **Nivel 2 = nodos apilados en su columna** (152 × 84 a 40 u), puertos repartidos por borde, pistas verticales por canal a 10 u, saltos por el carril y el canal anterior al destino      | Geometría por reglas (D2); el mismo cromo del nivel 1                                                    |
+| D46 | **Ficha de nodo como hoja inferior (< 900 px) y panel lateral (≥ 900 px)** superpuestos; el lienzo no se reacomoda                                                                       | Orden de diseño; el mapa no cabe al lado de un panel en 1280 px                                          |
+| D47 | **Recorrido por atributo del contenedor + CSS generado** (`data-paso`), hoja de animación aparte con `media`, sin botón «Reproducir» con movimiento reducido; numeración 1–5, 6a, 7a, 6b | CONTRATO § 4.3 y G12; regla de desarrollo 5-a (el árbol no depende de la preferencia)                    |
+| D48 | **Lado a lado con las 9 bandas como columnas y una plataforma por fila** (bloques mini 118 × 64), tres por página, una banda a la vez en teléfono; diff como píldoras glifo + palabra    | G5 por construcción; «tres en ancho y una en teléfono» como constante de vista; color no interviene      |
+| D49 | **Cuatro plataformas ficticias** (Ejemplo, Norte, Sur, Este) y un diff ficticio v0.1.0 → v0.2.0 con los cuatro tipos de cambio                                                           | Regla dura 12 (cero cifras sobre fabricantes reales) y N ≠ 3                                             |
+| D50 | Textos EN de los 14 nodos, el recorrido, los términos y las fuentes **redactados** en la maqueta (el mapa v0.2.0 es solo ES)                                                             | Regla 20; se entregan a la planeadora en § 16                                                            |
+| D51 | Los preajustes de sala se re-aplican en cada clic: los controladores (ficha, recorrido) **solo obedecen cuando el preajuste cambia**                                                     | Visto fallar: «Siguiente» no avanzaba porque el preajuste lo devolvía a «todos»                          |
+
+**Construido:** `atlas-nivel-2.html` (76 KB) · `atlas-recorrido.html` (52 KB, CSS de estados generado
+
+- `assets/recorrido-animacion.css` + `assets/recorrido.js`) · `lado-a-lado.html` (95 KB, 3 lienzos +
+  vista angosta HTML + `assets/lado.js`) · `kit.html` (31 KB) · `assets/ficha.js` · `bigd.css` (panel,
+  recorrido, lado a lado, evidencia, peso, tabla, campos, estados) · `diagrama.css` (nodo, insignias de
+  paso, diff) · `design-system.md` v0.3.0 (§§ 3.5, 4, 5, 10, 11) · `diagramador-tokens.md` (§§ 4.3,
+  9.2 bis/ter, 15) · README (cobertura) · portada de sala.
+
+**Calculadora (fuera del repo, `scratchpad/calc3/`):** `nivel2.mjs` (nivel 2 y recorrido),
+`lado.mjs`, `datos2.mjs` (EN + plataformas ficticias), páginas. Fórmulas en la propuesta § 9.
+
+**Verificado en Chromium:** nivel 2 — ficha abre al tocar y por preajuste, Esc cierra; recorrido —
+Anterior/Siguiente, flechas, Reproducir avanza cada 2 s y Pausar detiene, preajustes; con
+`reducedMotion: reduce` el botón está oculto, no hay `data-animando` y la línea no tiene animación;
+lado a lado — paginación por preajuste, pestañas de banda en angosto. Correcciones tras mirar: la
+pregunta del glosario no encontraba «catálogo» (buscaba en dos campos, no en tres); la marca de rama
+pisaba el nombre del nodo; el rótulo de fila del lado a lado se pintaba a 17 px y pisaba su meta (la
+regla de 13 px vivía en la hoja equivocada); «previa privada» no cabía en el bloque mini (si no caben
+cuenta y madurez, manda la madurez); el `<select>` del kit mezclaba idiomas (`<option>` no admite
+`<span lang>`: dos `<select lang>`).
+
+**Pasada de capturas de la mirada 2:** 408 encuadres sobre las seis páginas (estados × 2 temas × 2
+idiomas × 380/1280 + deuteranopía, protanopía, tritanopía y acromatopsia en ES), **0 fallas de
+medida**. Leídas como imagen: nivel 2 ficha oscuro ES 1280 y glosario oscuro ES 380; recorrido
+bifurcación claro EN 1280; lado a lado tres oscuro ES 1280, diff claro ES 1280 y tres oscuro ES 380;
+kit oscuro ES 1280 y claro ES 380.
+
+**Hallazgo de la simulación (deuteranopía, nivel 2):** en «Agente de preguntas sobre datos» la
+madurez «vista previa» pisaba «1 fuente» en la fila inferior del nodo; el arnés no lo ve porque los
+dos textos son del mismo dueño. Regla nueva en la calculadora: con madurez a la vista, las fuentes
+van como glifo + número. Deuda del arnés: medir solapes entre textos del mismo dueño.

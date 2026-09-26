@@ -1,6 +1,6 @@
 ---
-version: 0.2.0
-estado: borrador — mirada 1, ronda 4 (Etapa de Diseño, F2a)
+version: 0.3.0
+estado: completo para la mirada 2 (Etapa de Diseño, F2a); se sella en G-Diseño
 fecha: 2026-09-26
 fuente_en_codigo: docs/diseno/assets/ (tokens.css GENERADO · bigd.css · diagrama.css · fuentes.css)
 gramatica_del_diagrama: docs/diseno/diagramador-tokens.md
@@ -8,10 +8,10 @@ gramatica_del_diagrama: docs/diseno/diagramador-tokens.md
 
 # Big-D — design system
 
-> **Fuente de verdad visual de Big-D.** Esta es la versión 0.1: lo que la mirada 1 necesita para
-> juzgar el atlas. La versión completa, con todos los componentes canon y sus estados, llega en la
-> mirada 2 (`kit.html`). Lo que toca al diagrama vive en `docs/diseno/diagramador-tokens.md`,
-> porque es contrato del reusable y no estilo de esta app.
+> **Fuente de verdad visual de Big-D.** Versión 0.3: completa para la mirada 2, con todos los
+> componentes canon y sus estados, vistos en `docs/diseno/kit.html` y en las páginas del atlas. Lo
+> que toca al diagrama vive en `docs/diseno/diagramador-tokens.md`, porque es contrato del
+> reusable y no estilo de esta app. Se sella en G-Diseño.
 
 ## 1. Personalidad
 
@@ -100,23 +100,38 @@ Página: ancho máximo 1280 px; margen lateral 16 px en teléfono y 32 px desde 
 
 ### 3.5 Movimiento
 
-- **Casi nulo.** Solo `opacity` y `transform`, 120 ms (`--t-rapida`), por ejemplo el giro del
-  chevrón del selector.
-- **Reducir movimiento:** todas las duraciones a 0 ms. **La forma del árbol jamás depende del
-  movimiento** (regla de desarrollo 5-a): el movimiento cambia propiedades, nunca qué se pinta.
-- La animación del recorrido del dato es de la gramática: hoja aparte, solo con
-  `prefers-reduced-motion: no-preference` (`diagramador-tokens.md` § 15).
+| Movimiento                        | Duración / curva                    | Dónde                                     | Con «reducir movimiento»                          |
+| --------------------------------- | ----------------------------------- | ----------------------------------------- | ------------------------------------------------- |
+| Cambio de estado de un control    | 120 ms, ease                        | subrayado de pestañas, alternadores, foco | igual (es un cambio de color, no de forma)        |
+| Sombras de borde del lienzo       | 120 ms, opacidad                    | `lienzo-marco` al deslizar                | igual                                             |
+| Desplazamiento al elegir una capa | `scroll-behavior: smooth`           | índice de capas                           | salto instantáneo (`auto`)                        |
+| Recorrido: avance de paso         | 240–320 ms, ease, opacidad y grosor | `atlas-recorrido.html`                    | sin transición: el atributo cambia y el CSS pinta |
+| Recorrido: línea activa «fluye»   | 1,2 s lineal, `stroke-dashoffset`   | solo mientras se reproduce                | la hoja `recorrido-animacion.css` **no se carga** |
+| Reproducción automática           | un paso cada 2 s                    | botón «Reproducir»                        | el botón **no existe**                            |
+| Indicador de carga                | 1,4 s lineal, rotación              | estado «Simulación en curso»              | estático: la barra de progreso basta              |
+
+Reglas: solo `opacity`, `stroke-*` y `transform`; nada arranca solo salvo la reproducción que el
+usuario pidió; **la forma del árbol jamás depende de la preferencia de movimiento** (regla de
+desarrollo 5-a): el SVG del recorrido es el mismo con y sin movimiento; cambia una hoja CSS con
+`media="(prefers-reduced-motion: no-preference)"` (G12, `diagramador-tokens.md` § 15).
 
 ## 4. Estados: siempre símbolo + texto (+ días)
 
-| Estado                    | Forma                                                                          | Ejemplo                                               |
-| ------------------------- | ------------------------------------------------------------------------------ | ----------------------------------------------------- |
-| Vigente                   | píldora de contorno 1 px + marca de verificación dibujada                      | «vigente · verificado hace 6 días»                    |
-| Por revisar               | píldora de contorno 2 px + «!» dibujado                                        | «por revisar · 2 bloques, el más antiguo con 34 días» |
-| Vencido                   | píldora llena de tinta, texto en el color de la superficie + aspa dibujada     | «vencido · 1 bloque con 63 días»                      |
-| Seleccionado              | fondo `tinta-1`, texto `sup-1`                                                 | pestaña de nivel activa, opción del conmutador        |
-| Pendiente (aún no existe) | texto `tinta-2`, cursor «no permitido», `aria-disabled`                        | pestañas y secciones que llegan en otras miradas      |
-| Foco                      | contorno de 2 px en `tinta-1` a 2 px del borde; en el diagrama, borde de 3,5 u |                                                       |
+| Estado                        | Forma                                                                                     | Ejemplo                                                           |
+| ----------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| Vigente                       | píldora de contorno 1 px + marca de verificación dibujada                                 | «vigente · verificado hace 6 días»                                |
+| Por revisar                   | píldora de contorno 2 px + «!» dibujado                                                   | «por revisar · 2 bloques, el más antiguo con 34 días»             |
+| Vencido                       | píldora llena de tinta, texto en el color de la superficie + aspa dibujada                | «vencido · 1 bloque con 63 días»                                  |
+| Seleccionado / actual         | subrayado de 2 px + negrita (controles); borde de 2 u en `tinta-1` (nodo)                 | pestaña activa, alternador, nodo con ficha abierta                |
+| Pendiente (aún no existe)     | texto `tinta-2`, cursor «no permitido», `aria-disabled`                                   | pestañas y secciones que llegan en otras miradas                  |
+| Foco                          | contorno de 2 px en `tinta-1` a 3 px del borde; en el diagrama, borde de 2 u              |                                                                   |
+| Madurez (no disponible)       | medidor de llenado 0–4 + texto; retirado = vacío y tachado; anunciado = contorno punteado | «vista previa», «beta», «anunciado»                               |
+| Vacío                         | caja punteada dibujada + título + qué hacer                                               | «Sin casos todavía · Crea el primero desde “Caso”»                |
+| Carga                         | anillo (gira solo sin «reducir movimiento») + qué corre + cuánto lleva en mono + barra    | «Simulación en curso · 2 400 / 10 000 · semilla»                  |
+| Error                         | círculo lleno con aspa + título + causa + **campo e id** en mono; `role="alert"`          | «La base no carga · evidencias/ev-0142.yaml · fecha_verificacion» |
+| Campo inválido                | borde de 1,5 px en `tinta-1` + aviso con aspa + `aria-invalid`                            | «Debe ser un entero.»                                             |
+| Cita no verificada            | filete izquierdo punteado + «cita no verificada» en mono con aspa                         | tarjeta de propuesta                                              |
+| Prioridad alta sin mitigación | fila sobre `sup-1` + «sin mitigación» con aspa                                            | tabla de prioridad de acción                                      |
 
 Vacío, carga y error se diseñan en las miradas 3 y 4, con la misma regla.
 
@@ -139,9 +154,22 @@ hace la jerarquía.
 | **Lectura en texto**                                             | `details` plegado con la lista banda → bloque → envíos                                                                             | plegada · abierta                               | al final                |
 | **Banda, bloque, flujo, etiqueta, franja, referencia, insignia** | gramática del diagramador, dirección B                                                                                             | ver `diagramador-tokens.md`                     | el diagrama             |
 
-**Llegan en la mirada 2 (`kit.html`):** nodo del nivel 2 con relleno tintado, ficha de nodo (hoja
-inferior y panel lateral), paso de recorrido, tarjeta de evidencia, control de peso con rango
-relativo, tabla de prioridad de acción, estados vacío, carga y error.
+**Componentes de las miradas 2 a 4 (vistos en `kit.html`):**
+
+| Componente                       | Anatomía                                                                                                                                                                 | Estados                                                                | Dónde se ve            |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------- | ---------------------- |
+| **Nodo (nivel 2)**               | tarjeta 152 × 84 con filete de tipo, glifo, nombre (≤ 3 líneas), madurez si no es disponible, «N fuentes»                                                                | normal · con ficha abierta (borde 2 u) · atenuado (recorrido)          | `atlas-nivel-2.html`   |
+| **Ficha de nodo**                | tipo · nombre · frase de líder · qué hace · por qué importa · términos (propios y del glosario, marcados) · madurez · fuentes con fecha y tipo · verificado / consultado | cerrada · abierta (hoja inferior < 900 px, panel lateral desde 900 px) | nivel 2                |
+| **Paso de recorrido**            | insignia numerada sobre el nodo (6a/7a/6b en la rama) + marca de bifurcación; lista de pasos con líder y experto                                                         | estático · activo · visitado · pendiente (atenuado) · animando         | `atlas-recorrido.html` |
+| **Controles del recorrido**      | Anterior · «Paso n de 8» · Siguiente · Reproducir/Pausar · Ver todos; flechas del teclado                                                                                | reproduciendo (`aria-pressed`) · sin botón con movimiento reducido     | recorrido              |
+| **Lado a lado**                  | filas por plataforma, columnas por banda (9), bloque mini 118 × 64; bloque punteado «sin componentes»; selector N; paginación de 3 en 3                                  | tres · página 2 · diferencias · una banda a la vez (< 900 px)          | `lado-a-lado.html`     |
+| **Marca de diferencia**          | píldora glifo + palabra sobre el bloque: + nuevo · − retirado (llena) · → renombrado · ▮ madurez                                                                         | —                                                                      | lado a lado            |
+| **Tarjeta de evidencia**         | código · semáforo · estado · afirmación · cita entre « » · fuente con fecha y tipo · madurez · conflicto de interés · verificación por código en mono                    | aprobada · propuesta (borde punteado) · cita no verificada             | kit; miradas 3         |
+| **Control de peso**              | nombre · valor en mono · barra con rango relativo (banda), punto y línea punteada de inversión · rango, inversión y origen                                               | normal · suma ≠ 100 (aviso con aspa)                                   | kit; mirada 3          |
+| **Tabla de prioridad de acción** | riesgo · S O D en mono · prioridad (píldora: alta llena de borde, media, baja punteada) · mitigación                                                                     | alta sin mitigación (fila sobre `sup-1` + aviso)                       | kit; mirada 4          |
+| **Campo**                        | etiqueta en mono mayúsculas · entrada sobre `sup-1` con línea inferior en `tinta-2` · aviso                                                                              | normal · inválido · selector con chevrón dibujado                      | kit; miradas 3–4       |
+| **Estado vacío / carga / error** | glifo dibujado + título + explicación (+ progreso o campo e id en mono)                                                                                                  | ver § 4                                                                | kit; miradas 3–4       |
+| **Botón**                        | principal lleno de tinta · secundario en contorno · deshabilitado al 45 %; 40 px de alto, esquina 4 px                                                                   | normal · presionado · deshabilitado                                    | todas                  |
 
 ## 6. Iconografía
 
@@ -205,12 +233,17 @@ corren con `pnpm test`: `paleta-diagramador` comprueba que de verdad no llegan a
 ## 10. Deuda de diseño
 
 - La barra de sala de diseño está solo en español: es cromo de la maqueta, no producto.
-- Componentes y estados de las pantallas 2 a 11: llegan en las miradas 2 a 4.
+- Pantallas 5 a 11 (conocimiento, caso, comparación, decisiones, informe, instrumento): sus
+  componentes ya están en el kit; las pantallas llegan en las miradas 3 y 4.
+- El selector de plataformas del lado a lado no filtra en la maqueta (las casillas son estáticas).
+- El nivel 2 en teléfono muestra el mapa entero deslizable; una vista «una capa a la vez» para el
+  nivel 2 no se diseñó (P10 se mide en el piloto).
 
 ## 11. Registro de cambios
 
-| Versión | Fecha      | Cambio                                                                                                                                                                                                 |
-| ------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 0.2.0   | 2026-09-26 | Ronda 4 de la mirada 1: Space Grotesk + JetBrains Mono (elección del usuario), cromo sin píldoras (filetes, texto y aire), componentes del atlas en la dirección B, lienzo con desplazamiento lateral. |
-| 0.1.1   | 2026-09-26 | Ronda 2 de la mirada 1: paleta de un matiz por tipo, claro en papel frío casi blanco; el diagrama es siempre horizontal (P5 del usuario). La dirección visual está por elegir.                         |
-| 0.1.0   | 2026-09-26 | Borrador para la mirada 1: personalidad, tesis, tokens de los dos temas, tipografía, espacio, movimiento, estados y los componentes del atlas nivel 1                                                  |
+| Versión | Fecha      | Cambio                                                                                                                                                                                                                                                                   |
+| ------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 0.3.0   | 2026-09-26 | Mirada 2: componentes canon completos (nodo, ficha, paso, lado a lado, diferencia, evidencia, control de peso, prioridad de acción, campo, estados vacío/carga/error, botón), tabla de movimiento con su variante reducida, estados ampliados, deuda al día. `kit.html`. |
+| 0.2.0   | 2026-09-26 | Ronda 4 de la mirada 1: Space Grotesk + JetBrains Mono (elección del usuario), cromo sin píldoras (filetes, texto y aire), componentes del atlas en la dirección B, lienzo con desplazamiento lateral.                                                                   |
+| 0.1.1   | 2026-09-26 | Ronda 2 de la mirada 1: paleta de un matiz por tipo, claro en papel frío casi blanco; el diagrama es siempre horizontal (P5 del usuario). La dirección visual está por elegir.                                                                                           |
+| 0.1.0   | 2026-09-26 | Borrador para la mirada 1: personalidad, tesis, tokens de los dos temas, tipografía, espacio, movimiento, estados y los componentes del atlas nivel 1                                                                                                                    |

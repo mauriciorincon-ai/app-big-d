@@ -44,3 +44,14 @@
 .db-insignia-vencido .db-insignia-marca { color: var(--sup-1); }
 .db-insignia-vencido .db-t-insignia { fill: var(--sup-1); }
 @media (forced-colors: active) { .db-card, .db-chip rect, .db-ref rect, .db-insignia rect { fill: Canvas; stroke: CanvasText; } .db-linea, .db-punta { stroke: CanvasText; } .db-punta { fill: CanvasText; } }
+
+/* Nivel 2: nodo */
+.db-t-nombre-nodo { font-size: 13px; }
+.db-marca-suave { color: var(--tinta-2); }
+.db-nodo[aria-current="true"] [data-caja] { stroke: var(--tinta-1); stroke-width: 2; }
+/* Nivel 3: recorrido */
+.dg-paso-insignia rect { fill: var(--tinta-1); stroke: var(--sup-1); stroke-width: 2; }
+.dg-t-paso { font: 700 12px var(--letra-mono); fill: var(--sup-1); }
+.dg-rama { color: var(--tinta-1); }
+/* Lado a lado */
+.db-t-banda-lado, .db-t-fila-lado { font-size: 13px; }
