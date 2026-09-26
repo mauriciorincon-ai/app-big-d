@@ -244,3 +244,8 @@ ES 380. **Corregido tras mirar:** a 1280 px el mapa se pasaba 30 px y recortaba 
 **Pendiente (ronda 4, tras elegir la letra):** quitar las fuentes no elegidas y Atkinson; endurecer
 el gate de vocabulario a la familia elegida; volver a poner los estados de vigencia y las
 alternativas P4/P9; reescribir §§ 6–9 y 13 de la propuesta; borrar `atlas-direcciones.html`.
+
+**Gate que atrapó algo (ronda 3):** `maqueta-vocabulario` puso en rojo `assets/atlas.css` porque los
+separadores «/» y «·» del cromo usaban `linea` como color de texto (tinta vetada, regla 5-b). Pasaron
+a `tinta-2`. El commit a05a217 salió con ese rojo por correr el push en la misma cadena que el test:
+corregido en el commit siguiente; la cadena ya no encadena push tras test.

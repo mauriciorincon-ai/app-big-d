@@ -34,7 +34,7 @@ a { color: inherit; text-underline-offset: 3px; }
 .alterna { display: inline-flex; align-items: center; gap: 4px; font: 500 13px/1 var(--letra-mono); }
 .alterna button { font: inherit; color: var(--tinta-2); background: none; border: 0; padding: 8px 4px; min-height: 36px; cursor: pointer; border-radius: 3px; }
 .alterna button[aria-pressed="true"] { color: var(--tinta-1); font-weight: 700; text-decoration: underline; text-underline-offset: 5px; text-decoration-thickness: 2px; }
-.alterna .sep { color: var(--linea); }
+.alterna .sep { color: var(--tinta-2); }
 @media (max-width: 719px) { .barra { flex-wrap: wrap; gap: 0 20px; padding: 0 16px; min-height: 0; } .marca { min-height: 56px; } .ajustes { margin-left: auto; min-height: 56px; align-items: center; } .nav { order: 3; width: 100%; border-top: 1px solid var(--linea); gap: 18px; } .nav > li > a, .nav > li > span { min-height: 44px; } }
 
 /* Página */
@@ -47,7 +47,7 @@ h1 { font-size: 32px; line-height: 1.1; font-weight: 800; letter-spacing: -0.025
 .sub { margin: 10px 0 0; color: var(--tinta-2); font-size: 17px; max-width: 60ch; }
 .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 16px 0 0; font: 500 13px/1.4 var(--letra-mono); color: var(--tinta-2); }
 .meta b { color: var(--tinta-1); font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
-.meta .punto { color: var(--linea); }
+.meta .punto { color: var(--tinta-2); }
 .enlace-boton { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 2px; font: 600 15px/1 var(--letra); color: var(--tinta-1); background: none; border: 0; border-bottom: 1.5px solid var(--tinta-1); cursor: pointer; }
 
 /* Niveles */
