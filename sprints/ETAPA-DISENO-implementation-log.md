@@ -100,3 +100,15 @@ del estampado**: `CHANGELOG.md:179` (el changelog del kit cita el patrón en pro
 carácter). No es una URL de despliegue y ya estaba en `main`; se deja como hallazgo para la
 planeadora (el kit debería escribir `pages[.]dev` en su CHANGELOG). Cero líneas en lo que esta
 etapa agrega.
+
+### CI y última milla (PR #3, commit e3db45c)
+
+- `gh pr checks 3`: `quality` ✓ 42 s · `e2e` ✓ 54 s · `lighthouse` ✓ 1 min 31 s · `Vercel` ✓ ·
+  `Vercel Preview Comments` ✓ — conclusión propia `success` en cada uno; primera corrida de los
+  tres gates nuevos en CI (dentro de `quality`, sin histórico previo).
+- **Preview SIN sesión** (`curl`, dos direcciones: la del despliegue y la de la rama):
+  `/diseno/index.html`, `/diseno/assets/tokens.css` y `/` → **302 al inicio de sesión de
+  Vercel** en las seis combinaciones. La protección cubre la maqueta.
+- **No verificado desde aquí:** el contenido de `/diseno/` CON sesión (la sesión no tiene
+  credenciales de Vercel). La evidencia indirecta es el build local idéntico: `out/diseno/`
+  contiene `index.html`, `assets/` y las fuentes. Lo confirma el usuario al abrir el preview.
