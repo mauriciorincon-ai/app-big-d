@@ -18,6 +18,7 @@
 - `<pantalla>.html` — una página por pantalla core del H1, HTML autocontenido (cero CDNs, cero
   frameworks), con sus estados, 380 px y desktop, oscuro y claro, español e inglés. Datos 100 %
   sintéticos: la Plataforma Ejemplo y el hospital ficticio.
+- `atlas-direcciones.html` — ronda 2 de la mirada 1: tres direcciones visuales del atlas nivel 1 para elegir.
 - `diagramador-tokens.md` — la propuesta de gramática visual del diagramador para el CONTRATO v0.3.0.
 - `assets/` — `tokens.{json,css}` (GENERADOS por `pnpm tokens`), fuentes con su licencia, hojas y
   el script de la barra de sala.
@@ -34,6 +35,13 @@ calculadora vive fuera del repo a propósito: no es el motor y no adelanta el pa
 diagramador antes de G-Diseño. El HTML de la página es autoría a mano; solo las regiones marcadas
 `<!-- inicio:… -->` llevan el SVG, la leyenda y la lectura en texto trazados.
 
+**Ronda 2 (`atlas-direcciones.html`).** Tras la mirada del 2026-09-26 (ronda 1 no aprobada) el
+diagrama es **siempre horizontal**: jamás se encoge ni se transpone; si no cabe en su contenedor, el
+lienzo se desliza de lado (`assets/lienzo.js`: índice de capas, sombras de borde, pista «desliza»).
+Los tres lienzos (A carriles · B plano · C bloques) salen de la misma calculadora, con la misma data
+y los mismos glifos; cambia la forma de pintar (`assets/direcciones.css`). Lo que el usuario elija
+pasa a `bigd.css` / `diagrama.css` y a `diagramador-tokens.md` en la ronda 3; lo demás se borra.
+
 ## Plan de miradas
 
 | Mirada       | Artefacto(s)                                                                                                  | Orden                                     |
@@ -46,15 +54,16 @@ diagramador antes de G-Diseño. El HTML de la página es autoría a mano; solo l
 
 ## Registro de miradas
 
-| Fecha | Artefacto | Veredicto del usuario (textual) | Qué se construyó encima |
-| ----- | --------- | ------------------------------- | ----------------------- |
-|       |           |                                 |                         |
+| Fecha      | Artefacto                                                                | Veredicto del usuario (textual)                                                                                                                                                                                | Qué se construyó encima                                                                                                                                               |
+| ---------- | ------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-09-26 | `atlas-nivel-1.html` (ronda 1, abierto en local; el preview no le abrió) | «revisé la que está en local y la verdad no me gustó nada, visualmente horrible, y el diagrama no lo quiero vertical sino horizontal y con desplazamiento lateral por si se hace muy grande» — **no aprobado** | Nada todavía. Ronda 2 de la mirada 1: diagrama siempre horizontal con desplazamiento lateral (el usuario decide P5: jamás se transpone) y una dirección visual nueva. |
 
 ## Cobertura (se llena durante la etapa)
 
-| Página de la maqueta    | Funcionalidad de la VISION                                                                        | Estados que muestra                                                                                                                                                                                                                                                  |
-| ----------------------- | ------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `atlas-nivel-1.html` ⭐ | C1 visión general · C5 semáforo de vigencia · C6 diagramador (nivel 1, leyenda, lectura en texto) | propuesta · por revisar · vencido · P4 una línea por modo · P9 orquestación como capa · ancho y 380 px · oscuro y claro · ES y EN · banda sin bloque («1 componente») · flujos agregados con varios modos · bloque con vista previa · ficha breve al tocar un bloque |
+| Página de la maqueta                  | Funcionalidad de la VISION                                                                        | Estados que muestra                                                                                                                                                                                                                                                        |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `atlas-direcciones.html` ⭐ (ronda 2) | C1 visión general · C6 diagramador (nivel 1, leyenda)                                             | A carriles · B plano · C bloques · siempre horizontal con desplazamiento lateral (índice de capas, sombras de borde, pista «desliza») · 380 px y ancho · oscuro y claro · ES y EN · paleta de un matiz por tipo · franjas con referencias alineadas bajo la capa que tocan |
+| `atlas-nivel-1.html` ⭐               | C1 visión general · C5 semáforo de vigencia · C6 diagramador (nivel 1, leyenda, lectura en texto) | propuesta · por revisar · vencido · P4 una línea por modo · P9 orquestación como capa · ancho y 380 px · oscuro y claro · ES y EN · banda sin bloque («1 componente») · flujos agregados con varios modos · bloque con vista previa · ficha breve al tocar un bloque       |
 
 ## Registro de G-Diseño (se llena al cerrar la etapa)
 

@@ -9,48 +9,104 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { oklchAHex } from "./color.mjs";
 
-/** Claridad de cada nivel por tema (D8). Nivel 0 = hondo, 1 = claro. */
-export const NIVELES = { oscuro: [0.7, 0.86], claro: [0.44, 0.62] };
-export const CROMA = 0.13;
-
 /**
- * Los 8 tipos de la gramática `plataformas-datos`, en su orden. Cuatro familias de matiz × dos
- * niveles; los matices salen de `pnpm paleta:buscar` (CROMA=0.13, niveles de arriba).
+ * Los 8 tipos de la gramática `plataformas-datos`, en su orden (ronda 2 de la mirada 1, D30).
+ * UN MATIZ PROPIO POR TIPO, elegido por significado y repartido en la rueda (la ronda 1 usaba cuatro
+ * familias × dos claridades: dos azules, dos turquesas, mostaza y oliva — el usuario la vio apagada
+ * y repetida). La claridad por tema sale de `pnpm paleta:buscar` (búsqueda determinista dentro de
+ * RANGOS: el naranja jamás baja a marrón, el amarillo no existe) y el croma es el máximo que cabe
+ * en sRGB hasta `croma`. «Externo» es casi neutro a propósito: está FUERA de la plataforma.
  */
 export const TIPOS = [
-  { token: "tipo-1", id: "cap-ingesta", familia: "azul", matiz: 265, nivel: 1 },
+  {
+    token: "tipo-1",
+    id: "cap-ingesta",
+    familia: "azul",
+    matiz: 250,
+    croma: 0.15,
+    L: { oscuro: 0.82, claro: 0.48 },
+  },
   {
     token: "tipo-2",
     id: "cap-almacenamiento",
-    familia: "azul",
-    matiz: 275,
-    nivel: 0,
+    familia: "violeta",
+    matiz: 295,
+    croma: 0.15,
+    L: { oscuro: 0.72, claro: 0.58 },
   },
   {
     token: "tipo-3",
     id: "cap-transformacion",
-    familia: "verde-azulado",
-    matiz: 190,
-    nivel: 0,
+    familia: "naranja",
+    matiz: 62,
+    croma: 0.15,
+    L: { oscuro: 0.75, claro: 0.64 },
   },
-  { token: "tipo-4", id: "cap-gobierno", familia: "rosa", matiz: 10, nivel: 0 },
-  { token: "tipo-5", id: "cap-consumo", familia: "ocre", matiz: 100, nivel: 1 },
+  {
+    token: "tipo-4",
+    id: "cap-gobierno",
+    familia: "rojo",
+    matiz: 22,
+    croma: 0.16,
+    L: { oscuro: 0.66, claro: 0.57 },
+  },
+  {
+    token: "tipo-5",
+    id: "cap-consumo",
+    familia: "verde",
+    matiz: 148,
+    croma: 0.15,
+    L: { oscuro: 0.77, claro: 0.52 },
+  },
   {
     token: "tipo-6",
     id: "cap-ia",
-    familia: "verde-azulado",
-    matiz: 180,
-    nivel: 1,
+    familia: "magenta",
+    matiz: 345,
+    croma: 0.16,
+    L: { oscuro: 0.77, claro: 0.5 },
   },
-  { token: "tipo-7", id: "tipo-externo", familia: "ocre", matiz: 95, nivel: 0 },
+  {
+    token: "tipo-7",
+    id: "tipo-externo",
+    familia: "pizarra",
+    matiz: 250,
+    croma: 0.035,
+    L: { oscuro: 0.63, claro: 0.4 },
+  },
   {
     token: "tipo-8",
     id: "tipo-operacion",
-    familia: "rosa",
-    matiz: 30,
-    nivel: 1,
+    familia: "cian",
+    matiz: 205,
+    croma: 0.12,
+    L: { oscuro: 0.73, claro: 0.62 },
   },
 ];
+
+/** Rangos de claridad por tipo y tema donde busca `pnpm paleta:buscar` (mismo orden que TIPOS). */
+export const RANGOS = {
+  oscuro: [
+    [0.66, 0.84],
+    [0.66, 0.86],
+    [0.72, 0.84],
+    [0.66, 0.8],
+    [0.68, 0.86],
+    [0.7, 0.88],
+    [0.62, 0.8],
+    [0.68, 0.86],
+  ],
+  claro: [
+    [0.44, 0.6],
+    [0.44, 0.6],
+    [0.56, 0.66],
+    [0.46, 0.58],
+    [0.5, 0.64],
+    [0.5, 0.62],
+    [0.4, 0.56],
+    [0.52, 0.64],
+  ],
+};
 
 /**
  * UMBRALES DECLARADOS de distancia de color (ΔE en OKLab, peor par de los 8 tipos, por tema).
@@ -71,9 +127,12 @@ export const UMBRALES = {
 
 /** Relleno tintado del nodo (D7): croma bajo del mismo matiz. */
 export const TINTE = {
-  oscuro: { L: 0.27, C: 0.035 },
-  claro: { L: 0.955, C: 0.03 },
+  oscuro: { L: 0.285, C: 0.05 },
+  claro: { L: 0.955, C: 0.035 },
 };
+/** Un tipo casi neutro (croma < 0,05) lleva un relleno casi neutro. */
+export const tinteDe = (tema, tp) =>
+  oklchAHex(TINTE[tema].L, tp.croma < 0.05 ? 0.012 : TINTE[tema].C, tp.matiz);
 
 /** Neutros de la interfaz (D6: la UI es monocroma). [L, C, h] */
 export const NEUTROS = {
@@ -87,10 +146,11 @@ export const NEUTROS = {
     "tinta-3": [0.56, 0.012, 255], // VETADA como texto (decorativa: rejillas, guías)
   },
   claro: {
-    fondo: [0.95, 0.01, 85],
-    "sup-1": [0.975, 0.008, 85],
-    "sup-2": [0.995, 0.004, 85],
-    linea: [0.84, 0.012, 85],
+    // Ronda 2: papel frío casi blanco (el crema de la ronda 1 se leía viejo).
+    fondo: [0.965, 0.004, 255],
+    "sup-1": [0.985, 0.003, 255],
+    "sup-2": [1, 0, 0],
+    linea: [0.87, 0.008, 255],
     "tinta-1": [0.22, 0.014, 255],
     "tinta-2": [0.38, 0.014, 255],
     "tinta-3": [0.64, 0.012, 255], // VETADA como texto
@@ -109,22 +169,18 @@ export function construir() {
     for (const [k, [L, C, h]] of Object.entries(NEUTROS[tema]))
       t[k] = oklchAHex(L, C, h);
     for (const tp of TIPOS) {
-      t[tp.token] = oklchAHex(NIVELES[tema][tp.nivel], CROMA, tp.matiz);
-      t[`${tp.token}-tinte`] = oklchAHex(
-        TINTE[tema].L,
-        TINTE[tema].C,
-        tp.matiz,
-      );
+      t[tp.token] = oklchAHex(tp.L[tema], tp.croma, tp.matiz);
+      t[`${tp.token}-tinte`] = tinteDe(tema, tp);
     }
     temas[tema] = t;
   }
   return {
     _generado: "scripts/paleta/generar-tokens.mjs — no editar a mano",
-    tipos: TIPOS.map(({ token, id, familia, nivel }) => ({
+    tipos: TIPOS.map(({ token, id, familia, matiz }) => ({
       token,
       id,
       familia,
-      nivel,
+      matiz,
     })),
     tintas_vetadas_como_texto: TINTAS_VETADAS,
     temas,

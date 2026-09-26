@@ -1,6 +1,6 @@
 ---
 version: 0.1.0
-estado: borrador para la mirada 1 (Etapa de Diseño, F2a)
+estado: borrador — mirada 1, ronda 2 (Etapa de Diseño, F2a)
 fecha: 2026-09-26
 fuente_en_codigo: docs/diseno/assets/ (tokens.css GENERADO · bigd.css · diagrama.css)
 gramatica_del_diagrama: docs/diseno/diagramador-tokens.md
@@ -46,22 +46,22 @@ Los colores se declaran en OKLCH en `scripts/paleta/generar-tokens.mjs` y se gen
 
 | Token     | Oscuro    | Claro     | Uso                                                              |
 | --------- | --------- | --------- | ---------------------------------------------------------------- |
-| `fondo`   | `#0b0f14` | `#f1eee7` | fondo de página y de las bandas del diagrama                     |
-| `sup-1`   | `#12161c` | `#f9f6f1` | barra de la app, lienzo del diagrama, tarjetas                   |
-| `sup-2`   | `#1b2128` | `#fffdfa` | bloques, controles, etiquetas, paneles elevados                  |
-| `linea`   | `#383e45` | `#cecac2` | filetes que separan secciones (**vetada como texto**)            |
+| `fondo`   | `#0b0f14` | `#f2f4f6` | fondo de página                                                  |
+| `sup-1`   | `#12161c` | `#f9fafc` | barra de la app, carriles y lienzo del diagrama                  |
+| `sup-2`   | `#1b2128` | `#ffffff` | tarjetas, controles, etiquetas, paneles elevados                 |
+| `linea`   | `#383e45` | `#d1d5d9` | filetes que separan secciones (**vetada como texto**)            |
 | `tinta-1` | `#e8ebf1` | `#161b21` | texto principal, títulos, marcas, foco, fondo de lo seleccionado |
-| `tinta-2` | `#b9bec6` | `#3d434a` | texto secundario, flujos, bordes de bloque y de control          |
+| `tinta-2` | `#b9bec6` | `#3d434a` | texto secundario, flujos, bordes de control                      |
 | `tinta-3` | `#70757c` | `#878d94` | guías y rejillas (**vetada como texto**)                         |
 
-Oscuro: superficie azul negra fría, tinta clara. Claro: papel cálido, tinta azul negra.
+Oscuro: superficie azul negra fría, tinta clara. Claro: papel frío casi blanco, tinta azul negra (ronda 2; la ronda 1 usaba un crema cálido).
 
 ### 3.2 Color — tipos de componente
 
-Ocho matices en cuatro familias, con claridad por tema. Tabla completa, método, umbral y medidas en
-`diagramador-tokens.md` § 5. Resumen: azul (ingesta, almacenamiento), verde azulado
-(transformación, IA), ocre (externo, consumo), rosa (gobierno, operación). Cada uno tiene su
-relleno tintado (`tipo-N-tinte`) para los nodos del nivel 2.
+Un matiz propio por tipo, con claridad por tema (ronda 2). Tabla completa, método, umbral y medidas en
+`diagramador-tokens.md` § 5. Resumen: azul (ingesta), violeta (almacenamiento), naranja
+(transformación), rojo (gobierno), verde (consumo), magenta (IA), pizarra casi neutro (externo) y
+cian (operación). Cada uno tiene su relleno tintado (`tipo-N-tinte`) para tarjetas e insignias.
 
 ### 3.3 Tipografía
 
@@ -150,11 +150,12 @@ relativo, tabla de prioridad de acción, estados vacío, carga y error.
 
 | Par                                             | Oscuro | Claro  | Mínimo |
 | ----------------------------------------------- | ------ | ------ | ------ |
-| `tinta-1` sobre `sup-1`                         | 15,2:1 | 16,1:1 | 4,5:1  |
-| `tinta-2` sobre `sup-1`                         | 9,7:1  | 9,3:1  | 4,5:1  |
-| `tinta-2` sobre `fondo`                         | 10,3:1 | 8,6:1  | 4,5:1  |
-| `tinta-1` sobre el relleno de nodo más exigente | 12,4:1 | 15,0:1 | 4,5:1  |
-| trazo de tipo más débil sobre `sup-1`           | 6,4:1  | 3,2:1  | 3:1    |
+| `tinta-1` sobre `sup-1`                         | 15,2:1 | 16,6:1 | 4,5:1  |
+| `tinta-2` sobre `sup-1`                         | 9,7:1  | 9,6:1  | 4,5:1  |
+| `tinta-2` sobre `fondo`                         | 10,3:1 | 9,1:1  | 4,5:1  |
+| `tinta-1` sobre el relleno de nodo más exigente | 11,8:1 | 15,0:1 | 4,5:1  |
+| `tinta-2` sobre el relleno de nodo más exigente | 7,5:1  | 8,7:1  | 4,5:1  |
+| trazo de tipo más débil sobre `sup-1`           | 5,2:1  | 3,3:1  | 3:1    |
 
 ### 7.2 Tintas vetadas como texto
 
@@ -201,6 +202,7 @@ corren con `pnpm test`: `paleta-diagramador` comprueba que de verdad no llegan a
 
 ## 11. Registro de cambios
 
-| Versión | Fecha      | Cambio                                                                                                                                                |
-| ------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 0.1.0   | 2026-09-26 | Borrador para la mirada 1: personalidad, tesis, tokens de los dos temas, tipografía, espacio, movimiento, estados y los componentes del atlas nivel 1 |
+| Versión | Fecha      | Cambio                                                                                                                                                                         |
+| ------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 0.1.1   | 2026-09-26 | Ronda 2 de la mirada 1: paleta de un matiz por tipo, claro en papel frío casi blanco; el diagrama es siempre horizontal (P5 del usuario). La dirección visual está por elegir. |
+| 0.1.0   | 2026-09-26 | Borrador para la mirada 1: personalidad, tesis, tokens de los dos temas, tipografía, espacio, movimiento, estados y los componentes del atlas nivel 1                          |

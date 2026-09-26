@@ -1,9 +1,9 @@
 ---
 documento: Gramática visual del diagramador — propuesta para el CONTRATO v0.3.0
-estado: propuesta (mirada 1 pendiente)
+estado: propuesta (mirada 1, ronda 2: dirección visual por elegir)
 fecha: 2026-09-26
 contrato_base: reusables/diagramador/CONTRATO.md v0.2.0 (planeadora, solo lectura)
-referencia_visual: docs/diseno/atlas-nivel-1.html
+referencia_visual: docs/diseno/atlas-direcciones.html (ronda 2) · docs/diseno/atlas-nivel-1.html (ronda 1, no aprobada)
 autor: Etapa de Diseño de Big-D (piloto del reusable)
 ---
 
@@ -14,42 +14,53 @@ autor: Etapa de Diseño de Big-D (piloto del reusable)
 > que dice se ve dibujado en `docs/diseno/atlas-nivel-1.html`, trazado sobre la Plataforma Ejemplo
 > (ficticia) del contrato, en ancho y en 380 px, oscuro y claro, español e inglés.
 
+> **Ronda 2 (2026-09-26).** El usuario miró la ronda 1 y no la aprobó: «visualmente horrible; el
+> diagrama no lo quiero vertical sino horizontal y con desplazamiento lateral por si se hace muy
+> grande». Cambios ya aplicados aquí: **P5 lo decide el usuario** (§ 1: siempre horizontal, jamás se
+> transpone; § 9.2 queda retirado) y **la paleta pasa a un matiz propio por tipo** (§ 5, medida con
+> los mismos umbrales). La dirección visual (A carriles · B plano · C bloques, en
+> `atlas-direcciones.html`) está por elegir; con ella se reescriben §§ 4, 6–9 y 13 en la ronda 3.
+
 ## 0. Las decisiones, en una tabla
 
-| #     | Pregunta del contrato                    | Propuesta                                                                                                            | Sección |
-| ----- | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | ------- |
-| P5    | Orientación del eje                      | **Se confirma D1.** Ancho: capas de izquierda a derecha. Angosto: de arriba abajo, como transpuesta                  | § 1     |
-| D1    | ¿Dónde van las transversales?            | **Abajo, a todo lo ancho, en las dos disposiciones.** En ancho su cabecera va a la izquierda                         | § 2     |
-| P9    | Orquestación, ¿capa o transversal?       | **Transversal**, tercera franja. La maqueta muestra las dos para juzgar                                              | § 3     |
-| P4    | Flujo agregado con varios modos a 380 px | **Una línea con etiqueta de modos.** La alternativa de una línea por modo se ve en la maqueta                        | § 4     |
-| —     | Flujos con una franja en el nivel 1      | **Referencias escritas junto al elemento** (flecha + marcador + nombre). Las líneas entran en el nivel 2             | § 4.3   |
-| Gaps  | Paleta validada y umbral de distancia    | 8 matices en 4 familias × 2 claridades, **umbral declarado** y gate en CI                                            | § 5     |
-| —     | Glifos de tipo                           | Se mantienen 6; **hexágono pasa a escudo y pentágono a barras**                                                      | § 6     |
-| —     | Símbolos de estado                       | **Se dibujan, jamás se escriben**: la fuente no trae ✓ ✕ ▶ β (medido)                                                | § 6.3   |
-| —     | Marcadores de modo                       | Se mantienen 3; **«reloj» de _a demanda_ pasa a «ida y vuelta»**                                                     | § 7     |
-| P11   | Fuente con tabla de métricas             | **Atkinson Hyperlegible Next** (y Mono), SIL OFL 1.1, variable 200–800                                               | § 8     |
-| G11   | Tipografía y pisos                       | Ancho: letra mínima 14 u. Angosto: 13 u. Se cambia de disposición, nunca se escala bajo 12 px                        | § 8.3   |
-| D2    | Geometría realizable por reglas          | Constantes y fórmulas en § 9; la referencia salió de ellas con **0 cruces D11**                                      | § 9     |
-| P10   | Densidad máxima por banda                | **Estimada: 6 nodos por banda** (`limites.nodos_por_banda_max`). Se mide en el piloto                                | § 10    |
-| § 4.8 | Semáforo dentro del diagrama             | **Se marca la excepción**: lo vigente no lleva insignia; _por revisar_ y _vencido_ sí                                | § 11    |
-| § 3.7 | Bilingüe                                 | **La geometría no depende del idioma**: cajas y alturas se calculan con el texto más largo de los idiomas declarados | § 12    |
-| G12   | Capa CSS de animación del recorrido      | Hoja aparte con `media="(prefers-reduced-motion: no-preference)"`; el SVG no cambia                                  | § 15    |
+| #     | Pregunta del contrato                    | Propuesta                                                                                                                     | Sección |
+| ----- | ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ------- |
+| P5    | Orientación del eje                      | **Decisión del usuario: siempre horizontal**, en todo ancho; si no cabe, desplazamiento lateral con índice de capas (ronda 2) | § 1     |
+| D1    | ¿Dónde van las transversales?            | **Abajo, a todo lo ancho.** Su cabecera va a la izquierda; sus conexiones, alineadas bajo la capa que tocan (ronda 2)         | § 2     |
+| P9    | Orquestación, ¿capa o transversal?       | **Transversal**, tercera franja. La maqueta muestra las dos para juzgar                                                       | § 3     |
+| P4    | Flujo agregado con varios modos a 380 px | **Una línea con etiqueta de modos.** La alternativa de una línea por modo se ve en la maqueta                                 | § 4     |
+| —     | Flujos con una franja en el nivel 1      | **Referencias escritas junto al elemento** (flecha + marcador + nombre). Las líneas entran en el nivel 2                      | § 4.3   |
+| Gaps  | Paleta validada y umbral de distancia    | **Un matiz propio por tipo** (ronda 2), claridad buscada por tema, **umbral declarado** y gate en CI                          | § 5     |
+| —     | Glifos de tipo                           | Se mantienen 6; **hexágono pasa a escudo y pentágono a barras**                                                               | § 6     |
+| —     | Símbolos de estado                       | **Se dibujan, jamás se escriben**: la fuente no trae ✓ ✕ ▶ β (medido)                                                         | § 6.3   |
+| —     | Marcadores de modo                       | Se mantienen 3; **«reloj» de _a demanda_ pasa a «ida y vuelta»**                                                              | § 7     |
+| P11   | Fuente con tabla de métricas             | **Atkinson Hyperlegible Next** (y Mono), SIL OFL 1.1, variable 200–800                                                        | § 8     |
+| G11   | Tipografía y pisos                       | Letra mínima 12 u a escala 1 en todo ancho: el lienzo se desliza, jamás se escala (ronda 2)                                   | § 8.3   |
+| D2    | Geometría realizable por reglas          | Constantes y fórmulas en § 9; la referencia salió de ellas con **0 cruces D11**                                               | § 9     |
+| P10   | Densidad máxima por banda                | **Estimada: 6 nodos por banda** (`limites.nodos_por_banda_max`). Se mide en el piloto                                         | § 10    |
+| § 4.8 | Semáforo dentro del diagrama             | **Se marca la excepción**: lo vigente no lleva insignia; _por revisar_ y _vencido_ sí                                         | § 11    |
+| § 3.7 | Bilingüe                                 | **La geometría no depende del idioma**: cajas y alturas se calculan con el texto más largo de los idiomas declarados          | § 12    |
+| G12   | Capa CSS de animación del recorrido      | Hoja aparte con `media="(prefers-reduced-motion: no-preference)"`; el SVG no cambia                                           | § 15    |
 
 ## 1. P5 — Orientación del eje
 
-**Propuesta: se confirma D1.** En la disposición ancha las capas van en columnas de izquierda a
-derecha, en el orden de la gramática. En la angosta cada banda es una fila, de arriba abajo.
+**Decisión del usuario (mirada 1, ronda 1, 2026-09-26): siempre horizontal.** Las capas van en
+columnas de izquierda a derecha, en el orden de la gramática, **en todo ancho**. El diagrama jamás se
+transpone ni se encoge: si no cabe en su contenedor, el lienzo se desliza de lado.
 
-- **Evidencia a favor.** Fabric lee «ingest, store, process, enrich, serve» de izquierda a derecha y
-  Databricks dibuja sus carriles igual (investigación técnica § 1.5). En móvil, transponer el eje y
-  serializar están entre las estrategias más frecuentes (Hoffswell et al., CHI 2020; Kim et al.,
-  EuroVis 2021; investigación técnica § 7).
-- **La transposición, exacta.** En ancho, la cabecera de una capa va arriba de su columna y los
-  elementos debajo. En angosto, la cabecera va a la izquierda de su fila y los elementos a la
-  derecha. La regla común: **la cabecera va al inicio de la banda, en el sentido perpendicular a su
-  extensión**.
-- **Se lee como pregunta y respuesta.** En 380 px, cada fila dice a la izquierda «¿De dónde vienen
-  los datos?» y a la derecha «Sistemas de origen». Es la forma más corta de cumplir C1.
+- **Lo que cambia respecto de D1.** D1 pedía transponer en angosto (cada banda una fila, de arriba
+  abajo). La ronda 1 lo dibujó así y el usuario lo rechazó: en el teléfono el mapa dejaba de parecerse
+  al de escritorio. Ahora hay **una sola disposición**, la misma en el teléfono y en el escritorio.
+- **Desplazamiento lateral con ayudas (propuesta de garantía nueva para el contrato).** El lienzo va
+  en un contenedor con desplazamiento horizontal propio (la página no se desborda); cuando no cabe
+  aparecen un **índice de capas** que lleva a cada columna, **sombras de borde** que dicen que hay más
+  a un lado, y una pista escrita («Desliza de lado para ver las seis capas»). Con teclado, el lienzo
+  es enfocable y las flechas lo mueven. Con movimiento reducido, el salto es instantáneo.
+- **G11 se cumple por construcción.** A escala 1, el texto más chico del lienzo mide 12 px en
+  pantalla en cualquier ancho; no hay escalado que lo baje del piso. La altura del lienzo del ejemplo
+  (≈ 610–665 u según la dirección) cabe en la altura de un teléfono.
+- **Evidencia que se mantiene.** Fabric lee «ingest, store, process, enrich, serve» de izquierda a
+  derecha y Databricks dibuja sus carriles igual (investigación técnica § 1.5).
 
 ## 2. Franjas transversales
 
@@ -140,30 +151,32 @@ filas: uno baja y otro sube.
   reservan a los tipos de nodo; flujos, etiquetas, insignias y semáforo van en tinta.
 - **Codificación del nodo.** Relleno tintado de croma bajo del matiz, borde de 2 u y glifo en el
   matiz, **texto siempre en tinta**. El contraste del texto no depende del matiz.
-- **Matiz estable, claridad por tema.** Cada tipo tiene un matiz en OKLCH igual en los dos temas; la
-  claridad cambia por tema. Dos niveles de claridad (hondo y claro) por familia.
-- **Búsqueda determinista.** `pnpm paleta:buscar` recorre matices cada 5° desde 9 arranques fijos y
-  maximiza la peor distancia entre pares bajo 7 vistas: normal, y protan, deutan y tritan con
-  severidad 0,6 y 1,0 (Machado, Oliveira y Fernandes, 2009). Croma 0,13; claridades 0,70 / 0,86
-  (oscuro) y 0,44 / 0,62 (claro). La exploración de croma y claridad está en la bitácora.
-- **Asignación con sentido.** La distancia no cambia al permutar colores entre tipos, así que se
-  asignan por familia: azul para los datos que entran y reposan, verde azulado para el cómputo,
-  ocre para los bordes de la plataforma, rosa para lo transversal.
+- **Un matiz propio por tipo (ronda 2).** Cada tipo tiene su matiz en OKLCH, igual en los dos
+  temas, elegido por significado y repartido en la rueda: azul la ingesta, violeta el almacenamiento,
+  naranja la transformación, rojo el gobierno, verde el consumo, magenta la IA, cian la operación y un
+  pizarra casi neutro para lo externo (está **fuera** de la plataforma). La ronda 1 usaba cuatro
+  familias × dos claridades (dos azules, dos turquesas, mostaza y oliva); el usuario la vio apagada y
+  repetida.
+- **Búsqueda determinista de la claridad.** `pnpm paleta:buscar` fija matiz y croma tope por tipo y
+  busca la claridad de cada uno, por tema, dentro de un rango (el naranja jamás baja a marrón; no hay
+  amarillo). Tres arranques fijos y descenso por coordenadas; maximiza la peor distancia entre pares
+  bajo 7 vistas —normal, y protan, deutan y tritan con severidad 0,6 y 1,0 (Machado, Oliveira y
+  Fernandes, 2009)— con la condición de que cada trazo pase 3:1 sobre sup-1, sup-2 y su relleno.
 - **Fuente de verdad.** `scripts/paleta/generar-tokens.mjs` declara el OKLCH y genera
   `docs/diseno/assets/tokens.json` y `tokens.css`. El gate falla si alguien los edita a mano.
 
 ### 5.2 Los 8 tipos
 
-| Token  | Tipo               | Familia               | Oscuro    | Claro     | Trazo/sup-1 oscuro | Trazo/sup-1 claro | Glifo/relleno oscuro | Glifo/relleno claro |
-| ------ | ------------------ | --------------------- | --------- | --------- | ------------------ | ----------------- | -------------------- | ------------------- |
-| tipo-1 | cap-ingesta        | azul (clara)          | `#bbd1ff` | `#5f83d4` | 11.82              | 3.43              | 9.84                 | 3.23                |
-| tipo-2 | cap-almacenamiento | azul (honda)          | `#8797ef` | `#404899` | 6.66               | 7.48              | 5.56                 | 7.05                |
-| tipo-3 | cap-transformacion | verde-azulado (honda) | `#00b6af` | `#00605c` | 7.18               | 6.89              | 5.88                 | 6.57                |
-| tipo-4 | cap-gobierno       | rosa (honda)          | `#e27a8c` | `#8b2b42` | 6.39               | 7.72              | 5.40                 | 7.23                |
-| tipo-5 | cap-consumo        | ocre (clara)          | `#e5d367` | `#998700` | 11.96              | 3.35              | 9.91                 | 3.17                |
-| tipo-6 | cap-ia             | verde-azulado (clara) | `#5aedd4` | `#009c89` | 12.53              | 3.18              | 10.27                | 3.04                |
-| tipo-7 | tipo-externo       | ocre (honda)          | `#b89d2b` | `#625100` | 6.82               | 7.22              | 5.67                 | 6.82                |
-| tipo-8 | tipo-operacion     | rosa (clara)          | `#ffbfb4` | `#c86556` | 11.55              | 3.57              | 9.68                 | 3.35                |
+| Token  | Tipo               | Familia        | Oscuro    | Claro     | Trazo/sup-1 oscuro | Trazo/sup-1 claro | Glifo/relleno oscuro | Glifo/relleno claro |
+| ------ | ------------------ | -------------- | --------- | --------- | ------------------ | ----------------- | -------------------- | ------------------- |
+| tipo-1 | cap-ingesta        | azul (250°)    | `#95c9ff` | `#0060a6` | 10.44              | 6.24              | 8.21                 | 5.73                |
+| tipo-2 | cap-almacenamiento | violeta (295°) | `#ac8ff8` | `#8264c8` | 6.95               | 4.37              | 5.56                 | 3.97                |
+| tipo-3 | cap-transformacion | naranja (62°)  | `#f09638` | `#ca7400` | 7.88               | 3.35              | 6.29                 | 3.04                |
+| tipo-4 | cap-gobierno       | rojo (22°)     | `#e36364` | `#c4474b` | 5.39               | 4.62              | 4.35                 | 4.21                |
+| tipo-5 | cap-consumo        | verde (148°)   | `#6ace7c` | `#017f31` | 9.27               | 4.93              | 7.19                 | 4.56                |
+| tipo-6 | cap-ia             | magenta (345°) | `#fa87cb` | `#9e3378` | 8.12               | 6.29              | 6.56                 | 5.69                |
+| tipo-7 | tipo-externo       | pizarra (250°) | `#7a8b9e` | `#39495a` | 5.20               | 8.84              | 4.09                 | 8.11                |
+| tipo-8 | tipo-operacion     | cian (205°)    | `#1fbdcb` | `#0098a4` | 7.95               | 3.34              | 6.17                 | 3.10                |
 
 ### 5.3 Umbral declarado y resultado
 
@@ -174,31 +187,32 @@ y así se ve en las capturas de escala de grises.
 
 | Vista      | Umbral          | Peor par oscuro         | Peor par claro          |
 | ---------- | --------------- | ----------------------- | ----------------------- |
-| normal     | 0.1             | 0.127 (tipo-5 ~ tipo-8) | 0.123 (tipo-3 ~ tipo-7) |
-| protan-0.6 | 0.06            | 0.072 (tipo-6 ~ tipo-8) | 0.083 (tipo-3 ~ tipo-4) |
-| deutan-0.6 | 0.06            | 0.072 (tipo-6 ~ tipo-8) | 0.075 (tipo-5 ~ tipo-8) |
-| tritan-0.6 | 0.06            | 0.081 (tipo-5 ~ tipo-8) | 0.103 (tipo-2 ~ tipo-3) |
-| protan-1.0 | 0.03            | 0.078 (tipo-6 ~ tipo-8) | 0.090 (tipo-3 ~ tipo-4) |
-| deutan-1.0 | 0.03            | 0.053 (tipo-6 ~ tipo-8) | 0.052 (tipo-5 ~ tipo-8) |
-| tritan-1.0 | 0.03            | 0.040 (tipo-5 ~ tipo-8) | 0.037 (tipo-2 ~ tipo-3) |
-| grises     | — (no se exige) | 0.004 (tipo-1 ~ tipo-5) | 0.006 (tipo-1 ~ tipo-5) |
+| normal     | 0.1             | 0.124 (tipo-1 ~ tipo-8) | 0.124 (tipo-4 ~ tipo-6) |
+| protan-0.6 | 0.06            | 0.074 (tipo-6 ~ tipo-8) | 0.080 (tipo-1 ~ tipo-2) |
+| deutan-0.6 | 0.06            | 0.081 (tipo-3 ~ tipo-5) | 0.099 (tipo-4 ~ tipo-5) |
+| tritan-0.6 | 0.06            | 0.086 (tipo-5 ~ tipo-8) | 0.100 (tipo-3 ~ tipo-4) |
+| protan-1.0 | 0.03            | 0.069 (tipo-6 ~ tipo-8) | 0.045 (tipo-3 ~ tipo-5) |
+| deutan-1.0 | 0.03            | 0.058 (tipo-6 ~ tipo-8) | 0.061 (tipo-4 ~ tipo-5) |
+| tritan-1.0 | 0.03            | 0.038 (tipo-3 ~ tipo-6) | 0.046 (tipo-1 ~ tipo-5) |
+| grises     | — (no se exige) | 0.002 (tipo-3 ~ tipo-8) | 0.001 (tipo-3 ~ tipo-8) |
 
 ### 5.4 Neutros
 
-| Neutro  | Oscuro    | Claro     | Uso                                        |
-| ------- | --------- | --------- | ------------------------------------------ |
-| fondo   | `#0b0f14` | `#f1eee7` | fondo de página y de las bandas            |
-| sup-1   | `#12161c` | `#f9f6f1` | lienzo del diagrama, tarjetas              |
-| sup-2   | `#1b2128` | `#fffdfa` | bloques, controles, etiquetas              |
-| linea   | `#383e45` | `#cecac2` | filetes decorativos (vetada como texto)    |
-| tinta-1 | `#e8ebf1` | `#161b21` | texto principal, marcas, foco              |
-| tinta-2 | `#b9bec6` | `#3d434a` | texto secundario, flujos, bordes de bloque |
-| tinta-3 | `#70757c` | `#878d94` | guías y rejillas (vetada como texto)       |
+| Neutro  | Oscuro    | Claro     | Uso                                             |
+| ------- | --------- | --------- | ----------------------------------------------- |
+| fondo   | `#0b0f14` | `#f2f4f6` | fondo de página                                 |
+| sup-1   | `#12161c` | `#f9fafc` | carriles y lienzo del diagrama, barra de la app |
+| sup-2   | `#1b2128` | `#ffffff` | tarjetas, controles, etiquetas                  |
+| linea   | `#383e45` | `#d1d5d9` | filetes decorativos (vetada como texto)         |
+| tinta-1 | `#e8ebf1` | `#161b21` | texto principal, marcas, foco                   |
+| tinta-2 | `#b9bec6` | `#3d434a` | texto secundario, flujos                        |
+| tinta-3 | `#70757c` | `#878d94` | guías y rejillas (vetada como texto)            |
 
-Contrastes medidos: tinta-1 sobre sup-1 **15,2:1** (oscuro) y **16,1:1** (claro); tinta-2 sobre
-el fondo más exigente **8,6:1**; tinta-1 sobre el relleno de nodo más oscuro **12,4:1**. Las tintas
-vetadas como texto (tinta-3, linea) no llegan a 4,5:1, y el gate lo exige: si llegaran, el veto
-sobraría. tinta-3 sí pasa 3:1 (3,9 y 3,1), así que sirve para guías gráficas.
+Contrastes medidos: tinta-1 sobre sup-1 **15,2:1** (oscuro) y **16,6:1** (claro); tinta-2 sobre
+el fondo **10,3:1** y **9,1:1**; tinta-1 sobre el relleno de nodo más exigente **11,8:1** y
+**15,0:1**. Las tintas vetadas como texto (tinta-3, linea) no llegan a 4,5:1, y el gate lo exige:
+si llegaran, el veto sobraría. tinta-3 sí pasa 3:1 (3,9 y 3,2), así que sirve para guías gráficas.
+Ronda 2: el claro pasa de papel crema a un papel frío casi blanco.
 
 ### 5.5 Gate
 
@@ -340,7 +354,10 @@ demás baja al carril por el canal de salida, lo recorre y sube por el canal de 
 coloreo de intervalos, en orden determinista. **D11 por construcción:** los tramos verticales solo
 corren en canales y los horizontales solo en el carril o en tramos de entrada y salida.
 
-### 9.2 Angosto (380 px, lienzo 348)
+### 9.2 Angosto (380 px, lienzo 348) — RETIRADO en la ronda 2
+
+> Retirado por la decisión de P5 (§ 1): ya no existe disposición angosta. Se conserva la tabla
+> como registro de lo que la ronda 1 midió.
 
 | Constante         | Valor                                                                                                                          |
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------------ |

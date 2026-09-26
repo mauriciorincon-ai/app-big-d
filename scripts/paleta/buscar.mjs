@@ -1,98 +1,112 @@
-// Búsqueda DETERMINISTA de la paleta de los 8 tipos de nodo (Etapa de Diseño, D8).
-// Sin azar: arranques en rejilla fija, descenso por coordenadas sobre una rejilla de matices de 5°.
-// Uso: `pnpm paleta:buscar` → imprime la mejor paleta y su tabla; no escribe archivos.
+// Búsqueda DETERMINISTA de la claridad de los 8 tipos de nodo (Etapa de Diseño, D8 → D30).
+// Sin azar: tres arranques fijos (centro de cada rango, y claridades alternadas bajo/alto y
+// alto/bajo), descenso por coordenadas con pasos fijos; gana el mejor puntaje.
+// Uso: `pnpm paleta:buscar` → imprime la claridad propuesta por tipo y tema, y su tabla de peores
+// pares; no escribe archivos (el resultado se copia a TIPOS[].L en generar-tokens.mjs).
 //
-// Modelo: cada tipo tiene UN matiz estable en los dos temas; la claridad (OKLCH L) depende del
-// tema y del NIVEL del tipo. El croma es el máximo que cabe en sRGB hasta CROMA_MAX.
-// Objetivo: maximizar el mínimo, sobre temas × vistas, de (peor ΔE_OK del par) / (umbral de la vista).
+// Modelo (ronda 2): cada tipo tiene UN matiz propio y un croma tope (TIPOS, elegidos por
+// significado); lo que se busca es la claridad OKLCH por tema dentro de RANGOS.
+// Objetivo: maximizar el mínimo de (peor ΔE_OK del par) / (umbral de la vista) sobre las vistas
+// declaradas, con penalización si un trazo baja de 3:1 sobre sup-1, sup-2 o su propio relleno.
 import { contraste, oklchAHex, peorPar } from "./color.mjs";
-import { UMBRALES } from "./generar-tokens.mjs";
+import {
+  NEUTROS,
+  RANGOS,
+  TIPOS,
+  UMBRALES,
+  tinteDe,
+} from "./generar-tokens.mjs";
 
-export const SUPERFICIE = {
-  oscuro: oklchAHex(0.2, 0.014, 255),
-  claro: oklchAHex(0.975, 0.008, 85),
-};
-export const NIVELES = {
-  // Claridad por nivel. Oscuro: trazo claro sobre lienzo oscuro; claro: trazo oscuro sobre papel.
-  oscuro: (process.env.NIV_OSC ?? "0.7,0.86").split(",").map(Number),
-  claro: (process.env.NIV_CLA ?? "0.44,0.62").split(",").map(Number),
-};
-const CROMA_MAX = Number(process.env.CROMA ?? 0.16);
-export const UMBRAL = UMBRALES;
-const VISTAS = Object.keys(UMBRAL);
+const VISTAS = Object.keys(UMBRALES);
+const PASOS = [-0.04, -0.02, -0.01, 0.01, 0.02, 0.04];
 
-/** @param {number[]} matices @param {number[]} nivel */
-export function paleta(matices, nivel) {
-  /** @type {Record<string, {id: string, hex: string}[]>} */
-  const r = {};
-  for (const tema of /** @type {const} */ (["oscuro", "claro"]))
-    r[tema] = matices.map((h, i) => ({
-      id: `tipo-${i + 1}`,
-      hex: oklchAHex(NIVELES[tema][nivel[i]], CROMA_MAX, h),
-    }));
-  return r;
+/** @param {"oscuro" | "claro"} tema @param {number[]} L */
+function colores(tema, L) {
+  return TIPOS.map((tp, i) => ({
+    id: tp.token,
+    hex: oklchAHex(L[i], tp.croma, tp.matiz),
+  }));
 }
 
-/** @param {number[]} matices @param {number[]} nivel */
-export function puntaje(matices, nivel) {
-  const p = paleta(matices, nivel);
+/** @param {"oscuro" | "claro"} tema @param {number[]} L */
+export function puntaje(tema, L) {
+  const c = colores(tema, L);
+  const [s1, s2] = ["sup-1", "sup-2"].map((k) => {
+    const [l, cr, h] = NEUTROS[tema][k];
+    return oklchAHex(l, cr, h);
+  });
   let peor = Infinity;
-  for (const tema of /** @type {const} */ (["oscuro", "claro"])) {
-    for (const c of p[tema]) {
-      const k = contraste(c.hex, SUPERFICIE[tema]);
-      if (k < 3) peor = Math.min(peor, k / 3 - 1); // penaliza por debajo de 3:1
-    }
-    for (const v of VISTAS)
-      peor = Math.min(peor, peorPar(p[tema], v).min / UMBRAL[v]);
-  }
+  c.forEach((x, i) => {
+    const k = Math.min(
+      contraste(x.hex, s1),
+      contraste(x.hex, s2),
+      contraste(x.hex, tinteDe(tema, TIPOS[i])),
+    );
+    if (k < 3) peor = Math.min(peor, k / 3 - 1);
+  });
+  for (const v of VISTAS)
+    peor = Math.min(peor, peorPar(c, v).min / UMBRALES[v]);
   return peor;
 }
 
-function buscar(/** @type {number[]} */ nivel) {
-  const rejilla = Array.from({ length: 72 }, (_, i) => i * 5);
-  let mejor = { m: [0], s: -Infinity };
-  for (let desfase = 0; desfase < 45; desfase += 5) {
-    let m = Array.from({ length: 8 }, (_, i) => (desfase + i * 45) % 360);
-    let s = puntaje(m, nivel);
-    for (let vuelta = 0, mejoro = true; mejoro && vuelta < 20; vuelta++) {
-      mejoro = false;
-      for (let i = 0; i < 8; i++)
-        for (const h of rejilla) {
-          const prueba = m.slice();
-          prueba[i] = h;
-          const sp = puntaje(prueba, nivel);
-          if (sp > s + 1e-9) {
-            s = sp;
-            m = prueba;
-            mejoro = true;
-          }
-        }
-    }
-    if (s > mejor.s) mejor = { m, s };
+/** @param {"oscuro" | "claro"} tema */
+export function buscar(tema) {
+  const R = RANGOS[tema];
+  const r2 = (/** @type {number} */ x) => Math.round(x * 100) / 100;
+  const arranques = [
+    R.map(([a, b]) => r2((a + b) / 2)),
+    R.map(([a, b], i) => r2(i % 2 ? b - 0.02 : a + 0.02)),
+    R.map(([a, b], i) => r2(i % 2 ? a + 0.02 : b - 0.02)),
+  ];
+  let mejor = { L: arranques[0], s: -Infinity };
+  for (const L0 of arranques) {
+    const r = descender(tema, L0);
+    if (r.s > mejor.s + 1e-9) mejor = r;
   }
   return mejor;
 }
 
+/** @param {"oscuro" | "claro"} tema @param {number[]} L0 */
+function descender(tema, L0) {
+  const R = RANGOS[tema];
+  let L = L0;
+  let s = puntaje(tema, L);
+  for (let vuelta = 0, mejoro = true; mejoro && vuelta < 60; vuelta++) {
+    mejoro = false;
+    for (let i = 0; i < L.length; i++)
+      for (const d of PASOS) {
+        const L2 = [...L];
+        L2[i] =
+          Math.round(Math.min(R[i][1], Math.max(R[i][0], L2[i] + d)) * 100) /
+          100;
+        const s2 = puntaje(tema, L2);
+        if (s2 > s + 1e-9) {
+          s = s2;
+          L = L2;
+          mejoro = true;
+        }
+      }
+  }
+  return { L, s };
+}
+
 if (import.meta.url === `file://${process.argv[1]}`) {
-  // Niveles alternados por orden de gramática: tipo-1 bajo, tipo-2 alto, …
-  const nivel = [0, 1, 0, 1, 0, 1, 0, 1];
-  const { m, s } = buscar(nivel);
-  console.log("superficies", SUPERFICIE);
-  console.log("matices", m.join(" "), "puntaje", s.toFixed(3));
-  const p = paleta(m, nivel);
   for (const tema of /** @type {const} */ (["oscuro", "claro"])) {
+    const { L, s } = buscar(tema);
     console.log(
-      `\n${tema}:`,
-      p[tema]
-        .map(
-          (c) =>
-            `${c.id}=${c.hex} (${contraste(c.hex, SUPERFICIE[tema]).toFixed(2)}:1)`,
-        )
-        .join("  "),
+      `\n${tema}: puntaje ${s.toFixed(3)} (≥ 1 = todas las vistas en su umbral)`,
     );
-    for (const v of [...VISTAS, "grises"]) {
-      const { min, par } = peorPar(p[tema], v);
-      console.log(`  ${v.padEnd(11)} peor ${min.toFixed(3)}  ${par.join("~")}`);
+    TIPOS.forEach((tp, i) =>
+      console.log(
+        `  ${tp.token} ${tp.id.padEnd(20)} L ${L[i].toFixed(2)}  ${oklchAHex(L[i], tp.croma, tp.matiz)}`,
+      ),
+    );
+    const c = colores(tema, L);
+    for (const v of VISTAS) {
+      const { min, par } = peorPar(c, v);
+      console.log(
+        `  ${v.padEnd(11)} ${min.toFixed(3)} (umbral ${UMBRALES[v]}) ${par.join("~")}`,
+      );
     }
   }
 }

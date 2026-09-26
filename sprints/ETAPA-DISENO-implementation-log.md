@@ -164,3 +164,53 @@ acromatopsia claro. **Corregido tras mirar:** las pestañas de nivel apilaban n�
 selector `span` alcanzaba a los hijos) y la pestaña activa se lavaba; las muestras de línea de la
 leyenda heredaban el ancho del diagrama; «Varios modos» caía en la columna del marcador; los
 nombres de modo usaban la mono de los códigos; los enlaces de la barra medían 30 px de alto.
+
+## Fase 1 — Mirada 1, ronda 2 (2026-09-26)
+
+**Mirada de la ronda 1 (registrada en `docs/diseno/README.md` antes de construir):** el usuario abrió
+`atlas-nivel-1.html` en local —el preview no le abrió— y respondió: «revisé la que está en local y la
+verdad no me gustó nada, visualmente horrible, y el diagrama no lo quiero vertical sino horizontal y
+con desplazamiento lateral por si se hace muy grande». **No aprobada.**
+
+**Lectura crítica propia de la ronda 1 (capturas releídas antes de rediseñar):** parecía un
+boceto de flujo, no un producto. Las cajas eran rectángulos oscuros casi vacíos; el color vivía en
+glifos de 12 px y la paleta repetía cuatro familias (dos azules, dos turquesas, mostaza, oliva). Las
+columnas eran altas y huecas, las líneas se enredaban junto a «Almacén central», las franjas eran
+formularios con «1 componente» punteado y el claro en crema se leía viejo. Por debajo de 1029 px de
+contenedor el mapa pasaba a la disposición vertical, que es la que el usuario vio en su pantalla.
+
+**Decisiones de la ronda 2:**
+
+| #   | Decisión                                                                                                                                                                                                              | Razón                                                                                               |
+| --- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| D29 | **P5 lo decide el usuario: siempre horizontal.** Jamás se transpone ni se encoge; si no cabe, el lienzo se desliza de lado (índice de capas, sombras de borde, pista escrita). La geometría angosta (§ 9.2) se retira | Mirada textual del usuario                                                                          |
+| D30 | **Paleta de un matiz propio por tipo** (azul, violeta, naranja, rojo, verde, magenta, cian y pizarra para lo externo); la claridad sale de `pnpm paleta:buscar` reescrito (tres arranques fijos, rangos por tipo)     | La ronda 1 era apagada y repetida. Mismos umbrales y mismo gate: 39/39 verdes, peor par 0,6 = 0,074 |
+| D31 | **Claro en papel frío casi blanco** (fondo L 0,965; tarjetas blancas)                                                                                                                                                 | El crema cálido se leía viejo junto a los colores nuevos                                            |
+| D32 | **Tres direcciones visuales del mismo mapa** en `atlas-direcciones.html`: A carriles · B plano · C bloques; misma data, mismos glifos, misma calculadora                                                              | «Horrible» no dice qué gusta; elegir entre tres es más corto que adivinar una                       |
+| D33 | **Las conexiones de una franja se alinean bajo la columna de la capa que tocan** (flecha ↑/↓ + marcador + nombre), en vez de listarse junto al elemento                                                               | La referencia se lee como cruce de fila y columna, sin líneas                                       |
+| D34 | **Un «sin bloque» de un solo componente muestra el nombre del componente** («Monitor de consumo»), no «1 componente»                                                                                                  | El recuadro punteado vacío se leía como marcador de posición                                        |
+
+**Plan de miradas:** sin cambios. Es la ronda 2 de la mirada 1; no se construyó el segundo artefacto.
+
+**Construido:** `docs/diseno/atlas-direcciones.html` (80 KB; tres lienzos de 1206–1212 × 615–665 u) ·
+`assets/direcciones.css` · `assets/lienzo.js` · `scripts/paleta/generar-tokens.mjs` y
+`scripts/paleta/buscar.mjs` (modelo de un matiz por tipo) · `tokens.{json,css}` regenerados ·
+tablas de paleta al día en `diagramador-tokens.md` § 5 y `design-system.md` §§ 3.1, 3.2 y 7.1 ·
+§ 0 y § 1 de la propuesta con P5 decidido · portada de sala con la ronda 2 primero.
+
+**Verificado:** arnés sobre `atlas-direcciones` — 24 encuadres (3 direcciones × 2 temas × 2 idiomas
+× 380/1280), 0 fallas de medida (sin desborde de página, sin texto fuera del lienzo ni sobre caja
+ajena, fuente cargada). Prueba de interacción en Chromium a 380 px: el lienzo desborda en las tres
+direcciones, el índice lleva a «Procesamiento» (scrollLeft 618–624) y marca la capa actual, la
+página mide 380 px; a 1440 px el lienzo cabe y el índice no aparece. Leídas como imagen: A oscuro
+ES 1280 y 380, B claro ES 1280, C oscuro EN 1280. **Corregido tras mirar:** la pregunta de las
+franjas se pintaba a 14 px y se medía a 13 (quedaba pegada a su ficha); las fichas compactas de tres
+líneas no respiraban (52 → 60 u); las pestañas de nivel se partían en dos filas a 380 px.
+
+**Preview:** el usuario reporta que no le abrió. Sin sesión, la URL responde 302 al inicio de sesión
+de Vercel (esperado); el despliegue del commit f21519c terminó en `success`. Desde aquí no se puede
+ver qué pasa con sesión: pendiente de lo que el usuario vio al abrirlo.
+
+**Pendiente para la ronda 3 (tras la elección):** la dirección elegida pasa a `bigd.css` /
+`diagrama.css`; `atlas-nivel-1.html` se rehace con ella y recupera los estados (vigencia, P4, P9),
+la ficha breve y la lectura en texto; `diagramador-tokens.md` §§ 4, 6–9 y 13 se reescriben.
