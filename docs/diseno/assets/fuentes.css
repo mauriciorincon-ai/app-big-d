@@ -1,0 +1,17 @@
+/* Fuentes de Big-D (D5 · P11): Atkinson Hyperlegible Next (interfaz y diagrama) y Mono (huellas,
+   semillas, ids, comandos). SIL OFL 1.1 — licencias junto a los archivos. Servidas desde el mismo
+   sitio: jamás desde un CDN (gate maqueta-autocontenida). `block`: nunca se pinta con respaldo. */
+@font-face {
+  font-family: "Atkinson Hyperlegible Next";
+  src: url("fuentes/atkinson-hyperlegible-next.woff2") format("woff2");
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: block;
+}
+@font-face {
+  font-family: "Atkinson Hyperlegible Mono";
+  src: url("fuentes/atkinson-hyperlegible-mono.woff2") format("woff2");
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: block;
+}

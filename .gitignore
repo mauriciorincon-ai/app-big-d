@@ -23,3 +23,6 @@ Thumbs.db
 
 # Perfil exportado estático (kit v1.29.0)
 out/
+
+# Maqueta de la Etapa de Diseño copiada al export (DERIVADO de docs/diseno/, se regenera en cada build)
+public/diseno/

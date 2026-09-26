@@ -1,0 +1,83 @@
+/* GENERADO por scripts/paleta/generar-tokens.mjs — no editar a mano (el gate detecta deriva). */
+/* Oscuro es el primario: sin preferencia ni elección, manda oscuro. */
+:root,
+:root[data-theme="oscuro"] {
+  color-scheme: dark;
+  --fondo: #0b0f14;
+  --sup-1: #12161c;
+  --sup-2: #1b2128;
+  --linea: #383e45;
+  --tinta-1: #e8ebf1;
+  --tinta-2: #b9bec6;
+  --tinta-3: #70757c;
+  --tipo-1: #bbd1ff;
+  --tipo-1-tinte: #1e2638;
+  --tipo-2: #8797ef;
+  --tipo-2-tinte: #212538;
+  --tipo-3: #00b6af;
+  --tipo-3-tinte: #0f2c2a;
+  --tipo-4: #e27a8c;
+  --tipo-4-tinte: #351f22;
+  --tipo-5: #e5d367;
+  --tipo-5-tinte: #2a2712;
+  --tipo-6: #5aedd4;
+  --tipo-6-tinte: #102c27;
+  --tipo-7: #b89d2b;
+  --tipo-7-tinte: #2c2612;
+  --tipo-8: #ffbfb4;
+  --tipo-8-tinte: #36201c;
+}
+:root[data-theme="claro"] {
+  color-scheme: light;
+  --fondo: #f1eee7;
+  --sup-1: #f9f6f1;
+  --sup-2: #fffdfa;
+  --linea: #cecac2;
+  --tinta-1: #161b21;
+  --tinta-2: #3d434a;
+  --tinta-3: #878d94;
+  --tipo-1: #5f83d4;
+  --tipo-1-tinte: #e9f0ff;
+  --tipo-2: #404899;
+  --tipo-2-tinte: #ecefff;
+  --tipo-3: #00605c;
+  --tipo-3-tinte: #daf7f4;
+  --tipo-4: #8b2b42;
+  --tipo-4-tinte: #ffeaed;
+  --tipo-5: #998700;
+  --tipo-5-tinte: #f4f1da;
+  --tipo-6: #009c89;
+  --tipo-6-tinte: #dcf7f1;
+  --tipo-7: #625100;
+  --tipo-7-tinte: #f6f0da;
+  --tipo-8: #c86556;
+  --tipo-8-tinte: #ffebe7;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    color-scheme: light;
+    --fondo: #f1eee7;
+    --sup-1: #f9f6f1;
+    --sup-2: #fffdfa;
+    --linea: #cecac2;
+    --tinta-1: #161b21;
+    --tinta-2: #3d434a;
+    --tinta-3: #878d94;
+    --tipo-1: #5f83d4;
+    --tipo-1-tinte: #e9f0ff;
+    --tipo-2: #404899;
+    --tipo-2-tinte: #ecefff;
+    --tipo-3: #00605c;
+    --tipo-3-tinte: #daf7f4;
+    --tipo-4: #8b2b42;
+    --tipo-4-tinte: #ffeaed;
+    --tipo-5: #998700;
+    --tipo-5-tinte: #f4f1da;
+    --tipo-6: #009c89;
+    --tipo-6-tinte: #dcf7f1;
+    --tipo-7: #625100;
+    --tipo-7-tinte: #f6f0da;
+    --tipo-8: #c86556;
+    --tipo-8-tinte: #ffebe7;
+  }
+}
