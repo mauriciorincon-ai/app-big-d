@@ -277,3 +277,5 @@ líneas claro EN 1280. Sin correcciones tras mirar.
 **Plan de miradas:** sin cambios. La mirada 1 se presenta completa para aprobación (atlas nivel 1
 
 - tokens del diagramador); la mirada 2 no arranca sin ella.
+
+**Mirada 1 aprobada (2026-09-26):** «lo abrí y apruebo», con la ronda 4 abierta en local. Registrada en `docs/diseno/README.md`. Fase 1 cerrada; la fase 2 (mirada 2) espera el «continúa».
