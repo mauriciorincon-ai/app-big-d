@@ -4,6 +4,8 @@
    prefers-color-scheme, y sin preferencia, oscuro (design-system.md § 9). */
 @import "../styles/tokens.css";
 @import "../styles/base.css";
+@import "../styles/diagrama.css";
+@import "../styles/atlas.css";
 
 /* Contrato con el código (design-system.md § 9): los tokens pasan 1:1 al @theme de Tailwind v4. */
 @theme inline {

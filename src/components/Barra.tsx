@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { datos, rutaAtlas } from "@/lib/datos";
 import { textos, type Idioma } from "@/lib/i18n";
 import { ConmutadorIdioma } from "./ConmutadorIdioma";
 import { ConmutadorTema } from "./ConmutadorTema";
@@ -15,7 +16,7 @@ export function Barra({ idioma }: { idioma: Idioma }) {
       </Link>
       <ul className="nav" aria-label={t.secciones}>
         <li>
-          <Link href={`/${idioma}`} aria-current="page">
+          <Link href={rutaAtlas(datos(), idioma)} aria-current="page">
             {t.atlas}
           </Link>
         </li>
