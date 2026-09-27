@@ -58,10 +58,16 @@ function rutasDelExport(dir, base = "") {
   return out;
 }
 const rutas = (arg("rutas") ?? rutasDelExport(arbol).join(",")).split(",").filter(Boolean);
+/** Cuántas plataformas hay en data/: el campo «Plataforma» debe listarlas todas (N por diseño). */
+const N_PLATAFORMAS = readdirSync(join(raiz, "data", "plataformas")).filter((f) => f.endsWith(".yaml")).length;
 const anchos = arg("anchos", "380,1280").split(",").map(Number);
 const temas = arg("temas", "oscuro,claro").split(",");
 /** Pantalla de la maqueta que obedece cada ruta (fidelidad). */
-const MAQUETA = [[/^\/(es|en)\/atlas\/[^/]+$/, "atlas-nivel-1"]];
+const MAQUETA = [
+  [/^\/(es|en)\/atlas\/[^/]+$/, "atlas-nivel-1"],
+  [/^\/(es|en)\/atlas\/[^/]+\/componentes$/, "atlas-nivel-2"],
+  [/^\/(es|en)\/atlas\/[^/]+\/recorrido$/, "atlas-recorrido"],
+];
 
 // Puerto libre y servidor propio: jamás se reusa un servidor que ya estuviera escuchando.
 const puerto = await new Promise((ok) => {
@@ -179,6 +185,26 @@ async function interactuar(pagina, ruta, tema, ancho, clave) {
   }
   await pagina.locator(`[data-theme-set="${tema}"]`).click();
 
+  // Campo «Plataforma»: lista las N plataformas; las que no tienen mapa dicen «— …» y no se eligen; elegir
+  // otra lleva a su atlas.
+  const campo = pagina.locator(".campo-plataforma select");
+  if (await campo.count()) {
+    await marcar(campo);
+    const ops = await campo.evaluate((sel) => [...sel.options].map((o) => ({ v: o.value, d: o.disabled, t: o.text, s: o.selected })));
+    cambio(ops.filter((o) => o.v).length === N_PLATAFORMAS, `el campo «Plataforma» lista ${ops.filter((o) => o.v).length} de ${N_PLATAFORMAS} plataformas`);
+    cambio(ops.filter((o) => o.v && o.d).every((o) => o.t.includes(" — ")), "una plataforma sin mapa no dice que viene pronto");
+    const otra = ops.find((o) => o.v && !o.d && !o.s);
+    if (otra) {
+      // En otra pestaña: navegar aquí borraría las marcas de lo ya probado.
+      const aparte = await pagina.context().newPage();
+      await aparte.goto(pagina.url());
+      await aparte.locator(".campo-plataforma select").selectOption(otra.v);
+      await aparte.waitForURL((u) => u.href.includes(`/atlas/${otra.v}`), { timeout: 3000 }).catch(() => {});
+      cambio(aparte.url().includes(`/atlas/${otra.v}`), `elegir «${otra.t}» no llevó a su atlas`);
+      await aparte.close();
+    }
+  }
+
   // Índice de capas: solo aparece si el lienzo desborda; cada botón lleva el lienzo a su capa.
   const indice = pagina.locator(".indice [data-col]");
   await marcar(indice);
@@ -213,10 +239,73 @@ async function interactuar(pagina, ruta, tema, ancho, clave) {
     });
   } else cambio((await indice.first().isVisible().catch(() => false)) === false, "el lienzo cabe y el índice se ve igual");
 
-  // Bloques: clic en cada uno abre la ficha breve con su nombre; el primero también con Enter.
+  // Niveles 2 y 3: cada componente abre el panel con su ficha y lleva el foco al título; Esc lo cierra y
+  // devuelve el foco al componente; «Cerrar» también cierra.
+  if (await pagina.locator("#panel-ficha").count()) {
+    const nodos = pagina.locator(".lienzo .dg-nodo");
+    await marcar(nodos);
+    const panel = pagina.locator("#panel-ficha");
+    const n = await nodos.count();
+    for (let i = 0; i < n; i++) {
+      const nodo = nodos.nth(i);
+      const nombre = (await nodo.getAttribute("aria-label")).split(". ")[0];
+      await nodo.evaluate((el) => el.dispatchEvent(new MouseEvent("click", { bubbles: true })));
+      await panel.waitFor({ state: "visible", timeout: 2000 }).catch(() => {});
+      const titulo = (await panel.isVisible()) ? await panel.locator("h2").textContent() : "";
+      cambio(titulo === nombre, `el componente «${nombre}» no abrió su ficha (título: «${titulo}»)`);
+      cambio(await pagina.evaluate(() => document.activeElement?.tagName === "H2"), `al abrir «${nombre}» el foco no fue al título`);
+      await pagina.keyboard.press("Escape");
+      cambio(await panel.isHidden(), `Esc no cerró la ficha de «${nombre}»`);
+    }
+    if (n) {
+      const primero = nodos.first();
+      await primero.focus();
+      await pagina.keyboard.press("Enter");
+      cambio(await panel.isVisible(), "Enter sobre un componente no abrió su ficha");
+      const cerrar = panel.locator(".cerrar");
+      await marcar(cerrar);
+      await cerrar.click();
+      cambio(await panel.isHidden(), "«Cerrar» no cerró la ficha");
+      cambio(await primero.evaluate((e) => e === document.activeElement), "al cerrar, el foco no volvió al componente");
+    }
+  }
+
+  // Recorrido: cada control cambia `data-paso` (o la reproducción) y las flechas también.
+  if (await pagina.locator("#rec").count()) {
+    const rec = pagina.locator("#rec");
+    const boton = (a) => pagina.locator(`[data-rec="${a}"]`);
+    await marcar(pagina.locator("[data-rec]"));
+    const paso = () => rec.getAttribute("data-paso");
+    const pos = () => pagina.locator(".rec-pos").textContent();
+    // Las fichas de arriba también movieron el paso (tocar un componente lleva a su paso): se parte de todos.
+    await boton("todos").click();
+    cambio((await boton("anterior").isDisabled()) && (await paso()) === "todos", "en «todos los pasos», «Anterior» no está deshabilitado");
+    const posTodos = await pos();
+    await boton("siguiente").click();
+    cambio((await paso()) !== "todos" && (await pos()) !== posTodos, "«Siguiente» no avanzó el recorrido");
+    const primero = await paso();
+    await boton("siguiente").click();
+    await boton("anterior").click();
+    cambio((await paso()) === primero, "«Anterior» no retrocedió");
+    await boton("todos").click();
+    cambio((await paso()) === "todos", "«Ver todos» no volvió a todos los pasos");
+    await pagina.locator("h1").click();
+    await pagina.keyboard.press("ArrowRight");
+    cambio((await paso()) === primero, "la flecha derecha no avanzó el recorrido");
+    await boton("todos").click();
+    await boton("reproducir").click();
+    cambio((await boton("reproducir").getAttribute("aria-pressed")) === "true", "«Reproducir» no arrancó");
+    await pagina.waitForTimeout(2300);
+    const avanzado = await paso();
+    cambio(avanzado !== "todos" && avanzado !== primero, `la reproducción no avanzó sola (quedó en ${avanzado})`);
+    await boton("reproducir").click();
+    cambio((await boton("reproducir").getAttribute("aria-pressed")) === "false", "«Pausar» no detuvo la reproducción");
+  }
+
+  // Nivel 1: clic en cada bloque abre la ficha breve con su nombre; el primero también con Enter.
   const elems = pagina.locator(".lienzo .dg-elem");
-  await marcar(elems);
-  const nElems = await elems.count();
+  const nElems = (await pagina.locator("#ficha-breve").count()) ? await elems.count() : 0;
+  if (nElems) await marcar(elems);
   for (let i = 0; i < nElems; i++) {
     const e = elems.nth(i);
     const nombre = (await e.getAttribute("aria-label")).split(/[.:]/)[0];
@@ -235,7 +324,9 @@ async function interactuar(pagina, ruta, tema, ancho, clave) {
     await ultimo.focus();
     await pagina.keyboard.press("Enter");
     cambio((await pagina.locator("#ficha-breve").textContent()).includes(nombre) && (await pagina.locator("#ficha-breve").isVisible()), `Enter sobre «${nombre}» no abrió su ficha`);
-    const lienzoFoco = pagina.locator(".lienzo[tabindex]");
+  }
+  const lienzoFoco = pagina.locator(".lienzo[tabindex]");
+  if (await lienzoFoco.count()) {
     await marcar(lienzoFoco);
     await lienzoFoco.focus();
     cambio(await lienzoFoco.evaluate((e) => e === document.activeElement), "el lienzo no recibe el foco");
@@ -264,11 +355,21 @@ async function interactuar(pagina, ruta, tema, ancho, clave) {
     cambio((await abierta()) !== antes, "el resumen de la lectura no la abrió");
   }
 
+  // Al final de los clics (la hoja modal tapa el resto en teléfono): una ficha abierta para la captura de
+  // estado; sus enlaces a fuentes entran en la pasada de enlaces que sigue.
+  if ((await pagina.locator("#panel-ficha").count()) && (await pagina.locator(".lienzo .dg-nodo").count()) > 1)
+    await pagina.locator(".lienzo .dg-nodo").nth(1).evaluate((el) => el.dispatchEvent(new MouseEvent("click", { bubbles: true })));
+
   // Enlaces: cada uno lleva a una ruta que existe (el de idioma, además, cambia lang).
-  const enlaces = pagina.locator("header a[href], main a[href]:not(.saltar-diagrama)");
+  const enlaces = pagina.locator("header a[href], main a[href]:not(.saltar-diagrama), #panel-ficha a[href]");
   await marcar(enlaces);
   const hrefs = await enlaces.evaluateAll((as) => as.map((a) => ({ href: a.getAttribute("href"), lang: a.getAttribute("hreflang") })));
   for (const { href, lang } of hrefs) {
+    // Una fuente de una ficha apunta fuera del sitio: el arnés jamás sale a la red; basta con que sea https.
+    if (/^https?:/.test(href) && !href.startsWith(base)) {
+      cambio(href.startsWith("https://"), `el enlace externo ${href} no es https`);
+      continue;
+    }
     const r = await fetch(new URL(href, base));
     cambio(r.ok, `el enlace ${href} no existe (${r.status})`);
     if (lang) {
@@ -343,9 +444,10 @@ for (const ruta of rutas)
       }
       encuadres++;
       await interactuar(pagina, ruta, tema, ancho, clave);
-      // Estado con la ficha breve abierta (la pasada termina con un bloque activado por teclado).
-      if (salida && !bandera("solo-medir") && (await pagina.locator("#ficha-breve").isVisible())) {
-        await pagina.locator(".mapa").screenshot({ path: join(salida, `${clave}__ficha.png`) });
+      // Estado con la ficha abierta: la breve (nivel 1) o el panel (niveles 2 y 3).
+      if (salida && !bandera("solo-medir")) {
+        if (await pagina.locator("#ficha-breve").isVisible()) await pagina.locator(".mapa").screenshot({ path: join(salida, `${clave}__ficha.png`) });
+        if (await pagina.locator("#panel-ficha").isVisible()) await pagina.screenshot({ path: join(salida, `${clave}__ficha.png`) });
       }
       for (const e of errores) fallas.push(`${clave}: error en la consola: ${e}`);
       await ctx.close();

@@ -64,7 +64,7 @@ test.describe("en un teléfono de 380 px", () => {
 
 test("la barra y la portada llevan al atlas", async ({ page }) => {
   await page.goto("/en");
-  await page.getByRole("link", { name: "Open the atlas" }).click();
+  await page.getByRole("combobox", { name: "Platform" }).selectOption("plataforma-ejemplo");
   await expect(page).toHaveURL(/\/en\/atlas\/plataforma-ejemplo$/);
   await page.goto("/es");
   await page.getByRole("navigation", { name: "Secciones" }).or(page.getByRole("list", { name: "Secciones" })).getByRole("link", { name: "Atlas" }).click();

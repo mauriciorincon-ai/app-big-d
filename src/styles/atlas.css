@@ -2,8 +2,7 @@
    lienzo deslizable, ficha breve, leyenda y lectura). La leyenda y la lectura en texto las GENERA el
    diagramador (clases dg-leyenda* y dg-lectura); aquí solo se acomodan como la maqueta. Colores solo por
    variable. */
-.enlace-boton { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 2px; font: 600 15px/1 var(--letra); color: var(--tinta-1); background: none; border: 0; border-bottom: 1.5px solid var(--tinta-1); cursor: pointer; text-decoration: none; }
-.abrir { margin: 22px 0 0; }
+.abrir { margin: 26px 0 0; max-width: 380px; }
 
 /* Niveles */
 .niveles { display: flex; gap: 28px; margin: 0 0 24px; padding: 0; list-style: none; border-bottom: 1px solid var(--linea); overflow-x: auto; scrollbar-width: none; }
@@ -96,3 +95,62 @@
 .dg-lectura section[data-recorrido] ol, .dg-lectura section[data-recorrido] ul { list-style: none; }
 .dg-lectura section[data-recorrido] ol { padding-left: 22px; }
 .dg-lectura section[data-recorrido] ul { padding-left: 22px; }
+
+/* Campo «Plataforma» (kit: `.campo` + `.select`; forma aprobada en la parada A del S1). */
+.campo { display: grid; gap: 6px; min-width: 220px; }
+.campo-etiqueta { font: 600 12px/1 var(--letra-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--tinta-2); }
+.campo select { font: 400 15px/1.3 var(--letra); color: var(--tinta-1); background: var(--sup-1); border: 1px solid var(--linea); border-bottom-color: var(--tinta-2); border-radius: 4px; padding: 9px 12px; min-height: 40px; width: 100%; }
+.campo select:focus-visible { outline: 2px solid var(--tinta-1); outline-offset: 1px; }
+.select { position: relative; display: block; }
+.select select { appearance: none; padding-right: 32px; cursor: pointer; }
+.select svg { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); pointer-events: none; }
+.campo-plataforma { min-width: 280px; }
+@media (max-width: 719px) { .campo-plataforma { min-width: 0; width: 100%; } }
+
+/* Panel de la ficha (niveles 2 y 3): hoja inferior en teléfono, panel lateral desde 900 px. Sin sombra. */
+.panel { position: fixed; z-index: 20; background: var(--sup-1); border-top: 1px solid var(--linea); display: flex; flex-direction: column; left: 0; right: 0; bottom: 0; max-height: 72vh; border-radius: 8px 8px 0 0; }
+.panel[hidden] { display: none; }
+@media (min-width: 900px) { .panel { left: auto; top: 0; bottom: 0; width: 420px; max-height: none; border-top: 0; border-left: 1px solid var(--linea); border-radius: 0; } }
+.panel-cabeza { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 20px; border-bottom: 1px solid var(--linea); }
+.panel-cuerpo { overflow-y: auto; padding: 16px 20px 28px; }
+.cerrar { font: 600 14px/1 var(--letra); color: var(--tinta-1); background: none; border: 0; border-bottom: 1.5px solid var(--tinta-1); padding: 4px 0; min-height: 36px; cursor: pointer; }
+/* Ficha (generada por el motor, `toCard`). */
+.dg-ficha h2 { font-size: 22px; font-weight: 700; line-height: 1.2; letter-spacing: -0.01em; margin: 6px 0 8px; }
+.dg-ficha h3 { font: 600 12px/1 var(--letra-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--tinta-2); margin: 20px 0 6px; }
+.dg-ficha p { margin: 0; font-size: 15px; }
+.dg-ficha .dg-ficha-lider { font-size: 16px; }
+.dg-ficha-tipo { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--tinta-2); }
+.dg-ficha .dg-ficha-tipo { font-size: 13px; }
+.dg-ficha-cod { font: 600 11px/1 var(--letra-mono); letter-spacing: 0.06em; color: var(--tinta-2); }
+.dg-terminos { margin: 0; }
+.dg-terminos > div { padding: 8px 0; border-top: 1px solid var(--linea); }
+.dg-terminos dt { font-weight: 700; font-size: 14px; display: inline-flex; gap: 8px; align-items: baseline; }
+.dg-terminos dd { margin: 2px 0 0; font-size: 14px; color: var(--tinta-2); }
+.dg-del-glosario dt { border-bottom: 1.5px dotted var(--tinta-2); }
+.dg-ficha-madurez { display: inline-flex; align-items: center; gap: 8px; }
+.dg-fuentes { margin: 0; padding: 0; list-style: none; }
+.dg-fuentes li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; padding: 8px 0; border-top: 1px solid var(--linea); font-size: 14px; }
+.dg-fuentes a { color: var(--tinta-1); text-decoration: underline; }
+.dg-ficha-fecha { font: 500 13px/1.4 var(--letra-mono); color: var(--tinta-2); }
+.dg-ficha .dg-ficha-meta { margin-top: 14px; font: 500 13px/1.4 var(--letra-mono); color: var(--tinta-2); }
+.dg-ficha-meta b { color: var(--tinta-1); font-weight: 600; }
+
+/* Recorrido (nivel 3). */
+.rec-controles { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin: 0 0 14px; }
+.boton { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 16px; font: 600 15px/1 var(--letra); color: var(--fondo); background: var(--tinta-1); border: 1.5px solid var(--tinta-1); border-radius: 4px; cursor: pointer; }
+.boton-sec { color: var(--tinta-1); background: transparent; }
+.boton[aria-pressed="true"] { text-decoration: underline; text-underline-offset: 4px; }
+.boton:disabled { opacity: 0.45; cursor: not-allowed; }
+.rec-pos { color: var(--tinta-2); min-width: 12ch; text-align: center; }
+.pasos { margin-top: 28px; }
+.pasos-lista { margin: 12px 0 0; padding: 0; list-style: none; }
+.pasos-lista li { display: grid; grid-template-columns: 40px 1fr; gap: 12px; padding: 12px 0; border-top: 1px solid var(--linea); font-size: 15px; }
+.pasos-lista li[aria-current] { border-left: 3px solid var(--tinta-1); padding-left: 12px; background: var(--sup-1); }
+.paso-n { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 16px; background: var(--tinta-1); color: var(--fondo); font: 700 13px/1 var(--letra-mono); }
+.paso-nodo { color: var(--tinta-2); }
+.paso-lider { margin: 4px 0 0; }
+.paso-experto { margin: 4px 0 0; color: var(--tinta-2); font-size: 14px; }
+.paso-rama { margin: 6px 0 0; font-size: 14px; font-weight: 600; }
+/* Movimiento reducido: «Reproducir» sigue en el DOM (el árbol no depende de la preferencia) y el CSS lo
+   oculta; el controlador además se niega a reproducir. */
+@media (prefers-reduced-motion: reduce) { .rec [data-rec="reproducir"] { display: none; } }

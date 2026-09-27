@@ -1,2 +1,22 @@
-export { ID_LECTURA, ID_PISTA, ID_SECCION_LECTURA, pildora, textosMotor, vistaNivel1, type Pildora, type VistaNivel1 } from "./nivel1";
+export {
+  ID_LECTURA,
+  ID_PISTA,
+  ID_RECORRIDO,
+  ID_SECCION_LECTURA,
+  opcionesPlataforma,
+  pildora,
+  rutasAtlas,
+  textosMotor,
+  vistaNivel1,
+  vistaNivel2,
+  vistaRecorrido,
+  type Nivel,
+  type OpcionPlataforma,
+  type PasoPanel,
+  type Pildora,
+  type VistaAtlas,
+  type VistaNivel1,
+  type VistaNivel2,
+  type VistaRecorrido,
+} from "./vistas";
 export { plantilla, plural } from "./plantilla";

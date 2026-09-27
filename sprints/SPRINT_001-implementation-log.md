@@ -396,6 +396,8 @@ dibuja los niveles 1 y 2 de los dos mapas bilingües y mide cada `tspan` con `ge
     pide la píldora del mapa con el texto completo y la app no debe repetir la regla de los umbrales.
 16. **D-S1-27** — `toText` recibe la fecha de consulta: § 4.8 exige «por revisar · N días» también en la
     lectura, y la firma de § 8 (`{ language }`) no tiene cómo calcularlo.
+18. **D-S1-36** — `toCard(map, grammar, nodeId, { language, textos, fechaConsulta? })` en la API de § 8: § 4.5
+    dice «el motor entrega el contenido» sin nombrar la función; y `TextosMotor.ficha` para sus títulos.
 17. **Leyenda (§ 4.9)** — La regla del haz («varios modos en una conexión: línea gruesa y una etiqueta que dice
     cuáles, en orden») es gramática, no copy de la app: debería salir en la leyenda generada.
 
@@ -559,3 +561,42 @@ idioma y nivel).
   sobria junto a los colores que explica). No se construye nada nuevo.
 - **D-S1-35** — La portada queda como está (título + «Abrir el atlas») hasta que el selector tenga forma
   aprobada; si el campo «Plataforma» pasa, la portada lo repite bajo el título.
+
+## Fase 3 — Resto del atlas, investigador y Fabric (2026-09-27)
+
+**«continúa» del usuario (2026-09-27)** tras cerrar la parada A. Modelo sin cambio (Opus 5.5, esfuerzo alto).
+
+### 3a — Niveles 2 y 3, campo «Plataforma»
+
+| # | Decisión | Por qué |
+| - | -------- | ------- |
+| D-S1-36 | La ficha de un nodo la genera el motor: `toCard` (HTML), con el glifo y el medidor del dibujo (`svg/simbolos.ts`, compartido con la leyenda) | § 4.5: «el motor entrega el contenido; el panel es de la app». Así los paths viven en un solo lugar. Enmienda 18 |
+| D-S1-37 | Panel de la ficha: hoja inferior **modal** en teléfono (`role="dialog"`, `aria-modal`, foco contenido) y región lateral **no modal** desde 900 px; al abrir, el foco va al título; Esc o «Cerrar» lo devuelven al componente | Contrato de foco del design system § 7 |
+| D-S1-38 | Recorrido: el primero del mapa. Tocar un componente del recorrido lleva a su paso y abre su ficha. «Anterior» se deshabilita en «todos los pasos» y «Siguiente» en el último (la maqueta no los deshabilitaba). La frase de la rama nombra sus números («… a la vez: 6a y 6b.») | La maqueta dejaba los nodos del recorrido enfocables sin acción, y la frase de la gramática terminaba en dos puntos sin nada después |
+| D-S1-39 | La lectura en texto va en los tres niveles, y «Saltar el diagrama» lleva a ella | G10 y design system § 7; la maqueta de los niveles 2 y 3 saltaba a «tras el diagrama» |
+| D-S1-40 | Campo «Plataforma» (forma aprobada en la parada A) en el encabezado de los tres niveles: conserva el nivel si la otra plataforma lo tiene. La portada lo muestra sin elección y pierde el enlace «Abrir el atlas» (D-S1-35) | — |
+| D-S1-41 | A-27 (estado vacío en contexto): las plataformas «pronto» no se eligen en el campo; su estado vacío vive en la pantalla del investigador de esa plataforma (3b), junto al comando que lo llena | Una página del atlas sin mapa no tiene nada que dibujar |
+
+- Rutas nuevas: `/[idioma]/atlas/[plataforma]/componentes` y `…/recorrido` (solo si el mapa tiene recorrido). El
+  encabezado, el mapa y la lectura son componentes comunes (`CabeceraAtlas`, `SeccionMapa`, `Lectura`).
+- La animación del recorrido vive en `src/styles/recorrido-animacion.css`, entera dentro de
+  `@media (prefers-reduced-motion: no-preference)`. Con movimiento reducido, «Reproducir» sigue en el DOM, el CSS
+  lo oculta y el controlador se niega a reproducir.
+- Miradas: los niveles 2 y 3 son fidelidad a pantallas ya aprobadas (miradas de TEXTO, «maquetado, no visto»,
+  según D-S1-13); el campo «Plataforma» se construyó con la forma aprobada.
+
+| Gate | ¿Puede fallar? | Demo en rojo | A quién nombró | Verde |
+| ---- | -------------- | ------------ | -------------- | ----- |
+| `ficha.test.ts` — términos del glosario como en la maqueta, nodo por nodo | Sí | sin la condición «aparece en sus textos» | «sistema-admisiones: expected ['catálogo (glosario)'] to deeply equal []» | 4/4 |
+| `atlas.test.ts` — cadena de fidelidad extendida a nivel 2 y recorrido (6 golden) | Sí (demo de la fase 2) | — | — | 14/14 |
+| e2e `atlas-niveles` — movimiento reducido: «Reproducir» oculto | Sí | sin la regla que lo oculta | `toBeHidden` · Received: visible, en los dos proyectos | 24/24 |
+| e2e `atlas-niveles` — la forma del árbol no depende de la preferencia | Sí | «Reproducir» sin dibujar con movimiento reducido | `expect(arbol).toBe(sin)` · −2 +2 líneas | 24/24 |
+| e2e `atlas-niveles` — axe con la ficha abierta | Sí: su primera corrida dio 4 rojos | el orden de la prueba: en teléfono la hoja modal tapa la lectura (el comportamiento correcto) | 4 × timeout en `summary.click` | 24/24 |
+
+**Pasada de capturas e interacción** (el arnés aprendió el campo «Plataforma» —la navegación se prueba en otra
+pestaña—, la ficha con su foco, los botones y las flechas del recorrido, y jamás pide un enlace externo): 8 rutas
+× 2 temas × 380 y 1280 px = **32 encuadres, 1664 comprobaciones, 0 fallas**, más los pares producto | maqueta
+del nivel 2 y del recorrido leídos como imagen. Sus rojos de la primera corrida fueron suyos (dejó la hoja modal
+abierta a mitad de la pasada; partió del último paso; perdió las marcas al navegar).
+
+**Suites:** unitarias 600/600 · e2e 76/76 · lint y tipos limpios. `lighthouse-urls.json` suma las 4 rutas nuevas.

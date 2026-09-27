@@ -8,11 +8,12 @@ import { useEffect, useState } from "react";
  *   - desborde: `data-desborda` en la sección cuando el SVG no cabe (aparecen el índice y la pista);
  *   - sombras de borde: `data-mas-izq` / `data-mas-der` en el marco según lo que queda oculto;
  *   - índice de capas: cada botón `[data-col]` desplaza el lienzo hasta la x de su capa;
- *   - ficha breve: al activar un bloque (clic, Enter o Espacio) muestra su entrada de la lectura en texto.
+ *   - ficha breve (solo el nivel 1, con `lectura`): al activar un bloque (clic, Enter o Espacio) muestra su
+ *     entrada de la lectura en texto. En los niveles 2 y 3 los componentes abren su ficha (`PanelFicha`).
  * Con teclado, el lienzo es una región enfocable y las flechas lo desplazan (lo hace el navegador).
  * El árbol es el mismo en el servidor y en el cliente: la ficha nace oculta y solo cambia su contenido.
  */
-export function ControlLienzo({ mapa, lectura }: { mapa: string; lectura: string }) {
+export function ControlLienzo({ mapa, lectura }: { mapa: string; lectura?: string }) {
   const [ficha, setFicha] = useState<string | null>(null);
 
   useEffect(() => {
@@ -36,6 +37,7 @@ export function ControlLienzo({ mapa, lectura }: { mapa: string; lectura: string
     }
 
     function activar(el: Element) {
+      if (!lectura) return;
       for (const x of raiz!.querySelectorAll('.dg-elem[aria-current="true"]')) x.removeAttribute("aria-current");
       el.setAttribute("aria-current", "true");
       const id = el.getAttribute("data-dueno") ?? "";
@@ -60,7 +62,7 @@ export function ControlLienzo({ mapa, lectura }: { mapa: string; lectura: string
     }
     function alTecla(ev: KeyboardEvent) {
       const elem = (ev.target as Element).closest?.(".dg-elem");
-      if (elem && (ev.key === "Enter" || ev.key === " ")) {
+      if (lectura && elem && (ev.key === "Enter" || ev.key === " ")) {
         ev.preventDefault();
         activar(elem);
       }
@@ -80,6 +82,7 @@ export function ControlLienzo({ mapa, lectura }: { mapa: string; lectura: string
     };
   }, [mapa, lectura]);
 
+  if (!lectura) return null;
   return (
     <div className="ficha-viva" aria-live="polite">
       {/* El contenido es la entrada de la lectura en texto, generada por el motor en el build. */}
