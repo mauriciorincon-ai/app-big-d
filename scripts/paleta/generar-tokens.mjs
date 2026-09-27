@@ -200,12 +200,21 @@ export function css(t) {
   color-scheme: dark;
 ${bloque(t.temas.oscuro)}
 }
-:root[data-theme="claro"] {
+:root[data-theme="claro"],
+.tema-claro {
   color-scheme: light;
 ${bloque(t.temas.claro)}
 }
 @media (prefers-color-scheme: light) {
   :root:not([data-theme]) {
+    color-scheme: light;
+${bloque(t.temas.claro).replace(/^/gm, "  ")}
+  }
+}
+/* El papel es siempre claro: la vista de impresión (.tema-claro) y la impresión real. */
+@media print {
+  :root,
+  :root[data-theme="oscuro"] {
     color-scheme: light;
 ${bloque(t.temas.claro).replace(/^/gm, "  ")}
   }

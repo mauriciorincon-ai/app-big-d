@@ -1,5 +1,5 @@
 ---
-version: 0.4.1
+version: 0.5.0
 estado: completo para la mirada 2 (Etapa de Diseño, F2a); se sella en G-Diseño
 fecha: 2026-09-26
 fuente_en_codigo: docs/diseno/assets/ (tokens.css GENERADO · bigd.css · diagrama.css · fuentes.css)
@@ -8,7 +8,7 @@ gramatica_del_diagrama: docs/diseno/diagramador-tokens.md
 
 # Big-D — design system
 
-> **Fuente de verdad visual de Big-D.** Versión 0.4: completa para la mirada 3, con todos los
+> **Fuente de verdad visual de Big-D.** Versión 0.5: completa para la mirada 4 (el H1 entero), con todos los
 > componentes canon y sus estados, vistos en `docs/diseno/kit.html` y en las páginas del atlas. Lo
 > que toca al diagrama vive en `docs/diseno/diagramador-tokens.md`, porque es contrato del
 > reusable y no estilo de esta app. Se sella en G-Diseño.
@@ -188,6 +188,19 @@ hace la jerarquía.
 | **Control de sensibilidad**      | el control de peso con dos marcas: inversión (discontinua) y salida del empate (punteada) · lista de consecuencias · tabla de totales por valor                          | —                                                                      | comparación            |
 | **Aceptabilidad por posición**   | tabla plataforma × puesto con barra mini + porcentaje; recuadro punteado = zona gris; umbrales declarados en mono; vector central en tarjeta                             | sólida · moderada · moderada (frontera) · frágil                       | comparación            |
 | **Pros y contras**               | tarjeta por plataforma: «Se destaca» (✓) y «Se queda corta» (✕), contra la escala y la mejor; nunca contra el promedio                                                   | —                                                                      | comparación            |
+| **Diagrama de ondas**            | columnas = ondas de Kahn (224 u a 72 u) con título mono y subtítulo; tarjeta de decisión 224 × 112; «depende de» = línea con punta, ruteo ortogonal por los huecos, carril superior (saltos en la primera fila) e inferior; cero cruces medidos | ondas · ciclo (columna «sin onda», aristas del ciclo en tinta discontinua) | `decisiones.html`      |
+| **Tarjeta de decisión**          | reversibilidad = glifo + palabra + borde (una vía: 2,5 px de tinta; costosa: discontinuo; dos vías: filete) · estado a la derecha · pregunta 14/700 · pie con «implícita» (!) y «supuesto sin probar» | pendiente · espera una prueba · decidida · en ciclo · sin onda | decisiones            |
+| **Ficha de decisión**            | reversibilidad y su tratamiento · estado · dependencias · opciones por plataforma (la eliminada, tachada) · opción recomendada · supuestos · riesgos | —                                                                      | decisiones (panel)     |
+| **Tabla de riesgos**             | riesgo (modo + efecto) · decisión · S O D · prioridad de acción · RPN en tinta-2 · mitigación con responsable y momento · residual con cambio de categoría; orden prioridad → severidad → RPN; tabla v0 plegada | alta sin mitigación (fila resaltada + alerta con «Agregar mitigación») | decisiones            |
+| **Tarjeta de supuesto**          | id · estado · criticidad · enunciado · prueba barata · tarea para (responsable, vence, costo) · decisión que sostiene | sin probar (borde discontinuo + alerta) · confirmado · refutado (tachado + «la decisión se reabre») | decisiones            |
+| **Fases e ítems**                | columna por fase (filete superior de tinta) · ítem: id, tipo con glifo (tarea / verificación), estado, descripción, «viene de» con píldoras de origen, «cumplido cuando» | pendiente · hecho (tachado) · bloqueado (borde discontinuo + motivo) | `informe.html`         |
+| **Píldora de origen**            | «decisión X · una vía» · «mitigación de R-n» · «supuesto X»; ningún ítem sin origen | —                                                                      | informe                |
+| **Cadena de trazabilidad**       | ítem ← decisión ← supuesto ← prueba barata, una fila por eslabón con su estado | —                                                                      | informe                |
+| **Informe**                      | índice de 14 secciones (fijo en ancho) · cabecera con huella · secciones numeradas en mono · resumen de líder con su presupuesto medido · relato de fracaso en cursiva con autoría humana · alertas · ficha de reproducibilidad | en pantalla · vista de impresión | informe                |
+| **Vista de impresión**           | papel claro en cualquier tema (clase `tema-claro`, generada en tokens.css), ancho A4, filete de 2 px en lugar de sombra, cabecera de página, saltos marcados; `@media print` usa la misma hoja | —                                                                      | informe                |
+| **Fila de validación**           | símbolo + enunciado + detalle (esperado/obtenido, casos y semilla, referencia) | detectado · no detectado (recuadro discontinuo + causa + qué se corrige) | `instrumento.html`     |
+| **Bloqueo de publicación**       | salida de terminal en mono + «No se publica» + qué no se publica, qué sigue vigente y cómo destrabar | —                                                                      | instrumento            |
+| **Tarjeta de recorrido**         | número · pantalla · códigos de la VISION · estados · estado de su mirada | aprobada · por mirar                                                  | `index.html`           |
 | **Botón**                        | principal lleno de tinta · secundario en contorno · deshabilitado al 45 %; 40 px de alto, esquina 4 px                                                                   | normal · presionado · deshabilitado                                    | todas                  |
 
 ## 6. Iconografía
@@ -262,6 +275,7 @@ corren con `pnpm test`: `paleta-diagramador` comprueba que de verdad no llegan a
 
 | Versión | Fecha      | Cambio                                                                                                                                                                                                                                                                   |
 | ------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 0.5.0   | 2026-09-26 | Mirada 4: decisiones y riesgos, hoja de ruta e informe, instrumento y recorrido (13 componentes nuevos). El tema claro se emite también para `.tema-claro` y `@media print` (papel siempre claro). Sombras siguen prohibidas: el papel se separa con filete. |
 | 0.4.1   | 2026-09-26 | Ajuste de la mirada 3 (pedido del usuario): componentes desplegados visualmente en el lado a lado (vista «componentes» en el lienzo y tarjetas de nodo en la ficha y en teléfono). |
 | 0.4.0   | 2026-09-26 | Mirada 3: componentes de conocimiento y caso (semáforo por capa, bloque de comando, afirmación de propuesta, ficha de corrida, veredicto, error de carga, instantáneas, lista de pesos, restricción, decisión implícita, sello, totales, matriz, control de sensibilidad, aceptabilidad, pros y contras). Navegación Conocimiento y Caso activa. |
 | 0.3.1   | 2026-09-26 | Ajuste de la mirada 2 (pedido del usuario): ficha de bloque en el lado a lado, para ver cuáles son los componentes detrás de «N comp.».                                                                                                                                  |

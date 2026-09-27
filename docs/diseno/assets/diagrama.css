@@ -56,3 +56,15 @@
 /* Lado a lado */
 .db-t-banda-lado, .db-t-fila-lado { font-size: 13px; }
 .db-t-cab-bloque { font-size: 12px; font-weight: 700; }
+/* Decisiones por ondas: la reversibilidad se codifica con glifo + palabra + borde (jamás un matiz). */
+.dd-una_via .dd-caja { stroke: var(--tinta-1); stroke-width: 2.5; }
+.dd-costosa .dd-caja { stroke: var(--tinta-2); stroke-width: 1.5; stroke-dasharray: 7 4; }
+.dd-dos_vias .dd-caja { stroke: var(--linea); stroke-width: 1; }
+.dd-t-rev { fill: var(--tinta-1); letter-spacing: 0.04em; }
+.dd-t-nombre { font-size: 14px; }
+.dd-en-ciclo .dd-caja { fill: var(--sup-1); stroke: var(--tinta-1); stroke-width: 2.5; stroke-dasharray: 3 3; }
+.dd-bloq .dd-caja { fill: var(--sup-1); stroke-dasharray: 3 4; }
+.dd-bloq .dd-t-nombre { fill: var(--tinta-2); }
+.dd-dep-ciclo .db-linea { stroke: var(--tinta-1); stroke-width: 2.2; stroke-dasharray: 5 3; }
+.dd-dep-ciclo .db-punta { fill: var(--tinta-1); }
+@media (forced-colors: active) { .dd-caja { stroke: CanvasText; } }

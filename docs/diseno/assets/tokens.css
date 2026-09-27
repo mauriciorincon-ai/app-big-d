@@ -27,7 +27,8 @@
   --tipo-8: #1fbdcb;
   --tipo-8-tinte: #003135;
 }
-:root[data-theme="claro"] {
+:root[data-theme="claro"],
+.tema-claro {
   color-scheme: light;
   --fondo: #f2f4f6;
   --sup-1: #f9fafc;
@@ -55,6 +56,36 @@
 }
 @media (prefers-color-scheme: light) {
   :root:not([data-theme]) {
+    color-scheme: light;
+    --fondo: #f2f4f6;
+    --sup-1: #f9fafc;
+    --sup-2: #ffffff;
+    --linea: #d1d5d9;
+    --tinta-1: #161b21;
+    --tinta-2: #3d434a;
+    --tinta-3: #878d94;
+    --tipo-1: #0060a6;
+    --tipo-1-tinte: #e5f2ff;
+    --tipo-2: #8264c8;
+    --tipo-2-tinte: #f1edff;
+    --tipo-3: #ca7400;
+    --tipo-3-tinte: #ffecdd;
+    --tipo-4: #c4474b;
+    --tipo-4-tinte: #ffebe9;
+    --tipo-5: #017f31;
+    --tipo-5-tinte: #e1f7e3;
+    --tipo-6: #9e3378;
+    --tipo-6-tinte: #ffe9f4;
+    --tipo-7: #39495a;
+    --tipo-7-tinte: #eaf1f8;
+    --tipo-8: #0098a4;
+    --tipo-8-tinte: #d6f8fb;
+  }
+}
+/* El papel es siempre claro: la vista de impresión (.tema-claro) y la impresión real. */
+@media print {
+  :root,
+  :root[data-theme="oscuro"] {
     color-scheme: light;
     --fondo: #f2f4f6;
     --sup-1: #f9fafc;

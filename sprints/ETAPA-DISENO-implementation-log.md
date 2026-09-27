@@ -426,3 +426,42 @@ dependabot contra la intención del PR; la comparación versión por versión la
 (queda como deuda proponer un gate: «un PR de dependencias no baja ninguna versión respecto de main»).
 **Campo homepage del repo:** tenía la URL de producción (la GitHub App de Vercel lo reescribe); se limpia tras
 cada merge a main (regla 17).
+
+## Fase 4 — Mirada 4: decisiones y riesgos, hoja de ruta e informe, instrumento, recorrido (2026-09-26)
+
+Arrancó con el «continúa» del usuario. Ese «continúa» llegó sin comentario sobre el ajuste del lado a lado
+(componentes desplegados): **no lo aprueba** (regla de mirada), queda registrado como pendiente y se vuelve a
+pedir en la matriz de esta mirada. La fase 4 no se construye encima del lado a lado.
+
+Fuentes leídas: especificación original del usuario (`corpus/raw`, § 6.8–6.11 entidades, § 10.5 decisiones
+candidatas, § 11 escalas, § 12 estructura del informe, M9 validación), investigación científica § 2 (prioridad
+de acción) y § 3 (pre-mortem), especificación de features C15–C20 y los cambios E-3, E-9, E-10, E-13, E-15, E-23.
+
+| #   | Decisión | Razón |
+| --- | -------- | ----- |
+| D65 | **Las siete decisiones candidatas del § 10.5, con dependencias propias del caso**, se ordenan por **Kahn por ondas** en la calculadora (4 ondas) y el ciclo sembrado catálogo ⇄ protección se encuentra por **DFS**; nada se ordena a mano | Es la lógica de `src/engine/decisiones.ts`; la maqueta no puede contradecirla |
+| D66 | **Diagrama de ondas** con la gramática de líneas del diagramador: columnas = ondas, ruteo ortogonal por huecos, carril inferior para saltos y **carril superior cuando las dos puntas están en la primera fila** | La primera versión del ciclo tenía 3 cruces entre líneas (el salto por abajo cortaba dos dependencias); con el carril superior, 0 cruces y 0 tramos sobre tarjetas en los dos diagramas |
+| D67 | **Reversibilidad sin color**: glifo + palabra + borde (una vía 2,5 px de tinta, costosa discontinuo, dos vías filete) | Regla 13; las decisiones no tienen matiz de la gramática |
+| D68 | **Tabla de prioridad de acción v0 calibrada**: alta = S ≥ 9 (salvo O = 1) o S 7–8 con **O ≥ 3** o D ≥ 7 | La propuesta de C § 2.4 (O ≥ 4) dejaba el caso sembrado S8/O3/D4 en media; E-3 exige alta. Se declara como convención y la pantalla del instrumento muestra qué pasa si alguien la vuelve a O ≥ 4 |
+| D69 | **La prueba barata es una tarea con responsable, fecha y costo**; la pantalla lo dice («planifica y controla; no ejecuta») | E-23 y regla dura 3 |
+| D70 | **Hoja de ruta en cuatro fases** con la regla E-10 (pruebas baratas antes de las decisiones de una vía); 17 ítems, **todos con origen** (decisión, mitigación o supuesto) y criterio de cumplido; T-07 bloqueado por R-1 sin mitigación | C19 y regla dura 9 |
+| D71 | **Informe de 14 secciones** con el resumen de líder **medido por código** al generar (43 palabras ES, 42 EN; el generador falla si pasa de 50); relato de fracaso escrito por el comité (autoría humana declarada); alerta 13 = «sin fuente primaria oficial» | E-9, E-13, E-23 |
+| D72 | **Vista de impresión = papel claro en cualquier tema**: el generador de tokens emite el tema claro también para `.tema-claro` y dentro de `@media print`; el papel se separa con filete de 2 px, no con sombra | design-system § 3.4 prohíbe sombras (la primera versión usó una y un `#fff`; corregido antes de subir) |
+| D73 | **Instrumento en tres estados**: verde (6/6 · 7/7 · 9/9 · 4/4 motores), rojo (el sembrado S8/O3/D4 sale media tras editar la tabla: 8/9, la fila dice qué se corrige) y «no se publica» (salida de terminal + qué queda vigente + cómo destrabar) | RF-09.3, RF-09.4, E-15 |
+| D74 | **Portada = recorrido completo**: 11 pantallas + kit por sección, con códigos de la VISION, estados y el estado de su mirada; «Instrumento» y las pestañas 09–10 activas en todas las páginas | Orden de diseño (índice como recorrido) |
+
+**Construido:** `decisiones.html` (97 KB) · `informe.html` (80 KB) · `instrumento.html` (40 KB) · `index.html`
+(13 KB) · `assets/informe.js` · `bigd.css` y `diagrama.css` (sección mirada 4) · `scripts/paleta/generar-tokens.mjs`
+(`.tema-claro` + `@media print`; tokens regenerados, gate de paleta 39/39) · `design-system.md` v0.5.0 (13
+componentes) · README (cobertura, registro) · todas las páginas regeneradas con la navegación completa.
+
+**Calculadora:** `scratchpad/calc3/datos4.mjs` (decisiones, riesgos, supuestos, ítems; Kahn + DFS + prioridad
+de acción), `m4-comun.mjs` (diagrama de ondas con conteo de cruces), `m4-decisiones.mjs`, `m4-informe.mjs`,
+`m4-instrumento.mjs`, `m4-indice.mjs`, `pagina-m4.mjs`.
+
+**Pasada de capturas de la mirada 4:** 312 encuadres (4 páginas × estados × 2 temas × 2 idiomas × 380/1280 +
+cuatro simulaciones de daltonismo), **0 fallas de medida** tras una corrección: el índice del informe
+desbordaba 9–16 px a 380 (elemento de rejilla sin `min-width: 0`). Leídas como imagen: decisiones ondas oscuro
+ES 1280, ciclo claro ES 1280, una vía oscuro EN 1280 (ficha), riesgos oscuro ES 1280, supuestos claro ES 380;
+informe fases claro ES 1280, impresión oscuro ES 1280 (papel claro), informe oscuro EN 380; instrumento rojo
+oscuro ES 1280; portada claro ES 1280. Ajuste tras mirar: las filas etiqueta/valor se apilan bajo 480 px.
