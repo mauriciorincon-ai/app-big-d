@@ -506,3 +506,20 @@ carpeta; el lint cubre el generador. Primera corrida: las **13 páginas byte a b
 
 Nota de la demo: el primer intento reemplazó «75,75», que no existe en la página (muestra «75,8»), y salió verde
 sin haber cambiado nada; se comprobó con `cmp` antes de repetirla. Una demo que no cambia el archivo no es roja.
+
+**A-02 · robustez calculada.** El caso sale de `pagina-m3.mjs` a `scripts/maqueta/pantallas/caso.mjs` (criterios,
+pesos, rangos, plataformas, evidencia limitante, totales, punto de inversión, salida del empate y **simulación**),
+y la comparación y el informe leen de ahí. Simulación: sfc32 con semilla 20260926; pesos uniformes sobre el
+politopo {Σw = 100, lo ≤ w ≤ hi} con los rangos enteros que muestra el perfil (±20 %, gobierno 20–30): mínimos por
+transformación (espaciados de uniformes ordenadas, sin logaritmos) y máximos por rechazo (474 455 intentos para
+10 000 muestras). Resultado: **Norte primera en el 100,0 %, a menos de 5 puntos de Ejemplo en el 99,0 %**; tres
+semillas más dan la misma clase (Ejemplo gana en 1 de 30 000). Coincide con la medición del auditor (99,5 % con
+rangos continuos ±20 %).
+
+| #   | Decisión | Razón |
+| --- | -------- | ----- |
+| D77 | **La robustez del caso es «sólida» y el empate técnico también es estable**; la pregunta «¿qué tendría que creer el comité para que gane Ejemplo?» se responde con el punto de inversión (gobierno < 14,8, fuera del rango 20–30 declarado por el comité clínico). **Reemplaza a D61** («moderada (frontera)», cifras escritas a mano) | Las cifras salen del método que la página declara. La historia honesta refuerza la tesis: dentro de lo declarado, los pesos no deciden; deciden la evidencia limitante y los supuestos |
+| D78 | **Ninguna cifra ni cardinalidad del caso se escribe a mano en el informe**: resumen de líder (49 palabras), recomendación, pesos con origen, «once criterios por tres plataformas» (en palabras desde N), filas de la matriz y sección de robustez se generan desde `caso.mjs` | A-02 y A-28/§ 6 de la auditoría: el S1 genera desde plantilla con N |
+
+La zona gris y las clases «moderada» y «frágil» quedan sin pantalla porque el caso no las produce; el design
+system lo declara (§ componentes, «Aceptabilidad por posición»).
