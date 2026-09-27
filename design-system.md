@@ -1,5 +1,5 @@
 ---
-version: 0.3.1
+version: 0.4.0
 estado: completo para la mirada 2 (Etapa de Diseño, F2a); se sella en G-Diseño
 fecha: 2026-09-26
 fuente_en_codigo: docs/diseno/assets/ (tokens.css GENERADO · bigd.css · diagrama.css · fuentes.css)
@@ -8,7 +8,7 @@ gramatica_del_diagrama: docs/diseno/diagramador-tokens.md
 
 # Big-D — design system
 
-> **Fuente de verdad visual de Big-D.** Versión 0.3: completa para la mirada 2, con todos los
+> **Fuente de verdad visual de Big-D.** Versión 0.4: completa para la mirada 3, con todos los
 > componentes canon y sus estados, vistos en `docs/diseno/kit.html` y en las páginas del atlas. Lo
 > que toca al diagrama vive en `docs/diseno/diagramador-tokens.md`, porque es contrato del
 > reusable y no estilo de esta app. Se sella en G-Diseño.
@@ -170,6 +170,22 @@ hace la jerarquía.
 | **Tabla de prioridad de acción** | riesgo · S O D en mono · prioridad (píldora: alta llena de borde, media, baja punteada) · mitigación                                                                     | alta sin mitigación (fila sobre `sup-1` + aviso)                       | kit; mirada 4          |
 | **Campo**                        | etiqueta en mono mayúsculas · entrada sobre `sup-1` con línea inferior en `tinta-2` · aviso                                                                              | normal · inválido · selector con chevrón dibujado                      | kit; miradas 3–4       |
 | **Estado vacío / carga / error** | glifo dibujado + título + explicación (+ progreso o campo e id en mono)                                                                                                  | ver § 4                                                                | kit; miradas 3–4       |
+| **Semáforo por capa**            | fila por banda: número · nombre · «N evidencias · verificada hace N días» · píldora de vigencia; la capa vencida abre el bloque de comando                              | vigente · por revisar · vencido (con comando)                          | `investigador.html`    |
+| **Bloque de comando**            | código en mono sobre sup-2 + botón «Copiar» + nota de dónde se ejecuta (Claude Code, por el curador; jamás la app)                                                       | —                                                                      | investigador           |
+| **Afirmación de propuesta**      | código · marca de diff (nuevo / renombrado) · estado (por revisar, aprobada, rechazada) · afirmación · cita en « » · veredicto del verificador en mono · fuente y conflicto de interés · Aprobar / Rechazar | por revisar · aprobada · rechazada por código (tachada, borde punteado) | investigador           |
+| **Ficha de corrida**             | run-id en mono · fecha · modelo declarado · validador · fuentes consultadas                                                                                              | —                                                                      | investigador           |
+| **Veredicto**                    | caja con filete de tinta: símbolo + título + explicación + datos en mono (empate técnico, ganadora clara, sin novedades, huella verificada, perfil aprobado)              | —                                                                      | investigador · base · perfil · comparación |
+| **Error de carga**               | estado de error con lista mono `archivo:línea:col · id · campo · regla`, filete izquierdo de tinta; «qué pasa mientras tanto»                                            | —                                                                      | `base.html`            |
+| **Tabla de instantáneas**        | fecha · huella (prefijo en tinta, resto en tinta-2) · conteos · «Verificar huella» / «Ver diferencias»; insignia «vigente»                                               | verificada                                                             | base                   |
+| **Lista de pesos**               | fila por criterio: nombre + origen · valor en mono grande · barra con rango (±20 %) y punto · rango en mono; estrella dibujada = esencial; caja de suma arriba            | suma 100 · suma ≠ 100 (aspa + texto) · rango abierto (aviso)           | `perfil.html`          |
+| **Restricción eliminatoria**     | enunciado + origen · insignia llena «elimina: plataforma» o suave «todas la cumplen»                                                                                     | elimina · cumplida                                                     | perfil                 |
+| **Decisión implícita**           | tarjeta con pregunta, opciones de radio con consecuencia en pequeño; «sin responder» bloquea la aprobación                                                                | sin responder · respondida                                             | perfil                 |
+| **Sello de aprobación**          | recuadro de 2 px, mono mayúsculas, símbolo ✓; fecha, quién y versión al lado                                                                                             | —                                                                      | perfil                 |
+| **Totales**                      | fila por plataforma: puesto · nombre · mínimo de esenciales y evidencia limitante · barra 0–100 con línea discontinua de la banda de empate · total en mono grande        | líder · resto                                                          | `comparacion.html`     |
+| **Matriz de puntajes**           | criterio (estrella = esencial) · peso · n/4 por plataforma; subrayado = mejor; recuadro punteado = evidencia limitante; fila de totales; escala 0–4 plegada             | —                                                                      | comparación            |
+| **Control de sensibilidad**      | el control de peso con dos marcas: inversión (discontinua) y salida del empate (punteada) · lista de consecuencias · tabla de totales por valor                          | —                                                                      | comparación            |
+| **Aceptabilidad por posición**   | tabla plataforma × puesto con barra mini + porcentaje; recuadro punteado = zona gris; umbrales declarados en mono; vector central en tarjeta                             | sólida · moderada · moderada (frontera) · frágil                       | comparación            |
+| **Pros y contras**               | tarjeta por plataforma: «Se destaca» (✓) y «Se queda corta» (✕), contra la escala y la mejor; nunca contra el promedio                                                   | —                                                                      | comparación            |
 | **Botón**                        | principal lleno de tinta · secundario en contorno · deshabilitado al 45 %; 40 px de alto, esquina 4 px                                                                   | normal · presionado · deshabilitado                                    | todas                  |
 
 ## 6. Iconografía
@@ -244,6 +260,7 @@ corren con `pnpm test`: `paleta-diagramador` comprueba que de verdad no llegan a
 
 | Versión | Fecha      | Cambio                                                                                                                                                                                                                                                                   |
 | ------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 0.4.0   | 2026-09-26 | Mirada 3: componentes de conocimiento y caso (semáforo por capa, bloque de comando, afirmación de propuesta, ficha de corrida, veredicto, error de carga, instantáneas, lista de pesos, restricción, decisión implícita, sello, totales, matriz, control de sensibilidad, aceptabilidad, pros y contras). Navegación Conocimiento y Caso activa. |
 | 0.3.1   | 2026-09-26 | Ajuste de la mirada 2 (pedido del usuario): ficha de bloque en el lado a lado, para ver cuáles son los componentes detrás de «N comp.».                                                                                                                                  |
 | 0.3.0   | 2026-09-26 | Mirada 2: componentes canon completos (nodo, ficha, paso, lado a lado, diferencia, evidencia, control de peso, prioridad de acción, campo, estados vacío/carga/error, botón), tabla de movimiento con su variante reducida, estados ampliados, deuda al día. `kit.html`. |
 | 0.2.0   | 2026-09-26 | Ronda 4 de la mirada 1: Space Grotesk + JetBrains Mono (elección del usuario), cromo sin píldoras (filetes, texto y aire), componentes del atlas en la dirección B, lienzo con desplazamiento lateral.                                                                   |

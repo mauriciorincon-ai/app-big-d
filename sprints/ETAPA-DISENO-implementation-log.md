@@ -346,3 +346,39 @@ lado, 0 fallas; leídos como imagen: componentes oscuro ES 1280, claro ES 380 y 
 primera pasada mostró la hoja inferior y el desplegable a la vez en teléfono: se ocultó la hoja).
 En la vista de diferencias, las dos versiones abren la ficha del mapa vigente (deuda menor: la
 v0.2.0 no tiene lista propia).
+
+## Fase 3 — Mirada 3: investigador, base de conocimiento, perfil del caso, comparación (2026-09-26)
+
+Arrancó con el «continúa» del usuario tras la mirada 2 (aprobada con el ajuste D52).
+
+| #   | Decisión                                                                                                                                                                                                                                        | Razón                                                                                                            |
+| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| D54 | **Los números de la comparación se calculan en la calculadora** (totales = Σ w·s/4, mínimo de esenciales, punto de inversión con la fórmula cerrada de C § 1.3, salida de la banda de empate por barrido a 0,1) sobre puntajes ficticios; nada se escribe a mano | Que las pantallas no se contradigan; la fórmula es la del núcleo futuro, pero vive fuera del repo (regla 8)      |
+| D55 | **Once criterios ficticios** (6 de capacidad + 5 transversales: costo, cumplimiento y residencia, equipo, apertura, operación); esenciales: almacenamiento, gobierno, cumplimiento; escala 0–4 con nombres propios de la maqueta                    | C § 1.5 habla de 11 criterios; los nombres reales llegan con la base de conocimiento del S1                       |
+| D56 | **La estrella «esencial» y todo símbolo se dibujan como SVG**: el gate `maqueta-vocabulario` atrapó «★» y «Σ» (no existen en Space Grotesk)                                                                                                       | Regla del gate: cero respaldo del sistema                                                                        |
+| D57 | **Investigador: cuatro estados** (capa vencida con comando · propuesta con diff calculado y veredicto por afirmación: verificada / no verificable / no encontrada · aprobado · sin novedades con huella igual, fuentes y preguntas guía)            | TN § 4.5 (tres capas de verificación) y § 4.6 (diff por código; «sin novedades» = huella)                        |
+| D58 | **Error de carga con el formato de TN § 3.2** (`archivo:línea:col · id · campo · regla`) y «qué pasa mientras tanto» (nada se calcula; la instantánea anterior sigue vigente)                                                                     | RF-01.2                                                                                                          |
+| D59 | **Perfil: el borrador no se aprueba con una decisión implícita sin responder**; suma ≠ 100 y rango abierto deshabilitan «Aprobar» con aspa/aviso + texto                                                                                         | Orden (estados mínimos) y regla 13 (símbolo + texto)                                                             |
+| D60 | **Comparación: cuatro vistas (totales · sensibilidad · robustez · pros y contras) como pestañas dentro de la página**, con el veredicto siempre arriba; la vista «ganadora clara» usa una segunda matriz (Norte 1/4 en gobierno)                    | Una pantalla por funcionalidad de la orden; el empate y la ganadora clara son la misma pantalla con otra base    |
+| D61 | **Robustez «moderada (frontera)»**: 69,4 % con intervalo ±0,9 cruza el umbral 70; recuadro punteado = zona gris; vector central de pesos «¿qué tendría que creer el comité para que gane Norte?»                                                 | C § 1.4 y § 1.6                                                                                                  |
+
+**Construido:** `investigador.html` (43 KB) · `base.html` (24 KB) · `perfil.html` (62 KB) · `comparacion.html`
+(51 KB) · `bigd.css` (sección «miradas 3–4») · `comun3.mjs` (`pestanas`, barra con Conocimiento y Caso
+activos; todas las páginas regeneradas) · `design-system.md` v0.4.0 (§ 5 + 16 componentes) · README
+(cobertura) · portada.
+
+**Calculadora:** `scratchpad/calc3/pagina-m3.mjs` (datos ficticios + fórmulas; imprime totales, t* y salida
+del empate al generar: Ejemplo 75,75 · Norte 78,75 · Sur 63,75 · t* 14,8 · sale del empate en 31,9).
+
+**Pasada de capturas de la mirada 3:** 136 encuadres (4 páginas × estados × 2 temas × 2 idiomas × 380/1280),
+**0 fallas de medida** tras dos correcciones: (1) la insignia «elimina: Plataforma Este» no partía y desbordaba
+21–30 px en 380 (ahora parte; la fila de restricciones se apila en angosto); (2) el semáforo «por revisar · 34
+días» se partía dentro de la píldora (ahora `nowrap` y fila propia en angosto). Vistas como imagen: investigador
+propuesta oscuro ES 1280, capas claro ES 380 y oscuro EN 380, sin novedades claro ES 1280; base evidencias
+oscuro ES 1280, error oscuro EN 380; perfil suma claro ES 380, aprobado oscuro ES 380; comparación empate oscuro
+ES 1280 y claro EN 1280, sensibilidad oscuro EN 380, robustez claro ES 1280. Correcciones tras mirar: el «1 ·»
+del líder se colaba en el texto pequeño (selector `> b`); el rango del peso caía en la columna de 48 px en 380
+(ahora ocupa la fila); columna de nombres de los totales de 220 a 340 u en ancho.
+
+**Gates:** 51/51 · lint limpio · barrido de enlaces limpio salvo un hallazgo previo al sprint en `CHANGELOG.md`
+(narra el patrón con el literal `pages.dev`; viene del kit, se corrige en la fase 5 con `/deploy-check`).
