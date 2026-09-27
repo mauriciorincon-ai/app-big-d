@@ -2,7 +2,9 @@
    tokens.css, así que un mismo SVG sirve a los dos temas. Portada de docs/diseno/assets/diagrama.css
    (clases `db-*` de la maqueta → `dg-*` del motor). La letra la hereda de la página (G15). */
 .dg-svg { display: block; }
-.dg-svg text { font-family: var(--letra); }
+/* Avances fraccionarios también en Chromium/Linux, que sin esto redondea cada texto a píxeles enteros y
+   puede dibujarlo hasta 1 px más ancho que la tabla de métricas (G15, medido en la CI del S1). */
+.dg-svg text { font-family: var(--letra); text-rendering: geometricPrecision; }
 .dg-svg [tabindex]:focus { outline: none; }
 .dg-guia { stroke: var(--linea); stroke-width: 1; stroke-dasharray: 2 5; fill: none; }
 .dg-t-num { font: 500 12px var(--letra-mono); letter-spacing: 0.1em; fill: var(--tinta-2); }
