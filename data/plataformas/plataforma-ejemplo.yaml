@@ -1,0 +1,8 @@
+# Una plataforma del atlas por archivo, ordenadas por id. Agregar una plataforma es agregar su archivo (y,
+# cuando se publica, su mapa aprobado en data/mapas/<id>.mapa.yaml); jamás código (N plataformas).
+id: plataforma-ejemplo
+nombre:
+  es: Plataforma Ejemplo (ficticia)
+  en: Example Platform (fictional)
+estado: publicada
+ficticia: true
