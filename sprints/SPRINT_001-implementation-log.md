@@ -398,6 +398,9 @@ dibuja los niveles 1 y 2 de los dos mapas bilingües y mide cada `tspan` con `ge
     lectura, y la firma de § 8 (`{ language }`) no tiene cómo calcularlo.
 18. **D-S1-36** — `toCard(map, grammar, nodeId, { language, textos, fechaConsulta? })` en la API de § 8: § 4.5
     dice «el motor entrega el contenido» sin nombrar la función; y `TextosMotor.ficha` para sus títulos.
+19. **Contrato de la propuesta** — El contrato del diagramador no dice cómo se propone un mapa; el esquema de
+    Big-D (`src/lib/investigador/esquema.ts`: afirmación = entidad + id + cita literal; rechazar = sacar del mapa
+    en cascada) sirve de base si otro consumidor necesita el mismo flujo.
 17. **Leyenda (§ 4.9)** — La regla del haz («varios modos en una conexión: línea gruesa y una etiqueta que dice
     cuáles, en orden») es gramática, no copy de la app: debería salir en la leyenda generada.
 
@@ -600,3 +603,53 @@ del nivel 2 y del recorrido leídos como imagen. Sus rojos de la primera corrida
 abierta a mitad de la pasada; partió del último paso; perdió las marcas al navegar).
 
 **Suites:** unitarias 600/600 · e2e 76/76 · lint y tipos limpios. `lighthouse-urls.json` suma las 4 rutas nuevas.
+
+### 3b — El investigador (skill, candados, verificador, aprobación y pantalla)
+
+CI de `299a93e` (3a): quality ✓ · e2e ✓ · lighthouse ✓ (8 rutas) · diagramador ubuntu ✓ · macOS ✓ · Vercel ✓.
+
+**Semántica de Claude Code verificada en la documentación** (agente de documentación, 2026-09-27):
+- La skill admite `disable-model-invocation`, `context: fork` y `agent`.
+- El subagente declara `hooks` en su frontmatter; su `Stop` pasa a `SubagentStop`.
+- Los hooks de `settings.json` también corren dentro del subagente, y su entrada trae `agent_id` y `agent_type`.
+- La salida 2 bloquea, y stderr llega al agente.
+
+Dos datos del informe no se tomaron por buenos: los nombres de campo de Write/Edit (el repo usa
+`file_path`) y que un Stop no pueda forzar a seguir. Los hooks leen las dos variantes y se comprueban en vivo.
+
+| # | Decisión | Por qué |
+| - | -------- | ------- |
+| D-S1-42 | Una afirmación es sobre una **entidad** (`{ entidad: nodo \| flujo, id }`), no una ruta JSON Pointer. Rechazarla saca la entidad del mapa y, en cascada, sus flujos, los recorridos que ya no se sostienen (la condición de V5) y los bloques vacíos | Un puntero a un campo obligatorio (la madurez) no se puede «rechazar»; por id no se rompe al reordenar |
+| D-S1-43 | Todo componente y todo flujo necesita al menos una afirmación. La cita de un componente es una de sus `fuentes`, y la de un flujo, una fuente de alguno de sus extremos | Trazabilidad total: nada entra al mapa sin una cita que lo respalde |
+| D-S1-44 | Los scripts (`validar`, `verificar-citas`, `aprobar`) empaquetan el TypeScript de la app con esbuild (`scripts/lib/cargar-ts.mjs`) | Mismo código que la app y las pruebas, sin dependencias nuevas (esbuild ya estaba) |
+| D-S1-45 | Hooks en `.claude/settings.json` (filtran por `agent_type`) **y** en el frontmatter del agente con la marca `--investigador`; la validación al terminar va solo en el agente | Si un día `agent_type` no llegara, el candado del investigador sigue puesto; y un solo hook de fin cuenta bien los 2 reintentos |
+| D-S1-46 | El candado de la aprobación es para **todo** agente, también la sesión principal. Mira qué EJECUTA el comando (intérprete o ruta al inicio de un tramo, también dentro de `$(…)` y comillas invertidas), no qué menciona | La IA jamás aprueba. Falsos positivos aceptados: un heredoc con una línea que empiece por el intérprete y el script se bloquea (se escribe con Edit/Write) |
+| D-S1-47 | El registro de fuentes no guarda el id de sesión de Claude Code | El archivo viaja al repo público: nada de la sesión de quien investiga |
+| D-S1-48 | Pantalla `/[idioma]/investigador/[plataforma]` para las N plataformas: vigencia por banda con el comando exacto por capa; sin mapa, el estado vacío con `/investigar <id>` (A-27). La propuesta pendiente se agrupa en: por decidir (no verificables), verificadas (aprobadas de entrada) y rechazadas por el código. El comando solo aparece con todo decidido | La pantalla es estática: arma el comando, no aprueba. La persona decide primero lo que el código no pudo verificar |
+
+**Candados en vivo.** Con los hooks activos, esta misma sesión intentó correr el script de aprobación y quedó
+bloqueada con el mensaje del hook: el gate corrió en el modo real. También me bloqueó una vez al escribir una
+prueba que mencionaba el script dentro de una plantilla de JS: se afinó la regla (tramos y sustituciones
+emparejadas) y el caso quedó como prueba.
+
+| Gate | ¿Puede fallar? | Demo en rojo | A quién nombró | Verde |
+| ---- | -------------- | ------------ | -------------- | ----- |
+| `hooks.test.ts` — nadie corre la aprobación (sesión principal y subagente, 8 formas de lanzarla) | Sí | la regla de la aprobación desactivada | las 8 formas, una por una | 39/39 |
+| `hooks.test.ts` — sin identificadores del usuario | Sí | la búsqueda de identificadores desactivada | los casos de correo y nombre | 39/39 |
+| `nucleo.test.ts` + `scripts.test.ts` — una cita «no encontrada» no se aprueba | Sí | sin esa regla en `aprobar` | 3 pruebas: la del núcleo y las 2 del script de punta a punta | 62/62 |
+| `revision-propuesta.test.tsx` — lo no verificable espera la decisión humana | Sí | aprobado de entrada | «Falta 1 afirmación por decidir» no aparece | 1/1 |
+| Validador de la propuesta, en vivo | Sí | mi propia propuesta de muestra usó una madurez que no existe | `mapa/nodos/10/madurez · V2 · agente-datos` | válida al corregirla |
+
+Una propuesta de muestra local (Plataforma Ejemplo con un renombre y un cambio de madurez; páginas servidas
+desde disco) mostró la revisión completa. Resultado: 24 verificadas, 1 no verificable, 3 no encontradas, diff
+«1 renombrado · 1 cambio de madurez», y el comando armado al decidir. Se borró: no queda nada en `propuestas/`.
+
+**Pasada de capturas:** 16 rutas × 2 temas × 380 y 1280 = **64 encuadres, 2256 comprobaciones, 0 fallas**. El
+arnés aprendió «Copiar» (lee el portapapeles) y Aprobar/Rechazar. **Suites:** unitarias 663/663 (cobertura
+sobre los pisos, tras sumar las pruebas que faltaban en ramas de `src/lib`) · e2e 88/88. Lighthouse suma
+`/es/investigador/plataforma-ejemplo` y `/en/investigador/databricks`.
+
+### Lo que sigue (3c)
+La corrida real: la persona escribe `/investigar fabric` en la sesión; el subagente propone; la propuesta
+se sube; la persona la revisa en la pantalla del investigador y corre el comando de aprobación en una
+terminal. **Parada B.**

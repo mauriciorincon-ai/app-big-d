@@ -7,6 +7,7 @@
 @import "../styles/diagrama.css";
 @import "../styles/atlas.css";
 @import "../styles/recorrido-animacion.css";
+@import "../styles/investigador.css";
 
 /* Contrato con el código (design-system.md § 9): los tokens pasan 1:1 al @theme de Tailwind v4. */
 @theme inline {

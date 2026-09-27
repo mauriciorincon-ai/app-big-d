@@ -199,8 +199,11 @@ async function interactuar(pagina, ruta, tema, ancho, clave) {
       const aparte = await pagina.context().newPage();
       await aparte.goto(pagina.url());
       await aparte.locator(".campo-plataforma select").selectOption(otra.v);
-      await aparte.waitForURL((u) => u.href.includes(`/atlas/${otra.v}`), { timeout: 3000 }).catch(() => {});
-      cambio(aparte.url().includes(`/atlas/${otra.v}`), `elegir «${otra.t}» no llevó a su atlas`);
+      // Lleva a la página de esa plataforma en la misma sección (atlas o investigador).
+      const seccion = new URL(pagina.url()).pathname.split("/")[2] ?? "atlas"; // desde la portada, el atlas
+      const destino = (u) => new URL(u).pathname.split("/").slice(2, 4).join("/") === `${seccion}/${otra.v}`;
+      await aparte.waitForURL((u) => destino(u.href), { timeout: 3000 }).catch(() => {});
+      cambio(destino(aparte.url()), `elegir «${otra.t}» no llevó a su página de ${seccion}`);
       await aparte.close();
     }
   }
@@ -300,6 +303,27 @@ async function interactuar(pagina, ruta, tema, ancho, clave) {
     cambio(avanzado !== "todos" && avanzado !== primero, `la reproducción no avanzó sola (quedó en ${avanzado})`);
     await boton("reproducir").click();
     cambio((await boton("reproducir").getAttribute("aria-pressed")) === "false", "«Pausar» no detuvo la reproducción");
+  }
+
+  // Investigador: «Copiar» deja en el portapapeles exactamente el comando y lo confirma; cada par
+  // Aprobar/Rechazar marca su decisión.
+  const copiar = pagina.locator(".comando button");
+  await marcar(copiar);
+  const nCopiar = await copiar.count();
+  for (let i = 0; i < nCopiar; i++) {
+    const b = copiar.nth(i);
+    const texto = await b.locator("xpath=..").locator("code").textContent();
+    const antes = await b.textContent();
+    await b.click();
+    await pagina.waitForTimeout(80);
+    cambio((await b.textContent()) !== antes, `«${antes}» no confirmó la copia de «${texto}»`);
+    cambio((await pagina.evaluate(() => navigator.clipboard.readText())) === texto, `«Copiar» no dejó «${texto}» en el portapapeles`);
+  }
+  const decidir = pagina.locator(".decidir button");
+  await marcar(decidir);
+  for (let i = 0; i < (await decidir.count()); i++) {
+    await decidir.nth(i).click();
+    cambio((await decidir.nth(i).getAttribute("aria-pressed")) === "true", "un botón Aprobar/Rechazar no marcó su decisión");
   }
 
   // Nivel 1: clic en cada bloque abre la ficha breve con su nombre; el primero también con Enter.
@@ -419,7 +443,13 @@ async function componer(izq, der, archivo, titulo) {
 for (const ruta of rutas)
   for (const ancho of anchos)
     for (const tema of temas) {
-      const ctx = await navegador.newContext({ viewport: { width: ancho, height: 900 }, deviceScaleFactor: 2, colorScheme: tema === "claro" ? "light" : "dark" });
+      const ctx = await navegador.newContext({
+        viewport: { width: ancho, height: 900 },
+        deviceScaleFactor: 2,
+        colorScheme: tema === "claro" ? "light" : "dark",
+        // «Copiar» escribe en el portapapeles; la pasada lo lee para comprobar que copió el comando.
+        permissions: ["clipboard-read", "clipboard-write"],
+      });
       await ctx.addInitScript((t) => {
         try {
           localStorage.setItem("bigd-tema", t);

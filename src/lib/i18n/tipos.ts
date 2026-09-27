@@ -6,7 +6,7 @@ import type { TextosMotor } from "diagramador";
 // Plantillas con {marcas}: las llena la app; los pares [uno, varios] son el plural.
 export interface Textos {
   sitio: { nombre: string; descripcion: string };
-  barra: { sello: string; secciones: string; atlas: string; idioma: string; tema: string; oscuro: string; claro: string };
+  barra: { sello: string; secciones: string; atlas: string; conocimiento: string; idioma: string; tema: string; oscuro: string; claro: string };
   saltarContenido: string;
   pie: string;
   inicio: { ojo: string; titulo: string; sub: string };
@@ -63,5 +63,55 @@ export interface Textos {
       pasos: string;
     };
     plataforma: { etiqueta: string; pronto: string; elegir: string };
+  };
+  investigador: {
+    titulo: string;
+    ojo: string;
+    sub: string;
+    mapaAprobado: string;
+    sinMapa: string;
+    historial: readonly [string, string];
+    secciones: { etiqueta: string; investigador: string; base: string };
+    vigencia: {
+      titulo: string;
+      /** «{revisar}» y «{vencido}»: umbrales de la gramática. */
+      nota: string;
+      componentes: readonly [string, string];
+      verificado: readonly [string, string];
+      dias: readonly [string, string];
+      estados: { vigente: string; revisar: string; vencido: string };
+    };
+    comando: { copiar: string; copiado: string; nota: string };
+    vacio: { titulo: string; texto: string };
+    propuesta: {
+      titulo: string;
+      tituloCapa: string;
+      nota: string;
+      corrida: string;
+      modelo: string;
+      reintentos: readonly [string, string];
+      fuentes: readonly [string, string];
+      verificadaEl: string;
+      invalida: string;
+      sinVerificar: string;
+      diff: string;
+      primera: string;
+      conteo: string;
+      grupos: { decidir: string; verificadas: string; rechazadas: string };
+      cambio: { nuevo: string; renombrado: string; madurez: string; cambiado: string; igual: string };
+      entidad: { nodo: string; flujo: string };
+      estado: { porDecidir: string; aprobada: string; rechazada: string };
+      verif: { verificada: string; noVerificable: string; noEncontrada: string; rechazadaPorCodigo: string };
+      tipoFuente: { oficial: string; tercero: string };
+      aprobar: string;
+      rechazar: string;
+      faltan: readonly [string, string];
+      comandoTitulo: string;
+      comandoNota: string;
+      preguntas: string;
+      respondida: string;
+      sinFuente: string;
+    };
+    veredicto: { aprobada: string; sinNovedades: string; detalle: string };
   };
 }
