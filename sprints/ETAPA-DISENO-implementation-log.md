@@ -23,7 +23,7 @@ plan aprobado: 2026-09-26 (plan mode → «construye»)
 | 2            | `design-system.md` completo + `kit.html` + `atlas-nivel-2.html` + `atlas-recorrido.html` + `lado-a-lado.html` | aprobada 2026-09-26, con un ajuste |
 | 3            | `investigador.html` · `base.html` · `perfil.html` · `comparacion.html`                                        | aprobada 2026-09-26, con un ajuste |
 | 4            | `decisiones.html` · `informe.html` · `instrumento.html` · `index.html`                                        | aprobada 2026-09-26 |
-| 5 = G-Diseño | todo, desplegado, teléfono + desktop, ambos temas, ambos idiomas                                              | pendiente |
+| 5 = G-Diseño | todo, desplegado, teléfono + desktop, ambos temas, ambos idiomas                                              | aprobada 2026-09-27 en local, con un ajuste (portada) |
 
 Regla: «continúa» no aprueba diseño; cada mirada se registra en `docs/diseno/README.md` ANTES del
 siguiente artefacto; cambios a este plan se aprueban antes de construir.
@@ -589,6 +589,7 @@ cada build: decidir tras G-Diseño y excluirla de `build:demo`) → S1 · A-27 (
 | Plan Fase 1 | La nota de marcas se retiró con el cromo de la ronda 3 y no volvió | Constructor; declarado tras la auditoría (A-16) | design system § 6 y § 10 (deuda S1) |
 | Regla 8 | El generador vivió fuera del repo hasta la auditoría | Constructor; corregido (A-01) | `scripts/maqueta/` · gate de deriva |
 | Plan D61 | La robustez «moderada (frontera)» tenía cifras escritas a mano; ahora se calcula y sale «sólida» | Constructor; corregido (A-02, D77) | comparacion.html · informe.html |
+| Plan, mirada 5 «sobre el deploy» | El preview devolvió 404 en `/diseno/index.html` con sesión (2026-09-27; en la ronda 1 tampoco abrió). La mirada 5 se hace en local: doble clic en el computador y servidor en la red de la casa para el teléfono. El despliegue queda para cuando haya versión estable | Usuario («hasta que salgamos a una versión estable dame todo en local») | A-04 abierto: causa sin diagnosticar (hace falta el log de build de Vercel, detrás de la sesión del usuario) · summary § Deuda |
 
 ### Hallazgo durante los pagos: la ficha del nivel 2 nunca abrió (N-1)
 
@@ -614,3 +615,20 @@ lectura en texto del nivel 1; foco en «Relación con el directorio» 2,5 → 4 
 «Reproducir» en el DOM con `display: none` (sin preferencia: visible); el último paso dice «Paso 6b de 8».
 Pasada de capturas tras los pagos: **392 medidas de las 13 páginas, 0 fallas**, más 208 encuadres de nivel 2,
 recorrido y decisiones, 0 fallas.
+
+### Veredicto de la mirada 5 — G-Diseño (2026-09-27)
+
+El preview del PR devolvió 404 en `/diseno/index.html` con sesión. El usuario pidió «hasta que salgamos a una
+versión estable dame todo en local»: la maqueta se abrió por doble clic en el computador (el constructor la abrió
+con `open`) y se sirvió en la red de la casa para el teléfono; el servidor se apagó al llegar la respuesta. La
+captura que el usuario adjuntó es la portada en escritorio, tema oscuro, ES.
+
+Textual: «lo abrí y apruebo, muy buena imagen y fluidez, muchos elementos de importancia; lo que no me convence mucho es la pantalla principal: esas tarjetas no se me parecen desordenadas, como puestas sin un orden, y visualmente como que no son atractivas; ahí sí falta mucho mejor diseño. Los demás elementos pintan muy bien; el cambio de idioma y el blanco y negro funcionan muy bien».
+
+**G-Diseño aprobado con un ajuste: la portada.** Queda por mirar solo la portada rediseñada, antes del merge.
+
+| #   | Decisión | Razón |
+| --- | -------- | ----- |
+| D81 | **La portada se dibuja con la gramática del atlas**: cuatro etapas de izquierda a derecha (Atlas · Conocimiento · Caso · Plan) como bandas con su pregunta, las pantallas como nodos con una miniatura de lo que muestran, y lo transversal abajo (instrumento y design system) | La rejilla anterior de tarjetas iguales con huecos es un antipatrón que el propio design system prohíbe (§ 8, «rejillas de tarjetas idénticas»), y el usuario no la vio ordenada. Las bandas tienen la misma altura por construcción (2 filas de nodos cada una), el orden se lee en la flecha entre etapas, y la portada muestra la tesis de la app: todo con el mismo mapa |
+| D82 | **La mirada 5 se hizo en local**; el despliegue en Vercel queda para cuando haya versión estable | Decisión del usuario. A-04 pasa de «sin verificar» a **fallado**: el preview no sirve la maqueta. La causa no se diagnosticó, porque el log de build de Vercel está detrás de la sesión del usuario |
+| D83 | **La decisión de grises (D79) se da por aprobada** con el «lo abrí y apruebo» | Iba en la matriz de la mirada con la pregunta explícita. El usuario no la nombró por separado; su «el blanco y negro funcionan muy bien» se lee como el conmutador de tema o como los grises. En los dos casos es positivo, y se le dice cómo se leyó |
