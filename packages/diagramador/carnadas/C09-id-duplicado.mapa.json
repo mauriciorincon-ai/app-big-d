@@ -1,0 +1,1023 @@
+{
+  "contrato_version": "0.3.0",
+  "gramatica_id": "plataformas-datos",
+  "gramatica_version": "0.2.0",
+  "sujeto_id": "plataforma-ejemplo",
+  "sujeto_nombre": {
+    "es": "Plataforma Ejemplo (ficticia)",
+    "en": "Example Platform (fictional)"
+  },
+  "version": "0.1.0",
+  "fecha_actualizacion": "2026-09-20",
+  "estado": "aprobada",
+  "refs_externas": [
+    "ficticia: cuarta plataforma de la carnada RNF-06; ningún componente describe un producto real"
+  ],
+  "bloques": [
+    {
+      "id": "origen",
+      "nombre": {
+        "es": "Sistemas de origen",
+        "en": "Source systems"
+      },
+      "banda_id": "fuentes",
+      "lider": {
+        "es": "Donde nacen los datos del negocio.",
+        "en": "Where the business data is born."
+      }
+    },
+    {
+      "id": "entrada",
+      "nombre": {
+        "es": "Entrada de datos",
+        "en": "Data intake"
+      },
+      "banda_id": "ingesta",
+      "lider": {
+        "es": "Trae los datos a la plataforma, en tandas o a medida que cambian.",
+        "en": "Brings data in, in batches or as it changes."
+      }
+    },
+    {
+      "id": "almacen",
+      "nombre": {
+        "es": "Almacén central",
+        "en": "Central store"
+      },
+      "banda_id": "almacenamiento",
+      "lider": {
+        "es": "Guarda todos los datos en un formato que otras herramientas pueden leer.",
+        "en": "Keeps all the data in a format other tools can read."
+      }
+    },
+    {
+      "id": "preparacion",
+      "nombre": {
+        "es": "Preparación",
+        "en": "Preparation"
+      },
+      "banda_id": "procesamiento",
+      "lider": {
+        "es": "Limpia y combina los datos para que sirvan.",
+        "en": "Cleans and combines the data so it is fit for use."
+      }
+    },
+    {
+      "id": "consumo-bi",
+      "nombre": {
+        "es": "Tableros",
+        "en": "Dashboards"
+      },
+      "banda_id": "consumo",
+      "lider": {
+        "es": "Convierte los datos en indicadores que la gente consulta.",
+        "en": "Turns the data into the indicators people check."
+      }
+    },
+    {
+      "id": "agentes",
+      "nombre": {
+        "es": "Agentes",
+        "en": "Agents"
+      },
+      "banda_id": "ia",
+      "lider": {
+        "es": "Responde preguntas usando los datos como contexto.",
+        "en": "Answers questions using the data as context."
+      }
+    },
+    {
+      "id": "gobierno",
+      "nombre": {
+        "es": "Gobierno",
+        "en": "Governance"
+      },
+      "banda_id": "gobierno",
+      "lider": {
+        "es": "Decide quién ve qué y deja rastro de cada acceso.",
+        "en": "Decides who sees what, and keeps a trail of every access."
+      }
+    }
+  ],
+  "nodos": [
+    {
+      "id": "sistema-admisiones",
+      "banda_id": "fuentes",
+      "tipo_id": "tipo-externo",
+      "bloque_id": "origen",
+      "orden": 1,
+      "nombre": {
+        "es": "Sistema de admisiones",
+        "en": "Admissions system"
+      },
+      "lider": {
+        "es": "El sistema donde el hospital registra a cada paciente que llega.",
+        "en": "The system where the hospital registers every patient who arrives."
+      },
+      "experto": {
+        "es": "Base relacional transaccional del sistema administrativo; expone tablas de admisiones con clave primaria y marca de última modificación, requisito de la captura de cambios.",
+        "en": "Transactional relational database of the administrative system; it exposes admissions tables with a primary key and a last-modified timestamp, which change capture requires."
+      },
+      "por_que_importa": {
+        "es": "Si la plataforma no puede leerlo sin afectar su rendimiento, la analítica compite con la atención al paciente.",
+        "en": "If the platform cannot read it without hurting its performance, analytics competes with patient care."
+      },
+      "madurez": "disponible-general",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/sistema-admisiones",
+          "titulo": {
+            "es": "Ficha ficticia del sistema de admisiones",
+            "en": "Fictional data sheet of the admissions system"
+          },
+          "fecha": "2026-09-01",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    },
+    {
+      "id": "conector-relacional",
+      "banda_id": "ingesta",
+      "tipo_id": "cap-ingesta",
+      "bloque_id": "entrada",
+      "orden": 1,
+      "nombre": {
+        "es": "Conector de bases relacionales",
+        "en": "Relational database connector"
+      },
+      "lider": {
+        "es": "Copia tablas completas del sistema de origen en horarios fijos.",
+        "en": "Copies whole tables from the source system on a fixed schedule."
+      },
+      "experto": {
+        "es": "Extracción por lotes con consultas completas o por marca de agua; útil para cargas iniciales y tablas sin marca de modificación.",
+        "en": "Batch extraction with full or watermark queries; useful for initial loads and for tables without a modification mark."
+      },
+      "por_que_importa": {
+        "es": "Sin carga inicial completa no hay punto de partida para la captura de cambios.",
+        "en": "Without a complete initial load there is no starting point for change capture."
+      },
+      "madurez": "disponible-general",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/conector",
+          "titulo": {
+            "es": "Documentación ficticia del conector",
+            "en": "Fictional connector documentation"
+          },
+          "fecha": "2026-08-15",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    },
+    {
+      "id": "captura-cambios",
+      "banda_id": "ingesta",
+      "tipo_id": "cap-ingesta",
+      "bloque_id": "entrada",
+      "orden": 2,
+      "nombre": {
+        "es": "Captura de cambios",
+        "en": "Change capture"
+      },
+      "lider": {
+        "es": "Trae solo lo nuevo o modificado, casi en el momento en que ocurre.",
+        "en": "Brings only what is new or changed, almost as it happens."
+      },
+      "experto": {
+        "es": "Lee el registro de transacciones del origen y replica inserciones, actualizaciones y borrados en orden, con reintento y control de duplicados.",
+        "en": "Reads the source's transaction log and replays inserts, updates and deletes in order, with retries and duplicate control."
+      },
+      "por_que_importa": {
+        "es": "Copiar todo cada vez satura el origen y llega tarde; sin captura de cambios los indicadores se atrasan un día.",
+        "en": "Copying everything every time saturates the source and arrives late; without change capture the indicators run a day behind."
+      },
+      "terminos": {
+        "es": {
+          "registro de transacciones": "Bitácora interna donde la base de datos anota cada cambio antes de aplicarlo."
+        },
+        "en": {
+          "transaction log": "Internal journal where the database records every change before applying it."
+        }
+      },
+      "madurez": "disponible-general",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/captura-cambios",
+          "titulo": {
+            "es": "Documentación ficticia de captura de cambios",
+            "en": "Fictional change-capture documentation"
+          },
+          "fecha": "2026-08-15",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    },
+    {
+      "id": "capa-cruda",
+      "banda_id": "almacenamiento",
+      "tipo_id": "cap-almacenamiento",
+      "bloque_id": "almacen",
+      "orden": 1,
+      "nombre": {
+        "es": "Zona de datos crudos",
+        "en": "Raw data zone"
+      },
+      "lider": {
+        "es": "Guarda los datos tal como llegaron, para poder volver a ellos.",
+        "en": "Keeps the data exactly as it arrived, so you can always go back to it."
+      },
+      "experto": {
+        "es": "Tablas en formato abierto con historial de versiones; se escriben solo por anexión y conservan el dato original para auditoría y reproceso.",
+        "en": "Open-format tables with version history; written by append only, they keep the original record for audit and reprocessing."
+      },
+      "por_que_importa": {
+        "es": "Si el dato original se pierde, un error de transformación no tiene vuelta atrás.",
+        "en": "If the original data is lost, a transformation error has no way back."
+      },
+      "madurez": "disponible-general",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/almacen",
+          "titulo": {
+            "es": "Documentación ficticia del almacén",
+            "en": "Fictional store documentation"
+          },
+          "fecha": "2026-08-20",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    },
+    {
+      "id": "almacen-tablas-abiertas",
+      "banda_id": "almacenamiento",
+      "tipo_id": "cap-almacenamiento",
+      "bloque_id": "almacen",
+      "orden": 2,
+      "nombre": {
+        "es": "Tablas limpias en formato abierto",
+        "en": "Clean tables in an open format"
+      },
+      "lider": {
+        "es": "Los datos ya preparados, guardados en un formato que otras herramientas pueden leer sin copiarlos.",
+        "en": "The prepared data, stored in a format other tools can read without copying it."
+      },
+      "experto": {
+        "es": "Tablas en formato abierto con transacciones y esquema versionado; motores externos las leen en su lugar mediante el catálogo.",
+        "en": "Open-format tables with transactions and a versioned schema; external engines read them in place through the catalog."
+      },
+      "por_que_importa": {
+        "es": "Un formato cerrado ata los datos a una sola herramienta y encarece salir de ella.",
+        "en": "A closed format ties the data to a single tool and makes leaving it expensive."
+      },
+      "madurez": "disponible-general",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/almacen",
+          "titulo": {
+            "es": "Documentación ficticia del almacén",
+            "en": "Fictional store documentation"
+          },
+          "fecha": "2026-08-20",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    },
+    {
+      "id": "motor-transformacion",
+      "banda_id": "procesamiento",
+      "tipo_id": "cap-transformacion",
+      "bloque_id": "preparacion",
+      "orden": 1,
+      "nombre": {
+        "es": "Motor de transformación",
+        "en": "Transformation engine"
+      },
+      "lider": {
+        "es": "Limpia, combina y corrige los datos crudos.",
+        "en": "Cleans, combines and corrects the raw data."
+      },
+      "experto": {
+        "es": "Motor distribuido que ejecuta transformaciones por lotes sobre las tablas abiertas; escala el cómputo según la carga.",
+        "en": "Distributed engine that runs batch transformations over the open tables; it scales compute with the load."
+      },
+      "por_que_importa": {
+        "es": "Datos sin limpiar producen indicadores que se contradicen entre tableros.",
+        "en": "Uncleaned data produces indicators that contradict each other across dashboards."
+      },
+      "terminos": {
+        "es": {
+          "cómputo": "Capacidad de procesamiento que se alquila por tiempo de uso."
+        },
+        "en": {
+          "compute": "Processing capacity rented by time of use."
+        }
+      },
+      "madurez": "disponible-general",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/motor",
+          "titulo": {
+            "es": "Documentación ficticia del motor",
+            "en": "Fictional engine documentation"
+          },
+          "fecha": "2026-08-25",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    },
+    {
+      "id": "canalizacion-declarativa",
+      "banda_id": "procesamiento",
+      "tipo_id": "cap-transformacion",
+      "bloque_id": "preparacion",
+      "orden": 2,
+      "nombre": {
+        "es": "Canalizaciones declarativas",
+        "en": "Declarative pipelines"
+      },
+      "lider": {
+        "es": "Describe qué pasos debe seguir un dato, y la plataforma se encarga de ejecutarlos.",
+        "en": "Describes which steps a piece of data must follow, and the platform runs them."
+      },
+      "experto": {
+        "es": "Definición declarativa de dependencias y reglas de calidad; el motor resuelve el orden y detiene la carga si una regla falla.",
+        "en": "Declarative definition of dependencies and quality rules; the engine resolves the order and stops the load when a rule fails."
+      },
+      "por_que_importa": {
+        "es": "Sin reglas de calidad explícitas, un dato malo llega al tablero sin que nadie lo note.",
+        "en": "Without explicit quality rules, bad data reaches the dashboard and nobody notices."
+      },
+      "madurez": "disponible-general",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/canalizaciones",
+          "titulo": {
+            "es": "Documentación ficticia de canalizaciones",
+            "en": "Fictional pipelines documentation"
+          },
+          "fecha": "2026-08-25",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    },
+    {
+      "id": "programador-tareas",
+      "banda_id": "orquestacion",
+      "tipo_id": "cap-transformacion",
+      "orden": 1,
+      "nombre": {
+        "es": "Programador de tareas",
+        "en": "Task scheduler"
+      },
+      "lider": {
+        "es": "Decide qué se ejecuta y a qué hora.",
+        "en": "Decides what runs and at what time."
+      },
+      "experto": {
+        "es": "Planificador con dependencias entre tareas, reintentos y alertas; dispara las canalizaciones por horario o por evento.",
+        "en": "Scheduler with task dependencies, retries and alerts; it triggers pipelines on a schedule or on an event."
+      },
+      "por_que_importa": {
+        "es": "Si nadie coordina el orden, una tarea lee datos que otra todavía no terminó de preparar.",
+        "en": "If nobody coordinates the order, one task reads data another has not finished preparing."
+      },
+      "madurez": "disponible-general",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/programador",
+          "titulo": {
+            "es": "Documentación ficticia del programador",
+            "en": "Fictional scheduler documentation"
+          },
+          "fecha": "2026-08-25",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    },
+    {
+      "id": "modelo-semantico",
+      "banda_id": "consumo",
+      "tipo_id": "cap-consumo",
+      "bloque_id": "consumo-bi",
+      "orden": 1,
+      "nombre": {
+        "es": "Modelo semántico",
+        "en": "Semantic model"
+      },
+      "lider": {
+        "es": "Define una sola vez qué significa cada indicador, para que todos los tableros digan lo mismo.",
+        "en": "Defines once what each indicator means, so every dashboard says the same thing."
+      },
+      "experto": {
+        "es": "Capa de métricas y relaciones sobre las tablas limpias, leídas en su lugar; centraliza definiciones y aplica la seguridad por filas.",
+        "en": "Metrics and relationships layer over the clean tables, read in place; it centralises definitions and applies row-level security."
+      },
+      "por_que_importa": {
+        "es": "Sin definiciones únicas, dos áreas reportan cifras distintas del mismo indicador.",
+        "en": "Without single definitions, two departments report different figures for the same indicator."
+      },
+      "madurez": "disponible-general",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/semantica",
+          "titulo": {
+            "es": "Documentación ficticia del modelo semántico",
+            "en": "Fictional semantic model documentation"
+          },
+          "fecha": "2026-08-30",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    },
+    {
+      "id": "tablero",
+      "banda_id": "consumo",
+      "tipo_id": "cap-consumo",
+      "bloque_id": "consumo-bi",
+      "orden": 2,
+      "nombre": {
+        "es": "Tablero de ocupación",
+        "en": "Bed occupancy dashboard"
+      },
+      "lider": {
+        "es": "Muestra cuántos pacientes ingresan y cuántas camas quedan libres.",
+        "en": "Shows how many patients are admitted and how many beds are free."
+      },
+      "experto": {
+        "es": "Visualización que consulta el modelo semántico a demanda; hereda sus definiciones y su seguridad por filas.",
+        "en": "Visualisation that queries the semantic model on request; it inherits its definitions and its row-level security."
+      },
+      "por_que_importa": {
+        "es": "Es donde la dirección toma decisiones; si el dato llega tarde, decide a ciegas.",
+        "en": "This is where management decides; if the data arrives late, it decides blind."
+      },
+      "madurez": "disponible-general",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/tableros",
+          "titulo": {
+            "es": "Documentación ficticia de tableros",
+            "en": "Fictional dashboards documentation"
+          },
+          "fecha": "2026-08-30",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    },
+    {
+      "id": "agente-datos",
+      "banda_id": "ia",
+      "tipo_id": "cap-ia",
+      "bloque_id": "agentes",
+      "orden": 1,
+      "nombre": {
+        "es": "Agente de preguntas sobre datos",
+        "en": "Data question agent"
+      },
+      "lider": {
+        "es": "Responde en lenguaje natural preguntas sobre las admisiones, usando solo los datos que el usuario puede ver.",
+        "en": "Answers plain-language questions about admissions, using only the data the user is allowed to see."
+      },
+      "experto": {
+        "es": "Agente que consulta las tablas limpias como contexto bajo los permisos del catálogo; está en vista previa y no garantiza respuestas para producción.",
+        "en": "Agent that queries the clean tables as context under the catalog's permissions; it is in preview and does not guarantee answers for production."
+      },
+      "por_que_importa": {
+        "es": "Un agente sin los permisos del catálogo podría mostrar datos de pacientes a quien no debe verlos.",
+        "en": "An agent without the catalog's permissions could show patient data to someone who must not see it."
+      },
+      "madurez": "vista-previa-publica",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/agentes",
+          "titulo": {
+            "es": "Anuncio ficticio del agente",
+            "en": "Fictional agent announcement"
+          },
+          "fecha": "2026-09-10",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    },
+    {
+      "id": "catalogo-central",
+      "banda_id": "gobierno",
+      "tipo_id": "cap-gobierno",
+      "bloque_id": "gobierno",
+      "orden": 1,
+      "nombre": {
+        "es": "Catálogo central",
+        "en": "Central catalog"
+      },
+      "lider": {
+        "es": "El inventario de todos los datos, con quién puede usarlos y de dónde vienen.",
+        "en": "The inventory of all the data, with who may use it and where it comes from."
+      },
+      "experto": {
+        "es": "Registro único de tablas, permisos y linaje capturado automáticamente en cada lectura y escritura.",
+        "en": "Single registry of tables, permissions and lineage, captured automatically on every read and write."
+      },
+      "por_que_importa": {
+        "es": "Sin un catálogo central, cada herramienta administra permisos por su lado y nadie puede auditar el conjunto.",
+        "en": "Without a central catalog every tool manages permissions on its own and nobody can audit the whole."
+      },
+      "terminos": {
+        "es": {
+          "linaje": "El rastro de dónde viene un dato y por qué transformaciones pasó."
+        },
+        "en": {
+          "lineage": "The trail of where a piece of data comes from and which transformations it went through."
+        }
+      },
+      "madurez": "disponible-general",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/catalogo",
+          "titulo": {
+            "es": "Documentación ficticia del catálogo",
+            "en": "Fictional catalog documentation"
+          },
+          "fecha": "2026-09-05",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    },
+    {
+      "id": "filtros-filas",
+      "banda_id": "gobierno",
+      "tipo_id": "cap-gobierno",
+      "bloque_id": "gobierno",
+      "orden": 2,
+      "nombre": {
+        "es": "Filtros por fila y enmascaramiento",
+        "en": "Row filters and masking"
+      },
+      "lider": {
+        "es": "Cada persona ve solo los pacientes y columnas que le corresponden.",
+        "en": "Each person sees only the patients and columns that belong to them."
+      },
+      "experto": {
+        "es": "Políticas por fila y máscaras por columna definidas en el catálogo y aplicadas por todos los motores que leen la tabla.",
+        "en": "Row policies and column masks defined in the catalog and enforced by every engine that reads the table."
+      },
+      "por_que_importa": {
+        "es": "Con datos clínicos, un permiso mal puesto es un incidente de datos sensibles.",
+        "en": "With clinical data, a misplaced permission is a sensitive-data incident."
+      },
+      "madurez": "disponible-general",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/filtros",
+          "titulo": {
+            "es": "Documentación ficticia de filtros",
+            "en": "Fictional filters documentation"
+          },
+          "fecha": "2026-09-05",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    },
+    {
+      "id": "monitor-capacidad",
+      "banda_id": "operacion",
+      "tipo_id": "tipo-operacion",
+      "orden": 1,
+      "nombre": {
+        "es": "Monitor de consumo",
+        "en": "Usage monitor"
+      },
+      "lider": {
+        "es": "Muestra cuánto se está gastando y en qué.",
+        "en": "Shows how much is being spent, and on what."
+      },
+      "experto": {
+        "es": "Métricas de uso de cómputo por tarea y por área, con alertas de presupuesto.",
+        "en": "Compute usage metrics per task and per department, with budget alerts."
+      },
+      "por_que_importa": {
+        "es": "Sin visibilidad del gasto, la factura se descubre a fin de mes.",
+        "en": "Without visibility of spend, the bill is discovered at the end of the month."
+      },
+      "terminos": {
+        "es": {
+          "cómputo": "Capacidad de procesamiento que se alquila por tiempo de uso."
+        },
+        "en": {
+          "compute": "Processing capacity rented by time of use."
+        }
+      },
+      "madurez": "disponible-general",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/monitor",
+          "titulo": {
+            "es": "Documentación ficticia del monitor",
+            "en": "Fictional monitor documentation"
+          },
+          "fecha": "2026-09-05",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    },
+    {
+      "id": "tablero",
+      "banda_id": "consumo",
+      "tipo_id": "cap-consumo",
+      "bloque_id": "consumo-bi",
+      "orden": 2,
+      "nombre": {
+        "es": "Tablero de ocupación",
+        "en": "Bed occupancy dashboard"
+      },
+      "lider": {
+        "es": "Muestra cuántos pacientes ingresan y cuántas camas quedan libres.",
+        "en": "Shows how many patients are admitted and how many beds are free."
+      },
+      "experto": {
+        "es": "Visualización que consulta el modelo semántico a demanda; hereda sus definiciones y su seguridad por filas.",
+        "en": "Visualisation that queries the semantic model on request; it inherits its definitions and its row-level security."
+      },
+      "por_que_importa": {
+        "es": "Es donde la dirección toma decisiones; si el dato llega tarde, decide a ciegas.",
+        "en": "This is where management decides; if the data arrives late, it decides blind."
+      },
+      "madurez": "disponible-general",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/tableros",
+          "titulo": {
+            "es": "Documentación ficticia de tableros",
+            "en": "Fictional dashboards documentation"
+          },
+          "fecha": "2026-08-30",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    }
+  ],
+  "flujos": [
+    {
+      "id": "f-origen-cambios",
+      "origen": "sistema-admisiones",
+      "destino": "captura-cambios",
+      "modo_id": "continuo",
+      "que_viaja": {
+        "es": "Registros nuevos o modificados",
+        "en": "New or changed records"
+      },
+      "lider": {
+        "es": "Cada admisión nueva viaja apenas se registra.",
+        "en": "Every new admission travels as soon as it is registered."
+      }
+    },
+    {
+      "id": "f-origen-conector",
+      "origen": "sistema-admisiones",
+      "destino": "conector-relacional",
+      "modo_id": "por-lotes",
+      "que_viaja": {
+        "es": "Tablas completas",
+        "en": "Whole tables"
+      },
+      "lider": {
+        "es": "Una copia completa, una vez al día.",
+        "en": "A full copy, once a day."
+      }
+    },
+    {
+      "id": "f-cambios-cruda",
+      "origen": "captura-cambios",
+      "destino": "capa-cruda",
+      "modo_id": "continuo",
+      "que_viaja": {
+        "es": "Cambios en orden",
+        "en": "Changes in order"
+      },
+      "lider": {
+        "es": "Los cambios se guardan tal como llegan.",
+        "en": "Changes are stored just as they arrive."
+      }
+    },
+    {
+      "id": "f-conector-cruda",
+      "origen": "conector-relacional",
+      "destino": "capa-cruda",
+      "modo_id": "por-lotes",
+      "que_viaja": {
+        "es": "Tablas completas",
+        "en": "Whole tables"
+      },
+      "lider": {
+        "es": "La copia diaria se guarda sin tocar.",
+        "en": "The daily copy is stored untouched."
+      }
+    },
+    {
+      "id": "f-cruda-motor",
+      "origen": "capa-cruda",
+      "destino": "motor-transformacion",
+      "modo_id": "por-lotes",
+      "que_viaja": {
+        "es": "Datos crudos",
+        "en": "Raw data"
+      },
+      "lider": {
+        "es": "El motor toma los datos crudos para limpiarlos.",
+        "en": "The engine takes the raw data to clean it."
+      }
+    },
+    {
+      "id": "f-motor-limpias",
+      "origen": "motor-transformacion",
+      "destino": "almacen-tablas-abiertas",
+      "modo_id": "por-lotes",
+      "que_viaja": {
+        "es": "Tablas limpias",
+        "en": "Clean tables"
+      },
+      "lider": {
+        "es": "Lo limpio se guarda aparte de lo crudo.",
+        "en": "What is clean is stored apart from what is raw."
+      }
+    },
+    {
+      "id": "f-canalizacion-motor",
+      "origen": "canalizacion-declarativa",
+      "destino": "motor-transformacion",
+      "modo_id": "a-demanda",
+      "que_viaja": {
+        "es": "Pasos y reglas de calidad",
+        "en": "Steps and quality rules"
+      },
+      "lider": {
+        "es": "Le dice al motor qué hacer y qué revisar.",
+        "en": "Tells the engine what to do and what to check."
+      }
+    },
+    {
+      "id": "f-programador-canalizacion",
+      "origen": "programador-tareas",
+      "destino": "canalizacion-declarativa",
+      "modo_id": "a-demanda",
+      "que_viaja": {
+        "es": "Orden de ejecución",
+        "en": "Run order"
+      },
+      "lider": {
+        "es": "Da la orden de empezar.",
+        "en": "Gives the order to start."
+      }
+    },
+    {
+      "id": "f-limpias-semantico",
+      "origen": "almacen-tablas-abiertas",
+      "destino": "modelo-semantico",
+      "modo_id": "sin-copia",
+      "que_viaja": {
+        "es": "Tablas limpias",
+        "en": "Clean tables"
+      },
+      "lider": {
+        "es": "El modelo lee las tablas en su lugar, sin copiarlas.",
+        "en": "The model reads the tables in place, without copying them."
+      }
+    },
+    {
+      "id": "f-semantico-tablero",
+      "origen": "modelo-semantico",
+      "destino": "tablero",
+      "modo_id": "a-demanda",
+      "que_viaja": {
+        "es": "Consultas de indicadores",
+        "en": "Indicator queries"
+      },
+      "lider": {
+        "es": "El tablero pide los indicadores cuando alguien lo abre.",
+        "en": "The dashboard asks for the indicators when someone opens it."
+      }
+    },
+    {
+      "id": "f-limpias-agente",
+      "origen": "almacen-tablas-abiertas",
+      "destino": "agente-datos",
+      "modo_id": "a-demanda",
+      "que_viaja": {
+        "es": "Contexto para responder",
+        "en": "Context to answer"
+      },
+      "lider": {
+        "es": "El agente consulta las tablas para responder.",
+        "en": "The agent queries the tables to answer."
+      }
+    },
+    {
+      "id": "f-catalogo-limpias",
+      "origen": "catalogo-central",
+      "destino": "almacen-tablas-abiertas",
+      "modo_id": "a-demanda",
+      "que_viaja": {
+        "es": "Permisos y metadatos",
+        "en": "Permissions and metadata"
+      },
+      "lider": {
+        "es": "El catálogo dice quién puede leer cada tabla.",
+        "en": "The catalog says who may read each table."
+      }
+    },
+    {
+      "id": "f-filtros-semantico",
+      "origen": "filtros-filas",
+      "destino": "modelo-semantico",
+      "modo_id": "a-demanda",
+      "que_viaja": {
+        "es": "Filas visibles por persona",
+        "en": "Rows visible per person"
+      },
+      "lider": {
+        "es": "Cada persona recibe solo sus filas.",
+        "en": "Each person receives only their rows."
+      }
+    },
+    {
+      "id": "f-motor-monitor",
+      "origen": "motor-transformacion",
+      "destino": "monitor-capacidad",
+      "modo_id": "continuo",
+      "que_viaja": {
+        "es": "Métricas de consumo",
+        "en": "Usage metrics"
+      },
+      "lider": {
+        "es": "Cada tarea reporta cuánto gastó.",
+        "en": "Every task reports what it spent."
+      }
+    }
+  ],
+  "recorridos": [
+    {
+      "id": "admision-paciente",
+      "titulo": {
+        "es": "Un registro de admisión, de punta a punta",
+        "en": "One admission record, end to end"
+      },
+      "pasos": [
+        {
+          "id": "p1",
+          "nodo_id": "sistema-admisiones",
+          "que_pasa": {
+            "es": "Nace el registro",
+            "en": "The record is born"
+          },
+          "lider": {
+            "es": "Un paciente ficticio ingresa y queda registrado.",
+            "en": "A fictional patient is admitted and registered."
+          },
+          "experto": {
+            "es": "Inserción en la tabla de admisiones con marca de tiempo de modificación.",
+            "en": "Insert into the admissions table with a modification timestamp."
+          }
+        },
+        {
+          "id": "p2",
+          "nodo_id": "captura-cambios",
+          "que_pasa": {
+            "es": "Se detecta el cambio",
+            "en": "The change is detected"
+          },
+          "lider": {
+            "es": "La plataforma nota que hay un registro nuevo.",
+            "en": "The platform notices there is a new record."
+          },
+          "experto": {
+            "es": "El lector del registro de transacciones emite el evento de inserción.",
+            "en": "The transaction-log reader emits the insert event."
+          }
+        },
+        {
+          "id": "p3",
+          "nodo_id": "capa-cruda",
+          "que_pasa": {
+            "es": "Se guarda tal cual",
+            "en": "Stored as is"
+          },
+          "lider": {
+            "es": "El registro se guarda sin modificar.",
+            "en": "The record is stored unmodified."
+          },
+          "experto": {
+            "es": "Anexión a la tabla cruda con versión y metadatos de carga.",
+            "en": "Append to the raw table with version and load metadata."
+          }
+        },
+        {
+          "id": "p4",
+          "nodo_id": "motor-transformacion",
+          "que_pasa": {
+            "es": "Se limpia y combina",
+            "en": "Cleaned and combined"
+          },
+          "lider": {
+            "es": "Se corrigen formatos y se une con otros datos del paciente.",
+            "en": "Formats are corrected and it is joined with the patient's other data."
+          },
+          "experto": {
+            "es": "Transformación por lotes con reglas de calidad; los registros que fallan se apartan.",
+            "en": "Batch transformation with quality rules; records that fail are set aside."
+          }
+        },
+        {
+          "id": "p5",
+          "nodo_id": "almacen-tablas-abiertas",
+          "bifurca": "paralela",
+          "que_pasa": {
+            "es": "Queda listo para usarse",
+            "en": "Ready to be used"
+          },
+          "lider": {
+            "es": "El registro limpio queda disponible para tableros y agentes.",
+            "en": "The clean record is available to dashboards and agents."
+          },
+          "experto": {
+            "es": "Escritura transaccional en la tabla limpia; el catálogo registra el linaje.",
+            "en": "Transactional write to the clean table; the catalog records the lineage."
+          }
+        },
+        {
+          "id": "p6",
+          "nodo_id": "modelo-semantico",
+          "sigue_de": "p5",
+          "que_pasa": {
+            "es": "Se vuelve indicador",
+            "en": "Becomes an indicator"
+          },
+          "lider": {
+            "es": "Cuenta dentro del indicador de admisiones del día.",
+            "en": "It counts inside the day's admissions indicator."
+          },
+          "experto": {
+            "es": "Lectura sin copia por el modelo semántico; aplica la seguridad por filas.",
+            "en": "Read without copy by the semantic model; row-level security applies."
+          }
+        },
+        {
+          "id": "p7",
+          "nodo_id": "tablero",
+          "sigue_de": "p6",
+          "que_pasa": {
+            "es": "Aparece en el tablero",
+            "en": "Shows on the dashboard"
+          },
+          "lider": {
+            "es": "La dirección ve la ocupación actualizada.",
+            "en": "Management sees the updated occupancy."
+          },
+          "experto": {
+            "es": "Consulta a demanda del tablero al modelo semántico.",
+            "en": "On-request query from the dashboard to the semantic model."
+          }
+        },
+        {
+          "id": "p8",
+          "nodo_id": "agente-datos",
+          "sigue_de": "p5",
+          "que_pasa": {
+            "es": "Sirve de contexto a un agente",
+            "en": "Serves as context for an agent"
+          },
+          "lider": {
+            "es": "Un agente puede responder cuántos ingresos hubo hoy.",
+            "en": "An agent can answer how many admissions there were today."
+          },
+          "experto": {
+            "es": "Consulta a demanda bajo los permisos del catálogo; funcionalidad en vista previa.",
+            "en": "The agent reads the clean tables under the catalog's permissions."
+          }
+        }
+      ]
+    }
+  ],
+  "glosario": {
+    "es": {
+      "catálogo": "Inventario central de los datos: qué hay, dónde está y quién puede usarlo."
+    },
+    "en": {
+      "catalog": "Central inventory of the data: what exists, where it is and who may use it."
+    }
+  }
+}

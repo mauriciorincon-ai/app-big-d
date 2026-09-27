@@ -1,0 +1,433 @@
+{
+  "contrato_version": "0.3.0",
+  "gramatica_id": "prueba-agentes-ia",
+  "gramatica_version": "0.1.0",
+  "sujeto_id": "agentes-ejemplo",
+  "sujeto_nombre": {
+    "es": "Agentes Ejemplo (ficticio)"
+  },
+  "version": "0.1.0",
+  "fecha_actualizacion": "2026-09-20",
+  "estado": "aprobada",
+  "bloques": [
+    {
+      "id": "chat",
+      "nombre": {
+        "es": "Chat"
+      },
+      "banda_id": "interfaz",
+      "lider": {
+        "es": "Bloque de prueba: chat."
+      }
+    },
+    {
+      "id": "equipo",
+      "nombre": {
+        "es": "Equipo de agentes"
+      },
+      "banda_id": "agentes",
+      "lider": {
+        "es": "Bloque de prueba: equipo de agentes."
+      }
+    },
+    {
+      "id": "recuerdos",
+      "nombre": {
+        "es": "Recuerdos"
+      },
+      "banda_id": "memoria",
+      "lider": {
+        "es": "Bloque de prueba: recuerdos."
+      }
+    }
+  ],
+  "nodos": [
+    {
+      "id": "chat-ui",
+      "banda_id": "interfaz",
+      "tipo_id": "control",
+      "bloque_id": "chat",
+      "orden": 1,
+      "nombre": {
+        "es": "Chat"
+      },
+      "lider": {
+        "es": "Donde se escribe la pregunta."
+      },
+      "experto": {
+        "es": "Detalle experto de prueba: chat."
+      },
+      "por_que_importa": {
+        "es": "Sin esta pieza el recorrido de prueba se corta."
+      },
+      "madurez": "disponible",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/prueba",
+          "titulo": {
+            "es": "Fuente ficticia de prueba"
+          },
+          "fecha": "2026-09-01",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    },
+    {
+      "id": "orquestador",
+      "banda_id": "orquestacion",
+      "tipo_id": "agente",
+      "orden": 1,
+      "nombre": {
+        "es": "Orquestador"
+      },
+      "lider": {
+        "es": "Decide qué agente responde."
+      },
+      "experto": {
+        "es": "Detalle experto de prueba: orquestador."
+      },
+      "por_que_importa": {
+        "es": "Sin esta pieza el recorrido de prueba se corta."
+      },
+      "madurez": "disponible",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/prueba",
+          "titulo": {
+            "es": "Fuente ficticia de prueba"
+          },
+          "fecha": "2026-09-01",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    },
+    {
+      "id": "analista",
+      "banda_id": "agentes",
+      "tipo_id": "agente",
+      "bloque_id": "equipo",
+      "orden": 1,
+      "nombre": {
+        "es": "Agente analista"
+      },
+      "lider": {
+        "es": "Razona sobre la pregunta."
+      },
+      "experto": {
+        "es": "Detalle experto de prueba: agente analista."
+      },
+      "por_que_importa": {
+        "es": "Sin esta pieza el recorrido de prueba se corta."
+      },
+      "madurez": "disponible",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/prueba",
+          "titulo": {
+            "es": "Fuente ficticia de prueba"
+          },
+          "fecha": "2026-09-01",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    },
+    {
+      "id": "buscador",
+      "banda_id": "herramientas",
+      "tipo_id": "herramienta",
+      "orden": 1,
+      "nombre": {
+        "es": "Buscador"
+      },
+      "lider": {
+        "es": "Busca documentos."
+      },
+      "experto": {
+        "es": "Detalle experto de prueba: buscador."
+      },
+      "por_que_importa": {
+        "es": "Sin esta pieza el recorrido de prueba se corta."
+      },
+      "madurez": "disponible",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/prueba",
+          "titulo": {
+            "es": "Fuente ficticia de prueba"
+          },
+          "fecha": "2026-09-01",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    },
+    {
+      "id": "indice",
+      "banda_id": "memoria",
+      "tipo_id": "memoria",
+      "bloque_id": "recuerdos",
+      "orden": 1,
+      "nombre": {
+        "es": "Índice de documentos"
+      },
+      "lider": {
+        "es": "Lo que el sistema sabe."
+      },
+      "experto": {
+        "es": "Detalle experto de prueba: índice de documentos."
+      },
+      "por_que_importa": {
+        "es": "Sin esta pieza el recorrido de prueba se corta."
+      },
+      "madurez": "disponible",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/prueba",
+          "titulo": {
+            "es": "Fuente ficticia de prueba"
+          },
+          "fecha": "2026-09-01",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    },
+    {
+      "id": "filtro",
+      "banda_id": "guardarrailes",
+      "tipo_id": "control",
+      "orden": 1,
+      "nombre": {
+        "es": "Filtro de salida"
+      },
+      "lider": {
+        "es": "Revisa la respuesta."
+      },
+      "experto": {
+        "es": "Detalle experto de prueba: filtro de salida."
+      },
+      "por_que_importa": {
+        "es": "Sin esta pieza el recorrido de prueba se corta."
+      },
+      "madurez": "disponible",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/prueba",
+          "titulo": {
+            "es": "Fuente ficticia de prueba"
+          },
+          "fecha": "2026-09-01",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    },
+    {
+      "id": "medidor",
+      "banda_id": "costo",
+      "tipo_id": "control",
+      "orden": 1,
+      "nombre": {
+        "es": "Medidor de uso"
+      },
+      "lider": {
+        "es": "Cuenta el gasto."
+      },
+      "experto": {
+        "es": "Detalle experto de prueba: medidor de uso."
+      },
+      "por_que_importa": {
+        "es": "Sin esta pieza el recorrido de prueba se corta."
+      },
+      "madurez": "en-prueba",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/prueba",
+          "titulo": {
+            "es": "Fuente ficticia de prueba"
+          },
+          "fecha": "2026-09-01",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    }
+  ],
+  "flujos": [
+    {
+      "id": "f1",
+      "origen": "chat-ui",
+      "destino": "orquestador",
+      "modo_id": "invoca",
+      "que_viaja": {
+        "es": "Pregunta"
+      },
+      "lider": {
+        "es": "Pregunta."
+      }
+    },
+    {
+      "id": "f2",
+      "origen": "orquestador",
+      "destino": "analista",
+      "modo_id": "invoca",
+      "que_viaja": {
+        "es": "Encargo"
+      },
+      "lider": {
+        "es": "Encargo."
+      }
+    },
+    {
+      "id": "f3",
+      "origen": "analista",
+      "destino": "buscador",
+      "modo_id": "invoca",
+      "que_viaja": {
+        "es": "Búsqueda"
+      },
+      "lider": {
+        "es": "Búsqueda."
+      }
+    },
+    {
+      "id": "f4",
+      "origen": "buscador",
+      "destino": "indice",
+      "modo_id": "lee",
+      "que_viaja": {
+        "es": "Consulta"
+      },
+      "lider": {
+        "es": "Consulta."
+      }
+    },
+    {
+      "id": "f5",
+      "origen": "buscador",
+      "destino": "analista",
+      "modo_id": "devuelve",
+      "que_viaja": {
+        "es": "Documentos"
+      },
+      "lider": {
+        "es": "Documentos."
+      }
+    },
+    {
+      "id": "f6",
+      "origen": "analista",
+      "destino": "chat-ui",
+      "modo_id": "devuelve",
+      "que_viaja": {
+        "es": "Respuesta"
+      },
+      "lider": {
+        "es": "Respuesta."
+      }
+    },
+    {
+      "id": "f7",
+      "origen": "filtro",
+      "destino": "chat-ui",
+      "modo_id": "invoca",
+      "que_viaja": {
+        "es": "Revisión"
+      },
+      "lider": {
+        "es": "Revisión."
+      }
+    }
+  ],
+  "recorridos": [
+    {
+      "id": "pregunta",
+      "titulo": {
+        "es": "Una pregunta hasta su respuesta"
+      },
+      "pasos": [
+        {
+          "id": "p1",
+          "nodo_id": "chat-ui",
+          "que_pasa": {
+            "es": "La persona pregunta"
+          },
+          "lider": {
+            "es": "La persona pregunta."
+          },
+          "experto": {
+            "es": "Detalle experto: la persona pregunta."
+          }
+        },
+        {
+          "id": "p2",
+          "nodo_id": "orquestador",
+          "que_pasa": {
+            "es": "Se asigna"
+          },
+          "lider": {
+            "es": "Se asigna."
+          },
+          "experto": {
+            "es": "Detalle experto: se asigna."
+          }
+        },
+        {
+          "id": "p3",
+          "nodo_id": "analista",
+          "que_pasa": {
+            "es": "Se razona"
+          },
+          "lider": {
+            "es": "Se razona."
+          },
+          "experto": {
+            "es": "Detalle experto: se razona."
+          }
+        },
+        {
+          "id": "p4",
+          "nodo_id": "buscador",
+          "que_pasa": {
+            "es": "Se busca"
+          },
+          "lider": {
+            "es": "Se busca."
+          },
+          "experto": {
+            "es": "Detalle experto: se busca."
+          }
+        },
+        {
+          "id": "p5",
+          "nodo_id": "analista",
+          "que_pasa": {
+            "es": "Se integra"
+          },
+          "lider": {
+            "es": "Se integra."
+          },
+          "experto": {
+            "es": "Detalle experto: se integra."
+          }
+        },
+        {
+          "id": "p6",
+          "nodo_id": "chat-ui",
+          "que_pasa": {
+            "es": "Llega la respuesta"
+          },
+          "lider": {
+            "es": "Llega la respuesta."
+          },
+          "experto": {
+            "es": "Detalle experto: llega la respuesta."
+          }
+        }
+      ]
+    }
+  ]
+}

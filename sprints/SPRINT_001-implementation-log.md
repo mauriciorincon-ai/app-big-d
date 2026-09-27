@@ -92,3 +92,94 @@ Decisiones D-S1-01 a D-S1-14 y la tabla de contradicciones: en el plan aprobado,
 | ---- | -------------- | ------------ | -------------- | ----------------- |
 | `tests/unit/controladores-maqueta.test.ts` (kit) | Sí: una página nueva con controles y sin script | `docs/diseno/zz-carnada-controles.html` con un `<button>` | «zz-carnada-controles.html: 1 control(es) dibujado(s) y ningún script cargado» | ✓ 13/13 al borrarla (y 13/13 el de la etapa) |
 | `scripts/verificar-dependencias.mjs` (regla 18) | Sí: un paquete del PR por debajo de `main` | Ref temporal `refs/demo/regla-18` cuyo lockfile trae `react@99.0.0` | «react: 99.0.0 (refs/demo/regla-18) → 19.3.0 (este árbol)», salida 1 | ✓ contra `origin/main`: «653 paquetes, ninguno por debajo»; ref borrada |
+
+### Contrato v0.3.0 copiado, con su lock
+
+- `packages/diagramador/` es paquete del workspace (`pnpm-workspace.yaml` → `packages/*`, `workspace:*`,
+  `transpilePackages`). El lockfile ganó su importer en el mismo commit.
+- Copia **con `cp`**, nunca con un editor (el hook de prettier cambiaría bytes). Se copiaron
+  `CONTRATO.md`, `CHANGELOG.md`, `REGISTRO-DE-FALLAS.md`, `README.md`, `esquema/`, `gramaticas/`,
+  `ejemplos/` y `carnadas/` desde `reusables/diagramador/` (planeadora, commit `3bc3bf0`). `metricas/`
+  (tabla, cobertura, 2 woff2 y licencias) vino de `docs/diseno/assets/fuentes/`. `.prettierignore` las
+  protege.
+- **`CONTRATO.lock`**: `version: 0.3.0` + 54 líneas `shasum -a 256`. `CONTRATO.md` =
+  `763bde26…d602`, idéntica a la planeadora. `scripts/contrato/{huellas,fijar,verificar}.mjs`:
+  `verificar` compara la copia con su origen (la planeadora en local; en CI no existe y lo dice).
+
+| Gate | ¿Puede fallar? | Demo en rojo | A quién nombró | Verde al revertir |
+| ---- | -------------- | ------------ | -------------- | ----------------- |
+| `tests/unit/contrato-lock.test.ts` (57: versión, cobertura del lock, una huella por archivo, métricas = maqueta) | Sí: cualquier byte cambiado en la copia | Un espacio agregado al final de `gramaticas/plataformas-datos.json` | «gramaticas/plataformas-datos.json coincide byte a byte con su huella»; `verificar.mjs`: «la copia no coincide con CONTRATO.lock» y «DERIVA contra el origen» | ✓ 57/57 al quitarlo |
+
+### Cascarón del producto: fuentes, tokens, tema e idioma
+
+- **Rutas:** layout raíz por idioma `src/app/[idioma]/layout.tsx` (`<html lang>` desde la ruta,
+  `dynamicParams = false`, `/es` y `/en` estáticos) + layout raíz de `/` en `src/app/(raiz)/`, la
+  portada que ofrece los dos idiomas, cada entrada con su `lang`. Con dos layouts raíz no hay uno solo
+  para el 404: `src/app/global-not-found.tsx` bilingüe, con `experimental.globalNotFound` de Next 16.3
+  (documentado como experimental; se declara aquí). Fuera la plantilla de `create-next-app`: `layout`,
+  `page`, `favicon.ico` y los SVG de `public/`, incluido **`vercel.svg`, un logo de fabricante**. Ícono
+  = el signo de la marca (`src/app/icon.svg`).
+- **Fuentes (G15):** `next/font/local` con los woff2 de la maqueta (`display: block` como la maqueta),
+  variables `--letra` y `--letra-mono`. El build sirve los dos woff2 con la huella de `metricas.json`
+  (`fa5a9a0d…` Space Grotesk, `1fac9f73…` JetBrains Mono).
+- **Tokens:** el generador de paleta emite también `src/styles/tokens.css` (misma hoja);
+  `globals.css` la importa y la mapea 1:1 al `@theme inline` de Tailwind v4 (design system § 9).
+  `src/styles/base.css` porta la base de `bigd.css` (barra, página, pie, saltos).
+- **Tema (A-31 pagada):** script en `<head>` que solo aplica una elección guardada; sin elección no hay
+  atributo y manda `prefers-color-scheme` (la rama de `tokens.css` que la maqueta nunca ejerció).
+  `ConmutadorTema` con `useSyncExternalStore`: el servidor da `null` y los dos botones nacen sin
+  marcar; el árbol no cambia, solo `aria-pressed` (regla 5-a). El primer intento usaba `setState` en un
+  efecto y el lint de React lo rechazó.
+- **Idioma = ruta:** `ConmutadorIdioma` lleva a la misma página en el otro idioma. Diccionario tipado
+  `src/lib/i18n/{tipos,es,en}.ts`, redactado en los dos idiomas desde las cadenas de la maqueta.
+- **Cobertura:** `test` = `vitest run --coverage`; el paquete entra al alcance con piso 80 %.
+  `observability.ts` recibió su test (inerte sin DSN; con DSN, solo tipo y metadatos).
+  `lighthouse-urls.json` = `/`, `/es`, `/en`.
+
+| Gate | ¿Puede fallar? | Demo en rojo | A quién nombró | Verde al revertir |
+| ---- | -------------- | ------------ | -------------- | ----------------- |
+| `tests/unit/i18n.test.ts` (mismas claves, sin vacíos, todo carácter en la cobertura de Space Grotesk) | Sí: un símbolo fuera de la fuente cae a la del sistema | «Saltar al contenido ✓» | «saltarContenido: ✓» | ✓ 4/4 |
+| `paleta-diagramador`: la hoja del producto = el generador | Sí: una edición a mano de `src/styles/tokens.css` | `--fondo: #0b0f15` | «la hoja del producto (src/styles/tokens.css) es la misma que genera el generador» | ✓ 47/47 al regenerar |
+| e2e `producto-base` — tema sin elección (A-31) | Sí: la maqueta fijaba `data-theme="oscuro"` | `data-theme="oscuro"` fijo en el layout | las dos pruebas «sin elección, manda el sistema» (`Received string: "oscuro"`) | ✓ |
+| e2e `producto-base` — fuentes servidas = tabla de métricas (G15) | Sí: servir otra fuente | Space Grotesk apuntada al woff2 de JetBrains Mono | «el sitio sirve las fuentes de la tabla de métricas» (falta la huella `fa5a9a0d…`) | ✓ 34/34 e2e |
+
+### Lints G2, G3 y «planea, no opera + cero IA en runtime»
+
+- **G2** (ESLint, `packages/diagramador/src/**` y `src/engine/**`): `Math` inexacta y `random`, `**`,
+  `Date`, `Intl`, `performance`, `crypto.getRandomValues`, `localeCompare`/`toLocale*` y las APIs de
+  medición de texto.
+- **Reusable** (ESLint, paquete): no importa la app, ni el framework, ni I/O de Node.
+- **Planea, no opera** (ESLint en `src/` + test `planea-no-opera`): cero SDK de plataformas de datos o
+  de proveedores de modelos, cero dominios de ambos y cero primitivas de red en `src/` y en el paquete.
+  Excepción declarada: el SDK de Sentry del kit (inerte sin DSN).
+- **G3** (test `g3-neutralidad`): los ids y nombres de las 6 gramáticas, los 6 mapas del contrato, los
+  mapas y plataformas de `data/` (cuando existan) y las cuatro plataformas reales no aparecen en el
+  código del paquete.
+
+**Hallazgo de la demo:** la regla del reusable **no disparó** en la primera corrida. Los bloques
+«reusable» y «no opera» declaraban cada uno `no-restricted-imports` sobre el paquete. En flat config el
+último pisa al primero, así que el paquete solo tenía los patrones de «no opera». Se unieron en una sola
+regla por alcance; la segunda demo nombró los dos imports. Sin la demo, el gate habría sido decorado.
+
+| Gate | ¿Puede fallar? | Demo en rojo | A quién nombró | Verde al revertir |
+| ---- | -------------- | ------------ | -------------- | ----------------- |
+| ESLint G2 | Sí | `packages/diagramador/src/zz-carnada-g2.ts` con `Math.cos(1)` | «'Math.cos' is restricted … G2: función inexacta o azar» | ✓ lint limpio |
+| ESLint reusable | Sí (tras el arreglo) | `import { textos } from "@/lib/i18n"` + `import OpenAI from "openai"` en el paquete | «'@/lib/i18n' … no importa nada de la app» y «'openai' … Cero IA en runtime» | ✓ |
+| ESLint «no opera» en `src/` | Sí | `import OpenAI from "openai"` en `src/lib/zz-carnada-opera.ts` | «'openai' import is restricted … Cero IA en runtime» | ✓ |
+| test `planea-no-opera` | Sí | `fetch("https://api.fabric.microsoft.com/v1/workspaces")` en la misma carnada | «fabric.microsoft.com» y «\bfetch\s*\(» en `src/lib/zz-carnada-opera.ts` | ✓ 3/3 |
+| test `g3-neutralidad` | Sí | `// Fabric` agregado a `packages/diagramador/src/index.ts` | «packages/diagramador/src/index.ts: «Fabric»» | ✓ 2/2 |
+
+### ADRs por tema (inglés)
+
+`decisions/diagramador-architecture.md` · `decisions/svg-serializer-and-golden-files.md` ·
+`decisions/investigator-code-first.md` (*propuesto*: pasa a aceptado cuando la fase 3 llene su columna de
+evidencia; la plantilla no admite «código considerado») · `decisions/investigator-7s-compliance.md`
+(fuentes leídas el 2026-09-27: la página *Legal and compliance* de Claude Code y los *Consumer Terms*
+vigentes desde el 2025-10-08) · `decisions/design-mockup-destination.md` (A-25: la maqueta se sirve en
+los deploys privados durante H1, jamás en un build público, y se retira por ADR al cerrar el ciclo).
+
+### No se tocó
+
+- `docs/diseno/README.md`: la plantilla del kit v1.32.0 trae las secciones «Fase 0» y «Tokens de
+  reusables» y la fila «Preview donde se aprobó». Aplican a las próximas etapas de diseño; el registro de
+  esta etapa, ya cerrada, se conserva tal como quedó («en local; el preview devolvió 404»).

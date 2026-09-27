@@ -1,0 +1,420 @@
+{
+  "contrato_version": "0.3.0",
+  "gramatica_id": "prueba-arquitectura-app",
+  "gramatica_version": "0.1.0",
+  "sujeto_id": "app-ejemplo",
+  "sujeto_nombre": {
+    "es": "App Ejemplo (ficticia)"
+  },
+  "version": "0.1.0",
+  "fecha_actualizacion": "2026-09-20",
+  "estado": "aprobada",
+  "bloques": [
+    {
+      "id": "pantallas",
+      "nombre": {
+        "es": "Pantallas"
+      },
+      "banda_id": "cliente",
+      "lider": {
+        "es": "Bloque de prueba: pantallas."
+      }
+    },
+    {
+      "id": "rutas",
+      "nombre": {
+        "es": "Rutas"
+      },
+      "banda_id": "app",
+      "lider": {
+        "es": "Bloque de prueba: rutas."
+      }
+    },
+    {
+      "id": "bd",
+      "nombre": {
+        "es": "Base de datos"
+      },
+      "banda_id": "datos",
+      "lider": {
+        "es": "Bloque de prueba: base de datos."
+      }
+    }
+  ],
+  "nodos": [
+    {
+      "id": "navegador",
+      "banda_id": "cliente",
+      "tipo_id": "interfaz",
+      "bloque_id": "pantallas",
+      "orden": 1,
+      "nombre": {
+        "es": "Pantalla"
+      },
+      "lider": {
+        "es": "Lo que el usuario toca."
+      },
+      "experto": {
+        "es": "Detalle experto de prueba: pantalla."
+      },
+      "por_que_importa": {
+        "es": "Sin esta pieza el recorrido de prueba se corta."
+      },
+      "madurez": "disponible",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/prueba",
+          "titulo": {
+            "es": "Fuente ficticia de prueba"
+          },
+          "fecha": "2026-09-01",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    },
+    {
+      "id": "ruta",
+      "banda_id": "app",
+      "tipo_id": "logica",
+      "bloque_id": "rutas",
+      "orden": 1,
+      "nombre": {
+        "es": "Ruta del servidor"
+      },
+      "lider": {
+        "es": "Recibe la acción."
+      },
+      "experto": {
+        "es": "Detalle experto de prueba: ruta del servidor."
+      },
+      "por_que_importa": {
+        "es": "Sin esta pieza el recorrido de prueba se corta."
+      },
+      "madurez": "disponible",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/prueba",
+          "titulo": {
+            "es": "Fuente ficticia de prueba"
+          },
+          "fecha": "2026-09-01",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    },
+    {
+      "id": "correo",
+      "banda_id": "servicios",
+      "tipo_id": "integracion",
+      "orden": 1,
+      "nombre": {
+        "es": "Servicio de correo"
+      },
+      "lider": {
+        "es": "Envía avisos."
+      },
+      "experto": {
+        "es": "Detalle experto de prueba: servicio de correo."
+      },
+      "por_que_importa": {
+        "es": "Sin esta pieza el recorrido de prueba se corta."
+      },
+      "madurez": "disponible",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/prueba",
+          "titulo": {
+            "es": "Fuente ficticia de prueba"
+          },
+          "fecha": "2026-09-01",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    },
+    {
+      "id": "tabla",
+      "banda_id": "datos",
+      "tipo_id": "persistencia",
+      "bloque_id": "bd",
+      "orden": 1,
+      "nombre": {
+        "es": "Tabla"
+      },
+      "lider": {
+        "es": "Guarda la acción."
+      },
+      "experto": {
+        "es": "Detalle experto de prueba: tabla."
+      },
+      "por_que_importa": {
+        "es": "Sin esta pieza el recorrido de prueba se corta."
+      },
+      "madurez": "disponible",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/prueba",
+          "titulo": {
+            "es": "Fuente ficticia de prueba"
+          },
+          "fecha": "2026-09-01",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    },
+    {
+      "id": "proveedor",
+      "banda_id": "externos",
+      "tipo_id": "integracion",
+      "orden": 1,
+      "nombre": {
+        "es": "Proveedor externo"
+      },
+      "lider": {
+        "es": "Un servicio de afuera."
+      },
+      "experto": {
+        "es": "Detalle experto de prueba: proveedor externo."
+      },
+      "por_que_importa": {
+        "es": "Sin esta pieza el recorrido de prueba se corta."
+      },
+      "madurez": "disponible",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/prueba",
+          "titulo": {
+            "es": "Fuente ficticia de prueba"
+          },
+          "fecha": "2026-09-01",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    },
+    {
+      "id": "politicas",
+      "banda_id": "seguridad",
+      "tipo_id": "control",
+      "orden": 1,
+      "nombre": {
+        "es": "Políticas por fila"
+      },
+      "lider": {
+        "es": "Cada usuario ve lo suyo."
+      },
+      "experto": {
+        "es": "Detalle experto de prueba: políticas por fila."
+      },
+      "por_que_importa": {
+        "es": "Sin esta pieza el recorrido de prueba se corta."
+      },
+      "madurez": "disponible",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/prueba",
+          "titulo": {
+            "es": "Fuente ficticia de prueba"
+          },
+          "fecha": "2026-09-01",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    },
+    {
+      "id": "trazas",
+      "banda_id": "observabilidad",
+      "tipo_id": "control",
+      "orden": 1,
+      "nombre": {
+        "es": "Trazas"
+      },
+      "lider": {
+        "es": "Deja rastro de errores."
+      },
+      "experto": {
+        "es": "Detalle experto de prueba: trazas."
+      },
+      "por_que_importa": {
+        "es": "Sin esta pieza el recorrido de prueba se corta."
+      },
+      "madurez": "disponible",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/prueba",
+          "titulo": {
+            "es": "Fuente ficticia de prueba"
+          },
+          "fecha": "2026-09-01",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    }
+  ],
+  "flujos": [
+    {
+      "id": "f1",
+      "origen": "navegador",
+      "destino": "ruta",
+      "modo_id": "peticion",
+      "que_viaja": {
+        "es": "Acción"
+      },
+      "lider": {
+        "es": "Acción."
+      }
+    },
+    {
+      "id": "f2",
+      "origen": "ruta",
+      "destino": "tabla",
+      "modo_id": "peticion",
+      "que_viaja": {
+        "es": "Escritura"
+      },
+      "lider": {
+        "es": "Escritura."
+      }
+    },
+    {
+      "id": "f3",
+      "origen": "tabla",
+      "destino": "ruta",
+      "modo_id": "peticion",
+      "que_viaja": {
+        "es": "Confirmación"
+      },
+      "lider": {
+        "es": "Confirmación."
+      }
+    },
+    {
+      "id": "f4",
+      "origen": "ruta",
+      "destino": "navegador",
+      "modo_id": "peticion",
+      "que_viaja": {
+        "es": "Respuesta"
+      },
+      "lider": {
+        "es": "Respuesta."
+      }
+    },
+    {
+      "id": "f5",
+      "origen": "ruta",
+      "destino": "correo",
+      "modo_id": "evento",
+      "que_viaja": {
+        "es": "Aviso"
+      },
+      "lider": {
+        "es": "Aviso."
+      }
+    },
+    {
+      "id": "f6",
+      "origen": "correo",
+      "destino": "proveedor",
+      "modo_id": "evento",
+      "que_viaja": {
+        "es": "Mensaje"
+      },
+      "lider": {
+        "es": "Mensaje."
+      }
+    },
+    {
+      "id": "f7",
+      "origen": "politicas",
+      "destino": "tabla",
+      "modo_id": "peticion",
+      "que_viaja": {
+        "es": "Filtro"
+      },
+      "lider": {
+        "es": "Filtro."
+      }
+    }
+  ],
+  "recorridos": [
+    {
+      "id": "accion",
+      "titulo": {
+        "es": "Una acción del usuario, ida y vuelta"
+      },
+      "pasos": [
+        {
+          "id": "p1",
+          "nodo_id": "navegador",
+          "que_pasa": {
+            "es": "El usuario actúa"
+          },
+          "lider": {
+            "es": "El usuario actúa."
+          },
+          "experto": {
+            "es": "Detalle experto: el usuario actúa."
+          }
+        },
+        {
+          "id": "p2",
+          "nodo_id": "ruta",
+          "que_pasa": {
+            "es": "La app recibe"
+          },
+          "lider": {
+            "es": "La app recibe."
+          },
+          "experto": {
+            "es": "Detalle experto: la app recibe."
+          }
+        },
+        {
+          "id": "p3",
+          "nodo_id": "tabla",
+          "que_pasa": {
+            "es": "Se guarda"
+          },
+          "lider": {
+            "es": "Se guarda."
+          },
+          "experto": {
+            "es": "Detalle experto: se guarda."
+          }
+        },
+        {
+          "id": "p4",
+          "nodo_id": "ruta",
+          "que_pasa": {
+            "es": "Se confirma"
+          },
+          "lider": {
+            "es": "Se confirma."
+          },
+          "experto": {
+            "es": "Detalle experto: se confirma."
+          }
+        },
+        {
+          "id": "p5",
+          "nodo_id": "navegador",
+          "que_pasa": {
+            "es": "El usuario ve el resultado"
+          },
+          "lider": {
+            "es": "El usuario ve el resultado."
+          },
+          "experto": {
+            "es": "Detalle experto: el usuario ve el resultado."
+          }
+        }
+      ]
+    }
+  ]
+}

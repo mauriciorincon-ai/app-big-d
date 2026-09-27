@@ -1,26 +1,26 @@
 @import "tailwindcss";
+/* Tokens GENERADOS por scripts/paleta/generar-tokens.mjs (mismo contenido que la maqueta; el gate
+   `paleta-diagramador` detecta la deriva). Tema: atributo data-theme en <html>; sin atributo manda
+   prefers-color-scheme, y sin preferencia, oscuro (design-system.md § 9). */
+@import "../styles/tokens.css";
+@import "../styles/base.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/* Contrato con el código (design-system.md § 9): los tokens pasan 1:1 al @theme de Tailwind v4. */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  --color-fondo: var(--fondo);
+  --color-sup-1: var(--sup-1);
+  --color-sup-2: var(--sup-2);
+  --color-linea: var(--linea);
+  --color-tinta-1: var(--tinta-1);
+  --color-tinta-2: var(--tinta-2);
+  --color-tipo-1: var(--tipo-1);
+  --color-tipo-2: var(--tipo-2);
+  --color-tipo-3: var(--tipo-3);
+  --color-tipo-4: var(--tipo-4);
+  --color-tipo-5: var(--tipo-5);
+  --color-tipo-6: var(--tipo-6);
+  --color-tipo-7: var(--tipo-7);
+  --color-tipo-8: var(--tipo-8);
+  --font-sans: var(--letra);
+  --font-mono: var(--letra-mono);
 }

@@ -58,6 +58,9 @@ describe("paleta del diagramador — tokens generados, sin deriva", () => {
       css(construir()),
     );
   });
+  it("la hoja del producto (src/styles/tokens.css) es la misma que genera el generador", () => {
+    expect(readFileSync("src/styles/tokens.css", "utf8")).toBe(css(construir()));
+  });
   it("hay exactamente un token por tipo de la gramática y ninguno repetido", () => {
     expect(new Set(tipos).size).toBe(tipos.length);
     for (const tema of temas) {

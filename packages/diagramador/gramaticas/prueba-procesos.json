@@ -1,0 +1,160 @@
+{
+  "contrato_version": "0.3.0",
+  "id": "prueba-procesos",
+  "version": "0.1.0",
+  "nombre": {
+    "es": "Procesos de negocio (prueba)"
+  },
+  "descripcion": "Prueba de generalidad: recorrido de un caso con carriles por actor (sin capas).",
+  "idiomas": [
+    "es"
+  ],
+  "idioma_base": "es",
+  "bandas": [
+    {
+      "id": "paciente",
+      "nombre": {
+        "es": "Paciente"
+      },
+      "clase": "carril",
+      "orden": 1,
+      "pregunta_lider": {
+        "es": "¿Qué hace la persona?"
+      }
+    },
+    {
+      "id": "admisiones",
+      "nombre": {
+        "es": "Admisiones"
+      },
+      "clase": "carril",
+      "orden": 2,
+      "pregunta_lider": {
+        "es": "¿Qué hace admisiones?"
+      }
+    },
+    {
+      "id": "enfermeria",
+      "nombre": {
+        "es": "Enfermería"
+      },
+      "clase": "carril",
+      "orden": 3,
+      "pregunta_lider": {
+        "es": "¿Qué hace enfermería?"
+      }
+    },
+    {
+      "id": "facturacion",
+      "nombre": {
+        "es": "Facturación"
+      },
+      "clase": "carril",
+      "orden": 4,
+      "pregunta_lider": {
+        "es": "¿Qué hace facturación?"
+      }
+    }
+  ],
+  "tipos_de_nodo": [
+    {
+      "id": "tarea",
+      "nombre": {
+        "es": "Tarea"
+      },
+      "token_color": "tipo-1",
+      "glifo": "cuadrado",
+      "etiqueta_corta": {
+        "es": "TAR"
+      }
+    },
+    {
+      "id": "decision",
+      "nombre": {
+        "es": "Decisión"
+      },
+      "token_color": "tipo-2",
+      "glifo": "rombo",
+      "etiqueta_corta": {
+        "es": "DEC"
+      }
+    },
+    {
+      "id": "evento",
+      "nombre": {
+        "es": "Evento"
+      },
+      "token_color": "tipo-3",
+      "glifo": "circulo",
+      "etiqueta_corta": {
+        "es": "EVT"
+      }
+    }
+  ],
+  "modos_de_flujo": [
+    {
+      "id": "secuencia",
+      "nombre": {
+        "es": "Secuencia"
+      },
+      "estilo_linea": "continua",
+      "marcador": "ninguno",
+      "descripcion": {
+        "es": "Sigue el paso siguiente"
+      }
+    },
+    {
+      "id": "mensaje",
+      "nombre": {
+        "es": "Mensaje"
+      },
+      "estilo_linea": "discontinua",
+      "marcador": "onda",
+      "descripcion": {
+        "es": "Avisa a otro actor"
+      }
+    }
+  ],
+  "escala_madurez": [
+    {
+      "id": "disponible",
+      "nombre": {
+        "es": "Disponible"
+      },
+      "nivel": 4,
+      "disponible": true
+    },
+    {
+      "id": "en-prueba",
+      "nombre": {
+        "es": "En prueba"
+      },
+      "nivel": 1,
+      "disponible": false
+    }
+  ],
+  "vigencia": {
+    "umbral_revisar_dias": 30,
+    "umbral_vencido_dias": 60
+  },
+  "recorrido_referencia": {
+    "desde_bandas": [
+      "paciente"
+    ],
+    "hasta_bandas": [
+      "facturacion"
+    ],
+    "llegadas": "alguna"
+  },
+  "limites": {
+    "bloques_min": 0,
+    "bloques_max": 6,
+    "frases_lider_max": 2,
+    "nodos_por_banda_max": 6
+  },
+  "terminos_a_explicar": {
+    "es": [
+      "triage"
+    ]
+  }
+}

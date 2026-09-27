@@ -1,0 +1,329 @@
+{
+  "contrato_version": "0.3.0",
+  "gramatica_id": "prueba-nubes",
+  "gramatica_version": "0.1.0",
+  "sujeto_id": "nube-ejemplo",
+  "sujeto_nombre": {
+    "es": "Nube Ejemplo (ficticia)"
+  },
+  "version": "0.1.0",
+  "fecha_actualizacion": "2026-09-20",
+  "estado": "aprobada",
+  "bloques": [
+    {
+      "id": "entrada",
+      "nombre": {
+        "es": "Entrada"
+      },
+      "banda_id": "acceso",
+      "lider": {
+        "es": "Bloque de prueba: entrada."
+      }
+    },
+    {
+      "id": "ejecucion",
+      "nombre": {
+        "es": "Ejecución"
+      },
+      "banda_id": "computo",
+      "lider": {
+        "es": "Bloque de prueba: ejecución."
+      }
+    },
+    {
+      "id": "persistencia",
+      "nombre": {
+        "es": "Persistencia"
+      },
+      "banda_id": "datos",
+      "lider": {
+        "es": "Bloque de prueba: persistencia."
+      }
+    }
+  ],
+  "nodos": [
+    {
+      "id": "balanceador",
+      "banda_id": "acceso",
+      "tipo_id": "servicio-red",
+      "bloque_id": "entrada",
+      "orden": 1,
+      "nombre": {
+        "es": "Balanceador"
+      },
+      "lider": {
+        "es": "Reparte las peticiones."
+      },
+      "experto": {
+        "es": "Detalle experto de prueba: balanceador."
+      },
+      "por_que_importa": {
+        "es": "Sin esta pieza el recorrido de prueba se corta."
+      },
+      "madurez": "disponible",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/prueba",
+          "titulo": {
+            "es": "Fuente ficticia de prueba"
+          },
+          "fecha": "2026-09-01",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    },
+    {
+      "id": "funcion",
+      "banda_id": "computo",
+      "tipo_id": "servicio-computo",
+      "bloque_id": "ejecucion",
+      "orden": 1,
+      "nombre": {
+        "es": "Función"
+      },
+      "lider": {
+        "es": "Ejecuta el código."
+      },
+      "experto": {
+        "es": "Detalle experto de prueba: función."
+      },
+      "por_que_importa": {
+        "es": "Sin esta pieza el recorrido de prueba se corta."
+      },
+      "madurez": "disponible",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/prueba",
+          "titulo": {
+            "es": "Fuente ficticia de prueba"
+          },
+          "fecha": "2026-09-01",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    },
+    {
+      "id": "cola",
+      "banda_id": "computo",
+      "tipo_id": "servicio-computo",
+      "bloque_id": "ejecucion",
+      "orden": 2,
+      "nombre": {
+        "es": "Cola"
+      },
+      "lider": {
+        "es": "Guarda tareas pendientes."
+      },
+      "experto": {
+        "es": "Detalle experto de prueba: cola."
+      },
+      "por_que_importa": {
+        "es": "Sin esta pieza el recorrido de prueba se corta."
+      },
+      "madurez": "disponible",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/prueba",
+          "titulo": {
+            "es": "Fuente ficticia de prueba"
+          },
+          "fecha": "2026-09-01",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    },
+    {
+      "id": "base",
+      "banda_id": "datos",
+      "tipo_id": "servicio-datos",
+      "bloque_id": "persistencia",
+      "orden": 1,
+      "nombre": {
+        "es": "Base de datos"
+      },
+      "lider": {
+        "es": "Guarda los registros."
+      },
+      "experto": {
+        "es": "Detalle experto de prueba: base de datos."
+      },
+      "por_que_importa": {
+        "es": "Sin esta pieza el recorrido de prueba se corta."
+      },
+      "madurez": "disponible",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/prueba",
+          "titulo": {
+            "es": "Fuente ficticia de prueba"
+          },
+          "fecha": "2026-09-01",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    },
+    {
+      "id": "directorio",
+      "banda_id": "identidad",
+      "tipo_id": "servicio-identidad",
+      "orden": 1,
+      "nombre": {
+        "es": "Directorio"
+      },
+      "lider": {
+        "es": "Sabe quién es cada usuario."
+      },
+      "experto": {
+        "es": "Detalle experto de prueba: directorio."
+      },
+      "por_que_importa": {
+        "es": "Sin esta pieza el recorrido de prueba se corta."
+      },
+      "madurez": "disponible",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/prueba",
+          "titulo": {
+            "es": "Fuente ficticia de prueba"
+          },
+          "fecha": "2026-09-01",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    },
+    {
+      "id": "cortafuegos",
+      "banda_id": "red",
+      "tipo_id": "servicio-red",
+      "orden": 1,
+      "nombre": {
+        "es": "Cortafuegos"
+      },
+      "lider": {
+        "es": "Bloquea lo que no debe pasar."
+      },
+      "experto": {
+        "es": "Detalle experto de prueba: cortafuegos."
+      },
+      "por_que_importa": {
+        "es": "Sin esta pieza el recorrido de prueba se corta."
+      },
+      "madurez": "disponible",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/prueba",
+          "titulo": {
+            "es": "Fuente ficticia de prueba"
+          },
+          "fecha": "2026-09-01",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    }
+  ],
+  "flujos": [
+    {
+      "id": "f1",
+      "origen": "balanceador",
+      "destino": "funcion",
+      "modo_id": "sincrono",
+      "que_viaja": {
+        "es": "Petición"
+      },
+      "lider": {
+        "es": "Petición."
+      }
+    },
+    {
+      "id": "f2",
+      "origen": "funcion",
+      "destino": "cola",
+      "modo_id": "asincrono",
+      "que_viaja": {
+        "es": "Tarea"
+      },
+      "lider": {
+        "es": "Tarea."
+      }
+    },
+    {
+      "id": "f3",
+      "origen": "funcion",
+      "destino": "base",
+      "modo_id": "sincrono",
+      "que_viaja": {
+        "es": "Consulta"
+      },
+      "lider": {
+        "es": "Consulta."
+      }
+    },
+    {
+      "id": "f4",
+      "origen": "directorio",
+      "destino": "funcion",
+      "modo_id": "sincrono",
+      "que_viaja": {
+        "es": "Identidad"
+      },
+      "lider": {
+        "es": "Identidad."
+      }
+    }
+  ],
+  "recorridos": [
+    {
+      "id": "peticion",
+      "titulo": {
+        "es": "Una petición de punta a punta"
+      },
+      "pasos": [
+        {
+          "id": "p1",
+          "nodo_id": "balanceador",
+          "que_pasa": {
+            "es": "Llega la petición"
+          },
+          "lider": {
+            "es": "Llega la petición."
+          },
+          "experto": {
+            "es": "Detalle experto: llega la petición."
+          }
+        },
+        {
+          "id": "p2",
+          "nodo_id": "funcion",
+          "que_pasa": {
+            "es": "Se ejecuta"
+          },
+          "lider": {
+            "es": "Se ejecuta."
+          },
+          "experto": {
+            "es": "Detalle experto: se ejecuta."
+          }
+        },
+        {
+          "id": "p3",
+          "nodo_id": "base",
+          "que_pasa": {
+            "es": "Se guarda"
+          },
+          "lider": {
+            "es": "Se guarda."
+          },
+          "experto": {
+            "es": "Detalle experto: se guarda."
+          }
+        }
+      ]
+    }
+  ]
+}

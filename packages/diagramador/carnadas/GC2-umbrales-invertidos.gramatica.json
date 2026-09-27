@@ -1,0 +1,435 @@
+{
+  "contrato_version": "0.3.0",
+  "id": "plataformas-datos",
+  "version": "0.2.0",
+  "nombre": {
+    "es": "Plataformas de datos",
+    "en": "Data platforms"
+  },
+  "descripcion": "Gramática del piloto (big-d, Atlas M11). Capas y preguntas de la sección 10.6 de los requerimientos v1.1; tipos = las seis capacidades de la sección 10.2 más dos tipos sin capacidad (sistemas externos y operación), que la especificación no cubre (gap registrado en la F1). Desviación declarada de § 10.6 (G-Diseño, P9): Orquestación es TRANSVERSAL (tercera franja: primero el dato —gobierno—, luego el control —operación—, al final quién dispara), porque ningún registro pasa por ella y su único flujo va hacia atrás; el tipo cap-transformacion ya se llama «Transformación y orquestación». Textos EN redactados en la Etapa de Diseño (docs/diseno/diagramador-tokens.md § 16).",
+  "idiomas": [
+    "es",
+    "en"
+  ],
+  "idioma_base": "es",
+  "bandas": [
+    {
+      "id": "fuentes",
+      "nombre": {
+        "es": "Fuentes",
+        "en": "Sources"
+      },
+      "clase": "capa",
+      "orden": 1,
+      "pregunta_lider": {
+        "es": "¿De dónde vienen los datos?",
+        "en": "Where does the data come from?"
+      }
+    },
+    {
+      "id": "ingesta",
+      "nombre": {
+        "es": "Ingesta",
+        "en": "Ingestion"
+      },
+      "clase": "capa",
+      "orden": 2,
+      "pregunta_lider": {
+        "es": "¿Cómo entran los datos a la plataforma?",
+        "en": "How does data get into the platform?"
+      }
+    },
+    {
+      "id": "almacenamiento",
+      "nombre": {
+        "es": "Almacenamiento",
+        "en": "Storage"
+      },
+      "clase": "capa",
+      "orden": 3,
+      "pregunta_lider": {
+        "es": "¿Dónde y en qué formato se guardan?",
+        "en": "Where is it kept, and in what format?"
+      }
+    },
+    {
+      "id": "procesamiento",
+      "nombre": {
+        "es": "Procesamiento y transformación",
+        "en": "Processing and transformation"
+      },
+      "clase": "capa",
+      "orden": 4,
+      "pregunta_lider": {
+        "es": "¿Con qué motor se limpian, combinan y preparan?",
+        "en": "What engine cleans, joins and prepares it?"
+      }
+    },
+    {
+      "id": "consumo",
+      "nombre": {
+        "es": "Consumo",
+        "en": "Consumption"
+      },
+      "clase": "capa",
+      "orden": 5,
+      "pregunta_lider": {
+        "es": "¿Cómo llegan a tableros, reportes y aplicaciones?",
+        "en": "How does it reach dashboards, reports and apps?"
+      }
+    },
+    {
+      "id": "ia",
+      "nombre": {
+        "es": "Inteligencia artificial",
+        "en": "Artificial intelligence"
+      },
+      "clase": "capa",
+      "orden": 6,
+      "pregunta_lider": {
+        "es": "¿Cómo se construyen modelos y agentes sobre los datos?",
+        "en": "How are models and agents built on the data?"
+      }
+    },
+    {
+      "id": "gobierno",
+      "nombre": {
+        "es": "Gobierno y seguridad",
+        "en": "Governance and security"
+      },
+      "clase": "transversal",
+      "orden": 1,
+      "pregunta_lider": {
+        "es": "¿Quién puede ver qué, y cómo se audita?",
+        "en": "Who can see what, and how is it audited?"
+      }
+    },
+    {
+      "id": "operacion",
+      "nombre": {
+        "es": "Operación y costo",
+        "en": "Operations and cost"
+      },
+      "clase": "transversal",
+      "orden": 2,
+      "pregunta_lider": {
+        "es": "¿Cómo se vigila, se despliega y se paga?",
+        "en": "How is it monitored, deployed and paid for?"
+      }
+    },
+    {
+      "id": "orquestacion",
+      "nombre": {
+        "es": "Orquestación",
+        "en": "Orchestration"
+      },
+      "clase": "transversal",
+      "orden": 3,
+      "pregunta_lider": {
+        "es": "¿Quién decide qué se ejecuta y cuándo?",
+        "en": "Who decides what runs, and when?"
+      }
+    }
+  ],
+  "tipos_de_nodo": [
+    {
+      "id": "cap-ingesta",
+      "nombre": {
+        "es": "Ingesta e integración de datos",
+        "en": "Data ingestion and integration"
+      },
+      "token_color": "tipo-1",
+      "glifo": "triangulo",
+      "etiqueta_corta": {
+        "es": "ING",
+        "en": "ING"
+      }
+    },
+    {
+      "id": "cap-almacenamiento",
+      "nombre": {
+        "es": "Almacenamiento y formato abierto",
+        "en": "Storage and open formats"
+      },
+      "token_color": "tipo-2",
+      "glifo": "cuadrado",
+      "etiqueta_corta": {
+        "es": "ALM",
+        "en": "STO"
+      }
+    },
+    {
+      "id": "cap-transformacion",
+      "nombre": {
+        "es": "Transformación y orquestación",
+        "en": "Transformation and orchestration"
+      },
+      "token_color": "tipo-3",
+      "glifo": "rombo",
+      "etiqueta_corta": {
+        "es": "TRA",
+        "en": "TRA"
+      }
+    },
+    {
+      "id": "cap-gobierno",
+      "nombre": {
+        "es": "Gobierno, seguridad y linaje",
+        "en": "Governance, security and lineage"
+      },
+      "token_color": "tipo-4",
+      "glifo": "escudo",
+      "etiqueta_corta": {
+        "es": "GOB",
+        "en": "GOV"
+      }
+    },
+    {
+      "id": "cap-consumo",
+      "nombre": {
+        "es": "Consumo analítico e inteligencia de negocio",
+        "en": "Analytics and business intelligence"
+      },
+      "token_color": "tipo-5",
+      "glifo": "circulo",
+      "etiqueta_corta": {
+        "es": "CON",
+        "en": "CON"
+      }
+    },
+    {
+      "id": "cap-ia",
+      "nombre": {
+        "es": "Inteligencia artificial y agentes sobre los datos",
+        "en": "AI and agents on the data"
+      },
+      "token_color": "tipo-6",
+      "glifo": "estrella",
+      "etiqueta_corta": {
+        "es": "IA",
+        "en": "AI"
+      }
+    },
+    {
+      "id": "tipo-externo",
+      "nombre": {
+        "es": "Sistema externo a la plataforma",
+        "en": "System outside the platform"
+      },
+      "token_color": "tipo-7",
+      "glifo": "anillo",
+      "etiqueta_corta": {
+        "es": "EXT",
+        "en": "EXT"
+      }
+    },
+    {
+      "id": "tipo-operacion",
+      "nombre": {
+        "es": "Operación, monitoreo y costo",
+        "en": "Operations, monitoring and cost"
+      },
+      "token_color": "tipo-8",
+      "glifo": "barras",
+      "etiqueta_corta": {
+        "es": "OPE",
+        "en": "OPS"
+      }
+    }
+  ],
+  "modos_de_flujo": [
+    {
+      "id": "por-lotes",
+      "nombre": {
+        "es": "Por lotes",
+        "en": "In batches"
+      },
+      "estilo_linea": "discontinua",
+      "marcador": "cuadros",
+      "descripcion": {
+        "es": "Viaja en tandas programadas.",
+        "en": "Travels in scheduled batches."
+      }
+    },
+    {
+      "id": "continuo",
+      "nombre": {
+        "es": "Continuo",
+        "en": "Continuous"
+      },
+      "estilo_linea": "continua",
+      "marcador": "onda",
+      "descripcion": {
+        "es": "Viaja a medida que ocurre.",
+        "en": "Travels as it happens."
+      }
+    },
+    {
+      "id": "a-demanda",
+      "nombre": {
+        "es": "A demanda",
+        "en": "On request"
+      },
+      "estilo_linea": "punteada",
+      "marcador": "ida-y-vuelta",
+      "descripcion": {
+        "es": "Viaja cuando alguien lo pide.",
+        "en": "Travels when someone asks for it."
+      }
+    },
+    {
+      "id": "sin-copia",
+      "nombre": {
+        "es": "Sin copia",
+        "en": "No copy"
+      },
+      "estilo_linea": "doble",
+      "marcador": "enlace",
+      "descripcion": {
+        "es": "Se lee en su lugar, sin copiarlo.",
+        "en": "Read where it lives, never copied."
+      }
+    }
+  ],
+  "escala_madurez": [
+    {
+      "id": "disponible-general",
+      "nombre": {
+        "es": "Disponible de forma general",
+        "en": "Generally available"
+      },
+      "nivel": 4,
+      "disponible": true
+    },
+    {
+      "id": "vista-previa-publica",
+      "nombre": {
+        "es": "Vista previa pública",
+        "en": "Public preview"
+      },
+      "nivel": 3,
+      "disponible": false
+    },
+    {
+      "id": "vista-previa-privada",
+      "nombre": {
+        "es": "Vista previa privada",
+        "en": "Private preview"
+      },
+      "nivel": 2,
+      "disponible": false
+    },
+    {
+      "id": "beta",
+      "nombre": {
+        "es": "Beta",
+        "en": "Beta"
+      },
+      "nivel": 1,
+      "disponible": false
+    },
+    {
+      "id": "anunciado",
+      "nombre": {
+        "es": "Anunciado",
+        "en": "Announced"
+      },
+      "nivel": 0,
+      "disponible": false
+    },
+    {
+      "id": "retirado",
+      "nombre": {
+        "es": "Retirado",
+        "en": "Retired"
+      },
+      "nivel": -1,
+      "disponible": false
+    }
+  ],
+  "vigencia": {
+    "umbral_revisar_dias": 60,
+    "umbral_vencido_dias": 60
+  },
+  "recorrido_referencia": {
+    "desde_bandas": [
+      "fuentes"
+    ],
+    "hasta_bandas": [
+      "consumo",
+      "ia"
+    ],
+    "llegadas": "todas"
+  },
+  "limites": {
+    "bloques_min": 5,
+    "bloques_max": 8,
+    "frases_lider_max": 2,
+    "nodos_por_banda_max": 6
+  },
+  "terminos_a_explicar": {
+    "es": [
+      "lakehouse",
+      "data lake",
+      "warehouse",
+      "delta",
+      "parquet",
+      "iceberg",
+      "cdc",
+      "etl",
+      "elt",
+      "spark",
+      "sql",
+      "api",
+      "clúster",
+      "cluster",
+      "esquema",
+      "catálogo",
+      "linaje",
+      "capa semántica",
+      "vector",
+      "embedding",
+      "serverless",
+      "pipeline",
+      "streaming",
+      "orquestación",
+      "cómputo",
+      "sku",
+      "rls",
+      "notebook",
+      "metadatos",
+      "token"
+    ],
+    "en": [
+      "lakehouse",
+      "data lake",
+      "warehouse",
+      "delta",
+      "parquet",
+      "iceberg",
+      "cdc",
+      "etl",
+      "elt",
+      "spark",
+      "sql",
+      "api",
+      "cluster",
+      "schema",
+      "catalog",
+      "lineage",
+      "semantic layer",
+      "vector",
+      "embedding",
+      "serverless",
+      "pipeline",
+      "streaming",
+      "orchestration",
+      "compute",
+      "sku",
+      "rls",
+      "notebook",
+      "metadata",
+      "token"
+    ]
+  }
+}
