@@ -8,7 +8,7 @@ gramatica_del_diagrama: docs/diseno/diagramador-tokens.md
 
 # Big-D — design system
 
-> **Fuente de verdad visual de Big-D.** Versión 0.5.1: completa para la mirada 4 (el H1 entero), con todos los
+> **Fuente de verdad visual de Big-D.** Versión 0.5.2: completa para la mirada 4 (el H1 entero), con la portada rehecha tras G-Diseño, con todos los
 > componentes canon y sus estados, vistos en `docs/diseno/kit.html` y en las páginas del atlas. Lo
 > que toca al diagrama vive en `docs/diseno/diagramador-tokens.md`, porque es contrato del
 > reusable y no estilo de esta app. Se sella en G-Diseño.
@@ -201,7 +201,7 @@ hace la jerarquía.
 | **Vista de impresión**           | papel claro en cualquier tema (clase `tema-claro`, generada en tokens.css), ancho A4, filete de 2 px en lugar de sombra, cabecera de página, saltos marcados; `@media print` usa la misma hoja | —                                                                      | informe                |
 | **Fila de validación**           | símbolo + enunciado + detalle (esperado/obtenido, casos y semilla, referencia) | detectado · no detectado (recuadro discontinuo + causa + qué se corrige) | `instrumento.html`     |
 | **Bloqueo de publicación**       | salida de terminal en mono + «No se publica» + qué no se publica, qué sigue vigente y cómo destrabar | —                                                                      | instrumento            |
-| **Tarjeta de recorrido**         | número · pantalla · códigos de la VISION · estados · estado de su mirada | aprobada · por mirar                                                  | `index.html`           |
+| **Mapa del recorrido**           | etapas como bandas (ojo «Etapa n», nombre, pregunta) con flecha entre ellas · pantallas como nodos (miniatura decorativa, número, nombre, una frase, códigos de la VISION) · transversales abajo, a todo lo ancho. En ancho las bandas comparten filas (subgrid) y quedan alineadas; debajo de 1200 px se apilan con la flecha hacia abajo | ancho · apilado · teléfono | `index.html`           |
 | **Botón**                        | principal lleno de tinta · secundario en contorno · deshabilitado al 45 %; 40 px de alto, esquina 4 px                                                                   | normal · presionado · deshabilitado                                    | todas                  |
 
 ## 6. Iconografía
@@ -291,6 +291,7 @@ corren con `pnpm test`: `paleta-diagramador` comprueba que de verdad no llega a 
 
 | Versión | Fecha      | Cambio                                                                                                                                                                                                                                                                   |
 | ------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 0.5.2   | 2026-09-27 | G-Diseño: la portada deja la rejilla de tarjetas iguales (antipatrón del § 8, y el usuario no la vio ordenada) y se dibuja con la gramática del atlas: cuatro etapas como bandas, nodos con miniatura de la pantalla y transversales abajo (D81). Fuera la «tarjeta de recorrido» y el estado de mirada por tarjeta: la aprobación va una sola vez, en la cabecera. |
 | 0.5.1   | 2026-09-27 | Auditoría de la etapa: fuera los tokens sin uso (`tipo-N-tinte`, `tinta-3`); dos claridades del claro salen de la búsqueda sin el relleno retirado (naranja `#d27908`, rojo `#c74a4d`); espacio y radios declarados como escala objetivo del S1; h1 a 700; foco que suma al borde; saltos al contenido y al diagrama; contrato de foco de la ficha; «Reproducir» oculto por CSS con movimiento reducido; nota de marcas y selector del atlas pasan al S1; degradados funcionales declarados. La ficha del nivel 2 por fin abre (la página no cargaba su script). |
 | 0.5.0   | 2026-09-26 | Mirada 4: decisiones y riesgos, hoja de ruta e informe, instrumento y recorrido (13 componentes nuevos). El tema claro se emite también para `.tema-claro` y `@media print` (papel siempre claro). Sombras siguen prohibidas: el papel se separa con filete. |
 | 0.4.1   | 2026-09-26 | Ajuste de la mirada 3 (pedido del usuario): componentes desplegados visualmente en el lado a lado (vista «componentes» en el lienzo y tarjetas de nodo en la ficha y en teléfono). |

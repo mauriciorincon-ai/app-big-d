@@ -472,16 +472,58 @@ html[data-eje-vista="impresion"] .informe-marco { display: block; }
 .val-lista li { grid-template-columns: 20px 1fr; }
 .val-falla { border: 1.5px dashed var(--tinta-1); border-radius: 6px; padding: 8px; }
 .conteo-falla { color: var(--tinta-1); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
-.recorrido { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
-@media (min-width: 720px) { .recorrido { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1100px) { .recorrido { grid-template-columns: repeat(3, 1fr); } }
-.rec-tarjeta { display: grid; gap: 6px; height: 100%; padding: 16px 18px; border: 1px solid var(--linea); border-radius: 6px; background: var(--sup-1); color: var(--tinta-1); text-decoration: none; font-size: 15px; }
-.rec-tarjeta:hover { border-color: var(--tinta-1); }
-.rec-tarjeta b { font-size: 18px; }
-.rec-n { font-size: 13px; color: var(--tinta-2); }
-.rec-c { font-size: 12px; color: var(--tinta-2); }
-.rec-estados { font-size: 14px; color: var(--tinta-2); }
-.rec-mirada { display: inline-flex; align-items: center; gap: 6px; font: 600 12px/1.3 var(--letra-mono); margin-top: 4px; }
+/* Portada (D81, mirada 5): el recorrido dibujado con la gramática del atlas. Etapas como bandas con su pregunta,
+   pantallas como nodos con miniatura, transversales abajo. En ancho, las cuatro bandas comparten filas (subgrid):
+   la cabecera y las dos filas de nodos quedan alineadas en todas. Debajo de 1200 px las bandas se apilan. */
+.ruta { display: grid; gap: 28px; margin: 4px 0 32px; }
+.ruta-banda, .ruta-trans { position: relative; display: grid; gap: 12px; align-content: start; padding: 14px; background: var(--sup-1); border: 1px solid var(--linea); border-radius: 8px; }
+.ruta-trans { gap: 12px; }
+.ruta-banda + .ruta-trans { margin-top: 4px; }
+.ruta-cab { position: relative; display: grid; gap: 4px; align-content: start; }
+.ruta-etapa { font: 600 12px/1.2 var(--letra-mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--tinta-2); }
+.ruta-cab h2 { margin: 2px 0 0; font-size: 22px; line-height: 1.2; letter-spacing: -0.01em; }
+.ruta-pregunta { margin: 0; font-size: 15px; line-height: 1.4; color: var(--tinta-2); }
+.ruta-nodos { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.ruta-nodo { display: grid; grid-template-columns: 104px minmax(0, 1fr); gap: 12px; align-items: start; height: 100%; padding: 10px; background: var(--sup-2); border: 1px solid var(--linea); border-radius: 6px; color: var(--tinta-1); text-decoration: none; }
+.ruta-nodo:hover { border-color: var(--tinta-1); }
+.ruta-cuerpo { display: grid; gap: 3px; min-width: 0; }
+.ruta-n, .ruta-c { font-size: 12px; line-height: 1.4; color: var(--tinta-2); }
+.ruta-titulo { font-size: 17px; font-weight: 700; line-height: 1.25; }
+.ruta-texto { font-size: 14px; line-height: 1.45; color: var(--tinta-2); }
+.ruta-c { margin-top: 3px; }
+/* Flecha entre etapas: hacia abajo cuando se apilan, hacia la derecha en ancho. */
+.ruta-flecha { position: absolute; left: 6px; top: -41px; color: var(--tinta-2); transform: rotate(90deg); }
+.mini { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; background: var(--fondo); border: 1px solid var(--linea); border-radius: 4px; }
+.mini .f { fill: var(--sup-2); stroke: var(--linea); }
+.mini .k { fill: var(--sup-1); stroke: var(--linea); }
+.mini .t { fill: var(--tinta-2); }
+.mini .a { fill: var(--tinta-1); }
+.mini .b { fill: var(--tinta-2); }
+.mini .l { fill: none; stroke: var(--tinta-2); stroke-width: 1.5; }
+.mini .la { fill: none; stroke: var(--tinta-1); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.mini .g { fill: none; stroke: var(--linea); }
+.mini .o { fill: none; stroke: var(--tinta-2); stroke-width: 1.2; }
+.mini .d { fill: none; stroke: var(--tinta-1); stroke-width: 1.2; stroke-dasharray: 3 2; }
+.mini .p { fill: var(--sup-2); stroke: var(--tinta-2); stroke-width: 1.5; }
+.mini .c1 { fill: var(--tipo-1); } .mini .c2 { fill: var(--tipo-2); } .mini .c3 { fill: var(--tipo-3); } .mini .c4 { fill: var(--tipo-4); }
+.mini .c5 { fill: var(--tipo-5); } .mini .c6 { fill: var(--tipo-6); } .mini .c7 { fill: var(--tipo-7); } .mini .c8 { fill: var(--tipo-8); }
+@media (min-width: 720px) {
+  .ruta-nodos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ruta-trans .ruta-nodos { grid-template-columns: minmax(0, 1fr); }
+  .ruta-nodo { grid-template-columns: 128px minmax(0, 1fr); }
+}
+@media (min-width: 1200px) {
+  .ruta { grid-template-columns: 2fr 1fr 1fr 1fr; grid-template-rows: repeat(3, auto); column-gap: 32px; row-gap: 12px; }
+  .ruta-banda { grid-row: 1 / span 3; grid-template-rows: subgrid; }
+  .ruta-banda .ruta-nodos { grid-row: 2 / span 2; grid-template-rows: subgrid; grid-template-columns: minmax(0, 1fr); }
+  .ruta-banda:first-child .ruta-nodos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ruta-banda .ruta-nodo { grid-template-columns: minmax(0, 1fr); align-content: start; }
+  .ruta-flecha { left: -44px; top: 20px; transform: none; }
+  .ruta-trans { grid-column: 1 / -1; grid-template-columns: subgrid; align-items: start; }
+  .ruta-banda + .ruta-trans { margin-top: 16px; }
+  .ruta-trans .ruta-nodos { grid-column: 2 / -1; }
+  .ruta-trans .ruta-nodo { grid-template-columns: 176px minmax(0, 1fr); }
+}
 @media (max-width: 479px) { .evidencia-meta div, .repro div { grid-template-columns: 1fr; gap: 2px; } }
 /* Saltos (auditoría A-13): invisibles hasta recibir el foco; «Saltar al contenido» es el primer Tab. */
 .saltar { position: absolute; left: 8px; top: -80px; z-index: 60; padding: 10px 14px; background: var(--tinta-1); color: var(--fondo); font-weight: 700; text-decoration: none; border-radius: 4px; }

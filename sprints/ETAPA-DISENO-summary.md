@@ -1,7 +1,7 @@
 ---
 sprint: ETAPA-DISENO (F2a)
 app: big-d
-status: open — cierra con el veredicto de G-Diseño (mirada 5) y el merge del PR #3
+status: open — G-Diseño aprobado (2026-09-27, con un ajuste); cierra con la mirada de la portada y el merge del PR #3
 opened: 2026-09-26
 closed: pendiente de G-Diseño
 branch: diseno/fundacion
@@ -13,10 +13,14 @@ orden: portafolio/big-d/ordenes/DISENO-orden.md (planeadora)
 
 ## Outcome
 
-**Parcial, a un paso de cerrar.** Los entregables de la orden están construidos. Las miradas 1 a 4 están
-aprobadas por el usuario con los archivos abiertos y registradas antes de construir encima. La
-auditoría independiente pidió ajustes y quedaron pagados. Falta la mirada 5, que es G-Diseño sobre el
-preview desplegado, y el merge a `main`. Esta sección se actualiza con el veredicto antes del merge.
+**Sí, con una salvedad.** Los entregables de la orden están construidos. Las miradas 1 a 4 están aprobadas
+por el usuario con los archivos abiertos y registradas antes de construir encima. La auditoría independiente
+pidió ajustes y quedaron pagados. **G-Diseño se aprobó el 2026-09-27** («lo abrí y apruebo») con un ajuste: la
+portada, que se rehízo con la gramática del atlas (D81) y se mira antes del merge.
+
+La salvedad es el despliegue: el preview devolvió 404 en `/diseno/index.html`. El usuario pidió trabajar en local
+hasta una versión estable, y la mirada 5 se hizo en local (D82). La maqueta desplegada en Vercel protegido, que
+pedía la orden, queda sin cumplir y en deuda.
 
 ## Qué se construyó
 
@@ -72,15 +76,15 @@ La orden no fija métricas numéricas. Lo que se midió:
 
 ## Gate ⭐ — diferimiento y contrapesos
 
-La etapa no tiene guía de prueba. Su gate humano es **G-Diseño**: la mirada 5 del usuario sobre el
-despliegue, en teléfono y escritorio.
+La etapa no tiene guía de prueba. Su gate humano es **G-Diseño**: la mirada 5 del usuario. Se hizo en local,
+en el computador, porque el preview dio 404.
 
 | Contrapeso                     | Evidencia (archivo, cuenta medida, corrida)                                                                                                                                                                                                                                                      |
 | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Pasada de capturas del builder | Mirada 1: 352 encuadres. Mirada 2: 440. Mirada 3: 184. Mirada 4: 312 más 392 medidas. Pagos de la auditoría: 128, 392 y 208. Todo con 0 fallas de medida, más los encuadres leídos como imagen que lista la bitácora en cada fase. Arnés `scripts/capturar-maqueta.mjs`; capturas fuera del repo |
 | e2e de `reduced-motion`        | 0 pruebas versionadas, porque la etapa no tiene pantallas de producto. La variante reducida del recorrido se verificó en Chromium (`reducedMotion: reduce`: «Reproducir» queda en el DOM con `display: none`, sin la hoja de animación). El e2e nace en el S1 con la primera pantalla animada    |
 
-⭐ no aplica en la etapa. G-Diseño (mirada 5) queda pendiente del usuario.
+⭐ no aplica en la etapa. G-Diseño (mirada 5): aprobado el 2026-09-27, con la portada por mirar.
 
 ## Auditoría (`/audita-sprint`)
 
@@ -93,7 +97,7 @@ despliegue, en teléfono y escritorio.
 | A-01 generador fuera del repo               | Alto      | `scripts/maqueta/` con rutas relativas, entrada fijada con huella y el gate `maqueta-deriva` (demo en rojo: edición a mano y dato sin regenerar)                |
 | A-02 robustez imposible con su método       | Alto      | Simulación real en `caso.mjs`. La historia pasa a «orden sólido, empate estable» (D77). El informe genera cifras y cardinalidades desde N (D78)                 |
 | A-03 teléfono cableado a tres plataformas   | Alto      | Todas las plataformas en cada banda, paginación desde una constante declarada y orden por identificador (A-22)                                                  |
-| A-04 preview con sesión nunca visto         | Alto      | Depende del usuario: se pide en la mirada 5                                                                                                                     |
+| A-04 preview con sesión nunca visto         | Alto      | **Fallado en la mirada 5**: 404 con sesión. Sin diagnóstico (el log de build de Vercel está detrás de la sesión del usuario). Pasa a deuda                        |
 | A-05 a A-17                                 | Medio     | Los 13 pagados. El detalle, uno por uno, está en la bitácora                                                                                                    |
 | A-18 a A-23, A-28, A-32                     | Bajo      | Pagados                                                                                                                                                         |
 | A-24, A-25, A-27, A-29, A-30, A-31          | Bajo      | Deuda con sprint de pago (abajo)                                                                                                                                |
@@ -188,6 +192,7 @@ Están en `docs/diseno/diagramador-tokens.md` § 16. Las principales:
 
 | Deuda                                                                                                                   | Por qué                                                               | Sprint de pago                                               |
 | ----------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------ |
+| Maqueta desplegada: el preview devuelve 404 en `/diseno/` (A-04, D82)                                                  | El usuario pidió trabajar en local hasta una versión estable          | Antes del primer preview que se quiera mirar (S1)            |
 | Endurecer los gates de la maqueta (A-24): `http://`, escapes, `title[data-en]`, `fill:` en CSS y sha de `metricas.json` | Bajo, y la maqueta se congela tras G-Diseño                           | S1                                                           |
 | La maqueta viaja en cada build (A-25)                                                                                   | Hay que decidir si se queda tras G-Diseño y excluirla de `build:demo` | S1                                                           |
 | Estado vacío en contexto (A-27)                                                                                         | Solo existe en el kit                                                 | S1                                                           |

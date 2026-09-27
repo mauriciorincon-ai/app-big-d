@@ -632,3 +632,20 @@ Textual: «lo abrí y apruebo, muy buena imagen y fluidez, muchos elementos de i
 | D81 | **La portada se dibuja con la gramática del atlas**: cuatro etapas de izquierda a derecha (Atlas · Conocimiento · Caso · Plan) como bandas con su pregunta, las pantallas como nodos con una miniatura de lo que muestran, y lo transversal abajo (instrumento y design system) | La rejilla anterior de tarjetas iguales con huecos es un antipatrón que el propio design system prohíbe (§ 8, «rejillas de tarjetas idénticas»), y el usuario no la vio ordenada. Las bandas tienen la misma altura por construcción (2 filas de nodos cada una), el orden se lee en la flecha entre etapas, y la portada muestra la tesis de la app: todo con el mismo mapa |
 | D82 | **La mirada 5 se hizo en local**; el despliegue en Vercel queda para cuando haya versión estable | Decisión del usuario. A-04 pasa de «sin verificar» a **fallado**: el preview no sirve la maqueta. La causa no se diagnosticó, porque el log de build de Vercel está detrás de la sesión del usuario |
 | D83 | **La decisión de grises (D79) se da por aprobada** con el «lo abrí y apruebo» | Iba en la matriz de la mirada con la pregunta explícita. El usuario no la nombró por separado; su «el blanco y negro funcionan muy bien» se lee como el conmutador de tema o como los grises. En los dos casos es positivo, y se le dice cómo se leyó |
+
+#### Ajuste de la portada (D81)
+
+- `scripts/maqueta/pantallas/m4-indice.mjs` reescrito: `ETAPAS` (Atlas · Conocimiento · Caso · Plan, con su
+  pregunta) y `TRANSVERSALES` (Instrumento · Design system). Cada nodo lleva una frase en lenguaje de líder,
+  redactada en ES y en EN, y sus códigos. El estado de mirada por tarjeta desaparece: la aprobación va una sola
+  vez en la cabecera.
+- `scripts/maqueta/pantallas/m4-mini.mjs` (nuevo): 12 miniaturas de 160 × 90, decorativas (`aria-hidden`),
+  en tinta y superficie; los matices de tipo solo en las del atlas y el kit, donde la pantalla dibuja la gramática.
+- `bigd.css`: fuera `.recorrido` y `.rec-*`; entra el bloque `.ruta-*` y `.mini`. En ancho (≥ 1200 px), cuatro
+  columnas `2fr 1fr 1fr 1fr` con filas compartidas por `subgrid`: cabeceras y filas de nodos alineadas en las
+  cuatro bandas, y las transversales en las mismas columnas. Debajo, bandas apiladas con flecha hacia abajo. El
+  corte empezó en 1100 px; la captura a 1100 salió apretada (códigos partidos) y se subió a 1200.
+- Capturas leídas como imagen: oscuro ES 1280, claro EN 380, claro ES 1280, 900 y 1100. El arnés dio 8 medidas
+  con 0 fallas, y sin desborde a 720, 900, 1099, 1100 y 1440.
+- `pnpm lint`, `typecheck` y `test` en verde (85/85; el gate de deriva compara la portada regenerada).
+
