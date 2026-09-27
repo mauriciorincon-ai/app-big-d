@@ -1,5 +1,5 @@
 ---
-version: 0.3.0
+version: 0.3.1
 estado: completo para la mirada 2 (Etapa de Diseño, F2a); se sella en G-Diseño
 fecha: 2026-09-26
 fuente_en_codigo: docs/diseno/assets/ (tokens.css GENERADO · bigd.css · diagrama.css · fuentes.css)
@@ -162,7 +162,8 @@ hace la jerarquía.
 | **Ficha de nodo**                | tipo · nombre · frase de líder · qué hace · por qué importa · términos (propios y del glosario, marcados) · madurez · fuentes con fecha y tipo · verificado / consultado | cerrada · abierta (hoja inferior < 900 px, panel lateral desde 900 px) | nivel 2                |
 | **Paso de recorrido**            | insignia numerada sobre el nodo (6a/7a/6b en la rama) + marca de bifurcación; lista de pasos con líder y experto                                                         | estático · activo · visitado · pendiente (atenuado) · animando         | `atlas-recorrido.html` |
 | **Controles del recorrido**      | Anterior · «Paso n de 8» · Siguiente · Reproducir/Pausar · Ver todos; flechas del teclado                                                                                | reproduciendo (`aria-pressed`) · sin botón con movimiento reducido     | recorrido              |
-| **Lado a lado**                  | filas por plataforma, columnas por banda (9), bloque mini 118 × 64; bloque punteado «sin componentes»; selector N; paginación de 3 en 3                                  | tres · página 2 · diferencias · una banda a la vez (< 900 px)          | `lado-a-lado.html`     |
+| **Lado a lado**                  | filas por plataforma, columnas por banda (9), bloque mini 118 × 64; bloque punteado «sin componentes»; selector N; paginación de 3 en 3                                  | tres · componentes de un bloque · página 2 · diferencias · una banda a la vez (< 900 px) | `lado-a-lado.html`     |
+| **Ficha de bloque**              | al tocar un bloque del lado a lado: banda · plataforma · nombre · «N componentes» · tipo · lista de componentes (glifo + nombre + madurez + fuentes) · versión y vigencia; panel lateral en ancho, desplegable bajo la fila en teléfono | abierta · cerrada (Esc)                                                | lado a lado            |
 | **Marca de diferencia**          | píldora glifo + palabra sobre el bloque: + nuevo · − retirado (llena) · → renombrado · ▮ madurez                                                                         | —                                                                      | lado a lado            |
 | **Tarjeta de evidencia**         | código · semáforo · estado · afirmación · cita entre « » · fuente con fecha y tipo · madurez · conflicto de interés · verificación por código en mono                    | aprobada · propuesta (borde punteado) · cita no verificada             | kit; miradas 3         |
 | **Control de peso**              | nombre · valor en mono · barra con rango relativo (banda), punto y línea punteada de inversión · rango, inversión y origen                                               | normal · suma ≠ 100 (aviso con aspa)                                   | kit; mirada 3          |
@@ -243,6 +244,7 @@ corren con `pnpm test`: `paleta-diagramador` comprueba que de verdad no llegan a
 
 | Versión | Fecha      | Cambio                                                                                                                                                                                                                                                                   |
 | ------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 0.3.1   | 2026-09-26 | Ajuste de la mirada 2 (pedido del usuario): ficha de bloque en el lado a lado, para ver cuáles son los componentes detrás de «N comp.».                                                                                                                                  |
 | 0.3.0   | 2026-09-26 | Mirada 2: componentes canon completos (nodo, ficha, paso, lado a lado, diferencia, evidencia, control de peso, prioridad de acción, campo, estados vacío/carga/error, botón), tabla de movimiento con su variante reducida, estados ampliados, deuda al día. `kit.html`. |
 | 0.2.0   | 2026-09-26 | Ronda 4 de la mirada 1: Space Grotesk + JetBrains Mono (elección del usuario), cromo sin píldoras (filetes, texto y aire), componentes del atlas en la dirección B, lienzo con desplazamiento lateral.                                                                   |
 | 0.1.1   | 2026-09-26 | Ronda 2 de la mirada 1: paleta de un matiz por tipo, claro en papel frío casi blanco; el diagrama es siempre horizontal (P5 del usuario). La dirección visual está por elegir.                                                                                           |

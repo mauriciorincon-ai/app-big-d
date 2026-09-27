@@ -326,3 +326,23 @@ kit oscuro ES 1280 y claro ES 380.
 madurez «vista previa» pisaba «1 fuente» en la fila inferior del nodo; el arnés no lo ve porque los
 dos textos son del mismo dueño. Regla nueva en la calculadora: con madurez a la vista, las fuentes
 van como glifo + número. Deuda del arnés: medir solapes entre textos del mismo dueño.
+
+### Mirada 2 — veredicto (2026-09-26)
+
+Con los archivos abiertos: nivel 2 «muy bien logrado, mucho mejor que al inicio»; recorrido
+«impresionante esa identificación visual»; lado a lado «muy alineado con lo que pensaba», con un
+ajuste: **ver cuáles son los componentes detrás de «1, 2 o 3 comp.»**; kit «me gusta mucho».
+**Mirada 2 aprobada con un ajuste** (registro en `docs/diseno/README.md`).
+
+| #   | Decisión                                                                                                                                                                                                                       | Razón                                                                                                          |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
+| D52 | **Ficha de bloque en el lado a lado**: cada bloque con componentes es activable (`db-nodo` + `data-nodo`, lo abre `ficha.js` en el mismo panel del nivel 2); lista glifo + nombre + madurez + fuentes; en < 900 px la fila lleva un desplegable y el panel no se muestra | Pedido del usuario; un solo mecanismo de ficha en toda la maqueta; en teléfono dos superficies eran redundantes |
+| D53 | Las listas de componentes de Norte, Sur y Este son ficticias y **su conteo se verifica contra «N comp.»** en la calculadora; las de Ejemplo salen de los 14 nodos del mapa agrupados por banda                                   | Regla dura 12; el conteo y la lista no pueden divergir                                                          |
+
+Preajuste nuevo «componentes» (`ficha:norte-ingesta`); los otros tres cierran la ficha. Verificado en
+Chromium: clic abre «Preparación SQL» con 3 componentes, Esc cierra; en 380 px el desplegable de
+«Permisos y máscaras» abre con 2 y el panel queda `display: none`. Capturas: 32 encuadres del lado a
+lado, 0 fallas; leídos como imagen: componentes oscuro ES 1280, claro ES 380 y oscuro EN 380 (la
+primera pasada mostró la hoja inferior y el desplegable a la vez en teléfono: se ocultó la hoja).
+En la vista de diferencias, las dos versiones abren la ficha del mapa vigente (deuda menor: la
+v0.2.0 no tiene lista propia).
