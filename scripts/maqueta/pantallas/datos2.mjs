@@ -1,6 +1,6 @@
 // Datos de la mirada 2: textos EN REDACTADOS de los 14 nodos (el mapa v0.2.0 es solo ES), el recorrido,
-// el glosario y cuatro plataformas ficticias para el lado a lado. Nada de esto se versiona como dato;
-// el artefacto es la maqueta.
+// el glosario y las plataformas ficticias del lado a lado. Es dato de la MAQUETA, no del producto: el
+// dato del producto nace en data/ en el S1.
 export { MAPA, GRAM, BANDA, BLOQUE, NODO, MODOS, MODO, TIPO, MADUREZ, VARIANTE } from "../nucleo/datos.mjs";
 import { MAPA } from "../nucleo/datos.mjs";
 
@@ -43,12 +43,14 @@ export const PASO_FLUJO = { p2: "f-origen-cambios", p3: "f-cambios-cruda", p4: "
  * Cada una: por banda, {nombre es/en, n componentes, tipo dominante, madurez peor} o null (sin bloque
  * ni componentes). Nombres genéricos: ningún producto real.
  */
+// Orden por identificador: el mismo en los dos idiomas (la geometría no depende del idioma, D27) y
+// ninguna plataforma va primero por ser quien es.
 export const PLATAFORMAS = [
   { id: "ejemplo", nombre: { es: "Plataforma Ejemplo (ficticia)", en: "Example Platform (fictional)" }, version: "0.1.0", verificado: 6 },
+  { id: "este", nombre: { es: "Plataforma Este (ficticia)", en: "East Platform (fictional)" }, version: "0.1.0", verificado: 3 },
   { id: "norte", nombre: { es: "Plataforma Norte (ficticia)", en: "North Platform (fictional)" }, version: "0.3.0", verificado: 12 },
   { id: "sur", nombre: { es: "Plataforma Sur (ficticia)", en: "South Platform (fictional)" }, version: "0.2.0", verificado: 41 },
-  { id: "este", nombre: { es: "Plataforma Este (ficticia)", en: "East Platform (fictional)" }, version: "0.1.0", verificado: 3 },
-];
+].sort((a, b) => (a.id < b.id ? -1 : 1));
 export const LADO = {
   ejemplo: { fuentes: ["Sistemas de origen", "Source systems", 1, "tipo-externo", "disponible-general"], ingesta: ["Entrada de datos", "Data intake", 2, "cap-ingesta", "disponible-general"], almacenamiento: ["Almacén central", "Central store", 2, "cap-almacenamiento", "disponible-general"], procesamiento: ["Preparación", "Preparation", 2, "cap-transformacion", "disponible-general"], consumo: ["Tableros", "Dashboards", 2, "cap-consumo", "disponible-general"], ia: ["Agentes", "Agents", 1, "cap-ia", "vista-previa-publica"], gobierno: ["Gobierno", "Governance", 2, "cap-gobierno", "disponible-general"], operacion: ["Monitor de consumo", "Usage monitor", 1, "tipo-operacion", "disponible-general"], orquestacion: ["Programador de tareas", "Task scheduler", 1, "cap-transformacion", "disponible-general"] },
   norte: { fuentes: ["Sistemas de origen", "Source systems", 2, "tipo-externo", "disponible-general"], ingesta: ["Conectores gestionados", "Managed connectors", 3, "cap-ingesta", "disponible-general"], almacenamiento: ["Almacén de archivos", "File store", 1, "cap-almacenamiento", "disponible-general"], procesamiento: ["Motor de consultas", "Query engine", 1, "cap-transformacion", "disponible-general"], consumo: ["Reportes", "Reports", 2, "cap-consumo", "disponible-general"], ia: null, gobierno: ["Catálogo", "Catalog", 1, "cap-gobierno", "vista-previa-publica"], operacion: ["Control de costo", "Cost control", 1, "tipo-operacion", "disponible-general"], orquestacion: ["Flujos programados", "Scheduled flows", 1, "cap-transformacion", "disponible-general"] },

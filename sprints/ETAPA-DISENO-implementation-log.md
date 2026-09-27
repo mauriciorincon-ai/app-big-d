@@ -523,3 +523,16 @@ rangos continuos ±20 %).
 
 La zona gris y las clases «moderada» y «frágil» quedan sin pantalla porque el caso no las produce; el design
 system lo declara (§ componentes, «Aceptabilidad por posición»).
+
+**A-03 · todas las plataformas en el teléfono (+ A-22 orden declarado).** La vista angosta del lado a lado
+filtraba `p.id !== "este"` y el selector dejaba a Este desmarcada aunque el lienzo ancho la mostraba. Ahora:
+cada banda del teléfono apila **todas** las plataformas (medido: 9 bandas × 4 plataformas; 8 desplegables de Este,
+la novena banda es «sin componentes»); el selector marca las 4 («Plataformas: 4 de 4»); la paginación en ancho
+sale de una constante declarada (`POR_PAGINA = 3` en `lado.mjs`) y los textos de página, los `aria` y el título
+(«Cuatro plataformas, el mismo mapa») se generan desde N. El orden es **por identificador**, el mismo en ES y EN
+(el «orden alfabético» anterior no lo era en ninguno de los dos idiomas); por eso la página 1 pasa a Ejemplo,
+Este y Norte, y la 2 a Sur. `diagramador-tokens.md` § 9.2 ter, fila N, al día.
+
+Pasada de capturas tras A-02 y A-03: 128 encuadres (lado a lado, comparación e informe × estados × 2 temas × 2
+idiomas × 380/1280), **0 fallas de medida**. Leídas como imagen: lado a lado «tres» oscuro ES 380 (las 4
+plataformas apiladas en Fuentes) y comparación «robustez» claro ES 1280 (cifras de la simulación, sin zona gris).

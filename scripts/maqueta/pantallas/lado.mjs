@@ -70,9 +70,14 @@ export function svgLado(filas, o = {}) {
   return { svg: s + `</svg>`, W, H, cols: BANDAS.map((b, i) => ({ id: b, x: colX(i) })) };
 }
 export const filaDe = (pl) => ({ pl, etiqueta: pl.nombre, meta: { es: `v${pl.version} · verificado hace ${pl.verificado} días`, en: `v${pl.version} · verified ${pl.verificado} days ago` } });
+/** Constante DECLARADA de la vista: tres plataformas a la vez en ancho; con más, se pagina. */
+export const POR_PAGINA = 3;
+export const PAGINAS_PL = Array.from({ length: Math.ceil(PLATAFORMAS.length / POR_PAGINA) }, (_, i) => PLATAFORMAS.slice(i * POR_PAGINA, (i + 1) * POR_PAGINA));
+const lista = (xs, y) => (xs.length === 1 ? xs[0] : `${xs.slice(0, -1).join(", ")} ${y} ${xs[xs.length - 1]}`);
+const ariaPag = ([es, en], pls, k) => [`${es}, página ${k} de ${PAGINAS_PL.length}: ${lista(pls.map((p) => p.nombre.es.replace(" (ficticia)", "")), "y")}.`, `${en}, page ${k} of ${PAGINAS_PL.length}: ${lista(pls.map((p) => p.nombre.en.replace(" (fictional)", "")), "and")}.`];
 export function paginas() {
-  const p1 = svgLado(PLATAFORMAS.slice(0, 3).map(filaDe), { id: "pag-1", aria: ["Lado a lado, página 1 de 2: Plataforma Ejemplo, Norte y Sur.", "Side by side, page 1 of 2: Example, North and South platforms."] });
-  const p2 = svgLado(PLATAFORMAS.slice(3).map(filaDe), { id: "pag-2", aria: ["Lado a lado, página 2 de 2: Plataforma Este.", "Side by side, page 2 of 2: East Platform."] });
+  const pags = PAGINAS_PL.map((pls, i) => svgLado(pls.map(filaDe), { id: `pag-${i + 1}`, aria: ariaPag(["Lado a lado", "Side by side"], pls, i + 1) }));
+  const [p1, p2] = pags;
   const ej = PLATAFORMAS[0];
   const diffPorBanda = Object.fromEntries(DIFF.map((d) => [d.banda, d]));
   const v2 = { ...ej, version: "0.2.0", verificado: 1 };
@@ -145,7 +150,6 @@ export function svgLadoComp(pls, o = {}) {
   return { svg: s + `</svg>`, W, H, cols: BANDAS.map((b, i) => ({ id: b, x: colX(i) })) };
 }
 export function paginasComp() {
-  const c1 = svgLadoComp(PLATAFORMAS.slice(0, 3), { id: "comp-1", aria: ["Componentes desplegados, página 1 de 2: Plataforma Ejemplo, Norte y Sur.", "Expanded components, page 1 of 2: Example, North and South platforms."] });
-  const c2 = svgLadoComp(PLATAFORMAS.slice(3), { id: "comp-2", aria: ["Componentes desplegados, página 2 de 2: Plataforma Este.", "Expanded components, page 2 of 2: East Platform."] });
+  const [c1, c2] = PAGINAS_PL.map((pls, i) => svgLadoComp(pls, { id: `comp-${i + 1}`, aria: ariaPag(["Componentes desplegados", "Expanded components"], pls, i + 1) }));
   return { c1, c2 };
 }

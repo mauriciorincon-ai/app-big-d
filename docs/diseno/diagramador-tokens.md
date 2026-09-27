@@ -375,7 +375,7 @@ queda en el historial (f21519c).
 | Fila        | 26 u de rótulo (nombre de la plataforma + versión y vigencia en mono) + bloques de 118 × 64; filas a 14 u                              |
 | Bloque      | filete de tipo, glifo, nombre 12/700 (≤ 2 líneas), «N comp.» y madurez si no es disponible (si no caben las dos, manda la madurez)     |
 | Sin bloque  | caja punteada «sin componentes»                                                                                                        |
-| N           | tres plataformas por página (constante de vista), paginación; en < 900 px, una banda a la vez con las plataformas apiladas             |
+| N           | tres plataformas por página en ancho (constante de vista declarada), paginación más allá; en < 900 px, una banda a la vez con **todas** las plataformas de la comparación apiladas, sin paginar. Orden por identificador de la plataforma, el mismo en los dos idiomas |
 | Diferencias | píldora glifo + palabra bajo el bloque cambiado: nuevo (+), retirado (−, llena), renombrado (→), madurez (▮); lista explicativa debajo |
 | Desplegados | vista «componentes»: columnas de 152 u a 14 u (viewBox 1496), cabecera del bloque hasta 2 líneas a 12/700, pila de nodos 152 × 88 a 8 u (glifo a 17 u, nombre desde 29 u, ≤ 3 líneas a 13/700); la fila mide su celda más alta; G5 se conserva porque solo crece la fila. Para el contrato: `compare` acepta el nivel 2 con alineación por banda, no por nodo |
 | Componentes | cada bloque es activable (`data-nodo`): abre la lista de sus componentes (glifo + nombre + madurez + fuentes) en el panel; en < 900 px, desplegable bajo la fila. Pedido del usuario en la mirada 2; para el contrato: la vista `compare` expone los nodos de cada bloque agregado (G10 también aquí) |
