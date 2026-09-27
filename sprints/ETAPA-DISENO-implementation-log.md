@@ -465,3 +465,21 @@ desbordaba 9–16 px a 380 (elemento de rejilla sin `min-width: 0`). Leídas com
 ES 1280, ciclo claro ES 1280, una vía oscuro EN 1280 (ficha), riesgos oscuro ES 1280, supuestos claro ES 380;
 informe fases claro ES 1280, impresión oscuro ES 1280 (papel claro), informe oscuro EN 380; instrumento rojo
 oscuro ES 1280; portada claro ES 1280. Ajuste tras mirar: las filas etiqueta/valor se apilan bajo 480 px.
+
+### Veredicto de la mirada 4 (2026-09-26)
+
+Textual, con los archivos abiertos: «0. Lado a lado: bueno, pues no está mal, pero yo lo pensaba en el mismo
+diagrama sin necesidad de esa pantalla adicional; si es mucho esfuerzo, dejémoslo ahí, está bien.
+decisiones.html: excelente detalle de la decisión. informe.html: esto sí que valió la revisión, excelente detalle
+de actividades para desarrollar con su estado; esto es lo que vale la pena ver y detenernos, lo anterior… deja de
+preguntar bobadas y avancemos, para eso hay un gate para revisión de pequeñeces. instrumento.html: esto también es
+súper novedoso, muy interesante detalle de Casos de referencia, Propiedades, etc., súper valioso».
+
+**Mirada 4 aprobada** y el ajuste del lado a lado aprobado como está. «Avancemos» abre la fase 5.
+
+| #   | Decisión | Razón |
+| --- | -------- | ----- |
+| D75 | **El lado a lado conserva el conmutador bloques / componentes en la maqueta**; la intención del usuario (desplegar en el mismo diagrama) pasa al contrato como **nivel por banda en `compare`** (`diagramador-tokens.md` § 9.2 ter, fila «Mismo lienzo») | El usuario lo dejó a criterio del esfuerzo. Mezclar niveles por banda en una sola disposición es trabajo del motor de colocación, no de la referencia; dibujarlo a mano ahora fijaría un golden file que el motor todavía no sabe producir |
+| D76 | **Los ajustes menores ya comentados no se vuelven a pedir como mirada**: se deciden, se registran y se juntan para la mirada 5 (G-Diseño) | Pedido del usuario («deja de preguntar bobadas y avancemos»). Las miradas siguen para artefactos nuevos; guardado en la memoria del proyecto |
+
+## Fase 5 — Cierre: G-Diseño (2026-09-26)

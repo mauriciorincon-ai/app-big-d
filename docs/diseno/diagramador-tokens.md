@@ -379,6 +379,7 @@ queda en el historial (f21519c).
 | Diferencias | píldora glifo + palabra bajo el bloque cambiado: nuevo (+), retirado (−, llena), renombrado (→), madurez (▮); lista explicativa debajo |
 | Desplegados | vista «componentes»: columnas de 152 u a 14 u (viewBox 1496), cabecera del bloque hasta 2 líneas a 12/700, pila de nodos 152 × 88 a 8 u (glifo a 17 u, nombre desde 29 u, ≤ 3 líneas a 13/700); la fila mide su celda más alta; G5 se conserva porque solo crece la fila. Para el contrato: `compare` acepta el nivel 2 con alineación por banda, no por nodo |
 | Componentes | cada bloque es activable (`data-nodo`): abre la lista de sus componentes (glifo + nombre + madurez + fuentes) en el panel; en < 900 px, desplegable bajo la fila. Pedido del usuario en la mirada 2; para el contrato: la vista `compare` expone los nodos de cada bloque agregado (G10 también aquí) |
+| Mismo lienzo | intención del usuario en la mirada 4: los componentes se despliegan **en el mismo diagrama**, sin conmutador de vista. La maqueta conserva el conmutador (el usuario lo aprobó así); para el contrato: `compare` acepta un **nivel por banda** (una banda desplegada a nivel 2 en todas las plataformas y las demás a nivel 1, en el mismo SVG) y la fila desplegada crece sin mover las columnas (G5). El golden file de ese estado lo fija el sprint que implemente `compare` |
 
 ### 9.3 Lo que midió la referencia (ronda 4)
 
