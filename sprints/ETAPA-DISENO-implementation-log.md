@@ -381,4 +381,4 @@ del líder se colaba en el texto pequeño (selector `> b`); el rango del peso ca
 (ahora ocupa la fila); columna de nombres de los totales de 220 a 340 u en ancho.
 
 **Gates:** 51/51 · lint limpio · barrido de enlaces limpio salvo un hallazgo previo al sprint en `CHANGELOG.md`
-(narra el patrón con el literal `pages.dev`; viene del kit, se corrige en la fase 5 con `/deploy-check`).
+(narraba el patrón con el literal `pages[.]dev`; venía del kit y se corrigió en este commit).
