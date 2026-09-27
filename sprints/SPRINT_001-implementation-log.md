@@ -333,3 +333,19 @@ a la red).
 
 **Job `diagramador`** en `ci.yml`: matriz `ubuntu-latest` + `macos-latest`, sin `needs`; pruebas del paquete en
 Node + G1 en los tres navegadores. Su primera corrida es este push.
+
+### G15 medido en los tres motores (pendiente del contrato)
+
+Segunda prueba de `tests/determinismo`: la página carga Space Grotesk y JetBrains Mono (servidas por la
+propia prueba; la prueba exige que carguen, porque con la fuente de respaldo podría caber por casualidad),
+dibuja los niveles 1 y 2 de los dos mapas bilingües y mide cada `tspan` con `getComputedTextLength()`
+(en la prueba, nunca en el motor). Ninguno puede pasar del ancho que calculó la tabla.
+
+- macOS, local: **456 textos; el más ajustado usa el 97,1 % de lo que midió la tabla**, igual en Chromium,
+  Firefox y WebKit. Es decir: la suma de avances sin kerning coincide con el navegador y el margen de
+  3 % (103/100) es el único margen. Respuesta a P12 (kerning en la tabla): no hace falta mientras el margen
+  se conserve; va a «Enmiendas» como dato medido. Linux: lo mide el job `diagramador`.
+
+| Gate | ¿Puede fallar? | Demo en rojo | A quién nombró | Verde |
+| ---- | -------------- | ------------ | -------------- | ----- |
+| `tests/determinismo` — G15 | Sí | Margen de la tabla en 97/100 | Firefox: «Entrada» 64,3 u en 63 u; «¿Qué recibe el agente?», «Orquestación»… (103,1 %) | ✓ 3/3 |
