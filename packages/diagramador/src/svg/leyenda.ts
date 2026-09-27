@@ -6,19 +6,13 @@ import type { Gramatica } from "../tipos";
 import { plantilla } from "../layout/escena";
 import type { TextosMotor } from "../layout/tipos";
 import { ordenarPor } from "../util/orden";
-import { GLIFOS, MARCADORES, MARCAS } from "./glifos";
+import { MARCADORES, MARCAS } from "./glifos";
+import { glifoSVG, medidorSVG } from "./simbolos";
 import { escapar } from "./serializar";
 
 const svg = (caja: string, w: number, h: number, cuerpo: string) => `<svg class="dg-svg" viewBox="${caja}" width="${w}" height="${h}" aria-hidden="true">${cuerpo}</svg>`;
 const DASH: Record<string, string> = { discontinua: ' stroke-dasharray="8 5"', continua: "", punteada: ' stroke-dasharray="0.1 5.5" stroke-linecap="round"', doble: "" };
 
-function medidorSVG(nivel: number): string {
-  const lleno = nivel > 0 ? Math.floor((2 * 11 * nivel + 4) / 8) : 0;
-  let s = `<rect class="${nivel === 0 ? "dg-madurez-caja dg-madurez-anunciado" : "dg-madurez-caja"}" x="-3.5" y="-5.5" width="7" height="11" rx="1.5"/>`;
-  if (lleno > 0) s += `<rect class="dg-madurez-nivel" x="-3.5" y="${5.5 - lleno}" width="7" height="${lleno}" rx="1"/>`;
-  if (nivel < 0) s += `<path class="dg-madurez-tachado" d="M-3.5,5.5 L3.5,-5.5"/>`;
-  return svg("-7 -7 14 14", 14, 14, s);
-}
 
 export function toLegend(grammar: Gramatica, opciones: { language: string; textos: Record<string, TextosMotor> }): string {
   const l = opciones.language;
@@ -27,9 +21,7 @@ export function toLegend(grammar: Gramatica, opciones: { language: string; texto
   const e = escapar;
   const tipos = grammar.tipos_de_nodo
     .map((tp) => {
-      const gl = GLIFOS[tp.glifo];
-      const path = gl.trazo ? `<path d="${gl.d}" fill="none" stroke="currentColor" stroke-width="${gl.trazo}"/>` : `<path d="${gl.d}" fill="currentColor"/>`;
-      return `<li>${svg("-9 -9 18 18", 18, 18, `<g class="dg-c-${e(tp.token_color)}">${path}</g>`)}<span class="dg-leyenda-cod">${e(tp.etiqueta_corta[l]!)}</span><span>${e(tp.nombre[l]!)}</span></li>`;
+      return `<li>${glifoSVG(tp.glifo, tp.token_color)}<span class="dg-leyenda-cod">${e(tp.etiqueta_corta[l]!)}</span><span>${e(tp.nombre[l]!)}</span></li>`;
     })
     .join("");
   const modos = grammar.modos_de_flujo

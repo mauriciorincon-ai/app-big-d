@@ -113,6 +113,18 @@ export interface TextosMotor {
   recorridoDe: string;
   /** Rótulo de una bifurcación en la lectura. */
   ramas: { paralela: string; alternativa: string };
+  /** Ficha de nodo (§ 4.5): títulos de sus secciones, «{fecha}» de verificación y de consulta, tipo de fuente. */
+  ficha: {
+    queHace: string;
+    porQueImporta: string;
+    terminos: string;
+    glosario: string;
+    madurez: string;
+    fuentes: string;
+    verificado: string;
+    consultado: string;
+    tipoFuente: { oficial: string; tercero: string };
+  };
   /** Leyenda (§ 4.9): títulos, regla de vigencia («{revisar}», «{vencido}») y nota de marcas (D7). */
   leyenda: { tipos: string; modos: string; madurez: string; vigencia: string; reglaVigencia: string; vigente: string; porRevisar: string; vencido: string; notaMarcas: string };
 }

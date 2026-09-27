@@ -9,7 +9,7 @@ export interface Textos {
   barra: { sello: string; secciones: string; atlas: string; idioma: string; tema: string; oscuro: string; claro: string };
   saltarContenido: string;
   pie: string;
-  inicio: { ojo: string; titulo: string; sub: string; abrirAtlas: string };
+  inicio: { ojo: string; titulo: string; sub: string };
   /** Cadenas que el diagramador dibuja o lee (D-S1-06): el paquete no trae palabras propias. */
   motor: TextosMotor;
   atlas: {
@@ -21,6 +21,7 @@ export interface Textos {
     vigencia: {
       vigente: string;
       bloquesPorRevisar: readonly [string, string];
+      componentesPorRevisar: readonly [string, string];
       vencidos: readonly [string, string];
       /** Tras «N vencido»: «{n} por revisar». */
       porRevisar: string;
@@ -42,5 +43,25 @@ export interface Textos {
     pistaActivar: string;
     notaModos: string;
     lectura: string;
+    nivel2: { titulo: string; ojo: string; sub: string; guia: { entrada: string; resto: string } };
+    /** Pista de los componentes activables (niveles 2 y 3): qué hace Enter. */
+    pistaNodo: string;
+    ficha: { titulo: string; cerrar: string };
+    recorrido: {
+      titulo: string;
+      ojo: string;
+      guia: { entrada: string; resto: string };
+      controles: string;
+      anterior: string;
+      siguiente: string;
+      reproducir: string;
+      pausar: string;
+      verTodos: string;
+      todos: string;
+      /** «{n}» = número del paso (1, 6a…), «{total}» = cuántos pasos. */
+      pasoDe: string;
+      pasos: string;
+    };
+    plataforma: { etiqueta: string; pronto: string; elegir: string };
   };
 }

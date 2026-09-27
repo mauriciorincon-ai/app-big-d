@@ -8,6 +8,7 @@ export { toSVG, type OpcionesSVG } from "./svg/toSVG";
 export { toJourneyCSS } from "./svg/recorridoCSS";
 export { toLegend } from "./svg/leyenda";
 export { toText, type OpcionesTexto } from "./texto/toText";
+export { toCard, type OpcionesFicha } from "./texto/toCard";
 export { diff, type Diferencias } from "./diff";
 export { crossings, type Cruce } from "./layout/d11";
 export { coberturaDeRangos } from "./texto/cobertura";
