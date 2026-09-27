@@ -384,7 +384,9 @@ dibuja los niveles 1 y 2 de los dos mapas bilingües y mide cada `tspan` con `ge
 7. **D-S1-17** — `escala_madurez[].etiqueta_corta`: el nombre largo no cabe en bloques ni nodos.
 8. **D-S1-19** — Paths de «envía/recibe»: el contrato dice ↑/↓ y dibuja →/←.
 9. **D-S1-20** — D12: «un id, un `data-dueno` o el de su grupo».
-10. **D-S1-23** — Más de 2 saltos: pistas adicionales con aviso (G5 del nivel 1 deja de valer en ese caso).
+10. **D-S1-23** — Más de 2 saltos: pistas adicionales **sin aviso** (el carril crece y las franjas bajan; G5 del
+    nivel 1 deja de valer en ese caso). Corregido en 3c: el aviso rompía el build con el primer mapa real, y el
+    propio `prueba-arquitectura-app` del contrato lo disparaba.
 11. **D-S1-25** — G6 (c): quitar un flujo también cambia los que comparten extremo, canal o fila de
     referencias (puertos `y + alto·i/(k+1)`).
 12. **G15/P12** — Medido: la tabla sin kerning + 3 % es cota superior en 3 motores × 2 sistemas (el más
@@ -403,6 +405,24 @@ dibuja los niveles 1 y 2 de los dos mapas bilingües y mide cada `tspan` con `ge
     en cascada) sirve de base si otro consumidor necesita el mismo flujo.
 17. **Leyenda (§ 4.9)** — La regla del haz («varios modos en una conexión: línea gruesa y una etiqueta que dice
     cuáles, en orden») es gramática, no copy de la app: debería salir en la leyenda generada.
+20. **D-S1-40 — Canal con más de 6 pistas** — § 5.3 da 6 posiciones fijas; el primer mapa real pide 7 en un canal
+    del nivel 2. Con más de 6, el canal entero se reparte parejo a 2 u de cada tarjeta, en el mismo orden (centro,
+    derecha, izquierda), con un piso de 4 u entre pistas (12 como máximo; la 13.ª avisa). Hasta 6, nada cambia.
+21. **D-S1-41 — Etiqueta de modos que choca** — § 5.3 dice «si no cabe, el motor lo reporta y no dibuja encima de
+    nada», pero no da un segundo lugar. Se prueba el tramo de llegada, pegado a la pista; si tampoco está libre, se
+    reporta.
+22. **D-S1-42 — Fila de referencias de franja llena** — Entre referencias van 8 u y bajan hasta 4 si la fila no
+    alcanza; las que se salen por la derecha se corren hacia adentro empujando a las anteriores (antes solo se
+    corría la última).
+23. **D-S1-43 — Etiqueta de un salto en el nivel 1** — La regla de la maqueta (entre la llegada del salto anterior
+    y la propia) supone saltos anidados; con saltos que no salen del mismo lado, la etiqueta va en la mitad de su
+    propio tramo. Invariante nueva: toda etiqueta de modos a ≤ 30 u de su trazo, en todos los mapas.
+24. **V16 (propuesta) — «El mapa se dibuja»** — Ninguna regla V1–V15 mira si los textos caben: un mapa válido para
+    publicar puede traer avisos de geometría (una palabra más ancha que el bloque, un nombre de 4 líneas en una
+    ficha de 2). Big-D lo resuelve fuera del contrato (el validador del investigador y la aprobación dibujan las
+    vistas); el contrato podría declararlo como regla de validación en modo publicación.
+25. **Carnada P1 (mapa denso)** — `packages/diagramador/test/carnadas-piloto/P1-mapa-denso.mapa.json`: la forma
+    del primer mapa real con nombres neutrales. Propuesta para el juego de carnadas del contrato.
 
 ## Fase 2 — Atlas nivel 1 en el producto (2026-09-27)
 
@@ -685,3 +705,67 @@ primera pintura es el piso del framework (≈ 140 KB) y las fuentes. La CI mide 
 el nivel 1 debería quedar en ~2900, **con un margen de ~100 ms, que es delgado.** Si otra página lo gasta, la
 siguiente palanca es el HTML del nivel 1 (SVG, leyenda y lectura van dos veces: en el HTML y en la carga de
 React). Los estilos por ruta de `11dca01` se quedan: no dañan y cada página carga menos CSS.
+
+**CI de `6d92d09`:** quality ✓ · e2e ✓ · lighthouse ✓ · diagramador ubuntu ✓ · macOS ✓ · Vercel ✓ — los seis en
+`success` propio. El rojo de `508176c` y `11dca01` quedó pagado sin tocar el presupuesto.
+
+### 3c — Primera corrida de `/investigar fabric` (2026-09-27)
+
+**La corrida.** La persona escribió `/investigar fabric`. El subagente propuso 19 componentes y 19 flujos en 7
+bloques, un recorrido con rama paralela y **80 afirmaciones** (una por componente y por flujo, más una de madurez por
+componente). El validador pasó al primer intento. **80/80 citas verificadas** contra la página cruda: seis se
+corrigieron en la misma corrida (un enlace pegado a la puntuación). El registro de fuentes tiene 35 consultas:
+24 a la documentación oficial, 5 a la web del fabricante, 1 al blog (403), 1 al foro y 4 búsquedas. **Ningún
+identificador del usuario** en el registro ni en la propuesta: el correo y el nombre de git, el usuario, el host y la
+palabra «session» dan 0 coincidencias.
+
+**El ensayo antes de pedir la revisión.** Apliqué la propuesta entera sobre una copia temporal de `data/`, con las
+mismas funciones de la aprobación (sin correr el script de aprobación: lo tiene bloqueado toda sesión de agente), y
+dibujé las tres vistas. `cargarDatos` pasó, **pero el build habría fallado**: `vistas.ts` rechaza un dibujo con
+avisos, y había 8 distintos.
+
+| Aviso | De quién | Arreglo |
+|---|---|---|
+| «Almacenamiento» no cabe en 104 u (nombre de bloque, es) | dato | lo corrige el investigador |
+| «Etiquetas de confidencialidad (Microsoft Purview)»: 4 líneas en una ficha de 2 (es; 3 en en) | dato | lo corrige el investigador |
+| carril exprés: 3 saltos (nivel 1) y 4 (nivel 2) en 2 pistas | motor | D-S1-23 corregido: sin aviso |
+| canal 2: más de 6 pistas (nivel 2) | motor | D-S1-40 |
+| dos etiquetas de modos encimadas (nivel 2) | motor | D-S1-41 |
+| una referencia de la franja de orquestación fuera del lienzo | motor | D-S1-42 |
+| (visto al mirar la imagen, sin aviso) una etiqueta de salto a 202 u de su línea (nivel 1) | motor | D-S1-43 |
+
+**Hueco de proceso (¿puede fallar?):** el ensayo de la aprobación cargaba los datos pero no dibujaba, y el validador
+del investigador tampoco. La propuesta pasaba los dos y habría roto el build al aprobarse. **Gate nuevo:**
+`src/lib/investigador/dibujo.ts` dibuja el nivel 1, el nivel 2 y cada recorrido, y lo usan `validarPropuesta`
+(validador del investigador y pantalla de revisión) y `aprobar` (sobre lo que queda tras las decisiones).
+
+| Gate | ¿Puede fallar? | Rojo | A quién nombró | Verde |
+|---|---|---|---|---|
+| Dibujo en validar y aprobar (`nucleo.test.ts`) | Sí | la función devuelve `[]` | «falla con ruta y motivo…» y «si lo que queda no se dibuja…» | 63/63 |
+| Dibujo en vivo | Sí | `validar.mjs` sobre la propuesta real | `dibujo · nivel-1 · nombre de almacen (es)…` y las dos de la ficha | — (es el dato) |
+| P1 sin avisos en 3 vistas + 7 pistas parejas (`densidad.test.ts`) | Sí | el motor anterior (`git stash` de `src/`) | nivel-1, nivel-2, recorrido y «7 pistas» | 9/9 |
+| Alternativa de etiqueta | Sí | sin alternativas | nivel-2 y recorrido: `etiqueta f-flujos-visuales-almacen-sql: queda encima…` | 11/11 |
+| Aire de la fila de referencias | Sí | sin achicarlo | nivel-2, recorrido y «tres referencias largas…» | 11/11 |
+| Pase de derecha a izquierda | Sí (primero **no**: con nombres cortos la carnada nunca llenaba la fila; se alargaron dos nombres hasta una fila tan justa como la real, y se sumó el caso «apiñadas bajo las últimas columnas») | solo se corre la última | «apiñadas bajo las últimas columnas» | 11/11 |
+| Etiqueta sobre su trazo (todos los mapas del contrato y P1) | Sí | la regla vieja del nivel 1 | `P1 · nivel-1`: «etiqueta origen.almacen: a 202 u de su trazo» | 33/33 |
+
+Los golden files **no cambiaron** (todos los cambios solo actúan donde antes había aviso). El único aviso declarado
+del paquete (`prueba-arquitectura-app`, 3 saltos) desapareció: ahora ningún mapa del contrato da avisos.
+
+**Imagen.** Fabric con los dos nombres acortados a mano (solo en el ensayo; el dato lo corrige el investigador),
+leído como imagen: el nivel 1 queda limpio; el nivel 2 queda denso pero legible (7 pistas en el canal de
+almacenamiento a procesamiento, 4 pistas en el carril exprés, la fila de orquestación justa).
+
+**La skill** aprende a retomar una propuesta sin aprobar (corrige solo lo que el validador diga y vuelve a verificar)
+y a leer las fallas `dibujo · …` (nombre más corto que diga lo mismo, en los dos idiomas; jamás quitar el
+componente).
+
+**La propuesta se sube como está** (`propuestas/2026-09-27-fabric/` + el registro de fuentes): es la primera corrida
+del piloto y su pantalla de revisión dice que no se puede aprobar hasta corregirla. La segunda corrida la reemplaza
+en la misma carpeta, y el diff de git mostrará qué cambió.
+
+**Suites:** unitarias 697/697 · paquete 436/436 (golden files intactos) · capturas 64 encuadres, 2256 comprobaciones,
+0 fallas.
+
+**Lo que sigue:** la persona corre `/investigar fabric` otra vez. Después: revisión afirmación por afirmación y
+aprobación en una terminal (parada B).

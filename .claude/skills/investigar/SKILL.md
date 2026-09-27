@@ -22,6 +22,12 @@ Investiga la plataforma (y la capa, si viene) de: **$ARGUMENTS**. El primer argu
 - `data/mapas/plataforma-ejemplo.mapa.yaml` — un mapa completo y válido: copia su forma.
 - `src/lib/investigador/esquema.ts` — el esquema exacto de la propuesta.
 
+## 1-bis. Si ya hay una propuesta sin aprobar, retómala
+Si en `propuestas/` hay una carpeta de esta plataforma (y capa) cuya propuesta **no pasó** la validación
+—o que todavía nadie aprobó (no aparece en `data/revisiones/<id>.jsonl`)— **parte de ella**: vuelve a
+validar, corrige solo lo que el validador diga y vuelve a verificar. No rehagas la investigación si la
+fuente de cada afirmación sigue en pie. Escribe en la carpeta de hoy (si es la misma, se reemplaza).
+
 ## 2. Investiga
 Con WebSearch y WebFetch, solo documentación pública (ver tus reglas). Para cada componente o flujo que
 vayas a proponer, abre con WebFetch la página que lo respalda y copia el pasaje literal.
@@ -58,7 +64,10 @@ En `propuestas/<AAAA-MM-DD>-<plataforma>[-<capa>]/propuesta.json` (fecha de hoy)
 
 ## 4. Valida y verifica (código, no opinión)
 1. `node scripts/investigar/validar.mjs propuestas/<carpeta>` — corrige lo que diga; hasta 2 reintentos
-   (anótalos en `ejecucion.reintentos`).
+   (anótalos en `ejecucion.reintentos`). Además del esquema y de las reglas del contrato, el validador
+   **dibuja** el nivel 1, el nivel 2 y cada recorrido: una falla `dibujo · …` es un texto que no cabe (una
+   palabra más ancha que el bloque, un nombre de más líneas de las que tiene la ficha). Se corrige con un
+   nombre más corto que diga lo mismo, en los dos idiomas; jamás quitando el componente.
 2. `node scripts/verificar-citas.mjs propuestas/<carpeta>` — baja cada página con curl y busca la cita.
    Una cita «no-encontrada» casi siempre es un pasaje no literal: vuelve a abrir la página, cópialo
    exacto, o retira la afirmación. Vuelve a validar y a verificar.

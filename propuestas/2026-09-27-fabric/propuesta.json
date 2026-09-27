@@ -1,0 +1,2869 @@
+{
+  "version": 1,
+  "plataforma": "fabric",
+  "fecha": "2026-09-27",
+  "ejecucion": {
+    "herramienta": "claude-code",
+    "modelo": "claude-opus-5-5",
+    "reintentos": 0
+  },
+  "mapa": {
+    "contrato_version": "0.3.0",
+    "gramatica_id": "plataformas-datos",
+    "gramatica_version": "0.2.0",
+    "sujeto_id": "fabric",
+    "sujeto_nombre": { "es": "Microsoft Fabric", "en": "Microsoft Fabric" },
+    "version": "0.0.0",
+    "fecha_actualizacion": "2026-09-27",
+    "estado": "propuesta",
+    "bloques": [
+      {
+        "id": "origen",
+        "nombre": { "es": "Sistemas de origen", "en": "Source systems" },
+        "banda_id": "fuentes",
+        "lider": {
+          "es": "Los sistemas donde nacen los datos, dentro o fuera de la organización.",
+          "en": "The systems where data is born, inside or outside the organisation."
+        }
+      },
+      {
+        "id": "entrada",
+        "nombre": { "es": "Entrada de datos", "en": "Data intake" },
+        "banda_id": "ingesta",
+        "lider": {
+          "es": "Trae los datos a la plataforma: una réplica que se mantiene al día o copias programadas.",
+          "en": "Brings data into the platform: a replica that keeps itself current, or scheduled copies."
+        }
+      },
+      {
+        "id": "almacen",
+        "nombre": {
+          "es": "Almacenamiento en OneLake",
+          "en": "Storage in OneLake"
+        },
+        "banda_id": "almacenamiento",
+        "lider": {
+          "es": "Un solo lago para toda la organización; cada herramienta lee la misma copia.",
+          "en": "One lake for the whole organisation; every tool reads the same copy."
+        }
+      },
+      {
+        "id": "preparacion",
+        "nombre": { "es": "Preparación", "en": "Preparation" },
+        "banda_id": "procesamiento",
+        "lider": {
+          "es": "Limpia, combina y da forma a los datos, con código o sin él.",
+          "en": "Cleans, combines and shapes the data, with code or without it."
+        }
+      },
+      {
+        "id": "consumo-bi",
+        "nombre": { "es": "Informes", "en": "Reports" },
+        "banda_id": "consumo",
+        "lider": {
+          "es": "Convierte los datos en indicadores e informes que la gente consulta.",
+          "en": "Turns the data into the indicators and reports people check."
+        }
+      },
+      {
+        "id": "agentes",
+        "nombre": { "es": "Agentes", "en": "Agents" },
+        "banda_id": "ia",
+        "lider": {
+          "es": "Responde preguntas en lenguaje natural usando los datos como contexto.",
+          "en": "Answers plain-language questions using the data as context."
+        }
+      },
+      {
+        "id": "gobierno",
+        "nombre": { "es": "Gobierno", "en": "Governance" },
+        "banda_id": "gobierno",
+        "lider": {
+          "es": "Decide quién ve qué datos y marca los que son sensibles.",
+          "en": "Decides who sees which data and marks what is sensitive."
+        }
+      }
+    ],
+    "nodos": [
+      {
+        "id": "bases-operacionales",
+        "banda_id": "fuentes",
+        "tipo_id": "tipo-externo",
+        "bloque_id": "origen",
+        "orden": 1,
+        "nombre": {
+          "es": "Bases de datos operacionales",
+          "en": "Operational databases"
+        },
+        "lider": {
+          "es": "Los sistemas del día a día, como el de admisiones, donde se registra cada operación.",
+          "en": "The day-to-day systems, such as admissions, where every transaction is recorded."
+        },
+        "experto": {
+          "es": "Bases relacionales y otros sistemas transaccionales, por ejemplo SQL Server, que Fabric puede replicar de forma continua en OneLake con el espejado o copiar con un trabajo de copia.",
+          "en": "Relational databases and other transactional systems, SQL Server for example, which Fabric can replicate continuously into OneLake through mirroring or copy with a Copy job."
+        },
+        "por_que_importa": {
+          "es": "La forma de traerlas decide qué tan al día están los datos de análisis.",
+          "en": "How they are brought in decides how current the analytics data is."
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://learn.microsoft.com/en-us/fabric/mirroring/overview",
+            "titulo": {
+              "es": "Espejado en Microsoft Fabric (Microsoft Learn)",
+              "en": "Mirroring - Microsoft Fabric | Microsoft Learn"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          },
+          {
+            "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/whats-new-archive",
+            "titulo": {
+              "es": "Archivo de novedades de Microsoft Fabric (Microsoft Learn)",
+              "en": "What's new? archive - Microsoft Fabric | Microsoft Learn"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-09-27"
+      },
+      {
+        "id": "almacenamiento-externo",
+        "banda_id": "fuentes",
+        "tipo_id": "tipo-externo",
+        "bloque_id": "origen",
+        "orden": 2,
+        "nombre": {
+          "es": "Almacenamiento en otras nubes",
+          "en": "Storage in other clouds"
+        },
+        "lider": {
+          "es": "Archivos que ya viven en otras nubes o en servidores propios y que se pueden usar sin moverlos.",
+          "en": "Files that already live in other clouds or on your own servers and can be used without moving them."
+        },
+        "experto": {
+          "es": "Azure Data Lake Storage, Azure Blob Storage, Amazon S3 y compatibles, fuentes compatibles con Iceberg, Microsoft Dataverse y fuentes locales, a las que OneLake apunta con accesos directos (shortcuts).",
+          "en": "Azure Data Lake Storage, Azure Blob Storage, Amazon S3 and compatible sources, Iceberg-compatible sources, Microsoft Dataverse and on-premises sources, which OneLake points to through shortcuts."
+        },
+        "por_que_importa": {
+          "es": "Sin copias no hay dos versiones del mismo dato: lo que cambia en el origen se ve de inmediato.",
+          "en": "Without copies there are no two versions of the same data: what changes at the source shows up immediately."
+        },
+        "terminos": {
+          "es": {
+            "acceso directo": "Una referencia que hace ver datos guardados en otro lugar como si estuvieran en OneLake, sin copiarlos."
+          },
+          "en": {
+            "shortcut": "A reference that makes data stored elsewhere look as if it were in OneLake, without copying it."
+          }
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview",
+            "titulo": {
+              "es": "OneLake, el lago de datos unificado (Microsoft Learn)",
+              "en": "OneLake, the unified data lake - Microsoft Fabric | Microsoft Learn"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          },
+          {
+            "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/",
+            "titulo": {
+              "es": "Anuncio de disponibilidad general de Microsoft Fabric (blog de Microsoft Fabric, 15 de noviembre de 2023)",
+              "en": "Prepare your data for AI innovation with Microsoft Fabric, now generally available | Microsoft Fabric Blog"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-09-27"
+      },
+      {
+        "id": "espejo",
+        "banda_id": "ingesta",
+        "tipo_id": "cap-ingesta",
+        "bloque_id": "entrada",
+        "orden": 1,
+        "nombre": { "es": "Espejado (Mirroring)", "en": "Mirroring" },
+        "lider": {
+          "es": "Mantiene en la plataforma una copia de las bases del día a día que se actualiza sola, casi al instante.",
+          "en": "Keeps a copy of the day-to-day databases in the platform that updates itself almost instantly."
+        },
+        "experto": {
+          "es": "Replicación continua de bases operacionales hacia OneLake en tablas Delta; los cambios pueden publicarse cada 15 segundos.",
+          "en": "Continuous replication of operational databases into OneLake as Delta tables; changes can be published as often as every 15 seconds."
+        },
+        "por_que_importa": {
+          "es": "Necesita una capacidad encendida: si se pausa, la réplica se detiene y los informes quedan con datos viejos.",
+          "en": "It needs a running capacity: if the capacity is paused, replication stops and reports are left with stale data."
+        },
+        "terminos": {
+          "es": {
+            "tablas Delta": "Tablas guardadas en un formato abierto que lleva un registro de cada cambio."
+          },
+          "en": {
+            "Delta tables": "Tables stored in an open format that keeps a log of every change."
+          }
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://learn.microsoft.com/en-us/fabric/mirroring/overview",
+            "titulo": {
+              "es": "Espejado en Microsoft Fabric (Microsoft Learn)",
+              "en": "Mirroring - Microsoft Fabric | Microsoft Learn"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          },
+          {
+            "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/whats-new-archive",
+            "titulo": {
+              "es": "Archivo de novedades de Microsoft Fabric (Microsoft Learn)",
+              "en": "What's new? archive - Microsoft Fabric | Microsoft Learn"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-09-27"
+      },
+      {
+        "id": "trabajo-copia",
+        "banda_id": "ingesta",
+        "tipo_id": "cap-ingesta",
+        "bloque_id": "entrada",
+        "orden": 2,
+        "nombre": { "es": "Trabajo de copia (Copy job)", "en": "Copy job" },
+        "lider": {
+          "es": "Copia datos de muchos orígenes a muchos destinos, completos o solo lo nuevo, en el horario que se fije.",
+          "en": "Copies data from many sources to many destinations, in full or only what is new, on the schedule you set."
+        },
+        "experto": {
+          "es": "Movimiento de datos sin canalizaciones: copia masiva, copia incremental o replicación por captura de cambios (CDC), con uno o varios horarios por trabajo.",
+          "en": "Data movement without pipelines: bulk copy, incremental copy or change data capture (CDC) replication, with one or several schedules per job."
+        },
+        "por_que_importa": {
+          "es": "Una copia incremental no trae todo cada vez y, si falla, retoma desde la última ejecución exitosa.",
+          "en": "An incremental copy does not bring everything each time and, if it fails, resumes from the last successful run."
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://learn.microsoft.com/en-us/fabric/data-factory/what-is-copy-job",
+            "titulo": {
+              "es": "Qué es el trabajo de copia en Data Factory (Microsoft Learn)",
+              "en": "What is Copy job in Data Factory - Microsoft Fabric | Microsoft Learn"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          },
+          {
+            "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/whats-new-archive",
+            "titulo": {
+              "es": "Archivo de novedades de Microsoft Fabric (Microsoft Learn)",
+              "en": "What's new? archive - Microsoft Fabric | Microsoft Learn"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-09-27"
+      },
+      {
+        "id": "base-espejada",
+        "banda_id": "almacenamiento",
+        "tipo_id": "cap-almacenamiento",
+        "bloque_id": "almacen",
+        "orden": 1,
+        "nombre": { "es": "Base de datos espejada", "en": "Mirrored database" },
+        "lider": {
+          "es": "La réplica de la base de origen, lista para consultarse.",
+          "en": "The replica of the source database, ready to be queried."
+        },
+        "experto": {
+          "es": "Réplica en OneLake en tablas Delta, con su propio punto de conexión de análisis SQL; cada unidad de capacidad comprada incluye un terabyte gratis de almacenamiento para réplicas.",
+          "en": "Replica in OneLake as Delta tables, with its own SQL analytics endpoint; each capacity unit purchased includes one free terabyte of mirroring storage."
+        },
+        "por_que_importa": {
+          "es": "Superado el terabyte gratis por unidad de capacidad, o con la capacidad en pausa, el almacenamiento de la réplica se paga.",
+          "en": "Beyond the free terabyte per capacity unit, or while the capacity is paused, the replica's storage is paid for."
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://learn.microsoft.com/en-us/fabric/mirroring/overview",
+            "titulo": {
+              "es": "Espejado en Microsoft Fabric (Microsoft Learn)",
+              "en": "Mirroring - Microsoft Fabric | Microsoft Learn"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          },
+          {
+            "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/whats-new-archive",
+            "titulo": {
+              "es": "Archivo de novedades de Microsoft Fabric (Microsoft Learn)",
+              "en": "What's new? archive - Microsoft Fabric | Microsoft Learn"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-09-27"
+      },
+      {
+        "id": "onelake",
+        "banda_id": "almacenamiento",
+        "tipo_id": "cap-almacenamiento",
+        "bloque_id": "almacen",
+        "orden": 2,
+        "nombre": { "es": "OneLake", "en": "OneLake" },
+        "lider": {
+          "es": "El único lago de la organización: todas las herramientas guardan y leen ahí, en formatos abiertos.",
+          "en": "The organisation's single lake: every tool stores and reads there, in open formats."
+        },
+        "experto": {
+          "es": "Almacenamiento lógico único por inquilino, construido sobre Azure Data Lake Storage; guarda las tablas en Delta Parquet o Iceberg y no requiere infraestructura propia.",
+          "en": "One logical store per tenant, built on Azure Data Lake Storage; it keeps tables in Delta Parquet or Iceberg and needs no infrastructure of its own."
+        },
+        "por_que_importa": {
+          "es": "Al guardar en formatos abiertos, los datos no quedan atados a un formato propietario.",
+          "en": "Because it stores open formats, the data is not locked into a proprietary format."
+        },
+        "terminos": {
+          "es": {
+            "inquilino": "La cuenta de la organización en la nube de Microsoft, que agrupa a todos sus usuarios y recursos."
+          },
+          "en": {
+            "tenant": "The organisation's account in Microsoft's cloud, grouping all its users and resources."
+          }
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview",
+            "titulo": {
+              "es": "OneLake, el lago de datos unificado (Microsoft Learn)",
+              "en": "OneLake, the unified data lake - Microsoft Fabric | Microsoft Learn"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          },
+          {
+            "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/",
+            "titulo": {
+              "es": "Anuncio de disponibilidad general de Microsoft Fabric (blog de Microsoft Fabric, 15 de noviembre de 2023)",
+              "en": "Prepare your data for AI innovation with Microsoft Fabric, now generally available | Microsoft Fabric Blog"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-09-27"
+      },
+      {
+        "id": "lakehouse",
+        "banda_id": "almacenamiento",
+        "tipo_id": "cap-almacenamiento",
+        "bloque_id": "almacen",
+        "orden": 3,
+        "nombre": { "es": "Lakehouse", "en": "Lakehouse" },
+        "lider": {
+          "es": "Guarda en un mismo lugar tablas y archivos de cualquier tipo, listos para prepararse y consultarse.",
+          "en": "Keeps tables and files of any kind in one place, ready to be prepared and queried."
+        },
+        "experto": {
+          "es": "Une la escala de un lago de datos con las consultas de un almacén: guarda datos estructurados y no estructurados en tablas Delta que se analizan con Apache Spark y con SQL.",
+          "en": "Joins a data lake's scale with a warehouse's querying: it keeps structured and unstructured data in Delta tables that are analysed with Apache Spark and with SQL."
+        },
+        "por_que_importa": {
+          "es": "Elegir entre lakehouse y almacén de datos depende de las herramientas del equipo, los tipos de datos y el patrón de uso.",
+          "en": "Choosing between a lakehouse and a data warehouse depends on the team's tools, the data types and the workload pattern."
+        },
+        "terminos": {
+          "es": {
+            "lakehouse": "Almacén que une la escala de un lago de datos con las consultas de un almacén de datos."
+          },
+          "en": {
+            "lakehouse": "A store that joins a data lake's scale with a data warehouse's querying."
+          }
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://learn.microsoft.com/en-us/fabric/data-engineering/lakehouse-overview",
+            "titulo": {
+              "es": "Qué es un lakehouse (Microsoft Learn)",
+              "en": "What is a lakehouse? - Microsoft Fabric | Microsoft Learn"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          },
+          {
+            "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/",
+            "titulo": {
+              "es": "Anuncio de disponibilidad general de Microsoft Fabric (blog de Microsoft Fabric, 15 de noviembre de 2023)",
+              "en": "Prepare your data for AI innovation with Microsoft Fabric, now generally available | Microsoft Fabric Blog"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-09-27"
+      },
+      {
+        "id": "warehouse",
+        "banda_id": "almacenamiento",
+        "tipo_id": "cap-almacenamiento",
+        "bloque_id": "almacen",
+        "orden": 4,
+        "nombre": {
+          "es": "Almacén de datos (Warehouse)",
+          "en": "Data warehouse"
+        },
+        "lider": {
+          "es": "Una base para análisis donde los cambios que tocan varias tablas se aplican completos o no se aplican.",
+          "en": "An analytics database where changes touching several tables are applied in full or not at all."
+        },
+        "experto": {
+          "es": "Almacén relacional a escala empresarial sobre el lago, con transacciones ACID completas que abarcan varias tablas.",
+          "en": "Enterprise-scale relational warehouse on the lake, with full ACID transactions spanning several tables."
+        },
+        "por_que_importa": {
+          "es": "Una carga que toca varias tablas queda completa o no queda, sin dejar datos a medias.",
+          "en": "A load that touches several tables either completes or does not happen, never leaving data half-written."
+        },
+        "terminos": {
+          "es": {
+            "ACID": "Garantías de que una transacción se aplica completa o no se aplica, sin dejar datos a medias."
+          },
+          "en": {
+            "ACID": "Guarantees that a transaction is applied in full or not at all, never half-done."
+          }
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://learn.microsoft.com/en-us/fabric/data-warehouse/data-warehousing",
+            "titulo": {
+              "es": "Qué es Fabric Data Warehouse (Microsoft Learn)",
+              "en": "What Is Fabric Data Warehouse? - Microsoft Fabric | Microsoft Learn"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          },
+          {
+            "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/",
+            "titulo": {
+              "es": "Anuncio de disponibilidad general de Microsoft Fabric (blog de Microsoft Fabric, 15 de noviembre de 2023)",
+              "en": "Prepare your data for AI innovation with Microsoft Fabric, now generally available | Microsoft Fabric Blog"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-09-27"
+      },
+      {
+        "id": "notebooks-spark",
+        "banda_id": "procesamiento",
+        "tipo_id": "cap-transformacion",
+        "bloque_id": "preparacion",
+        "orden": 1,
+        "nombre": {
+          "es": "Cuadernos y Apache Spark",
+          "en": "Notebooks and Apache Spark"
+        },
+        "lider": {
+          "es": "Donde los ingenieros escriben el código que limpia y transforma grandes volúmenes de datos.",
+          "en": "Where engineers write the code that cleans and transforms large volumes of data."
+        },
+        "experto": {
+          "es": "Motor Apache Spark con cuadernos en Python, R o Scala para ingerir, preparar y transformar grandes volúmenes, y herramientas para programar esos trabajos.",
+          "en": "Apache Spark engine with notebooks in Python, R or Scala to ingest, prepare and transform large datasets, plus tools to schedule those jobs."
+        },
+        "por_que_importa": {
+          "es": "Aquí se decide cómo se corrigen los datos: un error en este paso llega a todo lo que se construye encima.",
+          "en": "This is where data corrections are decided: an error at this step reaches everything built on top of it."
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/microsoft-fabric-overview",
+            "titulo": {
+              "es": "Qué es Microsoft Fabric (Microsoft Learn)",
+              "en": "What is Microsoft Fabric - Microsoft Fabric | Microsoft Learn"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          },
+          {
+            "url": "https://learn.microsoft.com/en-us/fabric/data-engineering/data-engineering-overview",
+            "titulo": {
+              "es": "Qué es Fabric Data Engineering (Microsoft Learn)",
+              "en": "What is Fabric Data Engineering? - Microsoft Fabric | Microsoft Learn"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          },
+          {
+            "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/",
+            "titulo": {
+              "es": "Anuncio de disponibilidad general de Microsoft Fabric (blog de Microsoft Fabric, 15 de noviembre de 2023)",
+              "en": "Prepare your data for AI innovation with Microsoft Fabric, now generally available | Microsoft Fabric Blog"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-09-27"
+      },
+      {
+        "id": "dataflow-gen2",
+        "banda_id": "procesamiento",
+        "tipo_id": "cap-transformacion",
+        "bloque_id": "preparacion",
+        "orden": 2,
+        "nombre": {
+          "es": "Flujos de datos (Dataflow Gen2)",
+          "en": "Dataflow Gen2"
+        },
+        "lider": {
+          "es": "Prepara y transforma datos con una interfaz visual, sin escribir código.",
+          "en": "Prepares and transforms data through a visual interface, without writing code."
+        },
+        "experto": {
+          "es": "Herramienta de bajo código construida sobre Power Query: se conecta a cientos de orígenes, aplica más de 300 transformaciones y carga el resultado en varios destinos.",
+          "en": "Low-code tool built on Power Query: it connects to hundreds of sources, applies more than 300 transformations and loads the result into several destinations."
+        },
+        "por_que_importa": {
+          "es": "Permite preparar datos a quien no programa; conviene decidir qué lógica vive aquí y cuál en código, para no duplicarla.",
+          "en": "It lets people who do not code prepare data; it pays to decide which logic lives here and which in code, so it is not duplicated."
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://learn.microsoft.com/en-us/fabric/data-factory/dataflows-gen2-overview",
+            "titulo": {
+              "es": "Diferencias entre Dataflow Gen1 y Dataflow Gen2 (Microsoft Learn)",
+              "en": "Differences between Dataflow Gen1 and Dataflow Gen2 - Microsoft Fabric | Microsoft Learn"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          },
+          {
+            "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/",
+            "titulo": {
+              "es": "Anuncio de disponibilidad general de Microsoft Fabric (blog de Microsoft Fabric, 15 de noviembre de 2023)",
+              "en": "Prepare your data for AI innovation with Microsoft Fabric, now generally available | Microsoft Fabric Blog"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-09-27"
+      },
+      {
+        "id": "modelo-semantico",
+        "banda_id": "consumo",
+        "tipo_id": "cap-consumo",
+        "bloque_id": "consumo-bi",
+        "orden": 1,
+        "nombre": {
+          "es": "Modelo semántico en Direct Lake",
+          "en": "Direct Lake semantic model"
+        },
+        "lider": {
+          "es": "Carga en memoria los datos del lago para los informes, sin mantener una copia aparte.",
+          "en": "Loads data from the lake into memory for reports, without keeping a separate copy."
+        },
+        "experto": {
+          "es": "Modo de almacenamiento de los modelos semánticos de Power BI que carga en memoria tablas Delta de OneLake; a diferencia del modo de importación, su actualización copia solo metadatos.",
+          "en": "Power BI semantic model storage mode that loads Delta tables from OneLake into memory; unlike Import mode, its refresh copies only metadata."
+        },
+        "por_que_importa": {
+          "es": "Evita recargas completas de datos, pero tiene límites que dependen del tamaño de la capacidad.",
+          "en": "It avoids full data reloads, but it has limits that depend on the size of the capacity."
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/direct-lake-overview",
+            "titulo": {
+              "es": "Introducción a Direct Lake (Microsoft Learn)",
+              "en": "Direct Lake overview - Microsoft Fabric | Microsoft Learn"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          },
+          {
+            "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/",
+            "titulo": {
+              "es": "Anuncio de disponibilidad general de Microsoft Fabric (blog de Microsoft Fabric, 15 de noviembre de 2023)",
+              "en": "Prepare your data for AI innovation with Microsoft Fabric, now generally available | Microsoft Fabric Blog"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-09-27"
+      },
+      {
+        "id": "informe-power-bi",
+        "banda_id": "consumo",
+        "tipo_id": "cap-consumo",
+        "bloque_id": "consumo-bi",
+        "orden": 2,
+        "nombre": { "es": "Informes de Power BI", "en": "Power BI reports" },
+        "lider": {
+          "es": "Los tableros e informes interactivos donde la dirección consulta los indicadores.",
+          "en": "The interactive dashboards and reports where management checks the indicators."
+        },
+        "experto": {
+          "es": "Informes y tableros interactivos que se comparten en la organización; sus visuales consultan el modelo semántico con DAX cuando alguien los usa.",
+          "en": "Interactive reports and dashboards shared across the organisation; their visuals query the semantic model with DAX when someone uses them."
+        },
+        "por_que_importa": {
+          "es": "Es donde se toman decisiones; si el dato llega tarde o mal, se decide con información equivocada.",
+          "en": "This is where decisions are made; if the data arrives late or wrong, decisions rest on the wrong information."
+        },
+        "terminos": {
+          "es": {
+            "DAX": "El lenguaje de fórmulas y consultas de los modelos semánticos de Power BI."
+          },
+          "en": {
+            "DAX": "The formula and query language of Power BI semantic models."
+          }
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/microsoft-fabric-overview",
+            "titulo": {
+              "es": "Qué es Microsoft Fabric (Microsoft Learn)",
+              "en": "What is Microsoft Fabric - Microsoft Fabric | Microsoft Learn"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          },
+          {
+            "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/",
+            "titulo": {
+              "es": "Anuncio de disponibilidad general de Microsoft Fabric (blog de Microsoft Fabric, 15 de noviembre de 2023)",
+              "en": "Prepare your data for AI innovation with Microsoft Fabric, now generally available | Microsoft Fabric Blog"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-09-27"
+      },
+      {
+        "id": "agente-datos",
+        "banda_id": "ia",
+        "tipo_id": "cap-ia",
+        "bloque_id": "agentes",
+        "orden": 1,
+        "nombre": {
+          "es": "Agente de datos de Fabric",
+          "en": "Fabric data agent"
+        },
+        "lider": {
+          "es": "Responde preguntas en lenguaje natural sobre los datos, con los mismos permisos de quien pregunta.",
+          "en": "Answers plain-language questions about the data, with the same permissions as the person asking."
+        },
+        "experto": {
+          "es": "Agente que convierte preguntas en consultas de solo lectura sobre las fuentes elegidas, por ejemplo tablas de un lakehouse, con las credenciales de quien pregunta.",
+          "en": "Agent that turns questions into read-only queries over the chosen sources, lakehouse tables for example, using the asker's credentials."
+        },
+        "por_que_importa": {
+          "es": "Por ahora solo admite inglés: un equipo que pregunta en español debe probarlo antes de contar con él.",
+          "en": "For now it only supports English: a team that asks in Spanish should test it before relying on it."
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://learn.microsoft.com/en-us/fabric/data-science/concept-data-agent",
+            "titulo": {
+              "es": "Creación del agente de datos de Fabric (Microsoft Learn)",
+              "en": "Fabric data agent creation - Microsoft Fabric | Microsoft Learn"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-09-27"
+      },
+      {
+        "id": "seguridad-onelake",
+        "banda_id": "gobierno",
+        "tipo_id": "cap-gobierno",
+        "bloque_id": "gobierno",
+        "orden": 1,
+        "nombre": { "es": "Seguridad de OneLake", "en": "OneLake security" },
+        "lider": {
+          "es": "Define quién ve qué datos, hasta el nivel de fila y columna, y lo hace cumplir en todas las herramientas.",
+          "en": "Defines who sees which data, down to row and column, and enforces it in every tool."
+        },
+        "experto": {
+          "es": "Roles definidos sobre un elemento que conceden acceso a carpetas, tablas, esquemas, filas y columnas, y que todos los motores de Fabric aplican por igual.",
+          "en": "Roles defined on an item that grant access to folders, tables, schemas, rows and columns, enforced alike by every Fabric engine."
+        },
+        "por_que_importa": {
+          "es": "Los roles solo limitan a quienes leen: administradores, miembros y colaboradores del espacio de trabajo ven todos los datos.",
+          "en": "Roles only restrict readers: workspace admins, members and contributors see all the data."
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://learn.microsoft.com/en-us/fabric/onelake/security/get-started-security",
+            "titulo": {
+              "es": "Introducción a la seguridad de los datos en OneLake (Microsoft Learn)",
+              "en": "Data security overview - Microsoft Fabric | Microsoft Learn"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          },
+          {
+            "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/whats-new-archive",
+            "titulo": {
+              "es": "Archivo de novedades de Microsoft Fabric (Microsoft Learn)",
+              "en": "What's new? archive - Microsoft Fabric | Microsoft Learn"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-09-27"
+      },
+      {
+        "id": "etiquetas-confidencialidad",
+        "banda_id": "gobierno",
+        "tipo_id": "cap-gobierno",
+        "bloque_id": "gobierno",
+        "orden": 2,
+        "nombre": {
+          "es": "Etiquetas de confidencialidad (Microsoft Purview)",
+          "en": "Sensitivity labels (Microsoft Purview)"
+        },
+        "lider": {
+          "es": "Marca qué datos son sensibles; en algunas exportaciones, como a Excel, la marca y su protección viajan con ellos.",
+          "en": "Marks which data is sensitive; in some exports, such as to Excel, the mark and its protection travel with the data."
+        },
+        "experto": {
+          "es": "Etiquetas y políticas de Microsoft Purview Information Protection sobre los elementos de Fabric; con una política de publicación, la etiqueta y su control de acceso siguen a los datos al exportarlos a Excel, PDF o PowerPoint.",
+          "en": "Microsoft Purview Information Protection labels and policies on Fabric items; with a publishing policy, the label and its access control follow the data when it is exported to Excel, PDF or PowerPoint."
+        },
+        "por_que_importa": {
+          "es": "Una etiqueta que no se aplica no protege nada: hay que decidir quién etiqueta y cómo se vigila la cobertura.",
+          "en": "A label nobody applies protects nothing: someone has to decide who labels and how coverage is monitored."
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://learn.microsoft.com/en-us/fabric/governance/information-protection",
+            "titulo": {
+              "es": "Protección de la información en Fabric (Microsoft Learn)",
+              "en": "Information protection in Fabric - Microsoft Fabric | Microsoft Learn"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          },
+          {
+            "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/",
+            "titulo": {
+              "es": "Anuncio de disponibilidad general de Microsoft Fabric (blog de Microsoft Fabric, 15 de noviembre de 2023)",
+              "en": "Prepare your data for AI innovation with Microsoft Fabric, now generally available | Microsoft Fabric Blog"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-09-27"
+      },
+      {
+        "id": "capacidad",
+        "banda_id": "operacion",
+        "tipo_id": "tipo-operacion",
+        "orden": 1,
+        "nombre": {
+          "es": "Capacidad de Fabric (SKU F)",
+          "en": "Fabric capacity (F SKU)"
+        },
+        "lider": {
+          "es": "El conjunto de recursos que pagan y comparten todas las herramientas de la plataforma.",
+          "en": "The pool of resources that every tool on the platform pays for and shares."
+        },
+        "experto": {
+          "es": "Grupo de recursos cuyo tamaño fija la potencia de cómputo; las capacidades F se compran en Azure con cobro por segundo sin compromiso, o con reserva anual para ahorrar.",
+          "en": "Resource pool whose size sets the compute power; F capacities are bought through Azure, billed per second with no commitment, or with a yearly reservation to save costs."
+        },
+        "por_que_importa": {
+          "es": "Todas las cargas de trabajo comparten el mismo grupo: su tamaño fija el costo y el techo de lo que puede ejecutarse a la vez.",
+          "en": "Every workload shares the same pool: its size sets the cost and the ceiling on what can run at once."
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://learn.microsoft.com/en-us/fabric/enterprise/licenses",
+            "titulo": {
+              "es": "Licencias y capacidad de Microsoft Fabric (Microsoft Learn)",
+              "en": "Understand Microsoft Fabric licenses and capacity - Microsoft Fabric | Microsoft Learn"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          },
+          {
+            "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/",
+            "titulo": {
+              "es": "Anuncio de disponibilidad general de Microsoft Fabric (blog de Microsoft Fabric, 15 de noviembre de 2023)",
+              "en": "Prepare your data for AI innovation with Microsoft Fabric, now generally available | Microsoft Fabric Blog"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-09-27"
+      },
+      {
+        "id": "app-metricas",
+        "banda_id": "operacion",
+        "tipo_id": "tipo-operacion",
+        "orden": 2,
+        "nombre": {
+          "es": "App de métricas de capacidad",
+          "en": "Capacity Metrics app"
+        },
+        "lider": {
+          "es": "Muestra cuánto de la capacidad se está usando, para decidir cómo aprovecharla.",
+          "en": "Shows how much of the capacity is in use, to decide how to make the most of it."
+        },
+        "experto": {
+          "es": "App para vigilar el consumo de las capacidades de Fabric; los datos de uso llegan de 10 a 15 minutos después de cada actividad.",
+          "en": "App for monitoring the consumption of Fabric capacities; usage data arrives 10 to 15 minutes after each activity."
+        },
+        "por_que_importa": {
+          "es": "No envía alertas: para avisos sobre la salud de la capacidad hace falta otro mecanismo.",
+          "en": "It sends no alerts: notices about capacity health need a separate mechanism."
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://learn.microsoft.com/en-us/fabric/enterprise/metrics-app",
+            "titulo": {
+              "es": "Qué es la app de métricas de capacidad de Microsoft Fabric (Microsoft Learn)",
+              "en": "What is the Microsoft Fabric Capacity Metrics app? - Microsoft Fabric | Microsoft Learn"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          },
+          {
+            "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/whats-new-archive",
+            "titulo": {
+              "es": "Archivo de novedades de Microsoft Fabric (Microsoft Learn)",
+              "en": "What's new? archive - Microsoft Fabric | Microsoft Learn"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-09-27"
+      },
+      {
+        "id": "canalizaciones",
+        "banda_id": "orquestacion",
+        "tipo_id": "cap-transformacion",
+        "orden": 1,
+        "nombre": {
+          "es": "Canalizaciones de Data Factory",
+          "en": "Data Factory pipelines"
+        },
+        "lider": {
+          "es": "Deciden qué pasos se ejecutan, en qué orden y cuándo: por horario o ante un evento.",
+          "en": "Decide which steps run, in what order and when: on a schedule or when an event occurs."
+        },
+        "experto": {
+          "es": "Encadenan actividades, de modo que cada una puede disparar la siguiente según termine bien o mal, y se ejecutan por horario o por disparadores de eventos.",
+          "en": "They chain activities, so each one can trigger the next depending on whether it succeeds or fails, and they run on a schedule or through event triggers."
+        },
+        "por_que_importa": {
+          "es": "Si nadie coordina el orden, un paso puede leer datos que otro todavía no terminó de preparar.",
+          "en": "If nobody coordinates the order, one step can read data another has not finished preparing."
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://learn.microsoft.com/en-us/fabric/data-factory/pipeline-overview",
+            "titulo": {
+              "es": "Introducción a las canalizaciones (Microsoft Learn)",
+              "en": "Pipeline Overview - Microsoft Fabric | Microsoft Learn"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          },
+          {
+            "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/microsoft-fabric-overview",
+            "titulo": {
+              "es": "Qué es Microsoft Fabric (Microsoft Learn)",
+              "en": "What is Microsoft Fabric - Microsoft Fabric | Microsoft Learn"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          },
+          {
+            "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/",
+            "titulo": {
+              "es": "Anuncio de disponibilidad general de Microsoft Fabric (blog de Microsoft Fabric, 15 de noviembre de 2023)",
+              "en": "Prepare your data for AI innovation with Microsoft Fabric, now generally available | Microsoft Fabric Blog"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-09-27"
+      },
+      {
+        "id": "airflow",
+        "banda_id": "orquestacion",
+        "tipo_id": "cap-transformacion",
+        "orden": 2,
+        "nombre": {
+          "es": "Trabajos de Apache Airflow",
+          "en": "Apache Airflow jobs"
+        },
+        "lider": {
+          "es": "Programa y vigila procesos escritos en Python como una secuencia de pasos con dependencias.",
+          "en": "Schedules and monitors processes written in Python as a sequence of steps with dependencies."
+        },
+        "experto": {
+          "es": "Experiencia de Apache Airflow en Data Factory para crear, programar y vigilar procesos en Python definidos como grafos acíclicos dirigidos (DAG).",
+          "en": "Apache Airflow experience in Data Factory to author, schedule and monitor Python processes defined as directed acyclic graphs (DAGs)."
+        },
+        "por_que_importa": {
+          "es": "Convive con las canalizaciones: hay que decidir cuál de las dos orquesta cada proceso para no duplicar horarios.",
+          "en": "It coexists with pipelines: someone has to decide which one orchestrates each process so schedules are not duplicated."
+        },
+        "terminos": {
+          "es": {
+            "DAG": "Grafo acíclico dirigido: pasos con dependencias que nunca vuelven sobre sí mismos."
+          },
+          "en": {
+            "DAG": "Directed acyclic graph: steps with dependencies that never loop back on themselves."
+          }
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/whats-new-archive",
+            "titulo": {
+              "es": "Archivo de novedades de Microsoft Fabric (Microsoft Learn)",
+              "en": "What's new? archive - Microsoft Fabric | Microsoft Learn"
+            },
+            "fecha": "2026-09-27",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-09-27"
+      }
+    ],
+    "flujos": [
+      {
+        "id": "f-origen-espejo",
+        "origen": "bases-operacionales",
+        "destino": "espejo",
+        "modo_id": "continuo",
+        "que_viaja": { "es": "Cambios de las tablas", "en": "Table changes" },
+        "lider": {
+          "es": "Cada cambio en la base de origen viaja a la plataforma casi al instante.",
+          "en": "Every change in the source database travels to the platform almost instantly."
+        }
+      },
+      {
+        "id": "f-espejo-replica",
+        "origen": "espejo",
+        "destino": "base-espejada",
+        "modo_id": "continuo",
+        "que_viaja": {
+          "es": "Datos replicados en tablas Delta",
+          "en": "Replicated data as Delta tables"
+        },
+        "lider": {
+          "es": "La réplica se mantiene al día sin intervención.",
+          "en": "The replica keeps itself up to date with no manual work."
+        }
+      },
+      {
+        "id": "f-origen-copia",
+        "origen": "bases-operacionales",
+        "destino": "trabajo-copia",
+        "modo_id": "por-lotes",
+        "que_viaja": {
+          "es": "Tablas completas, o solo filas nuevas y cambiadas",
+          "en": "Whole tables, or only new and changed rows"
+        },
+        "lider": {
+          "es": "Una copia programada trae todo la primera vez y después solo lo nuevo.",
+          "en": "A scheduled copy brings everything the first time and then only what is new."
+        }
+      },
+      {
+        "id": "f-copia-lakehouse",
+        "origen": "trabajo-copia",
+        "destino": "lakehouse",
+        "modo_id": "por-lotes",
+        "que_viaja": { "es": "Tablas copiadas", "en": "Copied tables" },
+        "lider": {
+          "es": "Lo copiado queda guardado en tablas listas para prepararse.",
+          "en": "What is copied is stored in tables ready to be prepared."
+        }
+      },
+      {
+        "id": "f-externo-onelake",
+        "origen": "almacenamiento-externo",
+        "destino": "onelake",
+        "modo_id": "sin-copia",
+        "que_viaja": {
+          "es": "Referencias a archivos externos",
+          "en": "References to external files"
+        },
+        "lider": {
+          "es": "OneLake apunta a los archivos donde están, sin copiarlos.",
+          "en": "OneLake points to the files where they are, without copying them."
+        }
+      },
+      {
+        "id": "f-onelake-spark",
+        "origen": "onelake",
+        "destino": "notebooks-spark",
+        "modo_id": "sin-copia",
+        "que_viaja": {
+          "es": "Tablas leídas en su lugar",
+          "en": "Tables read in place"
+        },
+        "lider": {
+          "es": "El código de los ingenieros lee las tablas directamente, sin exportarlas.",
+          "en": "The engineers' code reads the tables directly, without exporting them."
+        }
+      },
+      {
+        "id": "f-replica-spark",
+        "origen": "base-espejada",
+        "destino": "notebooks-spark",
+        "modo_id": "por-lotes",
+        "que_viaja": { "es": "Datos replicados", "en": "Replicated data" },
+        "lider": {
+          "es": "La réplica es el punto de partida para limpiar y combinar los datos.",
+          "en": "The replica is the starting point for cleaning and combining the data."
+        }
+      },
+      {
+        "id": "f-spark-lakehouse",
+        "origen": "notebooks-spark",
+        "destino": "lakehouse",
+        "modo_id": "por-lotes",
+        "que_viaja": { "es": "Tablas limpias", "en": "Clean tables" },
+        "lider": {
+          "es": "Lo limpio se guarda en tablas listas para usarse.",
+          "en": "What is clean is stored in tables ready to use."
+        }
+      },
+      {
+        "id": "f-lakehouse-dataflow",
+        "origen": "lakehouse",
+        "destino": "dataflow-gen2",
+        "modo_id": "por-lotes",
+        "que_viaja": { "es": "Tablas preparadas", "en": "Prepared tables" },
+        "lider": {
+          "es": "Los flujos de datos toman tablas ya guardadas para darles otra forma.",
+          "en": "Dataflows take stored tables to reshape them."
+        }
+      },
+      {
+        "id": "f-dataflow-warehouse",
+        "origen": "dataflow-gen2",
+        "destino": "warehouse",
+        "modo_id": "por-lotes",
+        "que_viaja": { "es": "Datos depurados", "en": "Curated data" },
+        "lider": {
+          "es": "El resultado se carga en la base para análisis.",
+          "en": "The result is loaded into the analytics database."
+        }
+      },
+      {
+        "id": "f-lakehouse-modelo",
+        "origen": "lakehouse",
+        "destino": "modelo-semantico",
+        "modo_id": "sin-copia",
+        "que_viaja": { "es": "Tablas del lakehouse", "en": "Lakehouse tables" },
+        "lider": {
+          "es": "El modelo lee las tablas en su lugar, sin copiarlas.",
+          "en": "The model reads the tables in place, without copying them."
+        }
+      },
+      {
+        "id": "f-warehouse-modelo",
+        "origen": "warehouse",
+        "destino": "modelo-semantico",
+        "modo_id": "sin-copia",
+        "que_viaja": {
+          "es": "Tablas del almacén de datos",
+          "en": "Data warehouse tables"
+        },
+        "lider": {
+          "es": "El modelo también puede leer las tablas de la base para análisis sin copiarlas.",
+          "en": "The model can also read the analytics database's tables without copying them."
+        }
+      },
+      {
+        "id": "f-modelo-informe",
+        "origen": "modelo-semantico",
+        "destino": "informe-power-bi",
+        "modo_id": "a-demanda",
+        "que_viaja": {
+          "es": "Consultas de indicadores",
+          "en": "Indicator queries"
+        },
+        "lider": {
+          "es": "El informe pide los indicadores cuando alguien lo usa.",
+          "en": "The report asks for the indicators when someone uses it."
+        }
+      },
+      {
+        "id": "f-lakehouse-agente",
+        "origen": "lakehouse",
+        "destino": "agente-datos",
+        "modo_id": "a-demanda",
+        "que_viaja": {
+          "es": "Contexto para responder",
+          "en": "Context to answer"
+        },
+        "lider": {
+          "es": "El agente consulta las tablas elegidas para responder.",
+          "en": "The agent queries the chosen tables to answer."
+        }
+      },
+      {
+        "id": "f-canalizacion-spark",
+        "origen": "canalizaciones",
+        "destino": "notebooks-spark",
+        "modo_id": "a-demanda",
+        "que_viaja": { "es": "Orden de ejecución", "en": "Run order" },
+        "lider": {
+          "es": "Da la orden de ejecutar el código de los ingenieros.",
+          "en": "It gives the order to run the engineers' code."
+        }
+      },
+      {
+        "id": "f-canalizacion-dataflow",
+        "origen": "canalizaciones",
+        "destino": "dataflow-gen2",
+        "modo_id": "a-demanda",
+        "que_viaja": { "es": "Orden de ejecución", "en": "Run order" },
+        "lider": {
+          "es": "Da la orden de ejecutar un flujo de datos.",
+          "en": "It gives the order to run a dataflow."
+        }
+      },
+      {
+        "id": "f-canalizacion-copia",
+        "origen": "canalizaciones",
+        "destino": "trabajo-copia",
+        "modo_id": "a-demanda",
+        "que_viaja": { "es": "Orden de ejecución", "en": "Run order" },
+        "lider": {
+          "es": "Puede lanzar un trabajo de copia como uno de sus pasos.",
+          "en": "It can launch a copy job as one of its steps."
+        }
+      },
+      {
+        "id": "f-seguridad-lakehouse",
+        "origen": "seguridad-onelake",
+        "destino": "lakehouse",
+        "modo_id": "a-demanda",
+        "que_viaja": {
+          "es": "Permisos por carpeta, tabla, fila y columna",
+          "en": "Permissions by folder, table, row and column"
+        },
+        "lider": {
+          "es": "Las reglas de acceso se aplican a cada tabla, fila y columna.",
+          "en": "Access rules apply to each table, row and column."
+        }
+      },
+      {
+        "id": "f-spark-metricas",
+        "origen": "notebooks-spark",
+        "destino": "app-metricas",
+        "modo_id": "por-lotes",
+        "que_viaja": { "es": "Consumo de capacidad", "en": "Capacity usage" },
+        "lider": {
+          "es": "Lo que gasta cada ejecución aparece en la app de métricas minutos después.",
+          "en": "What each run uses shows up in the metrics app a few minutes later."
+        }
+      }
+    ],
+    "recorridos": [
+      {
+        "id": "registro-admision",
+        "titulo": {
+          "es": "Un registro de admisión, de punta a punta",
+          "en": "One admission record, end to end"
+        },
+        "pasos": [
+          {
+            "id": "p1",
+            "nodo_id": "bases-operacionales",
+            "que_pasa": {
+              "es": "Nace el registro",
+              "en": "The record is born"
+            },
+            "lider": {
+              "es": "Un paciente ficticio ingresa y queda registrado en el sistema de admisiones.",
+              "en": "A fictional patient is admitted and recorded in the admissions system."
+            },
+            "experto": {
+              "es": "Inserción en una tabla de la base operacional de origen.",
+              "en": "Insert into a table in the source operational database."
+            }
+          },
+          {
+            "id": "p2",
+            "nodo_id": "espejo",
+            "que_pasa": { "es": "Se replica", "en": "It is replicated" },
+            "lider": {
+              "es": "El espejado detecta el cambio y lo lleva a la plataforma.",
+              "en": "Mirroring picks up the change and carries it to the platform."
+            },
+            "experto": {
+              "es": "La replicación continua lleva el cambio a la réplica en OneLake, en tablas Delta.",
+              "en": "Continuous replication carries the change to the replica in OneLake, as Delta tables."
+            }
+          },
+          {
+            "id": "p3",
+            "nodo_id": "base-espejada",
+            "que_pasa": {
+              "es": "Queda en la réplica",
+              "en": "Lands in the replica"
+            },
+            "lider": {
+              "es": "El registro ya se puede consultar en la plataforma.",
+              "en": "The record can now be queried in the platform."
+            },
+            "experto": {
+              "es": "Fila en una tabla Delta de la base espejada, visible también desde su punto de conexión de análisis SQL.",
+              "en": "Row in a Delta table of the mirrored database, also visible through its SQL analytics endpoint."
+            }
+          },
+          {
+            "id": "p4",
+            "nodo_id": "notebooks-spark",
+            "que_pasa": {
+              "es": "Se limpia y combina",
+              "en": "Cleaned and combined"
+            },
+            "lider": {
+              "es": "Se corrigen formatos y se une con otros datos del paciente.",
+              "en": "Formats are corrected and it is joined with the patient's other data."
+            },
+            "experto": {
+              "es": "Un cuaderno de Spark lee la réplica, aplica las transformaciones y escribe el resultado.",
+              "en": "A Spark notebook reads the replica, applies the transformations and writes the result."
+            }
+          },
+          {
+            "id": "p5",
+            "nodo_id": "lakehouse",
+            "bifurca": "paralela",
+            "que_pasa": {
+              "es": "Queda listo para usarse",
+              "en": "Ready to be used"
+            },
+            "lider": {
+              "es": "El registro limpio queda disponible para informes y agentes.",
+              "en": "The clean record is available to reports and agents."
+            },
+            "experto": {
+              "es": "Escritura en una tabla Delta del lakehouse, que se puede consultar con Spark y con SQL.",
+              "en": "Write to a Delta table in the lakehouse, which can be queried with Spark and with SQL."
+            }
+          },
+          {
+            "id": "p6",
+            "nodo_id": "modelo-semantico",
+            "sigue_de": "p5",
+            "que_pasa": {
+              "es": "Se vuelve indicador",
+              "en": "Becomes an indicator"
+            },
+            "lider": {
+              "es": "Cuenta dentro del indicador de admisiones del día.",
+              "en": "It counts inside the day's admissions indicator."
+            },
+            "experto": {
+              "es": "Direct Lake carga la tabla en memoria sin copiarla; la actualización solo copia metadatos.",
+              "en": "Direct Lake loads the table into memory without copying it; the refresh only copies metadata."
+            }
+          },
+          {
+            "id": "p7",
+            "nodo_id": "informe-power-bi",
+            "sigue_de": "p6",
+            "que_pasa": {
+              "es": "Aparece en el informe",
+              "en": "Shows in the report"
+            },
+            "lider": {
+              "es": "La dirección ve la ocupación actualizada.",
+              "en": "Management sees the updated occupancy."
+            },
+            "experto": {
+              "es": "Los visuales del informe envían consultas DAX al modelo semántico.",
+              "en": "The report's visuals send DAX queries to the semantic model."
+            }
+          },
+          {
+            "id": "p8",
+            "nodo_id": "agente-datos",
+            "sigue_de": "p5",
+            "que_pasa": {
+              "es": "Sirve de contexto a un agente",
+              "en": "Serves as context for an agent"
+            },
+            "lider": {
+              "es": "Un agente puede responder cuántos ingresos hubo hoy, a quien tenga permiso de verlo.",
+              "en": "An agent can answer how many admissions there were today, to anyone allowed to see it."
+            },
+            "experto": {
+              "es": "El agente genera una consulta de solo lectura sobre la tabla elegida, con las credenciales de quien pregunta; por ahora solo en inglés.",
+              "en": "The agent generates a read-only query over the chosen table with the asker's credentials; English only for now."
+            }
+          }
+        ]
+      }
+    ],
+    "glosario": {
+      "es": {
+        "OneLake": "El lago de datos único que Microsoft Fabric incluye para toda la organización.",
+        "réplica": "Copia de una base de datos que se mantiene sincronizada con el original."
+      },
+      "en": {
+        "OneLake": "The single data lake Microsoft Fabric includes for the whole organisation.",
+        "replica": "A copy of a database that is kept in sync with the original."
+      }
+    }
+  },
+  "afirmaciones": [
+    {
+      "id": "A-1",
+      "sobre": { "entidad": "nodo", "id": "bases-operacionales" },
+      "enunciado": {
+        "es": "Fabric replica de forma continua en OneLake datos de bases de datos de Azure y de otras fuentes externas.",
+        "en": "Fabric continuously replicates data from Azure databases and other external sources into OneLake."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/mirroring/overview",
+        "texto": "You can continuously replicate your existing data estate directly into Fabric's OneLake from various Azure databases and external data sources.",
+        "titulo": "Mirroring - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-2",
+      "sobre": { "entidad": "nodo", "id": "bases-operacionales" },
+      "enunciado": {
+        "es": "La réplica desde SQL Server figura como disponible de forma general en el archivo de novedades de Fabric.",
+        "en": "Mirroring from SQL Server is listed as generally available in Fabric's what's-new archive."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/whats-new-archive",
+        "texto": "SQL Server mirroring to Fabric (GA)",
+        "titulo": "What's new? archive - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-3",
+      "sobre": { "entidad": "nodo", "id": "almacenamiento-externo" },
+      "enunciado": {
+        "es": "OneLake admite accesos directos a Azure Data Lake Storage, Azure Blob Storage, Amazon S3 y compatibles, fuentes compatibles con Iceberg, Microsoft Dataverse y fuentes locales, entre otras.",
+        "en": "OneLake supports shortcuts to Azure Data Lake Storage, Azure Blob Storage, Amazon S3 and compatible sources, Iceberg-compatible sources, Microsoft Dataverse and on-premises sources, among others."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview",
+        "texto": "You can use shortcuts for OneLake, Azure Data Lake Storage, Azure Blob storage, Amazon S3 and S3 compatible sources, Iceberg-compatible sources, Microsoft Dataverse, on-premises sources, and more.",
+        "titulo": "OneLake, the unified data lake - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-4",
+      "sobre": { "entidad": "nodo", "id": "almacenamiento-externo" },
+      "enunciado": {
+        "es": "Como el acceso directo apunta al origen, los cambios del origen se ven de inmediato en OneLake.",
+        "en": "Because a shortcut points to the source, changes at the source are visible in OneLake immediately."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview",
+        "texto": "The shortcut points to the source, so when the source data updates, those changes are immediately visible through OneLake.",
+        "titulo": "OneLake, the unified data lake - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-5",
+      "sobre": { "entidad": "nodo", "id": "almacenamiento-externo" },
+      "enunciado": {
+        "es": "Los accesos directos a OneLake, Azure Data Lake Storage Gen2, Amazon S3 y Microsoft Dataverse se anunciaron en disponibilidad general en noviembre de 2023.",
+        "en": "Shortcuts to OneLake, Azure Data Lake Storage Gen2, Amazon S3 and Microsoft Dataverse were announced as generally available in November 2023."
+      },
+      "cita": {
+        "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/",
+        "texto": "We are excited to announce the general availability of shortcuts for OneLake, Azure Data Lake Storage Gen2, Amazon S3, and Microsoft Dataverse.",
+        "titulo": "Prepare your data for AI innovation with Microsoft Fabric—now generally available | Microsoft Fabric Blog",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Anuncio comercial del fabricante: Microsoft tiene interés en presentar bien Fabric.",
+          "en": "Vendor marketing announcement: Microsoft has an interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-6",
+      "sobre": { "entidad": "nodo", "id": "espejo" },
+      "enunciado": {
+        "es": "El espejado es una solución de bajo costo y baja latencia que reúne datos de varios sistemas en una sola plataforma de análisis.",
+        "en": "Mirroring is a low-cost, low-latency solution that brings data from several systems together into one analytics platform."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/mirroring/overview",
+        "texto": "Mirroring in Fabric is a low-cost and low-latency solution that brings data from various systems together into a single analytics platform.",
+        "titulo": "Mirroring - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-7",
+      "sobre": { "entidad": "nodo", "id": "espejo" },
+      "enunciado": {
+        "es": "Fabric combina de inmediato los cambios recibidos en la tabla Delta de destino, y los cambios pueden publicarse cada 15 segundos.",
+        "en": "Fabric merges incoming changes into the target Delta table immediately, and changes can be published as often as every 15 seconds."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/mirroring/overview",
+        "texto": "Fabric immediately merges incoming changes into the target delta table. Changes can be published as fast as every 15 seconds.",
+        "titulo": "Mirroring - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-8",
+      "sobre": { "entidad": "nodo", "id": "espejo" },
+      "enunciado": {
+        "es": "El espejado necesita una capacidad de Fabric encendida: si se pausa o se elimina, no se replica ningún dato.",
+        "en": "Mirroring needs a running Fabric capacity: if it is paused or deleted, no data is replicated."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/mirroring/overview",
+        "texto": "A running Microsoft Fabric capacity is required for mirroring. A paused or deleted capacity affects mirroring and no data is replicated.",
+        "titulo": "Mirroring - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-9",
+      "sobre": { "entidad": "nodo", "id": "espejo" },
+      "enunciado": {
+        "es": "El archivo de novedades de Fabric registra el espejado de SQL Server como disponible de forma general.",
+        "en": "Fabric's what's-new archive records SQL Server mirroring as generally available."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/whats-new-archive",
+        "texto": "SQL Server 2025 is now generally available, along with SQL Server Mirroring",
+        "titulo": "What's new? archive - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-10",
+      "sobre": { "entidad": "nodo", "id": "trabajo-copia" },
+      "enunciado": {
+        "es": "El trabajo de copia mueve datos de muchos orígenes a muchos destinos sin canalizaciones, con copia masiva, incremental o por captura de cambios (CDC).",
+        "en": "Copy job moves data from many sources to many destinations without pipelines, using bulk, incremental or change data capture (CDC) copy."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/data-factory/what-is-copy-job",
+        "texto": "Copy job is the go-to solution in Microsoft Fabric Data Factory for simplified data movement from many sources to many destinations - no pipelines required. With native support for multiple delivery styles, including bulk copy, incremental copy, and change data capture (CDC) replication, Copy job offers the flexibility to handle a wide range of data movement scenarios",
+        "titulo": "What is Copy job in Data Factory - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-11",
+      "sobre": { "entidad": "nodo", "id": "trabajo-copia" },
+      "enunciado": {
+        "es": "Si un trabajo de copia falla, retoma desde el final de la última ejecución exitosa.",
+        "en": "If a copy job fails, it resumes from the end of the last successful run."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/data-factory/what-is-copy-job",
+        "texto": "If a copy job fails, you don't need to worry about data loss. The copy job always resumes from the end of the last successful run.",
+        "titulo": "What is Copy job in Data Factory - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-12",
+      "sobre": { "entidad": "nodo", "id": "trabajo-copia" },
+      "enunciado": {
+        "es": "Un trabajo de copia puede tener varios horarios de ejecución.",
+        "en": "A copy job can have several run schedules."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/data-factory/what-is-copy-job",
+        "texto": "With support for multiple schedules in copy job, you gain even greater control.",
+        "titulo": "What is Copy job in Data Factory - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-13",
+      "sobre": { "entidad": "nodo", "id": "trabajo-copia" },
+      "enunciado": {
+        "es": "El trabajo de copia aparece en la tabla de funciones disponibles de forma general («Generally available features») del archivo de novedades de Fabric, en febrero de 2025; la fila no repite las palabras «generally available».",
+        "en": "Copy job appears in the «Generally available features» table of Fabric's what's-new archive, in February 2025; the row itself does not repeat the words «generally available»."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/whats-new-archive",
+        "texto": "The Copy job in Data Factory has advantages over the Copy activity",
+        "titulo": "What's new? archive - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-14",
+      "sobre": { "entidad": "nodo", "id": "base-espejada" },
+      "enunciado": {
+        "es": "El espejado crea en OneLake una réplica de los datos lista para el análisis.",
+        "en": "Mirroring creates a replica of the data in OneLake, ready for analysis."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/mirroring/overview",
+        "texto": "It's a low-cost and low-latency turnkey solution that creates a replica of your data in OneLake for all your analytical needs.",
+        "titulo": "Mirroring - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-15",
+      "sobre": { "entidad": "nodo", "id": "base-espejada" },
+      "enunciado": {
+        "es": "Compartir una base de datos espejada da acceso también a su punto de conexión de análisis SQL.",
+        "en": "Sharing a mirrored database also grants access to its SQL analytics endpoint."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/mirroring/overview",
+        "texto": "When someone shares a mirrored database, they also grant access to the SQL analytics endpoint.",
+        "titulo": "Mirroring - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-16",
+      "sobre": { "entidad": "nodo", "id": "base-espejada" },
+      "enunciado": {
+        "es": "Cada unidad de capacidad comprada incluye un terabyte gratis de almacenamiento para réplicas; más allá de ese límite, o con la capacidad en pausa, el almacenamiento de OneLake se paga.",
+        "en": "Each capacity unit purchased includes one free terabyte of mirroring storage; beyond that limit, or while the capacity is paused, OneLake storage is paid for."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/mirroring/overview",
+        "texto": "Storage for replicas is free up to a limit based on the capacity size. Mirroring offers a free terabyte of mirroring storage for every capacity unit (CU) you purchase. For example, if you purchase an F64 capacity, you get 64 free terabytes worth of storage, exclusively used for mirroring. You pay for OneLake storage if you exceed the free mirroring storage limit or when the capacity is paused.",
+        "titulo": "Mirroring - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-17",
+      "sobre": { "entidad": "nodo", "id": "base-espejada" },
+      "enunciado": {
+        "es": "La base espejada que produce el espejado de SQL Server está en disponibilidad general según el archivo de novedades de Fabric.",
+        "en": "The mirrored database produced by SQL Server mirroring is generally available according to Fabric's what's-new archive."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/whats-new-archive",
+        "texto": "SQL Server 2025 is now generally available, along with SQL Server Mirroring",
+        "titulo": "What's new? archive - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-18",
+      "sobre": { "entidad": "nodo", "id": "onelake" },
+      "enunciado": {
+        "es": "OneLake está construido sobre Azure Data Lake Storage y guarda las tablas en Delta Parquet o Iceberg, formatos abiertos que no atan los datos a un formato propietario.",
+        "en": "OneLake is built on Azure Data Lake Storage and stores tables in Delta Parquet or Iceberg, open formats that keep data from being locked into a proprietary format."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview",
+        "texto": "OneLake is built on Azure Data Lake Storage and stores tables in Delta Parquet or Iceberg format, two open standards that any tool can read. This approach means your data isn't locked into proprietary formats.",
+        "titulo": "OneLake, the unified data lake - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-19",
+      "sobre": { "entidad": "nodo", "id": "onelake" },
+      "enunciado": {
+        "es": "Cada inquilino de Fabric tiene un único OneLake, que no se puede borrar ni duplicar y no requiere infraestructura propia.",
+        "en": "Every Fabric tenant has a single OneLake, which cannot be deleted or duplicated and needs no infrastructure of its own."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview",
+        "texto": "Every Fabric tenant comes with a single OneLake instance. You can't delete OneLake or create multiple OneLakes, and there's no infrastructure to provision or manage.",
+        "titulo": "OneLake, the unified data lake - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-20",
+      "sobre": { "entidad": "nodo", "id": "onelake" },
+      "enunciado": {
+        "es": "Microsoft Fabric, la plataforma que incluye OneLake, está en disponibilidad general desde noviembre de 2023 (el anuncio es de la plataforma, no de este componente en particular).",
+        "en": "Microsoft Fabric, the platform that includes OneLake, has been generally available since November 2023 (the announcement covers the platform, not this component specifically)."
+      },
+      "cita": {
+        "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/",
+        "texto": "We are thrilled to announce Microsoft Fabric is now generally available for purchase",
+        "titulo": "Prepare your data for AI innovation with Microsoft Fabric—now generally available | Microsoft Fabric Blog",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Anuncio comercial del fabricante: Microsoft tiene interés en presentar bien Fabric.",
+          "en": "Vendor marketing announcement: Microsoft has an interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-21",
+      "sobre": { "entidad": "nodo", "id": "lakehouse" },
+      "enunciado": {
+        "es": "Un lakehouse une la escala de un lago de datos con las consultas de un almacén: guarda datos estructurados y no estructurados, los gestiona con Delta Lake y se analiza con Apache Spark y SQL.",
+        "en": "A lakehouse joins a data lake's scale with a warehouse's querying: it stores structured and unstructured data, manages it with Delta Lake and is analysed with Apache Spark and SQL."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/data-engineering/lakehouse-overview",
+        "texto": "A lakehouse in Fabric combines the scalability of a data lake with the querying capabilities of a warehouse. You store structured and unstructured data in a single location, manage it with Delta Lake, and analyze it with both Apache Spark and SQL",
+        "titulo": "What is a lakehouse? - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-22",
+      "sobre": { "entidad": "nodo", "id": "lakehouse" },
+      "enunciado": {
+        "es": "Elegir entre lakehouse y almacén de datos depende de las herramientas de desarrollo, los tipos de datos y los patrones de carga de trabajo.",
+        "en": "Choosing between a lakehouse and a data warehouse depends on development tools, data types and workload patterns."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/data-engineering/lakehouse-overview",
+        "texto": "The main differences between a lakehouse and a warehouse in Fabric come down to your preferred development tools, data types, and workload patterns.",
+        "titulo": "What is a lakehouse? - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-23",
+      "sobre": { "entidad": "nodo", "id": "lakehouse" },
+      "enunciado": {
+        "es": "Microsoft Fabric, la plataforma que incluye el lakehouse, está en disponibilidad general desde noviembre de 2023 (el anuncio es de la plataforma, no de este componente en particular).",
+        "en": "Microsoft Fabric, the platform that includes the lakehouse, has been generally available since November 2023 (the announcement covers the platform, not this component specifically)."
+      },
+      "cita": {
+        "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/",
+        "texto": "We are thrilled to announce Microsoft Fabric is now generally available for purchase",
+        "titulo": "Prepare your data for AI innovation with Microsoft Fabric—now generally available | Microsoft Fabric Blog",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Anuncio comercial del fabricante: Microsoft tiene interés en presentar bien Fabric.",
+          "en": "Vendor marketing announcement: Microsoft has an interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-24",
+      "sobre": { "entidad": "nodo", "id": "warehouse" },
+      "enunciado": {
+        "es": "Fabric Data Warehouse es un almacén relacional a escala empresarial sobre una base de lago de datos.",
+        "en": "Fabric Data Warehouse is an enterprise-scale relational warehouse on a data lake foundation."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/data-warehouse/data-warehousing",
+        "texto": "Fabric Data Warehouse is an enterprise scale relational warehouse on a data lake foundation.",
+        "titulo": "What Is Fabric Data Warehouse? - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-25",
+      "sobre": { "entidad": "nodo", "id": "warehouse" },
+      "enunciado": {
+        "es": "El almacén de datos admite transacciones ACID completas que abarcan varias tablas.",
+        "en": "The data warehouse supports full ACID transactions spanning several tables."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/data-warehouse/data-warehousing",
+        "texto": "shares a large surface area based on the SQL Database Engine, with full multi-table ACID transaction support",
+        "titulo": "What Is Fabric Data Warehouse? - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-26",
+      "sobre": { "entidad": "nodo", "id": "warehouse" },
+      "enunciado": {
+        "es": "Microsoft Fabric, la plataforma que incluye el almacén de datos, está en disponibilidad general desde noviembre de 2023 (el anuncio es de la plataforma, no de este componente en particular).",
+        "en": "Microsoft Fabric, the platform that includes the data warehouse, has been generally available since November 2023 (the announcement covers the platform, not this component specifically)."
+      },
+      "cita": {
+        "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/",
+        "texto": "We are thrilled to announce Microsoft Fabric is now generally available for purchase",
+        "titulo": "Prepare your data for AI innovation with Microsoft Fabric—now generally available | Microsoft Fabric Blog",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Anuncio comercial del fabricante: Microsoft tiene interés en presentar bien Fabric.",
+          "en": "Vendor marketing announcement: Microsoft has an interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-27",
+      "sobre": { "entidad": "nodo", "id": "notebooks-spark" },
+      "enunciado": {
+        "es": "Fabric Data Engineering ofrece Apache Spark para procesar grandes volúmenes, con cuadernos y herramientas para escribir y programar trabajos de transformación.",
+        "en": "Fabric Data Engineering provides Apache Spark to process large datasets, with notebooks and tools to write and schedule transformation jobs."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/microsoft-fabric-overview",
+        "texto": "Fabric Data Engineering provides Apache Spark for processing large datasets, with notebooks and tools for writing and scheduling data transformation jobs.",
+        "titulo": "What is Microsoft Fabric - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-28",
+      "sobre": { "entidad": "nodo", "id": "notebooks-spark" },
+      "enunciado": {
+        "es": "Los cuadernos permiten escribir y ejecutar código en Python, R y Scala para ingerir, preparar y analizar datos.",
+        "en": "Notebooks let users write and run code in Python, R and Scala to ingest, prepare and analyse data."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/data-engineering/data-engineering-overview",
+        "texto": "They allow users to write and execute code in various programming languages, including Python, R, and Scala. You can use notebooks for data ingestion, preparation, analysis, and other data-related tasks.",
+        "titulo": "What is Fabric Data Engineering? - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-29",
+      "sobre": { "entidad": "nodo", "id": "notebooks-spark" },
+      "enunciado": {
+        "es": "Microsoft Fabric, la plataforma que incluye los cuadernos y Spark, está en disponibilidad general desde noviembre de 2023 (el anuncio es de la plataforma, no de este componente en particular).",
+        "en": "Microsoft Fabric, the platform that includes notebooks and Spark, has been generally available since November 2023 (the announcement covers the platform, not this component specifically)."
+      },
+      "cita": {
+        "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/",
+        "texto": "We are thrilled to announce Microsoft Fabric is now generally available for purchase",
+        "titulo": "Prepare your data for AI innovation with Microsoft Fabric—now generally available | Microsoft Fabric Blog",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Anuncio comercial del fabricante: Microsoft tiene interés en presentar bien Fabric.",
+          "en": "Vendor marketing announcement: Microsoft has an interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-30",
+      "sobre": { "entidad": "nodo", "id": "dataflow-gen2" },
+      "enunciado": {
+        "es": "Los flujos de datos preparan y transforman datos sin escribir código: se conectan a cientos de orígenes, aplican más de 300 transformaciones y cargan el resultado en varios destinos.",
+        "en": "Dataflows prepare and transform data without writing code: they connect to hundreds of sources, apply more than 300 transformations and load the result into several destinations."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/data-factory/dataflows-gen2-overview",
+        "texto": "Dataflows are a cloud-based tool that helps you prepare and transform data without writing code. They provide a low-code interface for ingesting data from hundreds of data sources, transforming your data using 300+ data transformations, and loading the resulting data into multiple destinations.",
+        "titulo": "Differences between Dataflow Gen1 and Dataflow Gen2 - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-31",
+      "sobre": { "entidad": "nodo", "id": "dataflow-gen2" },
+      "enunciado": {
+        "es": "Dataflow Gen2 está construido sobre Power Query, la misma experiencia que usan Excel y Power BI.",
+        "en": "Dataflow Gen2 is built on Power Query, the same experience used in Excel and Power BI."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/data-factory/dataflows-gen2-overview",
+        "texto": "Built using the familiar Power Query experience that's available across several Microsoft products and services such as Excel, Power BI, Power Platform, and Dynamics 365",
+        "titulo": "Differences between Dataflow Gen1 and Dataflow Gen2 - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-32",
+      "sobre": { "entidad": "nodo", "id": "dataflow-gen2" },
+      "enunciado": {
+        "es": "Microsoft Fabric, la plataforma que incluye Dataflow Gen2, está en disponibilidad general desde noviembre de 2023 (el anuncio es de la plataforma, no de este componente en particular).",
+        "en": "Microsoft Fabric, the platform that includes Dataflow Gen2, has been generally available since November 2023 (the announcement covers the platform, not this component specifically)."
+      },
+      "cita": {
+        "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/",
+        "texto": "We are thrilled to announce Microsoft Fabric is now generally available for purchase",
+        "titulo": "Prepare your data for AI innovation with Microsoft Fabric—now generally available | Microsoft Fabric Blog",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Anuncio comercial del fabricante: Microsoft tiene interés en presentar bien Fabric.",
+          "en": "Vendor marketing announcement: Microsoft has an interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-33",
+      "sobre": { "entidad": "nodo", "id": "modelo-semantico" },
+      "enunciado": {
+        "es": "Direct Lake es un modo de almacenamiento de los modelos semánticos de Power BI que carga rápidamente en memoria tablas Delta de OneLake.",
+        "en": "Direct Lake is a Power BI semantic model storage mode that quickly loads Delta tables from OneLake into memory."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/direct-lake-overview",
+        "texto": "Direct Lake is a Power BI semantic model table storage mode option available in Microsoft Fabric. It's optimized for large volumes of data to be quickly loaded into memory from Delta tables available in the OneLake",
+        "titulo": "Direct Lake overview - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-34",
+      "sobre": { "entidad": "nodo", "id": "modelo-semantico" },
+      "enunciado": {
+        "es": "A diferencia del modo de importación, que copia los datos, la actualización de Direct Lake copia solo metadatos.",
+        "en": "Unlike Import mode, which copies the data, a Direct Lake refresh copies only metadata."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/direct-lake-overview",
+        "texto": "Import mode replicates the data and creates an entire cached copy of the data for the semantic model, whereas a Direct Lake refresh copies only metadata",
+        "titulo": "Direct Lake overview - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-35",
+      "sobre": { "entidad": "nodo", "id": "modelo-semantico" },
+      "enunciado": {
+        "es": "Direct Lake tiene límites que dependen del tamaño (SKU) de la capacidad de Fabric.",
+        "en": "Direct Lake has limits that depend on the size (SKU) of the Fabric capacity."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/direct-lake-overview",
+        "texto": "Also, there are capacity guardrails and limitations that apply to your Fabric capacity subscription (SKU), as presented in the following table.",
+        "titulo": "Direct Lake overview - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-36",
+      "sobre": { "entidad": "nodo", "id": "modelo-semantico" },
+      "enunciado": {
+        "es": "Direct Lake en Power BI se anunció en disponibilidad general en noviembre de 2023.",
+        "en": "Direct Lake in Power BI was announced as generally available in November 2023."
+      },
+      "cita": {
+        "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/",
+        "texto": "In May 2023, we announced Direct Lake mode in Power BI, now generally available, which provides a blazing fast, real-time connection to your data",
+        "titulo": "Prepare your data for AI innovation with Microsoft Fabric—now generally available | Microsoft Fabric Blog",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Anuncio comercial del fabricante: Microsoft tiene interés en presentar bien Fabric.",
+          "en": "Vendor marketing announcement: Microsoft has an interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-37",
+      "sobre": { "entidad": "nodo", "id": "informe-power-bi" },
+      "enunciado": {
+        "es": "Power BI se conecta a fuentes de datos, crea gráficos y tableros interactivos y los comparte en la organización.",
+        "en": "Power BI connects to data sources, builds interactive charts and dashboards, and shares them across the organisation."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/microsoft-fabric-overview",
+        "texto": "Power BI lets you connect to data sources, create interactive charts and dashboards, and share insights across your organization.",
+        "titulo": "What is Microsoft Fabric - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-38",
+      "sobre": { "entidad": "nodo", "id": "informe-power-bi" },
+      "enunciado": {
+        "es": "Microsoft Fabric, la plataforma que incluye Power BI, está en disponibilidad general desde noviembre de 2023 (el anuncio es de la plataforma, no de este componente en particular).",
+        "en": "Microsoft Fabric, the platform that includes Power BI, has been generally available since November 2023 (the announcement covers the platform, not this component specifically)."
+      },
+      "cita": {
+        "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/",
+        "texto": "We are thrilled to announce Microsoft Fabric is now generally available for purchase",
+        "titulo": "Prepare your data for AI innovation with Microsoft Fabric—now generally available | Microsoft Fabric Blog",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Anuncio comercial del fabricante: Microsoft tiene interés en presentar bien Fabric.",
+          "en": "Vendor marketing announcement: Microsoft has an interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-39",
+      "sobre": { "entidad": "nodo", "id": "agente-datos" },
+      "enunciado": {
+        "es": "El agente de datos de Fabric está en disponibilidad general y permite construir sistemas conversacionales de preguntas y respuestas con IA generativa.",
+        "en": "The Fabric data agent is generally available and lets you build conversational question-and-answer systems with generative AI."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/data-science/concept-data-agent",
+        "texto": "Data agent in Microsoft Fabric is a generally available feature that enables you to build your own conversational Q&A systems by using generative AI",
+        "titulo": "Fabric data agent creation - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-40",
+      "sobre": { "entidad": "nodo", "id": "agente-datos" },
+      "enunciado": {
+        "es": "El agente usa las credenciales y los permisos de quien pregunta, así que solo llega a los datos que esa persona puede ver.",
+        "en": "The agent uses the asker's credentials and permissions, so it only reaches data that person is allowed to see."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/data-science/concept-data-agent",
+        "texto": "It uses the requesting user's credentials and permissions to enforce least-privilege access, ensuring that each interaction only reaches data the user is authorized to view.",
+        "titulo": "Fabric data agent creation - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-41",
+      "sobre": { "entidad": "nodo", "id": "agente-datos" },
+      "enunciado": {
+        "es": "El agente solo tiene acceso de lectura a sus fuentes de datos.",
+        "en": "The agent only has read access to its data sources."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/data-science/concept-data-agent",
+        "texto": "The Fabric data agent strictly enforces read-only access, maintaining read-only data connections to all data sources.",
+        "titulo": "Fabric data agent creation - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-42",
+      "sobre": { "entidad": "nodo", "id": "agente-datos" },
+      "enunciado": {
+        "es": "Por ahora el agente no admite idiomas distintos del inglés.",
+        "en": "For now the agent does not support languages other than English."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/data-science/concept-data-agent",
+        "texto": "The Fabric data agent doesn't currently support non-English languages.",
+        "titulo": "Fabric data agent creation - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-43",
+      "sobre": { "entidad": "nodo", "id": "seguridad-onelake" },
+      "enunciado": {
+        "es": "La seguridad de OneLake da control de acceso por roles sobre los datos de OneLake y lo aplica igual en todos los motores de Fabric.",
+        "en": "OneLake security provides role-based access control over data in OneLake and enforces it consistently across all Fabric engines."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/onelake/security/get-started-security",
+        "texto": "OneLake security provides granular role-based security for data stored in OneLake and enforces that security consistently across all compute engines in Fabric.",
+        "titulo": "Data security overview - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-44",
+      "sobre": { "entidad": "nodo", "id": "seguridad-onelake" },
+      "enunciado": {
+        "es": "Los administradores, miembros y colaboradores del espacio de trabajo ya pueden leer y escribir todos los datos, así que los roles de seguridad de OneLake no los limitan.",
+        "en": "Workspace admins, members and contributors can already read and write all the data, so OneLake security roles do not restrict them."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/onelake/security/get-started-security",
+        "texto": "Workspace Admins, Members, and Contributors already have read and write permissions on all data in a workspace, so they're not affected by OneLake security roles.",
+        "titulo": "Data security overview - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-45",
+      "sobre": { "entidad": "nodo", "id": "seguridad-onelake" },
+      "enunciado": {
+        "es": "La seguridad de OneLake y sus roles de acceso a datos están en disponibilidad general.",
+        "en": "OneLake security and its data access roles are generally available."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/whats-new-archive",
+        "texto": "OneLake security and OneLake data access roles are generally available",
+        "titulo": "What's new? archive - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-46",
+      "sobre": { "entidad": "nodo", "id": "etiquetas-confidencialidad" },
+      "enunciado": {
+        "es": "Fabric y Power BI clasifican y protegen datos sensibles con etiquetas y políticas de Microsoft Purview Information Protection.",
+        "en": "Fabric and Power BI classify and protect sensitive data with Microsoft Purview Information Protection labels and policies."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/governance/information-protection",
+        "texto": "Information protection in Fabric and Power BI enables organizations to categorize and protect their sensitive data using sensitivity labels and policies from Microsoft Purview Information Protection.",
+        "titulo": "Information protection in Fabric - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-47",
+      "sobre": { "entidad": "nodo", "id": "etiquetas-confidencialidad" },
+      "enunciado": {
+        "es": "Con una política de publicación de Purview, la etiqueta y su control de acceso siguen a los datos al exportarlos a Excel, PDF o PowerPoint.",
+        "en": "With a Purview publishing policy, the label and its access control follow the data when it is exported to Excel, PDF or PowerPoint."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/governance/information-protection",
+        "texto": "Sensitivity labels and the access control they apply (if they are associated with a Microsoft Purview publishing policy) stays with data and content that leaves Fabric and Power BI in the following export paths: Export to Excel, PDF files, and PowerPoint",
+        "titulo": "Information protection in Fabric - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-48",
+      "sobre": { "entidad": "nodo", "id": "etiquetas-confidencialidad" },
+      "enunciado": {
+        "es": "Las etiquetas de confidencialidad en Fabric se anunciaron en disponibilidad general en noviembre de 2023.",
+        "en": "Sensitivity labels in Fabric were announced as generally available in November 2023."
+      },
+      "cita": {
+        "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/",
+        "texto": "Both sensitivity labels, and the audit integration are now generally available.",
+        "titulo": "Prepare your data for AI innovation with Microsoft Fabric—now generally available | Microsoft Fabric Blog",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Anuncio comercial del fabricante: Microsoft tiene interés en presentar bien Fabric.",
+          "en": "Vendor marketing announcement: Microsoft has an interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-49",
+      "sobre": { "entidad": "nodo", "id": "capacidad" },
+      "enunciado": {
+        "es": "Cada capacidad es un grupo de recursos independiente, y su tamaño determina la potencia de cómputo disponible.",
+        "en": "Each capacity is a separate resource pool, and its size determines the compute power available."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/enterprise/licenses",
+        "texto": "Each capacity in a tenant is a distinct resource pool for Microsoft Fabric. The size of the capacity determines the amount of computation power available.",
+        "titulo": "Understand Microsoft Fabric licenses and capacity - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-50",
+      "sobre": { "entidad": "nodo", "id": "capacidad" },
+      "enunciado": {
+        "es": "Las capacidades F se compran en Azure, con cobro por segundo sin compromiso y la opción de una reserva anual para ahorrar.",
+        "en": "F capacities are bought through Azure, billed per second with no commitment, with the option of a yearly reservation to save costs."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/enterprise/licenses",
+        "texto": "You purchase F capacities through Azure, and Azure bills you per second with no commitment, with the option of a yearly capacity reservation to save costs.",
+        "titulo": "Understand Microsoft Fabric licenses and capacity - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-51",
+      "sobre": { "entidad": "nodo", "id": "capacidad" },
+      "enunciado": {
+        "es": "Fabric usa un solo grupo de capacidad y almacenamiento para todas las cargas de trabajo.",
+        "en": "Fabric uses a single pool of capacity and storage for every workload."
+      },
+      "cita": {
+        "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/",
+        "texto": "Fabric's unified architecture simplifies billing by providing a single pool of capacity and storage that is used for every workload.",
+        "titulo": "Prepare your data for AI innovation with Microsoft Fabric—now generally available | Microsoft Fabric Blog",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Anuncio comercial del fabricante: Microsoft tiene interés en presentar bien Fabric.",
+          "en": "Vendor marketing announcement: Microsoft has an interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-52",
+      "sobre": { "entidad": "nodo", "id": "capacidad" },
+      "enunciado": {
+        "es": "Microsoft Fabric se puede comprar en disponibilidad general desde noviembre de 2023.",
+        "en": "Microsoft Fabric has been generally available for purchase since November 2023."
+      },
+      "cita": {
+        "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/",
+        "texto": "We are thrilled to announce Microsoft Fabric is now generally available for purchase",
+        "titulo": "Prepare your data for AI innovation with Microsoft Fabric—now generally available | Microsoft Fabric Blog",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Anuncio comercial del fabricante: Microsoft tiene interés en presentar bien Fabric.",
+          "en": "Vendor marketing announcement: Microsoft has an interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-53",
+      "sobre": { "entidad": "nodo", "id": "app-metricas" },
+      "enunciado": {
+        "es": "La app de métricas de capacidad vigila el consumo de las capacidades de Fabric para decidir cómo usar sus recursos.",
+        "en": "The Capacity Metrics app monitors the consumption of Fabric capacities to decide how to use their resources."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/enterprise/metrics-app",
+        "texto": "The Microsoft Fabric Capacity Metrics app provides monitoring capabilities for Microsoft Fabric capacities. Use the app to monitor your capacity consumption and make informed decisions on how to use your capacity resources.",
+        "titulo": "What is the Microsoft Fabric Capacity Metrics app? - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-54",
+      "sobre": { "entidad": "nodo", "id": "app-metricas" },
+      "enunciado": {
+        "es": "La app de métricas no envía alertas ni notificaciones.",
+        "en": "The Metrics app does not send alerts or notifications."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/enterprise/metrics-app",
+        "texto": "The Microsoft Fabric Capacity Metrics app doesn't support alerts or notifications.",
+        "titulo": "What is the Microsoft Fabric Capacity Metrics app? - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-55",
+      "sobre": { "entidad": "nodo", "id": "app-metricas" },
+      "enunciado": {
+        "es": "Las páginas de salud, de resumen y de detalle por momento de la app de métricas están en disponibilidad general.",
+        "en": "The Metrics app's health, timepoint summary and timepoint detail pages are generally available."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/whats-new-archive",
+        "texto": "Capacity health page, timepoint summary, timepoint detail, and the Chargeback app are generally available",
+        "titulo": "What's new? archive - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-56",
+      "sobre": { "entidad": "nodo", "id": "canalizaciones" },
+      "enunciado": {
+        "es": "Las canalizaciones de Data Factory orquestan y automatizan flujos de trabajo de datos agrupando actividades que juntas cumplen una tarea.",
+        "en": "Data Factory pipelines orchestrate and automate data workflows by grouping activities that together perform a task."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/data-factory/pipeline-overview",
+        "texto": "Pipelines in Microsoft Fabric Data Factory help you orchestrate and automate your data workflows. A pipeline is a logical grouping of activities that together perform a task.",
+        "titulo": "Pipeline Overview - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-57",
+      "sobre": { "entidad": "nodo", "id": "canalizaciones" },
+      "enunciado": {
+        "es": "Las actividades se encadenan: al terminar una, puede disparar la siguiente según haya terminado bien, mal o simplemente haya terminado.",
+        "en": "Activities are chained: when one finishes, it can trigger the next depending on success, failure or completion."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/data-factory/pipeline-overview",
+        "texto": "You can chain activities together to create complex workflows. When one activity completes, it can trigger the next activity based on success, failure, or completion status.",
+        "titulo": "Pipeline Overview - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-58",
+      "sobre": { "entidad": "nodo", "id": "canalizaciones" },
+      "enunciado": {
+        "es": "Una canalización puede ejecutarse de forma automática según una hora y una frecuencia.",
+        "en": "A pipeline can run automatically on a time and frequency."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/data-factory/pipeline-overview",
+        "texto": "Set up automatic runs based on time and frequency.",
+        "titulo": "Pipeline Overview - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-59",
+      "sobre": { "entidad": "nodo", "id": "canalizaciones" },
+      "enunciado": {
+        "es": "Una canalización puede arrancar por eventos, como la llegada de archivos nuevos o cambios en una base de datos.",
+        "en": "A pipeline can start on events, such as new files arriving or changes in a database."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/data-factory/pipeline-overview",
+        "texto": "Use event triggers to start your pipeline when specific events occur, such as new files arriving in a data lake or changes in a database.",
+        "titulo": "Pipeline Overview - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-60",
+      "sobre": { "entidad": "nodo", "id": "canalizaciones" },
+      "enunciado": {
+        "es": "Microsoft Fabric, la plataforma que incluye Data Factory y sus canalizaciones, está en disponibilidad general desde noviembre de 2023 (el anuncio es de la plataforma, no de este componente en particular).",
+        "en": "Microsoft Fabric, the platform that includes Data Factory and its pipelines, has been generally available since November 2023 (the announcement covers the platform, not this component specifically)."
+      },
+      "cita": {
+        "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/",
+        "texto": "We are thrilled to announce Microsoft Fabric is now generally available for purchase",
+        "titulo": "Prepare your data for AI innovation with Microsoft Fabric—now generally available | Microsoft Fabric Blog",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Anuncio comercial del fabricante: Microsoft tiene interés en presentar bien Fabric.",
+          "en": "Vendor marketing announcement: Microsoft has an interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-61",
+      "sobre": { "entidad": "nodo", "id": "airflow" },
+      "enunciado": {
+        "es": "Los trabajos de Apache Airflow en Microsoft Fabric están en disponibilidad general y permiten crear, programar y vigilar procesos en Python definidos como grafos acíclicos dirigidos (DAG).",
+        "en": "Apache Airflow jobs in Microsoft Fabric are generally available and let you author, schedule and monitor Python processes defined as directed acyclic graphs (DAGs)."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/whats-new-archive",
+        "texto": "powered by Apache Airflow, are now generally available. An Apache Airflow Job in Microsoft Fabric offers seamless authoring, scheduling, and monitoring experience for Python-based data processes defined as Directed Acyclic Graphs (DAGs).",
+        "titulo": "What's new? archive - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-62",
+      "sobre": { "entidad": "flujo", "id": "f-origen-espejo" },
+      "enunciado": {
+        "es": "El espejado replica una base completa o tablas elegidas y mantiene los datos sincronizados de forma automática.",
+        "en": "Mirroring replicates a whole database or chosen tables and keeps the data in sync automatically."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/mirroring/overview",
+        "texto": "You choose whether to replicate an entire database or individual tables, and Mirroring automatically keeps your data in sync.",
+        "titulo": "Mirroring - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-63",
+      "sobre": { "entidad": "flujo", "id": "f-espejo-replica" },
+      "enunciado": {
+        "es": "Una vez configurado, los datos se replican de forma continua en OneLake.",
+        "en": "Once set up, the data replicates continuously into OneLake."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/mirroring/overview",
+        "texto": "Once set up, data continuously replicates into OneLake for analytics consumption.",
+        "titulo": "Mirroring - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-64",
+      "sobre": { "entidad": "flujo", "id": "f-origen-copia" },
+      "enunciado": {
+        "es": "La primera ejecución de una copia incremental trae todo y las siguientes solo lo nuevo o cambiado.",
+        "en": "The first run of an incremental copy brings everything, and later runs only what is new or changed."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/data-factory/what-is-copy-job",
+        "texto": "The first run copies everything, and subsequent runs only move new or changed data since the last run.",
+        "titulo": "What is Copy job in Data Factory - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-65",
+      "sobre": { "entidad": "flujo", "id": "f-copia-lakehouse" },
+      "enunciado": {
+        "es": "El trabajo de copia puede crear tablas de destino en un lakehouse de Fabric.",
+        "en": "Copy job can create destination tables in a Fabric lakehouse."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/data-factory/what-is-copy-job",
+        "texto": "For destination tables that Copy job creates in a Fabric Lakehouse, you can enable Change data feed (CDF)",
+        "titulo": "What is Copy job in Data Factory - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-66",
+      "sobre": { "entidad": "flujo", "id": "f-externo-onelake" },
+      "enunciado": {
+        "es": "Los accesos directos unifican datos de distintas nubes y dominios sin copiarlos.",
+        "en": "Shortcuts unify data across clouds and domains without copying it."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview",
+        "texto": "Shortcuts allow your organization to unify data across clouds and domains without copying it.",
+        "titulo": "OneLake, the unified data lake - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-67",
+      "sobre": { "entidad": "flujo", "id": "f-onelake-spark" },
+      "enunciado": {
+        "es": "Un cuaderno de Spark puede conectarse a OneLake y leer las tablas directamente.",
+        "en": "A Spark notebook can attach to OneLake and read the tables directly."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview",
+        "texto": "If a data scientist wants to make use of this data, they can attach a Spark notebook to OneLake and read those tables directly.",
+        "titulo": "OneLake, the unified data lake - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-68",
+      "sobre": { "entidad": "flujo", "id": "f-replica-spark" },
+      "enunciado": {
+        "es": "Los datos espejados pueden usarse con Spark, cuadernos y el resto de servicios de Fabric.",
+        "en": "Mirrored data can be used with Spark, notebooks and the other Fabric services."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/mirroring/overview",
+        "texto": "With the most up-to-date data in a queryable format in OneLake, you can use all the different services in Fabric, such as running analytics with Spark, executing notebooks, data engineering, visualizing through Power BI Reports, and more.",
+        "titulo": "Mirroring - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-69",
+      "sobre": { "entidad": "flujo", "id": "f-spark-lakehouse" },
+      "enunciado": {
+        "es": "Desde un cuaderno se escribe código Spark que lee, transforma y escribe datos en tablas y carpetas del lakehouse.",
+        "en": "From a notebook, Spark code reads, transforms and writes data to lakehouse tables and folders."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/data-engineering/lakehouse-overview",
+        "texto": "Write Spark code (Python, Scala, SQL, R) to read, transform, and write data to lakehouse tables and folders.",
+        "titulo": "What is a lakehouse? - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-70",
+      "sobre": { "entidad": "flujo", "id": "f-lakehouse-dataflow" },
+      "enunciado": {
+        "es": "Los flujos de datos pueden tomar datos de un lakehouse, entre muchos otros orígenes.",
+        "en": "Dataflows can take data from a lakehouse, among many other sources."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/data-factory/dataflows-gen2-overview",
+        "texto": "dataflows empower you with a modern data integration experience to ingest, prepare and transform data from a rich set of data sources including databases, data warehouse, Lakehouse, real-time data, and more.",
+        "titulo": "Differences between Dataflow Gen1 and Dataflow Gen2 - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-71",
+      "sobre": { "entidad": "flujo", "id": "f-dataflow-warehouse" },
+      "enunciado": {
+        "es": "El almacén de datos se carga, entre otras vías, con flujos de datos.",
+        "en": "The data warehouse is loaded through, among other routes, dataflows."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/data-warehouse/data-warehousing",
+        "texto": "Easily ingest, load and transform data at scale through Pipelines, Dataflows, cross database query or the COPY INTO T-SQL command.",
+        "titulo": "What Is Fabric Data Warehouse? - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-72",
+      "sobre": { "entidad": "flujo", "id": "f-lakehouse-modelo" },
+      "enunciado": {
+        "es": "Direct Lake conecta modelos semánticos a lakehouses con tablas Delta.",
+        "en": "Direct Lake connects semantic models to lakehouses with Delta tables."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/direct-lake-overview",
+        "texto": "Direct Lake is ideal for semantic models connecting to large Fabric lakehouses, warehouses, and other Fabric data sources with Delta tables.",
+        "titulo": "Direct Lake overview - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-73",
+      "sobre": { "entidad": "flujo", "id": "f-warehouse-modelo" },
+      "enunciado": {
+        "es": "Direct Lake conecta modelos semánticos también a almacenes de datos con tablas Delta.",
+        "en": "Direct Lake also connects semantic models to data warehouses with Delta tables."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/direct-lake-overview",
+        "texto": "Direct Lake is ideal for semantic models connecting to large Fabric lakehouses, warehouses, and other Fabric data sources with Delta tables.",
+        "titulo": "Direct Lake overview - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-74",
+      "sobre": { "entidad": "flujo", "id": "f-modelo-informe" },
+      "enunciado": {
+        "es": "Al usar los visuales de un informe de Power BI se generan consultas DAX al modelo semántico.",
+        "en": "Using the visuals in a Power BI report generates DAX queries to the semantic model."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/direct-lake-overview",
+        "texto": "Users load and interact with visuals in Power BI reports generating DAX queries to the semantic model.",
+        "titulo": "Direct Lake overview - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-75",
+      "sobre": { "entidad": "flujo", "id": "f-lakehouse-agente" },
+      "enunciado": {
+        "es": "Con un lakehouse como fuente, el agente responde usando las tablas elegidas.",
+        "en": "With a lakehouse as a source, the agent answers using the chosen tables."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/data-science/concept-data-agent",
+        "texto": "For lakehouse data sources, the Fabric data agent answers questions using the lakehouse tables you select.",
+        "titulo": "Fabric data agent creation - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-76",
+      "sobre": { "entidad": "flujo", "id": "f-canalizacion-spark" },
+      "enunciado": {
+        "es": "Data Factory permite programar y orquestar cuadernos y trabajos de Spark.",
+        "en": "Data Factory can schedule and orchestrate notebooks and Spark jobs."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/microsoft-fabric-overview",
+        "texto": "Fabric Spark's integration with Data Factory allows you to schedule and orchestrate notebooks and Spark jobs.",
+        "titulo": "What is Microsoft Fabric - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-77",
+      "sobre": { "entidad": "flujo", "id": "f-canalizacion-dataflow" },
+      "enunciado": {
+        "es": "Una canalización puede disparar un Dataflow Gen2 como uno de sus pasos.",
+        "en": "A pipeline can trigger a Dataflow Gen2 as one of its steps."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/data-factory/dataflows-gen2-overview",
+        "texto": "For example, every Monday you might use a pipeline to pull data from an Azure blob and clean it up, then trigger a Dataflow Gen2 to analyze the log data.",
+        "titulo": "Differences between Dataflow Gen1 and Dataflow Gen2 - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-78",
+      "sobre": { "entidad": "flujo", "id": "f-canalizacion-copia" },
+      "enunciado": {
+        "es": "Un trabajo de copia puede ejecutarse como actividad dentro de una canalización y aprovechar su orquestación y sus disparadores.",
+        "en": "A copy job can run as an activity inside a pipeline and use its orchestration and triggers."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/data-factory/what-is-copy-job",
+        "texto": "If you use the copy job activity in a pipeline, you can also take advantage of the pipeline's orchestration and trigger capabilities.",
+        "titulo": "What is Copy job in Data Factory - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-79",
+      "sobre": { "entidad": "flujo", "id": "f-seguridad-lakehouse" },
+      "enunciado": {
+        "es": "Los roles de seguridad de OneLake se definen sobre un elemento y se acotan a carpetas, tablas, esquemas, filas y columnas.",
+        "en": "OneLake security roles are defined on an item and scoped to folders, tables, schemas, rows and columns."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/onelake/security/get-started-security",
+        "texto": "Define these roles on an item and scope them down to folders, tables, schemas, rows, and columns.",
+        "titulo": "Data security overview - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    },
+    {
+      "id": "A-80",
+      "sobre": { "entidad": "flujo", "id": "f-spark-metricas" },
+      "enunciado": {
+        "es": "Los datos de uso de la capacidad llegan a la app de métricas entre 10 y 15 minutos después de la actividad.",
+        "en": "Capacity usage data reaches the Metrics app 10 to 15 minutes after the activity."
+      },
+      "cita": {
+        "url": "https://learn.microsoft.com/en-us/fabric/enterprise/metrics-app",
+        "texto": "In general, usage data becomes available within 10 to 15 minutes after the activity occurs.",
+        "titulo": "What is the Microsoft Fabric Capacity Metrics app? - Microsoft Fabric | Microsoft Learn",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante: Microsoft tiene interés comercial en presentar bien Fabric.",
+          "en": "Vendor documentation: Microsoft has a commercial interest in presenting Fabric favourably."
+        }
+      }
+    }
+  ],
+  "preguntas_guia": [
+    {
+      "pregunta": {
+        "es": "¿Se puede seguir un registro desde una base operacional hasta un informe y un agente sin salir de la plataforma? Sí: espejado, réplica, cuaderno de Spark, lakehouse, modelo en Direct Lake e informe, con una rama paralela al agente de datos (recorrido «registro-admision»).",
+        "en": "Can a record be followed from an operational database to a report and an agent without leaving the platform? Yes: mirroring, replica, Spark notebook, lakehouse, Direct Lake model and report, with a parallel branch to the data agent (journey «registro-admision»)."
+      },
+      "respondida": true
+    },
+    {
+      "pregunta": {
+        "es": "¿Sirve el agente de datos a un equipo que pregunta en español? La documentación dice que por ahora no admite idiomas distintos del inglés (A-42).",
+        "en": "Does the data agent work for a team that asks in Spanish? The documentation says it does not currently support languages other than English (A-42)."
+      },
+      "respondida": true
+    },
+    {
+      "pregunta": {
+        "es": "¿Los roles de seguridad de OneLake limitan a todos los usuarios? No: administradores, miembros y colaboradores del espacio de trabajo no quedan limitados (A-44).",
+        "en": "Do OneLake security roles restrict every user? No: workspace admins, members and contributors are not restricted (A-44)."
+      },
+      "respondida": true
+    },
+    {
+      "pregunta": {
+        "es": "¿Basta el anuncio de disponibilidad general de la plataforma (noviembre de 2023) como evidencia de madurez para OneLake, el lakehouse, el almacén de datos, los cuadernos con Spark, Dataflow Gen2, los informes de Power BI y las canalizaciones? No encontré un anuncio propio de cada componente; las afirmaciones A-20, A-23, A-26, A-29, A-32, A-38 y A-60 lo dicen de forma explícita. Rechazarlas saca el componente del mapa.",
+        "en": "Is the platform's general availability announcement (November 2023) enough evidence of maturity for OneLake, the lakehouse, the data warehouse, notebooks with Spark, Dataflow Gen2, Power BI reports and pipelines? I found no component-specific announcement; claims A-20, A-23, A-26, A-29, A-32, A-38 and A-60 say so explicitly. Rejecting them removes the component from the map."
+      },
+      "respondida": false
+    },
+    {
+      "pregunta": {
+        "es": "¿Qué madurez tienen Eventstreams, Eventhouse y los tableros en tiempo real? La documentación consultada declara la disponibilidad general de funciones sueltas, no la de su núcleo; la ruta en tiempo real queda fuera de este mapa hasta tener esa fuente.",
+        "en": "What maturity do Eventstreams, Eventhouse and Real-Time Dashboards have? The documentation consulted states general availability for individual features, not for their core; the real-time path stays out of this map until that source exists."
+      },
+      "respondida": false
+    },
+    {
+      "pregunta": {
+        "es": "¿Qué madurez tiene el ciclo de vida (integración con Git y canalizaciones de implementación)? Microsoft Learn dice que algunos elementos de CI/CD están en vista previa y remite a listas por tipo de elemento; no entra al mapa hasta fijar una madurez por componente.",
+        "en": "What maturity does lifecycle management (Git integration and deployment pipelines) have? Microsoft Learn says some CI/CD items are in preview and points to per-item lists; it stays out of the map until a single maturity per component can be set."
+      },
+      "respondida": false
+    },
+    {
+      "pregunta": {
+        "es": "¿Copilot en Fabric debe ser un componente? El archivo de novedades registra la disponibilidad general de Copilot en cargas concretas (por ejemplo Dataflow Gen2 o la base de datos SQL), no la de Copilot en conjunto; no se incluyó.",
+        "en": "Should Copilot in Fabric be a component? The what's-new archive records general availability of Copilot in specific workloads (Dataflow Gen2 or SQL database, for example), not of Copilot as a whole; it was not included."
+      },
+      "respondida": false
+    },
+    {
+      "pregunta": {
+        "es": "¿El catálogo de OneLake, con linaje y metadatos, debe ser un componente de gobierno? Solo encontré la disponibilidad general de su pestaña de gobierno; el catálogo completo no se incluyó.",
+        "en": "Should the OneLake catalog, with lineage and metadata, be a governance component? I only found general availability for its Govern tab; the catalog as a whole was not included."
+      },
+      "respondida": false
+    },
+    {
+      "pregunta": {
+        "es": "¿Está bien respaldada la madurez del trabajo de copia? La fila que lo nombra está en la tabla «Generally available features» del archivo de novedades, pero no repite esas palabras (A-13); el anuncio específico del blog de Fabric no se pudo leer (el sitio respondió 403).",
+        "en": "Is the Copy job's maturity well supported? The row naming it sits in the «Generally available features» table of the what's-new archive but does not repeat those words (A-13); the specific Fabric blog announcement could not be read (the site returned 403)."
+      },
+      "respondida": false
+    }
+  ],
+  "sin_novedades": false
+}

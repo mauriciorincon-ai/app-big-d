@@ -1,6 +1,7 @@
 import { coberturaDeRangos, validate, type Gramatica, type Mapa } from "diagramador";
 import { IDIOMAS } from "../i18n";
 import { sinAfirmacion } from "./decisiones";
+import { avisosDeDibujo } from "./dibujo";
 import { esquemaPropuesta, type Propuesta } from "./esquema";
 
 // Validación de una propuesta del investigador, TODA por código (la skill la corre al terminar y reintenta
@@ -9,6 +10,7 @@ import { esquemaPropuesta, type Propuesta } from "./esquema";
 //   3. coherencia: el mapa es «propuesta» de esa plataforma; cada afirmación habla de algo que existe; todo
 //      componente y flujo tiene afirmación; la cita de un componente es una de sus fuentes, y la de un
 //      flujo, una fuente de alguno de sus extremos.
+//   4. dibujo: las vistas del atlas sin avisos de geometría (un nombre que no cabe, una pieza sin lugar).
 
 export interface Resultado {
   ok: boolean;
@@ -42,5 +44,6 @@ export function validarPropuesta(dato: unknown, gramatica: Gramatica, rangos: re
     if (!fuentes.some((f) => f.url === a.cita.url)) fallas.push(`afirmaciones · ${a.id} cita ${a.cita.url}, que no es fuente de ${a.sobre.entidad === "nodo" ? "ese componente" : "ninguno de los extremos del flujo"}`);
   }
   if (!p.sin_novedades) for (const x of sinAfirmacion(mapa, p.afirmaciones)) fallas.push(`afirmaciones · ${x} no tiene ninguna afirmación que lo respalde`);
+  fallas.push(...avisosDeDibujo(mapa, gramatica, p.fecha));
   return { ok: fallas.length === 0, fallas, propuesta: p };
 }

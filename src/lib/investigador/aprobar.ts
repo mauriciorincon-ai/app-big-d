@@ -1,5 +1,6 @@
 import { coberturaDeRangos, diff, validate, type Gramatica, type Mapa } from "diagramador";
 import { aplicarDecisiones } from "./decisiones";
+import { avisosDeDibujo } from "./dibujo";
 import type { Propuesta, Revision, Verificacion } from "./esquema";
 import { huella } from "./huella";
 
@@ -74,6 +75,8 @@ export function aprobar(e: Entrada): { mapa: Mapa; revision: Revision } {
   const inf = validate(mapa, e.gramatica, { mode: "publicacion", coverage: coberturaDeRangos(e.rangos) });
   for (const x of [...inf.errores, ...inf.alertas]) fallas.push(`mapa${x.ruta} · ${x.regla} · ${x.id} · ${x.mensaje}`);
   if (!mapa.nodos.length) fallas.push("no queda ningún componente aprobado");
+  // Lo que quedó tras las decisiones también tiene que dibujarse: el build no publica un dibujo con avisos.
+  if (inf.ok && mapa.nodos.length) fallas.push(...avisosDeDibujo(mapa, e.gramatica, e.fecha));
   if (fallas.length) throw new ErrorDeAprobacion(fallas);
   if (e.anterior && !sinNovedades) {
     // Sanidad: si el diff contra el aprobado estuviera vacío, esto habría sido «sin novedades».

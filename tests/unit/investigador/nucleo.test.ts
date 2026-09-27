@@ -79,6 +79,11 @@ describe("validar una propuesta", () => {
     const ajena = propuestaNorte({ ...mapaNorte(), sujeto_id: "otra" });
     expect(validarPropuesta(ajena, G, RANGOS).fallas).toContain("mapa/sujeto_id · «otra» no es la plataforma investigada («plataforma-norte»)");
 
+    // Dibujo: un nombre de componente que no cabe en su ficha de franja (nivel 2 y recorrido: se dice una vez).
+    const nombreLargo = mapaNorte();
+    nombreLargo.nodos = nombreLargo.nodos.map((n) => (n.id === "catalogo-central" ? { ...n, nombre: { es: "Catálogo central de metadatos con linaje y clasificación", en: "Central catalog" } } : n));
+    expect(validarPropuesta(propuestaNorte(nombreLargo), G, RANGOS).fallas).toEqual(["dibujo · nivel-2 · ficha catalogo-central (es): 4 líneas; caben 2"]);
+
     const corta = propuestaNorte();
     corta.afirmaciones[0]!.cita.texto = "corta";
     expect(validarPropuesta(corta, G, RANGOS).fallas).toEqual(["afirmaciones.0.cita.texto · una cita de al menos 12 caracteres"]);
@@ -153,6 +158,17 @@ describe("aprobar", () => {
     const rechazadas = p.afirmaciones.filter((a) => a.sobre.entidad === "nodo" && fuera.has(a.sobre.id)).map((a) => a.id);
     const f = fallas(() => aprobar(entrada({ aprobadas: ids.filter((i) => !rechazadas.includes(i)), rechazadas })));
     expect(f).toEqual(["mapa/bloques · V7 · plataforma-norte · 4 bloques; la gramática admite de 5 a 8"]);
+  });
+
+  it("si lo que queda no se dibuja, no aprueba y dice qué no cabe (el build no publicaría ese atlas)", () => {
+    const base = p.mapa as unknown as Mapa;
+    const larga = { ...base, bloques: base.bloques.map((b) => (b.id === "almacen" ? { ...b, nombre: { es: "Almacenamiento central", en: "Central store" } } : b)) };
+    const q = propuestaNorte(larga);
+    const b = JSON.stringify(q);
+    const v = { ...verificacion(), propuesta_sha256: sha256(b) };
+    expect(fallas(() => aprobar(entrada({ propuesta: q, propuestaSha256: sha256(b), verificacion: v })))).toEqual([
+      "dibujo · nivel-1 · nombre de almacen (es): la palabra «Almacenamiento» no cabe en 104 u",
+    ]);
   });
 
   it("sin novedades: el mismo contenido que el aprobado solo renueva las fechas, con la versión de antes", () => {
