@@ -4,7 +4,8 @@ import { readFileSync } from "node:fs";
 import { expect, test } from "@playwright/test";
 
 // Cascarón del producto (S1, fase 0): tema por data-theme + prefers-color-scheme (A-31), idioma por
-// ruta, fuentes = tabla de métricas (G15), salto al contenido y axe en los dos temas.
+// ruta con la cápsula de la barra, fuentes = tabla de métricas (G15), salto al contenido y axe en los
+// dos temas. La raíz no es una pantalla: el servidor la redirige al español (veredicto del usuario).
 const FONDO = { oscuro: "rgb(11, 15, 20)", claro: "rgb(242, 244, 246)" } as const;
 const metricas = JSON.parse(readFileSync("docs/diseno/assets/fuentes/metricas.json", "utf8"));
 
@@ -20,7 +21,7 @@ for (const [esquema, tema] of [["dark", "oscuro"], ["light", "claro"]] as const)
       await expect(page.getByRole("button", { name: nombre, exact: true })).toHaveAttribute("aria-pressed", "true");
     });
 
-    for (const ruta of ["/", "/es", "/en"]) {
+    for (const ruta of ["/es", "/en"]) {
       test(`${ruta} sin violaciones serias de accesibilidad (${tema})`, async ({ page }) => {
         await page.goto(ruta);
         const scan = await new AxeBuilder({ page }).analyze();
@@ -41,6 +42,16 @@ test.describe("elección del visitante", () => {
     await expect(page.locator("html")).toHaveAttribute("data-theme", "claro");
     await expect(page.locator("body")).toHaveCSS("background-color", FONDO.claro);
   });
+});
+
+test("la raíz lleva directo al atlas en español, sin pantalla de elegir idioma", async ({ page, request }) => {
+  const respuesta = await request.get("/", { maxRedirects: 0 });
+  expect(respuesta.status()).toBe(307);
+  expect(respuesta.headers()["location"]).toBe("/es");
+  await page.goto("/");
+  await expect(page).toHaveURL(/\/es$/);
+  await expect(page.locator("html")).toHaveAttribute("lang", "es");
+  await expect(page.getByRole("group", { name: "Idioma" })).toBeVisible();
 });
 
 test("el idioma es la ruta: el conmutador lleva a la misma página en el otro idioma", async ({ page }) => {

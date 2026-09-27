@@ -1,6 +1,7 @@
 {
   "cleanUrls": ["/!(diseno)", "/!(diseno)/**"],
   "redirects": [
+    { "source": "/", "destination": "/es", "type": 307 },
     { "source": "/diseno", "destination": "/diseno/index.html", "type": 307 },
     { "source": "/diseno/", "destination": "/diseno/index.html", "type": 307 }
   ]

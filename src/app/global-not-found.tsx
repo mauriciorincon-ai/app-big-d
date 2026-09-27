@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { scriptTema } from "@/components/scriptTema";
-import { IDIOMAS, NOMBRE_PROPIO } from "@/lib/i18n";
+import { IDIOMAS } from "@/lib/i18n";
 import { jetbrainsMono, spaceGrotesk } from "./fuentes";
 import "./globals.css";
 
@@ -30,12 +30,11 @@ export default function GlobalNotFound() {
               </p>
             </div>
           </div>
-          <ul className="entradas">
+          <ul className="regresos">
             {IDIOMAS.map((idioma) => (
               <li key={idioma}>
                 <a href={`/${idioma}`} hrefLang={idioma} lang={idioma}>
-                  <b>{NOMBRE_PROPIO[idioma]}</b>
-                  <span>{TEXTO[idioma].volver}</span>
+                  {TEXTO[idioma].volver}
                 </a>
               </li>
             ))}

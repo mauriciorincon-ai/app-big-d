@@ -114,7 +114,8 @@ Decisiones D-S1-01 a D-S1-14 y la tabla de contradicciones: en el plan aprobado,
 
 - **Rutas:** layout raíz por idioma `src/app/[idioma]/layout.tsx` (`<html lang>` desde la ruta,
   `dynamicParams = false`, `/es` y `/en` estáticos) + layout raíz de `/` en `src/app/(raiz)/`, la
-  portada que ofrece los dos idiomas, cada entrada con su `lang`. Con dos layouts raíz no hay uno solo
+  portada que ofrece los dos idiomas, cada entrada con su `lang` (*retirada al cierre de la fase por
+  veredicto del usuario; ver «Cierre de la fase 0»*). Con dos layouts raíz no hay uno solo
   para el 404: `src/app/global-not-found.tsx` bilingüe, con `experimental.globalNotFound` de Next 16.3
   (documentado como experimental; se declara aquí). Fuera la plantilla de `create-next-app`: `layout`,
   `page`, `favicon.ico` y los SVG de `public/`, incluido **`vercel.svg`, un logo de fabricante**. Ícono
@@ -183,3 +184,37 @@ los deploys privados durante H1, jamás en un build público, y se retira por AD
 - `docs/diseno/README.md`: la plantilla del kit v1.32.0 trae las secciones «Fase 0» y «Tokens de
   reusables» y la fila «Preview donde se aprobó». Aplican a las próximas etapas de diseño; el registro de
   esta etapa, ya cerrada, se conserva tal como quedó («en local; el preview devolvió 404»).
+
+### Cierre de la fase 0
+
+**CI** (`gh pr checks 4` tras cada push; todos con conclusión propia `success`):
+
+| Commit | quality | e2e | lighthouse | Vercel |
+| ------ | ------- | --- | ---------- | ------ |
+| `d7032f6` | ✓ 53 s (primera corrida del paso «Regla 18») | ✓ 55 s | ✓ 1 min 26 s | ✓ |
+| `c7aec37` | ✓ 1 min 4 s | ✓ 1 min 10 s | ✓ 2 min 36 s | ✓ |
+
+**Mirada A-04 (2026-09-27, preview del PR #4, con sesión).** Pregunta: «¿Ya abre la maqueta en el
+preview?». Respuesta del usuario: «Excelente enlace abierto sin problemas y es navegable». Delata el
+archivo abierto y recorrido: **A-04 cerrada**.
+
+**Veredicto sobre la portada de idiomas (mismo mensaje).** «la entrada español ingles no le veo la razon
+deberia tener una capsula arriba y cone so ya cambiar todo». La portada de dos tarjetas era invención de
+la fase 0; la maqueta aprobada no la tiene: su único conmutador de idioma es la cápsula `.alterna` de la
+barra.
+
+- **D-S1-15 (reemplaza la raíz de D-S1-08).** `/` no es una pantalla: el servidor la redirige (307) a
+  `/es`, el idioma de la maqueta y del usuario. La cápsula ES / EN de la barra es el único conmutador y
+  lleva a la misma página en el otro idioma. Se decidió redirección de servidor, sin script: cero
+  parpadeo y cero JS. Lo que se pierde: la raíz no recuerda si el visitante eligió inglés.
+- Cambios: fuera `src/app/(raiz)/` (layout y página) y la clase `.entradas`; `serve.json` y
+  `vercel.json` suman `/` → `/es`; el 404 bilingüe cambia las dos tarjetas por dos enlaces de regreso;
+  `lighthouse-urls.json` = `/es`, `/en` (la raíz ya no es una página que medir).
+- Vercel, sin conexión (`vercel@60.1.3 build`): la ruta `^/$` → 307 `/es` queda en la posición 2, antes
+  de `filesystem`.
+- Clase de mirada: la pidió el usuario y el resultado es el de la maqueta. No abre parada; se ve en la
+  parada de la fase 2 (memoria «avanzar sin pequeñeces»).
+
+| Gate | ¿Puede fallar? | Demo en rojo | A quién nombró | Verde |
+| ---- | -------------- | ------------ | -------------- | ----- |
+| e2e `producto-base` — «la raíz lleva directo al atlas en español, sin pantalla de elegir idioma» (307 + `Location: /es`, aterriza con `lang="es"` y la cápsula) | Sí: la portada respondía 200 | El estado del repo antes del arreglo | `Expected: 307 · Received: 200` | ✓ suite e2e 32/32 (salen las 4 de axe sobre `/`, entran 2) |
