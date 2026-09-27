@@ -94,9 +94,9 @@ con línea por modo, orquestación como capa) y la hoja base del producto es `as
 | ---------------------------- | --------------------------------------------------------------------------------------------------- |
 | **Veredicto del usuario**    | _(pendiente)_ — aprobado / aprobado con notas                                                       |
 | **Fecha**                    |                                                                                                     |
-| **Rondas de sala de diseño** |                                                                                                     |
+| **Rondas de sala de diseño** | mirada 1 en 4 rondas (rechazo total → 3 direcciones → 3 tipografías → consolidación) · miradas 2, 3 y 4 en una ronda cada una, con un ajuste en la 2 y en la 3 · auditoría independiente y sus pagos (2026-09-27) |
 | **Dónde se aprobó**          | preview de Vercel del PR de `diseno/fundacion` (la URL vive en la planeadora, jamás aquí: regla 17) |
-| **Decisiones selladas**      |                                                                                                     |
+| **Decisiones selladas**      | P5 siempre horizontal con desplazamiento lateral (angosta retirada) · P4 una línea con etiqueta de modos · P9 Orquestación transversal · P11 Space Grotesk + JetBrains Mono · paleta de un matiz por tipo con umbral medido (D79) · dirección B · `compare` por banda (D75) · tabla de prioridad v0 con O ≥ 3 (D68) — detalle en `diagramador-tokens.md` § 0 y § 16 |
 | **Notas del usuario**        |                                                                                                     |
 
 **Sin este registro lleno, G-Diseño no está aprobado y ninguna orden de construcción se ejecuta.**
