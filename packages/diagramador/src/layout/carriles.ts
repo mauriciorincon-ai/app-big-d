@@ -6,7 +6,7 @@
 import type { Banda, Nodo } from "../tipos";
 import { mitad, type Decimas } from "../util/numeros";
 import { ordenarPor } from "../util/orden";
-import { M, porIdioma, plural, type Contexto } from "./contexto";
+import { M, porIdioma, plural, resumenVigencia, type Contexto } from "./contexto";
 import { plantilla } from "./escena";
 import { cabeceraFranja, etiquetaModos, trazo, ZONA } from "./piezas";
 import { numerarPasos } from "./nivel2";
@@ -162,6 +162,7 @@ export function carriles(ctx: Contexto, nivel: 1 | 2, conRecorrido?: string | tr
     titulo: porIdioma(ctx, (l, t) => plantilla(t.titulo[vista], valores(l))),
     descripcion: porIdioma(ctx, (l, t) => plantilla(t.descripcion[vista], valores(l))),
     ...(recorrido ? { recorrido: { id: recorrido.id, titulo: recorrido.titulo, pasos } } : {}),
+    vigencia: resumenVigencia(ctx, [...piezas.values()]),
     avisos: ctx.avisos,
   };
 }

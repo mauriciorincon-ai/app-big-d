@@ -4,7 +4,7 @@
 import type { Banda, Bloque, Nodo } from "../tipos";
 import { mitad, type Decimas } from "../util/numeros";
 import { ordenarPor } from "../util/orden";
-import { M, anchoLienzo, colX, diasDe, nodosDe, peorMadurez, plural, porIdioma, vigenciaDe, type Contexto } from "./contexto";
+import { M, anchoLienzo, colX, diasDe, nodosDe, peorMadurez, plural, porIdioma, resumenVigencia, vigenciaDe, type Contexto } from "./contexto";
 import { g, plantilla, texto, simbolo } from "./escena";
 import {
   X_FICHAS,
@@ -274,6 +274,7 @@ export function nivel1(ctx: Contexto): Geometria {
     escena,
     titulo: porIdioma(ctx, (l, t) => plantilla(t.titulo["nivel-1"], valores(l))),
     descripcion: porIdioma(ctx, (l, t) => plantilla(t.descripcion["nivel-1"], valores(l))),
+    vigencia: resumenVigencia(ctx, orden),
     avisos: ctx.avisos,
   };
 }

@@ -6,7 +6,7 @@
 import type { Nodo, Recorrido } from "../tipos";
 import { mitad, type Decimas } from "../util/numeros";
 import { ordenarPor } from "../util/orden";
-import { M, anchoLienzo, colX, diasDe, nodosDe, plural, porIdioma, vigenciaDe, type Contexto } from "./contexto";
+import { M, anchoLienzo, colX, diasDe, nodosDe, plural, porIdioma, resumenVigencia, vigenciaDe, type Contexto } from "./contexto";
 import { g, plantilla, rect, texto, simbolo } from "./escena";
 import {
   X_FICHAS,
@@ -270,6 +270,10 @@ export function nivel2(ctx: Contexto, conRecorrido: string | true | undefined): 
     titulo: porIdioma(ctx, (l, t) => plantilla(t.titulo[vista], valores(l))),
     descripcion: porIdioma(ctx, (l, t) => plantilla(t.descripcion[vista], valores(l))),
     ...(recorrido ? { recorrido: { id: recorrido.id, titulo: recorrido.titulo, pasos } } : {}),
+    vigencia: resumenVigencia(
+      ctx,
+      [...capas, ...franjas].flatMap((b) => nodosDe(ctx, b.id)).map((n) => ({ id: n.id, nodos: [n] })),
+    ),
     avisos: ctx.avisos,
   };
 }

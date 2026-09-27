@@ -9,12 +9,18 @@ import { plantilla } from "../layout/escena";
 import { numerarPasos } from "../layout/nivel2";
 import type { TextosMotor } from "../layout/tipos";
 import { escapar } from "../svg/serializar";
+import { diasEntre } from "../util/fechas";
 
 export interface OpcionesTexto {
   language: string;
   textos: Record<string, TextosMotor>;
   /** Id del elemento raíz (el destino de «Saltar el diagrama» y de `aria-details`). */
   id?: string;
+  /**
+   * Fecha de consulta (AAAA-MM-DD): con ella, cada nodo por revisar o vencido dice sus días (§ 4.8: el
+   * texto completo va también en la lectura). Lo vigente no se marca, como en el dibujo.
+   */
+  fechaConsulta?: string;
 }
 
 export function toText(map: Mapa, grammar: Gramatica, opciones: OpcionesTexto): string {
@@ -30,6 +36,14 @@ export function toText(map: Mapa, grammar: Gramatica, opciones: OpcionesTexto): 
   const bandas = [...(["capa", "carril", "transversal"] as const)].flatMap((c) => ordenarPor(grammar.bandas.filter((b) => b.clase === c), (b) => b.orden, (b) => b.id));
   const nodosDe = (banda: string) => ordenarPor(map.nodos.filter((n) => n.banda_id === banda), (n) => n.orden ?? Number.MAX_SAFE_INTEGER, (n) => n.id);
 
+  const vigencia = (n: Nodo): string => {
+    if (!opciones.fechaConsulta) return "";
+    const dias = diasEntre(n.fecha_verificacion, opciones.fechaConsulta);
+    const v = grammar.vigencia;
+    if (dias < v.umbral_revisar_dias) return "";
+    return ` ${e(plantilla(dias >= v.umbral_vencido_dias ? t.vencido : t.porRevisar, { n: dias }))}`;
+  };
+
   const itemNodo = (n: Nodo): string => {
     const m = madurez.get(n.madurez)!;
     const salen = flujos.filter((f) => f.origen === n.id);
@@ -38,7 +52,7 @@ export function toText(map: Mapa, grammar: Gramatica, opciones: OpcionesTexto): 
       ...salen.map((f) => `<li data-flujo="${e(f.id)}">${e(plantilla(t.hacia, { nombre: nodo.get(f.destino)!.nombre[l]!, modo: modo.get(f.modo_id)!.nombre[l]!, que: f.que_viaja[l]! }))}</li>`),
       ...entran.map((f) => `<li data-flujo="${e(f.id)}">${e(plantilla(t.desde, { nombre: nodo.get(f.origen)!.nombre[l]!, modo: modo.get(f.modo_id)!.nombre[l]!, que: f.que_viaja[l]! }))}</li>`),
     ];
-    return `<li data-nodo="${e(n.id)}"><b>${e(n.nombre[l]!)}</b> · ${e(tipo.get(n.tipo_id)!.nombre[l]!)} · ${e(m.nombre[l]!)}. ${e(n.lider[l]!)}${lineas.length ? `<ul>${lineas.join("")}</ul>` : ""}</li>`;
+    return `<li data-nodo="${e(n.id)}"><b>${e(n.nombre[l]!)}</b> · ${e(tipo.get(n.tipo_id)!.nombre[l]!)} · ${e(m.nombre[l]!)}. ${e(n.lider[l]!)}${vigencia(n)}${lineas.length ? `<ul>${lineas.join("")}</ul>` : ""}</li>`;
   };
   // Un flujo que VIENE de una franja se lista también en el nodo de capa que lo recibe (la referencia
   // de franja se dibuja en la franja, pero se lee junto al elemento con el que conecta).

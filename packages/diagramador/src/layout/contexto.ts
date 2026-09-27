@@ -4,7 +4,7 @@ import type { Banda, Gramatica, Mapa, ModoDeFlujo, NivelMadurez, Nodo, TipoDeNod
 import { METRICAS_PILOTO, medidor, type Medidor } from "../texto/metricas";
 import { diasEntre } from "../util/fechas";
 import { ordenarPor } from "../util/orden";
-import type { OpcionesLayout, TextosMotor } from "./tipos";
+import type { Geometria, OpcionesLayout, TextosMotor, Vigencia } from "./tipos";
 
 // Constantes de § 5.3, en décimas.
 export const M = 80;
@@ -13,7 +13,7 @@ export const CANAL = 500;
 export const PISTA_EXPRES_1 = 240;
 export const PISTA_EXPRES_PASO = 220;
 
-export type Vigencia = "vigente" | "revisar" | "vencido";
+export type { Vigencia };
 
 export interface Contexto {
   mapa: Mapa;
@@ -74,6 +74,19 @@ export function diasDe(ctx: Contexto, nodos: readonly Nodo[]): number {
 export function vigenciaDe(ctx: Contexto, dias: number): Vigencia {
   const v = ctx.gramatica.vigencia;
   return dias >= v.umbral_vencido_dias ? "vencido" : dias >= v.umbral_revisar_dias ? "revisar" : "vigente";
+}
+
+/** Vigencia del mapa entero y de cada elemento activable, en el orden en que llegan (§ 4.8). */
+export function resumenVigencia(ctx: Contexto, elementos: readonly { id: string; nodos: readonly Nodo[] }[]): Geometria["vigencia"] {
+  const dias = diasDe(ctx, ctx.mapa.nodos);
+  return {
+    dias,
+    estado: vigenciaDe(ctx, dias),
+    elementos: elementos.map((e) => {
+      const d = diasDe(ctx, e.nodos);
+      return { id: e.id, dias: d, estado: vigenciaDe(ctx, d) };
+    }),
+  };
 }
 
 /** La madurez más baja de un conjunto de nodos (por `nivel`). */

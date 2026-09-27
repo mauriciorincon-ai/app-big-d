@@ -5,6 +5,8 @@ import type { TextoIdioma } from "../tipos";
 import type { Decimas } from "../util/numeros";
 
 export type Vista = "nivel-1" | "nivel-2" | "recorrido";
+/** Semáforo de vigencia (§ 4.8): se cuenta desde `fecha_verificacion` hasta la fecha de consulta. */
+export type Vigencia = "vigente" | "revisar" | "vencido";
 export type Punto = readonly [Decimas, Decimas];
 
 export interface Caja {
@@ -68,6 +70,12 @@ export interface Geometria {
   titulo: TextoIdioma;
   descripcion: TextoIdioma;
   recorrido?: { id: string; titulo: TextoIdioma; pasos: PasoGeo[] };
+  /**
+   * Semáforo de vigencia (§ 4.8) del mapa (su nodo más viejo) y de cada elemento activable de la vista
+   * (bloque, caja sin bloque o ficha en el nivel 1; nodo en el nivel 2). Es el MISMO cálculo que dibuja
+   * las insignias: la app lo usa para la píldora del mapa sin repetir la regla.
+   */
+  vigencia: { dias: number; estado: Vigencia; elementos: { id: string; dias: number; estado: Vigencia }[] };
   /** Avisos de geometría (§ 5.3): etiquetas que no caben, textos de más líneas que su caja, pistas agotadas. */
   avisos: string[];
 }

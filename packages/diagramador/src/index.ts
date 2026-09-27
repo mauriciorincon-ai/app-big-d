@@ -3,7 +3,7 @@ export { CONTRATO_VERSION } from "./version";
 export { validate, validateGrammar } from "./validar";
 export type { Cobertura, Entrada, Informe, Modo } from "./validar";
 export { layout } from "./layout";
-export type { Caja, CajaPropia, Geometria, OpcionesLayout, PasoGeo, Punto, TextosMotor, Trazado, Vista } from "./layout/tipos";
+export type { Caja, CajaPropia, Geometria, OpcionesLayout, PasoGeo, Punto, TextosMotor, Trazado, Vigencia, Vista } from "./layout/tipos";
 export { toSVG, type OpcionesSVG } from "./svg/toSVG";
 export { toJourneyCSS } from "./svg/recorridoCSS";
 export { toLegend } from "./svg/leyenda";
