@@ -392,3 +392,133 @@ dibuja los niveles 1 y 2 de los dos mapas bilingües y mide cada `tspan` con `ge
 13. **G1** — Hueco «Linux pendiente» cerrado por medición.
 14. **Constitución** — Líneas viejas del diagramador en `CLAUDE-md-para-app.md` (V1–V12, franjas arriba,
     angosta 380, «v0.2.0 hoy»).
+15. **D-S1-26** — La geometría expone la vigencia del mapa y de cada elemento activable (`vigencia`): § 4.8
+    pide la píldora del mapa con el texto completo y la app no debe repetir la regla de los umbrales.
+16. **D-S1-27** — `toText` recibe la fecha de consulta: § 4.8 exige «por revisar · N días» también en la
+    lectura, y la firma de § 8 (`{ language }`) no tiene cómo calcularlo.
+17. **Leyenda (§ 4.9)** — La regla del haz («varios modos en una conexión: línea gruesa y una etiqueta que dice
+    cuáles, en orden») es gramática, no copy de la app: debería salir en la leyenda generada.
+
+## Fase 2 — Atlas nivel 1 en el producto (2026-09-27)
+
+**«continúa» del usuario (2026-09-27)** tras el resumen de la fase 1. Modelo sin cambio (Opus 5.5, esfuerzo
+alto).
+
+### El motor suma dos cosas (sin tocar un byte de los SVG)
+
+| # | Decisión | Por qué |
+| - | -------- | ------- |
+| D-S1-26 | `Geometria.vigencia`: días y estado del mapa (su nodo más viejo) y de cada elemento activable (bloque, caja sin bloque o ficha en el nivel 1; nodo en el nivel 2), con el mismo cálculo que dibuja las insignias | La píldora del mapa (`vigente` · `2 bloques por revisar` · `1 vencido · 1 por revisar`) la arma la app; sin esto tendría que repetir la regla de los umbrales. Enmienda 15 |
+| D-S1-27 | `toText(…, { fechaConsulta })`: cada nodo por revisar o vencido dice «Por revisar: verificado hace N días.»; lo vigente no se marca | § 4.8 pide el texto completo también en la lectura. Enmienda 16 |
+
+Los 26 golden files no cambiaron (399/399 pruebas del paquete; determinismo 6/6 en Chromium, Firefox y
+WebKit, G15 sigue en 97,1 %).
+
+### El dato de la app (`data/`)
+
+- **Gramática y mapa de ejemplo generados del contrato.** `scripts/datos/desde-contrato.mjs` escribe
+  `data/gramaticas/plataformas-datos.gramatica.yaml` y `data/mapas/plataforma-ejemplo.mapa.yaml` (YAML 1.2)
+  desde la copia fijada en `packages/diagramador/`. Prueba `datos-desde-contrato`: el YAML versionado es lo
+  que genera el script (bytes) y dice lo mismo que su JSON (igualdad profunda).
+- **Plataformas, una por archivo** (`data/plataformas/<id>.yaml`, Zod en `src/lib/datos/esquemas.ts`):
+  `plataforma-ejemplo` publicada y ficticia; `databricks`, `fabric` y `snowflake` «próximamente», sin
+  contenido (Fabric se publica cuando apruebes su mapa en la fase 3).
+- **Cargador del build** (`src/lib/datos/cargar.ts`): plataformas con Zod; gramáticas con `validateGrammar`;
+  mapas con `validate(…, { mode: "publicacion", coverage })`. Cruza: archivo = id, publicada ⇒ tiene mapa,
+  próximamente ⇒ no lo tiene, mapa ⇒ tiene plataforma, `sujeto_id` y `sujeto_nombre` = los de su
+  plataforma, la gramática declara los idiomas de la interfaz. **Más estricto que el contrato:** una alerta
+  también rompe el build, y la vista rompe el build si el dibujo trae avisos de geometría (un mapa publicado
+  no sale con etiquetas que no caben).
+- **D-S1-29 — Fecha de consulta** = el día del build (UTC), o `BIGD_FECHA_CONSULTA` en pruebas y capturas.
+  El preview muestra el estado real del día; las capturas de fidelidad usan 2026-09-26, la de la maqueta.
+
+### La pantalla
+
+- `src/app/[idioma]/atlas/[plataforma]/page.tsx`: una página estática por idioma × plataforma publicada. El
+  SVG, la leyenda y la lectura en texto salen del diagramador en el build (`src/lib/atlas/nivel1.ts`); la
+  página los coloca como `docs/diseno/atlas-nivel-1.html`: encabezado con la píldora de vigencia, pestañas de
+  nivel (02–04 pendientes, sin enlace), guía, índice de capas, pista, «Saltar el diagrama», lienzo deslizable,
+  leyenda y lectura plegada.
+- **D-S1-30 — Capa interactiva** (`ControlLienzo`, cliente): se engancha al SVG del build por sus ids, sin
+  repetirlo en la carga de React. Desborde, sombras de borde, índice de capas, ficha breve con clic, Enter o
+  Espacio. La ficha breve es la entrada del bloque en la lectura del motor, y vive en una región
+  `aria-live`. El árbol es el mismo en servidor y cliente (regla de movimiento reducido).
+- **D-S1-31 — Última capa del índice.** En un lienzo angosto la última columna nunca llega al borde izquierdo,
+  y la regla de la maqueta («la última que empieza antes del borde + 40 px») jamás la marcaba: tocar «06» la
+  mostraba sin marcarla. Al final del desplazamiento se marca la última. Defecto heredado de la maqueta; lo
+  cazó el e2e nuevo.
+- **D-S1-32 — Entrada al atlas.** «Atlas» en la barra y «Abrir el atlas» en la portada llevan a la primera
+  plataforma publicada por id (ninguna tiene trato especial). El selector de plataforma espera su mirada de
+  FORMA; mientras, el botón «Cambiar de plataforma» no se muestra (jamás un control que no hace nada).
+- Diccionario: `motor` (las cadenas que dibuja el diagramador, las de la maqueta) y `atlas` (la pantalla),
+  en los dos idiomas. Nuevos: la nota de marcas (texto de `diagramador-tokens.md` § 13, sin nombrar
+  plataformas: N por diseño), «Abrir el atlas» y la pista de los bloques para lector de pantalla. Son de
+  TEXTO: maquetados, no vistos; viajan al gate humano.
+- Hojas: `src/styles/atlas.css` (portada de la maqueta, más el acomodo de la leyenda y la lectura que genera
+  el motor) y `src/styles/diagrama.css`, ya importadas. La base de Tailwind quita los marcadores de lista: se
+  devuelven en la lectura y la ficha, y el recorrido conserva solo la numeración del motor.
+
+### Pruebas y gates
+
+| Gate | ¿Puede fallar? | Demo en rojo | A quién nombró | Verde |
+| ---- | -------------- | ------------ | -------------- | ----- |
+| `vigencia.test.ts` — la vigencia de la geometría marca exactamente los elementos con insignia | Sí | el resumen dice «vigente» siempre | 3 pruebas: «plataforma-ejemplo · nivel-1: expected [] to deeply equal ['_operacion', '_orquestacion', …]» y los demás mapas | 8/8 |
+| `vigencia.test.ts` — la lectura dice los días de lo por revisar y vencido | Sí | la condición de la fecha invertida | 2 pruebas | 8/8 |
+| `datos-desde-contrato` — deriva YAML ↔ JSON del contrato | Sí | una frase del YAML editada a mano | las 2 pruebas del mapa, con el campo `es` cambiado | 4/4 |
+| `datos.test.ts` — un dato roto rompe la carga con archivo, regla e id | Sí: cada caso rompe una copia de `data/` | 8 pruebas, 10 datos rotos: cada uno es un rojo por construcción y exige su mensaje exacto | — | 11/11 |
+| El build mismo (G14) | Sí | `fabric.yaml` con `estado: publicada` y sin mapa | `pnpm build` sale con 1: «data/plataformas/fabric.yaml · estado · publicada sin mapa: falta data/mapas/fabric.mapa.yaml» | build ✓ al restaurar |
+| `atlas.test.ts` — cadena de fidelidad: dato YAML + diccionario = golden del diagramador, byte a byte | Sí | «sin bloque» → «sin grupo» en `es.ts` | «nivel 1 en es» (el inglés sigue verde) | 7/7 |
+| e2e `atlas.spec.ts` (teclado, ficha, lienzo a 380 px, G10 en el producto, axe en los dos temas con la ficha y la lectura abiertas) | Sí | su primera corrida: 6 rojos reales | el selector contaba también los pasos del recorrido; la última capa no quedaba marcada (D-S1-31) | 20/20 |
+| Pasada de capturas e interacción (`scripts/capturar-producto.mjs`, manual: la CI no la corre) | Sí | (1) el clic de los bloques saboteado; (2) un botón nuevo sin prueba | (1) 14 fallas, una por bloque: «no abrió su ficha breve» / «no quedó marcado»; (2) «control sin pasada de interacción: `<button …>Cambiar de plataforma</button>`», salida 2 | 0 fallas, salida 0 |
+
+El arnés sirve `out/` con su propio servidor en un puerto libre y comprueba que entrega los bytes de
+`out/es.html` antes de fotografiar (regla de derivados y arneses). Mide desborde de la página, fuente
+cargada, texto dentro del lienzo y fuera de cajas ajenas, y el **área de desplazamiento** del lienzo (la que
+debe haber, y que al final se ve el borde derecho del SVG). Su pasada de interacción activa tema, índice de
+capas, cada bloque con clic y el último con Enter, el foco del lienzo, los dos saltos, la lectura plegada y
+cada enlace. Un control que no sabe activar es una falla. Sus propias fallas de la primera corrida eran suyas:
+midió antes de que terminara el desplazamiento suave, y ocultó la ficha por debajo de React.
+
+**Suites:** unitarias 589/589 (27 archivos; `src/lib/atlas` 95,7 % y `src/lib/datos` 94,9 % de líneas) ·
+e2e 52/52 · determinismo 6/6 · typecheck y lint limpios.
+
+### Fidelidad contra `docs/diseno/atlas-nivel-1.html`
+
+Build local con `BIGD_FECHA_CONSULTA=2026-09-26`, pares producto | maqueta compuestos por el arnés
+(`--maqueta`), leídos como imagen: 2 temas × 2 idiomas × 380 y 1280 px. Además los estados «por revisar»
+(2026-10-20) y «vencido» (2026-11-19) y la ficha breve abierta en cada encuadre: **32 encuadres, 24 con la
+ficha abierta, 0 fallas de medida.** El lienzo sale idéntico: mismas columnas, bloques, etiquetas de modos,
+carril exprés, franjas, referencias e insignias. Diferencias, todas declaradas:
+
+| # | Dónde | Maqueta | Producto | Por qué |
+| - | ----- | ------- | -------- | ------- |
+| 1 | Bloque «Agentes» | «1 componente» + «vista previa» | «Vista previa pública» en dos líneas, sin «1 componente» | D-S1-17: la gramática no tiene nombre corto (enmienda 7) |
+| 2 | Subtítulo | «seis capas y tres franjas» | «6 capas y 3 franjas» | Los conteos salen de la gramática (N por diseño); con palabras haría falta una tabla de números por idioma |
+| 3 | Encabezado | botón «Cambiar de plataforma» (sin comportamiento en la maqueta) | no aparece | Espera la mirada de FORMA de esta parada |
+| 4 | Barra | Conocimiento · Caso · Instrumento | solo Atlas | Secciones no construidas: jamás un enlace muerto |
+| 5 | Leyenda | tipos y modos | tipos, modos, **madurez, vigencia** y la nota de marcas | El contrato (§ 4.9) genera la leyenda entera; la nota espera su FORMA |
+| 6 | Lectura en texto | banda → bloque, con un resumen de conexiones | banda → bloque → componente → conexiones, más el recorrido | Es la del motor (G10 del contrato), la misma que oyen los lectores de pantalla |
+| 7 | Ficha breve | una línea del bloque | la entrada completa del bloque en esa lectura | Consecuencia de 6 |
+| 8 | Estados de vigencia | 2 bloques con fechas distintas | los 9 elementos a la vez | El mapa de ejemplo tiene una sola fecha de verificación; las insignias son las mismas |
+| 9 | Pie | «Todo lo que ves aquí es ficticio» | sin esa frase | El producto no es todo ficticio; el título dice «(ficticia)» |
+| 10 | Índice de capas | la última capa nunca se marca | se marca al llegar al final | D-S1-31 |
+
+### Propuesta de FORMA: selector de plataforma y nota de marcas
+
+`docs/propuestas-de-diseno/selector-y-nota.html` (doble clic; usa las hojas de la maqueta, tema e idioma
+funcionan, el botón abre y cierra). Cuatro marcos:
+
+1. **Selector abierto en el atlas (ancho).** «Cambiar de plataforma» despliega, bajo el encabezado, una
+   tarjeta por plataforma en rejilla que crece con N; empuja el contenido, no flota sobre el mapa. Publicada
+   = borde lleno y enlace, con su marca de vigencia; próximamente = borde discontinuo (como una caja sin
+   contenido del diagrama) y la palabra; la actual = borde de 2 px en tinta; «ficticia» en una etiqueta. Orden
+   por id. Al pie, la nota de marcas en una línea.
+2. **El mismo selector a 380 px.** Una tarjeta bajo otra.
+3. **La portada lo usa como índice**, siempre abierto.
+4. **Nota de marcas, dos formas.** A: párrafo al pie de la leyenda (lo que hoy muestra el atlas). B: nota con
+   filete y marca dibujada, más visible.
+
+### Parada A — pendiente
+
+Fidelidad sobre el preview del PR #4 + mirada de FORMA de la propuesta (+ la raíz directa a `/es`, que se
+dejó para esta parada). Se registra aquí antes de construir más UI.
