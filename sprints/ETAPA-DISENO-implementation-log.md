@@ -649,3 +649,11 @@ Textual: «lo abrí y apruebo, muy buena imagen y fluidez, muchos elementos de i
   con 0 fallas, y sin desborde a 720, 900, 1099, 1100 y 1440.
 - `pnpm lint`, `typecheck` y `test` en verde (85/85; el gate de deriva compara la portada regenerada).
 
+#### Mirada de la portada (2026-09-27)
+
+Pedida en matriz, con la portada abierta en local. Textual: «Ahora sí, espectacular». **Ajuste aprobado.** CI del
+commit c463222 en verde, cada check con su propia conclusión: quality 50 s, e2e 1 min 6 s, lighthouse 1 min 36 s
+y Vercel. Vercel pasa el build y aun así el preview da 404 en `/diseno/`: el sitio compila, pero no sirve la
+maqueta. Esa es la pista para diagnosticar A-04. La etapa queda cerrada; el PR #3 pasa a listo y el merge lo
+hace el usuario.
+

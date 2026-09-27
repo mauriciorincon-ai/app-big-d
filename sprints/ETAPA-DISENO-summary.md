@@ -1,9 +1,9 @@
 ---
 sprint: ETAPA-DISENO (F2a)
 app: big-d
-status: open — G-Diseño aprobado (2026-09-27, con un ajuste); cierra con la mirada de la portada y el merge del PR #3
+status: closed
 opened: 2026-09-26
-closed: pendiente de G-Diseño
+closed: 2026-09-27
 branch: diseno/fundacion
 pr: "#3 (mauriciorincon-ai/app-big-d)"
 orden: portafolio/big-d/ordenes/DISENO-orden.md (planeadora)
@@ -16,7 +16,7 @@ orden: portafolio/big-d/ordenes/DISENO-orden.md (planeadora)
 **Sí, con una salvedad.** Los entregables de la orden están construidos. Las miradas 1 a 4 están aprobadas
 por el usuario con los archivos abiertos y registradas antes de construir encima. La auditoría independiente
 pidió ajustes y quedaron pagados. **G-Diseño se aprobó el 2026-09-27** («lo abrí y apruebo») con un ajuste: la
-portada, que se rehízo con la gramática del atlas (D81) y se mira antes del merge.
+portada, que se rehízo con la gramática del atlas (D81) y el usuario aprobó: «Ahora sí, espectacular».
 
 La salvedad es el despliegue: el preview devolvió 404 en `/diseno/index.html`. El usuario pidió trabajar en local
 hasta una versión estable, y la mirada 5 se hizo en local (D82). La maqueta desplegada en Vercel protegido, que
@@ -54,7 +54,7 @@ pedía la orden, queda sin cumplir y en deuda.
 | Estándar       | Estado                             | Evidencia                                                                                                                                                                                                                                                                                        |
 | -------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Testing        | ✓                                  | `pnpm test` da 85/85 en 6 archivos. Por archivo: paleta 46, deriva 14, controladores 13, vocabulario 7, autocontenida 2, dependabot 3. Cinco gates nuevos, cada uno con su demo en rojo registrada en la bitácora. `pnpm test:e2e` da 2/2 sin reintentos                                         |
-| CI/CD          | ✓ | `quality`, `e2e` y `lighthouse` con conclusión propia `success` en cada push del PR #3 (último medido: `48add97`, quality 48 s · e2e 54 s · lighthouse 1 min 31 s · Vercel ✓). Primera corrida en CI de `maqueta-deriva` y `maqueta-controladores` en este PR: sin histórico, no se afirma regresión ni no-regresión                                                                    |
+| CI/CD          | ✓ | `quality`, `e2e` y `lighthouse` con conclusión propia `success` en cada push del PR #3 (último medido antes del cierre: `c463222`, quality 50 s · e2e 1 min 6 s · lighthouse 1 min 36 s · Vercel ✓; el commit de cierre se verifica igual antes de marcar el PR listo). Primera corrida en CI de `maqueta-deriva` y `maqueta-controladores` en este PR: sin histórico, no se afirma regresión ni no-regresión                                                                    |
 | Observabilidad | N/A                                | Sin código de producto. Sentry del estampado sin cambios (inerte sin DSN)                                                                                                                                                                                                                        |
 | Seguridad      | ✓                                  | gitleaks en cada commit (0 fugas). `pnpm audit --audit-level high` sin vulnerabilidades. No hay overrides en `package.json`. Barrido de enlaces vacío tras el último `git add`. El campo homepage del repo está vacío                                                                            |
 | Performance    | ✓ con límite declarado             | `lighthouse` mide `/`, no la maqueta: la maqueta es referencia y no pasa por Lighthouse (declarado en el plan)                                                                                                                                                                                   |
@@ -84,7 +84,7 @@ en el computador, porque el preview dio 404.
 | Pasada de capturas del builder | Mirada 1: 352 encuadres. Mirada 2: 440. Mirada 3: 184. Mirada 4: 312 más 392 medidas. Pagos de la auditoría: 128, 392 y 208. Todo con 0 fallas de medida, más los encuadres leídos como imagen que lista la bitácora en cada fase. Arnés `scripts/capturar-maqueta.mjs`; capturas fuera del repo |
 | e2e de `reduced-motion`        | 0 pruebas versionadas, porque la etapa no tiene pantallas de producto. La variante reducida del recorrido se verificó en Chromium (`reducedMotion: reduce`: «Reproducir» queda en el DOM con `display: none`, sin la hoja de animación). El e2e nace en el S1 con la primera pantalla animada    |
 
-⭐ no aplica en la etapa. G-Diseño (mirada 5): aprobado el 2026-09-27, con la portada por mirar.
+⭐ no aplica en la etapa. G-Diseño (mirada 5): aprobado el 2026-09-27; el ajuste de la portada, aprobado el mismo día.
 
 ## Auditoría (`/audita-sprint`)
 
