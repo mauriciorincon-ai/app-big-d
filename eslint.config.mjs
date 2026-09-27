@@ -12,6 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Maqueta de la Etapa de Diseño: HTML/CSS/JS de sala de diseño, no código de producto
+    // (scripts clásicos que abren por file://). public/diseno/ es su copia generada.
+    "docs/diseno/**",
+    "public/diseno/**",
   ]),
 ]);
 

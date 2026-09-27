@@ -1,0 +1,7 @@
+/* Fuentes de Big-D (P11). Todas SIL OFL 1.1 — licencias junto a los archivos. Servidas desde el
+   mismo sitio: jamás desde un CDN (gate maqueta-autocontenida). `block`: nunca se pinta con respaldo.
+   Space Grotesk (interfaz y diagrama; elegida por el usuario en la mirada 1, ronda 3, entre Manrope,
+   Space Grotesk y Onest; Atkinson Hyperlegible, rondas 1–2, fue rechazada) y JetBrains Mono para
+   huellas, fechas, códigos y comandos. Subconjunto latino, variables `wght`. */
+@font-face { font-family: "Space Grotesk"; src: url("fuentes/space-grotesk.woff2") format("woff2"); font-weight: 300 700; font-style: normal; font-display: block; }
+@font-face { font-family: "JetBrains Mono"; src: url("fuentes/jetbrains-mono.woff2") format("woff2"); font-weight: 100 800; font-style: normal; font-display: block; }

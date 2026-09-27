@@ -1,0 +1,77 @@
+/* Big-D — capa CSS del DIAGRAMA (propuesta G13 para el contrato v0.3.0): un solo SVG sirve a los dos
+   temas porque todo color entra por variable. Clases `db-*` = dirección B «plano» elegida en la
+   mirada 1. La letra la hereda de la página (Space Grotesk); tabla de métricas en fuentes/metricas.json. */
+/* Diagrama B */
+.dir-svg text { font-family: var(--letra); }
+.dir-svg [tabindex]:focus { outline: none; }
+.db-guia { stroke: var(--linea); stroke-width: 1; stroke-dasharray: 2 5; fill: none; }
+.db-t-num { font: 500 12px var(--letra-mono); letter-spacing: 0.1em; fill: var(--tinta-2); }
+.db-t-banda { font-size: 17px; font-weight: 700; fill: var(--tinta-1); }
+.db-t-banda-franja { font-size: 15px; }
+.db-t-pregunta { font-size: 14px; fill: var(--tinta-2); }
+.db-t-pregunta-franja { font-size: 13px; }
+.db-t-nombre { font-size: 16px; font-weight: 700; fill: var(--tinta-1); }
+.db-t-nombre-compacto { font-size: 14px; }
+.db-t-meta { font-size: 13px; fill: var(--tinta-2); }
+.db-t-meta-compacta { font-size: 12px; }
+.db-t-ref { font-size: 13px; font-weight: 700; fill: var(--tinta-1); }
+.db-card { fill: var(--sup-2); stroke: var(--linea); stroke-width: 1; }
+.db-fantasma { stroke-dasharray: 5 4; stroke: var(--tinta-2); }
+.db-linea { fill: none; stroke: var(--tinta-2); stroke-width: 1.6; }
+.db-punta { fill: var(--tinta-2); }
+.db-chip rect { fill: var(--sup-1); stroke: var(--linea); stroke-width: 1; }
+.db-marca { color: var(--tinta-1); }
+.db-ref rect { fill: var(--sup-1); stroke: var(--linea); stroke-width: 1; }
+.db-franja-filete { stroke: var(--linea); stroke-width: 1; fill: none; }
+.db-elem { cursor: pointer; }
+.db-elem:focus-visible [data-caja], .db-elem[aria-current="true"] [data-caja] { stroke: var(--tinta-1); stroke-width: 2; }
+.db-modo-por-lotes .db-linea { stroke-dasharray: 8 5; }
+.db-modo-a-demanda .db-linea { stroke-dasharray: 0.1 5.5; stroke-linecap: round; stroke-width: 2.8; }
+.db-modo-haz .db-linea { stroke-width: 4; }
+.db-doble-ext { stroke-width: 6.5; }
+.db-doble-int { stroke: var(--sup-1); stroke-width: 2.5; }
+.db-madurez rect { fill: none; stroke: var(--tinta-2); stroke-width: 1.2; }
+.db-madurez .dg-madurez-nivel { fill: var(--tinta-2); stroke: none; }
+.db-c-tipo-1, .lg-tipo-1 { color: var(--tipo-1); } .db-c-tipo-2, .lg-tipo-2 { color: var(--tipo-2); } .db-c-tipo-3, .lg-tipo-3 { color: var(--tipo-3); } .db-c-tipo-4, .lg-tipo-4 { color: var(--tipo-4); }
+.db-c-tipo-5, .lg-tipo-5 { color: var(--tipo-5); } .db-c-tipo-6, .lg-tipo-6 { color: var(--tipo-6); } .db-c-tipo-7, .lg-tipo-7 { color: var(--tipo-7); } .db-c-tipo-8, .lg-tipo-8 { color: var(--tipo-8); }
+.db-f-tipo-1 { fill: var(--tipo-1); } .db-f-tipo-2 { fill: var(--tipo-2); } .db-f-tipo-3 { fill: var(--tipo-3); } .db-f-tipo-4 { fill: var(--tipo-4); }
+.db-f-tipo-5 { fill: var(--tipo-5); } .db-f-tipo-6 { fill: var(--tipo-6); } .db-f-tipo-7 { fill: var(--tipo-7); } .db-f-tipo-8 { fill: var(--tipo-8); }
+
+.db-insignia rect { fill: var(--sup-2); stroke: var(--tinta-1); stroke-width: 1.5; }
+.db-insignia-marca { color: var(--tinta-1); }
+.db-t-insignia { font: 700 12px var(--letra-mono); fill: var(--tinta-1); }
+.db-insignia-vencido rect { fill: var(--tinta-1); }
+.db-insignia-vencido .db-insignia-marca { color: var(--sup-1); }
+.db-insignia-vencido .db-t-insignia { fill: var(--sup-1); }
+@media (forced-colors: active) {
+  .db-card, .db-chip rect, .db-ref rect, .db-insignia rect { fill: Canvas; stroke: CanvasText; } .db-linea, .db-punta { stroke: CanvasText; } .db-punta { fill: CanvasText; }
+  /* «vencido» se invierte y «sin copia» conserva su hueco: glifo, trazo y texto sobreviven (§ 14 de la propuesta) */
+  .db-insignia-vencido rect { fill: CanvasText; } .db-insignia-vencido .db-t-insignia { fill: Canvas; } .db-insignia-vencido .db-insignia-marca { color: Canvas; }
+  .db-doble-int { stroke: Canvas; }
+}
+
+/* Nivel 2: nodo */
+.db-t-nombre-nodo { font-size: 13px; }
+.db-marca-suave { color: var(--tinta-2); }
+.db-nodo[aria-current="true"] [data-caja] { stroke: var(--tinta-1); stroke-width: 2; }
+/* Nivel 3: recorrido */
+.dg-paso-insignia rect { fill: var(--tinta-1); stroke: var(--sup-1); stroke-width: 2; }
+.dg-t-paso { font: 700 12px var(--letra-mono); fill: var(--sup-1); }
+.dg-rama { color: var(--tinta-1); }
+/* Lado a lado */
+.db-t-banda-lado, .db-t-fila-lado { font-size: 13px; }
+.db-t-cab-bloque { font-size: 12px; font-weight: 700; }
+/* Decisiones por ondas: la reversibilidad se codifica con glifo + palabra + borde (jamás un matiz). */
+.dd-una_via .dd-caja { stroke: var(--tinta-1); stroke-width: 2.5; }
+.dd-costosa .dd-caja { stroke: var(--tinta-2); stroke-width: 1.5; stroke-dasharray: 7 4; }
+.dd-dos_vias .dd-caja { stroke: var(--linea); stroke-width: 1; }
+.dd-t-rev { fill: var(--tinta-1); letter-spacing: 0.04em; }
+.dd-t-nombre { font-size: 14px; }
+.dd-en-ciclo .dd-caja { fill: var(--sup-1); stroke: var(--tinta-1); stroke-width: 2.5; stroke-dasharray: 3 3; }
+.dd-bloq .dd-caja { fill: var(--sup-1); stroke-dasharray: 3 4; }
+.dd-bloq .dd-t-nombre { fill: var(--tinta-2); }
+.dd-dep-ciclo .db-linea { stroke: var(--tinta-1); stroke-width: 2.2; stroke-dasharray: 5 3; }
+.dd-dep-ciclo .db-punta { fill: var(--tinta-1); }
+/* Foco y ficha abierta SUMAN al borde de reposo (jamás lo reducen): una vía 2,5 → 4. */
+.dd-dec:focus-visible .dd-caja, .dd-dec[aria-current="true"] .dd-caja { stroke: var(--tinta-1); stroke-width: 4; }
+@media (forced-colors: active) { .dd-caja { stroke: CanvasText; } }
