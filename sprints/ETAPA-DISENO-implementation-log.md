@@ -483,3 +483,26 @@ súper novedoso, muy interesante detalle de Casos de referencia, Propiedades, et
 | D76 | **Los ajustes menores ya comentados no se vuelven a pedir como mirada**: se deciden, se registran y se juntan para la mirada 5 (G-Diseño) | Pedido del usuario («deja de preguntar bobadas y avancemos»). Las miradas siguen para artefactos nuevos; guardado en la memoria del proyecto |
 
 ## Fase 5 — Cierre: G-Diseño (2026-09-26)
+
+Auditoría independiente, fase 1 (subagente que no construyó la etapa, con el diff delante):
+`sprints/ETAPA-DISENO-auditoria.md`, veredicto **«requiere ajustes»**: 4 altos, 13 medios y 15 bajos. El
+constructor confirmó A-01, A-02 y A-03 antes de presentarlo. El usuario aprobó la fase 2: «Apruebo que corrija».
+
+### Fase 2 de la auditoría — pagos
+
+**A-01 · generador versionado.** La calculadora pasa del scratchpad a `scripts/maqueta/`: `nucleo/` (datos,
+glifos, métricas comunes, lectura en texto), `atlas/` (nivel 1), `pantallas/` (el resto), `rutas.mjs` (todo
+relativo al repo; `MAQUETA_SALIDA` desvía la salida) y `generar.mjs` (`pnpm maqueta`: corre las 7 entradas, cada
+una en su proceso, declara el árbol de salida y aborta fuera de `docs/diseno/` o de un temporal). Hallazgo que la
+auditoría no vio: `nucleo/datos.mjs` leía el mapa de ejemplo y la gramática **de la planeadora por ruta
+absoluta**; ahora son una copia fijada en `scripts/maqueta/entrada/` con `HUELLAS.json` (SHA-256) y el generador
+aborta si no coinciden. Módulos que no alcanza ninguna página (disposición angosta retirada, direcciones de la
+ronda 2, `inyectar.py`) no se copian. Se limpiaron 17 avisos de lint (variables sin usar) en lugar de ignorar la
+carpeta; el lint cubre el generador. Primera corrida: las **13 páginas byte a byte iguales** a las versionadas.
+
+| Gate | ¿Puede fallar? | Demo en rojo | A quién nombró | Verde al revertir |
+| ---- | -------------- | ------------ | -------------- | ----------------- |
+| `tests/unit/maqueta-deriva.test.ts` (14 aserciones: mismas páginas + una por página) | Sí: nada comparaba el HTML con su generador (el generador no estaba en el repo) | (1) «75,8» → «76,8» a mano en `comparacion.html`; (2) un nombre de decisión cambiado en `pantallas/datos4.mjs` sin regenerar | (1) `comparacion.html: difiere de lo que genera scripts/maqueta`; (2) `decisiones.html` e `informe.html` | ✓ 14/14 |
+
+Nota de la demo: el primer intento reemplazó «75,75», que no existe en la página (muestra «75,8»), y salió verde
+sin haber cambiado nada; se comprobó con `cmp` antes de repetirla. Una demo que no cambia el archivo no es roja.

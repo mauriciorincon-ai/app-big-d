@@ -1,0 +1,7 @@
+{
+  "_nota": "Copia fijada de la planeadora (reusables/diagramador, CONTRATO v0.2.0). No se edita aquí: si la planeadora cambia el mapa o la gramática, se copia de nuevo y se actualiza la huella. generar.mjs aborta si no coinciden.",
+  "archivos": {
+    "plataforma-ejemplo.mapa.json": { "origen": "reusables/diagramador/ejemplos/plataforma-ejemplo.mapa.json", "sha256": "7d106078ffd39a5f65d6aa7da5c39f071b044b51b03bbfd2b53a75f38081cea8" },
+    "plataformas-datos.json": { "origen": "reusables/diagramador/gramaticas/plataformas-datos.json", "sha256": "b01795e266ef0044df055c2e2208f3a90501631bdc17ce2bb46fb01145cb04e2" }
+  }
+}

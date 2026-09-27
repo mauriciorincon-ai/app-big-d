@@ -1,0 +1,50 @@
+{
+  "contrato_version": "0.2.0",
+  "id": "plataformas-datos",
+  "version": "0.1.0",
+  "nombre": "Plataformas de datos",
+  "descripcion": "Gramática del piloto (big-d, Atlas M11). Capas y preguntas de la sección 10.6 de los requerimientos v1.1; tipos = las seis capacidades de la sección 10.2 más dos tipos sin capacidad (sistemas externos y operación), que la especificación no cubre (gap registrado en la F1).",
+  "bandas": [
+    { "id": "fuentes", "nombre": "Fuentes", "clase": "capa", "orden": 1, "pregunta_lider": "¿De dónde vienen los datos?" },
+    { "id": "ingesta", "nombre": "Ingesta", "clase": "capa", "orden": 2, "pregunta_lider": "¿Cómo entran los datos a la plataforma?" },
+    { "id": "almacenamiento", "nombre": "Almacenamiento", "clase": "capa", "orden": 3, "pregunta_lider": "¿Dónde y en qué formato se guardan?" },
+    { "id": "procesamiento", "nombre": "Procesamiento y transformación", "clase": "capa", "orden": 4, "pregunta_lider": "¿Con qué motor se limpian, combinan y preparan?" },
+    { "id": "orquestacion", "nombre": "Orquestación", "clase": "capa", "orden": 5, "pregunta_lider": "¿Quién decide qué se ejecuta y cuándo?" },
+    { "id": "consumo", "nombre": "Consumo", "clase": "capa", "orden": 6, "pregunta_lider": "¿Cómo llegan a tableros, reportes y aplicaciones?" },
+    { "id": "ia", "nombre": "Inteligencia artificial", "clase": "capa", "orden": 7, "pregunta_lider": "¿Cómo se construyen modelos y agentes sobre los datos?" },
+    { "id": "gobierno", "nombre": "Gobierno y seguridad", "clase": "transversal", "orden": 1, "pregunta_lider": "¿Quién puede ver qué, y cómo se audita?" },
+    { "id": "operacion", "nombre": "Operación y costo", "clase": "transversal", "orden": 2, "pregunta_lider": "¿Cómo se vigila, se despliega y se paga?" }
+  ],
+  "tipos_de_nodo": [
+    { "id": "cap-ingesta", "nombre": "Ingesta e integración de datos", "token_color": "tipo-1", "glifo": "triangulo", "etiqueta_corta": "ING" },
+    { "id": "cap-almacenamiento", "nombre": "Almacenamiento y formato abierto", "token_color": "tipo-2", "glifo": "cuadrado", "etiqueta_corta": "ALM" },
+    { "id": "cap-transformacion", "nombre": "Transformación y orquestación", "token_color": "tipo-3", "glifo": "rombo", "etiqueta_corta": "TRA" },
+    { "id": "cap-gobierno", "nombre": "Gobierno, seguridad y linaje", "token_color": "tipo-4", "glifo": "hexagono", "etiqueta_corta": "GOB" },
+    { "id": "cap-consumo", "nombre": "Consumo analítico e inteligencia de negocio", "token_color": "tipo-5", "glifo": "circulo", "etiqueta_corta": "CON" },
+    { "id": "cap-ia", "nombre": "Inteligencia artificial y agentes sobre los datos", "token_color": "tipo-6", "glifo": "estrella", "etiqueta_corta": "IA" },
+    { "id": "tipo-externo", "nombre": "Sistema externo a la plataforma", "token_color": "tipo-7", "glifo": "anillo", "etiqueta_corta": "EXT" },
+    { "id": "tipo-operacion", "nombre": "Operación, monitoreo y costo", "token_color": "tipo-8", "glifo": "pentagono", "etiqueta_corta": "OPE" }
+  ],
+  "modos_de_flujo": [
+    { "id": "por-lotes", "nombre": "Por lotes", "estilo_linea": "discontinua", "marcador": "cuadros", "descripcion": "Viaja en tandas programadas" },
+    { "id": "continuo", "nombre": "Continuo", "estilo_linea": "continua", "marcador": "onda", "descripcion": "Viaja a medida que ocurre" },
+    { "id": "a-demanda", "nombre": "A demanda", "estilo_linea": "punteada", "marcador": "reloj", "descripcion": "Viaja cuando alguien lo pide" },
+    { "id": "sin-copia", "nombre": "Sin copia", "estilo_linea": "doble", "marcador": "enlace", "descripcion": "Se lee en su lugar, sin copiarlo" }
+  ],
+  "escala_madurez": [
+    { "id": "disponible-general", "nombre": "Disponible de forma general", "glifo": "✓", "disponible": true },
+    { "id": "vista-previa-publica", "nombre": "Vista previa pública", "glifo": "VP", "disponible": false },
+    { "id": "vista-previa-privada", "nombre": "Vista previa privada", "glifo": "VPP", "disponible": false },
+    { "id": "beta", "nombre": "Beta", "glifo": "β", "disponible": false },
+    { "id": "anunciado", "nombre": "Anunciado", "glifo": "AN", "disponible": false },
+    { "id": "retirado", "nombre": "Retirado", "glifo": "✕", "disponible": false }
+  ],
+  "vigencia": { "umbral_revisar_dias": 30, "umbral_vencido_dias": 60 },
+  "recorrido_referencia": { "desde_bandas": ["fuentes"], "hasta_bandas": ["consumo", "ia"], "llegadas": "todas" },
+  "limites": { "bloques_min": 5, "bloques_max": 8, "frases_lider_max": 2 },
+  "terminos_a_explicar": [
+    "lakehouse", "data lake", "warehouse", "delta", "parquet", "iceberg", "cdc", "etl", "elt", "spark",
+    "sql", "api", "clúster", "cluster", "esquema", "catálogo", "linaje", "capa semántica", "vector", "embedding",
+    "serverless", "pipeline", "streaming", "orquestación", "cómputo", "sku", "rls", "notebook", "metadatos", "token"
+  ]
+}
