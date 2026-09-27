@@ -17,7 +17,7 @@ import mPNubes from "../../packages/diagramador/ejemplos/prueba-nubes.mapa.json"
 import mPProcesos from "../../packages/diagramador/ejemplos/prueba-procesos.mapa.json";
 import mA3 from "../../packages/diagramador/carnadas/A3-cuatro-modos-en-un-par.mapa.json";
 
-const FECHA = "2026-10-20";
+const FECHA = "2026-09-26";
 const VISTAS: Vista[] = ["nivel-1", "nivel-2", "recorrido"];
 const GRAMATICAS = Object.fromEntries([gAgentes, gPlataformas, gPAgentes, gPApp, gPNubes, gPProcesos].map((g) => [g.id, g as unknown as Gramatica]));
 const EJEMPLOS = [mAgente, mPlataforma, mPAgentes, mPApp, mPNubes, mPProcesos] as unknown as Mapa[];
