@@ -518,7 +518,44 @@ funcionan, el botón abre y cierra). Cuatro marcos:
 4. **Nota de marcas, dos formas.** A: párrafo al pie de la leyenda (lo que hoy muestra el atlas). B: nota con
    filete y marca dibujada, más visible.
 
-### Parada A — pendiente
+### Parada A (2026-09-27)
 
-Fidelidad sobre el preview del PR #4 + mirada de FORMA de la propuesta (+ la raíz directa a `/es`, que se
-dejó para esta parada). Se registra aquí antes de construir más UI.
+CI de `ea0aa90`, primera con el atlas: quality ✓ 1 min 9 s · e2e ✓ 1 min 30 s · lighthouse ✓ 3 min 20 s (ya
+mide las dos rutas del atlas) · diagramador ubuntu ✓ 1 min 45 s · macOS ✓ 1 min 36 s · Vercel ✓.
+
+**Cómo se pidió, y qué falló del pedido.** El primer mensaje llevaba dos tablas con once filas, cuatro
+decisiones y el resumen técnico. Respuesta: «No entiendo A y B, sé claro qué necesitas exactamente y dónde
+mirar; ni siquiera está claro dónde debe ser». Segundo intento, cuatro preguntas numeradas con las páginas
+abiertas en el navegador: «Sigo sin entender, o sea, qué instrucciones tan…». Tercer intento, UNA pregunta
+de sí/no con la página ya al frente: respondió al instante. Desde aquí, cada mirada es una pregunta por
+mensaje, en palabras llanas, con la página abierta por mí (memoria del proyecto actualizada).
+
+**Mirada 1 — el mapa nuevo (fidelidad).** Página al frente: el atlas de la Plataforma Ejemplo en el preview
+del PR #4. Pregunta: «¿Ese mapa se ve bien?». Respuesta: **«Si se ve bien»** → **fidelidad aprobada**. Con la
+misma apertura quedan vistas la raíz directa a `/es` y la cápsula de idioma.
+
+**Mirada 2 — selector de plataforma, ronda 1 (FORMA).** Página al frente:
+`docs/propuestas-de-diseno/selector-y-nota.html`. Pregunta: «¿Te gustan esas tarjetas para elegir
+plataforma?». Respuesta: **«No, no me gusta nada, no es entendible»** → **rechazada**. El archivo se retira
+(queda en `ea0aa90`).
+
+**Ronda 2.** `docs/propuestas-de-diseno/selector-plataforma.html`: la página del mapa tal como está en el
+producto (el mapa es el golden file del diagramador, no un dibujo), con el campo «Plataforma» del kit
+aprobado (etiqueta, lista desplegable y chevrón dibujado) donde la maqueta tenía «Cambiar de plataforma».
+La lista trae las N plataformas por id; las que no tienen mapa dicen «— pronto» y no se pueden elegir.
+
+**Mirada 3 — selector de plataforma, ronda 2 (FORMA).** Página al frente: `selector-plataforma.html`.
+Pregunta: «¿Así se entiende cómo cambiar de plataforma?». Respuesta: **«Sí se entiende y visualmente
+apropiado»** → **aprobada**. Se construye en la fase 3: el campo «Plataforma» del kit en el encabezado del
+atlas (N opciones por id; sin mapa = «— pronto», deshabilitada; elegir otra lleva a su atlas en el mismo
+idioma y nivel).
+
+**Parada A cerrada**: fidelidad aprobada (mirada 1) y forma del selector aprobada (mirada 3).
+
+**Decididas por mí, sin preguntar (menores; viajan al gate humano del ciclo):**
+- **D-S1-33** — Bloque «Agentes»: se queda «Vista previa pública», el nombre de la gramática (D-S1-17). Sin
+  enmienda nueva de nombre corto; la 7 queda como sugerencia.
+- **D-S1-34** — Nota de marcas: forma A, el párrafo al pie de la leyenda que el motor ya genera (la más
+  sobria junto a los colores que explica). No se construye nada nuevo.
+- **D-S1-35** — La portada queda como está (título + «Abrir el atlas») hasta que el selector tenga forma
+  aprobada; si el campo «Plataforma» pasa, la portada lo repite bajo el título.
