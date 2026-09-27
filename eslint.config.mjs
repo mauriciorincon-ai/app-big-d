@@ -16,6 +16,8 @@ const eslintConfig = defineConfig([
     // (scripts clásicos que abren por file://). public/diseno/ es su copia generada.
     "docs/diseno/**",
     "public/diseno/**",
+    // Salida de `vercel build` sin conexión (diagnóstico de A-04; .vercel/ está ignorado en git).
+    ".vercel/**",
   ]),
 ]);
 

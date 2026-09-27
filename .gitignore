@@ -1,4 +1,3 @@
-# Renombrar a .gitignore al estampar la app
 .claude/settings.local.json
 node_modules/
 .next/
@@ -21,8 +20,10 @@ Thumbs.db
 .lighthouseci/
 .lh-*.json
 
-# Perfil exportado estático (kit v1.29.0)
-out/
+# Perfil exportado estático (kit v1.29.0): `out/` ya está ignorado arriba.
 
 # Maqueta de la Etapa de Diseño copiada al export (DERIVADO de docs/diseno/, se regenera en cada build)
 public/diseno/
+
+# Caché de resultados de Vitest 5 (se coló en el PR #3 con un `git add -A`).
+.vitest/
