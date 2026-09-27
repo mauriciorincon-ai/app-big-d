@@ -349,3 +349,46 @@ dibuja los niveles 1 y 2 de los dos mapas bilingües y mide cada `tspan` con `ge
 | Gate | ¿Puede fallar? | Demo en rojo | A quién nombró | Verde |
 | ---- | -------------- | ------------ | -------------- | ----- |
 | `tests/determinismo` — G15 | Sí | Margen de la tabla en 97/100 | Firefox: «Entrada» 64,3 u en 63 u; «¿Qué recibe el agente?», «Orquestación»… (103,1 %) | ✓ 3/3 |
+
+### CI de la fase 1: primera corrida del job `diagramador`, su rojo y el hallazgo de Linux
+
+| Commit | quality | e2e | lighthouse | diagramador (ubuntu) | diagramador (macOS) | Vercel |
+| ------ | ------- | --- | ---------- | -------------------- | ------------------- | ------ |
+| `a6748cb` motor | ✓ 1 min 6 s | ✓ 1 min 5 s | ✓ 2 min 26 s | ✓ 1 min 52 s (**primera corrida**) | ✓ 1 min 50 s (**primera corrida**) | ✓ |
+| `ab3e901` demo en rojo (fecha de consulta distinta solo en la entrada del navegador) | ✓ | ✓ | ✓ | ✗ | ✗ | ✓ |
+| `0185d05` revert de la demo | ✓ | ✓ | ✓ | ✗ **G15 en Chromium/Linux** | ✓ | ✓ |
+| `c084ef5` `geometricPrecision` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+
+- **G1 en Linux (hueco del contrato, cerrado):** los 26 golden generados en macOS salen con las mismas
+  huellas en Node y en Chromium, Firefox y WebKit de `ubuntu-latest`.
+- **El job se vio fallar en la CI** (regla 15): con la demo, `diagramador` cayó en los dos sistemas mientras
+  quality, e2e y lighthouse quedaban en verde; ningún otro job podía verlo.
+- **Hallazgo de la primera corrida en Linux (G15):** Chromium en Linux redondeaba cada texto a píxeles
+  enteros: «caso» 31 px contra 30,8 de la tabla, «tareas» 42 contra 41,7 (100,7 %). Firefox y WebKit en Linux,
+  y los tres en macOS: 97,1 %. Arreglo en la hoja del consumidor: `text-rendering: geometricPrecision` en
+  `.dg-svg text` (`src/styles/diagrama.css`). Con él, **97,1 % en 3 motores × 2 sistemas**. Va a
+  «Enmiendas»: el contrato debe exigir esa propiedad al consumidor (el motor no controla el CSS).
+- **Ruleset `main-protegida`**: exige ahora `quality`, `e2e`, `lighthouse`, `diagramador (ubuntu-latest)` y
+  `diagramador (macos-latest)` (`gh api`, 2026-09-27).
+
+### Enmiendas al contrato del diagramador (lista viva; va entera al summary)
+
+1. **D-S1-01** — La etiqueta de modos con más de 2 marcadores se parte en dos filas (38 × 32 u con 3 o 4): el
+   ancho de § 5.3 (70 u con 4) no cabe en el canal de 50 u que exige A3.
+2. **D-S1-02** — El informe separa errores, alertas (V9, V10) y avisos (lo que no corrió); se agrega
+   `validateGrammar`.
+3. **D-S1-03** — `esperado.json` debería listar los secundarios legítimos de C03, C06 y C07.
+4. **D-S1-05** — Geometría de carriles: filas con cabecera de 200 u y ranuras de 152/50 u por `orden` global.
+5. **D-S1-06** — Las cadenas de interfaz del motor llegan en `options.textos` (también `toText` y `toLegend`).
+6. **D-S1-16** — Tabla de traducción de errores de esquema a regla e id (§ 7 no la escribe).
+7. **D-S1-17** — `escala_madurez[].etiqueta_corta`: el nombre largo no cabe en bloques ni nodos.
+8. **D-S1-19** — Paths de «envía/recibe»: el contrato dice ↑/↓ y dibuja →/←.
+9. **D-S1-20** — D12: «un id, un `data-dueno` o el de su grupo».
+10. **D-S1-23** — Más de 2 saltos: pistas adicionales con aviso (G5 del nivel 1 deja de valer en ese caso).
+11. **D-S1-25** — G6 (c): quitar un flujo también cambia los que comparten extremo, canal o fila de
+    referencias (puertos `y + alto·i/(k+1)`).
+12. **G15/P12** — Medido: la tabla sin kerning + 3 % es cota superior en 3 motores × 2 sistemas (el más
+    ajustado, 97,1 %); el consumidor debe dibujar con `text-rendering: geometricPrecision`.
+13. **G1** — Hueco «Linux pendiente» cerrado por medición.
+14. **Constitución** — Líneas viejas del diagramador en `CLAUDE-md-para-app.md` (V1–V12, franjas arriba,
+    angosta 380, «v0.2.0 hoy»).
