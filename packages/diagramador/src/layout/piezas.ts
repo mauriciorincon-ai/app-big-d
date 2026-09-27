@@ -194,18 +194,35 @@ export interface Referencia {
 export function referencias(ctx: Contexto, refs: readonly Referencia[], desde: Decimas, ancho: Decimas, recorrido = false): { escena: Elemento[]; cajas: { id: string; dueno: string; caja: Caja }[] } {
   const escena: Elemento[] = [];
   const cajas: { id: string; dueno: string; caja: Caja }[] = [];
-  let cursor = desde;
-  for (const r of [...refs].sort((a, b) => a.cx - b.cx || (a.id < b.id ? -1 : 1))) {
-    const ms = marcadores(ctx, r.modos);
+  const orden = [...refs].sort((a, b) => a.cx - b.cx || (a.id < b.id ? -1 : 1));
+  const anchos = orden.map((r) => {
     const tw = Math.max(...ctx.idiomas.map((l) => ctx.sans.ancho(r.nombre[l]!, 13, 700)));
-    const w = 280 + 140 * ms.length + 40 + tw + 120;
+    return 280 + 140 * marcadores(ctx, r.modos).length + 40 + tw + 120;
+  });
+  // Centradas bajo su columna, de izquierda a derecha sin pisar la anterior; después, de derecha a izquierda,
+  // las que se salen se corren hacia adentro y empujan a las anteriores solo lo necesario (enmienda del
+  // piloto: antes solo se corría la última y la del medio quedaba fuera del lienzo).
+  // Entre referencias van 8 u; si la fila no alcanza, el espacio se achica hasta 4 u.
+  const limite = ancho - M - 40;
+  const suma = anchos.reduce((a, w) => a + w, 0);
+  const aire = orden.length > 1 && suma + 80 * (orden.length - 1) > limite - desde ? Math.max(40, Math.floor((limite - desde - suma) / (orden.length - 1))) : 80;
+  const xs: Decimas[] = [];
+  let cursor = desde;
+  for (const [i, r] of orden.entries()) {
+    xs.push(Math.max(r.cx - mitad(anchos[i]!), cursor));
+    cursor = xs[i]! + anchos[i]! + aire;
+  }
+  let tope = limite;
+  for (let i = orden.length - 1; i >= 0; i--) {
+    xs[i] = Math.min(xs[i]!, tope - anchos[i]!);
+    tope = xs[i]! - aire;
+  }
+  for (const [i, r] of orden.entries()) {
+    const w = anchos[i]!;
     const h = 300;
-    // Centrada bajo su columna; si se sale por la derecha, se corre hacia adentro sin pisar la anterior.
-    const limite = ancho - M - 40;
-    let x = Math.max(r.cx - mitad(w), cursor);
-    if (x + w > limite) x = Math.max(cursor, limite - w);
-    if (x + w > limite) ctx.avisos.push(`referencia ${r.id}: se sale del lienzo`);
-    cursor = x + w + 80;
+    const x = xs[i]!;
+    if (x < desde || x + w > limite) ctx.avisos.push(`referencia ${r.id}: se sale del lienzo`);
+    const ms = marcadores(ctx, r.modos);
     const caja: Caja = { x, y: r.cy - mitad(h), w, h };
     cajas.push({ id: r.id, dueno: r.flujo, caja });
     const modosTexto = (l: string) => r.modos.map((m) => ctx.modo.get(m)!.nombre[l]!.toLowerCase()).join(ctx.textos[l]!.y);

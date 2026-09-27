@@ -14,13 +14,11 @@ describe("D11 — ningún flujo atraviesa una caja ajena", () => {
 });
 
 describe("avisos de geometría (§ 5.3)", () => {
-  // El único aviso declarado: prueba-arquitectura-app tiene 3 saltos y el carril exprés trae 2 pistas.
-  const DECLARADOS: Record<string, string[]> = {
-    "app-ejemplo": ["carril exprés: 3 saltos en 2 pistas; se agregan 1 (la fila de franjas se corre)"],
-  };
+  // Ninguno. prueba-arquitectura-app trae 3 saltos: el carril exprés crece a 3 pistas sin avisar (enmienda
+  // del piloto; antes era el único aviso declarado).
   for (const c of CASOS)
-    it(`${c.nombre}: ${DECLARADOS[c.mapa.sujeto_id] ? "solo el declarado" : "sin avisos"}`, () => {
-      expect(disponer(c.mapa, c.vista).avisos).toEqual(DECLARADOS[c.mapa.sujeto_id] ?? []);
+    it(`${c.nombre}: sin avisos`, () => {
+      expect(disponer(c.mapa, c.vista).avisos).toEqual([]);
     });
 });
 
