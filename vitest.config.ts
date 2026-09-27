@@ -21,6 +21,7 @@ export default defineConfig({
       // Solo *.ts: un include de directorio hace que v8 intente parsear .gitkeep y truene
       // con PARSE_ERROR (K8, ds S1).
       include: ["src/lib/**/*.ts", "src/engine/**/*.ts", "packages/diagramador/src/**/*.ts"],
+      exclude: ["**/*.d.ts"],
       thresholds: {
         lines: 70,
         functions: 70,

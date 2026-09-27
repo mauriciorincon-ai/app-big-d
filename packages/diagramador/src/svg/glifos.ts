@@ -1,0 +1,36 @@
+// Glifos, marcadores y marcas (CONTRATO § 5.4, D13): paths, nunca caracteres. Pintan con `currentColor`;
+// el color lo pone la clase del uso. Glifos en caja de 16 u; marcadores y marcas en caja de 12 u.
+import type { Glifo, Marcador } from "../tipos";
+
+export const GLIFOS: Record<Glifo, { d: string; trazo?: string }> = {
+  triangulo: { d: "M0,-7.5 L7.5,6 L-7.5,6 Z" },
+  cuadrado: { d: "M-6.5,-6.5 H6.5 V6.5 H-6.5 Z" },
+  rombo: { d: "M0,-8 L8,0 L0,8 L-8,0 Z" },
+  escudo: { d: "M0,-7.5 L6.5,-5 V0 C6.5,4 3.5,6.3 0,7.8 C-3.5,6.3 -6.5,4 -6.5,0 V-5 Z" },
+  circulo: { d: "M0,-7 A7,7 0 1 1 0,7 A7,7 0 1 1 0,-7 Z" },
+  estrella: { d: "M0.0,-8.2 L2.1,-2.8 L7.8,-2.5 L3.3,1.1 L4.8,6.6 L0.0,3.5 L-4.8,6.6 L-3.3,1.1 L-7.8,-2.5 L-2.1,-2.8 Z" },
+  anillo: { d: "M0,-6 A6,6 0 1 1 0,6 A6,6 0 1 1 0,-6 Z", trazo: "2.6" },
+  barras: { d: "M-7.5,2 H-4 V7.5 H-7.5 Z M-1.75,-2.5 H1.75 V7.5 H-1.75 Z M4,-7.5 H7.5 V7.5 H4 Z" },
+};
+
+/** `cuadros` es mixto (dos cuadros llenos y una base): relleno + trazo fino; los demás, solo trazo. */
+export const MARCADORES: Record<Exclude<Marcador, "ninguno">, { d: string; mixto?: boolean }> = {
+  cuadros: { d: "M-5.5,-2.5 H-1.5 V1.5 H-5.5 Z M1.5,-2.5 H5.5 V1.5 H1.5 Z M-5.5,3.5 H5.5", mixto: true },
+  onda: { d: "M-6,0 C-4.5,-4.5 -1.5,-4.5 0,0 S4.5,4.5 6,0" },
+  "ida-y-vuelta": { d: "M-5.5,-2.5 H4 M1.5,-5 L4.5,-2.5 L1.5,0 M5.5,2.5 H-4 M-1.5,0 L-4.5,2.5 L-1.5,5" },
+  enlace: { d: "M-1.2,-3 H-3.5 A3,3 0 0 0 -3.5,3 H-1.2 M1.2,-3 H3.5 A3,3 0 0 1 3.5,3 H1.2 M-2.5,0 H2.5" },
+};
+
+/**
+ * Marcas de estado. `envia`/`recibe` son las flechas ↑/↓ de la maqueta aprobada: el contrato las nombra
+ * «(referencia ↑)» y «(↓)», pero su path dibuja → y ← (enmienda propuesta en el summary del S1).
+ */
+export const MARCAS: Record<string, { d: string; trazo: string }> = {
+  vigente: { d: "M-4.5,0.5 L-1.5,3.5 L4.5,-3.5", trazo: "1.8" },
+  revisar: { d: "M0,-5 V1.5 M0,4.2 V4.6", trazo: "1.8" },
+  vencido: { d: "M-3.8,-3.8 L3.8,3.8 M3.8,-3.8 L-3.8,3.8", trazo: "1.8" },
+  envia: { d: "M0,5 V-4 M-3.5,-1 L0,-4.5 L3.5,-1", trazo: "1.8" },
+  recibe: { d: "M0,-5 V4 M-3.5,1 L0,4.5 L3.5,1", trazo: "1.8" },
+  doc: { d: "M-4,-5.5 H2 L4.5,-3 V5.5 H-4 Z M-1.5,-1 H2 M-1.5,2 H2", trazo: "1.3" },
+  rama: { d: "M-5,-3 H5 M-5,3 H5 M1.5,-6 L5,-3 L1.5,0 M1.5,0 L5,3 L1.5,6", trazo: "1.6" },
+};

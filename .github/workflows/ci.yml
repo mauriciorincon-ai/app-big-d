@@ -81,3 +81,31 @@ jobs:
           lhci collect --startServerCommand="pnpm start" --numberOfRuns=3 $URLS
           lhci assert --budgetsFile=./perf-budget.json --aggregationMethod=median-run
           lhci assert --config=./lighthouse-categorias.json --aggregationMethod=median-run
+
+  diagramador:
+    # G1 del reusable (CONTRATO § 2, D-S1-12): las pruebas del paquete en Node (carnadas, golden files,
+    # D11, G5, G6, G10, deriva del validador) y la MISMA huella de cada SVG en Chromium, Firefox y WebKit,
+    # en Linux y en macOS. Sin `needs`: corre aunque otro job falle (un job saltado no es verde, regla 15).
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6   # SIN `version`: la lee de "packageManager" del package.json (fuente unica, kit v1.10.2)
+      - uses: actions/setup-node@v7
+        with: { node-version: 22, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - name: Paquete en Node — carnadas, golden files, D11, propiedades, lock del contrato y G3
+        run: pnpm exec vitest run packages/diagramador tests/unit/diagramador-esquemas.test.ts tests/unit/contrato-lock.test.ts tests/unit/g3-neutralidad.test.ts
+      - run: pnpm exec playwright install --with-deps chromium firefox webkit
+      - name: G1 en los tres navegadores — misma huella que los golden files de Node
+        run: pnpm exec playwright test -c playwright.determinismo.config.ts
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: determinismo-${{ matrix.os }}
+          path: test-results/
+          retention-days: 7
+          if-no-files-found: ignore

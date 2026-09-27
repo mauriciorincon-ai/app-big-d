@@ -1,0 +1,63 @@
+/* Big-D — hoja del DIAGRAMA (G13): el SVG del motor no trae colores; todo entra por variable desde
+   tokens.css, así que un mismo SVG sirve a los dos temas. Portada de docs/diseno/assets/diagrama.css
+   (clases `db-*` de la maqueta → `dg-*` del motor). La letra la hereda de la página (G15). */
+.dg-svg { display: block; }
+.dg-svg text { font-family: var(--letra); }
+.dg-svg [tabindex]:focus { outline: none; }
+.dg-guia { stroke: var(--linea); stroke-width: 1; stroke-dasharray: 2 5; fill: none; }
+.dg-t-num { font: 500 12px var(--letra-mono); letter-spacing: 0.1em; fill: var(--tinta-2); }
+.dg-t-banda { font-size: 17px; font-weight: 700; fill: var(--tinta-1); }
+.dg-t-banda-franja { font-size: 15px; }
+.dg-t-pregunta { font-size: 14px; fill: var(--tinta-2); }
+.dg-t-pregunta-franja { font-size: 13px; }
+.dg-t-nombre { font-size: 16px; font-weight: 700; fill: var(--tinta-1); }
+.dg-t-nombre-compacto { font-size: 14px; }
+.dg-t-nombre-nodo { font-size: 13px; }
+.dg-t-meta { font-size: 13px; fill: var(--tinta-2); }
+.dg-t-meta-compacta { font-size: 12px; }
+.dg-t-ref { font-size: 13px; font-weight: 700; fill: var(--tinta-1); }
+.dg-card { fill: var(--sup-2); stroke: var(--linea); stroke-width: 1; }
+.dg-fantasma { stroke-dasharray: 5 4; stroke: var(--tinta-2); }
+.dg-linea { fill: none; stroke: var(--tinta-2); stroke-width: 1.6; }
+.dg-punta { fill: var(--tinta-2); }
+.dg-etiqueta rect, .dg-ref rect { fill: var(--sup-1); stroke: var(--linea); stroke-width: 1; }
+.dg-marca { color: var(--tinta-1); }
+.dg-marca-suave { color: var(--tinta-2); }
+.dg-franja-filete { stroke: var(--linea); stroke-width: 1; fill: none; }
+.dg-elem { cursor: pointer; }
+.dg-elem:focus-visible [data-caja], .dg-elem[aria-current="true"] [data-caja] { stroke: var(--tinta-1); stroke-width: 2; }
+/* Modos de flujo: estilo de línea + marcador (G7); varios modos = haz. */
+.dg-linea-discontinua .dg-linea { stroke-dasharray: 8 5; }
+.dg-linea-punteada .dg-linea { stroke-dasharray: 0.1 5.5; stroke-linecap: round; stroke-width: 2.8; }
+.dg-haz .dg-linea { stroke-width: 4; }
+.dg-doble-ext { stroke-width: 6.5; }
+.dg-doble-int { stroke: var(--sup-1); stroke-width: 2.5; }
+/* Madurez = medidor (D13): 0 anunciado con contorno discontinuo; −1 retirado, tachado. */
+.dg-madurez-caja { fill: none; stroke: var(--tinta-2); stroke-width: 1.2; }
+.dg-madurez-anunciado { stroke-dasharray: 2 1.5; }
+.dg-madurez-nivel { fill: var(--tinta-2); stroke: none; }
+.dg-madurez-tachado { fill: none; stroke: var(--tinta-2); stroke-width: 1.2; }
+/* Tipos de nodo: el matiz vive en el filete y el glifo, nunca bajo el texto (D14). */
+.dg-c-tipo-1 { color: var(--tipo-1); } .dg-c-tipo-2 { color: var(--tipo-2); } .dg-c-tipo-3 { color: var(--tipo-3); } .dg-c-tipo-4 { color: var(--tipo-4); }
+.dg-c-tipo-5 { color: var(--tipo-5); } .dg-c-tipo-6 { color: var(--tipo-6); } .dg-c-tipo-7 { color: var(--tipo-7); } .dg-c-tipo-8 { color: var(--tipo-8); }
+.dg-f-tipo-1 { fill: var(--tipo-1); } .dg-f-tipo-2 { fill: var(--tipo-2); } .dg-f-tipo-3 { fill: var(--tipo-3); } .dg-f-tipo-4 { fill: var(--tipo-4); }
+.dg-f-tipo-5 { fill: var(--tipo-5); } .dg-f-tipo-6 { fill: var(--tipo-6); } .dg-f-tipo-7 { fill: var(--tipo-7); } .dg-f-tipo-8 { fill: var(--tipo-8); }
+.dg-f-ninguno { fill: var(--tinta-2); }
+/* Vigencia (§ 4.8): se marca la excepción; sin matiz, peso y relleno de la tinta. */
+.dg-insignia rect { fill: var(--sup-2); stroke: var(--tinta-1); stroke-width: 1.5; }
+.dg-insignia-marca { color: var(--tinta-1); }
+.dg-t-insignia { font: 700 12px var(--letra-mono); fill: var(--tinta-1); }
+.dg-insignia-vencido rect { fill: var(--tinta-1); }
+.dg-insignia-vencido .dg-insignia-marca { color: var(--sup-1); }
+.dg-insignia-vencido .dg-t-insignia { fill: var(--sup-1); }
+/* Nivel 2 y recorrido. */
+.dg-nodo[aria-current="true"] [data-caja] { stroke: var(--tinta-1); stroke-width: 2; }
+.dg-paso-insignia rect { fill: var(--tinta-1); stroke: var(--sup-1); stroke-width: 2; }
+.dg-t-paso { font: 700 12px var(--letra-mono); fill: var(--sup-1); }
+.dg-rama { color: var(--tinta-1); }
+@media (forced-colors: active) {
+  .dg-card, .dg-etiqueta rect, .dg-ref rect, .dg-insignia rect { fill: Canvas; stroke: CanvasText; }
+  .dg-linea { stroke: CanvasText; } .dg-punta { fill: CanvasText; }
+  .dg-insignia-vencido rect { fill: CanvasText; } .dg-insignia-vencido .dg-t-insignia { fill: Canvas; } .dg-insignia-vencido .dg-insignia-marca { color: Canvas; }
+  .dg-doble-int { stroke: Canvas; }
+}

@@ -218,3 +218,118 @@ barra.
 | Gate | ¿Puede fallar? | Demo en rojo | A quién nombró | Verde |
 | ---- | -------------- | ------------ | -------------- | ----- |
 | e2e `producto-base` — «la raíz lleva directo al atlas en español, sin pantalla de elegir idioma» (307 + `Location: /es`, aterriza con `lang="es"` y la cápsula) | Sí: la portada respondía 200 | El estado del repo antes del arreglo | `Expected: 307 · Received: 200` | ✓ suite e2e 32/32 (salen las 4 de axe sobre `/`, entran 2) |
+
+CI de `750c405` (la raíz): quality ✓ 55 s · e2e ✓ 54 s · lighthouse ✓ 1 min 55 s · Vercel ✓.
+
+**«continúa» del usuario (2026-09-27)**, en el mismo mensaje del veredicto: «Ajusta esto y continúa».
+Modelo sin cambio (Opus 5.5, esfuerzo alto, como se recomendó).
+
+## Fase 1 — El diagramador (2026-09-27)
+
+### Dependencias
+
+`ajv@^8.18.0` (compila los esquemas), `esbuild@^0.28.2` (empaqueta el validador y, más adelante, el motor
+para los navegadores) y `fast-check@^4.10.2` (propiedades), las tres de desarrollo en la raíz. El install
+dijo «+9 −3»: el lockfile solo **suma** entradas (esbuild y sus binarios por plataforma, fast-check,
+pure-rand); el «−3» es de enlaces en `node_modules`. `verificar-dependencias.mjs HEAD`: 682 paquetes,
+ninguno por debajo.
+
+### Validación (`validate`, `validateGrammar`)
+
+- **Fase 1 = esquema.** `scripts/diagramador/compilar-esquemas.mjs` compila los dos JSON Schema con Ajv 8
+  standalone (`allErrors`, `strict`, `inlineRefs: false`) y esbuild lo empaqueta sin imports:
+  `packages/diagramador/src/validar/esquemas.generado.js` (154 KB; el código de errores de Ajv es
+  verboso) + su `.d.ts` escrito a mano. El paquete no depende de Ajv en ejecución.
+- **Traducción de errores de esquema a reglas del contrato** (el contrato no la escribe; decisión
+  D-S1-16, va a «Enmiendas»):
+  - mapa: `/nodos/i/…` y `/bloques/i/…` → V3 · `/flujos/i/condicion` → V13 · `/flujos/i/…` → V4 ·
+    `…/pasos/j/bifurca` → V12 · `/recorridos/…` → V5 · colección que no es lista → V6 · `/glosario` → V14 ·
+    el resto → V1. El id es el del elemento que contiene el campo.
+  - gramática: bandas, tipos, modos y madurez → G2 · vigencia y límites → G6 · recorrido de referencia →
+    G5 · idiomas, idioma base y términos → G7 · el resto → G1.
+- **Fase 2 = reglas en código:** G1–G7 (`reglas-gramatica.ts`) y V1–V15 (`reglas-mapa.ts`). Compatibilidad
+  de versiones: en 0.x, misma mayor y misma menor; desde 1.0, misma mayor y menor no posterior.
+  V5 exige flujo **dirigido** del paso anterior al siguiente (los 6 mapas lo cumplen, también el de «ida y
+  vuelta»). V9 busca el término como palabra completa, sin distinguir mayúsculas, con las explicaciones
+  del nodo y del glosario; V10 cuenta signos de cierre. V15 sin cobertura no corre y lo dice como aviso.
+- **Informe (D-S1-02):** `{ ok, errores, alertas, avisos }`, cada entrada con la forma del contrato,
+  ordenado por `(doc, ruta, regla)` por unidades de código. Los mensajes van en español: son para quien
+  construye el mapa, no para la interfaz.
+
+**Carnadas: detectó 31 de 31** (`packages/diagramador/test/carnadas.test.ts`). Secundarios legítimos
+(D-S1-03), los tres que el plan previó:
+
+| Carnada | Esperado | Además reporta | Por qué es legítimo |
+| ------- | -------- | -------------- | ------------------- |
+| C03 | V2 · captura-cambios | V3 · captura-cambios | Su bloque «entrada» sigue anclado en ingesta y el nodo ya no vive ahí |
+| C06 | V4 · f-semantico-tablero | V5 · admision-paciente/p7 | Sin ese flujo, ningún flujo une los pasos 6 → 7 |
+| C07 | V5 · admision-paciente | V12 · admision-paciente/p5 | El paso 5 sigue declarando «paralela» con una sola rama |
+
+Los 6 mapas de ejemplo del contrato se aceptan en modo publicación, con cobertura, sin errores ni alertas.
+
+| Gate | ¿Puede fallar? | Demo en rojo | A quién nombró | Verde |
+| ---- | -------------- | ------------ | -------------- | ----- |
+| `packages/diagramador/test/carnadas.test.ts` (33) | Sí: una regla apagada deja pasar su carnada | V13 desactivada (`false &&`) | «C20-condicional-sin-condicion.mapa.json: V13 · f2 · fase 2» y «Received: "detectó 30 de 31"» | ✓ 33/33 |
+| `tests/unit/diagramador-esquemas.test.ts` (deriva del validador generado) | Sí: esquema cambiado sin regenerar o edición a mano | Un salto de línea agregado al final del generado | «coincide byte a byte… regenera con: node scripts/diagramador/compilar-esquemas.mjs» | ✓ |
+
+### Geometría, SVG, lectura, leyenda y diff
+
+**API** (`packages/diagramador/src/index.ts`, funciones puras): `validate` · `validateGrammar` ·
+`layout(map, grammar, view, { textos, fechaConsulta, recorrido? })` · `toSVG(geo, { language, prefix?, textId?,
+hintId? })` · `toJourneyCSS(geo, contenedor)` · `toText(map, grammar, { language, textos, id? })` ·
+`toLegend(grammar, { language, textos })` · `diff(a, b)` · `crossings(geo)` (D11). `compare` queda para el S2.
+
+- **Todo en enteros** (G1, G2): coordenadas en décimas, `fmt` como única salida numérica, días civiles sin
+  `Date`, anchos de texto por suma de avances × 103/100 con comparación exacta. Trazados ortogonales sin
+  trigonometría (largo = |dx| + |dy|, dirección = signo).
+- **Serializador propio** (D8): orden de atributos fijo por elemento (uno fuera de la tabla es un error),
+  ids con espacio de nombres `sujeto-vista-idioma`, una línea por grupo de primer nivel, LF y un salto final.
+- **Reproduce la maqueta**: el nivel 1, el nivel 2 y el recorrido de la Plataforma Ejemplo salen con el mismo
+  viewBox que la referencia (1178 × 648 y 1178 × 756) y, leídos como imagen lado a lado, con las mismas
+  columnas, bloques, etiquetas de modos, carril exprés, franjas, referencias, insignias de paso y rama.
+  Capturas en el scratchpad (no se versionan); la comparación formal es la parada de FIDELIDAD de la fase 2.
+- **Clases `dg-*`** en vez de las `db-*` de la maqueta, y el estilo por `estilo_linea` (continua, discontinua,
+  punteada, doble), no por id de modo: el SVG no lleva palabras de dominio (G3). La hoja del producto
+  `src/styles/diagrama.css` es la portada de `docs/diseno/assets/diagrama.css`; suma lo que la maqueta nunca
+  ejerció (medidor «anunciado» discontinuo y «retirado» tachado).
+
+**Decisiones** (a «Enmiendas» las que tocan el contrato):
+
+| # | Decisión | Por qué |
+| - | -------- | ------- |
+| D-S1-17 | Madurez en el bloque (nivel 1): el nombre de la gramática; si no cabe en una línea en algún idioma, ocupa dos y reemplaza a «N componentes». En el nodo (nivel 2): abreviada por palabras con «…» (D6) | La maqueta usaba «vista previa», un nombre corto que la gramática no tiene. Enmienda: `escala_madurez[].etiqueta_corta`. Va declarada al gate de fidelidad |
+| D-S1-18 | Insignia de vigencia: montada sobre el borde en bloques y nodos; en las fichas de franja (60 y 44 u) va afuera, a la derecha, y las referencias de la fila empiezan después. Las fichas de franja también marcan la excepción | Montada sobre una ficha de 44 u tapaba el nombre (G11 prohíbe texto bajo otra pieza) |
+| D-S1-19 | Marcas «envía/recibe» = flechas ↑/↓ de la maqueta | El contrato las nombra «(referencia ↑)» y «(↓)», pero su path dibuja → y ←. Enmienda |
+| D-S1-20 | Ids: caja sin bloque `_banda`; flujo agregado `origen.destino` (caracteres que un id de dato no admite); D12 por grupo de primer nivel | La maqueta ya asignaba el dueño por grupo. Enmienda a D12: «o su grupo» |
+| D-S1-21 | Caja sin bloque con varios nodos: sin nombre (§ 4.1, «caja sin nombre»); una referencia a ella nombra su banda | La primera versión escribía «2 componentes» como nombre |
+| D-S1-22 | Varios elementos por banda en el nivel 1: ranuras hacia abajo (104 + 40 u); en franjas, fichas lado a lado | Gaps del contrato; ningún mapa del contrato lo ejercita |
+| D-S1-23 | Más de 2 saltos: una pista más por salto, con aviso de geometría (la fila de franjas se corre) | `prueba-arquitectura-app` tiene 3. G5 del nivel 1 deja de valer en ese caso, y el aviso lo dice |
+| D-S1-24 | El salto entra por abajo en el nivel 1 (maqueta) y sube por el canal anterior al destino en el nivel 2 (§ 5.3) | Fidelidad a lo aprobado en cada vista |
+| D-S1-25 | G6 (c) ampliado: quitar un flujo cambia ese flujo y los que comparten con él extremo, canal o fila de referencias | Con puertos en `y + alto·i/(k+1)`, un flujo menos corre los de su borde. Enmienda |
+| — | Las etiquetas de los flujos con quiebre se despegan 2 u del borde de la tarjeta; las referencias que se salían del lienzo se corren hacia adentro | La maqueta dejaba cuatro etiquetas rozando la tarjeta; § 5.3 dice «no dibuja encima de nada» |
+
+**Carriles** (D-S1-05, `prueba-procesos`): una fila por carril con cabecera de 200 u; los nodos en ranuras
+de 152/50 u por `orden` global. Cada ranura tiene un solo nodo, así que ningún tramo en un canal cruza una caja.
+
+**Resultados:** 6 mapas × 3 vistas + A3: **D11 = 0**, **sin avisos** salvo el declarado de
+`prueba-arquitectura-app`; A3 dibuja la etiqueta de cuatro marcadores en dos filas (38 × 32 u) dentro del
+canal. **26 golden files** + `SHA256SUMS`. **G1 en navegadores (macOS local):** las 26 huellas de Node salen
+idénticas en Chromium, Firefox y WebKit. Semilla de fast-check: **20260927**. Suite: 559 pruebas; cobertura del
+paquete ≈ 90 % de ramas (la primera corrida quedó en 77,7 %: se agregaron las pruebas de la tabla de
+traducción de esquema y de bordes; no se bajó el piso).
+
+| Gate | ¿Puede fallar? | Demo en rojo | A quién nombró | Verde |
+| ---- | -------------- | ------------ | -------------- | ----- |
+| `geometria.test.ts` — D11 | Sí | El carril exprés 50 u más arriba, dentro de la última fila de nodos | 19 casos; p. ej. «f-limpias-semantico» cruza «canalizacion-declarativa» | ✓ 49/49 |
+| `golden.test.ts` (28) | Sí | «Almacén» → «Almacen» en un golden | «plataforma-ejemplo.nivel-1.es.svg: mismos bytes y misma huella» | ✓ |
+| `svg.test.ts` — canon | Solo si un golden se regenera con un motor roto (verifica los archivos; `golden.test` ata motor y archivos) | `fmt` con dos decimales y golden regenerados | 26 × «números cuantizados… a lo sumo un decimal» | ✓ golden restaurados con la misma `SHA256SUMS` |
+| `propiedades.test.ts` — invariancia al orden | Sí, pero el primer sabotaje (bloques sin ordenar) era **inalcanzable**: cada banda del ejemplo tiene un bloque | Flujos agregados del nivel 1 sin ordenar | los dos mapas, con su contraejemplo | ✓ 7/7 |
+| `propiedades.test.ts` — G6 (b) | Sí | El nombre accesible de cada nodo incluye el total de nodos | contraejemplo `["fuentes","aaa"]`: «cambió sistema-admisiones» | ✓ |
+| `tests/determinismo` (3 navegadores) | Sí | Otra fecha de consulta solo en la entrada del navegador | 20 de 26 huellas distintas (WebKit) | ✓ 3/3 |
+
+Falla del arnés, no del motor: `crypto.subtle` no existe en `about:blank` (no es contexto seguro); la
+prueba sirve una página vacía por `page.route` en `https://diagramador.invalid/` (TLD reservado, nada sale
+a la red).
+
+**Job `diagramador`** en `ci.yml`: matriz `ubuntu-latest` + `macos-latest`, sin `needs`; pruebas del paquete en
+Node + G1 en los tres navegadores. Su primera corrida es este push.

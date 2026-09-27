@@ -1,4 +1,15 @@
-// API pública del diagramador (CONTRATO v0.3.0 § 8). La fase 1 del S1 de Big-D la implementa:
-// validate · validateGrammar · layout · toSVG · toText · diff. Nada aquí importa de la app que lo
-// consume, ni abre red, ni lee el reloj.
-export const CONTRATO_VERSION = "0.3.0";
+// Diagramador — API pública (CONTRATO v0.3.0 § 8). Funciones puras: sin I/O, sin reloj, sin red.
+export { CONTRATO_VERSION } from "./version";
+export { validate, validateGrammar } from "./validar";
+export type { Cobertura, Entrada, Informe, Modo } from "./validar";
+export { layout } from "./layout";
+export type { Caja, CajaPropia, Geometria, OpcionesLayout, PasoGeo, Punto, TextosMotor, Trazado, Vista } from "./layout/tipos";
+export { toSVG, type OpcionesSVG } from "./svg/toSVG";
+export { toJourneyCSS } from "./svg/recorridoCSS";
+export { toLegend } from "./svg/leyenda";
+export { toText, type OpcionesTexto } from "./texto/toText";
+export { diff, type Diferencias } from "./diff";
+export { crossings, type Cruce } from "./layout/d11";
+export { coberturaDeRangos } from "./texto/cobertura";
+export { METRICAS_PILOTO, type TablaMetricas } from "./texto/metricas";
+export type * from "./tipos";
