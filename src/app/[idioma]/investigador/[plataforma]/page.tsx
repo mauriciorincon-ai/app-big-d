@@ -9,6 +9,8 @@ import { plantilla, plural } from "@/lib/atlas";
 import { datos, fechaDeConsulta } from "@/lib/datos";
 import { esIdioma, textos } from "@/lib/i18n";
 import { conteo, vistaInvestigador } from "@/lib/investigador/revision";
+// Estilos solo de esta pantalla: no bloquean el pintado del atlas.
+import "@/styles/investigador.css";
 
 // Conocimiento · investigador de una plataforma (fiel a docs/diseno/investigador.html): la vigencia de cada
 // capa con el comando exacto para investigarla, o el estado vacío si la plataforma aún no tiene mapa (A-27);

@@ -653,3 +653,14 @@ sobre los pisos, tras sumar las pruebas que faltaban en ramas de `src/lib`) · e
 La corrida real: la persona escribe `/investigar fabric` en la sesión; el subagente propone; la propuesta
 se sube; la persona la revisa en la pantalla del investigador y corre el comando de aprobación en una
 terminal. **Parada B.**
+
+**CI de `508176c`:** quality ✓ · e2e ✓ · diagramador ubuntu ✓ · macOS ✓ · Vercel ✓ · **lighthouse ✘**: LCP de
+`/es` y `/en/atlas/plataforma-ejemplo` en 3082 y 3065 ms contra el presupuesto de 3000 (mediana de 3 corridas).
+No se sube el presupuesto. Causa probable: la hoja global creció con los estilos del investigador (antes pasaba
+con 8 rutas). **Arreglo:** estilos por ruta. La hoja del atlas baja de 32,8 a 27,0 KB (6,7 KB comprimida); la
+del investigador (1,4 KB comprimida) y la de la animación del recorrido (0,2 KB) cargan solo en su página. Se
+verifica en la CI del commit siguiente; si el LCP sigue al borde, el siguiente paso es aligerar el HTML del
+nivel 1 (107 KB sin comprimir: SVG, leyenda y lectura van dos veces, en el HTML y en la carga de React).
+
+**Punto de corte (2026-09-27):** el usuario pidió compactar. Estado: fase 3a y 3b construidas y subidas; falta
+leer la CI de este arreglo y la corrida real (3c, parada B).

@@ -8,6 +8,8 @@ import { Lectura, SeccionMapa } from "@/components/atlas/SeccionMapa";
 import { vistaRecorrido } from "@/lib/atlas";
 import { datos, fechaDeConsulta } from "@/lib/datos";
 import { esIdioma, textos } from "@/lib/i18n";
+// La capa de animación, solo en esta vista (y dentro de una media query de movimiento no reducido).
+import "@/styles/recorrido-animacion.css";
 
 // Atlas · nivel 3 (recorrido de un dato): el primer recorrido del mapa, paso a paso. El SVG no cambia entre
 // pasos: el controlador cambia `data-paso` y el CSS generado del recorrido (en línea) hace el resto; la
