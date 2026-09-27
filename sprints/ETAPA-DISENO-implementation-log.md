@@ -414,6 +414,15 @@ antes del arreglo: `pnpm peers check` falló por `@types/node` 20 frente a vites
 lockfile además bajaba rolldown de 1.2.11 a 1.2.10 (la degradación silenciosa de la regla 18).
 Regla 18: de a uno y dejando regenerar a dependabot. `@dependabot rebase` en el #1 → quality, e2e, lighthouse y
 Vercel en `success` con conclusión propia → squash-merge (47e3b52). `@dependabot recreate` en el #2 sobre el main
-nuevo; al llegar se verifica versión por versión contra main antes de mezclar.
+nuevo: la regeneración **volvió a bajar** rolldown (1.2.11 → 1.2.10, las 15 variantes nativas), browserslist
+(4.29.1 → 4.29.0) y electron-to-chromium (1.5.439 → 1.5.438), publicados el 24-09 (no es espera mínima de
+publicación: el resolvedor de dependabot parte de un índice más viejo). Resolución a mano según la regla 18:
+en un worktree aparte, `package.json` de dependabot + lockfile de main + `pnpm install --lockfile-only` →
+solo cambian react y react-dom (19.2.8 → 19.3.0) y scheduler (0.27.0 → 0.28.0); comprobación paquete por
+paquete: **ninguno queda por debajo de la versión más nueva de los dos lados**. Instalación real + peers check +
+typecheck + lint + tests en verde; commit 6b4bd71 sobre la rama de dependabot; quality, e2e, lighthouse y Vercel
+en `success` → squash-merge (7316528). La lección para el método: ninguna puerta compara el resultado de
+dependabot contra la intención del PR; la comparación versión por versión la hice con un script de un solo uso
+(queda como deuda proponer un gate: «un PR de dependencias no baja ninguna versión respecto de main»).
 **Campo homepage del repo:** tenía la URL de producción (la GitHub App de Vercel lo reescribe); se limpia tras
 cada merge a main (regla 17).
