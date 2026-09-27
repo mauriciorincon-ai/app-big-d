@@ -382,3 +382,38 @@ del líder se colaba en el texto pequeño (selector `> b`); el rango del peso ca
 
 **Gates:** 51/51 · lint limpio · barrido de enlaces limpio salvo un hallazgo previo al sprint en `CHANGELOG.md`
 (narraba el patrón con el literal `pages[.]dev`; venía del kit y se corrigió en este commit).
+
+### Mirada 3 — veredicto (2026-09-26)
+
+Con los archivos abiertos y el pedido en matrices (regla nueva del usuario: todo pedido de mirada va como
+tabla dónde · qué mirar · qué espero que veas). Investigador «me gusta mucho esa cantidad de posibles
+elementos de información para el control de los documentos de verificación»; base «excelente, muy
+biblioteca y referencias»; perfil «interesante para entender la mayor incertidumbre»; comparación «esto es
+impactante… de lo más valioso de la aplicación». Preguntas: la historia del empate se entiende; las tres
+salidas del verificador son adecuadas; el bloqueo de «Aprobar» queda a mi criterio. Ajuste: **lado a lado,
+«que se desplegaran los componentes visualmente»**. **Mirada 3 aprobada con un ajuste.**
+
+| #   | Decisión | Razón |
+| --- | -------- | ----- |
+| D62 | **Se mantiene el bloqueo de «Aprobar» mientras haya una decisión implícita sin responder** (además de suma ≠ 100 y rango abierto) | Criterio delegado por el usuario. La tesis del producto es que los proyectos fracasan por decisiones implícitas: un perfil aprobado con una sin discutir es justo el fallo que la app promete evitar |
+| D63 | **Vista «componentes» del lado a lado**: conmutador «Ver: bloques / componentes»; cada bloque se abre en su pila de nodos del nivel 2 (152 × 88), columnas alineadas por banda, paginación en las dos vistas; la ficha del bloque y el teléfono muestran **tarjetas de nodo** en lugar de lista | Pedido del usuario; se reutiliza el nodo del nivel 2 para que «componente» se vea igual en toda la app |
+| D64 | En la vista desplegada el glifo va a 17 u y el nombre desde 29 u (en el nivel 2: 20 y 34) | «Filtros por fila y enmascaramiento»: la palabra más larga mide 116 u a 13/700 y no cabía en 110 |
+
+Verificado en Chromium: el conmutador cambia de vista y conserva la página; «Siguiente» en la vista
+componentes lleva a «desplegados, página 2»; en 380 px la vista componentes abre todas las filas de la banda.
+Capturas: 48 encuadres + simulaciones de daltonismo del lado a lado, 0 fallas; leídas: desplegados oscuro ES
+1280, ficha claro ES 1280, desplegados oscuro EN 380, desplegados claro ES 1280 con deuteranopía (transformación,
+consumo y gobierno se acercan en tono; el glifo los separa).
+
+### PRs de dependencias (pedido del usuario: «tengo problemas con los PR que están en cola»)
+
+Los dos PR de dependabot nacieron a las 17:38–17:40 UTC, antes de 9547230 (fijar `@types/node@22`, 17:39 UTC).
+El #1 (acciones: checkout, setup-node y upload-artifact a v7, pnpm/action-setup a v6) corrió su CI un minuto
+antes del arreglo: `pnpm peers check` falló por `@types/node` 20 frente a vitest 5, y e2e y lighthouse quedaron
+`skipping`. El #2 (react y react-dom 19.2.8 → 19.3.0) quedó en conflicto de lockfile con ese mismo commit, y su
+lockfile además bajaba rolldown de 1.2.11 a 1.2.10 (la degradación silenciosa de la regla 18).
+Regla 18: de a uno y dejando regenerar a dependabot. `@dependabot rebase` en el #1 → quality, e2e, lighthouse y
+Vercel en `success` con conclusión propia → squash-merge (47e3b52). `@dependabot recreate` en el #2 sobre el main
+nuevo; al llegar se verifica versión por versión contra main antes de mezclar.
+**Campo homepage del repo:** tenía la URL de producción (la GitHub App de Vercel lo reescribe); se limpia tras
+cada merge a main (regla 17).

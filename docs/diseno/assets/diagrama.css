@@ -55,3 +55,4 @@
 .dg-rama { color: var(--tinta-1); }
 /* Lado a lado */
 .db-t-banda-lado, .db-t-fila-lado { font-size: 13px; }
+.db-t-cab-bloque { font-size: 12px; font-weight: 700; }

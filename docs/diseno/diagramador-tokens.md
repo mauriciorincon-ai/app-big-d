@@ -377,6 +377,7 @@ queda en el historial (f21519c).
 | Sin bloque  | caja punteada «sin componentes»                                                                                                        |
 | N           | tres plataformas por página (constante de vista), paginación; en < 900 px, una banda a la vez con las plataformas apiladas             |
 | Diferencias | píldora glifo + palabra bajo el bloque cambiado: nuevo (+), retirado (−, llena), renombrado (→), madurez (▮); lista explicativa debajo |
+| Desplegados | vista «componentes»: columnas de 152 u a 14 u (viewBox 1496), cabecera del bloque hasta 2 líneas a 12/700, pila de nodos 152 × 88 a 8 u (glifo a 17 u, nombre desde 29 u, ≤ 3 líneas a 13/700); la fila mide su celda más alta; G5 se conserva porque solo crece la fila. Para el contrato: `compare` acepta el nivel 2 con alineación por banda, no por nodo |
 | Componentes | cada bloque es activable (`data-nodo`): abre la lista de sus componentes (glifo + nombre + madurez + fuentes) en el panel; en < 900 px, desplegable bajo la fila. Pedido del usuario en la mirada 2; para el contrato: la vista `compare` expone los nodos de cada bloque agregado (G10 también aquí) |
 
 ### 9.3 Lo que midió la referencia (ronda 4)
