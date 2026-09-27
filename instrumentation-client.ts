@@ -2,28 +2,37 @@
 // INERTE SIN DSN: si NEXT_PUBLIC_SENTRY_DSN no está definida (CI, local sin configurar),
 // no se inicializa nada y no hay ruido. Configura la DSN en .env.local y en Vercel.
 // Server-side Sentry (instrumentation.ts) se añade cuando la app tenga backend, por ADR.
-import * as Sentry from "@sentry/nextjs";
+//
+// El SDK se importa DINÁMICAMENTE (Big-D S1): con `import * as Sentry` estático viajaba a todas las
+// páginas aunque no hubiera DSN — ~70 KB comprimidos antes de la primera pintura, y el LCP simulado
+// de Lighthouse pasó del presupuesto de 3000 ms. Sin DSN el SDK no se descarga nunca; con DSN llega
+// en un chunk aparte, después de pintar.
+type Sdk = typeof import("@sentry/nextjs");
 
 const dsn = process.env.NEXT_PUBLIC_SENTRY_DSN;
+let sdk: Sdk | undefined;
 
 if (dsn) {
-  Sentry.init({
-    dsn,
-    environment: process.env.NEXT_PUBLIC_VERCEL_ENV ?? "local",
-    // Sin tracing ni replay: error tracking puro (presupuesto y privacidad).
-    tracesSampleRate: 0,
-    // Privacidad (metadata-only): nunca enviar requests ni breadcrumbs que puedan
-    // arrastrar contenido del usuario. Reportar errores vía src/lib/observability.ts.
-    beforeSend(event) {
-      delete event.request;
-      event.breadcrumbs = undefined;
-      if (event.exception?.values?.[0]?.type === "AbortError") return null;
-      return event;
-    },
+  void import("@sentry/nextjs").then((Sentry) => {
+    Sentry.init({
+      dsn,
+      environment: process.env.NEXT_PUBLIC_VERCEL_ENV ?? "local",
+      // Sin tracing ni replay: error tracking puro (presupuesto y privacidad).
+      tracesSampleRate: 0,
+      // Privacidad (metadata-only): nunca enviar requests ni breadcrumbs que puedan
+      // arrastrar contenido del usuario. Reportar errores vía src/lib/observability.ts.
+      beforeSend(event) {
+        delete event.request;
+        event.breadcrumbs = undefined;
+        if (event.exception?.values?.[0]?.type === "AbortError") return null;
+        return event;
+      },
+    });
+    sdk = Sentry;
   });
 }
 
 // Hook opcional de Next para transiciones de router (no-op si Sentry no inicializó).
-export const onRouterTransitionStart = dsn
-  ? Sentry.captureRouterTransitionStart
-  : () => {};
+export function onRouterTransitionStart(href: string, navigationType: string) {
+  sdk?.captureRouterTransitionStart(href, navigationType);
+}

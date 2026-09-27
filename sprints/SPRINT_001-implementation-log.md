@@ -664,3 +664,24 @@ nivel 1 (107 KB sin comprimir: SVG, leyenda y lectura van dos veces, en el HTML 
 
 **Punto de corte (2026-09-27):** el usuario pidió compactar. Estado: fase 3a y 3b construidas y subidas; falta
 leer la CI de este arreglo y la corrida real (3c, parada B).
+
+**CI de `11dca01`: lighthouse ✘ otra vez** (`/es/atlas/plataforma-ejemplo` 3071 ms; `/es/…/recorrido` 3078;
+`/en/…/recorrido` 3069). **La hipótesis de la hoja de estilos era falsa.** Diagnóstico con Lighthouse local
+(3 corridas por ruta, servidor propio en el puerto 3150: el 3000 lo tenía otra app de la máquina y la primera
+medición, hecha contra ella, se descartó — regla 17-bis b). El elemento del LCP es el texto `p.guia`; el LCP
+observado ocurre a los ~50 ms, y el simulado lo fija todo lo que se descarga antes de esa primera pintura:
+~290 KB entre el JavaScript del framework, **el SDK de Sentry** y las dos fuentes (`display: block`, a
+propósito). Sentry viajaba a todas las páginas **sin DSN**, por el `import * as Sentry` estático del kit
+(el chunk grande pesaba 466 KB, 147 KB comprimido).
+
+| Intento | Efecto (mediana local, nivel 1) | Queda |
+|---|---|---|
+| CSS dentro del HTML (`experimental.inlineCss`) | FCP −100 ms, LCP igual; el HTML crece a 161 KB | revertido |
+| Fuente mono sin precarga | CLS 0,09 (el límite es 0,1) y corridas inestables | revertido |
+| **Sentry con `import()` dinámico** en `instrumentation-client.ts` y `observability.ts` | inicio 2785 → 2614 · nivel 1 2940 → 2765 · recorrido 2935 → 2612 · investigador 2464 | **adoptado** |
+
+Sin DSN el SDK ya no se descarga; con DSN llega en un chunk aparte, después de pintar. Lo que queda antes de la
+primera pintura es el piso del framework (≈ 140 KB) y las fuentes. La CI mide ~130 ms más que la máquina local:
+el nivel 1 debería quedar en ~2900, **con un margen de ~100 ms, que es delgado.** Si otra página lo gasta, la
+siguiente palanca es el HTML del nivel 1 (SVG, leyenda y lectura van dos veces: en el HTML y en la carga de
+React). Los estilos por ruta de `11dca01` se quedan: no dañan y cada página carga menos CSS.
