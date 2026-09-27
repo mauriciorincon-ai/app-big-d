@@ -1,6 +1,6 @@
 ---
 documento: Gramática visual del diagramador — propuesta para el CONTRATO v0.3.0
-estado: propuesta (mirada 1 aprobada 2026-09-26; ampliada con nivel 2, recorrido y lado a lado para la mirada 2)
+estado: propuesta cerrada para G-Diseño (miradas 1–4 aprobadas 2026-09-26; ajustada tras la auditoría de la etapa 2026-09-27)
 fecha: 2026-09-26
 contrato_base: reusables/diagramador/CONTRATO.md v0.2.0 (planeadora, solo lectura)
 referencia_visual: docs/diseno/atlas-nivel-1.html · atlas-nivel-2.html · atlas-recorrido.html · lado-a-lado.html (rondas 1–3 de la mirada 1 en el historial: f21519c · 5439920 · a05a217)
@@ -69,7 +69,7 @@ transpone ni se encoge: si no cabe en su contenedor, el lienzo se desliza de lad
   Abajo funcionan como cimiento, que es como Fabric dibuja su capa de plataforma. Además, lo primero
   que se lee es Fuentes.
 - **Cabecera a la izquierda en ancho.** Una franja es una fila: su cabecera ocupa el ancho de la
-  primera columna más su canal (190 u), y sus elementos van en las ranuras alineadas con las
+  primera columna más su canal (200 u, § 9.1), y sus elementos van en las ranuras alineadas con las
   columnas 2 en adelante. Así su texto nunca cruza un canal por donde pase una línea.
 - **En teléfono** es el mismo lienzo deslizado: la franja sigue abarcando todas las columnas,
   aunque solo se vean dos a la vez; el rótulo «Transversales · abarcan todas las capas» lo dice.
@@ -86,7 +86,7 @@ motor. La maqueta trae el estado **«P9: orquestación como capa»** para juzgar
 | ---------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
 | El camino del dato     | Ningún registro pasa por ella. Su único flujo va **hacia atrás** (Programador → Canalizaciones) | Sale del eje de las capas, que queda solo para el movimiento del dato                                 |
 | Nivel 1                | La fila principal gana un hueco de «1 componente»                                               | «1 componente» en una franja, que es lo esperable en lo transversal                                   |
-| Ancho medido           | 7 columnas: viewBox de **1398 u**; el lienzo ancho exige un contenedor de **≥ 1198 px**         | 6 columnas: viewBox de **1200 u**; contenedor de **≥ 1029 px**                                        |
+| Ancho medido           | 7 columnas: viewBox de **1380 u**                                                              | 6 columnas: viewBox de **1178 u**; sin umbral de contenedor: si no cabe, el lienzo se desliza (§ 1)   |
 | Los criterios del caso | Ninguno de los 11 criterios separa la orquestación                                              | El tipo `cap-transformacion` ya se llama «Transformación **y** orquestación»                          |
 | La práctica            | La especificación § 10.6 la puso como capa 5                                                    | Databricks la agrupa con las capacidades comunes; Reis y Housley la tratan como corriente transversal |
 | Costo del cambio       | Ninguno                                                                                         | Nota en la gramática + una línea de CHANGELOG + declarar la desviación de § 10.6                      |
@@ -152,8 +152,10 @@ dos flechas en su canal, sin bajar al carril, repartidas a 22 u alrededor del ce
 
 - **El color es de la gramática, no de la interfaz.** La interfaz es monocroma. Los 8 matices se
   reservan a los tipos de nodo; flujos, etiquetas, insignias y semáforo van en tinta.
-- **Codificación del nodo.** Relleno tintado de croma bajo del matiz, borde de 2 u y glifo en el
-  matiz, **texto siempre en tinta**. El contraste del texto no depende del matiz.
+- **Codificación del nodo (dirección B).** Tarjeta en `sup-2` con borde fino en `linea`, **filete
+  izquierdo de 4 u y glifo en el matiz del tipo**, **texto siempre en tinta**. El contraste del texto no
+  depende del matiz. (La ronda 1 proponía un relleno tintado por tipo, D7; la dirección B lo retiró y sus
+  16 tokens `tipo-N-tinte` se eliminaron tras la auditoría, A-08.)
 - **Un matiz propio por tipo (ronda 2).** Cada tipo tiene su matiz en OKLCH, igual en los dos
   temas, elegido por significado y repartido en la rueda: azul la ingesta, violeta el almacenamiento,
   naranja la transformación, rojo el gobierno, verde el consumo, magenta la IA, cian la operación y un
@@ -164,40 +166,49 @@ dos flechas en su canal, sin bajar al carril, repartidas a 22 u alrededor del ce
   busca la claridad de cada uno, por tema, dentro de un rango (el naranja jamás baja a marrón; no hay
   amarillo). Tres arranques fijos y descenso por coordenadas; maximiza la peor distancia entre pares
   bajo 7 vistas —normal, y protan, deutan y tritan con severidad 0,6 y 1,0 (Machado, Oliveira y
-  Fernandes, 2009)— con la condición de que cada trazo pase 3:1 sobre sup-1, sup-2 y su relleno.
+  Fernandes, 2009)— con la condición de que cada trazo pase 3:1 sobre sup-1 (lienzo) y sup-2 (tarjeta
+  del nodo). Al retirar el relleno tintado, la búsqueda sin esa tercera condición movió dos claridades del
+  tema claro (naranja 0,64 → 0,66 y rojo 0,57 → 0,58): la paleta es la salida de la búsqueda (D79).
 - **Fuente de verdad.** `scripts/paleta/generar-tokens.mjs` declara el OKLCH y genera
   `docs/diseno/assets/tokens.json` y `tokens.css`. El gate falla si alguien los edita a mano.
 
 ### 5.2 Los 8 tipos
 
-| Token  | Tipo               | Familia        | Oscuro    | Claro     | Trazo/sup-1 oscuro | Trazo/sup-1 claro | Glifo/relleno oscuro | Glifo/relleno claro |
-| ------ | ------------------ | -------------- | --------- | --------- | ------------------ | ----------------- | -------------------- | ------------------- |
-| tipo-1 | cap-ingesta        | azul (250°)    | `#95c9ff` | `#0060a6` | 10.44              | 6.24              | 8.21                 | 5.73                |
-| tipo-2 | cap-almacenamiento | violeta (295°) | `#ac8ff8` | `#8264c8` | 6.95               | 4.37              | 5.56                 | 3.97                |
-| tipo-3 | cap-transformacion | naranja (62°)  | `#f09638` | `#ca7400` | 7.88               | 3.35              | 6.29                 | 3.04                |
-| tipo-4 | cap-gobierno       | rojo (22°)     | `#e36364` | `#c4474b` | 5.39               | 4.62              | 4.35                 | 4.21                |
-| tipo-5 | cap-consumo        | verde (148°)   | `#6ace7c` | `#017f31` | 9.27               | 4.93              | 7.19                 | 4.56                |
-| tipo-6 | cap-ia             | magenta (345°) | `#fa87cb` | `#9e3378` | 8.12               | 6.29              | 6.56                 | 5.69                |
-| tipo-7 | tipo-externo       | pizarra (250°) | `#7a8b9e` | `#39495a` | 5.20               | 8.84              | 4.09                 | 8.11                |
-| tipo-8 | tipo-operacion     | cian (205°)    | `#1fbdcb` | `#0098a4` | 7.95               | 3.34              | 6.17                 | 3.10                |
+| Token  | Tipo               | Familia        | Oscuro    | Claro     | Trazo/sup-1 oscuro | Trazo/sup-1 claro | Glifo/sup-2 oscuro | Glifo/sup-2 claro |
+| ------ | ------------------ | -------------- | --------- | --------- | ------------------ | ----------------- | ------------------ | ----------------- |
+| tipo-1 | cap-ingesta | azul (250°) | `#95c9ff` | `#0060a6` | 10.44 | 6.24 | 9.33 | 6.51 |
+| tipo-2 | cap-almacenamiento | violeta (295°) | `#ac8ff8` | `#8264c8` | 6.95 | 4.37 | 6.21 | 4.56 |
+| tipo-3 | cap-transformacion | naranja (62°) | `#f09638` | `#d27908` | 7.88 | 3.10 | 7.05 | 3.24 |
+| tipo-4 | cap-gobierno | rojo (22°) | `#e36364` | `#c74a4d` | 5.39 | 4.45 | 4.82 | 4.65 |
+| tipo-5 | cap-consumo | verde (148°) | `#6ace7c` | `#017f31` | 9.27 | 4.93 | 8.29 | 5.15 |
+| tipo-6 | cap-ia | magenta (345°) | `#fa87cb` | `#9e3378` | 8.12 | 6.29 | 7.25 | 6.57 |
+| tipo-7 | tipo-externo | pizarra (250°) | `#7a8b9e` | `#39495a` | 5.20 | 8.84 | 4.65 | 9.23 |
+| tipo-8 | tipo-operacion | cian (205°) | `#1fbdcb` | `#0098a4` | 7.95 | 3.34 | 7.11 | 3.48 |
 
 ### 5.3 Umbral declarado y resultado
 
-**Umbrales (convención de Big-D, no evidencia publicada):** ΔE en OKLab del peor par ≥ 0,10 en
+**Umbrales (convención de Big-D, no evidencia publicada; D79):** ΔE en OKLab del peor par ≥ 0,10 en
 visión normal, ≥ 0,06 en la severidad del usuario (0,6) y ≥ 0,03 en dicromacia (1,0). En
 acromatopsia no se exige distancia por pares: allí la información la cargan glifo y etiqueta (G7),
 y así se ve en las capturas de escala de grises.
 
+**Desviación del plan aprobado (D8 → D79).** El plan pedía ≥ 0,10 también a severidad 0,6, ≥ 0,08 en
+dicromacia y ΔL ≥ 0,05 entre tipos en grises. La paleta medida no llega (peor par 0,074 a 0,6 y 0,038 en
+tritan 1,0), y separar 8 tipos por claridad a 0,05 pide 0,35 de rango de L: en el tema claro, los trazos
+a 3:1 sobre `sup-2` viven por debajo de L ≈ 0,67 y los más oscuros se confunden con la tinta. Por eso la
+regla 13 se cumple con **glifo + etiqueta**, no con el color. Los mínimos quedan escritos en el test como
+literales: bajar el umbral y la paleta a la vez pone el gate en rojo.
+
 | Vista      | Umbral          | Peor par oscuro         | Peor par claro          |
 | ---------- | --------------- | ----------------------- | ----------------------- |
-| normal     | 0.1             | 0.124 (tipo-1 ~ tipo-8) | 0.124 (tipo-4 ~ tipo-6) |
-| protan-0.6 | 0.06            | 0.074 (tipo-6 ~ tipo-8) | 0.080 (tipo-1 ~ tipo-2) |
-| deutan-0.6 | 0.06            | 0.081 (tipo-3 ~ tipo-5) | 0.099 (tipo-4 ~ tipo-5) |
-| tritan-0.6 | 0.06            | 0.086 (tipo-5 ~ tipo-8) | 0.100 (tipo-3 ~ tipo-4) |
-| protan-1.0 | 0.03            | 0.069 (tipo-6 ~ tipo-8) | 0.045 (tipo-3 ~ tipo-5) |
-| deutan-1.0 | 0.03            | 0.058 (tipo-6 ~ tipo-8) | 0.061 (tipo-4 ~ tipo-5) |
-| tritan-1.0 | 0.03            | 0.038 (tipo-3 ~ tipo-6) | 0.046 (tipo-1 ~ tipo-5) |
-| grises     | — (no se exige) | 0.002 (tipo-3 ~ tipo-8) | 0.001 (tipo-3 ~ tipo-8) |
+| normal | 0.1 | 0.124 (tipo-1 ~ tipo-8) | 0.129 (tipo-1 ~ tipo-7) |
+| protan-0.6 | 0.06 | 0.074 (tipo-6 ~ tipo-8) | 0.080 (tipo-1 ~ tipo-2) |
+| deutan-0.6 | 0.06 | 0.081 (tipo-3 ~ tipo-5) | 0.104 (tipo-4 ~ tipo-5) |
+| tritan-0.6 | 0.06 | 0.086 (tipo-5 ~ tipo-8) | 0.106 (tipo-3 ~ tipo-4) |
+| protan-1.0 | 0.03 | 0.069 (tipo-6 ~ tipo-8) | 0.052 (tipo-6 ~ tipo-7) |
+| deutan-1.0 | 0.03 | 0.058 (tipo-6 ~ tipo-8) | 0.069 (tipo-4 ~ tipo-5) |
+| tritan-1.0 | 0.03 | 0.038 (tipo-3 ~ tipo-6) | 0.046 (tipo-1 ~ tipo-5) |
+| grises | — (no se exige) | 0.002 (tipo-3 ~ tipo-8) | 0.002 (tipo-1 ~ tipo-6) |
 
 ### 5.4 Neutros
 
@@ -209,20 +220,19 @@ y así se ve en las capturas de escala de grises.
 | linea   | `#383e45` | `#d1d5d9` | filetes decorativos (vetada como texto)         |
 | tinta-1 | `#e8ebf1` | `#161b21` | texto principal, marcas, foco                   |
 | tinta-2 | `#b9bec6` | `#3d434a` | texto secundario, flujos                        |
-| tinta-3 | `#70757c` | `#878d94` | guías y rejillas (vetada como texto)            |
 
 Contrastes medidos: tinta-1 sobre sup-1 **15,2:1** (oscuro) y **16,6:1** (claro); tinta-2 sobre
-el fondo **10,3:1** y **9,1:1**; tinta-1 sobre el relleno de nodo más exigente **11,8:1** y
-**15,0:1**. Las tintas vetadas como texto (tinta-3, linea) no llegan a 4,5:1, y el gate lo exige:
-si llegaran, el veto sobraría. tinta-3 sí pasa 3:1 (3,9 y 3,2), así que sirve para guías gráficas.
+el fondo **10,3:1** y **9,1:1**; tinta-1 sobre la tarjeta del nodo (`sup-2`) **13,6:1** y **17,3:1**. La tinta vetada como texto (`linea`) no llega a 4,5:1, y el gate lo exige: si llegara,
+el veto sobraría. `tinta-3` (guías) se retiró tras la auditoría (A-08): ninguna regla la usaba; las
+guías y rejillas van en `linea`.
 Ronda 2: el claro pasa de papel crema a un papel frío casi blanco.
 
 ### 5.5 Gate
 
-`tests/unit/paleta-diagramador.test.ts`: sin deriva entre generador y archivos; cada trazo ≥ 3:1
-sobre sup-1, sup-2 y su relleno; toda tinta de texto ≥ 4,5:1 sobre fondo, superficies y rellenos;
-los umbrales de § 5.3 por tema y vista. Se vio fallar con el naranja del spike (`#e69f00`, 2,09:1
-en claro).
+`tests/unit/paleta-diagramador.test.ts`: sin deriva entre generador y archivos; cada trazo y glifo
+≥ 3:1 sobre sup-1 y sup-2; toda tinta de texto ≥ 4,5:1 sobre fondo y superficies; los umbrales de
+§ 5.3 por tema y vista, que no pueden bajar de los mínimos escritos en el test. Se vio fallar con el
+naranja del spike (`#e69f00`, 2,09:1 en claro) y con el umbral normal bajado a 0,05 en el generador.
 
 ## 6. Glifos
 
@@ -276,7 +286,7 @@ El gate `maqueta-vocabulario` exige que todo carácter visible de la maqueta exi
 
 ## 7. Modos de flujo: trazo y marcador
 
-Siempre en tinta (tinta-2), grosor 2 u. El periodo del patrón cabe al menos 3 veces en el tramo
+Siempre en tinta (tinta-2), grosor 1,6 u (a demanda 2,8 u, para que el punto se lea; haz 4 u), igual que `diagrama.css`. El periodo del patrón cabe al menos 3 veces en el tramo
 más corto.
 
 | Modo         | Trazo                                            | Marcador                         | Path del marcador (caja 12)                                                              |
@@ -401,7 +411,7 @@ cargada**. Es la medida de G11 que la prueba del piloto repetirá en tres navega
   mide unas 700 u más la cabecera: una pantalla y media de teléfono, deslizable en vertical.
 - **Propuesta:** `limites.nodos_por_banda_max: 6`, con su carnada: siete nodos en una banda debe
   fallar. Se mide en el piloto con la referencia del nivel 2 (mirada 2).
-- **Nivel 1:** un bloque muestra un glifo por componente hasta 4 y luego «+N».
+- **Nivel 1:** un bloque muestra un glifo de su tipo y «N componentes» (dirección B); si la banda tiene un solo componente, su nombre (D34).
 - **G5 (bandas alineadas lado a lado).** En el nivel 1 la altura de la fila depende solo de la
   gramática, así que G5 se cumple. En el nivel 2 depende de los nodos: para alinear lado a lado hay
   que reservar por banda el máximo de los mapas comparados. Se decide en el
@@ -434,7 +444,7 @@ cargada**. Es la medida de G11 que la prueba del piloto repetirá en tres navega
 
 La leyenda se genera de la gramática, con los mismos paths: tipos (glifo + código + nombre), modos
 (trazo + marcador + nombre + frase), madurez (medidor + nombre) y vigencia (marca + regla de días).
-La nota de marcas se genera también:
+La nota de marcas **no se dibujó en la maqueta** (se retiró con el cromo de la ronda 3): se diseña en el S1, el primer sprint con nombres reales, junto al selector de plataforma del atlas. Su texto propuesto:
 
 > Databricks, Microsoft Fabric y Snowflake son marcas de sus respectivos titulares. Aquí se nombran
 > solo para identificarlas; su uso no implica respaldo de los titulares. Big-D no usa logos ni
@@ -442,7 +452,7 @@ La nota de marcas se genera también:
 
 ## 14. Accesibilidad
 
-- Raíz `graphics-document document` con `<title>` por idioma; banda `group` con nombre y pregunta;
+- Raíz `graphics-document document` con nombre accesible por idioma (en la maqueta, `aria-label` que cambia con el conmutador; el serializador del motor emite un SVG por idioma con su `<title>`); banda `group` con nombre y pregunta;
   elemento `graphics-symbol img`, enfocable, con nombre, frase y componentes; flujos y etiquetas
   `aria-hidden`.
 - **Foco y selección:** borde de 2 u en tinta-1 (el normal es de 1 u en `linea`); se distingue por
@@ -463,7 +473,8 @@ Implementada en la referencia (`atlas-recorrido.html`):
 - **Hoja aparte** `recorrido-animacion.css` cargada con `media="(prefers-reduced-motion:
 no-preference)"`: transiciones de opacidad y grosor (240–320 ms) y, mientras se reproduce, la
   línea activa «fluye» con `stroke-dashoffset` (1,2 s). Con movimiento reducido la hoja no se carga
-  y el botón «Reproducir» no existe (medido en Chromium con `reducedMotion: reduce`).
+  y el botón «Reproducir» queda en el DOM oculto por CSS (`display: none`): el árbol no depende de la
+  preferencia (regla 5-a del CLAUDE.md; en React, `useReducedMotion()` jamás decide qué se pinta).
 - **Vista estática por defecto:** todos los pasos numerados. La reproducción avanza un paso cada
   2 s y se detiene al final; «Anterior», «Siguiente» y las flechas del teclado la detienen.
 - **Numeración con rama:** 1–5, 6a → 7a (tablero) y 6b (agente); el nodo que bifurca lleva la marca
@@ -481,7 +492,13 @@ no-preference)"`: transiciones de opacidad y grosor (240–320 ms) y, mientras s
 | `plataformas-datos.json`                           | `orquestacion`: `clase: transversal`, `orden: 3`; nota de linaje en `descripcion`                              |
 | CONTRATO § 4.1                                     | en el nivel 1, los flujos con una franja se dan como referencias (§ 4.3)                                       |
 | CONTRATO § 4.8                                     | forma compacta de la insignia dentro del lienzo (§ 11)                                                         |
-| CONTRATO D1                                        | confirmar la lectura de «abarcan el eje» en angosto (§ 2)                                                      |
+| CONTRATO G11, D1, G5, § 4, P10                     | se retira la disposición angosta (P5 del usuario, D29). G11 pasa a: «una sola disposición a escala 1 (piso de 12 px); si no cabe, el lienzo se desliza de lado con índice de capas, sombras de borde y pista escrita; la página jamás desborda» |
+| CONTRATO § 4.2                                     | en el nivel 2, los flujos con una franja también se dan como referencias (D44, § 4.3)                          |
+| CONTRATO § 4.4 `compare`                           | acepta el nivel 2 alineado por banda (D63) y un **nivel por banda** en el mismo SVG (D75, § 9.2 ter)           |
+| CONTRATO G10                                       | la raíz del SVG enlaza la lectura en texto y cada vista lleva «Saltar el diagrama»                             |
+| Codificación del nodo                              | tarjeta en `sup-2` + filete de 4 u y glifo del tipo; texto en tinta (D7 retirado: sin rellenos tintados)       |
+| Serializador (D8)                                  | los ids de `<defs>` llevan espacio de nombres por SVG: una página con varios lienzos no repite ids             |
+| Umbral de paleta (Gaps)                            | ΔE ≥ 0,10 normal · ≥ 0,06 a severidad 0,6 · ≥ 0,03 en dicromacia; grises por glifo + etiqueta (D79, § 5.3)     |
 | Carnadas nuevas                                    | siete nodos en una banda · un carácter fuera de la fuente en un texto · un flujo agregado con 4 modos a 380 px |
 
 ### Textos EN redactados (gramática)

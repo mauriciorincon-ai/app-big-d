@@ -40,7 +40,7 @@ export const TIPOS = [
     familia: "naranja",
     matiz: 62,
     croma: 0.15,
-    L: { oscuro: 0.75, claro: 0.64 },
+    L: { oscuro: 0.75, claro: 0.66 },
   },
   {
     token: "tipo-4",
@@ -48,7 +48,7 @@ export const TIPOS = [
     familia: "rojo",
     matiz: 22,
     croma: 0.16,
-    L: { oscuro: 0.66, claro: 0.57 },
+    L: { oscuro: 0.66, claro: 0.58 },
   },
   {
     token: "tipo-5",
@@ -125,15 +125,6 @@ export const UMBRALES = {
   "tritan-1.0": 0.03,
 };
 
-/** Relleno tintado del nodo (D7): croma bajo del mismo matiz. */
-export const TINTE = {
-  oscuro: { L: 0.285, C: 0.05 },
-  claro: { L: 0.955, C: 0.035 },
-};
-/** Un tipo casi neutro (croma < 0,05) lleva un relleno casi neutro. */
-export const tinteDe = (tema, tp) =>
-  oklchAHex(TINTE[tema].L, tp.croma < 0.05 ? 0.012 : TINTE[tema].C, tp.matiz);
-
 /** Neutros de la interfaz (D6: la UI es monocroma). [L, C, h] */
 export const NEUTROS = {
   oscuro: {
@@ -143,7 +134,6 @@ export const NEUTROS = {
     linea: [0.36, 0.014, 255], // bordes finos (no texto)
     "tinta-1": [0.94, 0.008, 255],
     "tinta-2": [0.8, 0.012, 255],
-    "tinta-3": [0.56, 0.012, 255], // VETADA como texto (decorativa: rejillas, guías)
   },
   claro: {
     // Ronda 2: papel frío casi blanco (el crema de la ronda 1 se leía viejo).
@@ -153,12 +143,11 @@ export const NEUTROS = {
     linea: [0.87, 0.008, 255],
     "tinta-1": [0.22, 0.014, 255],
     "tinta-2": [0.38, 0.014, 255],
-    "tinta-3": [0.64, 0.012, 255], // VETADA como texto
   },
 };
 
 /** Tokens de tinta prohibidos como color de TEXTO (regla de desarrollo 5-b). */
-export const TINTAS_VETADAS = ["tinta-3", "linea"];
+export const TINTAS_VETADAS = ["linea"];
 
 export function construir() {
   /** @type {Record<string, Record<string, string>>} */
@@ -168,10 +157,7 @@ export function construir() {
     const t = {};
     for (const [k, [L, C, h]] of Object.entries(NEUTROS[tema]))
       t[k] = oklchAHex(L, C, h);
-    for (const tp of TIPOS) {
-      t[tp.token] = oklchAHex(tp.L[tema], tp.croma, tp.matiz);
-      t[`${tp.token}-tinte`] = tinteDe(tema, tp);
-    }
+    for (const tp of TIPOS) t[tp.token] = oklchAHex(tp.L[tema], tp.croma, tp.matiz);
     temas[tema] = t;
   }
   return {

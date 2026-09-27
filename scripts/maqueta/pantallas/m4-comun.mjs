@@ -5,6 +5,7 @@ import { MARCA } from "../nucleo/glifos.mjs";
 import { LANGS, esc, r1, camino, conFlecha, tramoCruzaCaja } from "../nucleo/comun.mjs";
 import { conFuente, avisos } from "../atlas/metrica.mjs";
 import { ES } from "./comun3.mjs";
+const mayus = (t) => t.charAt(0).toUpperCase() + t.slice(1);
 import { REV, ESTADO_DEC, SUP } from "./datos4.mjs";
 export { avisos };
 const F = conFuente("space-grotesk");
@@ -96,7 +97,7 @@ export function svgOndas(cols, decs, o = {}) {
   for (const id of Object.keys(pos)) {
     const d = decs.find((q) => q.id === id), p = pos[id], sup = d.sup.map((x) => SUP.find((q) => q.id === x)).filter((q) => q && q.estado === "sin_probar");
     const cic = enCiclo.has(id); const bloq = o.bloqueadas?.includes(id) && !cic;
-    s += `<g class="db-elem db-nodo dd-dec dd-${d.rev}${cic ? " dd-en-ciclo" : ""}${bloq ? " dd-bloq" : ""}" role="graphics-symbol img" tabindex="0" data-dueno="${id}" data-nodo="${id}" data-aria-es="${esc(d.es)}. Decisión de ${REV[d.rev].es}. ${ESTADO_DEC[d.estado][0]}.${d.impl ? " Implícita." : ""}${cic ? " En un ciclo de dependencias." : ""}" data-aria-en="${esc(d.en)}. ${REV[d.rev].en} decision. ${ESTADO_DEC[d.estado][1]}.${d.impl ? " Implicit." : ""}${cic ? " In a dependency cycle." : ""}">`;
+    s += `<g class="db-elem db-nodo dd-dec dd-${d.rev}${cic ? " dd-en-ciclo" : ""}${bloq ? " dd-bloq" : ""}" role="graphics-symbol img" tabindex="0" data-dueno="${id}" data-nodo="${id}" data-aria-es="${esc(d.es)}. ${REV[d.rev].aria[0]}. ${mayus(ESTADO_DEC[d.estado][0])}.${d.impl ? " Implícita." : ""}${cic ? " En un ciclo de dependencias." : ""}" data-aria-en="${esc(d.en)}. ${REV[d.rev].aria[1]}. ${mayus(ESTADO_DEC[d.estado][1])}.${d.impl ? " Implicit." : ""}${cic ? " In a dependency cycle." : ""}">`;
     s += `<rect data-caja="${id}" class="db-card dd-caja" x="${p.x}" y="${p.y}" width="${p.w}" height="${p.h}" rx="6"/>`;
     s += `<use href="#dd-rev-${d.rev}" x="${p.x + G.pad + 7}" y="${p.y + 17}" class="db-marca"/>`;
     for (const l of LANGS) s += t1(l, REV[d.rev][l], p.x + G.pad + 20, p.y + 9, 12, 16, "db-t-num dd-t-rev");

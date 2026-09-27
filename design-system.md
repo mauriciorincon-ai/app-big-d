@@ -1,6 +1,6 @@
 ---
-version: 0.5.0
-estado: completo para la mirada 2 (Etapa de Diseño, F2a); se sella en G-Diseño
+version: 0.5.1
+estado: completo para la mirada 4 (el H1 entero, Etapa de Diseño, F2a); se sella en G-Diseño
 fecha: 2026-09-26
 fuente_en_codigo: docs/diseno/assets/ (tokens.css GENERADO · bigd.css · diagrama.css · fuentes.css)
 gramatica_del_diagrama: docs/diseno/diagramador-tokens.md
@@ -8,7 +8,7 @@ gramatica_del_diagrama: docs/diseno/diagramador-tokens.md
 
 # Big-D — design system
 
-> **Fuente de verdad visual de Big-D.** Versión 0.5: completa para la mirada 4 (el H1 entero), con todos los
+> **Fuente de verdad visual de Big-D.** Versión 0.5.1: completa para la mirada 4 (el H1 entero), con todos los
 > componentes canon y sus estados, vistos en `docs/diseno/kit.html` y en las páginas del atlas. Lo
 > que toca al diagrama vive en `docs/diseno/diagramador-tokens.md`, porque es contrato del
 > reusable y no estilo de esta app. Se sella en G-Diseño.
@@ -49,10 +49,9 @@ Los colores se declaran en OKLCH en `scripts/paleta/generar-tokens.mjs` y se gen
 | `fondo`   | `#0b0f14` | `#f2f4f6` | fondo de página                                                  |
 | `sup-1`   | `#12161c` | `#f9fafc` | barra de la app, carriles y lienzo del diagrama                  |
 | `sup-2`   | `#1b2128` | `#ffffff` | tarjetas, controles, etiquetas, paneles elevados                 |
-| `linea`   | `#383e45` | `#d1d5d9` | filetes que separan secciones (**vetada como texto**)            |
+| `linea`   | `#383e45` | `#d1d5d9` | filetes que separan secciones, guías y rejillas (**vetada como texto**) |
 | `tinta-1` | `#e8ebf1` | `#161b21` | texto principal, títulos, marcas, foco, fondo de lo seleccionado |
 | `tinta-2` | `#b9bec6` | `#3d434a` | texto secundario, flujos, bordes de control                      |
-| `tinta-3` | `#70757c` | `#878d94` | guías y rejillas (**vetada como texto**)                         |
 
 Oscuro: superficie azul negra fría, tinta clara. Claro: papel frío casi blanco, tinta azul negra (ronda 2; la ronda 1 usaba un crema cálido).
 
@@ -61,7 +60,8 @@ Oscuro: superficie azul negra fría, tinta clara. Claro: papel frío casi blanco
 Un matiz propio por tipo, con claridad por tema (ronda 2). Tabla completa, método, umbral y medidas en
 `diagramador-tokens.md` § 5. Resumen: azul (ingesta), violeta (almacenamiento), naranja
 (transformación), rojo (gobierno), verde (consumo), magenta (IA), pizarra casi neutro (externo) y
-cian (operación). Cada uno tiene su relleno tintado (`tipo-N-tinte`) para tarjetas e insignias.
+cian (operación). El matiz pinta el filete, el glifo y el trazo; las tarjetas van en `sup-2` y el texto
+siempre en tinta (no hay rellenos tintados: se retiraron con la dirección B).
 
 ### 3.3 Tipografía
 
@@ -72,7 +72,7 @@ variables `wght`, subconjunto latino servido desde el sitio.
 
 | Rol                                   | Familia        | Tamaño / línea                                        | Peso             |
 | ------------------------------------- | -------------- | ----------------------------------------------------- | ---------------- |
-| Título de página (h1)                 | Space Grotesk  | 32 / 35 en teléfono · 46 / 51 desde 720 px, −0,025 em | 800              |
+| Título de página (h1)                 | Space Grotesk  | 32 / 35 en teléfono · 46 / 51 desde 720 px, −0,025 em | 700 (la cara servida llega a 700) |
 | Ojo de sección («ATLAS · NIVEL 1 …»)  | JetBrains Mono | 12, mayúsculas, +0,12 em                              | 600              |
 | Subtítulo                             | Space Grotesk  | 17 / 26                                               | 400              |
 | Cuerpo                                | Space Grotesk  | 16 / 25                                               | 400              |
@@ -89,9 +89,9 @@ variables `wght`, subconjunto latino servido desde el sitio.
 
 | Token             | Valor                                                      | Uso                                                                     |
 | ----------------- | ---------------------------------------------------------- | ----------------------------------------------------------------------- |
-| `--e-1` … `--e-7` | 4 · 8 · 12 · 16 · 24 · 32 · 48 px                          | toda distancia sale de esta escala                                      |
-| `--radio-control` | 6 px                                                       | botones, conmutadores, selector                                         |
-| `--radio-caja`    | 8 px                                                       | bandas, fichas, paneles                                                 |
+| `--e-1` … `--e-7` | 4 · 8 · 12 · 16 · 24 · 32 · 48 px                          | **escala objetivo del S1** (`@theme`). La maqueta usa además 10 · 14 · 18 · 22 · 28 px (medido en `bigd.css`); el S1 los lleva al paso más cercano o declara el paso nuevo |
+| `--radio-control` | 4 px                                                       | botones, conmutadores, selector (lo que se aprobó en la maqueta)        |
+| `--radio-caja`    | 8 px como máximo                                           | bandas, fichas, paneles, hoja inferior                                  |
 | píldora           | 999 px                                                     | vigencia, estados                                                       |
 | filete            | 1 px `linea` entre secciones · 1 px `tinta-2` en controles |                                                                         |
 | **sombras**       | **ninguna**                                                | la elevación es un paso de superficie (`sup-1` → `sup-2`) más un filete |
@@ -107,7 +107,7 @@ Página: ancho máximo 1280 px; margen lateral 16 px en teléfono y 32 px desde 
 | Desplazamiento al elegir una capa | `scroll-behavior: smooth`           | índice de capas                           | salto instantáneo (`auto`)                        |
 | Recorrido: avance de paso         | 240–320 ms, ease, opacidad y grosor | `atlas-recorrido.html`                    | sin transición: el atributo cambia y el CSS pinta |
 | Recorrido: línea activa «fluye»   | 1,2 s lineal, `stroke-dashoffset`   | solo mientras se reproduce                | la hoja `recorrido-animacion.css` **no se carga** |
-| Reproducción automática           | un paso cada 2 s                    | botón «Reproducir»                        | el botón **no existe**                            |
+| Reproducción automática           | un paso cada 2 s                    | botón «Reproducir»                        | el botón sigue en el DOM y el CSS lo oculta (`display: none` bajo `prefers-reduced-motion: reduce`): el árbol no cambia (regla 5-a) |
 | Indicador de carga                | 1,4 s lineal, rotación              | estado «Simulación en curso»              | estático: la barra de progreso basta              |
 
 Reglas: solo `opacity`, `stroke-*` y `transform`; nada arranca solo salvo la reproducción que el
@@ -123,8 +123,8 @@ desarrollo 5-a): el SVG del recorrido es el mismo con y sin movimiento; cambia u
 | Por revisar                   | píldora de contorno 2 px + «!» dibujado                                                   | «por revisar · 2 bloques, el más antiguo con 34 días»             |
 | Vencido                       | píldora llena de tinta, texto en el color de la superficie + aspa dibujada                | «vencido · 1 bloque con 63 días»                                  |
 | Seleccionado / actual         | subrayado de 2 px + negrita (controles); borde de 2 u en `tinta-1` (nodo)                 | pestaña activa, alternador, nodo con ficha abierta                |
-| Pendiente (aún no existe)     | texto `tinta-2`, cursor «no permitido», `aria-disabled`                                   | pestañas y secciones que llegan en otras miradas                  |
-| Foco                          | contorno de 2 px en `tinta-1` a 3 px del borde; en el diagrama, borde de 2 u              |                                                                   |
+| Deshabilitado                 | botón al 45 %, cursor «no permitido», `disabled`, con el motivo escrito al lado            | «Aprobar perfil» mientras la suma ≠ 100                          |
+| Foco                          | contorno de 2 px en `tinta-1` a 3 px del borde; en el diagrama, el borde **suma** al menos 1 u al de reposo (jamás lo reduce: una vía 2,5 → 4) |                                                                   |
 | Madurez (no disponible)       | medidor de llenado 0–4 + texto; retirado = vacío y tachado; anunciado = contorno punteado | «vista previa», «beta», «anunciado»                               |
 | Vacío                         | caja punteada dibujada + título + qué hacer                                               | «Sin casos todavía · Crea el primero desde “Caso”»                |
 | Carga                         | anillo (gira solo sin «reducir movimiento») + qué corre + cuánto lleva en mono + barra    | «Simulación en curso · 2 400 / 10 000 · semilla»                  |
@@ -133,9 +133,10 @@ desarrollo 5-a): el SVG del recorrido es el mismo con y sin movimiento; cambia u
 | Cita no verificada            | filete izquierdo punteado + «cita no verificada» en mono con aspa                         | tarjeta de propuesta                                              |
 | Prioridad alta sin mitigación | fila sobre `sup-1` + «sin mitigación» con aspa                                            | tabla de prioridad de acción                                      |
 
-Vacío, carga y error se diseñan en las miradas 3 y 4, con la misma regla.
+Carga («simulación en curso», comparación) y error («error de carga», base) tienen pantalla; el vacío
+solo vive en el kit (deuda del S1: la primera pantalla sin datos lo usa).
 
-## 5. Componentes canon (v0.2: los del atlas, nivel 1, dirección B)
+## 5. Componentes canon del atlas (desde v0.2, dirección B)
 
 **Principio del cromo:** sin píldoras ni rellenos; lo activo se marca con **subrayado de 2 px y
 negrita**, lo secundario con `tinta-2`, las secciones con **filetes de 1 px** en `linea`. El aire
@@ -143,11 +144,11 @@ hace la jerarquía.
 
 | Componente                                                       | Anatomía                                                                                                                           | Estados                                         | Dónde se ve             |
 | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- | ----------------------- |
-| **Barra de la app**                                              | signo + «Big-D» + sello de sección en mono · navegación en texto · alternadores «ES / EN» y «Oscuro / Claro» en mono               | actual (subrayado 2 px + negrita) · pendiente   | `atlas-nivel-1.html`    |
+| **Barra de la app**                                              | signo + «Big-D» + sello de sección en mono · navegación en texto · alternadores «ES / EN» y «Oscuro / Claro» en mono               | actual (subrayado 2 px + negrita)               | `atlas-nivel-1.html`    |
 | **Alternador**                                                   | dos palabras en mono separadas por «/»; 36 px de alto mínimo                                                                       | presionado = negrita + subrayado                | idioma, tema            |
 | **Encabezado de página**                                         | ojo en mono · h1 · subtítulo · línea de metadatos en mono                                                                          | vigente · por revisar · vencido (marca + texto) | cabeza del atlas        |
 | **Botón de enlace**                                              | texto 600 con línea inferior de 1,5 px                                                                                             | —                                               | «Cambiar de plataforma» |
-| **Pestañas de nivel**                                            | fila con filete inferior; número en mono + nombre; se desliza en teléfono                                                          | actual · pendiente                              | bajo el encabezado      |
+| **Pestañas de nivel**                                            | fila con filete inferior; número en mono + nombre; se desliza en teléfono                                                          | actual                                          | bajo el encabezado      |
 | **Lienzo del atlas**                                             | marco de 1 px sobre `sup-1` con rejilla punteada; desplazamiento lateral; índice de capas, sombras de borde y pista cuando no cabe | cabe · desborda                                 | el diagrama             |
 | **Ficha breve**                                                  | bloque con filete izquierdo de 2 px sobre `sup-1`                                                                                  | oculta · abierta tras tocar un bloque           | bajo el lienzo          |
 | **Leyenda**                                                      | dos listas con filetes: glifo + código en mono + nombre; muestras de línea + marcador                                              | —                                               | bajo el lienzo          |
@@ -161,7 +162,7 @@ hace la jerarquía.
 | **Nodo (nivel 2)**               | tarjeta 152 × 84 con filete de tipo, glifo, nombre (≤ 3 líneas), madurez si no es disponible, «N fuentes»                                                                | normal · con ficha abierta (borde 2 u) · atenuado (recorrido)          | `atlas-nivel-2.html`   |
 | **Ficha de nodo**                | tipo · nombre · frase de líder · qué hace · por qué importa · términos (propios y del glosario, marcados) · madurez · fuentes con fecha y tipo · verificado / consultado | cerrada · abierta (hoja inferior < 900 px, panel lateral desde 900 px) | nivel 2                |
 | **Paso de recorrido**            | insignia numerada sobre el nodo (6a/7a/6b en la rama) + marca de bifurcación; lista de pasos con líder y experto                                                         | estático · activo · visitado · pendiente (atenuado) · animando         | `atlas-recorrido.html` |
-| **Controles del recorrido**      | Anterior · «Paso n de 8» · Siguiente · Reproducir/Pausar · Ver todos; flechas del teclado                                                                                | reproduciendo (`aria-pressed`) · sin botón con movimiento reducido     | recorrido              |
+| **Controles del recorrido**      | Anterior · «Paso n de N» (N sale del mapa) · Siguiente · Reproducir/Pausar · Ver todos; flechas del teclado (no cuando el foco está en el lienzo, que las usa para deslizar) | reproduciendo (`aria-pressed`) · con movimiento reducido, «Reproducir» oculto por CSS (mismo árbol) | recorrido              |
 | **Lado a lado**                  | filas por plataforma, columnas por banda (9), bloque mini 118 × 64; bloque punteado «sin componentes»; selector N; paginación de 3 en 3                                  | tres · componentes de un bloque · página 2 · diferencias · una banda a la vez (< 900 px) | `lado-a-lado.html`     |
 | **Ficha de bloque**              | al tocar un bloque del lado a lado: banda · plataforma · nombre · «N componentes» · tipo · componentes como **tarjetas de nodo** · versión y vigencia; panel lateral en ancho, desplegable bajo la fila en teléfono | abierta · cerrada (Esc)                                                | lado a lado            |
 | **Tarjeta de nodo (HTML)**       | el nodo del nivel 2 fuera del lienzo: filete izquierdo de 4 px del color del tipo + glifo + nombre en negrita + pie con medidor y madurez (si no es disponible) y fuentes con glifo de documento | —                                                                      | lado a lado (ficha y teléfono) |
@@ -208,7 +209,9 @@ hace la jerarquía.
 - **Cero emojis y cero íconos de terceros.** Todo glifo es un path propio: los 8 tipos, los 4
   marcadores de modo, las marcas de estado y el medidor de madurez (`diagramador-tokens.md` §§ 6–7).
 - **Cero logos de fabricantes y cero colores de marca** (regla dura 5). Los nombres comerciales se
-  usan solo para identificar, con la nota de marcas en la leyenda.
+  usan solo para identificar. La **nota de marcas** junto a la leyenda y el **selector de plataforma
+  del atlas** (N, orden por identificador, nombres en uso nominativo) no se dibujaron en la maqueta: se
+  diseñan en el S1, el primer sprint con nombres reales (§ 10).
 - Controles: chevrón de 12 px dibujado.
 
 ## 7. Accesibilidad
@@ -220,14 +223,14 @@ hace la jerarquía.
 | `tinta-1` sobre `sup-1`                         | 15,2:1 | 16,6:1 | 4,5:1  |
 | `tinta-2` sobre `sup-1`                         | 9,7:1  | 9,6:1  | 4,5:1  |
 | `tinta-2` sobre `fondo`                         | 10,3:1 | 9,1:1  | 4,5:1  |
-| `tinta-1` sobre el relleno de nodo más exigente | 11,8:1 | 15,0:1 | 4,5:1  |
-| `tinta-2` sobre el relleno de nodo más exigente | 7,5:1  | 8,7:1  | 4,5:1  |
-| trazo de tipo más débil sobre `sup-1`           | 5,2:1  | 3,3:1  | 3:1    |
+| `tinta-1` sobre la tarjeta del nodo (`sup-2`)   | 13,6:1 | 17,3:1 | 4,5:1  |
+| `tinta-2` sobre la tarjeta del nodo (`sup-2`)   | 8,7:1  | 10,0:1 | 4,5:1  |
+| trazo de tipo más débil sobre `sup-1`           | 5,2:1  | 3,1:1  | 3:1    |
 
 ### 7.2 Tintas vetadas como texto
 
-**`tinta-3` y `linea` nunca colorean texto** (3,9:1 y 1,7:1 en oscuro). Lo vigilan dos gates que
-corren con `pnpm test`: `paleta-diagramador` comprueba que de verdad no llegan a 4,5:1, y
+**`linea` nunca colorea texto** (1,7:1 en oscuro, 1,4:1 en claro). Lo vigilan dos gates que
+corren con `pnpm test`: `paleta-diagramador` comprueba que de verdad no llega a 4,5:1, y
 `maqueta-vocabulario` falla si una regla `color:` o un `<text fill>` las usa.
 
 ### 7.3 Reglas
@@ -238,7 +241,14 @@ corren con `pnpm test`: `paleta-diagramador` comprueba que de verdad no llegan a
   deuteranopía, protanopía y tritanopía, en los dos temas.
 - 380 px sin desplazamiento horizontal: lo mide el arnés de capturas en cada página.
 - Blancos de toque de 32 px como mínimo en controles.
-- Colores forzados: el diagrama pasa a `Canvas` y `CanvasText` y conserva glifo, trazo y texto.
+- Colores forzados: el diagrama pasa a `Canvas` y `CanvasText` y conserva glifo, trazo y texto; la
+  insignia «vencido» se invierte (fondo `CanvasText`, texto `Canvas`) y la doble línea de «sin copia»
+  conserva su hueco.
+- Saltos: «Saltar al contenido» es el primer foco de cada página y cada diagrama lleva «Saltar el
+  diagrama» hacia su lectura en texto (G10).
+- Ficha (hoja o panel): al abrir, el foco va a su título; Esc o «Cerrar» lo devuelven al nodo de
+  origen (así en la maqueta). Contrato del S1: en teléfono es un diálogo modal (`role="dialog"`,
+  `aria-modal`, foco contenido); en ancho, una región complementaria no modal.
 
 ## 8. Anti-patrones prohibidos
 
@@ -246,9 +256,11 @@ corren con `pnpm test`: `paleta-diagramador` comprueba que de verdad no llegan a
 - Color como única señal. Rojo contra verde para decir bien y mal.
 - Emojis; caracteres fuera de la fuente (✓ ✕ ▶ → β) como texto.
 - Calcos de traducción automática: «casa del lago» por _lakehouse_, «lago de datos» por _data lake_.
-- Sombras, degradados, cristal, brillo, partículas en el recorrido.
+- Sombras, degradados, cristal, brillo, partículas en el recorrido. Dos degradados son funcionales y
+  están declarados: la rejilla punteada del lienzo y las sombras de borde que avisan que el lienzo se
+  desliza (`bigd.css`).
 - Rejillas de tarjetas idénticas; cifras gigantes sin su evidencia; un «3» cableado en una vista.
-- Radios mayores de 8 px en cajas; `tinta-3` o `linea` como color de texto.
+- Radios mayores de 8 px en cajas; `linea` como color de texto.
 - Animación que arranca sola o que decide qué elementos existen.
 
 ## 9. Contrato con el código futuro
@@ -256,7 +268,9 @@ corren con `pnpm test`: `paleta-diagramador` comprueba que de verdad no llegan a
 - `tokens.css` pasa tal cual a `src/app/` y se mapea 1:1 al `@theme` de Tailwind v4
   (`--color-fondo`, `--color-tinta-1`, …). El generador sigue siendo la fuente.
 - **Tema:** atributo `data-theme` en `<html>` (`oscuro` | `claro`); sin atributo, manda
-  `prefers-color-scheme` y, si no hay preferencia, oscuro.
+  `prefers-color-scheme` y, si no hay preferencia, oscuro. En la maqueta cada página fija
+  `data-theme="oscuro"` (tema primario) y el conmutador lo cambia: la rama `prefers-color-scheme` de
+  `tokens.css` no se ejerce aquí; la prueba el S1.
 - **Fuentes:** los woff2 de `docs/diseno/assets/fuentes/` se sirven desde el mismo sitio. El
   `layout.tsx` del estampado usa Geist por `next/font/google`: el S1 lo reemplaza por Space Grotesk,
   porque la fuente del sitio debe ser la de la tabla de métricas (G15).
@@ -265,9 +279,11 @@ corren con `pnpm test`: `paleta-diagramador` comprueba que de verdad no llegan a
 ## 10. Deuda de diseño
 
 - La barra de sala de diseño está solo en español: es cromo de la maqueta, no producto.
-- Pantallas 5 a 11 (conocimiento, caso, comparación, decisiones, informe, instrumento): sus
-  componentes ya están en el kit; las pantallas llegan en las miradas 3 y 4.
 - El selector de plataformas del lado a lado no filtra en la maqueta (las casillas son estáticas).
+- Nota de marcas y selector de plataforma del atlas: se diseñan en el S1 (§ 6).
+- Estado vacío en contexto: solo existe en el kit (S1).
+- Zona gris y clases «moderada» y «frágil» de la robustez: sin pantalla, porque el caso no las produce
+  (se ven cuando la simulación las da).
 - El nivel 2 en teléfono muestra el mapa entero deslizable; una vista «una capa a la vez» para el
   nivel 2 no se diseñó (P10 se mide en el piloto).
 
@@ -275,6 +291,7 @@ corren con `pnpm test`: `paleta-diagramador` comprueba que de verdad no llegan a
 
 | Versión | Fecha      | Cambio                                                                                                                                                                                                                                                                   |
 | ------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 0.5.1   | 2026-09-27 | Auditoría de la etapa: fuera los tokens sin uso (`tipo-N-tinte`, `tinta-3`); dos claridades del claro salen de la búsqueda sin el relleno retirado (naranja `#d27908`, rojo `#c74a4d`); espacio y radios declarados como escala objetivo del S1; h1 a 700; foco que suma al borde; saltos al contenido y al diagrama; contrato de foco de la ficha; «Reproducir» oculto por CSS con movimiento reducido; nota de marcas y selector del atlas pasan al S1; degradados funcionales declarados. La ficha del nivel 2 por fin abre (la página no cargaba su script). |
 | 0.5.0   | 2026-09-26 | Mirada 4: decisiones y riesgos, hoja de ruta e informe, instrumento y recorrido (13 componentes nuevos). El tema claro se emite también para `.tema-claro` y `@media print` (papel siempre claro). Sombras siguen prohibidas: el papel se separa con filete. |
 | 0.4.1   | 2026-09-26 | Ajuste de la mirada 3 (pedido del usuario): componentes desplegados visualmente en el lado a lado (vista «componentes» en el lienzo y tarjetas de nodo en la ficha y en teléfono). |
 | 0.4.0   | 2026-09-26 | Mirada 3: componentes de conocimiento y caso (semáforo por capa, bloque de comando, afirmación de propuesta, ficha de corrida, veredicto, error de carga, instantáneas, lista de pesos, restricción, decisión implícita, sello, totales, matriz, control de sensibilidad, aceptabilidad, pros y contras). Navegación Conocimiento y Caso activa. |

@@ -1,4 +1,4 @@
-/* Big-D — hoja base del PRODUCTO (design-system.md v0.2). Colores solo por variable (tokens.css,
+/* Big-D — hoja base del PRODUCTO (design-system.md v0.5). Colores solo por variable (tokens.css,
    generado y medido). Personalidad: instrumental · técnico · legible. Sin píldoras ni rellenos:
    filetes, texto y aire. Space Grotesk (elegida por el usuario, mirada 1 ronda 3) y JetBrains Mono. */
 :root {
@@ -21,7 +21,7 @@ a { color: inherit; text-underline-offset: 3px; }
 
 /* Barra */
 .barra { display: flex; align-items: center; gap: 28px; min-height: 60px; padding: 0 24px; border-bottom: 1px solid var(--linea); }
-.marca { display: inline-flex; align-items: center; gap: 10px; font-weight: 800; font-size: 19px; letter-spacing: -0.02em; text-decoration: none; }
+.marca { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; font-size: 19px; letter-spacing: -0.02em; text-decoration: none; }
 .marca-signo { width: 22px; height: 22px; display: block; }
 .marca-sello { font: 500 11px/1 var(--letra-mono); letter-spacing: 0.14em; color: var(--tinta-2); }
 .nav { display: flex; gap: 22px; margin: 0; padding: 0; list-style: none; font-size: 15px; }
@@ -39,7 +39,7 @@ a { color: inherit; text-underline-offset: 3px; }
 @media (min-width: 720px) { .pagina { padding: 40px 32px 80px; } }
 .encabezado { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px 32px; margin-bottom: 28px; }
 .encabezado .ojo { display: block; margin-bottom: 14px; }
-h1 { font-size: 32px; line-height: 1.1; font-weight: 800; letter-spacing: -0.025em; margin: 0; }
+h1 { font-size: 32px; line-height: 1.1; font-weight: 700; letter-spacing: -0.025em; margin: 0; }
 @media (min-width: 720px) { h1 { font-size: 46px; } }
 .sub { margin: 10px 0 0; color: var(--tinta-2); font-size: 17px; max-width: 60ch; }
 .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 16px 0 0; font: 500 13px/1.4 var(--letra-mono); color: var(--tinta-2); }
@@ -111,7 +111,7 @@ h1 { font-size: 32px; line-height: 1.1; font-weight: 800; letter-spacing: -0.025
 .lectura-flujos { color: var(--tinta-2); }
 
 /* Panel de ficha (nivel 2): hoja inferior en teléfono, panel lateral en desktop. Sin sombra: filete. */
-.panel { position: fixed; z-index: 20; background: var(--sup-1); border-top: 1px solid var(--linea); display: flex; flex-direction: column; left: 0; right: 0; bottom: 0; max-height: 72vh; border-radius: 10px 10px 0 0; }
+.panel { position: fixed; z-index: 20; background: var(--sup-1); border-top: 1px solid var(--linea); display: flex; flex-direction: column; left: 0; right: 0; bottom: 0; max-height: 72vh; border-radius: 8px 8px 0 0; }
 .panel[hidden] { display: none; }
 @media (max-width: 899px) { .panel-solo-ancho { display: none; } } /* lado a lado: en teléfono la lista se despliega bajo la fila */
 @media (min-width: 900px) { .panel { left: auto; top: 0; bottom: 0; width: 420px; max-height: none; border-top: 0; border-left: 1px solid var(--linea); border-radius: 0; } }
@@ -483,3 +483,11 @@ html[data-eje-vista="impresion"] .informe-marco { display: block; }
 .rec-estados { font-size: 14px; color: var(--tinta-2); }
 .rec-mirada { display: inline-flex; align-items: center; gap: 6px; font: 600 12px/1.3 var(--letra-mono); margin-top: 4px; }
 @media (max-width: 479px) { .evidencia-meta div, .repro div { grid-template-columns: 1fr; gap: 2px; } }
+/* Saltos (auditoría A-13): invisibles hasta recibir el foco; «Saltar al contenido» es el primer Tab. */
+.saltar { position: absolute; left: 8px; top: -80px; z-index: 60; padding: 10px 14px; background: var(--tinta-1); color: var(--fondo); font-weight: 700; text-decoration: none; border-radius: 4px; }
+.saltar:focus { top: 8px; }
+.saltar-diagrama { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.saltar-diagrama:focus { position: static; width: auto; height: auto; clip-path: none; display: inline-block; margin: 0 0 8px; color: var(--tinta-1); font-weight: 700; }
+/* Movimiento reducido: «Reproducir» sigue en el DOM (el árbol no depende de la preferencia, regla 5-a) y el
+   CSS lo oculta. Va al final y con el id del recorrido para ganarle a `.boton { display: inline-flex }`. */
+@media (prefers-reduced-motion: reduce) { #rec [data-rec="reproducir"] { display: none; } }

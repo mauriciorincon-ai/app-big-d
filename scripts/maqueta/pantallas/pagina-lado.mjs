@@ -1,4 +1,3 @@
-import fs from "node:fs";
 import { BANDA, MADUREZ, TIPO } from "../nucleo/datos.mjs";
 import { TIPO_GLIFO } from "../nucleo/glifos.mjs";
 import { esc } from "../nucleo/comun.mjs";
@@ -7,7 +6,7 @@ import { PAGINAS_PL, POR_PAGINA, paginas, paginasComp, avisos } from "./lado.mjs
 import { enPalabras } from "./caso.mjs";
 const cap = (t) => t.charAt(0).toUpperCase() + t.slice(1);
 import { ES, CHEVRON, barra, encabezado, head, mqBar, niveles, pie } from "./comun3.mjs";
-import { sal } from "../rutas.mjs";
+import { escribir } from "../pulir.mjs";
 const nComp = (n) => ES(`${n} ${n === 1 ? "componente" : "componentes"}`, `${n} ${n === 1 ? "component" : "components"}`);
 const nFte = (n) => ES(`${n} ${n === 1 ? "fuente" : "fuentes"}`, `${n} ${n === 1 ? "source" : "sources"}`);
 /** Componentes de un bloque como TARJETAS DE NODO (ajuste de la mirada 3): filete del color del tipo,
@@ -86,6 +85,6 @@ ${PLATAFORMAS.map((p) => BANDAS.map((b) => fichaBloque(p, b)).filter(Boolean).jo
 <script src="assets/ficha.js" defer></script>
 <script src="assets/lado.js" defer></script>
 ${pie}`;
-fs.writeFileSync(sal("lado-a-lado.html"), html);
+escribir("lado-a-lado.html", html);
 console.log("lado", (html.length / 1024).toFixed(1), "KB", avoids());
 function avoids() { return avisos.length ? avisos.join("\n") : "sin avisos"; }

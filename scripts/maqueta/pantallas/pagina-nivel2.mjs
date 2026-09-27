@@ -1,10 +1,9 @@
-import fs from "node:fs";
 import { BANDA, MAPA, MADUREZ, NODO, TIPO } from "../nucleo/datos.mjs";
 import { esc } from "../nucleo/comun.mjs";
 import { FUENTE_EN, NODO_EN, TERMINO_EN } from "./datos2.mjs";
 import { svgNivel2, avisos } from "./nivel2.mjs";
 import { ES, barra, encabezado, head, lienzo, metaVigente, mqBar, niveles, pie } from "./comun3.mjs";
-import { sal } from "../rutas.mjs";
+import { escribir } from "../pulir.mjs";
 
 const D = svgNivel2();
 const GLOS = MAPA.glosario;
@@ -47,6 +46,7 @@ ${MAPA.nodos.map(ficha).join("\n")}
     </div>
   </aside>
 </main>
+<script src="assets/ficha.js" defer></script>
 ${pie}`;
-fs.writeFileSync(sal("atlas-nivel-2.html"), html);
+escribir("atlas-nivel-2.html", html);
 console.log("nivel-2", (html.length / 1024).toFixed(1), "KB", avisos.length ? avisos.join("\n") : "sin avisos");

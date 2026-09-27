@@ -3,9 +3,9 @@
 // Las ondas, el ciclo, la prioridad de acción y el orden se CALCULAN aquí, no se escriben.
 
 export const REV = {
-  una_via: { es: "una vía", en: "one-way", trato: ["Revertirla implica migrar datos, rediseñar permisos o renegociar contratos. Análisis de riesgos obligatorio; se decide primero.", "Reversing it means migrating data, redesigning permissions or renegotiating contracts. Risk analysis is mandatory; it is decided first."] },
-  costosa: { es: "costosa", en: "costly", trato: ["Reversible con un esfuerzo significativo pero acotado. Análisis de riesgos recomendado.", "Reversible with significant but bounded effort. Risk analysis recommended."] },
-  dos_vias: { es: "dos vías", en: "two-way", trato: ["Se puede cambiar con bajo costo. Se decide rápido y se ajusta con la experiencia.", "It can be changed at low cost. Decide quickly and adjust with experience."] },
+  una_via: { es: "una vía", en: "one-way", aria: ["Decisión de una vía", "One-way decision"], trato: ["Revertirla implica migrar datos, rediseñar permisos o renegociar contratos. Análisis de riesgos obligatorio; se decide primero.", "Reversing it means migrating data, redesigning permissions or renegotiating contracts. Risk analysis is mandatory; it is decided first."] },
+  costosa: { es: "costosa", en: "costly", aria: ["Decisión costosa de revertir", "Costly-to-reverse decision"], trato: ["Reversible con un esfuerzo significativo pero acotado. Análisis de riesgos recomendado.", "Reversible with significant but bounded effort. Risk analysis recommended."] },
+  dos_vias: { es: "dos vías", en: "two-way", aria: ["Decisión de dos vías", "Two-way decision"], trato: ["Se puede cambiar con bajo costo. Se decide rápido y se ajusta con la experiencia.", "It can be changed at low cost. Decide quickly and adjust with experience."] },
 };
 export const ESTADO_DEC = { pendiente: ["pendiente", "pending"], en_prueba: ["espera una prueba", "awaiting a test"], decidida: ["decidida", "decided"] };
 

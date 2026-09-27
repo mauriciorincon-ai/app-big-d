@@ -19,10 +19,10 @@ plan aprobado: 2026-09-26 (plan mode → «construye»)
 
 | Mirada       | Artefacto(s)                                                                                                  | Estado    |
 | ------------ | ------------------------------------------------------------------------------------------------------------- | --------- |
-| 1            | `diagramador-tokens.md` + `atlas-nivel-1.html` ⭐ (+ `design-system.md` v0.1)                                 | pendiente |
-| 2            | `design-system.md` completo + `kit.html` + `atlas-nivel-2.html` + `atlas-recorrido.html` + `lado-a-lado.html` | pendiente |
-| 3            | `investigador.html` · `base.html` · `perfil.html` · `comparacion.html`                                        | pendiente |
-| 4            | `decisiones.html` · `informe.html` · `instrumento.html` · `index.html`                                        | pendiente |
+| 1            | `diagramador-tokens.md` + `atlas-nivel-1.html` ⭐ (+ `design-system.md` v0.1)                                 | aprobada 2026-09-26 (ronda 4) |
+| 2            | `design-system.md` completo + `kit.html` + `atlas-nivel-2.html` + `atlas-recorrido.html` + `lado-a-lado.html` | aprobada 2026-09-26, con un ajuste |
+| 3            | `investigador.html` · `base.html` · `perfil.html` · `comparacion.html`                                        | aprobada 2026-09-26, con un ajuste |
+| 4            | `decisiones.html` · `informe.html` · `instrumento.html` · `index.html`                                        | aprobada 2026-09-26 |
 | 5 = G-Diseño | todo, desplegado, teléfono + desktop, ambos temas, ambos idiomas                                              | pendiente |
 
 Regla: «continúa» no aprueba diseño; cada mirada se registra en `docs/diseno/README.md` ANTES del
@@ -536,3 +536,81 @@ Este y Norte, y la 2 a Sur. `diagramador-tokens.md` § 9.2 ter, fila N, al día.
 Pasada de capturas tras A-02 y A-03: 128 encuadres (lado a lado, comparación e informe × estados × 2 temas × 2
 idiomas × 380/1280), **0 fallas de medida**. Leídas como imagen: lado a lado «tres» oscuro ES 380 (las 4
 plataformas apiladas en Fuentes) y comparación «robustez» claro ES 1280 (cifras de la simulación, sin zona gris).
+
+**Medios y bajos pagados en la fase 2** (todos antes de la mirada 5; cada uno con su hallazgo en
+`sprints/ETAPA-DISENO-auditoria.md`):
+
+| Hallazgo | Pago |
+| -------- | ---- |
+| A-05 umbrales | D79 (abajo); `paleta-diagramador.test.ts` declara los mínimos como literales y exige umbral ≥ mínimo y peor par ≥ mínimo. **Demo en rojo:** `UMBRALES.normal = 0.05` en el generador → «el umbral normal del generador no baja del mínimo 0.1»; verde al revertir (46/46) |
+| A-06 desviaciones | sección «Desviación del plan» al final de esta bitácora |
+| A-07 § 16 | siete filas nuevas (angosta retirada, referencias en nivel 2, `compare` por banda, G10, codificación del nodo, ids de `<defs>`, umbral) y fuera la fila de D1 en angosto |
+| A-08 tokens huérfanos | fuera `tipo-N-tinte` (16) y `tinta-3` (2); la búsqueda de paleta pierde su tercera condición (glifo sobre el relleno retirado) y, re-ejecutada, mueve dos claridades del claro: naranja `#ca7400` → `#d27908`, rojo `#c4474b` → `#c74a4d` (D80). Tablas de § 5.2 y § 5.3 regeneradas por script, no copiadas |
+| A-09 grosor | § 7 dice 1,6 u (a demanda 2,8, haz 4), como `diagrama.css` |
+| A-10 espacio, radios, peso | `--e-*` y `--radio-*` declarados como escala objetivo del S1 con los desvíos medidos; radio de control 4 px; hoja inferior 10 → 8 px; h1 y marca 800 → 700 (la cara llega a 700: sin cambio visible) |
+| A-11 colores forzados | insignia «vencido» invertida (`CanvasText` / `Canvas`) y hueco de «sin copia» en `Canvas` |
+| A-12 foco | `.dd-dec:focus-visible` y ficha abierta: borde 4 (reposo 2,5); regla escrita: el foco suma, jamás resta |
+| A-13 saltos | `scripts/maqueta/pulir.mjs` (se aplica al escribir cada página): «Saltar al contenido» primer foco en las 13; «Saltar el diagrama» delante de cada lienzo (6), hacia la lectura en texto en el nivel 1 y detrás del lienzo en el resto |
+| A-14 nombres accesibles | 15 `aria-label` pasan a par `data-aria-es` / `data-aria-en`; quedan solo los de la barra de sala (deuda declarada) y los nombres de idioma |
+| A-15 reduced-motion | «Reproducir» queda en el DOM y el CSS lo oculta; `recorrido.js` ya no escribe `hidden`; textos de `design-system.md` § 3.5 y de la propuesta § 15 corregidos |
+| A-16 nota de marcas | los documentos dejan de prometerla; nota y selector del atlas pasan al S1 (deuda) |
+| A-17 foco de la ficha | `ficha.js`: al abrir por el usuario, foco al título; Esc o «Cerrar» lo devuelven al nodo; el modal de teléfono queda como contrato del S1 |
+| A-18 atributo duplicado | la muestra de «a demanda» lleva un solo `stroke-width` (2,8, como el diagrama) |
+| A-19 ids | `matriz-empate` y `matriz-clara`; «Ver puntajes» solo en la vista que tiene su matriz. Los `<defs>` repetidos entre lienzos quedan como cambio al serializador (§ 16) |
+| A-20 plantilla | «Decisión de una vía / costosa de revertir / de dos vías», estado con mayúscula |
+| A-21 títulos | «Big-D · sección · pantalla» según la navegación; portada «Big-D · Sala de diseño · Recorrido» |
+| A-23 recorrido | pasos y numeración salen del HTML (`data-num`); «Paso n de N»; las flechas no cambian de paso con el foco en el lienzo, en campos o con modificadores |
+| A-28 / A-32 | cardinalidades del informe y títulos desde N (D78); frases caducadas de § 4 corregidas en `design-system.md`, `diagramador-tokens.md`, `README.md`, `kit.html`, `bigd.css` y esta bitácora |
+
+| #   | Decisión | Razón |
+| --- | -------- | ----- |
+| D79 | **Umbrales de paleta = los medidos** (ΔE ≥ 0,10 normal · ≥ 0,06 a severidad 0,6 · ≥ 0,03 en dicromacia) y **grises por glifo + etiqueta**, no por claridad. Reemplaza los umbrales de D8 | Separar 8 tipos a ΔL 0,05 pide 0,35 de rango de L; en el claro, los trazos a 3:1 sobre `sup-2` viven bajo L ≈ 0,67 y los más oscuros se confunden con la tinta. La regla 13 se cumple con la doble codificación. Se muestra al usuario en la mirada 5 |
+| D80 | **La paleta es la salida de la búsqueda declarada**: al retirar el relleno tintado se re-ejecuta `pnpm paleta:buscar` y se adoptan sus dos claridades nuevas del claro | Dejar la paleta anterior habría sido fijarla a mano contra una condición que ya no existe |
+
+Quedan como deuda con pago (no se pagan en la etapa): A-24 (endurecer los gates de la maqueta: `http://`,
+escapes `\2713`, `title[data-en]`, `fill:` en CSS, sha de `metricas.json`) → S1 · A-25 (la maqueta viaja en
+cada build: decidir tras G-Diseño y excluirla de `build:demo`) → S1 · A-27 (vacío en contexto) → S1 · A-29
+(rol de los elementos activables) → sprint del diagramador · A-30 (degradados funcionales, ya declarados) · A-31
+(rama `prefers-color-scheme` sin ejercer) → S1. A-26 (rama atrasada) se paga al abrir el PR a `main`.
+
+## Desviación del plan
+
+| Origen | Qué cambió | Quién lo decidió | Dónde queda |
+| ------ | ---------- | ---------------- | ----------- |
+| Orden «Ronda 1: propuesta completa» | La ronda 1 se partió en cuatro miradas por artefacto (método v1.21.0) | Constructor, declarado en el plan aprobado | plan · README § Plan de miradas |
+| Plantilla del README del kit | La URL de aprobación no se escribe (regla 17): «preview del PR de `diseno/fundacion`» | Constructor, declarado en el plan (D18) | README § Registro de G-Diseño |
+| Plan D1 / D11 (P5) | Se retira la disposición angosta: el diagrama es siempre horizontal y se desliza | Usuario, mirada 1 ronda 1 (D29) | propuesta § 1 y § 16 (G11, D1, G5, § 4, P10) |
+| Plan D5 (P11) | Atkinson Hyperlegible → Space Grotesk + JetBrains Mono | Usuario, mirada 1 ronda 3 (D35, D40) | propuesta § 8 · design system § 3.3 |
+| Plan D8 | Umbrales de paleta rebajados a lo medido; grises por glifo + etiqueta | Constructor, registrado tarde (A-05) | D79 · propuesta § 5.3 |
+| Plan D7 | Nodo con relleno tintado → tarjeta `sup-2` + filete del tipo; tokens de tinte retirados | Dirección B elegida por el usuario (D32); limpieza tras la auditoría (A-08) | propuesta § 5.1 · D80 |
+| Orden, pantalla 1 «banda sin bloque (N componentes)» | Una banda de un solo componente muestra su nombre | Constructor, ronda 2 (D34) | README § Cobertura |
+| Especificación C § 2.4 | Tabla de prioridad v0: S 7–8 con O ≥ 3 (no ≥ 4) para que S8/O3/D4 salga alta | Constructor (D68), mostrado al usuario en la mirada 4 | decisiones.html · instrumento.html |
+| Pedido del usuario, mirada 4 | El lado a lado conserva el conmutador; la expansión en el mismo lienzo va al contrato | Usuario («si es mucho esfuerzo, dejémoslo») (D75) | propuesta § 9.2 ter y § 16 |
+| Plan Fase 1 | La nota de marcas se retiró con el cromo de la ronda 3 y no volvió | Constructor; declarado tras la auditoría (A-16) | design system § 6 y § 10 (deuda S1) |
+| Regla 8 | El generador vivió fuera del repo hasta la auditoría | Constructor; corregido (A-01) | `scripts/maqueta/` · gate de deriva |
+| Plan D61 | La robustez «moderada (frontera)» tenía cifras escritas a mano; ahora se calcula y sale «sólida» | Constructor; corregido (A-02, D77) | comparacion.html · informe.html |
+
+### Hallazgo durante los pagos: la ficha del nivel 2 nunca abrió (N-1)
+
+Al verificar A-17 en Chromium, la ficha de `atlas-nivel-2.html` no abrió ni con clic, ni con Enter, ni con el
+estado «ficha abierta» de la sala. **La página no cargaba `assets/ficha.js` en ninguna versión versionada**
+(desde 6a8ad53, mirada 2). La afirmación de esta bitácora en la fase 2 («Verificado en Chromium: nivel 2 — ficha
+abre al tocar y por preajuste, Esc cierra») **era falsa**; ni la pasada de capturas ni el auditor lo vieron,
+porque un panel cerrado también «mide bien». El usuario aprobó la mirada 2 sin haber podido abrir esa ficha:
+se le muestra en la mirada 5.
+
+Pago: `pagina-nivel2.mjs` carga `ficha.js` (como el lado a lado y las decisiones). Verificado en Chromium tras el
+arreglo: Enter abre y lleva el foco al título; Esc y «Cerrar» cierran y devuelven el foco al nodo; el estado
+«ficha abierta» muestra «Captura de cambios»; un clic en otro nodo cambia la ficha. Capturas leídas: ficha oscuro
+ES 1280 (panel lateral) y claro ES 380 (hoja inferior).
+
+| Gate | ¿Puede fallar? | Demo en rojo | A quién nombró | Verde al revertir |
+| ---- | -------------- | ------------ | -------------- | ----------------- |
+| `tests/unit/maqueta-controladores.test.ts` (13: una por página) — todo control dibujado tiene su script cargado (panel de ficha → `ficha.js`, recorrido → `recorrido.js`, lado angosto → `lado.js`, impresión → `informe.js`, lienzo → `lienzo.js`, conmutadores → `maqueta.js`) | Sí: ningún gate ni captura miraba si el control funciona; este defecto vivió cuatro miradas | El estado real del repo antes del arreglo (no hizo falta sembrarlo) | `atlas-nivel-2.html: panel de ficha sin assets/ficha.js` | ✓ 13/13 tras cargar el script |
+
+Verificado también en Chromium: «Saltar al contenido» es el primer Tab; «Saltar el diagrama» + Tab cae dentro de la
+lectura en texto del nivel 1; foco en «Relación con el directorio» 2,5 → 4 px; colores forzados: insignia vencida
+`rect` blanco / texto negro (oscuro) y al revés (claro), hueco de «sin copia» en `Canvas`; movimiento reducido:
+«Reproducir» en el DOM con `display: none` (sin preferencia: visible); el último paso dice «Paso 6b de 8».
+Pasada de capturas tras los pagos: **392 medidas de las 13 páginas, 0 fallas**, más 208 encuadres de nivel 2,
+recorrido y decisiones, 0 fallas.

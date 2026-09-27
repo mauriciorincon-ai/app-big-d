@@ -1,10 +1,10 @@
 // Arma docs/diseno/atlas-nivel-1.html (ronda 3): dirección B, tres tipografías para elegir.
-import fs from "node:fs";
 import { BANDA, MODO, TIPO } from "../nucleo/datos.mjs";
 import { MODO_MARCA, TIPO_GLIFO } from "../nucleo/glifos.mjs";
 import { lectura } from "../nucleo/lectura.mjs";
 import { svg, avisos } from "./dir3.mjs";
 import { sal } from "../rutas.mjs";
+import { escribir } from "../pulir.mjs";
 
 const SAL = sal("atlas-nivel-1.html");
 const LIENZOS = [["transversal", "chip"], ["transversal", "lineas"], ["capa", "chip"]];
@@ -15,7 +15,7 @@ const indice = colsC.map((c) => { const t = colsT.find((x) => x.id === c.id); co
 const glifo = (tp) => { const g = TIPO_GLIFO[tp.g]; return `<svg class="lg-${tp.t}" viewBox="-9 -9 18 18" width="18" height="18" aria-hidden="true">${g.relleno ? `<path d="${g.d}" fill="currentColor"/>` : `<path d="${g.d}" fill="none" stroke="currentColor" stroke-width="${g.trazo}"/>`}</svg>`; };
 const tipos = Object.values(TIPO).map((tp) => `<li>${glifo(tp)}<span class="cod">${ES(tp.es[0], tp.en[0])}</span><span>${ES(tp.es[1], tp.en[1])}</span></li>`).join("\n          ");
 const DASH = { "por-lotes": `stroke-dasharray="8 5"`, continuo: "", "a-demanda": `stroke-dasharray="0.1 5.5" stroke-linecap="round" stroke-width="2.8"`, "sin-copia": "" };
-const modos = Object.keys(MODO).map((m) => { const mk = MODO_MARCA[m]; const marca = mk.relleno === "mixto" ? `<path d="${mk.d}" fill="currentColor" stroke="currentColor" stroke-width="1.2" transform="translate(52,7)"/>` : `<path d="${mk.d}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" transform="translate(52,7)"/>`; const linea = m === "sin-copia" ? `<path d="M2,7 H38" stroke="currentColor" stroke-width="6.5"/><path d="M2,7 H38" stroke="var(--fondo)" stroke-width="2.5"/>` : `<path d="M2,7 H38" stroke="currentColor" stroke-width="2" ${DASH[m]}/>`; return `<li><svg viewBox="0 0 62 14" width="62" height="14" aria-hidden="true" fill="none">${linea}${marca}</svg><span>${ES(MODO[m].es[0], MODO[m].en[0])} — ${ES(MODO[m].es[1], MODO[m].en[1])}</span></li>`; }).join("\n          ");
+const modos = Object.keys(MODO).map((m) => { const mk = MODO_MARCA[m]; const marca = mk.relleno === "mixto" ? `<path d="${mk.d}" fill="currentColor" stroke="currentColor" stroke-width="1.2" transform="translate(52,7)"/>` : `<path d="${mk.d}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" transform="translate(52,7)"/>`; const linea = m === "sin-copia" ? `<path d="M2,7 H38" stroke="currentColor" stroke-width="6.5"/><path d="M2,7 H38" stroke="var(--fondo)" stroke-width="2.5"/>` : `<path d="M2,7 H38" stroke="currentColor"${DASH[m].includes("stroke-width") ? "" : ' stroke-width="2"'} ${DASH[m]}/>`; return `<li><svg viewBox="0 0 62 14" width="62" height="14" aria-hidden="true" fill="none">${linea}${marca}</svg><span>${ES(MODO[m].es[0], MODO[m].en[0])} — ${ES(MODO[m].es[1], MODO[m].en[1])}</span></li>`; }).join("\n          ");
 const svgs = LIENZOS.map(([v, p]) => `<div class="lienzo-dir" data-si="p9:${v} p4:${p}">${D[`${v}-${p}`].svg}</div>`).join("\n      ");
 const botones = `<button type="button" data-estado="propuesta" data-fija="vig:vigente p9:transversal p4:chip">propuesta</button>
     <button type="button" data-estado="por-revisar" data-fija="vig:revisar p9:transversal p4:chip">por revisar</button>
@@ -130,5 +130,5 @@ const html = `<!doctype html>
 </body>
 </html>
 `;
-fs.writeFileSync(SAL, html);
+escribir("atlas-nivel-1.html", html);
 console.log(SAL, (html.length / 1024).toFixed(1), "KB", avisos.length ? avisos.join("\n") : "sin avisos");

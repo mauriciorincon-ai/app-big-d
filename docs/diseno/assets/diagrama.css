@@ -43,7 +43,12 @@
 .db-insignia-vencido rect { fill: var(--tinta-1); }
 .db-insignia-vencido .db-insignia-marca { color: var(--sup-1); }
 .db-insignia-vencido .db-t-insignia { fill: var(--sup-1); }
-@media (forced-colors: active) { .db-card, .db-chip rect, .db-ref rect, .db-insignia rect { fill: Canvas; stroke: CanvasText; } .db-linea, .db-punta { stroke: CanvasText; } .db-punta { fill: CanvasText; } }
+@media (forced-colors: active) {
+  .db-card, .db-chip rect, .db-ref rect, .db-insignia rect { fill: Canvas; stroke: CanvasText; } .db-linea, .db-punta { stroke: CanvasText; } .db-punta { fill: CanvasText; }
+  /* «vencido» se invierte y «sin copia» conserva su hueco: glifo, trazo y texto sobreviven (§ 14 de la propuesta) */
+  .db-insignia-vencido rect { fill: CanvasText; } .db-insignia-vencido .db-t-insignia { fill: Canvas; } .db-insignia-vencido .db-insignia-marca { color: Canvas; }
+  .db-doble-int { stroke: Canvas; }
+}
 
 /* Nivel 2: nodo */
 .db-t-nombre-nodo { font-size: 13px; }
@@ -67,4 +72,6 @@
 .dd-bloq .dd-t-nombre { fill: var(--tinta-2); }
 .dd-dep-ciclo .db-linea { stroke: var(--tinta-1); stroke-width: 2.2; stroke-dasharray: 5 3; }
 .dd-dep-ciclo .db-punta { fill: var(--tinta-1); }
+/* Foco y ficha abierta SUMAN al borde de reposo (jamás lo reducen): una vía 2,5 → 4. */
+.dd-dec:focus-visible .dd-caja, .dd-dec[aria-current="true"] .dd-caja { stroke: var(--tinta-1); stroke-width: 4; }
 @media (forced-colors: active) { .dd-caja { stroke: CanvasText; } }

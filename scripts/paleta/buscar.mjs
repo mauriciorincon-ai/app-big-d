@@ -7,14 +7,13 @@
 // Modelo (ronda 2): cada tipo tiene UN matiz propio y un croma tope (TIPOS, elegidos por
 // significado); lo que se busca es la claridad OKLCH por tema dentro de RANGOS.
 // Objetivo: maximizar el mínimo de (peor ΔE_OK del par) / (umbral de la vista) sobre las vistas
-// declaradas, con penalización si un trazo baja de 3:1 sobre sup-1, sup-2 o su propio relleno.
+// declaradas, con penalización si un trazo baja de 3:1 sobre sup-1 (lienzo) o sup-2 (tarjeta del nodo).
 import { contraste, oklchAHex, peorPar } from "./color.mjs";
 import {
   NEUTROS,
   RANGOS,
   TIPOS,
   UMBRALES,
-  tinteDe,
 } from "./generar-tokens.mjs";
 
 const VISTAS = Object.keys(UMBRALES);
@@ -36,12 +35,8 @@ export function puntaje(tema, L) {
     return oklchAHex(l, cr, h);
   });
   let peor = Infinity;
-  c.forEach((x, i) => {
-    const k = Math.min(
-      contraste(x.hex, s1),
-      contraste(x.hex, s2),
-      contraste(x.hex, tinteDe(tema, TIPOS[i])),
-    );
+  c.forEach((x) => {
+    const k = Math.min(contraste(x.hex, s1), contraste(x.hex, s2));
     if (k < 3) peor = Math.min(peor, k / 3 - 1);
   });
   for (const v of VISTAS)
