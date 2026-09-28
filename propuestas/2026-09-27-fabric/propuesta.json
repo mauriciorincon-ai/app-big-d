@@ -5,7 +5,7 @@
   "ejecucion": {
     "herramienta": "claude-code",
     "modelo": "claude-opus-5-5",
-    "reintentos": 0
+    "reintentos": 1
   },
   "mapa": {
     "contrato_version": "0.3.0",
@@ -38,7 +38,7 @@
       {
         "id": "almacen",
         "nombre": {
-          "es": "Almacenamiento en OneLake",
+          "es": "Guardado en OneLake",
           "en": "Storage in OneLake"
         },
         "banda_id": "almacenamiento",
@@ -749,8 +749,8 @@
         "bloque_id": "gobierno",
         "orden": 2,
         "nombre": {
-          "es": "Etiquetas de confidencialidad (Microsoft Purview)",
-          "en": "Sensitivity labels (Microsoft Purview)"
+          "es": "Etiquetas de confidencialidad",
+          "en": "Sensitivity labels"
         },
         "lider": {
           "es": "Marca qué datos son sensibles; en algunas exportaciones, como a Excel, la marca y su protección viajan con ellos.",

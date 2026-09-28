@@ -769,3 +769,13 @@ en la misma carpeta, y el diff de git mostrará qué cambió.
 
 **Lo que sigue:** la persona corre `/investigar fabric` otra vez. Después: revisión afirmación por afirmación y
 aprobación en una terminal (parada B).
+
+**CI de `6cfeab0`** (con `1626780`): quality ✓ · e2e ✓ · lighthouse ✓ · diagramador ubuntu ✓ · macOS ✓ · Vercel ✓, los
+seis en `success` propio. El paquete corre en Linux y macOS con la carnada P1 y la invariante nueva.
+
+**Segunda corrida (retoma, 2026-09-27):** la skill retomó la propuesta sin volver a investigar. Cambios, según el diff
+de git: el bloque de almacenamiento en español pasó a «Guardado en OneLake», y la ficha de etiquetas quedó como
+«Etiquetas de confidencialidad» / «Sensitivity labels» (Purview sigue en el texto de experto); `reintentos: 1`. Las
+80/80 citas se volvieron a verificar y el registro de fuentes no cambió: no hubo consultas web nuevas. El ensayo de la
+aprobación completa, que dibuja las tres vistas en los dos idiomas, dio 0 avisos y D11 = 0. Queda lista para la
+revisión humana.
