@@ -779,3 +779,28 @@ de git: el bloque de almacenamiento en español pasó a «Guardado en OneLake»,
 80/80 citas se volvieron a verificar y el registro de fuentes no cambió: no hubo consultas web nuevas. El ensayo de la
 aprobación completa, que dibuja las tres vistas en los dos idiomas, dio 0 avisos y D11 = 0. Queda lista para la
 revisión humana.
+
+### Parada B — Fabric aprobado por una persona (2026-09-28)
+
+La persona abrió la pantalla de revisión en su navegador (servida en local), confirmó «Si la veo», dejó las 80
+afirmaciones aprobadas («Listo aprobadas y pulse copiar») y corrió el comando en su Terminal, en la carpeta del
+proyecto. Pegó la salida:
+
+`aprobar: fabric aprobada · mapa v0.1.0 · 19 componentes · 19 flujos · 80 aprobadas · 0 rechazadas → data/mapas/fabric.mapa.yaml`
+
+(El primer intento falló por el pegado, `ode: command not found`; no escribió nada.) El script escribió
+`data/mapas/fabric.mapa.yaml` (cabecera «APROBADO por una persona»), `estado: publicada` en
+`data/plataformas/fabric.yaml` y una línea en `data/revisiones/fabric.jsonl` con la huella del mapa. **La fecha de
+aprobación es 2026-09-29**: el script usa la fecha UTC, y en la hora local de la persona todavía era el 28.
+
+**Después de publicar.**
+- `rutaAtlas` (la primera plataforma publicada por id) pasa a ser `fabric`. El e2e «la barra y la portada llevan al
+  atlas» esperaba `plataforma-ejemplo` y se ajustó a la regla, con un comentario.
+- `datos.test.ts` usaba Fabric como ejemplo de «publicada sin mapa»; ahora usa Databricks.
+- `lighthouse-urls.json` suma `/es/atlas/fabric`, `/en/atlas/fabric/componentes` y `/es/atlas/fabric/recorrido`
+  (13 URL). Lighthouse local, mediana de 3: nivel 1 2763 ms, nivel 2 2761, recorrido 2612; las cuatro categorías
+  ≥ 0,96.
+
+**Pasada de capturas:** 22 rutas, **88 encuadres, 4120 comprobaciones de interacción, 0 fallas**. Leídos como imagen:
+Fabric en el nivel 1 (oscuro, 1280), el nivel 2 (claro, 1280), el recorrido (oscuro, 380) y el investigador con
+«Aprobada por una persona». **Suites:** unitarias 697/697 · e2e 88/88.

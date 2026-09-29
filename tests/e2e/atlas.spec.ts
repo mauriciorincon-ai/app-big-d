@@ -68,7 +68,8 @@ test("la barra y la portada llevan al atlas", async ({ page }) => {
   await expect(page).toHaveURL(/\/en\/atlas\/plataforma-ejemplo$/);
   await page.goto("/es");
   await page.getByRole("navigation", { name: "Secciones" }).or(page.getByRole("list", { name: "Secciones" })).getByRole("link", { name: "Atlas" }).click();
-  await expect(page).toHaveURL(/\/es\/atlas\/plataforma-ejemplo$/);
+  // La primera plataforma publicada en orden de id (ninguna tiene trato especial): desde la parada B, fabric.
+  await expect(page).toHaveURL(/\/es\/atlas\/fabric$/);
 });
 
 for (const [esquema, tema] of [

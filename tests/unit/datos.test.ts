@@ -69,8 +69,8 @@ describe("un dato roto rompe la carga con archivo, regla e id", () => {
   });
 
   it("una plataforma publicada sin mapa, y una «próximamente» que ya tiene mapa", () => {
-    const sinMapa = copia((d) => editarYaml(join(d, "plataformas/fabric.yaml"), (x) => (x.estado = "publicada")));
-    expect(fallas(sinMapa)).toEqual(["data/plataformas/fabric.yaml · estado · publicada sin mapa: falta data/mapas/fabric.mapa.yaml"]);
+    const sinMapa = copia((d) => editarYaml(join(d, "plataformas/databricks.yaml"), (x) => (x.estado = "publicada")));
+    expect(fallas(sinMapa)).toEqual(["data/plataformas/databricks.yaml · estado · publicada sin mapa: falta data/mapas/databricks.mapa.yaml"]);
     const conMapa = copia((d) => editarYaml(join(d, "plataformas/plataforma-ejemplo.yaml"), (x) => (x.estado = "proximamente")));
     expect(fallas(conMapa)).toEqual([expect.stringContaining("data/plataformas/plataforma-ejemplo.yaml · estado · «proximamente» pero ya hay")]);
   });
