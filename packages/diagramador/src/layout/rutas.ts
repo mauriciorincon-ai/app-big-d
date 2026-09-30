@@ -28,6 +28,8 @@ export interface OpcionesRuteo {
   yb: Decimas;
   /** Atributos extra del grupo del flujo (p. ej. `data-flujo` en el recorrido). */
   extra?: (c: Conexion) => Record<string, string>;
+  /** Centro del canal a la derecha de una columna (por defecto, el de § 5.3 tras una columna de 152 u). */
+  centroCanal?: (canal: number) => Decimas;
 }
 export interface Ruteo {
   lineas: Elemento[];
@@ -165,7 +167,8 @@ export function rutear(ctx: Contexto, piezas: ReadonlyMap<string, Pieza>, conexi
     usoCanal.set(canal, n + 1);
     const offsets = offsetsPista(pedidas.get(canal) ?? n + 1);
     if (n >= offsets.length) ctx.avisos.push(`canal ${canal}: más de ${offsets.length} pistas`);
-    return colX(canal) + COL + mitad(CANAL) + offsets[Math.min(n, offsets.length - 1)]!;
+    const centro = op.centroCanal ? op.centroCanal(canal) : colX(canal) + COL + mitad(CANAL);
+    return centro + offsets[Math.min(n, offsets.length - 1)]!;
   };
 
   const anchoEtiqueta = (c: Conexion): Decimas => {
@@ -237,7 +240,9 @@ export function rutear(ctx: Contexto, piezas: ReadonlyMap<string, Pieza>, conexi
       const xc = pista(a.col);
       const y1 = puertoY(c.o, "der", c);
       const y2 = puertoY(c.d, "der", c);
-      dibujar(c, [[xa, y1], [xc, y1], [xc, y2], [xa, y2]], mitad(xa + xc), y1);
+      // Como en los vecinos: la etiqueta se despega 2 u de la tarjeta (antes rozaba 1 u su borde; lo cazó la
+      // vista «bloque», enmienda del piloto).
+      dibujar(c, [[xa, y1], [xc, y1], [xc, y2], [xa, y2]], Math.max(mitad(xa + xc), xa + mitad(anchoEtiqueta(c)) + 20), y1);
     }
   }
   // ── Saltos por el carril exprés ──

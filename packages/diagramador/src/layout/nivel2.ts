@@ -26,8 +26,9 @@ import type { Caja, CajaPropia, Elemento, Geometria, PasoGeo } from "./tipos";
 
 const ALTO = 840;
 const SEPARACION = 400;
-const FICHA_W = 1680;
-const FICHA_H = 440;
+/** Ficha compacta de un nodo de franja (§ 5.3): 168 × 44 u, a 8 u entre sí. */
+export const FICHA_W = 1680;
+export const FICHA_H = 440;
 
 /** Numeración del recorrido (§ 4.3): 1–5, y tras una bifurcación 6a → 7a y 6b (la rama hereda su letra). */
 export function numerarPasos(r: Recorrido): PasoGeo[] {

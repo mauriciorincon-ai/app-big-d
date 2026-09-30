@@ -4,7 +4,7 @@
 import type { TextoIdioma } from "../tipos";
 import type { Decimas } from "../util/numeros";
 
-export type Vista = "nivel-1" | "nivel-2" | "recorrido";
+export type Vista = "nivel-1" | "nivel-2" | "recorrido" | "bloque";
 /** Semáforo de vigencia (§ 4.8): se cuenta desde `fecha_verificacion` hasta la fecha de consulta. */
 export type Vigencia = "vigente" | "revisar" | "vencido";
 export type Punto = readonly [Decimas, Decimas];
@@ -101,7 +101,7 @@ export interface TextosMotor {
   /** Vigencia en palabras para el nombre accesible: «{n}» días. */
   porRevisar: string;
   vencido: string;
-  /** Títulos y descripciones del SVG por vista: «{sujeto}», «{capas}», «{franjas}», «{nodos}», «{recorrido}». */
+  /** Títulos y descripciones del SVG por vista: «{sujeto}», «{capas}», «{franjas}», «{nodos}», «{recorrido}», «{bloque}». */
   titulo: Record<Vista, string>;
   descripcion: Record<Vista, string>;
   /** Nombre accesible de un paso: «{numero}» y «{que}». */
@@ -135,6 +135,8 @@ export interface OpcionesLayout {
   fechaConsulta: string;
   /** Recorrido a dibujar en la vista «recorrido» (por defecto, el primero). */
   recorrido?: string;
+  /** Elemento del nivel 1 que se abre en la vista «bloque»: el id de un bloque o «_<banda>» (sus nodos sin bloque). */
+  grupo?: string;
   /** Tabla de métricas (por defecto, la del piloto) y fuentes de interfaz y mono dentro de ella. */
   metricas?: import("../texto/metricas").TablaMetricas;
   fuente?: string;

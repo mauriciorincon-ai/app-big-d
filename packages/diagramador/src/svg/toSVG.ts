@@ -6,7 +6,7 @@ import { fmt } from "../util/numeros";
 import { GLIFOS, MARCADORES, MARCAS } from "./glifos";
 import { atributos, elemento, escapar, type Serializacion } from "./serializar";
 
-const CORTA = { "nivel-1": "n1", "nivel-2": "n2", recorrido: "rec" } as const;
+const CORTA = { "nivel-1": "n1", "nivel-2": "n2", recorrido: "rec", bloque: "bl" } as const;
 
 export interface OpcionesSVG {
   language: string;
