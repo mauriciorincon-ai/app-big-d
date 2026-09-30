@@ -1,9 +1,8 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
-// Atlas · niveles 2 y 3 (S1, fase 3): la ficha de un componente con su contrato de foco, el recorrido paso a
-// paso y el movimiento reducido (la forma del árbol no depende de la preferencia: solo el CSS oculta
-// «Reproducir» y el controlador se niega a reproducir). Más el campo «Plataforma» con sus N opciones.
+// Atlas · niveles 2 y 3 (S1, fase 3): la ficha de un componente con su contrato de foco y el recorrido paso a
+// paso. Más el campo «Plataforma» con sus N opciones. El movimiento reducido vive en reduced-motion.spec.ts.
 const N2 = "/es/atlas/plataforma-ejemplo/componentes";
 const REC = "/es/atlas/plataforma-ejemplo/recorrido";
 
@@ -89,28 +88,6 @@ test.describe("recorrido", () => {
     await expect(page.locator("#rec")).toHaveAttribute("data-paso", "p2", { timeout: 4000 });
     await boton.click();
     await expect(boton).toHaveAttribute("aria-pressed", "false");
-  });
-});
-
-test.describe("movimiento reducido", () => {
-  test("el árbol es el mismo con y sin la preferencia; «Reproducir» queda oculto y no reproduce", async ({ page }) => {
-    const arbol = () => page.locator("main").evaluate((m) => m.outerHTML.replace(/ data-pasada="[^"]*"/g, ""));
-    await page.emulateMedia({ reducedMotion: "no-preference" });
-    await page.goto(REC);
-    const sin = await arbol();
-    await page.emulateMedia({ reducedMotion: "reduce" });
-    await page.goto(REC);
-    expect(await arbol()).toBe(sin);
-    const boton = page.locator('[data-rec="reproducir"]');
-    await expect(boton).toHaveCount(1);
-    await expect(boton).toBeHidden();
-    await boton.dispatchEvent("click");
-    await expect(boton).toHaveAttribute("aria-pressed", "false");
-    await expect(page.locator("#rec")).toHaveAttribute("data-paso", "todos");
-    // Lo que sí se ve con movimiento reducido: el mapa, los controles del paso y la lista de pasos.
-    await expect(page.locator(".lienzo svg")).toBeVisible();
-    await expect(page.getByRole("button", { name: "Siguiente" })).toBeVisible();
-    await expect(page.locator(".pasos-lista li")).toHaveCount(8);
   });
 });
 

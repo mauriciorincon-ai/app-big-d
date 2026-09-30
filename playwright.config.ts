@@ -29,6 +29,20 @@ export default defineConfig({
     {
       name: "desktop-chromium",
       use: { ...devices["Desktop Chrome"] },
+      // G11 es de teléfono: la spec fija 380 px y ya corre en mobile-chromium.
+      testIgnore: /g11\.spec\.ts/,
+    },
+    // G11 en los otros dos motores (DoD del S1: «e2e G11 a 380 px en tres navegadores»). Solo esa spec: el
+    // resto del suite es de comportamiento y no cambia de motor a motor. La CI instala los tres navegadores.
+    {
+      name: "g11-firefox",
+      use: { ...devices["Desktop Firefox"] },
+      testMatch: /g11\.spec\.ts/,
+    },
+    {
+      name: "g11-webkit",
+      use: { ...devices["Desktop Safari"] },
+      testMatch: /g11\.spec\.ts/,
     },
   ],
   webServer: {

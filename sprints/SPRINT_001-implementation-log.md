@@ -855,3 +855,88 @@ ventana abierta en los dos temas. **Arnés:** la pasada de interacción abre la 
 y tarjetas) con clic y con Enter; la ficha breve sale del arnés. **Lighthouse local** del nivel 1 con las ventanas
 (28 KB comprimido, como «Componentes»): mediana 2757 ms, igual que antes. **Suites:** unitarias 760/760 · paquete
 494/494 (golden files intactos) · e2e 90/90 · capturas 88 encuadres, 4456 comprobaciones, 0 fallas.
+
+**Mirada de FORMA de la ventana (2026-09-29).** La persona la abrió en su navegador (atlas de Fabric, visión
+general, servido en local) y respondió: «No era exactamente lo que esperaba pero me gustó, y más porque mantenemos
+la línea de las ventanas que veníamos trabajando; ahora sí, continuemos construyendo». Aprobada. Lo que difiere de
+su pedido: la ventana no «sale» del bloque, se abre como el panel lateral de «Componentes» y del recorrido (hoja
+modal en teléfono), y la persona lo acepta porque conserva la línea. **CI de `36ea787`** se lee abajo, con el siguiente
+push.
+
+### Fase 4 · 2 — Pruebas de cierre, deuda y entregables
+
+**CI de `36ea787`** (la ventana): quality ✓ · e2e ✓ · lighthouse ✓ · diagramador ubuntu ✓ · macOS ✓ · Vercel ✓, los
+seis en `success` propio.
+
+**Las rutas salen del dato.** `tests/e2e/lib/rutas.ts` arma la lista del export desde `data/plataformas/` (N
+plataformas; ninguna lista a mano): la raíz de cada idioma, las tres vistas del atlas de cada plataforma publicada y
+el investigador de todas (22 rutas hoy). Las dos specs nuevas recorren esa lista entera.
+
+**G11 en tres motores (`tests/e2e/g11.spec.ts`).** Corre en `mobile-chromium` y en dos proyectos nuevos,
+`g11-firefox` y `g11-webkit` (solo esa spec; `desktop-chromium` la ignora porque G11 es de teléfono). A 380 px:
+en cada ruta la página no se desliza de lado; en cada dibujo (el lienzo y la ventana de cada bloque, abierta una por
+una) todo texto queda dentro del lienzo, dentro de su propia caja (el rectángulo más cercano de su grupo: la caja
+del nodo o del bloque, la pastilla de un número de paso), fuera de las cajas ajenas y sin pisar otro texto; la
+fuente cargó. La CI del job `e2e` instala ahora los tres navegadores.
+- Primera versión sin «su propia caja»: la demo en rojo mostró que un nombre que desborda su caja solo se veía si
+  llegaba al borde del dibujo. Se sumó la comprobación; en verde nombró los números de paso del recorrido (que
+  montan la esquina de su caja por diseño) y la regla se precisó: el rectángulo más cercano, que para ellos es su
+  pastilla.
+
+| Gate | ¿Puede fallar? | Rojo | A quién nombró | Verde |
+|---|---|---|---|---|
+| Texto del dibujo dentro de su caja y del lienzo | Sí | `.dg-t-nombre-nodo` de 13 a 17 px | 174 textos «se sale de su caja» y 12 «sale del lienzo» (Componentes y recorrido), en los tres motores | 78/78 |
+| La ventana de un bloque cabe en el teléfono | Sí | `.ventana-lienzo svg { min-width: 520px }` | «ventana de origen»: 160 px de más, en los tres motores | 78/78 |
+| La página no se desliza de lado | Sí | `.pie p { white-space: nowrap }` | las 22 rutas × 3 motores, 702–759 px | 78/78 |
+
+(Un primer intento de rojo de página, la huella del investigador sin cortar, no desbordó: ese texto ya se parte por
+otra regla. No era un hueco del gate.)
+
+**Movimiento reducido en todo el sitio (`tests/e2e/reduced-motion.spec.ts`).** En cada ruta: el mismo `main` con y
+sin la preferencia; con ella se ven el título, el dibujo y cada bloque, componente y flujo con opacidad plena. En el
+recorrido cuenta lo que está en el camino (`data-paso`): el resto se atenúa por diseño, con o sin movimiento. Lo que
+se toca se abre (ventana o ficha). Y axe con la preferencia en los dos temas, en las 22 rutas. La prueba del
+recorrido («Reproducir» oculto y no reproduce) se mudó aquí desde `atlas-niveles.spec.ts`. El movimiento del
+producto vive en CSS; el único código que mira la preferencia es el de «Reproducir», y solo decide si reproduce, no
+qué se pinta. Por eso no hay componente al que aplicarle la prueba unitaria «mismo HTML con null/true/false» (regla
+5-a).
+
+| Gate | ¿Puede fallar? | Rojo | A quién nombró | Verde |
+|---|---|---|---|---|
+| Mismo árbol con y sin la preferencia | Sí | el recorrido deja de pintar «Reproducir» si la preferencia está activa | los 4 recorridos × 2 proyectos | 134/134 |
+| Con la preferencia, todo se ve | Sí | `.lienzo .dg-elem { opacity: 0 }` bajo la preferencia | las otras 16 vistas del atlas, bloque por bloque «con opacidad 0.00» | 134/134 |
+| axe con la preferencia, dos temas | Sí | el `h1` en `--sup-2` bajo la preferencia | 88/88 (`color-contrast`) | 134/134 |
+
+**Determinismo de la ventana.** La vista «bloque» entra a los golden files (dos bloques del mapa de ejemplo:
+«Consumo», con su flujo adentro, y «Gobierno», de franja con ficha compacta; 31 archivos en `SHA256SUMS`) y a la
+prueba de los tres navegadores con los mismos casos. Leídos como imagen antes de fijarlos. Rojo: la prueba de Node
+sin los archivos (5 de 32 en rojo); la de navegadores con otra fecha de consulta en la entrada (las 4 huellas nuevas
+distintas en Chromium, Firefox y WebKit). Verde: paquete 526/526; navegadores 6/6.
+
+**A-24 — los gates de la maqueta, endurecidos.** Cada hueco con su rojo: se plantó el defecto, la versión anterior
+de la prueba (sacada de `HEAD`) siguió en verde y la nueva lo nombró.
+
+| Hueco (auditoría de la etapa) | Plantado | Prueba anterior | Prueba nueva |
+|---|---|---|---|
+| `http://localhost:…`, IP | `<a href="http://localhost:3000/es">` · `url(//192.168.1.10/…)` | verde | «URL http(s) fuera de example.org», «localhost o una IP» |
+| URI `data:` | `url("data:image/png;base64,…")` | verde | «URI data:» |
+| `.svg` y `.json` sin leer | un `.svg` y un `.json` con una URL de CDN | verde | los dos archivos, línea 1 |
+| `content:` con comillas simples o escapes | `content: '\2713'` | verde | `content «✓»` |
+| Texto de atributos | `aria-label="casa del lago ✓"` | verde | «✓ U+2713» y el calco |
+| `<image>` y `url()` de fondo | `<image href=…>` · `background-image: url(…)` | verde | «cero imágenes» |
+| `style="color:var(--linea)"` y `fill:` sobre texto en CSS | los dos | verde | «las tintas vetadas no colorean texto» |
+| Huella de `metricas.json` | un dígito cambiado | verde | la huella esperada contra la leída |
+| «Un token por tipo» sin la gramática | dos `token_color` cruzados en la gramática | verde | la lista de pares tipo → token |
+
+- **Regla 5-b en el producto** (`tests/unit/tintas-vetadas.test.ts`, nuevo): el barrido de tintas vetadas solo
+  miraba la maqueta. Ahora barre también las hojas de `src/`, el código de `src/` y del diagramador (clases de
+  Tailwind como `text-linea`, estilos en línea) y los golden files (lo que el motor dibuja). El detector es uno
+  solo (`tests/unit/lib/tintas.ts`) para la maqueta y el producto; bordes, trazos y fondos con la tinta siguen
+  permitidos. Rojo: `text-linea` en `PanelFicha` y `.dg-t-demo { fill: var(--linea) }` en `diagrama.css`, los dos
+  nombrados.
+- **A-25**: pagada en la fase 0 por ADR (`decisions/design-mockup-destination.md`); la prueba «el paquete de la demo
+  no trae `diseno/`» nace con `build:demo` (E4). **A-29**: pagada en la fase 1 (D-S1-07), con pruebas en
+  `svg.test.ts` y `atlas.test.ts`. **A-30**: declarada en `design-system.md` v0.5.1 (verificado).
+
+**Suites:** unitarias 795/795 · paquete 526/526 · e2e 300/300 (2,2 min en local: 22 rutas × 3 motores en G11,
+movimiento reducido y axe en las 22 rutas) · determinismo 6/6.

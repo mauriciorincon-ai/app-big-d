@@ -8,18 +8,41 @@
 import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { toSVG } from "../src/index";
-import { GRAMATICAS } from "./lib/contrato";
-import { CASOS, disponer } from "./lib/casos";
+import { layout, toSVG } from "../src/index";
+import { EJEMPLOS, GRAMATICAS } from "./lib/contrato";
+import { CASOS, FECHA, disponer } from "./lib/casos";
+import { TEXTOS } from "./lib/textos";
 
 const DIR = new URL("./golden/", import.meta.url);
 const ACTUALIZAR = process.env.ACTUALIZAR_GOLDEN === "1";
 const sha256 = (s: string) => createHash("sha256").update(s, "utf8").digest("hex");
 
-export const SALIDAS = CASOS.flatMap((c) =>
-  GRAMATICAS[c.mapa.gramatica_id]!.idiomas.map((idioma) => ({ archivo: `${c.clave}.${c.vista}.${idioma}.svg`, caso: c, idioma })),
-);
-const generar = (s: (typeof SALIDAS)[number]) => toSVG(disponer(s.caso.mapa, s.caso.vista), { language: s.idioma });
+/**
+ * La vista «bloque» (D-S1-44, la ventana de un bloque del nivel 1): un bloque con un flujo adentro y uno de
+ * franja, que usa la ficha compacta. Mismos casos en tests/determinismo/entrada.ts.
+ */
+export const BLOQUES = [
+  ["plataforma-ejemplo", "consumo-bi"],
+  ["plataforma-ejemplo", "gobierno"],
+] as const;
+
+export const SALIDAS: { archivo: string; svg: () => string }[] = [
+  ...CASOS.flatMap((c) =>
+    GRAMATICAS[c.mapa.gramatica_id]!.idiomas.map((idioma) => ({
+      archivo: `${c.clave}.${c.vista}.${idioma}.svg`,
+      svg: () => toSVG(disponer(c.mapa, c.vista), { language: idioma }),
+    })),
+  ),
+  ...BLOQUES.flatMap(([sujeto, grupo]) => {
+    const m = EJEMPLOS.find((e) => e.sujeto_id === sujeto)!;
+    const g = GRAMATICAS[m.gramatica_id]!;
+    return g.idiomas.map((idioma) => ({
+      archivo: `${sujeto}.bloque-${grupo}.${idioma}.svg`,
+      svg: () => toSVG(layout(m, g, "bloque", { textos: TEXTOS, fechaConsulta: FECHA, grupo }), { language: idioma }),
+    }));
+  }),
+];
+const generar = (s: (typeof SALIDAS)[number]) => s.svg();
 
 if (ACTUALIZAR) {
   mkdirSync(DIR, { recursive: true });
@@ -33,7 +56,7 @@ if (ACTUALIZAR) {
 
 describe("golden files del diagramador (G1)", () => {
   const sumas = existsSync(new URL("SHA256SUMS", DIR)) ? readFileSync(new URL("SHA256SUMS", DIR), "utf8") : "";
-  it(`son ${SALIDAS.length}: los 6 mapas del contrato × 3 vistas × sus idiomas, más A3 en el nivel 1`, () => {
+  it(`son ${SALIDAS.length}: los 6 mapas del contrato × 3 vistas × sus idiomas, más A3 en el nivel 1 y dos bloques`, () => {
     expect(sumas.trim().split("\n")).toHaveLength(SALIDAS.length);
   });
   for (const s of SALIDAS)

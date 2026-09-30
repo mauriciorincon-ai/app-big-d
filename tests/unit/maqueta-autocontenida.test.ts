@@ -9,10 +9,15 @@ import { archivosMaqueta, leer } from "./lib/maqueta";
  * `https://example.org/…` — las fuentes FICTICIAS de las tarjetas de evidencia (regla dura 12).
  *
  * Demo en rojo (regla 15): `<script src="https://cdn.jsdelivr.net/…">` plantado en index.html —
- * registrada en sprints/ETAPA-DISENO-implementation-log.md.
+ * registrada en sprints/ETAPA-DISENO-implementation-log.md. A-24 (S1, fase 4) cerró cuatro huecos, cada uno
+ * con su demo en rojo en sprints/SPRINT_001-implementation-log.md: `http://localhost:…` e IPs, URI `data:`, y
+ * los `.svg` y `.json` que `copiar-maqueta` también sirve.
  */
 const PROHIBIDO: Array<[RegExp, string]> = [
   [/(?:https?:)?\/\/(?!example\.org[/"'\s<)])[a-z0-9-]+\.[a-z]/i, "URL absoluta fuera de example.org"],
+  [/\bhttps?:\/\/(?!example\.org[/"'\s<)])/i, "URL http(s) fuera de example.org (también localhost o una IP)"],
+  [/\/\/(?:localhost\b|(?:\d{1,3}\.){3}\d{1,3})/i, "localhost o una IP"],
+  [/(?:^|[^a-z0-9-])data:[a-z]+\/[a-z0-9.+-]+[;,]/i, "URI data: (un recurso va como archivo en assets/)"],
   [/<script[^>]*\ssrc\s*=\s*["'](?!assets\/|\.\/assets\/)/i, "script fuera de assets/"],
   [/<link[^>]*\shref\s*=\s*["'](?!assets\/|\.\/assets\/|[a-z0-9-]+\.html)/i, "link fuera de assets/ o de la maqueta"],
   [/@import/i, "@import (la hoja se enlaza, no se importa)"],
@@ -21,13 +26,13 @@ const PROHIBIDO: Array<[RegExp, string]> = [
 ];
 
 describe("maqueta autocontenida (docs/diseno)", () => {
-  const lista = archivosMaqueta(/\.(html|css|js)$/);
+  const lista = archivosMaqueta(/\.(html|css|js|svg|json)$/);
 
   it("existe la maqueta y tiene archivos que inspeccionar", () => {
     expect(lista.length).toBeGreaterThan(0);
   });
 
-  it("ningún HTML/CSS/JS referencia la red ni un framework", () => {
+  it("ningún HTML, CSS, JS, SVG ni JSON referencia la red ni un framework", () => {
     const hallazgos: string[] = [];
     for (const f of lista)
       leer(f)

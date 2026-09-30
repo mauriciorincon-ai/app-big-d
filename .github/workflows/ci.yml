@@ -43,7 +43,7 @@ jobs:
       - uses: actions/setup-node@v7
         with: { node-version: 22, cache: pnpm }
       - run: pnpm install --frozen-lockfile
-      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm exec playwright install --with-deps chromium firefox webkit   # firefox y webkit: solo g11.spec (G11 en tres motores)
       - run: pnpm test:e2e        # incluye scans axe (@axe-core/playwright)
       # El primer reintento graba trace (playwright.config `trace: on-first-retry`) con
       # consola, errores y DOM — se sube SOLO cuando algo falla (kit v1.26.0).
