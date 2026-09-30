@@ -1019,3 +1019,14 @@ del atlas, la nota de marcas en su forma A y el estado vacío en contexto. Cada 
 de construir encima; la planeadora las lleva a la próxima versión del design system.
 
 **Suites:** unitarias 807/807 · e2e 300/300 · paquete 526/526.
+
+**CI de `cd4d86b`**: quality ✓ · e2e ✓ (300 passed en 2,9 min, **sin flaky**; primera corrida verde de G11 en
+Firefox y WebKit en la CI) · lighthouse ✓ · diagramador ubuntu ✓ · macOS ✓ · Vercel ✓, los seis en `success` propio.
+**Pasada de capturas** sobre el árbol final: 22 rutas, 88 encuadres, 4456 comprobaciones de interacción, 0 fallas.
+
+### Cierre de la construcción de la fase 4 (2026-09-29)
+
+Hecho: la ventana (con su mirada), G11 en tres motores, movimiento reducido y axe en todo el sitio, determinismo
+de la ventana, A-24 (y A-25, A-29 y A-30 verificadas), guía de prueba v1 con kit, manual bilingüe, `design-sync/`
+y el ADR de extensiones de diseño. Sigue, tras el «continúa»: `/audita-sprint` (obligatoria; su fase 2 paga todos
+los hallazgos) → `/deploy-check` → `SPRINT_001-summary.md` → PR listo.
