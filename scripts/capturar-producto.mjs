@@ -242,20 +242,23 @@ async function interactuar(pagina, ruta, tema, ancho, clave) {
     });
   } else cambio((await indice.first().isVisible().catch(() => false)) === false, "el lienzo cabe y el índice se ve igual");
 
-  // Niveles 2 y 3: cada componente abre el panel con su ficha y lleva el foco al título; Esc lo cierra y
-  // devuelve el foco al componente; «Cerrar» también cierra.
+  // Niveles 2 y 3: cada componente abre el panel con su ficha; nivel 1: cada bloque (o grupo sin bloque) abre
+  // su ventana. El foco va al título; Esc cierra y devuelve el foco al elemento; «Cerrar» también cierra.
+  const activables = (await pagina.locator(".lienzo .dg-nodo").count()) ? ".lienzo .dg-nodo" : ".lienzo .dg-elem";
   if (await pagina.locator("#panel-ficha").count()) {
-    const nodos = pagina.locator(".lienzo .dg-nodo");
+    const nodos = pagina.locator(activables);
     await marcar(nodos);
     const panel = pagina.locator("#panel-ficha");
     const n = await nodos.count();
     for (let i = 0; i < n; i++) {
       const nodo = nodos.nth(i);
-      const nombre = (await nodo.getAttribute("aria-label")).split(". ")[0];
+      const nombre = (await nodo.getAttribute("aria-label")).split(/[.:] /)[0];
       await nodo.evaluate((el) => el.dispatchEvent(new MouseEvent("click", { bubbles: true })));
       await panel.waitFor({ state: "visible", timeout: 2000 }).catch(() => {});
       const titulo = (await panel.isVisible()) ? await panel.locator("h2").textContent() : "";
-      cambio(titulo === nombre, `el componente «${nombre}» no abrió su ficha (título: «${titulo}»)`);
+      cambio(titulo === nombre, `«${nombre}» no abrió su panel (título: «${titulo}»)`);
+      if (activables.endsWith(".dg-elem"))
+        cambio((await panel.locator('svg[data-vista="bloque"] .dg-nodo').count()) > 0 && (await panel.locator(".dg-tarjeta").count()) > 0, `la ventana de «${nombre}» no trae sus componentes dibujados y sus tarjetas`);
       cambio(await pagina.evaluate(() => document.activeElement?.tagName === "H2"), `al abrir «${nombre}» el foco no fue al título`);
       await pagina.keyboard.press("Escape");
       cambio(await panel.isHidden(), `Esc no cerró la ficha de «${nombre}»`);
@@ -264,12 +267,12 @@ async function interactuar(pagina, ruta, tema, ancho, clave) {
       const primero = nodos.first();
       await primero.focus();
       await pagina.keyboard.press("Enter");
-      cambio(await panel.isVisible(), "Enter sobre un componente no abrió su ficha");
+      cambio(await panel.isVisible(), "Enter sobre un elemento del lienzo no abrió su panel");
       const cerrar = panel.locator(".cerrar");
       await marcar(cerrar);
       await cerrar.click();
       cambio(await panel.isHidden(), "«Cerrar» no cerró la ficha");
-      cambio(await primero.evaluate((e) => e === document.activeElement), "al cerrar, el foco no volvió al componente");
+      cambio(await primero.evaluate((e) => e === document.activeElement), "al cerrar, el foco no volvió al elemento del lienzo");
     }
   }
 
@@ -326,29 +329,6 @@ async function interactuar(pagina, ruta, tema, ancho, clave) {
     cambio((await decidir.nth(i).getAttribute("aria-pressed")) === "true", "un botón Aprobar/Rechazar no marcó su decisión");
   }
 
-  // Nivel 1: clic en cada bloque abre la ficha breve con su nombre; el primero también con Enter.
-  const elems = pagina.locator(".lienzo .dg-elem");
-  const nElems = (await pagina.locator("#ficha-breve").count()) ? await elems.count() : 0;
-  if (nElems) await marcar(elems);
-  for (let i = 0; i < nElems; i++) {
-    const e = elems.nth(i);
-    const nombre = (await e.getAttribute("aria-label")).split(/[.:]/)[0];
-    await e.evaluate((el) => el.dispatchEvent(new MouseEvent("click", { bubbles: true })));
-    const ficha = pagina.locator("#ficha-breve");
-    await ficha.waitFor({ state: "visible", timeout: 2000 }).catch(() => {});
-    const texto = (await ficha.isVisible()) ? await ficha.textContent() : "";
-    cambio(texto.includes(nombre), `el bloque «${nombre}» no abrió su ficha breve`);
-    cambio((await e.getAttribute("aria-current")) === "true", `el bloque «${nombre}» no quedó marcado`);
-  }
-  if (nElems > 1) {
-    // Con teclado: se activa otro bloque primero, para que Enter tenga algo que cambiar.
-    await elems.first().evaluate((el) => el.dispatchEvent(new MouseEvent("click", { bubbles: true })));
-    const ultimo = elems.nth(nElems - 1);
-    const nombre = (await ultimo.getAttribute("aria-label")).split(/[.:]/)[0];
-    await ultimo.focus();
-    await pagina.keyboard.press("Enter");
-    cambio((await pagina.locator("#ficha-breve").textContent()).includes(nombre) && (await pagina.locator("#ficha-breve").isVisible()), `Enter sobre «${nombre}» no abrió su ficha`);
-  }
   const lienzoFoco = pagina.locator(".lienzo[tabindex]");
   if (await lienzoFoco.count()) {
     await marcar(lienzoFoco);
@@ -381,8 +361,8 @@ async function interactuar(pagina, ruta, tema, ancho, clave) {
 
   // Al final de los clics (la hoja modal tapa el resto en teléfono): una ficha abierta para la captura de
   // estado; sus enlaces a fuentes entran en la pasada de enlaces que sigue.
-  if ((await pagina.locator("#panel-ficha").count()) && (await pagina.locator(".lienzo .dg-nodo").count()) > 1)
-    await pagina.locator(".lienzo .dg-nodo").nth(1).evaluate((el) => el.dispatchEvent(new MouseEvent("click", { bubbles: true })));
+  if ((await pagina.locator("#panel-ficha").count()) && (await pagina.locator(activables).count()) > 1)
+    await pagina.locator(activables).nth(1).evaluate((el) => el.dispatchEvent(new MouseEvent("click", { bubbles: true })));
 
   // Enlaces: cada uno lleva a una ruta que existe (el de idioma, además, cambia lang).
   const enlaces = pagina.locator("header a[href], main a[href]:not(.saltar-diagrama), #panel-ficha a[href]");
@@ -474,9 +454,8 @@ for (const ruta of rutas)
       }
       encuadres++;
       await interactuar(pagina, ruta, tema, ancho, clave);
-      // Estado con la ficha abierta: la breve (nivel 1) o el panel (niveles 2 y 3).
+      // Estado con el panel abierto: la ventana de un bloque (nivel 1) o la ficha de un componente (2 y 3).
       if (salida && !bandera("solo-medir")) {
-        if (await pagina.locator("#ficha-breve").isVisible()) await pagina.locator(".mapa").screenshot({ path: join(salida, `${clave}__ficha.png`) });
         if (await pagina.locator("#panel-ficha").isVisible()) await pagina.screenshot({ path: join(salida, `${clave}__ficha.png`) });
       }
       for (const e of errores) fallas.push(`${clave}: error en la consola: ${e}`);

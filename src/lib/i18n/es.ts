@@ -25,11 +25,12 @@ export const es: Textos = {
     dias: "{n} d",
     porRevisar: "Por revisar: verificado hace {n} días.",
     vencido: "Vencido: verificado hace {n} días.",
-    titulo: { "nivel-1": "{sujeto} · visión general", "nivel-2": "{sujeto} · componentes", recorrido: "{sujeto} · {recorrido}" },
+    titulo: { "nivel-1": "{sujeto} · visión general", "nivel-2": "{sujeto} · componentes", recorrido: "{sujeto} · {recorrido}", bloque: "{sujeto} · {bloque}" },
     descripcion: {
       "nivel-1": "Mapa de {sujeto}: {capas} capas de izquierda a derecha y {franjas} franjas transversales abajo.",
       "nivel-2": "Componentes de {sujeto}: {nodos} componentes en {capas} capas y {franjas} franjas.",
       recorrido: "Recorrido «{recorrido}» sobre los componentes de {sujeto}.",
+      bloque: "{bloque} de {sujeto}: sus componentes, uno bajo otro; una línea entre dos es un flujo entre ellos.",
     },
     paso: "Paso {numero}: {que}",
     hacia: "Hacia {nombre}, {modo}: {que}",
@@ -78,14 +79,14 @@ export const es: Textos = {
     niveles: { etiqueta: "Nivel de lectura", general: "Visión general", componentes: "Componentes", recorrido: "Recorrido de un dato", lado: "Lado a lado" },
     guia: {
       entrada: "Se lee de izquierda a derecha:",
-      resto: "es el camino que recorre un dato. Cada capa responde una pregunta; las franjas de abajo abarcan todas las capas. Toca un bloque para leer su frase.",
+      resto: "es el camino que recorre un dato. Cada capa responde una pregunta; las franjas de abajo abarcan todas las capas. Toca un bloque para ver sus componentes.",
     },
     mapa: "Mapa",
     indice: "Ir a una capa",
     pista: "Desliza de lado para ver las {n} capas.",
     saltarDiagrama: "Saltar el diagrama",
     lienzo: "Diagrama; se desplaza de lado",
-    pistaActivar: "Enter o Espacio muestra su frase debajo del mapa.",
+    pistaActivar: "Enter o Espacio abre sus componentes.",
     notaModos: "Varios modos en una conexión: línea gruesa y una etiqueta que dice cuáles, en orden. El color acompaña a la forma; nunca va solo.",
     lectura: "Lectura en texto: lo mismo que dice el mapa, en una lista",
     nivel2: {
@@ -99,6 +100,7 @@ export const es: Textos = {
     },
     pistaNodo: "Enter o Espacio abre su ficha.",
     ficha: { titulo: "Ficha del componente", cerrar: "Cerrar" },
+    ventana: { titulo: "Dentro del bloque", verComponentes: "Verlos junto a todos los demás, en «Componentes»" },
     recorrido: {
       titulo: "Recorrido de un dato",
       ojo: "Atlas · nivel 3 · recorrido de un dato",

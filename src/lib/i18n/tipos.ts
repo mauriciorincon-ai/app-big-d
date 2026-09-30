@@ -47,6 +47,8 @@ export interface Textos {
     /** Pista de los componentes activables (niveles 2 y 3): qué hace Enter. */
     pistaNodo: string;
     ficha: { titulo: string; cerrar: string };
+    /** Ventana de un bloque del nivel 1: sus componentes dibujados y sus tarjetas. */
+    ventana: { titulo: string; verComponentes: string };
     recorrido: {
       titulo: string;
       ojo: string;

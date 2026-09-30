@@ -1,4 +1,4 @@
-import { layout, toCard, toJourneyCSS, toLegend, toSVG, toText, type Geometria, type TextosMotor, type Vigencia, type Vista } from "diagramador";
+import { layout, toBlockCards, toCard, toJourneyCSS, toLegend, toSVG, toText, type Geometria, type TextosMotor, type Vigencia, type Vista } from "diagramador";
 import type { Atlas, Datos } from "@/lib/datos";
 import { IDIOMAS, textos, type Idioma, type Textos } from "@/lib/i18n";
 import { plantilla, plural } from "./plantilla";
@@ -79,11 +79,47 @@ function fichas(atlas: Atlas, idioma: Idioma, fechaConsulta: string): Record<str
 
 export interface VistaNivel1 extends VistaAtlas {
   leyenda: string;
+  /** La ventana de cada elemento activable del nivel 1 (bloque o «_<banda>»), por su `data-dueno`. */
+  ventanas: Record<string, string>;
+}
+
+const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+
+/**
+ * Ventana de un elemento del nivel 1 (pedido del usuario en la mirada de Fabric): su nombre y su frase, sus
+ * componentes dibujados por el motor (vista «bloque»: la tarjeta del nivel 2 y los flujos entre ellos), sus
+ * tarjetas de texto (`toBlockCards`) y el paso al nivel 2. Un aviso de geometría rompe el build, como en las
+ * demás vistas.
+ */
+function ventanas(atlas: Atlas, idioma: Idioma, fechaConsulta: string, elementos: readonly string[]): Record<string, string> {
+  const tm = textosMotor();
+  const t = textos(idioma).atlas.ventana;
+  const componentes = rutasAtlas(atlas, idioma).componentes!;
+  return Object.fromEntries(
+    elementos.map((id) => {
+      const geo = layout(atlas.mapa, atlas.gramatica, "bloque", { textos: tm, fechaConsulta, grupo: id });
+      if (geo.avisos.length) throw new Error(`atlas ${atlas.plataforma.id}, ventana ${id}: avisos de geometría\n${geo.avisos.join("\n")}`);
+      const banda = id.startsWith("_") ? atlas.gramatica.bandas.find((b) => b.id === id.slice(1)) : undefined;
+      const bloque = banda ? undefined : atlas.mapa.bloques.find((b) => b.id === id);
+      const nombre = banda ? banda.nombre[idioma]! : bloque!.nombre[idioma]!;
+      const frase = banda ? banda.pregunta_lider[idioma]! : bloque!.lider[idioma]!;
+      const svg = toSVG(geo, { language: idioma, prefix: `${atlas.plataforma.id}-bl-${id.replace(/^_/, "banda-")}-${idioma}` });
+      const tarjetas = toBlockCards(atlas.mapa, atlas.gramatica, id, { language: idioma, textos: tm, fechaConsulta });
+      return [
+        id,
+        `<h2>${esc(nombre)}</h2><p class="ventana-lider">${esc(frase)}</p><div class="ventana-lienzo">${svg}</div>${tarjetas}<p class="ventana-mas"><a href="${esc(componentes)}">${esc(t.verComponentes)}</a></p>`,
+      ];
+    }),
+  );
 }
 
 export function vistaNivel1(atlas: Atlas, idioma: Idioma, fechaConsulta: string): VistaNivel1 {
-  const { comun } = disponer(atlas, idioma, fechaConsulta, "nivel-1");
-  return { ...comun, leyenda: toLegend(atlas.gramatica, { language: idioma, textos: textosMotor() }) };
+  const { geo, comun } = disponer(atlas, idioma, fechaConsulta, "nivel-1");
+  return {
+    ...comun,
+    leyenda: toLegend(atlas.gramatica, { language: idioma, textos: textosMotor() }),
+    ventanas: ventanas(atlas, idioma, fechaConsulta, geo.vigencia.elementos.map((e) => e.id)),
+  };
 }
 
 export interface VistaNivel2 extends VistaAtlas {

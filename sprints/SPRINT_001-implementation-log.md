@@ -423,6 +423,14 @@ dibuja los niveles 1 y 2 de los dos mapas bilingües y mide cada `tspan` con `ge
     vistas); el contrato podría declararlo como regla de validación en modo publicación.
 25. **Carnada P1 (mapa denso)** — `packages/diagramador/test/carnadas-piloto/P1-mapa-denso.mapa.json`: la forma
     del primer mapa real con nombres neutrales. Propuesta para el juego de carnadas del contrato.
+26. **D-S1-44 — Vista «bloque» y `toBlockCards`** (pedido del usuario al mirar Fabric): `layout(map, grammar,
+    "bloque", { grupo })` dibuja lo que hay dentro de un elemento activable del nivel 1 (un bloque, o «_<banda>»
+    para los nodos sin bloque) con la MISMA tarjeta que el nivel 2 (de capa o ficha compacta de franja) y solo los
+    flujos de adentro; `toBlockCards(map, grammar, group, opts)` da una tarjeta de texto por componente con todas
+    sus conexiones. `rutear` acepta `centroCanal` (el canal va tras la tarjeta real, 152 o 168 u). § 8 no tiene
+    esta vista ni esta función.
+27. **D-S1-45 — Etiqueta de un flujo dentro de una columna** — se despega 2 u de la tarjeta como la de los
+    vecinos (antes la rozaba 1 u; ningún mapa del contrato tenía el caso, lo cazó la vista «bloque»).
 
 ## Fase 2 — Atlas nivel 1 en el producto (2026-09-27)
 
@@ -804,3 +812,46 @@ aprobación es 2026-09-29**: el script usa la fecha UTC, y en la hora local de l
 **Pasada de capturas:** 22 rutas, **88 encuadres, 4120 comprobaciones de interacción, 0 fallas**. Leídos como imagen:
 Fabric en el nivel 1 (oscuro, 1280), el nivel 2 (claro, 1280), el recorrido (oscuro, 380) y el investigador con
 «Aprobada por una persona». **Suites:** unitarias 697/697 · e2e 88/88.
+
+**CI de `e22cbc9`** (Fabric publicado): quality ✓ · e2e ✓ · lighthouse ✓ (13 URL, con las tres de Fabric) ·
+diagramador ubuntu ✓ · macOS ✓ · Vercel ✓, los seis en `success` propio. Queda el cierre de la fase 3: la mirada
+del atlas de Fabric y el «continúa».
+
+### Mirada del atlas de Fabric y pedido del usuario (2026-09-29)
+
+La persona abrió el atlas de Fabric en su navegador y respondió: «Sí, el mapa se entiende». Sobre «Componentes»:
+«la visual de componentes muy muy buena», y sobre «Recorrido de un dato»: «ni qué decir… una pantalla lateral
+derecha que cuenta el detalle, muy muy chévere». **Pedido (estado nuevo, mirada de FORMA):** en la visión general,
+al tocar un bloque, en lugar de la ficha breve en texto, «una ventana pequeña que sale del bloque y me muestra sus
+componentes con el mismo formato visual, y cómo interactúan si interactúan (línea que las conecta o son
+independientes); debajo el texto, ojalá en bloques rectangulares con toda la información». Con su «continúa»
+se cierra la fase 3 y la ventana entra primero en la fase 4.
+
+### Fase 4 · 1 — La ventana de un bloque (nivel 1)
+
+- **Motor** (D-S1-44, D-S1-45): vista «bloque», `toBlockCards`, `modoSVG` (el trazo y el marcador de un modo,
+  compartido con la leyenda: la leyenda quedó idéntica byte a byte) y `util/grupo.ts`.
+- **App:** `vistaNivel1` trae `ventanas` (una por elemento activable: nombre y frase, dibujo del motor, tarjetas y
+  el paso a «Componentes»). `PanelFicha` se generaliza (`objetivo`, `clave`): lateral desde 900 px, hoja modal en
+  teléfono, foco al título, Esc y «Cerrar» devuelven el foco al bloque. La ficha breve en texto del nivel 1 se
+  retira (`ControlLienzo` ya no la pinta; su CSS sale). Guía y pista del nivel 1 en los dos idiomas: «Toca un
+  bloque para ver sus componentes» / «Tap a block to see its components».
+- **Un hallazgo en el camino:** el bloque de gobierno del mapa de ejemplo trae «Filtros por fila y
+  enmascaramiento», un nodo de franja; con la tarjeta de capa la palabra no cabía (el build se negó). En «Componentes»
+  ese nodo es una ficha compacta, así que la ventana usa la misma tarjeta que el nivel 2 le da.
+
+| Gate | ¿Puede fallar? | Rojo | A quién nombró | Verde |
+|---|---|---|---|---|
+| Vista «bloque» en todos los mapas del contrato y P1 (`bloque.test.ts`) | Sí | sin ficha compacta en franjas | los grupos de franja de agente-ejemplo, agentes-ejemplo y plataforma-ejemplo | 58/58 |
+| Tarjetas con todas sus conexiones | Sí | sin las que entran | «una tarjeta por componente…» y «cada conexión con el trazo…» | 58/58 |
+| Canal centrado tras la ficha compacta | Sí | sin `centroCanal` | «en una franja, el canal va centrado…» | 58/58 |
+| Etiqueta de un flujo en la misma columna, despegada | Sí | la regla vieja | el mismo caso: `etiqueta f-catalogo-auditoria: queda encima de la caja de catalogo-central` | 58/58 |
+| Todo bloque que se toca tiene su ventana (`atlas.test.ts`, regla 22) | Sí | sin las ventanas de los grupos sin bloque | fabric y plataforma-ejemplo, en es y en | 19/19 |
+| Ids propios por ventana | Sí | sin prefijo | «ids del SVG propios por ventana…» | 19/19 |
+
+**e2e:** con teclado (Enter abre, el foco va al título, Esc cierra y devuelve el foco), dos componentes con su flujo
+en «Tableros», el enlace a «Componentes», y en 380 px una hoja modal que cabe sin deslizar de lado; axe con la
+ventana abierta en los dos temas. **Arnés:** la pasada de interacción abre la ventana de cada bloque (título, dibujo
+y tarjetas) con clic y con Enter; la ficha breve sale del arnés. **Lighthouse local** del nivel 1 con las ventanas
+(28 KB comprimido, como «Componentes»): mediana 2757 ms, igual que antes. **Suites:** unitarias 760/760 · paquete
+494/494 (golden files intactos) · e2e 90/90 · capturas 88 encuadres, 4456 comprobaciones, 0 fallas.

@@ -2,8 +2,8 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
 // Atlas · nivel 1 en el producto (S1, fase 2): el SVG del diagramador generado en el build, la capa
-// interactiva enganchada a sus ids (ficha breve con clic y con teclado, lienzo deslizable con índice de
-// capas), la lectura en texto equivalente (G10) y axe en los dos temas. Sin fecha fijada: el build usa el día
+// interactiva enganchada a sus ids (la ventana de un bloque con clic y con teclado, lienzo deslizable con
+// índice de capas), la lectura en texto equivalente (G10) y axe en los dos temas. Sin fecha fijada: el build usa el día
 // de hoy, así que nada aquí depende de si el mapa está vigente o por revisar.
 const RUTA = { es: "/es/atlas/plataforma-ejemplo", en: "/en/atlas/plataforma-ejemplo" } as const;
 
@@ -24,19 +24,30 @@ for (const [idioma, ruta] of Object.entries(RUTA)) {
   });
 }
 
-test("con teclado: Tab llega a un bloque, Enter muestra su frase debajo del mapa", async ({ page }) => {
+test("con teclado: Enter sobre un bloque abre su ventana con sus componentes; Esc la cierra y devuelve el foco", async ({ page }) => {
   await page.goto(RUTA.es);
-  const ficha = page.locator("#ficha-breve");
-  await expect(ficha).toBeHidden();
+  const panel = page.locator("#panel-ficha");
+  await expect(panel).toBeHidden();
   const primero = page.locator(".lienzo .dg-elem").first();
   await primero.focus();
   await page.keyboard.press("Enter");
-  await expect(ficha).toBeVisible();
-  await expect(ficha).toContainText("Sistemas de origen");
+  await expect(panel).toBeVisible();
+  await expect(panel.locator("h2")).toHaveText("Sistemas de origen");
+  await expect(panel.locator("h2")).toBeFocused();
+  await expect(panel.locator('svg[data-vista="bloque"] .dg-nodo')).toHaveCount(1);
+  await expect(panel.locator(".dg-tarjeta")).toHaveCount(1);
   await expect(primero).toHaveAttribute("aria-current", "true");
-  // Otro bloque con clic cambia la ficha y la marca.
-  await page.locator('.lienzo .dg-elem[data-dueno="almacen"]').dispatchEvent("click");
-  await expect(ficha).toContainText("Almacén central");
+  await page.keyboard.press("Escape");
+  await expect(panel).toBeHidden();
+  await expect(primero).toBeFocused();
+  // Otro bloque con clic: sus dos componentes dibujados, el flujo que los une y una tarjeta por cada uno.
+  await page.locator('.lienzo .dg-elem[data-dueno="consumo-bi"]').dispatchEvent("click");
+  await expect(panel.locator("h2")).toHaveText("Tableros");
+  await expect(panel.locator('svg[data-vista="bloque"] .dg-nodo')).toHaveCount(2);
+  await expect(panel.locator('svg[data-vista="bloque"] .dg-flujo[data-dueno="f-semantico-tablero"]')).toHaveCount(1);
+  await expect(panel.locator(".dg-tarjeta")).toHaveCount(2);
+  await expect(panel.locator('.dg-tarjeta[data-nodo="tablero"] li[data-flujo="f-semantico-tablero"]')).toContainText("Desde Modelo semántico");
+  await expect(panel.getByRole("link", { name: /Componentes/ })).toHaveAttribute("href", "/es/atlas/plataforma-ejemplo/componentes");
   await expect(primero).not.toHaveAttribute("aria-current", "true");
 });
 
@@ -60,6 +71,15 @@ test.describe("en un teléfono de 380 px", () => {
     await expect.poll(() => lienzo.evaluate((e) => e.scrollLeft)).toBeGreaterThan(500);
     await expect(page.getByRole("button", { name: /Inteligencia artificial/ })).toHaveAttribute("aria-current", "true");
   });
+  test("la ventana de un bloque es una hoja modal que cabe sin deslizar de lado", async ({ page }) => {
+    await page.goto(RUTA.en);
+    await page.locator('.lienzo .dg-elem[data-dueno="almacen"]').dispatchEvent("click");
+    const panel = page.getByRole("dialog", { name: "Inside the block" });
+    await expect(panel).toBeVisible();
+    await expect(panel).toHaveAttribute("aria-modal", "true");
+    await expect(panel.locator('svg[data-vista="bloque"] .dg-nodo')).toHaveCount(2);
+    expect(await panel.locator(".panel-cuerpo").evaluate((e) => e.scrollWidth - e.clientWidth)).toBeLessThanOrEqual(0);
+  });
 });
 
 test("la barra y la portada llevan al atlas", async ({ page }) => {
@@ -81,8 +101,10 @@ for (const [esquema, tema] of [
     for (const ruta of Object.values(RUTA))
       test(`${ruta} sin violaciones serias (${tema})`, async ({ page }) => {
         await page.goto(ruta);
-        await page.locator(".lienzo .dg-elem").first().dispatchEvent("click");
+        // La lectura antes que la ventana: en un teléfono la ventana es una hoja modal que tapa la página.
         await page.locator("details.lectura-seccion > summary").click();
+        await page.locator(".lienzo .dg-elem").first().dispatchEvent("click");
+        await expect(page.locator("#panel-ficha")).toBeVisible();
         const scan = await new AxeBuilder({ page }).analyze();
         const serias = scan.violations.filter((v) => v.impact === "critical" || v.impact === "serious");
         expect(serias, JSON.stringify(serias.map((v) => [v.id, v.nodes.map((n) => n.target)]))).toEqual([]);

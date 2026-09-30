@@ -25,11 +25,12 @@ export const en: Textos = {
     dias: "{n} d",
     porRevisar: "To review: verified {n} days ago.",
     vencido: "Expired: verified {n} days ago.",
-    titulo: { "nivel-1": "{sujeto} · overview", "nivel-2": "{sujeto} · components", recorrido: "{sujeto} · {recorrido}" },
+    titulo: { "nivel-1": "{sujeto} · overview", "nivel-2": "{sujeto} · components", recorrido: "{sujeto} · {recorrido}", bloque: "{sujeto} · {bloque}" },
     descripcion: {
       "nivel-1": "{sujeto} map: {capas} layers from left to right and {franjas} cross-cutting bands below.",
       "nivel-2": "{sujeto} components: {nodos} components in {capas} layers and {franjas} bands.",
       recorrido: "Journey “{recorrido}” over the components of {sujeto}.",
+      bloque: "{bloque} in {sujeto}: its components, one below the other; a line between two is a flow between them.",
     },
     paso: "Step {numero}: {que}",
     hacia: "To {nombre}, {modo}: {que}",
@@ -78,14 +79,14 @@ export const en: Textos = {
     niveles: { etiqueta: "Reading level", general: "Overview", componentes: "Components", recorrido: "A datum's journey", lado: "Side by side" },
     guia: {
       entrada: "Read it from left to right:",
-      resto: "it is the road a piece of data travels. Each layer answers one question; the bands below span every layer. Tap a block to read its line.",
+      resto: "it is the road a piece of data travels. Each layer answers one question; the bands below span every layer. Tap a block to see its components.",
     },
     mapa: "Map",
     indice: "Go to a layer",
     pista: "Swipe sideways to see all {n} layers.",
     saltarDiagrama: "Skip the diagram",
     lienzo: "Diagram; scrolls sideways",
-    pistaActivar: "Enter or Space shows its line below the map.",
+    pistaActivar: "Enter or Space opens its components.",
     notaModos: "Several modes on one connection: a thick line and a label that says which, in order. Colour goes with shape; never alone.",
     lectura: "Reading in text: what the map says, as a list",
     nivel2: {
@@ -99,6 +100,7 @@ export const en: Textos = {
     },
     pistaNodo: "Enter or Space opens its card.",
     ficha: { titulo: "Component card", cerrar: "Close" },
+    ventana: { titulo: "Inside the block", verComponentes: "See them alongside all the others, in “Components”" },
     recorrido: {
       titulo: "A datum's journey",
       ojo: "Atlas · level 3 · a datum's journey",

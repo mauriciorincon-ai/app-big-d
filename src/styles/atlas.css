@@ -36,12 +36,6 @@
 .saltar-diagrama:focus { position: static; width: auto; height: auto; clip-path: none; display: inline-block; margin: 0 0 8px; color: var(--tinta-1); font-weight: 700; }
 
 /* Ficha breve al activar un bloque: su entrada de la lectura en texto. */
-.ficha { margin: 14px 0 0; padding: 14px 18px; border-left: 2px solid var(--tinta-1); background: var(--sup-1); font-size: 15px; }
-.ficha[hidden] { display: none; }
-.ficha b { font-weight: 700; }
-.ficha ol { margin: 8px 0 0; padding-left: 22px; }
-.ficha ol > li + li { margin-top: 6px; }
-.ficha ul { margin: 4px 0 0; padding-left: 18px; color: var(--tinta-2); font-size: 14px; }
 
 /* Leyenda (generada): tipos a la izquierda en dos columnas, modos a la derecha con su nota; madurez y
    vigencia debajo; la nota de marcas cierra. Las secciones siguen el orden del contrato (§ 4.9). */
@@ -83,8 +77,8 @@
 .dg-lectura { font-size: 15px; }
 /* La base de Tailwind quita los marcadores de lista; la lectura (y la ficha que la cita) los necesita:
    el número dice el orden, la viñeta distingue una conexión de un componente. */
-.dg-lectura ol, .ficha ol { list-style: decimal; }
-.dg-lectura ul, .ficha ul { list-style: disc; }
+.dg-lectura ol { list-style: decimal; }
+.dg-lectura ul { list-style: disc; }
 .dg-lectura ol { margin: 6px 0 0; padding-left: 22px; }
 .dg-lectura > ol { margin-top: 12px; }
 .dg-lectura > ol > li { margin: 0 0 12px; }
@@ -154,3 +148,21 @@
 /* Movimiento reducido: «Reproducir» sigue en el DOM (el árbol no depende de la preferencia) y el CSS lo
    oculta; el controlador además se niega a reproducir. */
 @media (prefers-reduced-motion: reduce) { .rec [data-rec="reproducir"] { display: none; } }
+
+/* Ventana de un bloque del nivel 1 (pedido del usuario al mirar Fabric): su nombre y su frase, sus componentes
+   dibujados por el motor (vista «bloque», a escala 1) y una tarjeta de texto por componente (`toBlockCards`). */
+.panel-cuerpo > h2 { font-size: 22px; font-weight: 700; line-height: 1.2; letter-spacing: -0.01em; margin: 4px 0 6px; }
+.ventana-lider { margin: 0; font-size: 16px; }
+.ventana-lienzo { margin: 18px 0 6px; }
+.dg-tarjetas { display: grid; gap: 12px; margin-top: 8px; }
+.dg-tarjeta { padding: 14px 16px; border: 1px solid var(--linea); border-radius: 6px; background: var(--fondo); }
+.dg-tarjeta h3 { font-size: 16px; font-weight: 700; line-height: 1.25; margin: 8px 0 6px; }
+.dg-tarjeta p { margin: 0; font-size: 14px; }
+.dg-tarjeta .dg-ficha-madurez { color: var(--tinta-2); }
+.dg-tarjeta .dg-tarjeta-lider { margin-top: 8px; font-size: 15px; }
+.dg-tarjeta .dg-tarjeta-vigencia { margin-top: 6px; font: 500 13px/1.4 var(--letra-mono); }
+.dg-conexiones { list-style: none; margin: 10px 0 0; padding: 0; }
+.dg-conexiones li { display: flex; gap: 10px; align-items: flex-start; padding: 7px 0; border-top: 1px solid var(--linea); font-size: 14px; color: var(--tinta-2); }
+.dg-conexiones .dg-svg { flex: none; margin-top: 4px; color: var(--tinta-1); }
+.ventana-mas { margin: 18px 0 0; font-size: 15px; }
+.ventana-mas a { color: var(--tinta-1); text-decoration: underline; }

@@ -38,6 +38,28 @@ describe("vista general", () => {
   });
 });
 
+describe("ventana de cada bloque del nivel 1 (pedido del usuario al mirar Fabric)", () => {
+  // Todo elemento que se puede tocar en el lienzo tiene su ventana, y ninguna ventana sobra: un bloque sin
+  // ventana no abriría nada (regla 22: todo control dibujado hace algo).
+  const activables = (svg: string) => [...svg.matchAll(/<g [^>]*class="dg-elem[^"]*"[^>]*data-dueno="([^"]+)"/g)].map((m) => m[1]!).sort();
+  it.each(IDIOMAS.flatMap((idioma) => [...cargarDatos().atlas.keys()].map((id) => [id, idioma] as const)))("%s en %s", (id, idioma) => {
+    const a = cargarDatos().atlas.get(id)!;
+    const v = vistaNivel1(a, idioma, "2026-09-26");
+    expect(Object.keys(v.ventanas).sort()).toEqual(activables(v.svg));
+    for (const [grupo, html] of Object.entries(v.ventanas)) {
+      expect(html).toMatch(/^<h2>[^<]+<\/h2><p class="ventana-lider">/);
+      expect(html).toContain('data-vista="bloque"');
+      expect(html).toContain(`<div class="dg-tarjetas" lang="${idioma}" data-grupo="${grupo}">`);
+      expect(html).toContain(`<a href="/${idioma}/atlas/${id}/componentes">${textos(idioma).atlas.ventana.verComponentes.replace(/"/g, "&quot;")}</a>`);
+    }
+  });
+  it("ids del SVG propios por ventana: no chocan entre sí ni con el lienzo", () => {
+    const v = vistaNivel1(atlas, "es", "2026-09-26");
+    const ids = [v.svg, ...Object.values(v.ventanas)].flatMap((h) => [...h.matchAll(/ id="([^"]+)"/g)].map((m) => m[1]!));
+    expect(ids.length).toBe(new Set(ids).size);
+  });
+});
+
 describe("píldora de vigencia", () => {
   it("vigente, por revisar y vencido, desde el cálculo del motor", () => {
     const es = (fecha: string) => vistaNivel1(atlas, "es", fecha).pildora;

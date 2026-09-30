@@ -12,11 +12,25 @@ function suscribir(avisar: () => void) {
 /**
  * Panel de la ficha de un componente (niveles 2 y 3; maqueta: `ficha.js` + contrato de foco del design system
  * § 7): al activar un componente del lienzo (clic, Enter o Espacio) se abre con su ficha, generada por el motor.
+ * En el nivel 1 abre la ventana de un bloque (`objetivo` = los activables del lienzo, `clave` = su dueño).
  * En teléfono es una hoja inferior modal (`role="dialog"`, foco contenido); desde 900 px, una región lateral
  * no modal. Al abrir, el foco va al título; Esc o «Cerrar» cierran y lo devuelven al componente de origen.
  * El árbol es el mismo en servidor y cliente: solo cambian atributos y el contenido del cuerpo.
  */
-export function PanelFicha({ fichas, titulo, cerrar: textoCerrar }: { fichas: Record<string, string>; titulo: string; cerrar: string }) {
+export function PanelFicha({
+  fichas,
+  titulo,
+  cerrar: textoCerrar,
+  objetivo = ".lienzo .dg-nodo",
+  clave = "data-nodo",
+}: {
+  fichas: Record<string, string>;
+  titulo: string;
+  cerrar: string;
+  /** Qué elementos del lienzo abren el panel, y el atributo que dice cuál contenido mostrar. */
+  objetivo?: string;
+  clave?: string;
+}) {
   const [activo, setActivo] = useState<string | null>(null);
   const angosto = useSyncExternalStore(suscribir, () => window.matchMedia(ANGOSTO).matches, () => false);
   const panel = useRef<HTMLDivElement>(null);
@@ -25,9 +39,9 @@ export function PanelFicha({ fichas, titulo, cerrar: textoCerrar }: { fichas: Re
 
   // Marca el componente activo en el lienzo y, si lo abrió el usuario, lleva el foco al título de la ficha.
   useEffect(() => {
-    for (const n of document.querySelectorAll('.lienzo .dg-nodo[aria-current="true"]')) n.removeAttribute("aria-current");
+    for (const n of document.querySelectorAll(`${objetivo}[aria-current="true"]`)) n.removeAttribute("aria-current");
     if (!activo) return;
-    for (const n of document.querySelectorAll(`.lienzo .dg-nodo[data-nodo="${CSS.escape(activo)}"]`)) n.setAttribute("aria-current", "true");
+    for (const n of document.querySelectorAll(`${objetivo}[${clave}="${CSS.escape(activo)}"]`)) n.setAttribute("aria-current", "true");
     const cuerpo = panel.current?.querySelector<HTMLElement>(".panel-cuerpo");
     if (cuerpo) cuerpo.scrollTop = 0;
     if (mover.current) {
@@ -38,22 +52,22 @@ export function PanelFicha({ fichas, titulo, cerrar: textoCerrar }: { fichas: Re
         h.focus();
       }
     }
-  }, [activo]);
+  }, [activo, objetivo, clave]);
 
   useEffect(() => {
     function abrir(el: HTMLElement) {
-      const id = el.getAttribute("data-nodo");
+      const id = el.getAttribute(clave);
       if (!id || !(id in fichas)) return;
       origen.current = el;
       mover.current = true;
       setActivo(id);
     }
     function alClic(ev: MouseEvent) {
-      const n = (ev.target as Element).closest<HTMLElement>(".lienzo .dg-nodo");
+      const n = (ev.target as Element).closest<HTMLElement>(objetivo);
       if (n) abrir(n);
     }
     function alTecla(ev: KeyboardEvent) {
-      const n = (ev.target as Element).closest?.<HTMLElement>(".lienzo .dg-nodo");
+      const n = (ev.target as Element).closest?.<HTMLElement>(objetivo);
       if (n && (ev.key === "Enter" || ev.key === " ")) {
         ev.preventDefault();
         abrir(n);
@@ -90,7 +104,7 @@ export function PanelFicha({ fichas, titulo, cerrar: textoCerrar }: { fichas: Re
       document.removeEventListener("click", alClic);
       document.removeEventListener("keydown", alTecla);
     };
-  }, [fichas]);
+  }, [fichas, objetivo, clave]);
 
   function cerrarPanel() {
     setActivo(null);
