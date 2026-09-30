@@ -127,14 +127,14 @@ export function bundle(): Record<string, string> {
 </section></div>`;
 
   const opciones = opcionesPlataforma(d, "es", "general");
-  const selector = `<label class="campo campo-plataforma"><span class="campo-etiqueta">${esc(t.atlas.plataforma.etiqueta)}</span><span class="select"><select>${opciones
+  const selector = `<div class="campo campo-plataforma"><label class="campo-etiqueta" for="ds-plataforma">${esc(t.atlas.plataforma.etiqueta)}</label><span class="select"><select id="ds-plataforma" aria-describedby="ds-plataforma-nota">${opciones
     .map(
       (o) =>
         `<option value="${o.id}"${o.ruta ? "" : " disabled"}${o.id === PLATAFORMA ? " selected" : ""}>${esc(o.ruta ? o.nombre : `${o.nombre} — ${t.atlas.plataforma.pronto}`)}</option>`,
     )
     .join(
       "",
-    )}</select><svg viewBox="-6 -6 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M-4,-1.5 L0,2.5 L4,-1.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></span></label>`;
+    )}</select><svg viewBox="-6 -6 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M-4,-1.5 L0,2.5 L4,-1.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></span><p class="campo-nota" id="ds-plataforma-nota">${esc(t.atlas.plataforma.nota)}</p></div>`;
 
   const fuente = (que: string) =>
     `Generado por el motor del diagramador y las vistas del producto sobre la Plataforma Ejemplo (ficticia), consulta ${FECHA}. ${que}`;
@@ -194,7 +194,7 @@ export function bundle(): Record<string, string> {
       "Componentes · S1",
       "Selector de plataforma",
       `<div style="max-width:320px">${selector}</div>`,
-      "Las N plataformas por id; las que no tienen mapa dicen «pronto» y no se eligen (ADR design-system-s1-extensions; parada A, 2026-09-27).",
+      "Las N plataformas por id; las que no tienen mapa dicen «pronto» y no se eligen (ADR design-system-s1-extensions; parada A, 2026-09-27). La nota avisa antes del cambio de página (WCAG 3.2.2).",
     ],
   ];
 

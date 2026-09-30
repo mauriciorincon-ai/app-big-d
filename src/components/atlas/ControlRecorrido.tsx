@@ -66,6 +66,16 @@ export function ControlRecorrido({ pasos, t, children }: { pasos: PasoPanel[]; t
     function alTecla(ev: KeyboardEvent) {
       if (ev.altKey || ev.ctrlKey || ev.metaKey || ev.shiftKey) return;
       const objetivo = ev.target as Element;
+      // Enter o Espacio sobre un componente del recorrido hacen lo mismo que el clic: llevan a su paso (además
+      // de abrir su ficha). B-2 de la auditoría del S1: con el teclado solo se abría la ficha.
+      if (ev.key === "Enter" || ev.key === " ") {
+        const id = objetivo.closest?.(`#${ID_RECORRIDO} .dg-nodo[data-paso]`)?.getAttribute("data-paso")?.split(" ")[0];
+        if (id) {
+          parar();
+          setPaso(id);
+        }
+        return;
+      }
       if (objetivo.closest?.("input, textarea, select, [contenteditable], .lienzo, .lienzo-marco, .panel")) return;
       if (ev.key === "ArrowRight") {
         parar();
@@ -98,13 +108,15 @@ export function ControlRecorrido({ pasos, t, children }: { pasos: PasoPanel[]; t
   return (
     <div className="rec" id={ID_RECORRIDO} data-paso={paso} data-animando={animando ? "" : undefined}>
       <div className="rec-controles" role="group" aria-label={t.controles}>
-        <button type="button" className="boton" data-rec="anterior" onClick={() => (parar(), mover(-1))} disabled={paso === orden[0]}>
+        {/* `aria-disabled` y no `disabled`: al llegar al extremo el foco se queda en el botón (con `disabled`
+            caía al body; B-1 de la auditoría del S1). El clic en el extremo no hace nada. */}
+        <button type="button" className="boton" data-rec="anterior" onClick={() => paso !== orden[0] && (parar(), mover(-1))} aria-disabled={paso === orden[0]}>
           {t.anterior}
         </button>
         <span className="rec-pos mono" aria-live="polite">
           {actual ? plantilla(t.pasoDe, { n: actual.numero, total: pasos.length }) : t.todos}
         </span>
-        <button type="button" className="boton" data-rec="siguiente" onClick={() => (parar(), mover(1))} disabled={paso === orden[orden.length - 1]}>
+        <button type="button" className="boton" data-rec="siguiente" onClick={() => paso !== orden[orden.length - 1] && (parar(), mover(1))} aria-disabled={paso === orden[orden.length - 1]}>
           {t.siguiente}
         </button>
         <button type="button" className="boton boton-sec" data-rec="reproducir" aria-pressed={animando} onClick={reproducir}>

@@ -7,6 +7,7 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterAll, describe, expect, it } from "vitest";
+import { propuestaNorte, raizDePrueba } from "./lib/muestra";
 
 const RAIZ = mkdtempSync(join(tmpdir(), "bigd-hooks-"));
 afterAll(() => rmSync(RAIZ, { recursive: true, force: true }));
@@ -48,7 +49,18 @@ describe("candado — el investigador escribe solo en propuestas/ y corre solo s
   it.each(["data/mapas/fabric.mapa.yaml", "propuestas/../data/x.yaml", "src/lib/x.ts", ".claude/settings.json", "/etc/hosts", "propuestasx/a.json"])("no escribe en %s", (r) => {
     const s = escribir("Write", r);
     expect(s.status).toBe(2);
-    expect(s.stderr).toContain("solo escribe dentro de propuestas/");
+    expect(s.stderr).toContain("solo escribe propuestas/<carpeta>/propuesta.json");
+  });
+  it.each([
+    "propuestas/x/verificacion.json",
+    "propuestas/registro-de-ejecucion.jsonl",
+    "propuestas/x/.reintentos",
+    "propuestas/x/error-validacion.json",
+    "propuestas/x/y/propuesta.json",
+    "propuestas/a$(id)/propuesta.json",
+  ])("A-1: tampoco escribe %s (lo escribe el código)", (r) => {
+    expect(escribir("Edit", r).status).toBe(2);
+    expect(escribir("Write", r).status).toBe(2);
   });
   it("tampoco con la variante `path` ni con NotebookEdit", () => {
     expect(hook("candado", { ...INV, tool_name: "Edit", tool_input: { path: "data/x" } }).status).toBe(2);
@@ -71,9 +83,42 @@ describe("candado — el investigador escribe solo en propuestas/ y corre solo s
     expect(hook("candado", { tool_name: "Write", tool_input: { file_path: "data/x.yaml" } }, {}, ["--investigador"]).status).toBe(2);
     expect(hook("candado", { tool_name: "Bash", tool_input: { command: "curl x" } }, {}, ["--investigador"]).status).toBe(2);
   });
+  it("M-18: lee solo data/, propuestas/, src/lib/investigador/ y su skill; Glob y Grep con carpeta y sin salir", () => {
+    const leer = (herramienta: string, tool_input: Record<string, unknown>) => hook("candado", { ...INV, tool_name: herramienta, tool_input }).status;
+    expect(leer("Read", { file_path: "data/mapas/fabric.mapa.yaml" })).toBe(0);
+    expect(leer("Read", { file_path: join(RAIZ, "src/lib/investigador/esquema.ts") })).toBe(0);
+    expect(leer("Read", { file_path: ".claude/skills/investigar/SKILL.md" })).toBe(0);
+    expect(leer("Glob", { pattern: "*.yaml", path: "data/plataformas" })).toBe(0);
+    expect(leer("Grep", { pattern: "onelake", path: "propuestas" })).toBe(0);
+    for (const ruta of ["../x", ".env.local", "src/app/page.tsx", "/Users/otra/planeadora/brief.md", "data/../.env.local"]) expect(leer("Read", { file_path: ruta }), ruta).toBe(2);
+    expect(leer("Glob", { pattern: "**/*" })).toBe(2);
+    expect(leer("Glob", { pattern: "../**", path: "data" })).toBe(2);
+    expect(leer("Grep", { pattern: "x" })).toBe(2);
+    expect(leer("Grep", { pattern: "x", path: "data", glob: "../*" })).toBe(2);
+  });
+  it("B-29: si el hook se rompe, con la marca del agente BLOQUEA (antes salía con 1 y Claude Code seguía)", () => {
+    const roto = hook("candado", { tool_name: "Write", cwd: 42, tool_input: { file_path: "propuestas/x/propuesta.json" } }, {}, ["--investigador"]);
+    expect(roto.status).toBe(2);
+    expect(roto.stderr).toContain("falló");
+  });
+  it("B-29: los hooks no dependen de esbuild (calculan la raíz sin él)", () => {
+    for (const h of ["candado", "registro", "sin-identificadores", "entrada", "sin-lanzar"])
+      expect(readFileSync(`scripts/investigar/hooks/${h}.mjs`, "utf8"), h).not.toMatch(/from ["'][^"']*cargar-ts/);
+  });
   it("a otros agentes no los toca (solo la aprobación)", () => {
     expect(hook("candado", { tool_name: "Write", tool_input: { file_path: "src/x.ts" } }).status).toBe(0);
     expect(hook("candado", { agent_type: "general-purpose", tool_name: "Bash", tool_input: { command: "rm -rf x" } }).status).toBe(0);
+  });
+});
+
+describe("M-17: nadie lanza al investigador sin /investigar", () => {
+  it("la herramienta Agent (o Task) con subagent_type «investigador» se bloquea; otros agentes pasan", () => {
+    const lanzar = (tool_name: string, subagent_type: string) => hook("sin-lanzar", { tool_name, tool_input: { subagent_type, prompt: "investiga fabric" } });
+    expect(lanzar("Agent", "investigador").status).toBe(2);
+    expect(lanzar("Task", "Investigador").status).toBe(2);
+    expect(lanzar("Agent", "investigador").stderr).toContain("/investigar");
+    expect(lanzar("Agent", "general-purpose").status).toBe(0);
+    expect(lanzar("Agent", "Explore").status).toBe(0);
   });
 });
 
@@ -103,6 +148,9 @@ describe("registro de fuentes", () => {
     hook("registro", { tool_name: "WebSearch", tool_use_id: "t3", tool_input: { query: "otra cosa" } });
     const lineas = readFileSync(archivo, "utf8").trim().split("\n").map((l) => JSON.parse(l));
     expect(lineas.map((l) => l.url ?? l.consulta)).toEqual(["https://learn.microsoft.com/a", "fabric onelake"]);
+    // B-36: el id de la llamada no viaja crudo al repo público.
+    expect(readFileSync(archivo, "utf8")).not.toContain('"t1"');
+    expect(lineas.every((l) => /^[0-9a-f]{16}$/.test(l.llamada) && !("tool_use_id" in l))).toBe(true);
   });
 });
 
@@ -132,5 +180,18 @@ describe("validación al terminar", () => {
   });
   it("a otros agentes no los toca", () => {
     expect(hook("validar-al-terminar", { hook_event_name: "Stop" }).status).toBe(0);
+  });
+  it("B-35: una propuesta que pasa pone el contador de reintentos en cero", () => {
+    const { raiz, carpeta, espejo } = raizDePrueba(propuestaNorte());
+    try {
+      const v = spawnSync("node", ["scripts/verificar-citas.mjs", carpeta], { encoding: "utf8", env: { ...process.env, BIGD_RAIZ: raiz, BIGD_VERIFICAR_ESPEJO: espejo } });
+      expect(v.status, v.stderr).toBe(0);
+      writeFileSync(join(raiz, carpeta, ".reintentos"), "1");
+      const r = hook("validar-al-terminar", { ...INV, cwd: raiz, hook_event_name: "SubagentStop" }, { BIGD_RAIZ: raiz });
+      expect(r.status, r.stderr).toBe(0);
+      expect(existsSync(join(raiz, carpeta, ".reintentos"))).toBe(false);
+    } finally {
+      rmSync(raiz, { recursive: true, force: true });
+    }
   });
 });

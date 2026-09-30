@@ -67,12 +67,49 @@ describe("vista del investigador", () => {
     expect(v.fallas).toEqual([`afirmaciones · nodo ${p.afirmaciones[0]!.sobre.id} no tiene ninguna afirmación que lo respalde`]);
   });
 
+  it("B-45: los reintentos son los que contó el hook de fin, y lo que dejó al rendirse se muestra", () => {
+    writeFileSync(join(raiz, carpeta, ".reintentos"), "2");
+    writeFileSync(join(raiz, carpeta, "error-validacion.json"), JSON.stringify({ fecha_hora: "x", reintentos: 2, fallas: ["algo no pasó"] }));
+    const v = vistaInvestigador(d(), PLATAFORMA, "es", "2026-09-27", raiz, RANGOS).propuesta!;
+    expect(v.reintentos).toBe(2);
+    expect(v.fallas).toContain("error-validacion.json · algo no pasó");
+    rmSync(join(raiz, carpeta, ".reintentos"));
+    rmSync(join(raiz, carpeta, "error-validacion.json"));
+  });
+
+  it("M-20: cada afirmación dice de qué habla (el componente, u «origen → destino»)", () => {
+    writeFileSync(join(raiz, carpeta, "propuesta.json"), JSON.stringify(p));
+    const v = vistaInvestigador(d(), PLATAFORMA, "es", "2026-09-27", raiz, RANGOS).propuesta!;
+    const mapa = p.mapa as unknown as Mapa;
+    const nodo = v.afirmaciones.find((a) => a.entidad === "nodo")!;
+    expect(nodo.nombre).toBe(mapa.nodos.find((n) => n.id === nodo.sobre)!.nombre.es);
+    const flujo = v.afirmaciones.find((a) => a.entidad === "flujo")!;
+    const f = mapa.flujos.find((x) => x.id === flujo.sobre)!;
+    expect(flujo.nombre).toBe(`${mapa.nodos.find((n) => n.id === f.origen)!.nombre.es} → ${mapa.nodos.find((n) => n.id === f.destino)!.nombre.es}`);
+  });
+
+  it("A-2: una carpeta con un nombre que la terminal expandiría no aparece", () => {
+    const mala = join(raiz, "propuestas", "2099-01-01-x$(touch pwned)");
+    mkdirSync(mala, { recursive: true });
+    writeFileSync(join(mala, "propuesta.json"), readFileSync(join(raiz, carpeta, "propuesta.json")));
+    expect(vistaInvestigador(d(), PLATAFORMA, "es", "2026-09-27", raiz, RANGOS).propuesta!.carpeta).toBe(carpeta);
+    rmSync(mala, { recursive: true, force: true });
+  });
+
   it("una revisión en el historial cierra su propuesta", () => {
     mkdirSync(join(raiz, "data/revisiones"), { recursive: true });
     writeFileSync(join(raiz, "data/revisiones", `${PLATAFORMA}.jsonl`), `${JSON.stringify({ fecha: "2026-09-28", propuesta: carpeta, resultado: "aprobada", aprobadas: ["A-1"], rechazadas: [], mapa_version: "0.1.0", huella: "b".repeat(64) })}\n`);
     const v = vistaInvestigador(d(), PLATAFORMA, "es", "2026-09-28", raiz, RANGOS);
     expect(v.propuesta).toBeUndefined();
     expect(v.revisiones.map((r) => r.propuesta)).toEqual([carpeta]);
+  });
+
+  it("M-19: una propuesta más vieja que la última cerrada no reaparece como pendiente", () => {
+    const vieja = join(raiz, "propuestas", "2026-01-01-plataforma-norte");
+    mkdirSync(vieja, { recursive: true });
+    writeFileSync(join(vieja, "propuesta.json"), readFileSync(join(raiz, carpeta, "propuesta.json")));
+    expect(vistaInvestigador(d(), PLATAFORMA, "es", "2026-09-28", raiz, RANGOS).propuesta).toBeUndefined();
+    rmSync(vieja, { recursive: true, force: true });
   });
 });
 
@@ -94,7 +131,7 @@ describe("cambios contra un mapa aprobado", () => {
   prop.flujos.push({ id: "f-nuevo", origen: "tablero", destino: "agente-datos", modo_id: "a-demanda", que_viaja: { es: "Consultas", en: "Queries" }, lider: { es: "El agente lee el tablero.", en: "The agent reads the dashboard." } });
   const coi = { es: "fabricante", en: "vendor" };
   let k = 0;
-  const cita = (n: string) => ({ url: prop.nodos.find((x) => x.id === n)!.fuentes[0]!.url, texto: "Una cita cualquiera de la fuente.", titulo: "t", tipo: "oficial" as const, conflicto_de_interes: coi });
+  const cita = (n: string) => ({ url: prop.nodos.find((x) => x.id === n)!.fuentes[0]!.url, texto: "Una cita cualquiera de la fuente, con el largo que pide el esquema.", titulo: "t", tipo: "oficial" as const, conflicto_de_interes: coi });
   const afirmaciones = [
     ...prop.nodos.map((n) => ({ id: `A-${++k}`, sobre: { entidad: "nodo" as const, id: n.id }, enunciado: { es: n.id, en: n.id }, cita: cita(n.id) })),
     ...prop.flujos.map((f) => ({ id: `A-${++k}`, sobre: { entidad: "flujo" as const, id: f.id }, enunciado: { es: f.id, en: f.id }, cita: cita(f.origen) })),
@@ -112,6 +149,19 @@ describe("cambios contra un mapa aprobado", () => {
     const cambio = (id: string) => p.afirmaciones.find((a) => a.sobre === id)!.cambio;
     expect([cambio("capa-cruda"), cambio("agente-datos"), cambio("tablero"), cambio("sistema-admisiones")]).toEqual(["renombrado", "madurez", "cambiado", "igual"]);
     expect([cambio("f-cruda-motor"), cambio("f-nuevo"), cambio("f-conector-cruda")]).toEqual(["cambiado", "nuevo", "igual"]);
+    expect(p.retiros).toEqual([]);
+  });
+
+  it("M-21: lo que la propuesta ya no trae se lista como retiro, con su nombre", () => {
+    const sin = structuredClone(JSON.parse(readFileSync(join(dir, "propuesta.json"), "utf8")));
+    sin.mapa.flujos = sin.mapa.flujos.filter((f: { id: string }) => f.id !== "f-motor-monitor");
+    sin.afirmaciones = sin.afirmaciones.filter((a: { sobre: { id: string } }) => a.sobre.id !== "f-motor-monitor");
+    writeFileSync(join(dir, "propuesta.json"), JSON.stringify(sin));
+    const v = vistaInvestigador(cargarDatos(join(r2, "data"), REPO), "plataforma-ejemplo", "es", "2026-10-20", r2, RANGOS).propuesta!;
+    expect(v.fallas).toEqual([]);
+    const f = m.flujos.find((x) => x.id === "f-motor-monitor")!;
+    const nombre = (id: string) => m.nodos.find((n) => n.id === id)!.nombre.es;
+    expect(v.retiros).toEqual([{ id: "f-motor-monitor", entidad: "flujo", nombre: `${nombre(f.origen)} → ${nombre(f.destino)}` }]);
   });
 
   it("una propuesta que no es JSON se muestra con la falla", () => {

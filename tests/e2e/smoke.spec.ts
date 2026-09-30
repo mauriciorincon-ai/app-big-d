@@ -13,3 +13,16 @@ test("la app arranca y su raíz no tiene violaciones serias de accesibilidad", a
   const serias = scan.violations.filter((v) => v.impact === "critical" || v.impact === "serious");
   expect(serias, JSON.stringify(serias.map((v) => v.id))).toEqual([]);
 });
+
+// B-24 de la auditoría del S1: el servidor de `pnpm start` manda las cabeceras de seguridad de serve.json (las
+// mismas de vercel.json; tests/unit/servidor-config.test.ts lo compara), en una página y en un recurso.
+test("el servidor manda las cabeceras de seguridad", async ({ request }) => {
+  for (const ruta of ["/es", "/diseno/assets/tokens.css"]) {
+    const r = await request.get(ruta);
+    expect(r.status(), ruta).toBe(200);
+    expect(r.headers()["x-content-type-options"], ruta).toBe("nosniff");
+    expect(r.headers()["x-frame-options"], ruta).toBe("DENY");
+    expect(r.headers()["referrer-policy"], ruta).toBe("strict-origin-when-cross-origin");
+    expect(r.headers()["permissions-policy"], ruta).toContain("camera=()");
+  }
+});

@@ -1,4 +1,4 @@
-import type { Mapa } from "diagramador";
+import { pasoPrevio, type Mapa } from "diagramador";
 import type { Afirmacion } from "./esquema";
 
 // Aplicar la decisión humana: cada afirmación rechazada saca del mapa lo que afirmaba. Un componente
@@ -16,7 +16,7 @@ export function aplicarDecisiones(mapa: Mapa, afirmaciones: readonly Afirmacion[
   const recorridos = mapa.recorridos.filter((r) =>
     r.pasos.every((p, k) => {
       if (nodosFuera.has(p.nodo_id)) return false;
-      const previo = p.sigue_de !== undefined ? r.pasos.find((x) => x.id === p.sigue_de) : r.pasos[k - 1];
+      const previo = pasoPrevio(r, k);
       return !previo || previo.nodo_id === p.nodo_id || hay.has(`${previo.nodo_id}>${p.nodo_id}`);
     }),
   );

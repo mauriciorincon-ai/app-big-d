@@ -7,7 +7,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { parse, stringify } from "yaml";
-import { cargarDatos, datos, ErrorDeDatos, fechaDeConsulta, rutaAtlas } from "@/lib/datos";
+import { cargarDatos, datos, ErrorDeDatos, esDominioDeEjemplo, esFechaCivil, fechaDeConsulta, rutaAtlas, rutaInvestigador, sumarDias } from "@/lib/datos";
 
 const RAIZ = process.cwd();
 const copias: string[] = [];
@@ -55,6 +55,12 @@ describe("los datos del repo", () => {
     expect(rutaAtlas(d, "en")).toBe(`/en/atlas/${primera}`);
     expect(rutaAtlas({ plataformas: d.plataformas.map((p) => ({ ...p, estado: "proximamente" as const })), atlas: new Map() }, "es")).toBe("/es");
   });
+
+  it("B-5: el investigador por defecto es la primera plataforma por id; sin plataformas, la portada", () => {
+    const d = cargarDatos();
+    expect(rutaInvestigador(d, "es")).toBe(`/es/investigador/${d.plataformas[0]!.id}`);
+    expect(rutaInvestigador({ plataformas: [], atlas: new Map() }, "en")).toBe("/en");
+  });
 });
 
 describe("un dato roto rompe la carga con archivo, regla e id", () => {
@@ -101,6 +107,36 @@ describe("un dato roto rompe la carga con archivo, regla e id", () => {
     expect(fallas(dir)).toEqual([expect.stringContaining("/sujeto_nombre/es · no coincide con el nombre de la plataforma («Otra»)")]);
   });
 
+  it("M-10: un YAML mal formado nombra su archivo (plataforma, mapa y gramática) y no aborta la carga", () => {
+    const repetir = (archivo: string, clave: string) => (d: string) => writeFileSync(join(d, archivo), `${clave}: a\n${clave}: b\n${readFileSync(join(d, archivo), "utf8")}`);
+    expect(fallas(copia(repetir("plataformas/databricks.yaml", "id")))).toEqual([expect.stringMatching(/^data\/plataformas\/databricks\.yaml · yaml · Map keys must be unique/)]);
+    expect(fallas(copia(repetir("mapas/fabric.mapa.yaml", "version")))).toEqual([expect.stringMatching(/^data\/mapas\/fabric\.mapa\.yaml · yaml · Map keys must be unique/)]);
+    expect(fallas(copia(repetir("gramaticas/plataformas-datos.gramatica.yaml", "id")))).toEqual([expect.stringMatching(/^data\/gramaticas\/plataformas-datos\.gramatica\.yaml · yaml · /)]);
+  });
+
+  it("B-46: una plataforma ficticia que cita una fuente fuera de example.org (regla 12)", () => {
+    const dir = copia((d) =>
+      editarYaml(join(d, "mapas/plataforma-ejemplo.mapa.yaml"), (x) => {
+        ((x.nodos as { fuentes: { url: string }[] }[])[0]!.fuentes[0]!).url = "https://learn.microsoft.com/x";
+      }),
+    );
+    expect(fallas(dir)).toEqual([expect.stringMatching(/^data\/mapas\/plataforma-ejemplo\.mapa\.yaml · \/nodos\/0\/fuentes\/0\/url · .+ · una plataforma ficticia solo cita dominios reservados/)]);
+  });
+  it("B-46: dominios reservados para ejemplos, sí; uno real o parecido, no", () => {
+    for (const u of ["https://example.org/x", "https://example.com/", "https://ejemplo.invalid/a", "https://docs.plataforma.example/b", "https://a.test/"]) expect(esDominioDeEjemplo(u), u).toBe(true);
+    for (const u of ["https://learn.microsoft.com/x", "https://example.org.evil.com/", "http://example.org/x", "https://notexample.org/", "no es url"]) expect(esDominioDeEjemplo(u), u).toBe(false);
+  });
+
+  it("B-17 c: un mapa con dos recorridos (el atlas dibuja uno por mapa)", () => {
+    const dir = copia((d) =>
+      editarYaml(join(d, "mapas/plataforma-ejemplo.mapa.yaml"), (x) => {
+        const r = x.recorridos as { id: string }[];
+        r.push({ ...structuredClone(r[0]!), id: "otro-recorrido" });
+      }),
+    );
+    expect(fallas(dir)).toEqual(["data/mapas/plataforma-ejemplo.mapa.yaml · /recorridos · plataforma-ejemplo · el atlas dibuja un recorrido por mapa y este trae 2"]);
+  });
+
   it("una gramática que falta o que está rota", () => {
     const falta = copia((d) => unlinkSync(join(d, "gramaticas/plataformas-datos.gramatica.yaml")));
     expect(fallas(falta)).toEqual(["data/gramaticas/plataformas-datos.gramatica.yaml · no existe"]);
@@ -114,5 +150,18 @@ describe("fecha de consulta", () => {
     expect(fechaDeConsulta({}, new Date("2026-09-27T23:59:00Z"))).toBe("2026-09-27");
     expect(fechaDeConsulta({ BIGD_FECHA_CONSULTA: "2026-10-20" })).toBe("2026-10-20");
     expect(() => fechaDeConsulta({ BIGD_FECHA_CONSULTA: "20/10/2026" })).toThrow(/AAAA-MM-DD/);
+  });
+  it("B-6: un día que no existe no es una fecha, aunque tenga la forma", () => {
+    expect(esFechaCivil("2026-02-28")).toBe(true);
+    expect(esFechaCivil("2028-02-29")).toBe(true);
+    expect(esFechaCivil("2026-02-31")).toBe(false);
+    expect(esFechaCivil("2026-02-29")).toBe(false);
+    expect(() => fechaDeConsulta({ BIGD_FECHA_CONSULTA: "2026-02-31" })).toThrow(/AAAA-MM-DD/);
+  });
+  it("sumarDias cruza meses y años, y rechaza lo que no es fecha", () => {
+    expect(sumarDias("2026-09-27", 30)).toBe("2026-10-27");
+    expect(sumarDias("2026-12-31", 1)).toBe("2027-01-01");
+    expect(sumarDias("2026-03-01", -1)).toBe("2026-02-28");
+    expect(() => sumarDias("2026-13-01", 1)).toThrow(/AAAA-MM-DD/);
   });
 });

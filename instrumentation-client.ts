@@ -7,6 +7,8 @@
 // páginas aunque no hubiera DSN — ~70 KB comprimidos antes de la primera pintura, y el LCP simulado
 // de Lighthouse pasó del presupuesto de 3000 ms. Sin DSN el SDK no se descarga nunca; con DSN llega
 // en un chunk aparte, después de pintar.
+import { eventoSinContenido } from "@/lib/observability";
+
 type Sdk = typeof import("@sentry/nextjs");
 
 const dsn = process.env.NEXT_PUBLIC_SENTRY_DSN;
@@ -21,12 +23,7 @@ if (dsn) {
       tracesSampleRate: 0,
       // Privacidad (metadata-only): nunca enviar requests ni breadcrumbs que puedan
       // arrastrar contenido del usuario. Reportar errores vía src/lib/observability.ts.
-      beforeSend(event) {
-        delete event.request;
-        event.breadcrumbs = undefined;
-        if (event.exception?.values?.[0]?.type === "AbortError") return null;
-        return event;
-      },
+      beforeSend: eventoSinContenido,
     });
     sdk = Sentry;
   });

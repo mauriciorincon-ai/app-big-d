@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { comandoAprobar } from "@/lib/investigador/comando";
-import type { AfirmacionVista } from "@/lib/investigador/revision";
+import type { AfirmacionVista, PropuestaVista } from "@/lib/investigador/revision";
 import type { Textos } from "@/lib/i18n";
 import { plural } from "@/lib/atlas/plantilla";
 import { Comando } from "./Copiar";
@@ -16,7 +16,7 @@ type Decision = "aprobada" | "rechazada" | undefined;
  * entrada: lo verificado por el código va aprobado, lo que el código no pudo verificar espera la decisión
  * humana, y lo que el código no encontró queda rechazado sin opción.
  */
-export function RevisionPropuesta({ carpeta, afirmaciones, t }: { carpeta: string; afirmaciones: AfirmacionVista[]; t: T }) {
+export function RevisionPropuesta({ carpeta, afirmaciones, retiros = [], t }: { carpeta: string; afirmaciones: AfirmacionVista[]; retiros?: PropuestaVista["retiros"]; t: T }) {
   const inicial = useMemo(
     () =>
       Object.fromEntries(
@@ -60,6 +60,8 @@ export function RevisionPropuesta({ carpeta, afirmaciones, t }: { carpeta: strin
                         {d === "aprobada" ? tp.estado.aprobada : d === "rechazada" ? tp.estado.rechazada : tp.estado.porDecidir}
                       </span>
                     </header>
+                    {/* De qué habla (M-20): rechazarla retira ESE componente o flujo del mapa. */}
+                    <p className="afirmacion-sobre">{a.nombre}</p>
                     <p className="evidencia-afirma">{a.enunciado}</p>
                     <blockquote className={`evidencia-cita${v?.resultado === "verificada" ? "" : " evidencia-no-verificada"}`} lang="">
                       «{a.cita.texto}»
@@ -99,6 +101,21 @@ export function RevisionPropuesta({ carpeta, afirmaciones, t }: { carpeta: strin
             </div>
           </section>
         ))}
+      {retiros.length > 0 && (
+        <section className="grupo-afirmaciones retiros" aria-labelledby="retiros-t">
+          <h3 className="ojo" id="retiros-t">
+            {tp.retiros.titulo} · {retiros.length}
+          </h3>
+          <p className="kit-nota">{tp.retiros.nota}</p>
+          <ul className="retiros-lista">
+            {retiros.map((r) => (
+              <li key={r.id} data-retiro={r.id}>
+                <span className="diff-marca">{tp.entidad[r.entidad]}</span> <b>{r.nombre}</b> <span className="mono">{r.id}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
       <section className="aprobar" aria-labelledby="aprobar-t">
         <h3 id="aprobar-t">{tp.comandoTitulo}</h3>
         {faltan ? (
@@ -106,7 +123,7 @@ export function RevisionPropuesta({ carpeta, afirmaciones, t }: { carpeta: strin
             {plural(tp.faltan, faltan)}
           </p>
         ) : (
-          <Comando texto={comandoAprobar(carpeta, aprobadas, rechazadas)} copiar={t.comando.copiar} copiado={t.comando.copiado} nota={tp.comandoNota} />
+          <Comando texto={comandoAprobar(carpeta, aprobadas, rechazadas, retiros.map((r) => r.id))} copiar={t.comando.copiar} copiado={t.comando.copiado} nota={tp.comandoNota} />
         )}
       </section>
     </>

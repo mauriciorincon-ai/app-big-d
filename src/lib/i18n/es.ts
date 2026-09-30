@@ -8,6 +8,7 @@ export const es: Textos = {
   barra: { sello: "ATLAS", secciones: "Secciones", atlas: "Atlas", conocimiento: "Conocimiento", idioma: "Idioma", tema: "Tema", oscuro: "Oscuro", claro: "Claro" },
   saltarContenido: "Saltar al contenido",
   pie: "Big-D planea, gestiona y controla; jamás opera una plataforma. Declaración del autor: conoce Microsoft Fabric más a fondo que las demás plataformas.",
+  noEncontrada: { titulo: "Esta página no existe", volver: "Volver al atlas" },
   inicio: {
     ojo: "Big-D · Atlas",
     titulo: "Todas las plataformas de datos, con el mismo mapa",
@@ -115,7 +116,14 @@ export const es: Textos = {
       pasoDe: "Paso {n} de {total}",
       pasos: "Los pasos",
     },
-    plataforma: { etiqueta: "Plataforma", pronto: "pronto", elegir: "Elige una plataforma" },
+    plataforma: {
+      etiqueta: "Plataforma",
+      pronto: "pronto",
+      elegir: "Elige una plataforma",
+      notaInicio: "Al elegir una plataforma se abre su atlas.",
+      nota: "Al elegir otra plataforma se abre su atlas.",
+      notaInvestigador: "Al elegir otra plataforma se abre su página del investigador.",
+    },
   },
   investigador: {
     titulo: "Investigador",
@@ -170,11 +178,15 @@ export const es: Textos = {
       rechazar: "Rechazar",
       faltan: ["Falta {n} afirmación por decidir.", "Faltan {n} afirmaciones por decidir."],
       comandoTitulo: "Aprobar lo marcado",
-      comandoNota: "Solo una persona lo corre, en una terminal abierta en la carpeta del proyecto; la IA no puede, un candado se lo impide. El mapa aprobado entra a data/mapas/ y el atlas lo publica en el siguiente build.",
+      comandoNota: "Solo una persona lo corre, en su propia terminal abierta en la carpeta del proyecto (dentro de Claude Code el script se niega); la IA no puede. El mapa aprobado entra a data/mapas/ y el atlas lo publica en el siguiente build.",
+      retiros: {
+        titulo: "Se retiran del mapa",
+        nota: "No son afirmaciones: el mapa aprobado los tiene y esta propuesta ya no. Si apruebas, salen del mapa; el comando los nombra.",
+      },
       preguntas: "Preguntas guía",
       respondida: "respondida",
       sinFuente: "sin fuente: queda abierta, no se inventa",
     },
-    veredicto: { aprobada: "Aprobada por una persona", sinNovedades: "Sin novedades", detalle: "{fecha} · {a} aprobadas · {r} rechazadas · mapa v{version}" },
+    veredicto: { aprobada: "Aprobada por una persona", sinNovedades: "Sin novedades", detalle: "{fecha} (UTC) · {a} aprobadas · {r} rechazadas · mapa v{version}" },
   },
 };

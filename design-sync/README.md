@@ -1,6 +1,7 @@
 # design-sync — el design system de Big-D, listo para publicar
 
-Bundle publicable del design system (regla 16 del CLAUDE.md). La jerarquía es fija:
+Bundle publicable del design system (la regla del CLAUDE.md «el bundle publicable del design system es un artefacto
+del repo»). La jerarquía es fija:
 
 1. **`design-system.md`** es la fuente de verdad, más las extensiones del S1 por ADR
    (`decisions/design-system-s1-extensions.md`).
@@ -26,7 +27,7 @@ Grotesk y JetBrains Mono están instaladas.
 
 ## Cómo se mantiene
 
-- **Se genera, no se dibuja** (regla 8): `node scripts/design-sync/generar.mjs` reescribe `styles.css` y
+- **Se genera, no se dibuja** (la regla dura «el visual se genera, no se dibuja»): `node scripts/design-sync/generar.mjs` reescribe `styles.css` y
   `components/` desde `scripts/design-sync/bundle.ts`. Los diagramas salen del mismo motor y de las mismas vistas
   que el producto, sobre la Plataforma Ejemplo (ficticia), con una fecha de consulta fija.
 - **`tests/unit/design-sync.test.ts`** regenera en memoria y compara byte a byte. Si una hoja, el motor o los

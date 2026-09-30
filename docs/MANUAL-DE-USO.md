@@ -1,6 +1,7 @@
 # Big-D — Manual de uso · User manual
 
-> **Documento vivo.** Toda función que llega a `main` se documenta aquí en el mismo sprint (regla 9 del CLAUDE.md).
+> **Documento vivo.** Toda función que llega a `main` se documenta aquí en el mismo sprint (la regla «manual de uso
+> vivo» del CLAUDE.md).
 > Está escrito para quien usa la app, en lenguaje llano; al lanzarla, es la base de la guía pública. Va en dos
 > idiomas, redactado en cada uno: primero en español y después en inglés.
 >
@@ -15,8 +16,8 @@
 
 ### Qué es Big-D
 
-Big-D explica las plataformas de datos (hoy Microsoft Fabric, más una plataforma de ejemplo ficticia; Databricks y
-Snowflake llegan después) **con un mismo mapa**: las mismas capas, los mismos colores y los mismos símbolos para
+Big-D explica las plataformas de datos (hoy Microsoft Fabric, más la Plataforma Ejemplo, ficticia, que viene del
+contrato del diagramador y muestra el mapa completo; Databricks y Snowflake llegan después) **con un mismo mapa**: las mismas capas, los mismos colores y los mismos símbolos para
 todas. Así puedes entender una plataforma de punta a punta y, más adelante, compararlas sin aprender un dibujo
 nuevo cada vez. Todo lo que dice el mapa viene de documentación pública del fabricante, con fecha, y lo aprobó una
 persona afirmación por afirmación. Big-D **planea, gestiona y controla; jamás opera una plataforma**: no se conecta
@@ -38,8 +39,8 @@ a ninguna ni pide cuentas.
 
 - **Qué hace:** muestra la plataforma entera para líderes. Se lee de izquierda a derecha, como el camino que recorre
   un dato. Cada capa responde una pregunta («¿De dónde vienen los datos?», «¿Cómo entran?»…) y las franjas de
-  abajo, como el gobierno o la operación, abarcan todas las capas. Cada bloque dice cuántos componentes tiene y qué
-  tan al día está su información.
+  abajo, como el gobierno o la operación, abarcan todas las capas. Cada bloque dice cuántos componentes tiene; el
+  encabezado dice qué tan al día está la información del mapa.
 - **Cómo se usa:**
   1. Recorre el mapa de izquierda a derecha. En un teléfono, **desliza el mapa de lado** con el dedo o usa
      **«Ir a una capa»**.
@@ -48,9 +49,11 @@ a ninguna ni pide cuentas.
      tarjeta por componente, con su tipo, su madurez, su frase y todas sus conexiones.
   3. Cierra la ventana con **«Cerrar»** o con la tecla **Esc**. El enlace del final lleva a «Componentes».
   4. La **leyenda**, al pie del mapa, explica cada color, símbolo y tipo de línea.
-- **Cómo leer los estados:** la vigencia de la información siempre se muestra con un símbolo, un texto y los días
-  desde la última verificación, nunca solo con un color. Se marca **«por revisar»** desde los 30 días y
-  **«vencido»** desde los 60.
+- **Cómo leer los estados:** el encabezado del mapa dice su vigencia con un símbolo y un texto: **«vigente ·
+  verificado hace N días»**, o cuántos bloques están por revisar o vencidos. Un bloque o un componente solo lleva
+  una insignia cuando su información está **«por revisar»** (desde los 30 días) o **«vencido»** (desde los 60): un
+  símbolo y los días («34 d»), nunca solo un color. Lo vigente no lleva insignia. Si en una fila de referencias ya
+  no cabe todo, los nombres se abrevian con «…»; el nombre entero sigue en la ficha y en la lectura en texto.
 - **Limitaciones:** el mapa muestra lo que se aprobó; si una capa aún no tiene componentes, aparece vacía, no
   inventada.
 
@@ -107,7 +110,7 @@ a ninguna ni pide cuentas.
 - **Cómo se usa:**
   1. Entra a **Conocimiento → Investigador** y elige la plataforma. Vas a ver:
      - su **vigencia por capa**, con semáforo de símbolo, texto y días;
-     - si ya tiene mapa aprobado, quién lo aprobó y cuándo.
+     - si ya tiene mapa aprobado, que lo aprobó una persona y cuándo (la fecha, en UTC).
   2. Si no tiene mapa, la página te da el comando para investigarla (por ejemplo `/investigar databricks`) con el
      botón **«Copiar»**. Ese comando lo corre una persona en su sesión de Claude Code; la app no lo lanza.
   3. Cuando llega una propuesta, esta pantalla la muestra en tres grupos:
@@ -148,8 +151,8 @@ a ninguna ni pide cuentas.
 
 ### What Big-D is
 
-Big-D explains data platforms (today Microsoft Fabric, plus a fictional example platform; Databricks and Snowflake
-come later) **with one shared map**: the same layers, colours and symbols for all of them. You can understand a
+Big-D explains data platforms (today Microsoft Fabric, plus the Example Platform, a fictional one that comes from the
+diagramador's contract and shows the full map; Databricks and Snowflake come later) **with one shared map**: the same layers, colours and symbols for all of them. You can understand a
 platform end to end and, later, compare platforms without learning a new drawing each time. Everything on the map
 comes from the vendor's public documentation, dated, and a person approved it claim by claim. Big-D **plans,
 manages and controls; it never operates a platform**: it connects to none and asks for no accounts.
@@ -170,7 +173,7 @@ manages and controls; it never operates a platform**: it connects to none and as
 - **What it does:** shows the whole platform, for leaders. You read it left to right, like the road a piece of
   data travels. Each layer answers one question (“Where does the data come from?”, “How does it get in?”…). The
   bands at the bottom, such as governance or operations, span every layer. Each block tells how many components it
-  holds and how current its information is.
+  holds; the header tells how current the map's information is.
 - **How to use it:**
   1. Read the map from left to right. On a phone, **swipe the map sideways** or use **“Go to a layer”**.
   2. **Tap a block** to open its window, **“Inside the block”**. Its components are drawn as in “Components”: a
@@ -178,8 +181,11 @@ manages and controls; it never operates a platform**: it connects to none and as
      maturity, summary and every connection.
   3. Close it with **“Close”** or the **Esc** key. The link at the end takes you to “Components”.
   4. The **legend**, under the map, explains every colour, symbol and line style.
-- **Reading the states:** freshness is always a symbol, a word and the days since the last check, never colour
-  alone. It reads **“to review”** from 30 days and **“expired”** from 60.
+- **Reading the states:** the map's header gives its freshness as a symbol and a word: **“current · verified N
+  days ago”**, or how many blocks are to review or expired. A block or a component carries a badge only when its
+  information is **“to review”** (from 30 days) or **“expired”** (from 60): a symbol and the days (“34 d”), never
+  colour alone. Current information carries no badge. When a row of references no longer fits, names are
+  shortened with “…”; the full name stays in the card and in the text reading.
 - **Limitations:** the map shows what was approved; a layer with no components yet stays empty, never invented.
 
 #### 2. Components (level 2) · since Sprint 1
@@ -235,7 +241,7 @@ manages and controls; it never operates a platform**: it connects to none and as
 - **How to use it:**
   1. Go to **Knowledge → Researcher** and pick a platform. You will see:
      - its **freshness per layer**, as a signal with a symbol, a word and the days;
-     - if it already has an approved map, who approved it and when.
+     - if it already has an approved map, that a person approved it and when (the date, in UTC).
   2. If it has no map, the page gives you the command to research it (for example `/investigar databricks`) with a
      **“Copy”** button. A person runs that command in their Claude Code session; the app never launches it.
   3. When a proposal arrives, this screen shows it in three groups:

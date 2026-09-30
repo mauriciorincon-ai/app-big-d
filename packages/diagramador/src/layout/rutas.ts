@@ -42,9 +42,12 @@ export interface Ruteo {
 
 type Lado = "der" | "izq";
 const INFINITO = Number.MAX_SAFE_INTEGER;
-const OFFSETS_PISTA = [-50, 50, 150, 250, -150, -250];
+// ±23 u y no ±25: a 25 u del centro la pista corre sobre el borde de la tarjeta (M-23 de la auditoría del S1).
+const OFFSETS_PISTA = [-50, 50, 150, 230, -150, -230];
 /** Separación mínima entre pistas de un canal repartido: 4 u. */
 const PISTA_MIN = 40;
+/** Hueco mínimo entre dos tarjetas de una columna para que un flujo baje derecho con su etiqueta: 30 u. */
+const HUECO_DIRECTO = 300;
 /** Media anchura útil de un canal repartido: 2 u de aire contra cada tarjeta. */
 const MEDIO_UTIL = mitad(CANAL) - 20;
 
@@ -72,6 +75,18 @@ export function rutear(ctx: Contexto, piezas: ReadonlyMap<string, Pieza>, conexi
     return dc === 0 ? "intra" : dc === 1 ? "vecino" : "salto";
   };
   const adelante = (c: Conexion) => P(c.d).col > P(c.o).col;
+  // Dentro de una columna, un flujo baja o sube derecho entre dos tarjetas solo si son contiguas, si no tiene
+  // vuelta (el par contrario haría el mismo segmento) y si entre ellas cabe su etiqueta (30 u); si no, sale
+  // por el canal de la derecha (A-6 de la auditoría del S1: entre dos fichas compactas hay 8 u, y la ida y
+  // la vuelta dibujaban el mismo trazo con las etiquetas encimadas).
+  const pares = new Set(conexiones.map((c) => `${c.o}>${c.d}`));
+  const directo = (c: Conexion): boolean => {
+    const a = P(c.o);
+    const b = P(c.d);
+    if (Math.abs(b.fila - a.fila) !== 1 || pares.has(`${c.d}>${c.o}`)) return false;
+    const [arriba, abajo] = a.fila < b.fila ? [a, b] : [b, a];
+    return abajo.caja.y - (arriba.caja.y + arriba.caja.h) >= HUECO_DIRECTO;
+  };
 
   // ── Saltos: orden (el más lejano primero) y pistas del carril exprés ──
   const saltos = conexiones
@@ -106,7 +121,7 @@ export function rutear(ctx: Contexto, piezas: ReadonlyMap<string, Pieza>, conexi
       lateral(c.o, ida ? "der" : "izq", c, cy(b), ida ? 0 : 1);
       lateral(c.d, ida ? "izq" : "der", c, cy(a), ida ? 0 : 1);
     } else if (k === "intra") {
-      if (Math.abs(b.fila - a.fila) > 1) {
+      if (!directo(c)) {
         lateral(c.o, "der", c, cy(b));
         lateral(c.d, "der", c, cy(a));
       }
@@ -155,7 +170,7 @@ export function rutear(ctx: Contexto, piezas: ReadonlyMap<string, Pieza>, conexi
     if (k === "vecino") {
       if (puertoY(c.o, ida ? "der" : "izq", c) !== puertoY(c.d, ida ? "izq" : "der", c)) pedir(Math.min(a.col, b.col));
     } else if (k === "intra") {
-      if (Math.abs(b.fila - a.fila) > 1) pedir(a.col);
+      if (!directo(c)) pedir(a.col);
     } else {
       if (!a.baja) pedir(ida ? a.col : a.col - 1);
       if (!entraPorAbajo(c)) pedir(ida ? b.col - 1 : b.col);
@@ -230,7 +245,7 @@ export function rutear(ctx: Contexto, piezas: ReadonlyMap<string, Pieza>, conexi
     const a = P(c.o);
     const b = P(c.d);
     const bajando = b.fila > a.fila;
-    if (Math.abs(b.fila - a.fila) === 1) {
+    if (directo(c)) {
       const x = a.caja.x + mitad(a.caja.w);
       const y1 = bajando ? a.caja.y + a.caja.h : a.caja.y;
       const y2 = bajando ? b.caja.y : b.caja.y + b.caja.h;

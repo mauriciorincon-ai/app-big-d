@@ -90,6 +90,12 @@ export function medidor(nivel: number, cx: Decimas, cy: Decimas): Elemento {
   return g({ class: "dg-madurez" }, hijos);
 }
 
+/** Ancho de la insignia compacta de «N d» (marca + texto en mono 12/700, el idioma más ancho manda). */
+export function anchoInsignia(ctx: Contexto, dias: number): Decimas {
+  const tw = Math.max(...ctx.idiomas.map((l) => ctx.mono.ancho(plantilla(ctx.textos[l]!.dias, { n: dias }), 12, 700)));
+  return 100 + 120 + 40 + tw + 100;
+}
+
 /**
  * Insignia compacta de vigencia (§ 4.8): marca + «N d». En bloques y nodos va montada sobre el borde
  * superior, a la derecha; en las fichas compactas de franja (60 y 44 u de alto) el borde superior pisaría el
@@ -97,9 +103,10 @@ export function medidor(nivel: number, cx: Decimas, cy: Decimas): Elemento {
  */
 export function insigniaVigencia(ctx: Contexto, caja: Caja, estado: Exclude<Vigencia, "vigente">, dias: number, dueno: string, lado = false): { elemento: Elemento; caja: Caja } {
   const t = porIdioma(ctx, (_l, tx) => plantilla(tx.dias, { n: dias }));
-  const tw = Math.max(...ctx.idiomas.map((l) => ctx.mono.ancho(t[l]!, 12, 700)));
-  const bw = 100 + 120 + 40 + tw + 100;
-  const bx = lado ? caja.x + caja.w + 80 : caja.x + caja.w - 100 - bw;
+  const bw = anchoInsignia(ctx, dias);
+  // Montada, jamás pasa de la mitad de la tarjeta más 4 u: por la mitad baja la línea que llega desde la
+  // tarjeta de arriba (C-1 de la auditoría del S1: con «NNN d» la insignia la cruzaba).
+  const bx = lado ? caja.x + caja.w + 80 : Math.max(caja.x + caja.w - 100 - bw, caja.x + mitad(caja.w) + 40);
   const y = lado ? caja.y + mitad(caja.h) : caja.y;
   const cajaI: Caja = { x: bx, y: y - 100, w: bw, h: 200 };
   const elemento = g({ class: `dg-insignia dg-insignia-${estado}`, "aria-hidden": "true", "data-dueno": dueno }, [
@@ -195,15 +202,28 @@ export function referencias(ctx: Contexto, refs: readonly Referencia[], desde: D
   const escena: Elemento[] = [];
   const cajas: { id: string; dueno: string; caja: Caja }[] = [];
   const orden = [...refs].sort((a, b) => a.cx - b.cx || (a.id < b.id ? -1 : 1));
-  const anchos = orden.map((r) => {
-    const tw = Math.max(...ctx.idiomas.map((l) => ctx.sans.ancho(r.nombre[l]!, 13, 700)));
-    return 280 + 140 * marcadores(ctx, r.modos).length + 40 + tw + 120;
-  });
+  const limite = ancho - M - 40;
+  // Nombres que se dibujan: si la fila no cabe ni con 4 u entre referencias (una insignia de vigencia al
+  // lado de la ficha le quita ~73 u), se abrevian por palabras desde la más ancha (en empate, la primera)
+  // hasta caber, nunca por debajo de 40 u. El nombre entero sigue en `aria-label` y en la lectura (D6).
+  // C-1 de la auditoría del S1: sin esto, un mapa lleno se salía del lienzo el día que pasaba a revisar.
+  const nombres = orden.map((r) => ({ ...r.nombre }));
+  const anchoNombre = (i: number) => Math.max(...ctx.idiomas.map((l) => ctx.sans.ancho(nombres[i]![l]!, 13, 700)));
+  const fijo = orden.map((r) => 280 + 140 * marcadores(ctx, r.modos).length + 40 + 120);
+  const total = () => orden.reduce((a, _r, i) => a + fijo[i]! + anchoNombre(i), 0) + 40 * (orden.length - 1);
+  let exceso = total() - (limite - desde);
+  const porAncho = orden.map((_r, i) => i).sort((a, b) => anchoNombre(b) - anchoNombre(a) || a - b);
+  for (const i of porAncho) {
+    if (exceso <= 0) break;
+    const max = Math.max(400, anchoNombre(i) - exceso);
+    for (const l of ctx.idiomas) nombres[i]![l] = ctx.sans.abreviar(orden[i]!.nombre[l]!, 13, 700, max);
+    exceso = total() - (limite - desde);
+  }
+  const anchos = orden.map((_r, i) => fijo[i]! + anchoNombre(i));
   // Centradas bajo su columna, de izquierda a derecha sin pisar la anterior; después, de derecha a izquierda,
   // las que se salen se corren hacia adentro y empujan a las anteriores solo lo necesario (enmienda del
   // piloto: antes solo se corría la última y la del medio quedaba fuera del lienzo).
   // Entre referencias van 8 u; si la fila no alcanza, el espacio se achica hasta 4 u.
-  const limite = ancho - M - 40;
   const suma = anchos.reduce((a, w) => a + w, 0);
   const aire = orden.length > 1 && suma + 80 * (orden.length - 1) > limite - desde ? Math.max(40, Math.floor((limite - desde - suma) / (orden.length - 1))) : 80;
   const xs: Decimas[] = [];
@@ -230,7 +250,7 @@ export function referencias(ctx: Contexto, refs: readonly Referencia[], desde: D
       rect({ x: caja.x, y: caja.y, width: w, height: h, rx: 150 }),
       simbolo(r.envia ? "k-envia" : "k-recibe", x + 160, r.cy, "dg-marca"),
       ...ms.map((m, i) => simbolo(`m-${m}`, x + 280 + 70 + 140 * i, r.cy, "dg-marca")),
-      texto("dg-t-ref", x + 280 + 140 * ms.length + 40, ctx.sans.base(r.cy - 90, 13, 18), 0, Object.fromEntries(ctx.idiomas.map((l) => [l, [r.nombre[l]!]]))),
+      texto("dg-t-ref", x + 280 + 140 * ms.length + 40, ctx.sans.base(r.cy - 90, 13, 18), 0, Object.fromEntries(ctx.idiomas.map((l) => [l, [nombres[i]![l]!]]))),
     ];
     escena.push(
       g(

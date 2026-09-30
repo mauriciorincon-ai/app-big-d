@@ -59,6 +59,6 @@ describe("la ficha dice lo que dice el mapa", () => {
     raro.nodos[0]!.nombre.es = "A <b> & «C»";
     expect(ficha(raro, raro.nodos[0]!.id)).toContain("<h2>A &lt;b&gt; &amp; «C»</h2>");
     expect(() => ficha(ejemplo, "no-existe")).toThrow(/no tiene el nodo/);
-    expect(() => toCard(ejemplo, g(ejemplo), "tablero", { language: "fr", textos: TEXTOS })).toThrow(/cadenas de interfaz/);
+    expect(() => toCard(ejemplo, g(ejemplo), "tablero", { language: "en", textos: { es: TEXTOS.es! } })).toThrow(/cadenas de interfaz/);
   });
 });

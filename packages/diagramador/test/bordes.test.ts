@@ -22,8 +22,11 @@ describe("errores explícitos", () => {
   it("toSVG, toText y toLegend en un idioma que la gramática no declara", () => {
     const geo = disponer(M, "nivel-1");
     expect(() => toSVG(geo, { language: "fr" })).toThrow(/no declara el idioma/);
-    expect(() => toText(M, G, { language: "fr", textos: TEXTOS })).toThrow(/faltan las cadenas/);
-    expect(() => toLegend(G, { language: "fr", textos: TEXTOS })).toThrow(/faltan las cadenas/);
+    expect(() => toText(M, G, { language: "fr", textos: TEXTOS })).toThrow(/no declara el idioma/);
+    expect(() => toLegend(G, { language: "fr", textos: TEXTOS })).toThrow(/no declara el idioma/);
+    // Declarado en la gramática, pero sin sus cadenas de interfaz:
+    expect(() => toText(M, G, { language: "en", textos: { es: TEXTOS.es! } })).toThrow(/faltan las cadenas/);
+    expect(() => toLegend(G, { language: "en", textos: { es: TEXTOS.es! } })).toThrow(/faltan las cadenas/);
   });
   it("el CSS del recorrido solo existe para la vista «recorrido»", () => {
     expect(() => toJourneyCSS(disponer(M, "nivel-2"), ".rec")).toThrow(/no es de la vista/);

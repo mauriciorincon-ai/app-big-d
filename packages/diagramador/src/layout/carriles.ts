@@ -96,7 +96,9 @@ export function carriles(ctx: Contexto, nivel: 1 | 2, conRecorrido?: string | tr
     const n = usos.get(clave) ?? 0;
     usos.set(clave, n + 1);
     const orden = [0, -1, 1, -2, 2, -3, 3][n] ?? n;
-    if (n > 6) ctx.avisos.push(`carriles: más de 7 pistas en ${clave}`);
+    // El canal y el borde entre carriles miden 50 u y 48 u: una pista a más de 23 u del centro ya roza o
+    // cruza la caja de al lado (M-1 de la auditoría del S1: la 6.ª y la 7.ª caían a ±30 u sin aviso).
+    if (Math.abs(orden * paso) > 230) ctx.avisos.push(`carriles: la pista ${n + 1} de ${clave} se sale del canal`);
     return base + orden * paso;
   };
   const lineas: Elemento[] = [];

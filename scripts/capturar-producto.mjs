@@ -78,6 +78,33 @@ const puerto = await new Promise((ok) => {
   });
 });
 const servidor = spawn(join(raiz, "node_modules/.bin/serve"), [arbol, "-l", `tcp://127.0.0.1:${puerto}`, "--config", "../serve.json", "--no-clipboard"], { stdio: "ignore" });
+// Pase lo que pase (una excepción, un Ctrl-C), el servidor y el navegador no quedan vivos (B-22 de la
+// auditoría del S1: al fallar, `serve` y Chromium seguían corriendo).
+let navegador;
+function apagar() {
+  try {
+    servidor.kill();
+  } catch {
+    /* ya terminó */
+  }
+  navegador?.close().catch(() => {});
+}
+process.on("exit", apagar);
+for (const senal of ["SIGINT", "SIGTERM"])
+  process.on(senal, () => {
+    apagar();
+    process.exit(130);
+  });
+process.on("uncaughtException", (e) => {
+  console.error(`capturar-producto: ${e?.stack ?? e}`);
+  apagar();
+  process.exit(1);
+});
+process.on("unhandledRejection", (e) => {
+  console.error(`capturar-producto: ${e?.stack ?? e}`);
+  apagar();
+  process.exit(1);
+});
 const base = `http://127.0.0.1:${puerto}`;
 async function esperar() {
   for (let i = 0; i < 100; i++) {
@@ -101,7 +128,7 @@ console.log(`capturar-producto: árbol ${arbol} servido en ${base} (verificado b
 console.log(`  rutas ${rutas.join(" ")}`);
 if (salida) mkdirSync(salida, { recursive: true });
 
-const navegador = await chromium.launch();
+navegador = await chromium.launch();
 const fallas = [];
 let encuadres = 0;
 let interacciones = 0;

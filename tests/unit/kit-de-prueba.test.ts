@@ -1,3 +1,4 @@
+import { spawnSync } from "node:child_process";
 import { cpSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -35,6 +36,17 @@ describe("kit de prueba · propuesta de muestra", () => {
     const p = esquemaPlataforma.parse(parse(readFileSync(`${MUESTRA}/data/plataformas/plataforma-norte.yaml`, "utf8")));
     expect(p).toMatchObject({ id: "plataforma-norte", estado: "proximamente", ficticia: true });
   });
+});
+
+describe("kit de prueba · receta (B-26 de la auditoría del S1)", () => {
+  it("regenerar la muestra con scripts/kit-de-prueba/generar.mjs da los mismos bytes", () => {
+    const salida = mkdtempSync(join(tmpdir(), "bigd-kit-"));
+    temporales.push(salida);
+    const r = spawnSync("node", ["scripts/kit-de-prueba/generar.mjs", salida], { encoding: "utf8" });
+    expect(r.status, r.stderr).toBe(0);
+    for (const f of ["propuestas/2026-09-27-plataforma-norte/propuesta.json", "propuestas/2026-09-27-plataforma-norte/verificacion.json", "data/plataformas/plataforma-norte.yaml"])
+      expect(readFileSync(join(salida, f), "utf8") === readFileSync(join(MUESTRA, f), "utf8"), f).toBe(true);
+  }, 60_000);
 });
 
 describe("kit de prueba · base incompleta", () => {

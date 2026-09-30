@@ -5,6 +5,7 @@ import { describe, expect, it } from "vitest";
 import { TINTAS_VETADAS } from "../../scripts/paleta/generar-tokens.mjs";
 import { archivosMaqueta, leer, textoVisible } from "./lib/maqueta";
 import { usosVetados } from "./lib/tintas";
+import { VETADAS } from "./lib/vocabulario";
 
 /**
  * Gate de VOCABULARIO Y GLIFOS de la maqueta (Etapa de Diseño; reglas duras 5, 8, 13 y 20).
@@ -37,11 +38,7 @@ const contenidosCss = (css: string) =>
     m[2]!.replace(/\\([0-9a-f]{1,6})\s?/gi, (_, h: string) => String.fromCodePoint(parseInt(h, 16))).replace(/\\(.)/g, "$1"),
   );
 
-const VETADAS: Array<[RegExp, string]> = [
-  [/casa del lago/i, "calco de «lakehouse» (mercado § 6.B)"],
-  [/lago de datos/i, "calco de «data lake»: se dice «data lake» y se explica en el glosario"],
-  [/lorem|ipsum|TODO|FIXME|XXX/, "relleno o pendiente"],
-];
+
 
 type Metricas = { fuentes: Record<string, { sha256: string }> };
 const metricas = JSON.parse(readFileSync("docs/diseno/assets/fuentes/metricas.json", "utf8")) as Metricas;

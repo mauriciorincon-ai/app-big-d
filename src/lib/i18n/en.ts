@@ -8,6 +8,7 @@ export const en: Textos = {
   barra: { sello: "ATLAS", secciones: "Sections", atlas: "Atlas", conocimiento: "Knowledge", idioma: "Language", tema: "Theme", oscuro: "Dark", claro: "Light" },
   saltarContenido: "Skip to content",
   pie: "Big-D plans, manages and controls; it never operates a platform. Author's statement: the author knows Microsoft Fabric more deeply than the other platforms.",
+  noEncontrada: { titulo: "This page does not exist", volver: "Back to the atlas" },
   inicio: {
     ojo: "Big-D · Atlas",
     titulo: "Every data platform, on the same map",
@@ -115,7 +116,14 @@ export const en: Textos = {
       pasoDe: "Step {n} of {total}",
       pasos: "The steps",
     },
-    plataforma: { etiqueta: "Platform", pronto: "coming soon", elegir: "Choose a platform" },
+    plataforma: {
+      etiqueta: "Platform",
+      pronto: "coming soon",
+      elegir: "Choose a platform",
+      notaInicio: "Choosing a platform opens its atlas.",
+      nota: "Choosing another platform opens its atlas.",
+      notaInvestigador: "Choosing another platform opens its researcher page.",
+    },
   },
   investigador: {
     titulo: "Researcher",
@@ -170,11 +178,15 @@ export const en: Textos = {
       rechazar: "Reject",
       faltan: ["{n} claim left to decide.", "{n} claims left to decide."],
       comandoTitulo: "Approve what is marked",
-      comandoNota: "Only a person runs it, in a terminal opened in the project folder; the AI cannot, a lock prevents it. The approved map goes into data/mapas/ and the atlas publishes it on the next build.",
+      comandoNota: "Only a person runs it, in their own terminal opened in the project folder (inside Claude Code the script refuses); the AI cannot. The approved map goes into data/mapas/ and the atlas publishes it on the next build.",
+      retiros: {
+        titulo: "Removed from the map",
+        nota: "These are not claims: the approved map has them and this proposal no longer does. If you approve, they leave the map; the command names them.",
+      },
       preguntas: "Guiding questions",
       respondida: "answered",
       sinFuente: "no source: stays open, nothing is invented",
     },
-    veredicto: { aprobada: "Approved by a person", sinNovedades: "No news", detalle: "{fecha} · {a} approved · {r} rejected · map v{version}" },
+    veredicto: { aprobada: "Approved by a person", sinNovedades: "No news", detalle: "{fecha} (UTC) · {a} approved · {r} rejected · map v{version}" },
   },
 };

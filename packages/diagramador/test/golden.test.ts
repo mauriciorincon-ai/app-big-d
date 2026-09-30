@@ -18,7 +18,7 @@ const ACTUALIZAR = process.env.ACTUALIZAR_GOLDEN === "1";
 const sha256 = (s: string) => createHash("sha256").update(s, "utf8").digest("hex");
 
 /**
- * La vista «bloque» (D-S1-44, la ventana de un bloque del nivel 1): un bloque con un flujo adentro y uno de
+ * La vista «bloque» (D-S1-53, la ventana de un bloque del nivel 1): un bloque con un flujo adentro y uno de
  * franja, que usa la ficha compacta. Mismos casos en tests/determinismo/entrada.ts.
  */
 export const BLOQUES = [

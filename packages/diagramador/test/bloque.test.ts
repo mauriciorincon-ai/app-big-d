@@ -1,5 +1,5 @@
 // @vitest-environment node
-// Vista «bloque» y `toBlockCards` (enmienda del piloto, D-S1-44): lo que hay dentro de cada elemento activable
+// Vista «bloque» y `toBlockCards` (enmienda del piloto, D-S1-53): lo que hay dentro de cada elemento activable
 // del nivel 1, en todos los mapas del contrato y en la carnada P1. Mismas tarjetas que el nivel 2 (la de capa o
 // la ficha compacta de franja), solo los flujos de adentro, sin avisos ni cruces; y una tarjeta de texto por
 // componente con TODAS sus conexiones.
@@ -58,6 +58,25 @@ describe("vista «bloque»: cada elemento activable del nivel 1, en todos los ma
     const pista = t.puntos.find(([x], k) => k > 0 && x === t.puntos[k - 1]![0] && t.puntos[k]![1] !== t.puntos[k - 1]![1])![0];
     expect(pista).toBe(80 + 1680 + 250 - 50); // M + ficha + mitad del canal + la primera pista (−5 u)
   });
+  it("A-6 (a): un flujo entre dos fichas vecinas de una franja va por el canal, no entre las cajas", () => {
+    // Entre dos fichas compactas hay 8 u: la etiqueta del flujo (18 u) quedaba encima de las dos cajas.
+    const m = structuredClone(EJEMPLOS.find((x) => x.sujeto_id === "plataforma-ejemplo")!);
+    m.flujos.push({ ...m.flujos.find((f) => f.id === "f-catalogo-limpias")!, id: "f-catalogo-filtros", destino: "filtros-filas" });
+    const geo = bloque(m, "gobierno");
+    expect(geo.avisos).toEqual([]);
+    expect(crossings(geo)).toEqual([]);
+  });
+  it("A-6 (b): un flujo y su vuelta entre dos componentes vecinos no comparten el trazado", () => {
+    const m = structuredClone(EJEMPLOS.find((x) => x.sujeto_id === "plataforma-ejemplo")!);
+    const ida = m.flujos.find((f) => f.id === "f-semantico-tablero")!;
+    m.flujos.push({ ...ida, id: "f-tablero-semantico", origen: ida.destino, destino: ida.origen });
+    const geo = bloque(m, "consumo-bi");
+    expect(geo.avisos).toEqual([]);
+    expect(crossings(geo)).toEqual([]);
+    const puntos = (id: string) => new Set(geo.trazados.find((t) => t.id === id)!.puntos.map((p) => p.join(",")));
+    const comunes = [...puntos("f-semantico-tablero")].filter((p) => puntos("f-tablero-semantico").has(p));
+    expect(comunes).toEqual([]);
+  });
   it("mismos bytes en dos corridas", () => {
     expect(toSVG(bloque(P1, "almacen"), { language: "en" })).toBe(toSVG(bloque(P1, "almacen"), { language: "en" }));
   });
@@ -94,11 +113,15 @@ describe("toBlockCards", () => {
     expect(h).toMatch(/<li data-flujo="f-semantico-tablero"><svg class="dg-svg" viewBox="0 0 62 14"[^>]*>.*?<\/svg><span>To /);
     expect(h).toMatch(/<li data-flujo="f-semantico-tablero"><svg[^>]*>.*?<\/svg><span>From /);
   });
+  it("B-41: con `id`, el contenedor lo lleva (el SVG de la ventana lo enlaza como su versión en texto)", () => {
+    expect(toBlockCards(m, G, "consumo-bi", { language: "es", textos: TEXTOS, id: "v-texto" })).toMatch(/^<div class="dg-tarjetas" id="v-texto" lang="es"/);
+    expect(html("consumo-bi")).toMatch(/^<div class="dg-tarjetas" lang="es"/);
+  });
   it("la vigencia solo si no está vigente", () => {
     expect(html("consumo-bi", "es", FECHA)).not.toContain("dg-tarjeta-vigencia");
     expect(html("consumo-bi", "es", "2026-10-20")).toContain("Por revisar: verificado hace 30 días.");
   });
   it("sin las cadenas de un idioma, falla", () => {
-    expect(() => toBlockCards(m, G, "consumo-bi", { language: "fr", textos: TEXTOS })).toThrow(/faltan las cadenas/);
+    expect(() => toBlockCards(m, G, "consumo-bi", { language: "en", textos: { es: TEXTOS.es! } })).toThrow(/faltan las cadenas/);
   });
 });

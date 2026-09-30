@@ -1,5 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
+import { abrir, abrirConTecla, listo } from "./lib/abrir";
+import { IDIOMAS, PUBLICADAS } from "./lib/rutas";
 
 // Atlas · nivel 1 en el producto (S1, fase 2): el SVG del diagramador generado en el build, la capa
 // interactiva enganchada a sus ids (la ventana de un bloque con clic y con teclado, lienzo deslizable con
@@ -7,7 +9,9 @@ import { expect, test } from "@playwright/test";
 // de hoy, así que nada aquí depende de si el mapa está vigente o por revisar.
 const RUTA = { es: "/es/atlas/plataforma-ejemplo", en: "/en/atlas/plataforma-ejemplo" } as const;
 
-for (const [idioma, ruta] of Object.entries(RUTA)) {
+// G10 en el producto sobre TODA plataforma publicada y en todos los idiomas (B-16 de la auditoría del S1:
+// antes solo el ejemplo; Fabric lo cubrían g11 y reduced-motion, que no miran la lectura).
+for (const [idioma, ruta] of IDIOMAS.flatMap((i) => PUBLICADAS.map((p) => [i, `/${i}/atlas/${p}`] as const))) {
   test(`${ruta}: el diagrama, su lectura y su leyenda salen del motor, en «${idioma}»`, async ({ page }) => {
     await page.goto(ruta);
     await expect(page.locator("html")).toHaveAttribute("lang", idioma);
@@ -29,9 +33,7 @@ test("con teclado: Enter sobre un bloque abre su ventana con sus componentes; Es
   const panel = page.locator("#panel-ficha");
   await expect(panel).toBeHidden();
   const primero = page.locator(".lienzo .dg-elem").first();
-  await primero.focus();
-  await page.keyboard.press("Enter");
-  await expect(panel).toBeVisible();
+  await abrirConTecla(primero, panel);
   await expect(panel.locator("h2")).toHaveText("Sistemas de origen");
   await expect(panel.locator("h2")).toBeFocused();
   await expect(panel.locator('svg[data-vista="bloque"] .dg-nodo')).toHaveCount(1);
@@ -41,8 +43,7 @@ test("con teclado: Enter sobre un bloque abre su ventana con sus componentes; Es
   await expect(panel).toBeHidden();
   await expect(primero).toBeFocused();
   // Otro bloque con clic: sus dos componentes dibujados, el flujo que los une y una tarjeta por cada uno.
-  await page.locator('.lienzo .dg-elem[data-dueno="consumo-bi"]').dispatchEvent("click");
-  await expect(panel.locator("h2")).toHaveText("Tableros");
+  await abrir(page.locator('.lienzo .dg-elem[data-dueno="consumo-bi"]'), panel.locator("h2", { hasText: "Tableros" }));
   await expect(panel.locator('svg[data-vista="bloque"] .dg-nodo')).toHaveCount(2);
   await expect(panel.locator('svg[data-vista="bloque"] .dg-flujo[data-dueno="f-semantico-tablero"]')).toHaveCount(1);
   await expect(panel.locator(".dg-tarjeta")).toHaveCount(2);
@@ -53,6 +54,7 @@ test("con teclado: Enter sobre un bloque abre su ventana con sus componentes; Es
 
 test("«Saltar el diagrama» lleva a la lectura en texto", async ({ page }) => {
   await page.goto(RUTA.es);
+  await listo(page);
   await page.locator(".saltar-diagrama").focus();
   await expect(page.locator(".saltar-diagrama")).toBeVisible();
   await page.keyboard.press("Enter");
@@ -63,6 +65,7 @@ test.describe("en un teléfono de 380 px", () => {
   test.use({ viewport: { width: 380, height: 800 } });
   test("el lienzo se desliza de lado; la página no; el índice lleva a cada capa", async ({ page }) => {
     await page.goto(RUTA.es);
+    await listo(page);
     await expect(page.locator(".mapa")).toHaveAttribute("data-desborda", "");
     expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(0);
     await expect(page.locator(".pista")).toBeVisible();
@@ -73,9 +76,8 @@ test.describe("en un teléfono de 380 px", () => {
   });
   test("la ventana de un bloque es una hoja modal que cabe sin deslizar de lado", async ({ page }) => {
     await page.goto(RUTA.en);
-    await page.locator('.lienzo .dg-elem[data-dueno="almacen"]').dispatchEvent("click");
     const panel = page.getByRole("dialog", { name: "Inside the block" });
-    await expect(panel).toBeVisible();
+    await abrir(page.locator('.lienzo .dg-elem[data-dueno="almacen"]'), panel);
     await expect(panel).toHaveAttribute("aria-modal", "true");
     await expect(panel.locator('svg[data-vista="bloque"] .dg-nodo')).toHaveCount(2);
     expect(await panel.locator(".panel-cuerpo").evaluate((e) => e.scrollWidth - e.clientWidth)).toBeLessThanOrEqual(0);
@@ -84,9 +86,11 @@ test.describe("en un teléfono de 380 px", () => {
 
 test("la barra y la portada llevan al atlas", async ({ page }) => {
   await page.goto("/en");
+  await listo(page);
   await page.getByRole("combobox", { name: "Platform" }).selectOption("plataforma-ejemplo");
   await expect(page).toHaveURL(/\/en\/atlas\/plataforma-ejemplo$/);
   await page.goto("/es");
+  await listo(page);
   await page.getByRole("navigation", { name: "Secciones" }).or(page.getByRole("list", { name: "Secciones" })).getByRole("link", { name: "Atlas" }).click();
   // La primera plataforma publicada en orden de id (ninguna tiene trato especial): desde la parada B, fabric.
   await expect(page).toHaveURL(/\/es\/atlas\/fabric$/);
@@ -101,10 +105,10 @@ for (const [esquema, tema] of [
     for (const ruta of Object.values(RUTA))
       test(`${ruta} sin violaciones serias (${tema})`, async ({ page }) => {
         await page.goto(ruta);
+        await listo(page);
         // La lectura antes que la ventana: en un teléfono la ventana es una hoja modal que tapa la página.
         await page.locator("details.lectura-seccion > summary").click();
-        await page.locator(".lienzo .dg-elem").first().dispatchEvent("click");
-        await expect(page.locator("#panel-ficha")).toBeVisible();
+        await abrir(page.locator(".lienzo .dg-elem").first(), page.locator("#panel-ficha"));
         const scan = await new AxeBuilder({ page }).analyze();
         const serias = scan.violations.filter((v) => v.impact === "critical" || v.impact === "serious");
         expect(serias, JSON.stringify(serias.map((v) => [v.id, v.nodes.map((n) => n.target)]))).toEqual([]);

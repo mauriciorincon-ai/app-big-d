@@ -22,6 +22,10 @@ Investiga la plataforma (y la capa, si viene) de: **$ARGUMENTS**. El primer argu
 - `data/mapas/plataforma-ejemplo.mapa.yaml` — un mapa completo y válido: copia su forma.
 - `src/lib/investigador/esquema.ts` — el esquema exacto de la propuesta.
 
+Solo lees `data/`, `propuestas/`, `src/lib/investigador/` y esta skill; con Glob y Grep, di siempre la
+carpeta (`path`). Solo escribes `propuestas/<carpeta>/propuesta.json`: la verificación, el registro de
+fuentes y el contador de reintentos los escribe el código, y los hooks bloquean lo demás.
+
 ## 1-bis. Si ya hay una propuesta sin aprobar, retómala
 Si en `propuestas/` hay una carpeta de esta plataforma (y capa) cuya propuesta **no pasó** la validación
 —o que todavía nadie aprobó (no aparece en `data/revisiones/<id>.jsonl`)— **parte de ella**: vuelve a
@@ -55,19 +59,24 @@ En `propuestas/<AAAA-MM-DD>-<plataforma>[-<capa>]/propuesta.json` (fecha de hoy)
 }
 ```
 
-- **Una afirmación por cada nodo y por cada flujo** del mapa (al menos). La URL de la cita de un nodo es
-  una de sus `fuentes`; la de un flujo, una fuente de su origen o de su destino.
+- **Una afirmación por cada nodo y por cada flujo** del mapa (al menos), también con `sin_novedades: true`.
+  La URL de la cita de un nodo es una de sus `fuentes`; la de un flujo, una fuente de su origen o de su
+  destino. La cita tiene **al menos 40 caracteres**: un pasaje corto aparece en cualquier página.
 - Rechazar una afirmación saca del mapa lo que afirma: una afirmación por idea, no una por párrafo.
 - Respeta los límites de la gramática; agrupa en bloques (el nivel 1 del atlas) los componentes de una capa.
 - Un recorrido de referencia (de una fuente a un tablero y a un agente) si la documentación lo permite.
 - `sin_novedades: true` solo si nada cambió respecto del mapa aprobado.
+- Lo que el mapa aprobado tiene y tu propuesta ya no trae se **retira**: la pantalla se lo muestra a la
+  persona y el comando de aprobación lo nombra. No retires nada sin decirlo en el resumen.
 
 ## 4. Valida y verifica (código, no opinión)
 1. `node scripts/investigar/validar.mjs propuestas/<carpeta>` — corrige lo que diga; hasta 2 reintentos
-   (anótalos en `ejecucion.reintentos`). Además del esquema y de las reglas del contrato, el validador
-   **dibuja** el nivel 1, el nivel 2 y cada recorrido: una falla `dibujo · …` es un texto que no cabe (una
-   palabra más ancha que el bloque, un nombre de más líneas de las que tiene la ficha). Se corrige con un
-   nombre más corto que diga lo mismo, en los dos idiomas; jamás quitando el componente.
+   (anótalos en `ejecucion.reintentos`; la pantalla muestra los que contó el hook de fin). Además del
+   esquema y de las reglas del contrato, el validador **dibuja** el nivel 1, el nivel 2, cada recorrido y la
+   ventana de cada bloque, hoy y en los días en que el mapa pasará a «por revisar» y a «vencido»: una falla
+   `dibujo · …` es un texto que no cabe (una palabra más ancha que el bloque, un nombre de más líneas de
+   las que tiene la ficha). Se corrige con un nombre más corto que diga lo mismo, en los dos idiomas; jamás
+   quitando el componente.
 2. `node scripts/verificar-citas.mjs propuestas/<carpeta>` — baja cada página con curl y busca la cita.
    Una cita «no-encontrada» casi siempre es un pasaje no literal: vuelve a abrir la página, cópialo
    exacto, o retira la afirmación. Vuelve a validar y a verificar.

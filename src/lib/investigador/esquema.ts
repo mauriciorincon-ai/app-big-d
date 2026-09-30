@@ -11,7 +11,9 @@ const fecha = z.string().regex(/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/, 
 /** Una cita textual: el pasaje EXACTO de la página, en su idioma, que respalda la afirmación. */
 export const esquemaCita = z.strictObject({
   url: z.string().url().startsWith("https://", "solo fuentes https"),
-  texto: z.string().trim().min(12, "una cita de al menos 12 caracteres").max(600, "una cita de 600 caracteres como máximo"),
+  // 40 y no 12: una cita de doce caracteres aparece en casi cualquier página (B-31 de la auditoría del S1).
+  // Vale para las propuestas nuevas: la de Fabric (2026-09-27, ya cerrada) trae una de 35 que el código verificó.
+  texto: z.string().trim().min(40, "una cita de al menos 40 caracteres").max(600, "una cita de 600 caracteres como máximo"),
   /** Título de la página tal como se publica. */
   titulo: z.string().trim().min(1),
   tipo: z.enum(["oficial", "tercero"]),

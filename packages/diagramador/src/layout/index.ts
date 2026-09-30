@@ -4,11 +4,20 @@ import type { Gramatica, Mapa } from "../tipos";
 import { bloque } from "./bloque";
 import { carriles } from "./carriles";
 import { contexto } from "./contexto";
+import { crossings } from "./d11";
 import { nivel1 } from "./nivel1";
 import { nivel2 } from "./nivel2";
 import type { Geometria, OpcionesLayout, Vista } from "./tipos";
 
 export function layout(map: Mapa, grammar: Gramatica, view: Vista, options: OpcionesLayout): Geometria {
+  const geo = disponer(map, grammar, view, options);
+  // D11 también como aviso (M-1 de la auditoría del S1): quien solo mira los avisos —el build de la app, el
+  // validador del investigador, la aprobación— ve el cruce sin tener que llamar a `crossings`.
+  for (const c of crossings(geo)) geo.avisos.push(`D11: ${c.flujo} atraviesa la caja de ${c.caja}`);
+  return geo;
+}
+
+function disponer(map: Mapa, grammar: Gramatica, view: Vista, options: OpcionesLayout): Geometria {
   const ctx = contexto(map, grammar, options);
   if (view === "bloque") return bloque(ctx, options.grupo);
   if (ctx.carriles.length > 0) return carriles(ctx, view === "nivel-1" ? 1 : 2, view === "recorrido" ? (options.recorrido ?? true) : undefined);

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { datos, rutaAtlas } from "@/lib/datos";
+import { datos, rutaAtlas, rutaInvestigador } from "@/lib/datos";
 import { textos, type Idioma } from "@/lib/i18n";
 import { ConmutadorIdioma } from "./ConmutadorIdioma";
 import { ConmutadorTema } from "./ConmutadorTema";
@@ -19,7 +19,7 @@ export function Barra({ idioma }: { idioma: Idioma }) {
         etiqueta={t.secciones}
         secciones={[
           { ruta: rutaAtlas(datos(), idioma), texto: t.atlas, prefijo: `/${idioma}/atlas` },
-          { ruta: `/${idioma}/investigador/${datos().plataformas[0]!.id}`, texto: t.conocimiento, prefijo: `/${idioma}/investigador` },
+          { ruta: rutaInvestigador(datos(), idioma), texto: t.conocimiento, prefijo: `/${idioma}/investigador` },
         ]}
       />
       <div className="ajustes">

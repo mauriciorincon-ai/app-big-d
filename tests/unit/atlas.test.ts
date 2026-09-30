@@ -4,7 +4,7 @@
 // contra la maqueta): si el diccionario se aparta de las cadenas de la maqueta, o el YAML de su JSON, rojo.
 // (2) La píldora de vigencia dice lo que el motor calculó, en sus tres estados y en los dos idiomas.
 import { readFileSync } from "node:fs";
-import { layout, toSVG } from "diagramador";
+import { crossings, layout, toSVG } from "diagramador";
 import { describe, expect, it } from "vitest";
 import { opcionesPlataforma, pildora, rutasAtlas, textosMotor, vistaNivel1, vistaNivel2, vistaRecorrido } from "@/lib/atlas";
 import { cargarDatos } from "@/lib/datos";
@@ -49,7 +49,7 @@ describe("ventana de cada bloque del nivel 1 (pedido del usuario al mirar Fabric
     for (const [grupo, html] of Object.entries(v.ventanas)) {
       expect(html).toMatch(/^<h2>[^<]+<\/h2><p class="ventana-lider">/);
       expect(html).toContain('data-vista="bloque"');
-      expect(html).toContain(`<div class="dg-tarjetas" lang="${idioma}" data-grupo="${grupo}">`);
+      expect(html).toMatch(new RegExp(`<div class="dg-tarjetas" id="[^"]+" lang="${idioma}" data-grupo="${grupo}">`));
       expect(html).toContain(`<a href="/${idioma}/atlas/${id}/componentes">${textos(idioma).atlas.ventana.verComponentes.replace(/"/g, "&quot;")}</a>`);
     }
   });
@@ -108,5 +108,31 @@ describe("componentes y recorrido", () => {
     expect(ops.find((o) => o.id === "plataforma-ejemplo")!.ruta).toBe("/es/atlas/plataforma-ejemplo/recorrido");
     const sinRecorrido = { ...atlas, mapa: { ...atlas.mapa, recorridos: [] } };
     expect(rutasAtlas(sinRecorrido, "en")).toEqual({ general: "/en/atlas/plataforma-ejemplo", componentes: "/en/atlas/plataforma-ejemplo/componentes" });
+  });
+});
+
+describe("M-1 — D11 en cada atlas publicado: ninguna vista ni ventana con un flujo que atraviese una caja", () => {
+  const d = cargarDatos();
+  const casos = [...d.atlas.values()].flatMap((a) => {
+    const G = a.gramatica;
+    const tm = textosMotor();
+    const nivel1 = layout(a.mapa, G, "nivel-1", { textos: tm, fechaConsulta: "2026-09-26" });
+    return [
+      ...(["nivel-1", "nivel-2", "recorrido"] as const).map((v) => [`${a.plataforma.id} · ${v}`, () => layout(a.mapa, G, v, { textos: tm, fechaConsulta: "2026-09-26" })] as const),
+      ...nivel1.vigencia.elementos.map((e) => [`${a.plataforma.id} · ventana ${e.id}`, () => layout(a.mapa, G, "bloque", { textos: tm, fechaConsulta: "2026-09-26", grupo: e.id })] as const),
+    ];
+  });
+  it.each(casos)("%s", (_n, geo) => {
+    expect(crossings(geo())).toEqual([]);
+  });
+});
+
+describe("B-41 — la ventana de cada bloque enlaza su dibujo con su versión en texto (G10)", () => {
+  it.each(IDIOMAS)("en %s: aria-details del SVG = id de las tarjetas, en la misma ventana", (idioma) => {
+    for (const [id, html] of Object.entries(vistaNivel1(atlas, idioma, "2026-09-26").ventanas)) {
+      const destino = /<svg[^>]* aria-details="([^"]+)"/.exec(html)?.[1];
+      expect(destino, id).toBeTruthy();
+      expect(html, id).toContain(`<div class="dg-tarjetas" id="${destino}"`);
+    }
   });
 });

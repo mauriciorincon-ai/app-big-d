@@ -405,16 +405,16 @@ dibuja los niveles 1 y 2 de los dos mapas bilingües y mide cada `tspan` con `ge
     en cascada) sirve de base si otro consumidor necesita el mismo flujo.
 17. **Leyenda (§ 4.9)** — La regla del haz («varios modos en una conexión: línea gruesa y una etiqueta que dice
     cuáles, en orden») es gramática, no copy de la app: debería salir en la leyenda generada.
-20. **D-S1-40 — Canal con más de 6 pistas** — § 5.3 da 6 posiciones fijas; el primer mapa real pide 7 en un canal
+20. **D-S1-49 — Canal con más de 6 pistas** — § 5.3 da 6 posiciones fijas; el primer mapa real pide 7 en un canal
     del nivel 2. Con más de 6, el canal entero se reparte parejo a 2 u de cada tarjeta, en el mismo orden (centro,
     derecha, izquierda), con un piso de 4 u entre pistas (12 como máximo; la 13.ª avisa). Hasta 6, nada cambia.
-21. **D-S1-41 — Etiqueta de modos que choca** — § 5.3 dice «si no cabe, el motor lo reporta y no dibuja encima de
+21. **D-S1-50 — Etiqueta de modos que choca** — § 5.3 dice «si no cabe, el motor lo reporta y no dibuja encima de
     nada», pero no da un segundo lugar. Se prueba el tramo de llegada, pegado a la pista; si tampoco está libre, se
     reporta.
-22. **D-S1-42 — Fila de referencias de franja llena** — Entre referencias van 8 u y bajan hasta 4 si la fila no
+22. **D-S1-51 — Fila de referencias de franja llena** — Entre referencias van 8 u y bajan hasta 4 si la fila no
     alcanza; las que se salen por la derecha se corren hacia adentro empujando a las anteriores (antes solo se
     corría la última).
-23. **D-S1-43 — Etiqueta de un salto en el nivel 1** — La regla de la maqueta (entre la llegada del salto anterior
+23. **D-S1-52 — Etiqueta de un salto en el nivel 1** — La regla de la maqueta (entre la llegada del salto anterior
     y la propia) supone saltos anidados; con saltos que no salen del mismo lado, la etiqueta va en la mitad de su
     propio tramo. Invariante nueva: toda etiqueta de modos a ≤ 30 u de su trazo, en todos los mapas.
 24. **V16 (propuesta) — «El mapa se dibuja»** — Ninguna regla V1–V15 mira si los textos caben: un mapa válido para
@@ -423,13 +423,13 @@ dibuja los niveles 1 y 2 de los dos mapas bilingües y mide cada `tspan` con `ge
     vistas); el contrato podría declararlo como regla de validación en modo publicación.
 25. **Carnada P1 (mapa denso)** — `packages/diagramador/test/carnadas-piloto/P1-mapa-denso.mapa.json`: la forma
     del primer mapa real con nombres neutrales. Propuesta para el juego de carnadas del contrato.
-26. **D-S1-44 — Vista «bloque» y `toBlockCards`** (pedido del usuario al mirar Fabric): `layout(map, grammar,
+26. **D-S1-53 — Vista «bloque» y `toBlockCards`** (pedido del usuario al mirar Fabric): `layout(map, grammar,
     "bloque", { grupo })` dibuja lo que hay dentro de un elemento activable del nivel 1 (un bloque, o «_<banda>»
     para los nodos sin bloque) con la MISMA tarjeta que el nivel 2 (de capa o ficha compacta de franja) y solo los
     flujos de adentro; `toBlockCards(map, grammar, group, opts)` da una tarjeta de texto por componente con todas
     sus conexiones. `rutear` acepta `centroCanal` (el canal va tras la tarjeta real, 152 o 168 u). § 8 no tiene
     esta vista ni esta función.
-27. **D-S1-45 — Etiqueta de un flujo dentro de una columna** — se despega 2 u de la tarjeta como la de los
+27. **D-S1-54 — Etiqueta de un flujo dentro de una columna** — se despega 2 u de la tarjeta como la de los
     vecinos (antes la rozaba 1 u; ningún mapa del contrato tenía el caso, lo cazó la vista «bloque»).
 
 ## Fase 2 — Atlas nivel 1 en el producto (2026-09-27)
@@ -737,10 +737,10 @@ avisos, y había 8 distintos.
 | «Almacenamiento» no cabe en 104 u (nombre de bloque, es) | dato | lo corrige el investigador |
 | «Etiquetas de confidencialidad (Microsoft Purview)»: 4 líneas en una ficha de 2 (es; 3 en en) | dato | lo corrige el investigador |
 | carril exprés: 3 saltos (nivel 1) y 4 (nivel 2) en 2 pistas | motor | D-S1-23 corregido: sin aviso |
-| canal 2: más de 6 pistas (nivel 2) | motor | D-S1-40 |
-| dos etiquetas de modos encimadas (nivel 2) | motor | D-S1-41 |
-| una referencia de la franja de orquestación fuera del lienzo | motor | D-S1-42 |
-| (visto al mirar la imagen, sin aviso) una etiqueta de salto a 202 u de su línea (nivel 1) | motor | D-S1-43 |
+| canal 2: más de 6 pistas (nivel 2) | motor | D-S1-49 |
+| dos etiquetas de modos encimadas (nivel 2) | motor | D-S1-50 |
+| una referencia de la franja de orquestación fuera del lienzo | motor | D-S1-51 |
+| (visto al mirar la imagen, sin aviso) una etiqueta de salto a 202 u de su línea (nivel 1) | motor | D-S1-52 |
 
 **Hueco de proceso (¿puede fallar?):** el ensayo de la aprobación cargaba los datos pero no dibujaba, y el validador
 del investigador tampoco. La propuesta pasaba los dos y habría roto el build al aprobarse. **Gate nuevo:**
@@ -829,7 +829,7 @@ se cierra la fase 3 y la ventana entra primero en la fase 4.
 
 ### Fase 4 · 1 — La ventana de un bloque (nivel 1)
 
-- **Motor** (D-S1-44, D-S1-45): vista «bloque», `toBlockCards`, `modoSVG` (el trazo y el marcador de un modo,
+- **Motor** (D-S1-53, D-S1-54): vista «bloque», `toBlockCards`, `modoSVG` (el trazo y el marcador de un modo,
   compartido con la leyenda: la leyenda quedó idéntica byte a byte) y `util/grupo.ts`.
 - **App:** `vistaNivel1` trae `ventanas` (una por elemento activable: nombre y frase, dibujo del motor, tarjetas y
   el paso a «Componentes»). `PanelFicha` se generaliza (`objetivo`, `clave`): lateral desde 900 px, hoja modal en
@@ -1015,8 +1015,10 @@ Los nombres de botones y secciones se contrastaron con los diccionarios de la ap
 
 **ADR `decisions/design-system-s1-extensions.md`.** `design-system.md` no se toca: las cuatro decisiones de diseño
 del S1 lo extienden por ADR. Son la ventana de un bloque (reemplaza a la ficha breve), el selector de plataforma
-del atlas, la nota de marcas en su forma A y el estado vacío en contexto. Cada una fue vista por la persona antes
-de construir encima; la planeadora las lleva a la próxima versión del design system.
+del atlas, la nota de marcas en su forma A y el estado vacío en contexto. **Las dos primeras las vio la persona
+antes de construir encima; la nota de marcas (D-S1-34) y el estado vacío (D-S1-41) los decidí yo, sin mirada de
+FORMA** (corregido tras la auditoría, M-5: este párrafo decía que las cuatro se habían visto). Sus dos miradas se
+piden en la Fase 2 de la auditoría. La planeadora las lleva a la próxima versión del design system.
 
 **Suites:** unitarias 807/807 · e2e 300/300 · paquete 526/526.
 
@@ -1030,3 +1032,40 @@ Hecho: la ventana (con su mirada), G11 en tres motores, movimiento reducido y ax
 de la ventana, A-24 (y A-25, A-29 y A-30 verificadas), guía de prueba v1 con kit, manual bilingüe, `design-sync/`
 y el ADR de extensiones de diseño. Sigue, tras el «continúa»: `/audita-sprint` (obligatoria; su fase 2 paga todos
 los hallazgos) → `/deploy-check` → `SPRINT_001-summary.md` → PR listo.
+
+## Desviación del plan
+
+Lo que el sprint hizo distinto del plan aprobado (o de la orden), una línea por desviación, con dónde se decidió.
+La planeadora las lee aquí; las que tocan el contrato del diagramador viajan además a «Enmiendas» del summary.
+(Esta sección la prometía la cabecera de la bitácora desde la fase 0 y no existía: la cazó la auditoría, M-6.)
+
+**Del plan, ya declaradas en él (tabla de contradicciones y D-S1-01…14):**
+- **31 carnadas, no 28:** C01–C21, GC1–GC5, A1–A3 y los dos mapas reales (`esperado.json` manda sobre el SPRINT).
+- **7 mapas con D11 = 0**, no 5: los 6 ejemplos del contrato más Fabric.
+- **G1–G7 + V1–V15** y `validate(map, grammar, {mode, coverage})`, franjas abajo, sin vista angosta: manda el
+  contrato v0.3.0; la constitución copiada traía V1–V12, franjas arriba y «v0.2.0 hoy» (la planeadora la corrige).
+- **Kit v1.32.0** (no v1.30/1.31 «sin código»): `verificar-dependencias.mjs` en `quality` y
+  `controladores-maqueta.test.ts` copiados.
+- **`propuestas/` en la raíz**, no en `data/propuestas/`.
+- **Las pruebas del diagramador viven en el paquete** (`packages/diagramador/test/`), no en `tests/unit/diagramador/`.
+- **Determinismo en el navegador en una página en blanco** con config propia (D-S1-12), dentro del job `diagramador`.
+- **ADRs por tema**, sin número.
+- **D-S1-01** (etiqueta de A3 en dos filas), **D-S1-13** (paradas humanas agrupadas), **D-S1-14** (capturas de
+  un build local del mismo commit): declaradas en el plan.
+
+**Durante la construcción:**
+- **D-S1-15:** `/` no es una pantalla; el servidor la redirige al primer idioma (reemplaza la raíz de D-S1-08).
+- **D-S1-34** (nota de marcas, forma A) y **D-S1-41** (estado vacío en contexto): decididas sin mirada de FORMA;
+  sus miradas se piden en la Fase 2 de la auditoría (M-5).
+- **D-S1-42:** una afirmación es sobre una entidad (`{entidad, id}`), no una ruta JSON Pointer como decía el plan.
+- **La ventana de un bloque** (pedido del usuario al mirar Fabric, 2026-09-29): reemplaza a la ficha breve del
+  nivel 1; motor D-S1-53 y D-S1-54, ADR `decisions/design-system-s1-extensions.md`.
+- **Scripts con otra ruta que la del plan:** `scripts/contrato/{fijar,verificar,huellas}.mjs` (el plan decía
+  `scripts/verificar-contrato.mjs`), `scripts/datos/desde-contrato.mjs` (el plan: `scripts/datos/ejemplo-a-yaml.mjs`),
+  `scripts/diagramador/compilar-esquemas.mjs` y `scripts/investigar/validar.mjs`.
+- **`atlas.spec.ts` cubría solo el ejemplo** (el plan pedía Fabric en 3 niveles × 2 idiomas; lo cubrían g11 y
+  reduced-motion). La auditoría (B-16) lo lleva a toda plataforma publicada.
+- **`compare` (lado a lado) pasa a S2**, como decía el plan.
+
+**En la Fase 2 de la auditoría:** ver «Auditoría final — Fase 2» (arriba), apartado «Desviaciones del plan de
+pagos».

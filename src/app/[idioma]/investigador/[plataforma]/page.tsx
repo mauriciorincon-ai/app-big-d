@@ -67,6 +67,7 @@ export default async function Investigador({ params }: PageProps<"/[idioma]/inve
           actual={plataforma}
           etiqueta={textos(idioma).atlas.plataforma.etiqueta}
           pronto={textos(idioma).atlas.plataforma.pronto}
+          nota={textos(idioma).atlas.plataforma.notaInvestigador}
         />
       </div>
       <ul className="niveles" aria-label={t.secciones.etiqueta}>
@@ -171,7 +172,7 @@ export default async function Investigador({ params }: PageProps<"/[idioma]/inve
               <p>{t.propuesta.sinVerificar}</p>
             </div>
           ) : (
-            <RevisionPropuesta carpeta={p.carpeta} afirmaciones={p.afirmaciones} t={t} />
+            <RevisionPropuesta carpeta={p.carpeta} afirmaciones={p.afirmaciones} retiros={p.retiros} t={t} />
           )}
           {p.preguntas.length > 0 && (
             <div className="tarjeta preguntas">

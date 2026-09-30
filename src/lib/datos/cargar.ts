@@ -32,7 +32,22 @@ export class ErrorDeDatos extends Error {
 }
 
 const porId = (a: { id: string }, b: { id: string }) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0);
-const leerYaml = (archivo: string): unknown => parse(readFileSync(archivo, "utf8"));
+/**
+ * ¿La URL es de un dominio reservado para ejemplos (RFC 2606 y 6761)? example.org/.com/.net y los dominios de
+ * primer nivel .example, .invalid y .test: ninguno puede ser el de una institución real.
+ */
+export function esDominioDeEjemplo(url: string): boolean {
+  try {
+    const u = new URL(url);
+    const h = u.hostname.toLowerCase();
+    return u.protocol === "https:" && (["example.org", "example.com", "example.net"].includes(h) || /\.(example|invalid|test)$/.test(h));
+  } catch {
+    return false;
+  }
+}
+
+/** Un YAML que no se puede leer: la falla ya quedó anotada con su archivo (M-10 de la auditoría del S1). */
+const ROTO = Symbol("yaml roto");
 const linea = (archivo: string, e: Entrada) => `${archivo} · ${e.regla} · ${e.ruta || "/"} · ${e.id} · ${e.mensaje}`;
 
 /** Cobertura de la fuente del diagrama (V15): la de la copia fijada de la tabla de métricas. */
@@ -44,11 +59,22 @@ function cobertura(raiz: string): Cobertura {
 /** `dir` = la carpeta de datos; `raiz` = la del repo (para la cobertura de la fuente). */
 export function cargarDatos(dir = join(process.cwd(), "data"), raiz = process.cwd()): Datos {
   const fallas: string[] = [];
+  // Un YAML mal formado rompía la carga con «Map keys must be unique at line 2», sin decir qué archivo.
+  const leerYaml = (ruta: string, archivo: string): unknown => {
+    try {
+      return parse(readFileSync(ruta, "utf8"));
+    } catch (e) {
+      fallas.push(`${archivo} · yaml · ${(e as Error).message.split("\n")[0]}`);
+      return ROTO;
+    }
+  };
 
   const plataformas: Plataforma[] = [];
   for (const f of readdirSync(join(dir, "plataformas")).filter((x) => x.endsWith(".yaml")).sort()) {
     const archivo = `data/plataformas/${f}`;
-    const r = esquemaPlataforma.safeParse(leerYaml(join(dir, "plataformas", f)));
+    const dato = leerYaml(join(dir, "plataformas", f), archivo);
+    if (dato === ROTO) continue;
+    const r = esquemaPlataforma.safeParse(dato);
     if (!r.success) {
       for (const i of r.error.issues) fallas.push(`${archivo} · ${i.path.join(".") || "/"} · ${i.message}`);
       continue;
@@ -65,8 +91,12 @@ export function cargarDatos(dir = join(process.cwd(), "data"), raiz = process.cw
     let g: Gramatica | null = null;
     if (!existsSync(join(dir, "gramaticas", `${id}.gramatica.yaml`))) fallas.push(`${archivo} · no existe`);
     else {
-      const dato = leerYaml(join(dir, "gramaticas", `${id}.gramatica.yaml`));
-      const inf = validateGrammar(dato);
+      const dato = leerYaml(join(dir, "gramaticas", `${id}.gramatica.yaml`), archivo);
+      const inf = dato === ROTO ? undefined : validateGrammar(dato);
+      if (!inf) {
+        gramaticas.set(id, null);
+        return null;
+      }
       for (const e of [...inf.errores, ...inf.alertas]) fallas.push(linea(archivo, e));
       if (inf.ok && !inf.alertas.length) {
         g = dato as Gramatica;
@@ -94,7 +124,9 @@ export function cargarDatos(dir = join(process.cwd(), "data"), raiz = process.cw
       fallas.push(`data/plataformas/${p.id}.yaml · estado · publicada sin mapa: falta ${archivo}`);
       continue;
     }
-    const dato = leerYaml(join(dir, "mapas", `${p.id}.mapa.yaml`)) as Record<string, unknown> | null;
+    const leido = leerYaml(join(dir, "mapas", `${p.id}.mapa.yaml`), archivo);
+    if (leido === ROTO) continue;
+    const dato = leido as Record<string, unknown> | null;
     const gid = dato?.gramatica_id;
     if (typeof gid !== "string") {
       fallas.push(`${archivo} · /gramatica_id · falta`);
@@ -109,6 +141,15 @@ export function cargarDatos(dir = join(process.cwd(), "data"), raiz = process.cw
     if (mapa.sujeto_id !== p.id) fallas.push(`${archivo} · /sujeto_id · «${mapa.sujeto_id}» no es el id de su plataforma («${p.id}»)`);
     for (const i of IDIOMAS)
       if (mapa.sujeto_nombre[i] !== p.nombre[i]) fallas.push(`${archivo} · /sujeto_nombre/${i} · no coincide con el nombre de la plataforma («${p.nombre[i]}»)`);
+    // Regla 12 (cero datos reales): una plataforma ficticia solo cita dominios reservados para ejemplos (B-46).
+    if (p.ficticia)
+      mapa.nodos.forEach((n, i) =>
+        n.fuentes.forEach((f, k) => {
+          if (!esDominioDeEjemplo(f.url)) fallas.push(`${archivo} · /nodos/${i}/fuentes/${k}/url · ${n.id} · una plataforma ficticia solo cita dominios reservados (example.org, *.invalid…)`);
+        }),
+      );
+    // La vista «recorrido» dibuja un recorrido por mapa (B-17 c): uno de más no se publicaría en silencio.
+    if (mapa.recorridos.length > 1) fallas.push(`${archivo} · /recorridos · ${mapa.sujeto_id} · el atlas dibuja un recorrido por mapa y este trae ${mapa.recorridos.length}`);
     atlas.set(p.id, { plataforma: p, mapa, gramatica: g });
   }
 
@@ -122,6 +163,12 @@ let memoria: Datos | undefined;
 export function rutaAtlas(d: Datos, idioma: string): string {
   const primera = d.plataformas.find((p) => p.estado === "publicada");
   return primera ? `/${idioma}/atlas/${primera.id}` : `/${idioma}`;
+}
+
+/** Ruta del investigador por defecto: la primera plataforma por id (B-5); sin plataformas, la portada. */
+export function rutaInvestigador(d: Datos, idioma: string): string {
+  const primera = d.plataformas[0];
+  return primera ? `/${idioma}/investigador/${primera.id}` : `/${idioma}`;
 }
 
 /** Los datos del build, cargados y validados una sola vez por proceso. */

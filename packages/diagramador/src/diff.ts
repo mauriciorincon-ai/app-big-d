@@ -15,7 +15,17 @@ export interface Diferencias {
   pasos: { nuevos: string[]; retirados: string[]; cambiados: string[] };
 }
 
-const igual = (a: unknown, b: unknown): boolean => JSON.stringify(a) === JSON.stringify(b);
+/** JSON con las claves en orden de código: dos objetos iguales con las claves en otro orden dan lo mismo. */
+function canonico(v: unknown): string {
+  if (Array.isArray(v)) return `[${v.map(canonico).join(",")}]`;
+  if (v === null || typeof v !== "object") return JSON.stringify(v) ?? "null";
+  const o = v as Record<string, unknown>;
+  const claves = Object.keys(o).filter((k) => o[k] !== undefined).sort(compararCodigo);
+  return `{${claves.map((k) => `${JSON.stringify(k)}:${canonico(o[k])}`).join(",")}}`;
+}
+// M-26 de la auditoría del S1: con `JSON.stringify` a secas, el mismo flujo con sus claves en otro orden salía
+// «cambiado» (un YAML reescrito por otra herramienta marcaba los 14 flujos y los 8 pasos).
+const igual = (a: unknown, b: unknown): boolean => canonico(a) === canonico(b);
 const iguales = (a: TextoIdioma, b: TextoIdioma): boolean => Object.keys(a).length === Object.keys(b).length && Object.keys(a).every((k) => a[k] === b[k]);
 const porId = <T extends { id: string }>(xs: readonly T[]) => new Map(xs.map((x) => [x.id, x]));
 const ordenados = (xs: string[]) => xs.sort(compararCodigo);

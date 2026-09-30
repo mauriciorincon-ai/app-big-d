@@ -10,8 +10,8 @@ const nextConfig: NextConfig = {
   // El indicador de desarrollo de Next tapa la navegación inferior móvil e intercepta taps en los
   // e2e (visto en nutri-kids S1) — apagado por default.
   devIndicators: false,
-  // Layouts raíz por idioma (/es, /en) y otro para `/`: no hay un solo layout desde el cual componer el
-  // 404, así que se declara uno global (Next 16, documentado como experimental).
+  // Layouts raíz por idioma (/es, /en); `/` redirige al primer idioma (D-S1-15). No hay un solo layout
+  // desde el cual componer el 404, así que se declara uno global (Next 16, documentado como experimental).
   experimental: { globalNotFound: true },
 };
 

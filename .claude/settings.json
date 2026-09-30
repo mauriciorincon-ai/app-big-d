@@ -4,12 +4,12 @@
   "hooks": {
     "PreToolUse": [
       {
-        "_comment": "Bloquear secrets en cambios staged/worktree antes de escribir",
-        "matcher": "Write|Edit",
+        "_comment": "Bloquear secrets en LO QUE SE VA A ESCRIBIR (gitleaks stdin; B-25 de la auditoría del S1: `protect --staged` miraba el índice, no el texto nuevo)",
+        "matcher": "Write|Edit|MultiEdit|NotebookEdit",
         "hooks": [
           {
             "type": "command",
-            "command": "gitleaks protect --no-banner --redact --staged 2>/dev/null; if [ $? -eq 1 ]; then echo 'SECRET DETECTADO. Escritura bloqueada: mueve la clave a .env.local / Vercel env vars.'; exit 2; fi; exit 0"
+            "command": "node \"$CLAUDE_PROJECT_DIR\"/scripts/hooks/gitleaks-escritura.mjs"
           }
         ]
       },
@@ -24,12 +24,22 @@
         ]
       },
       {
-        "_comment": "Investigador (regla «la IA propone, el humano aprueba»): nadie corre scripts/aprobar.mjs; el subagente `investigador` solo escribe en propuestas/ y solo corre sus dos scripts. Se filtra por agent_type dentro del script.",
-        "matcher": "Bash|Write|Edit|MultiEdit|NotebookEdit",
+        "_comment": "Investigador (regla «la IA propone, el humano aprueba»): nadie corre scripts/aprobar.mjs; el subagente `investigador` solo escribe propuestas/<carpeta>/propuesta.json, solo lee lo de su oficio y solo corre sus dos scripts. Se filtra por agent_type dentro del script.",
+        "matcher": "Bash|Write|Edit|MultiEdit|NotebookEdit|Read|Glob|Grep",
         "hooks": [
           {
             "type": "command",
             "command": "node \"$CLAUDE_PROJECT_DIR\"/scripts/investigar/hooks/candado.mjs"
+          }
+        ]
+      },
+      {
+        "_comment": "Investigador: solo lo lanza una persona con /investigar; ningún agente lo lanza con la herramienta Agent.",
+        "matcher": "Agent|Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR\"/scripts/investigar/hooks/sin-lanzar.mjs"
           }
         ]
       },

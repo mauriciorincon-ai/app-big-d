@@ -1,12 +1,14 @@
-// Hook PreToolUse (Bash y escrituras) — el candado del investigador.
-//   1. NINGÚN agente (tampoco la sesión principal) corre scripts/aprobar.mjs: aprobar es de una persona.
-//   2. El subagente `investigador` solo escribe dentro de propuestas/ y solo corre, tal cual, los dos
-//      scripts de su oficio (validar la propuesta y verificar sus citas), sin encadenar nada.
-import { resolve, sep } from "node:path";
-import { RAIZ_REPO } from "../../lib/cargar-ts.mjs";
+// Hook PreToolUse (Bash, escrituras y lecturas) — el candado del investigador.
+//   1. NINGÚN agente (tampoco la sesión principal) corre scripts/aprobar.mjs: aprobar es de una persona. Es la
+//      defensa contra el accidente; la frontera está dentro del script (`puedeAprobar`, M-15).
+//   2. El subagente `investigador` solo escribe `propuestas/<carpeta>/propuesta.json` (A-1: todo lo demás de
+//      propuestas/ lo escribe el código —verificacion.json, el registro, el contador de reintentos— y el
+//      modelo no lo toca), solo lee lo de su oficio (M-18) y solo corre, tal cual, los dos scripts de su
+//      oficio (validar la propuesta y verificar sus citas), sin encadenar nada.
+import { isAbsolute, relative, resolve } from "node:path";
+import { RAIZ } from "../raiz.mjs";
 import { bloquear, entrada, esInvestigador, pasar } from "./entrada.mjs";
 
-const RAIZ = resolve(process.env.BIGD_RAIZ ?? RAIZ_REPO);
 const LANZADOR = /^(?:\S+=\S*\s+)*(?:node|nodejs|bun|deno|npx|env|sh|bash|zsh|exec|eval|source|xargs|nohup|time|pnpm(?:\s+exec|\s+dlx)?|yarn|npm\s+exec)\b/;
 const RUTA = /^(?:\S+=\S*\s+)*(?:\.\/)?(?:\S*\/)?scripts\/aprobar\.mjs\b/;
 
@@ -28,10 +30,22 @@ export function ejecutaAprobar(comando) {
 }
 
 const PERMITIDO = /^node scripts\/(?:investigar\/validar|verificar-citas)\.mjs propuestas\/[A-Za-z0-9][A-Za-z0-9._-]*\/?$/;
+/** Lo único que el investigador escribe: el propuesta.json de una carpeta de propuestas/. */
+const ESCRIBIBLE = /^propuestas\/[A-Za-z0-9][A-Za-z0-9._-]*\/propuesta\.json$/;
+/** Lo que lee: el dato, las propuestas, el contrato de su salida y su propia skill. */
+const LEIBLE = /^(?:data|propuestas|src\/lib\/investigador|\.claude\/skills\/investigar)(?:\/|$)/;
+
+/** La ruta relativa a la raíz de trabajo, con «/»; `null` si sale de ella. */
+function dentro(ruta, cwd) {
+  if (typeof ruta !== "string" || !ruta) return null;
+  const r = relative(RAIZ, resolve(cwd, ruta)).split("\\").join("/");
+  return r.startsWith("..") || isAbsolute(r) ? null : r;
+}
 
 const e = entrada();
 const herramienta = e.tool_name;
 const ti = e.tool_input ?? {};
+const cwd = e.cwd ?? RAIZ;
 
 if (herramienta === "Bash" && ejecutaAprobar(ti.command))
   bloquear("BLOQUEADO: scripts/aprobar.mjs lo corre solo una persona (la IA propone, el humano aprueba). Arma el comando en la pantalla de revisión y pídeselo al usuario.");
@@ -40,9 +54,19 @@ if (!esInvestigador(e)) pasar();
 
 if (["Write", "Edit", "MultiEdit", "NotebookEdit"].includes(herramienta)) {
   const ruta = ti.file_path ?? ti.path ?? ti.notebook_path;
-  const destino = typeof ruta === "string" ? resolve(e.cwd ?? RAIZ, ruta) : "";
-  if (!destino.startsWith(resolve(RAIZ, "propuestas") + sep))
-    bloquear(`BLOQUEADO: el investigador solo escribe dentro de propuestas/ (pidió «${ruta ?? "?"}»).`);
+  const r = dentro(ruta, cwd);
+  if (!r || !ESCRIBIBLE.test(r))
+    bloquear(`BLOQUEADO: el investigador solo escribe propuestas/<carpeta>/propuesta.json (pidió «${ruta ?? "?"}»); lo demás de propuestas/ lo escribe el código.`);
+  pasar();
+}
+
+if (["Read", "Glob", "Grep"].includes(herramienta)) {
+  // Glob y Grep sin `path` buscan en todo el directorio de trabajo: se les pide una carpeta permitida.
+  const ruta = herramienta === "Read" ? ti.file_path : ti.path;
+  const r = dentro(ruta, cwd);
+  const patron = herramienta === "Glob" ? String(ti.pattern ?? "") : herramienta === "Grep" ? String(ti.glob ?? "") : "";
+  if (!r || !LEIBLE.test(r) || patron.includes("..") || patron.startsWith("/") || patron.startsWith("~"))
+    bloquear(`BLOQUEADO: el investigador solo lee data/, propuestas/, src/lib/investigador/ y .claude/skills/investigar/ (pidió «${ruta ?? "(todo)"}»).`);
   pasar();
 }
 

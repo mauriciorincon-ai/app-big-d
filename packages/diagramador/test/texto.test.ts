@@ -2,7 +2,7 @@
 // G10 — la versión en texto dice lo mismo que el dibujo: todo nodo, flujo y referencia del SVG aparece en
 // la lectura y al revés, en cada idioma. Además: leyenda (§ 4.9), CSS del recorrido (§ 4.3) y diff (§ 4.7).
 import { describe, expect, it } from "vitest";
-import { diff, toJourneyCSS, toLegend, toSVG, toText, type Mapa } from "../src/index";
+import { diff, toBlockCards, toCard, toJourneyCSS, toLegend, toSVG, toText, type Mapa } from "../src/index";
 import { EJEMPLOS, GRAMATICAS } from "./lib/contrato";
 import { disponer } from "./lib/casos";
 import { TEXTOS } from "./lib/textos";
@@ -89,5 +89,26 @@ describe("diff entre versiones (§ 4.7)", () => {
   it("un mapa contra sí mismo no tiene diferencias", () => {
     const d = diff(a, structuredClone(a));
     expect([...d.nodos.nuevos, ...d.nodos.retirados, ...d.flujos.cambiados, ...d.pasos.cambiados]).toEqual([]);
+  });
+  it("M-26: el orden de las claves no es un cambio (el mismo mapa con cada objeto al revés)", () => {
+    const alReves = (v: unknown): unknown =>
+      Array.isArray(v) ? v.map(alReves) : v && typeof v === "object" ? Object.fromEntries(Object.entries(v).reverse().map(([k, x]) => [k, alReves(x)])) : v;
+    const d = diff(a, alReves(a) as Mapa);
+    expect({ flujos: d.flujos.cambiados, pasos: d.pasos.cambiados }).toEqual({ flujos: [], pasos: [] });
+  });
+});
+
+describe("B-39 — un idioma que la gramática no declara da un error claro en cada salida de texto", () => {
+  const m = EJEMPLOS.find((x) => x.sujeto_id === "plataforma-ejemplo")!;
+  const G = GRAMATICAS[m.gramatica_id]!;
+  // Las cadenas de interfaz sí están en «fr»: lo que falta es el idioma en la gramática (y en los textos del mapa).
+  const textos = { ...TEXTOS, fr: TEXTOS.es! };
+  it.each([
+    ["toText", () => toText(m, G, { language: "fr", textos })],
+    ["toCard", () => toCard(m, G, m.nodos[0]!.id, { language: "fr", textos })],
+    ["toBlockCards", () => toBlockCards(m, G, "consumo-bi", { language: "fr", textos })],
+    ["toLegend", () => toLegend(G, { language: "fr", textos })],
+  ] as const)("%s", (quien, f) => {
+    expect(f).toThrow(new RegExp(`${quien}: la gramática no declara el idioma «fr»`));
   });
 });

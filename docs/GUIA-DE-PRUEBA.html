@@ -178,7 +178,7 @@
         <span class="minimo">⭐⭐ Parada 1 de 3</span></label></li>
       <li data-origen="nuevo"><input type="checkbox" id="b2"><label for="b2">Mira el mapa. Esperado: se lee de izquierda a derecha; cada capa lleva su número, su nombre y <strong>su pregunta</strong>; las franjas transversales van abajo y abarcan todas las capas.
         <span class="origen origen-nuevo">Nuevo · S1</span></label></li>
-      <li data-origen="nuevo"><input type="checkbox" id="b3"><label for="b3">Mira un bloque. Esperado: dice cuántos componentes tiene y su <strong>vigencia con símbolo, texto y días</strong> (nunca solo un color).
+      <li data-origen="nuevo"><input type="checkbox" id="b3"><label for="b3">Mira el encabezado del mapa y un bloque. Esperado: el encabezado dice la vigencia con <strong>símbolo y texto</strong> («vigente · verificado hace N días»); el bloque dice cuántos componentes tiene y <strong>no lleva insignia mientras está vigente</strong>. Para ver un mapa envejecido sin esperar un mes, en una terminal en la carpeta del proyecto: <code>BIGD_FECHA_CONSULTA=2026-10-27 pnpm build &amp;&amp; pnpm start</code>. Esperado: cada bloque y cada componente lleva su insignia (símbolo y «30 d»), <strong>nada se sale del mapa</strong> y, en «Componentes», los nombres de una fila de referencias llena se abrevian con «…» (el nombre entero sigue en la ficha).
         <span class="origen origen-nuevo">Nuevo · S1</span></label></li>
       <li data-origen="nuevo"><input type="checkbox" id="b4"><label for="b4">Busca una conexión con más de un modo. Esperado: <strong>línea gruesa con una etiqueta</strong> que dice cuáles, en orden; la leyenda explica cada trazo.
         <span class="origen origen-nuevo">Nuevo · S1</span></label></li>
@@ -221,7 +221,7 @@
         <span class="origen origen-nuevo">Nuevo · S1</span></label></li>
       <li data-origen="nuevo"><input type="checkbox" id="c3"><label for="c3">En pantalla ancha y en teléfono. Esperado: en ancho la ficha es un <strong>panel a la derecha</strong> y la página sigue usable; en teléfono es una <strong>hoja abajo</strong> de la que el foco no sale; Esc o «Cerrar» devuelven el foco al componente.
         <span class="origen origen-nuevo">Nuevo · S1</span></label></li>
-      <li data-origen="nuevo"><input type="checkbox" id="c4"><label for="c4">Cambia de plataforma en el campo <strong>«Plataforma»</strong>. Esperado: te lleva a la misma vista de la otra plataforma; las que no tienen mapa dicen «pronto» y no se eligen.
+      <li data-origen="nuevo"><input type="checkbox" id="c4"><label for="c4">Cambia de plataforma en el campo <strong>«Plataforma»</strong>. Esperado: bajo el campo, una nota avisa <strong>«Al elegir otra plataforma se abre su atlas.»</strong>; elegir te lleva a la misma vista de la otra plataforma; las que no tienen mapa dicen «pronto» y no se eligen.
         <span class="origen origen-nuevo">Nuevo · S1</span></label></li>
       <li data-origen="nuevo"><input type="checkbox" id="c5"><label for="c5">Mira las pestañas «Nivel de lectura». Esperado: 01 Visión general, 02 Componentes y 03 Recorrido llevan a su vista; <strong>04 Lado a lado se ve pendiente, sin enlace</strong> (llega en el S2).
         <span class="origen origen-nuevo">Nuevo · S1</span></label></li>
@@ -239,7 +239,7 @@
         <span class="origen origen-nuevo">Nuevo · S1</span></label></li>
       <li data-origen="nuevo"><input type="checkbox" id="d3"><label for="d3">Llega adonde el camino se divide (<strong>6a / 6b</strong>). Esperado: la lista dice si las ramas ocurren a la vez o si sigue por una de ellas.
         <span class="origen origen-nuevo">Nuevo · S1</span></label></li>
-      <li data-origen="nuevo"><input type="checkbox" id="d4"><label for="d4">Toca un componente del camino. Esperado: salta a su paso y se abre su ficha a la derecha.
+      <li data-origen="nuevo"><input type="checkbox" id="d4"><label for="d4">Toca un componente del camino (o llega a él con Tab y pulsa Enter). Esperado: salta a su paso y se abre su ficha, a la derecha en pantalla ancha y desde abajo en teléfono.
         <span class="origen origen-nuevo">Nuevo · S1</span></label></li>
       <li data-origen="nuevo"><input type="checkbox" id="d5"><label for="d5">Toca <strong>«Reproducir»</strong>, luego «Pausar», luego «Ver todos». Esperado: avanza solo paso a paso, se detiene, y vuelve a mostrar todos los pasos.
         <span class="origen origen-nuevo">Nuevo · S1</span></label></li>
@@ -262,14 +262,14 @@
   </section>
 
   <section class="bloque">
-    <div class="bloque-cabeza"><span class="letra">F</span><h2>El investigador y la base de conocimiento</h2></div>
+    <div class="bloque-cabeza"><span class="letra">F</span><h2>El investigador, y una base incompleta que no se publica</h2></div>
     <p class="meta-bloque chica suave"><strong>Empieza en:</strong> <code>/es/investigador/fabric</code> · ~12 min · el mapa aprobado, el estado vacío y la revisión de una propuesta (con el kit)</p>
     <ul class="pasos">
       <li data-origen="nuevo"><input type="checkbox" id="f1"><label for="f1">Mira la página de Fabric. Esperado: «mapa aprobado v0.1.0», el veredicto <strong>«Aprobada por una persona»</strong> con fecha, 80 aprobadas y 0 rechazadas, y la <strong>vigencia por capa</strong> con semáforo (símbolo, texto y días).
         <span class="origen origen-nuevo">Nuevo · S1</span></label></li>
       <li data-origen="nuevo"><input type="checkbox" id="f2"><label for="f2">Cambia a <strong>Databricks</strong> en «Plataforma». Esperado: «Todavía no hay mapa de Databricks», el comando <code>/investigar databricks</code> y «Copiar» → «Copiado»; pégalo en una nota: es el comando exacto.
         <span class="origen origen-nuevo">Nuevo · S1</span></label></li>
-      <li data-origen="nuevo"><input type="checkbox" id="f3"><label for="f3">Con el <strong>kit</strong>, copia la propuesta de muestra, compila y abre <code>/es/investigador/plataforma-norte</code>. Esperado: tres grupos, <strong>1 por decidir</strong> (el código no pudo verificar la cita), <strong>26 verificadas</strong> (aprobadas de entrada) y <strong>1 rechazada por el código</strong>; cada afirmación con su cita, su fuente y lo que dijo la verificación.
+      <li data-origen="nuevo"><input type="checkbox" id="f3"><label for="f3">Con el <strong>kit</strong>, copia la propuesta de muestra, compila y abre <code>/es/investigador/plataforma-norte</code>. Esperado: tres grupos, <strong>1 por decidir</strong> (el código no pudo verificar la cita), <strong>26 verificadas</strong> (aprobadas de entrada) y <strong>1 rechazada por el código</strong>; cada afirmación dice <strong>de qué habla</strong> (el componente, o «origen → destino» si es un flujo), con su cita, su fuente y lo que dijo la verificación.
         <span class="origen origen-nuevo">Nuevo · S1</span></label></li>
       <li data-origen="nuevo"><input type="checkbox" id="f4"><label for="f4">Decide la que falta con «Aprobar» o «Rechazar». Esperado: el aviso «Falta 1 afirmación por decidir» desaparece y el comando de <strong>«Aprobar lo marcado»</strong> cambia con tu decisión; «Copiar» lo copia. <strong>No lo corras con la muestra.</strong>
         <span class="origen origen-nuevo">Nuevo · S1</span></label></li>
@@ -277,7 +277,7 @@
         <span class="origen origen-nuevo">Nuevo · S1</span></label></li>
       <li data-origen="nuevo"><input type="checkbox" id="f6"><label for="f6">Con el <strong>kit</strong>, copia la base incompleta y corre <code>pnpm build</code>. Esperado: <strong>el build se niega</strong> y nombra el archivo, la regla, el campo y el componente («tablero»).
         <span class="origen origen-nuevo">Nuevo · S1</span></label></li>
-      <li data-origen="nuevo"><input type="checkbox" id="f7"><label for="f7">Borra los archivos del kit (los <code>rm</code> del README) y compila de nuevo. Esperado: build limpio y el sitio como estaba; «Plataforma Norte» ya no aparece.
+      <li data-origen="nuevo"><input type="checkbox" id="f7"><label for="f7">Borra los archivos del kit con el <code>rm -rf</code> de la sección «Al terminar» del README del kit y compila de nuevo. Esperado: build limpio y el sitio como estaba; «Plataforma Norte» ya no aparece.
         <span class="origen origen-nuevo">Nuevo · S1</span></label></li>
     </ul>
     <div class="kit"><p><strong>Kit de prueba:</strong> <code>docs/kit-de-prueba/README.md</code> trae los dos kits de este bloque con sus comandos exactos: <strong>propuesta de muestra</strong> (f3–f5) y <strong>base incompleta</strong> (f6), y cómo dejar el proyecto como estaba (f7). Se corren en una terminal abierta en la carpeta del proyecto, con el sitio local (<code>pnpm build &amp;&amp; pnpm start</code>).</p></div>
@@ -304,6 +304,10 @@
           tema; visión general con la ventana de un bloque; componentes; recorrido; Plataforma Ejemplo;
           investigador con el kit de prueba (propuesta de muestra y base incompleta); la maqueta de referencia.
           ⭐ 4 (diferidas al S4) · ⭐⭐ 3. Ninguna eliminada.</li>
+        <li><strong>S1 · 2026-09-29, pagos de la auditoría:</strong> las mismas 38 pruebas. Se reescriben b3 (la vigencia
+          en el encabezado y las insignias al envejecer, con la fecha fijada), c4 (la nota bajo «Plataforma»), d4 (el
+          teclado y dónde abre la ficha), f3 (de qué habla cada afirmación), f7 (un solo comando de limpieza) y el
+          título del bloque F. Ninguna eliminada.</li>
       </ul>
     </details>
   </footer>

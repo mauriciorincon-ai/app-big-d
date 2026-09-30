@@ -9,7 +9,9 @@ import type { TextosMotor } from "../layout/tipos";
 import { escapar } from "../svg/serializar";
 import { glifoSVG, medidorSVG } from "../svg/simbolos";
 import type { Gramatica, Mapa } from "../tipos";
-import { diasEntre } from "../util/fechas";
+import { contieneTermino } from "../validar/lider";
+import { fraseVigencia } from "../util/vigencia";
+import { idiomaPedido } from "./idioma";
 import { compararCodigo } from "../util/orden";
 
 export interface OpcionesFicha {
@@ -19,14 +21,10 @@ export interface OpcionesFicha {
   fechaConsulta?: string;
 }
 
-const escaparRegex = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-/** El término aparece como palabra entera (letras y números Unicode alrededor no cuentan). */
-const aparece = (termino: string, texto: string) => new RegExp(`(^|[^\\p{L}\\p{N}])${escaparRegex(termino)}($|[^\\p{L}\\p{N}])`, "iu").test(texto);
 
 export function toCard(map: Mapa, grammar: Gramatica, nodeId: string, opciones: OpcionesFicha): string {
   const l = opciones.language;
-  const t = opciones.textos[l];
-  if (!t) throw new Error(`toCard: faltan las cadenas de interfaz en «${l}»`);
+  const t = idiomaPedido("toCard", grammar, l, opciones.textos);
   const n = map.nodos.find((x) => x.id === nodeId);
   if (!n) throw new Error(`toCard: el mapa no tiene el nodo «${nodeId}»`);
   const e = escapar;
@@ -38,7 +36,7 @@ export function toCard(map: Mapa, grammar: Gramatica, nodeId: string, opciones: 
   const textos = [n.nombre[l], n.lider[l], n.experto[l], n.por_que_importa[l]].join(" ");
   const propios = Object.entries(n.terminos?.[l] ?? {}).sort(([a], [b]) => compararCodigo(a, b));
   const delGlosario = Object.entries(map.glosario?.[l] ?? {})
-    .filter(([termino]) => !propios.some(([p]) => p.toLowerCase() === termino.toLowerCase()) && aparece(termino, textos))
+    .filter(([termino]) => !propios.some(([p]) => p.toLowerCase() === termino.toLowerCase()) && contieneTermino(textos, termino))
     .sort(([a], [b]) => compararCodigo(a, b));
   const terminos = [
     ...propios.map(([k, v]) => `<div><dt>${e(k)}</dt><dd>${e(v)}</dd></div>`),
@@ -52,9 +50,8 @@ export function toCard(map: Mapa, grammar: Gramatica, nodeId: string, opciones: 
   const meta = [`<span>${e(plantilla(f.verificado, { fecha: n.fecha_verificacion }))}</span>`];
   if (opciones.fechaConsulta) {
     meta.push(`<span>${e(plantilla(f.consultado, { fecha: opciones.fechaConsulta }))}</span>`);
-    const dias = diasEntre(n.fecha_verificacion, opciones.fechaConsulta);
-    const v = grammar.vigencia;
-    if (dias >= v.umbral_revisar_dias) meta.push(`<b>${e(plantilla(dias >= v.umbral_vencido_dias ? t.vencido : t.porRevisar, { n: dias }))}</b>`);
+    const frase = fraseVigencia(grammar, t, n.fecha_verificacion, opciones.fechaConsulta);
+    if (frase) meta.push(`<b>${e(frase)}</b>`);
   }
 
   return (

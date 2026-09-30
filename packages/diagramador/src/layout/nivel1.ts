@@ -42,6 +42,9 @@ function elementosDe(ctx: Contexto, b: Banda): Elem[] {
   const nodos = nodosDe(ctx, b.id);
   const bloques = ordenarPor(ctx.mapa.bloques.filter((x) => x.banda_id === b.id), (x) => x.id);
   const out: Elem[] = bloques.map((bl) => ({ id: bl.id, banda: b, fantasma: false, bloque: bl, nodos: nodos.filter((n) => n.bloque_id === bl.id) }));
+  // M-25 de la auditoría del S1: un bloque vacío valida, pero se dibuja como un activable sin glifo (G7) y su
+  // ventana no tiene qué mostrar. Hasta que V3 lo rechace (enmienda propuesta), el dibujo lo avisa.
+  for (const e of out) if (!e.nodos.length) ctx.avisos.push(`bloque ${e.id}: no tiene componentes`);
   const sueltos = nodos.filter((n) => !bloques.some((bl) => bl.id === n.bloque_id));
   if (sueltos.length) out.push({ id: `_${b.id}`, banda: b, fantasma: true, nodos: sueltos });
   return out;
@@ -234,6 +237,8 @@ export function nivel1(ctx: Contexto): Geometria {
       const f = fichaFranja(ctx, e, caja, rotulos);
       escena.push(f.elemento);
       fin = f.fin;
+      // M-24 de la auditoría del S1: la fila de fichas no se parte; si no cabe, se dice (y el build se detiene).
+      if (fin > W - M) ctx.avisos.push(`ficha ${e.id}: se sale del lienzo`);
     }
     const refs: Referencia[] = [];
     for (const e of es)

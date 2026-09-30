@@ -3,6 +3,7 @@
 import type { Banda, Gramatica, Mapa, ModoDeFlujo, NivelMadurez, Nodo, TipoDeNodo } from "../tipos";
 import { METRICAS_PILOTO, medidor, type Medidor } from "../texto/metricas";
 import { diasEntre } from "../util/fechas";
+import { estadoVigencia } from "../util/vigencia";
 import { ordenarPor } from "../util/orden";
 import type { Geometria, OpcionesLayout, TextosMotor, Vigencia } from "./tipos";
 
@@ -71,10 +72,7 @@ export function diasDe(ctx: Contexto, nodos: readonly Nodo[]): number {
   return nodos.reduce((max, n) => Math.max(max, diasEntre(n.fecha_verificacion, ctx.fechaConsulta)), 0);
 }
 
-export function vigenciaDe(ctx: Contexto, dias: number): Vigencia {
-  const v = ctx.gramatica.vigencia;
-  return dias >= v.umbral_vencido_dias ? "vencido" : dias >= v.umbral_revisar_dias ? "revisar" : "vigente";
-}
+export const vigenciaDe = (ctx: Contexto, dias: number): Vigencia => estadoVigencia(ctx.gramatica, dias);
 
 /** Vigencia del mapa entero y de cada elemento activable, en el orden en que llegan (§ 4.8). */
 export function resumenVigencia(ctx: Contexto, elementos: readonly { id: string; nodos: readonly Nodo[] }[]): Geometria["vigencia"] {

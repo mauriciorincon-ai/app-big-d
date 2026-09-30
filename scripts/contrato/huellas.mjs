@@ -18,7 +18,7 @@ export const DE_LA_MAQUETA = ["metricas"];
 
 const porUnidades = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
 
-function archivosDe(base, entrada) {
+export function archivosDe(base, entrada) {
   const ruta = join(base, entrada);
   if (statSync(ruta).isFile()) return [entrada];
   return readdirSync(ruta)

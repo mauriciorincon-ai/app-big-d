@@ -11,7 +11,7 @@ import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, relative } from "node:path";
 import { cargarTs } from "./lib/cargar-ts.mjs";
-import { carpetaPropuesta, hoy, RAIZ } from "./investigar/comun.mjs";
+import { carpetaPropuesta, hoy, identificadores, RAIZ } from "./investigar/comun.mjs";
 
 const AGENTE = "Mozilla/5.0 (compatible; Big-D-verificador-de-citas/1.0)";
 const espejo = (() => {
@@ -28,7 +28,8 @@ function bajar(url, tmp) {
   try {
     const codigo = execFileSync(
       "curl",
-      ["-sS", "-L", "--max-redirs", "5", "--max-time", "25", "--proto", local ? "=file" : "=https", "-A", AGENTE, "-H", "Accept-Language: en, es", "-o", salida, "-w", "%{http_code}", real],
+      // `-q` primero: no lee ~/.curlrc; `-g`: no expande `{a,b}` ni `[1-9]` de la URL (B-30).
+      ["-q", "-g", "-sS", "-L", "--max-redirs", "5", "--max-time", "25", "--proto", local ? "=file" : "=https", "-A", AGENTE, "-H", "Accept-Language: en, es", "-o", salida, "-w", "%{http_code}", real],
       { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] },
     );
     const cuerpo = readFileSync(salida);
@@ -44,6 +45,18 @@ try {
   const bytes = readFileSync(join(dir, "propuesta.json"));
   const forma = inv.esquemaPropuesta.safeParse(JSON.parse(bytes.toString("utf8")));
   if (!forma.success) throw new Error(`propuesta.json no pasa el esquema; corre antes scripts/investigar/validar.mjs`);
+  // Ninguna petición lleva un identificador de quien investiga (M-18 de la auditoría del S1): el hook lo
+  // vigila en WebFetch, y este script también baja URLs. Si una lo lleva, no se baja nada ni se escribe nada.
+  const ids = identificadores();
+  const legible = (u) => {
+    try {
+      return decodeURIComponent(u).toLowerCase();
+    } catch {
+      return u.toLowerCase();
+    }
+  };
+  const conId = forma.data.afirmaciones.filter((a) => ids.some((x) => legible(a.cita.url).includes(x)));
+  if (conId.length) throw new Error(`${conId.map((a) => a.id).join(", ")}: la URL de la cita lleva un identificador de quien investiga; no se consulta`);
   const tmp = mkdtempSync(join(tmpdir(), "bigd-citas-"));
   const cache = new Map();
   const resultados = [];

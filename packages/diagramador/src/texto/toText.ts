@@ -9,7 +9,8 @@ import { plantilla } from "../layout/escena";
 import { numerarPasos } from "../layout/nivel2";
 import type { TextosMotor } from "../layout/tipos";
 import { escapar } from "../svg/serializar";
-import { diasEntre } from "../util/fechas";
+import { fraseVigencia } from "../util/vigencia";
+import { idiomaPedido } from "./idioma";
 
 export interface OpcionesTexto {
   language: string;
@@ -25,8 +26,7 @@ export interface OpcionesTexto {
 
 export function toText(map: Mapa, grammar: Gramatica, opciones: OpcionesTexto): string {
   const l = opciones.language;
-  const t = opciones.textos[l];
-  if (!t) throw new Error(`toText: faltan las cadenas de interfaz en «${l}»`);
+  const t = idiomaPedido("toText", grammar, l, opciones.textos);
   const e = (s: string) => escapar(s);
   const nodo = new Map(map.nodos.map((n) => [n.id, n]));
   const tipo = new Map(grammar.tipos_de_nodo.map((x) => [x.id, x]));
@@ -37,11 +37,8 @@ export function toText(map: Mapa, grammar: Gramatica, opciones: OpcionesTexto): 
   const nodosDe = (banda: string) => ordenarPor(map.nodos.filter((n) => n.banda_id === banda), (n) => n.orden ?? Number.MAX_SAFE_INTEGER, (n) => n.id);
 
   const vigencia = (n: Nodo): string => {
-    if (!opciones.fechaConsulta) return "";
-    const dias = diasEntre(n.fecha_verificacion, opciones.fechaConsulta);
-    const v = grammar.vigencia;
-    if (dias < v.umbral_revisar_dias) return "";
-    return ` ${e(plantilla(dias >= v.umbral_vencido_dias ? t.vencido : t.porRevisar, { n: dias }))}`;
+    const frase = fraseVigencia(grammar, t, n.fecha_verificacion, opciones.fechaConsulta);
+    return frase ? ` ${e(frase)}` : "";
   };
 
   const itemNodo = (n: Nodo): string => {

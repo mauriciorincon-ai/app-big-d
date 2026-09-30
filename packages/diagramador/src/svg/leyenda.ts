@@ -9,14 +9,14 @@ import { ordenarPor } from "../util/orden";
 import { MARCAS } from "./glifos";
 import { glifoSVG, medidorSVG, modoSVG } from "./simbolos";
 import { escapar } from "./serializar";
+import { idiomaPedido } from "../texto/idioma";
 
 const svg = (caja: string, w: number, h: number, cuerpo: string) => `<svg class="dg-svg" viewBox="${caja}" width="${w}" height="${h}" aria-hidden="true">${cuerpo}</svg>`;
 
 
 export function toLegend(grammar: Gramatica, opciones: { language: string; textos: Record<string, TextosMotor> }): string {
   const l = opciones.language;
-  const t = opciones.textos[l];
-  if (!t) throw new Error(`toLegend: faltan las cadenas de interfaz en «${l}»`);
+  const t = idiomaPedido("toLegend", grammar, l, opciones.textos);
   const e = escapar;
   const tipos = grammar.tipos_de_nodo
     .map((tp) => {

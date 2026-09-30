@@ -1,3 +1,3 @@
-export { cargarDatos, datos, ErrorDeDatos, rutaAtlas, type Atlas, type Datos } from "./cargar";
+export { cargarDatos, datos, ErrorDeDatos, esDominioDeEjemplo, rutaAtlas, rutaInvestigador, type Atlas, type Datos } from "./cargar";
 export { esquemaPlataforma, type Plataforma } from "./esquemas";
-export { fechaDeConsulta } from "./fecha";
+export { esFechaCivil, fechaDeConsulta, sumarDias } from "./fecha";

@@ -10,6 +10,8 @@ export interface Textos {
   saltarContenido: string;
   pie: string;
   inicio: { ojo: string; titulo: string; sub: string };
+  /** La página que no existe (404 global, fuera de los layouts por idioma). */
+  noEncontrada: { titulo: string; volver: string };
   /** Cadenas que el diagramador dibuja o lee (D-S1-06): el paquete no trae palabras propias. */
   motor: TextosMotor;
   atlas: {
@@ -64,7 +66,7 @@ export interface Textos {
       pasoDe: string;
       pasos: string;
     };
-    plataforma: { etiqueta: string; pronto: string; elegir: string };
+    plataforma: { etiqueta: string; pronto: string; elegir: string; notaInicio: string; nota: string; notaInvestigador: string };
   };
   investigador: {
     titulo: string;
@@ -110,6 +112,7 @@ export interface Textos {
       faltan: readonly [string, string];
       comandoTitulo: string;
       comandoNota: string;
+      retiros: { titulo: string; nota: string };
       preguntas: string;
       respondida: string;
       sinFuente: string;

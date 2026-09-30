@@ -7,8 +7,11 @@
 `design-system.md` (v0.5.2) is read-only for product work: a design change is proposed in the sprint log as a
 FORMA look and the design system is extended by ADR (S1 order, «Qué NO tocar»). S1 was the first sprint with real
 platform names and the first one where a person used the atlas as a product, so four design decisions were made
-outside the mockup. Each was seen by the user before it was built on, and each is recorded in
-`sprints/SPRINT_001-implementation-log.md`. This ADR is the extension; the planning house folds it into the next
+outside the mockup, all recorded in `sprints/SPRINT_001-implementation-log.md`. **Decisions 1 and 2 were seen by the
+person before they were built on** (the block window, at the Fabric look of 2026-09-29; the platform selector, at stop
+A). **Decisions 3 and 4 were made by the builder without a FORMA look** (D-S1-34 and D-S1-41, recorded as minor);
+the S1 audit (M-5) caught that this ADR said otherwise, and their two looks are asked in the audit's phase 2, one per
+message, with the verdict recorded in the log. This ADR is the extension; the planning house folds it into the next
 design-system version.
 
 ## Decision

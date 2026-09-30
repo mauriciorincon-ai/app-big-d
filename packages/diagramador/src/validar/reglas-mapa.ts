@@ -6,6 +6,7 @@ import { ruta, type Entrada } from "./informe";
 import { contarFrases, contieneTermino, normalizarTermino } from "./lider";
 import { textosDeMapa } from "./textos";
 import { compatible } from "./version";
+import { pasoPrevio } from "../util/recorrido";
 
 export type Modo = "privado" | "publicacion";
 /** Conjunto de puntos de código que cubre la tabla de métricas (V15). Un `Set<number>` sirve. */
@@ -36,7 +37,11 @@ function reglasRecorrido(m: Mapa, g: Gramatica, r: Recorrido, i: number, nodos: 
     if (!nodos.has(p.nodo_id)) salida.push(e("V5", ruta("recorridos", i, "pasos", k, "nodo_id"), id, `el paso apunta a un nodo que no existe: «${p.nodo_id}»`));
     if (p.sigue_de !== undefined && !porId.has(p.sigue_de))
       salida.push(e("V5", ruta("recorridos", i, "pasos", k, "sigue_de"), id, `sigue a un paso que no existe: «${p.sigue_de}»`));
-    const previo = p.sigue_de !== undefined ? porId.get(p.sigue_de) : k > 0 ? r.pasos[k - 1] : undefined;
+    // A-5 de la auditoría del S1: sin esto, un paso que se sigue a sí mismo (o que forma un ciclo) validaba y
+    // el motor se quedaba sin memoria al numerar; y uno que sigue a otro posterior numeraba mal.
+    else if (p.sigue_de !== undefined && r.pasos.findIndex((x) => x.id === p.sigue_de) >= k)
+      salida.push(e("V5", ruta("recorridos", i, "pasos", k, "sigue_de"), id, `sigue a «${p.sigue_de}», que no está antes en la lista`));
+    const previo = pasoPrevio(r, k);
     if (!previo) return;
     hijos.set(previo.id, (hijos.get(previo.id) ?? 0) + 1);
     if (nodos.has(previo.nodo_id) && nodos.has(p.nodo_id) && previo.nodo_id !== p.nodo_id && !flujos.has(`${previo.nodo_id}>${p.nodo_id}`))
@@ -118,6 +123,9 @@ export function reglasMapa(m: Mapa, g: Gramatica, opciones: { mode: Modo; covera
   m.flujos.forEach((f, i) => {
     for (const lado of ["origen", "destino"] as const)
       if (!nodos.has(f[lado])) errores.push(e("V4", ruta("flujos", i, lado), f.id, `${lado} inexistente: «${f[lado]}»`));
+    // B-38 de la auditoría del S1: un flujo de un nodo hacia sí mismo se aceptaba y cada vista lo trataba
+    // distinto (el nivel 1 lo callaba, la lectura lo decía). Enmienda propuesta: V4 lo rechaza.
+    if (f.origen === f.destino) errores.push(e("V4", ruta("flujos", i, "destino"), f.id, `un flujo une dos nodos distintos; origen y destino son «${f.origen}»`));
     const modo = modos.get(f.modo_id);
     if (!modo) errores.push(e("V2", ruta("flujos", i, "modo_id"), f.id, `modo inexistente en la gramática: «${f.modo_id}»`));
     else if (modo.exige_condicion && !f.condicion)

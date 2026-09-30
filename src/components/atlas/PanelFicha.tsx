@@ -31,7 +31,10 @@ export function PanelFicha({
   objetivo?: string;
   clave?: string;
 }) {
-  const [activo, setActivo] = useState<string | null>(null);
+  // `n` cuenta las activaciones: reactivar el mismo componente vuelve a llevar el foco al título (B-3 de la
+  // auditoría del S1; con solo el id, React no veía cambio y el foco se quedaba donde estaba).
+  const [activacion, setActivacion] = useState<{ id: string; n: number } | null>(null);
+  const activo = activacion?.id ?? null;
   const angosto = useSyncExternalStore(suscribir, () => window.matchMedia(ANGOSTO).matches, () => false);
   const panel = useRef<HTMLDivElement>(null);
   const origen = useRef<HTMLElement | null>(null);
@@ -52,7 +55,7 @@ export function PanelFicha({
         h.focus();
       }
     }
-  }, [activo, objetivo, clave]);
+  }, [activacion, activo, objetivo, clave]);
 
   useEffect(() => {
     function abrir(el: HTMLElement) {
@@ -60,7 +63,7 @@ export function PanelFicha({
       if (!id || !(id in fichas)) return;
       origen.current = el;
       mover.current = true;
-      setActivo(id);
+      setActivacion((a) => ({ id, n: (a?.n ?? 0) + 1 }));
     }
     function alClic(ev: MouseEvent) {
       const n = (ev.target as Element).closest<HTMLElement>(objetivo);
@@ -107,7 +110,7 @@ export function PanelFicha({
   }, [fichas, objetivo, clave]);
 
   function cerrarPanel() {
-    setActivo(null);
+    setActivacion(null);
     const v = origen.current;
     origen.current = null;
     v?.focus();

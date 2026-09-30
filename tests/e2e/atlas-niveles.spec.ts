@@ -1,5 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
+import { abrir, abrirConTecla, listo } from "./lib/abrir";
 
 // Atlas · niveles 2 y 3 (S1, fase 3): la ficha de un componente con su contrato de foco y el recorrido paso a
 // paso. Más el campo «Plataforma» con sus N opciones. El movimiento reducido vive en reduced-motion.spec.ts.
@@ -12,9 +13,7 @@ test.describe("ficha de un componente", () => {
     const panel = page.locator("#panel-ficha");
     await expect(panel).toBeHidden();
     const nodo = page.locator('.lienzo .dg-nodo[data-nodo="captura-cambios"]');
-    await nodo.focus();
-    await page.keyboard.press("Enter");
-    await expect(panel).toBeVisible();
+    await abrirConTecla(nodo, panel);
     await expect(panel.locator("h2")).toHaveText("Captura de cambios");
     await expect(panel.locator("h2")).toBeFocused();
     await expect(nodo).toHaveAttribute("aria-current", "true");
@@ -28,8 +27,8 @@ test.describe("ficha de un componente", () => {
     test.use({ viewport: { width: 380, height: 800 } });
     test("es una hoja modal: el foco no sale de ella", async ({ page }) => {
       await page.goto(N2);
-      await page.locator('.lienzo .dg-nodo[data-nodo="catalogo-central"]').dispatchEvent("click");
       const panel = page.locator("#panel-ficha");
+      await abrir(page.locator('.lienzo .dg-nodo[data-nodo="catalogo-central"]'), panel);
       await expect(panel).toHaveAttribute("role", "dialog");
       await expect(panel).toHaveAttribute("aria-modal", "true");
       for (let i = 0; i < 6; i++) {
@@ -44,8 +43,10 @@ test.describe("ficha de un componente", () => {
   test("desde 900 px es una región lateral, no modal", async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.goto(N2);
-    await page.locator('.lienzo .dg-nodo[data-nodo="tablero"]').dispatchEvent("click");
-    await expect(page.locator("#panel-ficha")).toHaveAttribute("role", "complementary");
+    // Abierta, no oculta: con el panel oculto el rol se afirmaba sin abrir nada (M-9 de la auditoría del S1).
+    const panel = page.getByRole("complementary", { name: "Ficha" });
+    await abrir(page.locator('.lienzo .dg-nodo[data-nodo="tablero"]'), panel);
+    await expect(panel).toBeVisible();
     await expect(page.locator("#panel-ficha")).not.toHaveAttribute("aria-modal", /.*/);
   });
 });
@@ -53,6 +54,7 @@ test.describe("ficha de un componente", () => {
 test.describe("recorrido", () => {
   test("Siguiente, Anterior, Ver todos y las flechas cambian el paso; el componente del paso se marca", async ({ page }) => {
     await page.goto(REC);
+    await listo(page);
     const rec = page.locator("#rec");
     await expect(rec).toHaveAttribute("data-paso", "todos");
     await expect(page.getByRole("button", { name: "Anterior" })).toBeDisabled();
@@ -73,7 +75,7 @@ test.describe("recorrido", () => {
 
   test("tocar un componente del recorrido lleva a su paso y abre su ficha", async ({ page }) => {
     await page.goto(REC);
-    await page.locator('.lienzo .dg-nodo[data-paso~="p4"]').dispatchEvent("click");
+    await abrir(page.locator('.lienzo .dg-nodo[data-paso~="p4"]'), page.locator("#panel-ficha"));
     await expect(page.locator("#rec")).toHaveAttribute("data-paso", "p4");
     await expect(page.locator("#panel-ficha h2")).toHaveText("Motor de transformación");
   });
@@ -81,6 +83,7 @@ test.describe("recorrido", () => {
   test("sin movimiento reducido, «Reproducir» avanza solo y «Pausar» lo detiene", async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "no-preference" });
     await page.goto(REC);
+    await listo(page);
     const boton = page.locator('[data-rec="reproducir"]');
     await expect(boton).toBeVisible();
     await boton.click();
@@ -109,10 +112,10 @@ for (const [esquema, tema] of [
     for (const ruta of [N2, REC])
       test(`${ruta} con la ficha abierta, sin violaciones serias (${tema})`, async ({ page }) => {
         await page.goto(ruta);
+        await listo(page);
         // Primero la lectura: en teléfono la ficha es modal y tapa el resto de la página.
         await page.locator("details.lectura-seccion > summary").click();
-        await page.locator(".lienzo .dg-nodo").nth(2).dispatchEvent("click");
-        await expect(page.locator("#panel-ficha")).toBeVisible();
+        await abrir(page.locator(".lienzo .dg-nodo").nth(2), page.locator("#panel-ficha"));
         const scan = await new AxeBuilder({ page }).analyze();
         const serias = scan.violations.filter((v) => v.impact === "critical" || v.impact === "serious");
         expect(serias, JSON.stringify(serias.map((v) => [v.id, v.nodes.map((n) => n.target)]))).toEqual([]);

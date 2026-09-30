@@ -5,10 +5,11 @@
 // neutrales. Con el motor de la v0.3.0 daba cuatro avisos (carril exprés, «canal 2: más de 6 pistas», dos
 // etiquetas encimadas, una referencia fuera del lienzo) y la app no lo habría publicado. Ahora: ninguno.
 import { describe, expect, it } from "vitest";
-import { crossings, validate, type Caja, type Mapa } from "../src/index";
+import { crossings, layout, validate, type Caja, type Mapa } from "../src/index";
 import { offsetsPista } from "../src/layout/rutas";
-import { CASOS, disponer, VISTAS } from "./lib/casos";
-import { COBERTURA, GRAMATICAS, leerJson } from "./lib/contrato";
+import { CASOS, disponer, FECHA, VISTAS } from "./lib/casos";
+import { COBERTURA, EJEMPLOS, GRAMATICAS, leerJson } from "./lib/contrato";
+import { TEXTOS } from "./lib/textos";
 
 const P1 = leerJson<Mapa>("test/carnadas-piloto/P1-mapa-denso.mapa.json");
 const G = GRAMATICAS[P1.gramatica_id]!;
@@ -102,8 +103,29 @@ describe("referencias de una fila de franja (enmienda del piloto)", () => {
 });
 
 describe("pistas de un canal (§ 5.3 con la enmienda del piloto)", () => {
-  it("hasta 6, las posiciones fijas de siempre (los golden files no cambian)", () => {
-    for (let n = 1; n <= 6; n++) expect(offsetsPista(n)).toEqual([-50, 50, 150, 250, -150, -250]);
+  it("hasta 6, las posiciones fijas, a 2 u de las tarjetas como mínimo (M-23: ±25 u caía sobre su borde)", () => {
+    for (let n = 1; n <= 6; n++) expect(offsetsPista(n)).toEqual([-50, 50, 150, 230, -150, -230]);
+  });
+  it("ningún tramo vertical corre sobre el borde de una tarjeta (nube-ejemplo: el balanceador y cuatro nodos más)", () => {
+    const nube = EJEMPLOS.find((x) => x.sujeto_id === "nube-ejemplo")!;
+    const m = structuredClone(nube);
+    const base = m.nodos.find((n) => n.id === "cola")!;
+    for (let i = 1; i <= 4; i++) {
+      m.nodos.push({ ...base, id: `extra-${i}`, orden: 10 + i, nombre: { es: `Extra ${i}`, en: `Extra ${i}` } });
+      m.flujos.push({ ...m.flujos.find((f) => f.id === "f1")!, id: `fx${i}`, destino: `extra-${i}` });
+    }
+    for (const vista of ["nivel-1", "nivel-2"] as const) {
+      const geo = layout(m, GRAMATICAS[m.gramatica_id]!, vista, { textos: TEXTOS, fechaConsulta: FECHA });
+      const sobreBorde = geo.trazados.flatMap((t) =>
+        t.puntos.slice(1).flatMap((b, k) => {
+          const a = t.puntos[k]!;
+          if (a[0] !== b[0]) return [];
+          const [y1, y2] = [Math.min(a[1], b[1]), Math.max(a[1], b[1])];
+          return geo.cajas.filter((c) => (a[0] === c.caja.x || a[0] === c.caja.x + c.caja.w) && y1 < c.caja.y + c.caja.h && y2 > c.caja.y).map((c) => `${vista}: ${t.id} sobre el borde de ${c.id}`);
+        }),
+      );
+      expect(sobreBorde).toEqual([]);
+    }
   });
   it("con 7, siete posiciones parejas en el mismo orden (centro, derecha, izquierda) y dentro del canal", () => {
     const o = offsetsPista(7);

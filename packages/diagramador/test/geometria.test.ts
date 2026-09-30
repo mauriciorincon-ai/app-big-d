@@ -68,3 +68,57 @@ describe("la geometría no depende del idioma (§ 5.3)", () => {
       expect(sinTexto(toSVG(geo, { language: "en" }), "en")).toBe(sinTexto(toSVG(geo, { language: "es" }), "es"));
     });
 });
+
+describe("M-1 — D11 y las pistas de carriles también llegan como aviso", () => {
+  // caso-ejemplo (carriles) con seis flujos llega → valora: el canal entre sus ranuras pide seis pistas y la
+  // 6.ª cae a 30 u del centro, dentro de la caja de al lado. Antes: 0 avisos y el cruce solo lo veía `crossings`.
+  const caso = EJEMPLOS.find((m) => m.sujeto_id === "caso-ejemplo")!;
+  const denso = structuredClone(caso);
+  for (let i = 1; i <= 6; i++) denso.flujos.push({ ...caso.flujos[0]!, id: `fx${i}`, origen: "llega", destino: "valora" });
+  const geo = disponer(denso, "nivel-2");
+  it("la pista que se sale del canal se avisa", () => {
+    expect(geo.avisos.filter((a) => a.startsWith("carriles:"))).not.toEqual([]);
+  });
+  it("cada cruce de `crossings` aparece como aviso «D11»", () => {
+    const d11 = crossings(geo).map((c) => `D11: ${c.flujo} atraviesa la caja de ${c.caja}`);
+    expect(d11).not.toEqual([]);
+    expect(geo.avisos).toEqual(expect.arrayContaining(d11));
+  });
+});
+
+describe("A-6 — ida y vuelta entre dos componentes vecinos de una columna (nivel 2 y recorrido)", () => {
+  const m = structuredClone(EJEMPLOS.find((x) => x.sujeto_id === "plataforma-ejemplo")!);
+  const ida = m.flujos.find((f) => f.id === "f-semantico-tablero")!;
+  m.flujos.push({ ...ida, id: "f-tablero-semantico", origen: ida.destino, destino: ida.origen });
+  it.each(["nivel-1", "nivel-2", "recorrido"] as const)("%s: sin avisos, sin cruces y sin trazados que compartan puntos", (vista) => {
+    const geo = disponer(m, vista);
+    expect(geo.avisos).toEqual([]);
+    expect(crossings(geo)).toEqual([]);
+    const a = geo.trazados.find((t) => t.id === "f-semantico-tablero");
+    const b = geo.trazados.find((t) => t.id === "f-tablero-semantico");
+    if (a && b) {
+      const pa = new Set(a.puntos.map((p) => p.join(",")));
+      expect(b.puntos.filter((p) => pa.has(p.join(",")))).toEqual([]);
+    }
+  });
+});
+
+describe("M-24 — una fila de fichas de franja que no cabe se avisa", () => {
+  it("nube-ejemplo con un bloque en identidad: dos fichas de 180 u no caben tras la cabecera", () => {
+    const m = structuredClone(EJEMPLOS.find((x) => x.sujeto_id === "nube-ejemplo")!);
+    m.bloques.push({ ...m.bloques[0]!, id: "acceso-central", banda_id: "identidad", nombre: { es: "Acceso central", en: "Central access" } });
+    const extra = structuredClone(m.nodos.find((n) => n.id === "directorio")!);
+    m.nodos.push({ ...extra, id: "federacion", bloque_id: "acceso-central", nombre: { es: "Federación", en: "Federation" } });
+    const geo = disponer(m, "nivel-1");
+    expect(geo.avisos).toContain("ficha _identidad: se sale del lienzo");
+  });
+});
+
+describe("M-25 — un bloque sin componentes se avisa", () => {
+  it("plataforma-ejemplo con un bloque vacío en la capa de consumo", () => {
+    const m = structuredClone(EJEMPLOS.find((x) => x.sujeto_id === "plataforma-ejemplo")!);
+    const consumo = m.bloques.find((b) => b.id === "consumo-bi")!;
+    m.bloques.push({ ...consumo, id: "vacio", nombre: { es: "Vacío", en: "Empty" } });
+    expect(disponer(m, "nivel-1").avisos).toContain("bloque vacio: no tiene componentes");
+  });
+});

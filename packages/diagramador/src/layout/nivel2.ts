@@ -6,6 +6,7 @@
 import type { Nodo, Recorrido } from "../tipos";
 import { mitad, type Decimas } from "../util/numeros";
 import { ordenarPor } from "../util/orden";
+import { pasoPrevio } from "../util/recorrido";
 import { M, anchoLienzo, colX, diasDe, nodosDe, plural, porIdioma, resumenVigencia, vigenciaDe, type Contexto } from "./contexto";
 import { g, plantilla, rect, texto, simbolo } from "./escena";
 import {
@@ -34,7 +35,7 @@ export const FICHA_H = 440;
 export function numerarPasos(r: Recorrido): PasoGeo[] {
   const porId = new Map(r.pasos.map((p) => [p.id, p]));
   const previo = new Map<string, string | undefined>();
-  r.pasos.forEach((p, k) => previo.set(p.id, p.sigue_de ?? (k > 0 ? r.pasos[k - 1]!.id : undefined)));
+  r.pasos.forEach((p, k) => previo.set(p.id, pasoPrevio(r, k)?.id));
   const hijos = new Map<string, string[]>();
   for (const p of r.pasos) {
     const a = previo.get(p.id);
@@ -52,9 +53,16 @@ export function numerarPasos(r: Recorrido): PasoGeo[] {
     const letra = porId.get(a!)?.bifurca && hermanos.length > 1 ? String.fromCharCode(97 + hermanos.indexOf(p.id)) : "";
     numero.set(p.id, { n: base.n + 1, sufijo: base.sufijo + letra });
   }
+  // Un mapa validado no tiene ciclos (V5 exige que cada paso siga a uno anterior en la lista); si llega uno
+  // sin validar, se dice cuál en vez de agotar la memoria (A-5 de la auditoría del S1, G14).
   const visitados = (id: string): string[] => {
     const out: string[] = [];
-    for (let a = previo.get(id); a !== undefined; a = previo.get(a)) out.push(a);
+    const vistos = new Set<string>([id]);
+    for (let a = previo.get(id); a !== undefined; a = previo.get(a)) {
+      if (vistos.has(a)) throw new Error(`recorrido ${r.id}: el paso «${a}» se repite al seguir la cadena de «${id}» (sigue_de en ciclo)`);
+      vistos.add(a);
+      out.push(a);
+    }
     return out;
   };
   return r.pasos.map((p) => {

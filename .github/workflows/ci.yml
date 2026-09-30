@@ -30,7 +30,7 @@ jobs:
           node scripts/verificar-dependencias.mjs origin/main
       - run: pnpm typecheck
       - run: pnpm lint
-      - run: pnpm test            # vitest run --coverage (umbral 70% en vitest.config)
+      - run: pnpm test            # vitest run --coverage (umbrales en vitest.config: 70 global · 80 motores y lib · 50 componentes)
       - run: pnpm build
       - run: pnpm audit --audit-level high
 
@@ -75,10 +75,12 @@ jobs:
         # UNA corrida NO es una medicion (kit v1.26.0): el servidor recien levantado dio un
         # falso rojo reproducible en hoja-de-vida S7 y casi se paga con optimizacion a ciegas.
         # Tres corridas por URL y se asevera sobre la MEDIANA (median-run), nunca la optimista.
+        # B-20 de la auditoría del S1: versión fijada (como toda herramienta del CI) y el arranque del
+        # servidor esperado por su línea real, no «a ciegas» con el tiempo por defecto.
         run: |
-          npm i -g @lhci/cli
+          npm i -g @lhci/cli@0.15.1
           URLS=$(node -e "console.log(require('./lighthouse-urls.json').map(u=>'--url=http://localhost:3000'+u).join(' '))")
-          lhci collect --startServerCommand="pnpm start" --numberOfRuns=3 $URLS
+          lhci collect --startServerCommand="pnpm start" --startServerReadyPattern="Accepting connections" --numberOfRuns=3 $URLS
           lhci assert --budgetsFile=./perf-budget.json --aggregationMethod=median-run
           lhci assert --config=./lighthouse-categorias.json --aggregationMethod=median-run
 

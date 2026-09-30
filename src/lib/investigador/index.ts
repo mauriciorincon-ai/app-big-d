@@ -1,5 +1,5 @@
 // Punto de entrada del investigador para los scripts (empaquetado con esbuild) y la app.
-export { aprobar, ErrorDeAprobacion, type Entrada } from "./aprobar";
+export { aprobar, ErrorDeAprobacion, retirosDe, type Entrada } from "./aprobar";
 export { comandoAprobar, leerDecisiones } from "./comando";
 export { aplicarDecisiones, sinAfirmacion } from "./decisiones";
 export * from "./esquema";

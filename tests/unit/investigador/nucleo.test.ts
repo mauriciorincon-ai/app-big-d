@@ -86,7 +86,13 @@ describe("validar una propuesta", () => {
 
     const corta = propuestaNorte();
     corta.afirmaciones[0]!.cita.texto = "corta";
-    expect(validarPropuesta(corta, G, RANGOS).fallas).toEqual(["afirmaciones.0.cita.texto · una cita de al menos 12 caracteres"]);
+    expect(validarPropuesta(corta, G, RANGOS).fallas).toEqual(["afirmaciones.0.cita.texto · una cita de al menos 40 caracteres"]);
+  });
+  it("A-3: «sin novedades» no apaga la exigencia de cita", () => {
+    const vacia = { ...propuestaNorte(), sin_novedades: true, afirmaciones: [] };
+    const f = validarPropuesta(vacia, G, RANGOS).fallas;
+    expect(f.length).toBeGreaterThan(0);
+    expect(f.every((x) => x.endsWith("no tiene ninguna afirmación que lo respalde"))).toBe(true);
   });
 });
 
@@ -121,7 +127,9 @@ describe("aprobar", () => {
     propuesta_sha256: sha256(bytes),
     resultados: p.afirmaciones.map((a) => ({ afirmacion: a.id, url: a.cita.url, resultado: resultado(a.id), http: 200, sha256: "0".repeat(64) })),
   });
-  const entrada = (extra = {}) => ({ carpeta: "propuestas/x", propuesta: p, propuestaSha256: sha256(bytes), verificacion: verificacion(), aprobadas: ids, rechazadas: [], gramatica: G, rangos: RANGOS, fecha: "2026-09-28", ...extra });
+  const entrada = (extra = {}) => ({ carpeta: "propuestas/x", propuesta: p, propuestaSha256: sha256(bytes), verificacion: verificacion(), aprobadas: ids, rechazadas: [], retiradas: [], gramatica: G, rangos: RANGOS, fecha: "2026-09-28", ...extra });
+  const base = p.mapa as unknown as Mapa;
+  const aprobadoIgual = () => ({ ...base, estado: "aprobada" as const, version: "0.3.0", fecha_actualizacion: "2026-08-01", nodos: base.nodos.map((n) => ({ ...n, fecha_verificacion: "2026-08-01" })) });
   const fallas = (f: () => unknown) => {
     try {
       f();
@@ -172,8 +180,7 @@ describe("aprobar", () => {
   });
 
   it("sin novedades: el mismo contenido que el aprobado solo renueva las fechas, con la versión de antes", () => {
-    const base = p.mapa as unknown as Mapa;
-    const anterior = { ...base, estado: "aprobada" as const, version: "0.3.0", fecha_actualizacion: "2026-08-01", nodos: base.nodos.map((n) => ({ ...n, fecha_verificacion: "2026-08-01" })) };
+    const anterior = aprobadoIgual();
     const { mapa, revision } = aprobar(entrada({ anterior }));
     expect(revision.resultado).toBe("sin-novedades");
     expect(mapa.version).toBe("0.3.0");
@@ -182,14 +189,67 @@ describe("aprobar", () => {
     expect(cambiado.revision.resultado).toBe("aprobada");
     expect(cambiado.mapa.version).toBe("0.4.0");
   });
+
+  it("M-22: las fechas de consulta de las fuentes no son contenido («sin novedades» se alcanza)", () => {
+    const anterior = aprobadoIgual();
+    anterior.nodos = anterior.nodos.map((n) => ({ ...n, fuentes: n.fuentes.map((f) => ({ ...f, fecha: "2026-08-01" })) }));
+    expect(aprobar(entrada({ anterior })).revision.resultado).toBe("sin-novedades");
+  });
+
+  it("A-4: con el mismo contenido, un rechazo se aplica igual (no hay «sin novedades» si la persona rechazó algo)", () => {
+    const hoja = p.afirmaciones.find((a) => a.sobre.entidad === "nodo" && a.sobre.id === "agente-datos")!.id;
+    const { mapa, revision } = aprobar(entrada({ anterior: aprobadoIgual(), aprobadas: ids.filter((i) => i !== hoja), rechazadas: [hoja] }));
+    expect(revision.resultado).toBe("aprobada");
+    expect(mapa.nodos.some((n) => n.id === "agente-datos")).toBe(false);
+  });
+
+  it("A-3: sin afirmaciones no hay aprobación, aunque el modelo diga «sin novedades»", () => {
+    const q = { ...propuestaNorte(), sin_novedades: true, afirmaciones: [] };
+    const b = JSON.stringify(q);
+    const f = fallas(() => aprobar(entrada({ propuesta: q, propuestaSha256: sha256(b), verificacion: { ...verificacion(), propuesta_sha256: sha256(b), resultados: [] }, aprobadas: [] })));
+    expect(f.length).toBeGreaterThan(0);
+    expect(f.every((x) => x.endsWith("no tiene ninguna afirmación que lo respalde"))).toBe(true);
+  });
+
+  it("M-19: solo una propuesta posterior a la última cerrada (ni la misma otra vez, ni una más vieja)", () => {
+    const regla = /no es posterior a la última propuesta cerrada/;
+    expect(fallas(() => aprobar(entrada({ ultimaPropuesta: "propuestas/x" })))).toEqual([expect.stringMatching(regla)]);
+    expect(fallas(() => aprobar(entrada({ ultimaPropuesta: "propuestas/y" })))).toEqual([expect.stringMatching(regla)]);
+    expect(aprobar(entrada({ ultimaPropuesta: "propuestas/w" })).revision.resultado).toBe("aprobada");
+  });
+
+  it("M-21: lo que la propuesta ya no trae se retira solo si el comando lo nombra, y exactamente eso", () => {
+    const anterior = aprobadoIgual();
+    anterior.nodos = [...anterior.nodos, { ...anterior.nodos[0]!, id: "extra", orden: 99, nombre: { es: "Extra", en: "Extra" } }];
+    expect(fallas(() => aprobar(entrada({ anterior })))).toEqual(["los retiros no coinciden con el diff: la propuesta retira [extra] y el comando dice --retirar -"]);
+    expect(fallas(() => aprobar(entrada({ anterior, retiradas: ["otro"] })))[0]).toMatch(/^los retiros no coinciden/);
+    const { mapa, revision } = aprobar(entrada({ anterior, retiradas: ["extra"] }));
+    expect(revision.resultado).toBe("aprobada");
+    expect(mapa.nodos.some((n) => n.id === "extra")).toBe(false);
+  });
+
+  it("B-45: la verificación de una afirmación es de SU cita (la misma URL)", () => {
+    const v = verificacion();
+    v.resultados[0] = { ...v.resultados[0]!, url: "https://ejemplo.invalid/otra" };
+    expect(fallas(() => aprobar(entrada({ verificacion: v })))).toEqual(["A-1: la verificación es de otra URL (https://ejemplo.invalid/otra), no de su cita"]);
+  });
 });
 
 describe("comando de aprobación", () => {
   it("lo que arma la pantalla es lo que lee el script", () => {
-    const c = comandoAprobar("propuestas/2026-09-27-fabric", ["A-1", "A-3"], ["A-2"]);
-    expect(c).toBe(`node ${SCRIPT} propuestas/2026-09-27-fabric --aprobar A-1,A-3 --rechazar A-2`);
-    expect(leerDecisiones(c.split(" ").slice(2))).toEqual({ carpeta: "propuestas/2026-09-27-fabric", aprobadas: ["A-1", "A-3"], rechazadas: ["A-2"] });
-    expect(leerDecisiones(comandoAprobar("propuestas/x", ["A-1"], []).split(" ").slice(2)).rechazadas).toEqual([]);
-    expect(() => leerDecisiones(["propuestas/x", "--aprobar", "A-1"])).toThrow(/falta --rechazar/);
+    const c = comandoAprobar("propuestas/2026-09-27-fabric", ["A-1", "A-3"], ["A-2"], ["n-viejo", "f-viejo"]);
+    expect(c).toBe(`node ${SCRIPT} propuestas/2026-09-27-fabric --aprobar A-1,A-3 --rechazar A-2 --retirar n-viejo,f-viejo`);
+    expect(leerDecisiones(c.split(" ").slice(2))).toEqual({ carpeta: "propuestas/2026-09-27-fabric", aprobadas: ["A-1", "A-3"], rechazadas: ["A-2"], retiradas: ["n-viejo", "f-viejo"] });
+    const sinNada = leerDecisiones(comandoAprobar("propuestas/x", ["A-1"], []).split(" ").slice(2));
+    expect([sinNada.rechazadas, sinNada.retiradas]).toEqual([[], []]);
+    expect(() => leerDecisiones(["propuestas/x", "--aprobar", "A-1", "--retirar", "-"])).toThrow(/falta --rechazar/);
+    expect(() => leerDecisiones(["propuestas/x", "--aprobar", "A-1", "--rechazar", "-"])).toThrow(/falta --retirar/);
+  });
+  it("A-2: una carpeta o un id que la terminal podría ejecutar no entra al comando", () => {
+    expect(() => comandoAprobar("propuestas/x$(id)", [], [])).toThrow(/caracteres no permitidos/);
+    expect(() => comandoAprobar("propuestas/x;rm", [], [])).toThrow(/caracteres no permitidos/);
+    expect(() => comandoAprobar("propuestas/a/b", [], [])).toThrow(/caracteres no permitidos/);
+    expect(() => comandoAprobar("propuestas/x", ["A-1`id`"], [])).toThrow(/id de afirmación no permitido/);
+    expect(() => comandoAprobar("propuestas/x", [], [], ["a b"])).toThrow(/id retirado no permitido/);
   });
 });

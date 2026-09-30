@@ -3,9 +3,10 @@
 // D11 con flujos al azar, G5 al quitar flujos y G6 (localidad del cambio) en sus variantes (a), (b) y (c).
 import fc from "fast-check";
 import { describe, expect, it } from "vitest";
-import { crossings, toSVG, type Flujo, type Geometria, type Mapa } from "../src/index";
-import { EJEMPLOS } from "./lib/contrato";
-import { disponer } from "./lib/casos";
+import { crossings, layout, toBlockCards, toCard, toSVG, toText, type Flujo, type Geometria, type Mapa } from "../src/index";
+import { EJEMPLOS, GRAMATICAS, leerJson } from "./lib/contrato";
+import { disponer, FECHA } from "./lib/casos";
+import { TEXTOS } from "./lib/textos";
 
 const SEMILLA = 20260927;
 const OPC = { seed: SEMILLA, numRuns: 40 };
@@ -43,6 +44,35 @@ describe("invariancia al orden de los datos (D3)", () => {
           expect((["nivel-1", "nivel-2", "recorrido"] as const).map((v) => svg(m, v))).toEqual(antes);
         }),
         OPC,
+      );
+    });
+});
+
+describe("invariancia al orden en todas las salidas (B-42 de la auditoría del S1)", () => {
+  // Además de las tres vistas: la vista «bloque» de cada grupo, sus tarjetas, la lectura en texto y la ficha de
+  // cada nodo; sobre el mapa de ejemplo, el mapa denso del piloto (P1) y un mapa de carriles (caso-ejemplo).
+  const P1 = leerJson<Mapa>("test/carnadas-piloto/P1-mapa-denso.mapa.json");
+  const CASO = EJEMPLOS.find((m) => m.sujeto_id === "caso-ejemplo")!;
+  const salidas = (m: Mapa): string[] => {
+    const G = GRAMATICAS[m.gramatica_id]!;
+    const opc = { language: "es", textos: TEXTOS, fechaConsulta: FECHA };
+    const grupos = disponer(m, "nivel-1").vigencia.elementos.map((e) => e.id).sort();
+    return [
+      ...(["nivel-1", "nivel-2", "recorrido"] as const).map((v) => svg(m, v)),
+      ...grupos.map((g) => toSVG(layout(m, G, "bloque", { textos: TEXTOS, fechaConsulta: FECHA, grupo: g }), { language: "es" })),
+      ...grupos.map((g) => toBlockCards(m, G, g, opc)),
+      toText(m, G, opc),
+      ...m.nodos.map((n) => n.id).sort().map((id) => toCard(m, G, id, opc)),
+    ];
+  };
+  for (const base of [EJEMPLO, P1, CASO])
+    it(`${base.sujeto_id}: barajar nodos, flujos y bloques no cambia ni un byte de ninguna salida`, () => {
+      const antes = salidas(base);
+      fc.assert(
+        fc.property(fc.shuffledSubarray(base.nodos, { minLength: base.nodos.length }), fc.shuffledSubarray(base.flujos, { minLength: base.flujos.length }), fc.shuffledSubarray(base.bloques, { minLength: base.bloques.length }), (nodos, flujos, bloques) => {
+          expect(salidas({ ...clonar(base), nodos, flujos, bloques })).toEqual(antes);
+        }),
+        { ...OPC, numRuns: 12 },
       );
     });
 });

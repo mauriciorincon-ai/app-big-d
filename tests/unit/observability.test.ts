@@ -5,6 +5,18 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 const captureMessage = vi.fn();
 vi.mock("@sentry/nextjs", () => ({ captureMessage: (...a: unknown[]) => captureMessage(...a) }));
 
+describe("eventoSinContenido (beforeSend)", () => {
+  it("B-10: quita la petición, las migas y el mensaje de cada excepción; deja el tipo", async () => {
+    const { eventoSinContenido } = await import("@/lib/observability");
+    const e = eventoSinContenido({ request: { url: "x" }, breadcrumbs: [{}], exception: { values: [{ type: "TypeError", value: "columna «diagnóstico» vacía" }, { type: "Error", value: "otro texto" }] } });
+    expect(e).toEqual({ breadcrumbs: undefined, exception: { values: [{ type: "TypeError", value: "TypeError" }, { type: "Error", value: "Error" }] } });
+  });
+  it("un AbortError no se reporta", async () => {
+    const { eventoSinContenido } = await import("@/lib/observability");
+    expect(eventoSinContenido({ exception: { values: [{ type: "AbortError", value: "x" }] } })).toBeNull();
+  });
+});
+
 describe("reportError", () => {
   afterEach(() => {
     captureMessage.mockReset();

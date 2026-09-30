@@ -21,6 +21,7 @@ export default async function Inicio({ params }: PageProps<"/[idioma]">) {
             etiqueta={t.atlas.plataforma.etiqueta}
             pronto={t.atlas.plataforma.pronto}
             elegir={t.atlas.plataforma.elegir}
+            nota={t.atlas.plataforma.notaInicio}
           />
         </div>
       </div>

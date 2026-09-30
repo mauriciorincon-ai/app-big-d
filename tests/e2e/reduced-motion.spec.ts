@@ -1,6 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
-import { abrir } from "./lib/abrir";
+import { abrir, listo } from "./lib/abrir";
 import { RUTAS } from "./lib/rutas";
 
 // Movimiento reducido en el sitio entero (regla 5 del CLAUDE.md y contrapeso del ⭐ diferido): en cada ruta
@@ -10,6 +10,19 @@ import { RUTAS } from "./lib/rutas";
 // movimiento vive en el CSS (`recorrido-animacion.css` solo con `no-preference`); ningún componente decide
 // qué pinta según la preferencia: el recorrido solo se niega a reproducir.
 const arbol = (page: Page) => page.locator("main").evaluate((m) => m.outerHTML);
+
+/**
+ * Errores de hidratación (B-8 de la auditoría del S1): el mismo árbol en el servidor y en el cliente se afirma
+ * con el HTML, pero React también lo dice al hidratar (#418 texto distinto, #423 y #425 árbol distinto). Se
+ * escuchan los errores de la página y los de la consola.
+ */
+const HIDRATACION = /#418|#423|#425|hydrat/i;
+function escucharHidratacion(page: Page): string[] {
+  const errores: string[] = [];
+  page.on("pageerror", (e) => HIDRATACION.test(e.message) && errores.push(e.message));
+  page.on("console", (m) => m.type() === "error" && HIDRATACION.test(m.text()) && errores.push(m.text()));
+  return errores;
+}
 
 /**
  * Lo que no se ve de verdad: display none o visibility hidden en la cadena, u opacidad acumulada < 1. En el
@@ -31,12 +44,16 @@ const ocultos = (page: Page) =>
 
 for (const ruta of RUTAS)
   test(`${ruta}: el mismo árbol con y sin la preferencia, y con ella todo se ve`, async ({ page }) => {
+    const hidratacion = escucharHidratacion(page);
     await page.emulateMedia({ reducedMotion: "no-preference" });
     await page.goto(ruta);
+    await listo(page);
     const sin = await arbol(page);
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto(ruta);
+    await listo(page);
     expect(await arbol(page)).toBe(sin);
+    expect(hidratacion).toEqual([]);
     await expect(page.locator("main h1")).toBeVisible();
     if (ruta.includes("/atlas/")) await expect(page.locator(".lienzo svg.dg-svg")).toBeVisible();
     expect(await ocultos(page)).toEqual([]);
@@ -52,6 +69,7 @@ test("en el recorrido, «Reproducir» queda oculto y no reproduce", async ({ pag
   const ruta = RUTAS.find((r) => r.endsWith("/recorrido"))!;
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto(ruta);
+  await listo(page);
   const boton = page.locator('[data-rec="reproducir"]');
   await expect(boton).toHaveCount(1);
   await expect(boton).toBeHidden();

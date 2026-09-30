@@ -2,7 +2,7 @@
 // dependencia de desarrollo) lo empaqueta con sus importaciones —el alias «@/» de la app y el paquete
 // `diagramador` del workspace— en un archivo temporal, que se importa. Así los scripts usan EXACTAMENTE el
 // mismo código que la app y que las pruebas.
-import { mkdtempSync, writeFileSync } from "node:fs";
+import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -26,5 +26,10 @@ export async function cargarTs(ruta) {
   const dir = mkdtempSync(join(tmpdir(), "bigd-ts-"));
   const archivo = join(dir, "modulo.mjs");
   writeFileSync(archivo, r.outputFiles[0].text);
-  return import(pathToFileURL(archivo).href);
+  // Importado el módulo, el temporal sobra (B-23 de la auditoría del S1: quedaba uno por corrida).
+  try {
+    return await import(pathToFileURL(archivo).href);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
 }

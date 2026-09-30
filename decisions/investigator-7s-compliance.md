@@ -1,12 +1,13 @@
 # Investigator skill: compliance with the subscription-AI standard (7-S)
 
 **Status:** accepted · **Date:** 2026-09-27 · **Sprint:** S1 (Atlas de Fabric) · **Re-read before every
-release** (the `/deploy-check` release box points here).
+release**: the box «IA de construcción por suscripción (7-S)» in `.claude/commands/deploy-check.md` (§ 10)
+points here and does not let a release out without a dated re-reading.
 
 ## Context
 
 The only generative AI in Big-D is the `/investigar` skill. It runs on the user's Claude subscription
-through Claude Code. Standard 7-S (estándares v2.15.0) and the constitution's rule 21 govern that use.
+through Claude Code. Standard 7-S (estándares v2.15.0) and the constitution's rule on subscription build-AI govern that use.
 The constitution applies 7-S in its simplest form: an **interactive** skill in the user's own session —
 no batches, no automated `claude -p`, nothing in CI.
 
@@ -27,11 +28,11 @@ no batches, no automated `claude -p`, nothing in CI.
 
 | 7-S rule | How Big-D meets it | Gate |
 |---|---|---|
-| 1. Official, unmodified binary; the user's own session | The user types `/investigar` in their own Claude Code session; the skill is a project skill with `disable-model-invocation: true` (only the user can trigger it) | Skill frontmatter, reviewed in the S1 PR |
+| 1. Official, unmodified binary; the user's own session | The user types `/investigar` in their own Claude Code session; the skill is a project skill with `disable-model-invocation: true` (only the user can trigger it), and no agent can launch the `investigador` subagent directly with the Agent tool | Skill frontmatter; `scripts/investigar/hooks/sin-lanzar.mjs` and its test (audit M-17) |
 | 2. The token never leaves the binary | No code in the repo reads, stores or forwards credentials; no env var, trace or log carries them | gitleaks (pre-commit + agent hook) |
 | 3. Clean temp dir with empty MCP when invoking the binary non-interactively | **Not applicable**: nothing invokes the binary; the skill runs inside the interactive session. Its subagent gets only the tools it needs | This ADR |
 | 4. Batches outside CI, small and spaced | **No batches.** One investigation per user command. CI never invokes Claude Code | CI workflow review; `planea-no-opera` test (no model SDK or domain in `src/`) |
-| 5. Compliance ADR, re-read before each release | This document, with the sources and date above | `/deploy-check` release box |
+| 5. Compliance ADR, re-read before each release | This document, with the sources and date above | `/deploy-check` § 10, box «IA de construcción por suscripción (7-S)» |
 | 6. Switch to a key-based provider | Roadmap D5, not wanted today; the proposal contract is provider-neutral, so an adapter would not change the pipeline | This ADR |
 | 7. Never exposed to third parties | The app is private (Vercel protection); the public demo has no investigator; third parties would need their own API key | Zero-links rule; demo scope |
 

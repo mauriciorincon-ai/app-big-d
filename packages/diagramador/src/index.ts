@@ -13,5 +13,6 @@ export { toBlockCards, type OpcionesTarjetas } from "./texto/toBlockCards";
 export { diff, type Diferencias } from "./diff";
 export { crossings, type Cruce } from "./layout/d11";
 export { coberturaDeRangos } from "./texto/cobertura";
+export { pasoPrevio } from "./util/recorrido";
 export { METRICAS_PILOTO, type TablaMetricas } from "./texto/metricas";
 export type * from "./tipos";

@@ -1,4 +1,4 @@
-import { layout, toBlockCards, toCard, toJourneyCSS, toLegend, toSVG, toText, type Geometria, type TextosMotor, type Vigencia, type Vista } from "diagramador";
+import { layout, pasoPrevio, toBlockCards, toCard, toJourneyCSS, toLegend, toSVG, toText, type Geometria, type TextosMotor, type Vigencia, type Vista } from "diagramador";
 import type { Atlas, Datos } from "@/lib/datos";
 import { IDIOMAS, textos, type Idioma, type Textos } from "@/lib/i18n";
 import { plantilla, plural } from "./plantilla";
@@ -103,8 +103,10 @@ function ventanas(atlas: Atlas, idioma: Idioma, fechaConsulta: string, elementos
       const bloque = banda ? undefined : atlas.mapa.bloques.find((b) => b.id === id);
       const nombre = banda ? banda.nombre[idioma]! : bloque!.nombre[idioma]!;
       const frase = banda ? banda.pregunta_lider[idioma]! : bloque!.lider[idioma]!;
-      const svg = toSVG(geo, { language: idioma, prefix: `${atlas.plataforma.id}-bl-${id.replace(/^_/, "banda-")}-${idioma}` });
-      const tarjetas = toBlockCards(atlas.mapa, atlas.gramatica, id, { language: idioma, textos: tm, fechaConsulta });
+      const prefijo = `${atlas.plataforma.id}-bl-${id.replace(/^_/, "banda-")}-${idioma}`;
+      // Las tarjetas de texto son la versión en texto del dibujo de la ventana (G10, B-41 de la auditoría del S1).
+      const svg = toSVG(geo, { language: idioma, prefix: prefijo, textId: `${prefijo}-texto` });
+      const tarjetas = toBlockCards(atlas.mapa, atlas.gramatica, id, { language: idioma, textos: tm, fechaConsulta, id: `${prefijo}-texto` });
       return [
         id,
         `<h2>${esc(nombre)}</h2><p class="ventana-lider">${esc(frase)}</p><div class="ventana-lienzo">${svg}</div>${tarjetas}<p class="ventana-mas"><a href="${esc(componentes)}">${esc(t.verComponentes)}</a></p>`,
@@ -157,7 +159,7 @@ export function vistaRecorrido(atlas: Atlas, idioma: Idioma, fechaConsulta: stri
   const nodo = new Map(atlas.mapa.nodos.map((n) => [n.id, n]));
   const { ramas, y } = textos(idioma).motor;
   const numero = new Map(r.pasos.map((p) => [p.id, p.numero]));
-  const previo = new Map(dato.pasos.map((x, k) => [x.id, x.sigue_de ?? (k > 0 ? dato.pasos[k - 1]!.id : undefined)]));
+  const previo = new Map(dato.pasos.map((x, k) => [x.id, pasoPrevio(dato, k)?.id]));
   return {
     ...comun,
     fichas: fichas(atlas, idioma, fechaConsulta),

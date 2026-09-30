@@ -6,7 +6,8 @@ import type { Idioma, Textos } from "@/lib/i18n";
 import { plantilla } from "@/lib/atlas/plantilla";
 import { textosMotor } from "@/lib/atlas";
 import { esquemaPropuesta, esquemaRevision, esquemaVerificacion, type Resultado, type Revision } from "./esquema";
-import { sha256 } from "./huella";
+import { retirosDe } from "./aprobar";
+import { huella, sha256 } from "./huella";
 import { validarPropuesta } from "./validar";
 
 // La pantalla del investigador de una plataforma, preparada en el BUILD (el sitio es estático): la vigencia
@@ -29,6 +30,8 @@ export interface AfirmacionVista {
   id: string;
   entidad: "nodo" | "flujo";
   sobre: string;
+  /** De qué habla, como lo lee la persona: el nombre del componente, u «origen → destino» (M-20). */
+  nombre: string;
   enunciado: string;
   cita: { texto: string; url: string; titulo: string; tipo: "oficial" | "tercero"; conflicto: string };
   verificacion: { resultado: Resultado; http: number | null; sha256: string | null; motivo?: string } | null;
@@ -40,6 +43,7 @@ export interface PropuestaVista {
   fecha: string;
   capa?: string;
   modelo: string;
+  /** Reintentos que CONTÓ el hook de fin (`.reintentos`), no los que declara el modelo (B-45). */
   reintentos: number;
   fallas: string[];
   /** La verificación existe y es de esta versión de la propuesta. */
@@ -48,8 +52,9 @@ export interface PropuestaVista {
   fuentes: number;
   diff: { primera: boolean; nuevos: number; renombrados: number; retirados: number; madurez: number };
   afirmaciones: AfirmacionVista[];
+  /** Lo que el mapa aprobado tiene y la propuesta ya no trae: no son afirmaciones, se retiran si se aprueba (M-21). */
+  retiros: { id: string; entidad: "nodo" | "flujo"; nombre: string }[];
   preguntas: { pregunta: string; respondida: boolean }[];
-  sinNovedades: boolean;
 }
 
 export interface VistaInvestigador {
@@ -86,12 +91,15 @@ function revisiones(raiz: string, id: string): Revision[] {
     .map((l) => esquemaRevision.parse(JSON.parse(l)));
 }
 
-/** La propuesta más reciente de la plataforma que ninguna revisión cerró todavía. */
-function pendiente(raiz: string, id: string, cerradas: Set<string>): string | undefined {
+/**
+ * La propuesta más reciente de la plataforma POSTERIOR a la última que se cerró (M-19: una más vieja no
+ * reaparece como pendiente), con un nombre de carpeta que ninguna terminal expande (A-2).
+ */
+function pendiente(raiz: string, id: string, ultima: string | undefined): string | undefined {
   const base = join(raiz, "propuestas");
   if (!existsSync(base)) return undefined;
   return readdirSync(base)
-    .filter((d) => existsSync(join(base, d, "propuesta.json")) && !cerradas.has(`propuestas/${d}`))
+    .filter((d) => /^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(d) && existsSync(join(base, d, "propuesta.json")) && (ultima === undefined || `propuestas/${d}` > ultima))
     .filter((d) => {
       try {
         return JSON.parse(readFileSync(join(base, d, "propuesta.json"), "utf8")).plataforma === id;
@@ -103,6 +111,32 @@ function pendiente(raiz: string, id: string, cerradas: Set<string>): string | un
     .at(-1);
 }
 
+/** El nombre de un componente, u «origen → destino» de un flujo, en el idioma pedido. */
+function nombreDe(mapa: Mapa, entidad: "nodo" | "flujo", id: string, idioma: Idioma): string {
+  const nodo = (x: string) => mapa.nodos.find((n) => n.id === x)?.nombre[idioma] ?? x;
+  if (entidad === "nodo") return nodo(id);
+  const f = mapa.flujos.find((x) => x.id === id);
+  return f ? `${nodo(f.origen)} → ${nodo(f.destino)}` : id;
+}
+
+/** El contador del hook de fin; sin archivo, ningún reintento. */
+function reintentosDe(dir: string): number {
+  const f = join(dir, ".reintentos");
+  return existsSync(f) ? Number(readFileSync(f, "utf8")) || 0 : 0;
+}
+
+/** Las fallas que dejó el hook de fin al rendirse (error-validacion.json), si las hay. */
+function erroresDeValidacion(dir: string): string[] {
+  const f = join(dir, "error-validacion.json");
+  if (!existsSync(f)) return [];
+  try {
+    const d = JSON.parse(readFileSync(f, "utf8")) as { fallas?: unknown };
+    return Array.isArray(d.fallas) ? d.fallas.map((x) => `error-validacion.json · ${String(x)}`) : [];
+  } catch {
+    return ["error-validacion.json no es JSON"];
+  }
+}
+
 function cambioDe(entidad: "nodo" | "flujo", id: string, anterior: Mapa | undefined, propuesto: Mapa, d: ReturnType<typeof diff> | null): Cambio {
   if (!anterior || !d) return "nuevo";
   if (entidad === "flujo") return d.flujos.nuevos.includes(id) ? "nuevo" : d.flujos.cambiados.includes(id) ? "cambiado" : "igual";
@@ -111,7 +145,7 @@ function cambioDe(entidad: "nodo" | "flujo", id: string, anterior: Mapa | undefi
   if (d.nodos.madurez.some((m) => m.id === id)) return "madurez";
   const a = anterior.nodos.find((n) => n.id === id);
   const b = propuesto.nodos.find((n) => n.id === id);
-  return JSON.stringify({ ...a, fecha_verificacion: 0, fuentes: 0 }) === JSON.stringify({ ...b, fecha_verificacion: 0, fuentes: 0 }) ? "igual" : "cambiado";
+  return huella({ ...a, fecha_verificacion: 0, fuentes: 0 }) === huella({ ...b, fecha_verificacion: 0, fuentes: 0 }) ? "igual" : "cambiado";
 }
 
 export function vistaInvestigador(d: Datos, id: string, idioma: Idioma, fecha: string, raiz = process.cwd(), rangos?: readonly (readonly [number, number])[]): VistaInvestigador {
@@ -119,7 +153,8 @@ export function vistaInvestigador(d: Datos, id: string, idioma: Idioma, fecha: s
   const atlas = d.atlas.get(id);
   const historial = revisiones(raiz, id);
   const vista: VistaInvestigador = { plataforma, revisiones: historial, ...(atlas ? { mapa: atlas.mapa, bandas: vigenciaPorBanda(atlas, idioma, fecha) } : {}) };
-  const carpeta = pendiente(raiz, id, new Set(historial.map((r) => r.propuesta)));
+  const ultima = historial.map((r) => r.propuesta).sort().at(-1);
+  const carpeta = pendiente(raiz, id, ultima);
   if (!carpeta) return vista;
 
   const dir = join(raiz, "propuestas", carpeta);
@@ -128,13 +163,17 @@ export function vistaInvestigador(d: Datos, id: string, idioma: Idioma, fecha: s
   try {
     dato = JSON.parse(bytes.toString("utf8"));
   } catch (e) {
-    vista.propuesta = { carpeta: `propuestas/${carpeta}`, fecha: "", modelo: "", reintentos: 0, fallas: [`propuesta.json no es JSON: ${(e as Error).message}`], verificada: false, fuentes: 0, diff: { primera: !atlas, nuevos: 0, renombrados: 0, retirados: 0, madurez: 0 }, afirmaciones: [], preguntas: [], sinNovedades: false };
+    vista.propuesta = { carpeta: `propuestas/${carpeta}`, fecha: "", modelo: "", reintentos: reintentosDe(dir), fallas: [`propuesta.json no es JSON: ${(e as Error).message}`], verificada: false, fuentes: 0, diff: { primera: !atlas, nuevos: 0, renombrados: 0, retirados: 0, madurez: 0 }, afirmaciones: [], retiros: [], preguntas: [] };
     return vista;
   }
   const forma = esquemaPropuesta.safeParse(dato);
   const cob = rangos ?? JSON.parse(readFileSync(join(raiz, "packages/diagramador/metricas/cobertura.json"), "utf8")).fuentes["space-grotesk"].rangos;
   const gramatica = atlas?.gramatica ?? [...d.atlas.values()][0]?.gramatica;
-  const fallas = !forma.success ? forma.error.issues.map((i) => `${i.path.join(".") || "/"} · ${i.message}`) : gramatica ? validarPropuesta(dato, gramatica, cob).fallas : ["no hay gramática cargada"];
+  const fallas = [
+    ...(!forma.success ? forma.error.issues.map((i) => `${i.path.join(".") || "/"} · ${i.message}`) : gramatica ? validarPropuesta(dato, gramatica, cob).fallas : ["no hay gramática cargada"]),
+    // Si el hook de fin se rindió, lo que dejó escrito también se muestra (B-45).
+    ...erroresDeValidacion(dir),
+  ];
   const rutaV = join(dir, "verificacion.json");
   const verif = existsSync(rutaV) ? esquemaVerificacion.safeParse(JSON.parse(readFileSync(rutaV, "utf8"))) : null;
   const verificada = Boolean(verif?.success && verif.data.propuesta_sha256 === sha256(bytes));
@@ -147,7 +186,7 @@ export function vistaInvestigador(d: Datos, id: string, idioma: Idioma, fecha: s
     fecha: p?.fecha ?? "",
     ...(p?.capa ? { capa: p.capa } : {}),
     modelo: p?.ejecucion.modelo ?? "",
-    reintentos: p?.ejecucion.reintentos ?? 0,
+    reintentos: reintentosDe(dir),
     fallas,
     verificada,
     ...(verificada && verif?.success ? { fechaVerificacion: verif.data.fecha } : {}),
@@ -163,6 +202,7 @@ export function vistaInvestigador(d: Datos, id: string, idioma: Idioma, fecha: s
               id: a.id,
               entidad: a.sobre.entidad,
               sobre: a.sobre.id,
+              nombre: nombreDe(propuesto, a.sobre.entidad, a.sobre.id, idioma),
               enunciado: a.enunciado[idioma],
               cita: { texto: a.cita.texto, url: a.cita.url, titulo: a.cita.titulo, tipo: a.cita.tipo, conflicto: a.cita.conflicto_de_interes[idioma] },
               verificacion: r ? { resultado: r.resultado, http: r.http, sha256: r.sha256, ...(r.motivo ? { motivo: r.motivo } : {}) } : null,
@@ -170,8 +210,14 @@ export function vistaInvestigador(d: Datos, id: string, idioma: Idioma, fecha: s
             };
           })
         : [],
+    retiros:
+      atlas && propuesto && !fallas.length
+        ? retirosDe(atlas.mapa, propuesto).map((x) => {
+            const entidad = atlas.mapa.nodos.some((n) => n.id === x) ? ("nodo" as const) : ("flujo" as const);
+            return { id: x, entidad, nombre: nombreDe(atlas.mapa, entidad, x, idioma) };
+          })
+        : [],
     preguntas: p?.preguntas_guia.map((q) => ({ pregunta: q.pregunta[idioma], respondida: q.respondida })) ?? [],
-    sinNovedades: p?.sin_novedades ?? false,
   };
   return vista;
 }
