@@ -1,0 +1,205 @@
+// El bundle publicable del design system (`design-sync/`, regla 16 del CLAUDE.md), GENERADO: las tarjetas con
+// diagramas salen del mismo motor y de las mismas vistas que el producto (regla 8: el visual se genera, no se
+// dibuja), sobre la Plataforma Ejemplo (ficticia: ningún fabricante en la vitrina) y con una fecha de consulta
+// fija. Las hojas son las del producto, tal cual. `tests/unit/design-sync.test.ts` regenera y compara byte a
+// byte con lo versionado; `node scripts/design-sync/generar.mjs` lo escribe. Publicar es otro paso: lo dispara
+// la persona con `/design-sync` al cierre del ciclo (S4), y `project.json` no lo toca este generador.
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+import { opcionesPlataforma, vistaNivel1, vistaNivel2 } from "@/lib/atlas";
+import { cargarDatos } from "@/lib/datos";
+import { textos } from "@/lib/i18n";
+
+/** Fecha de consulta fija: el mapa de ejemplo se verificó el 2026-09-20, así que sale vigente. */
+export const FECHA = "2026-09-26";
+const PLATAFORMA = "plataforma-ejemplo";
+const HOJAS = [
+  "src/styles/tokens.css",
+  "src/styles/base.css",
+  "src/styles/diagrama.css",
+  "src/styles/atlas.css",
+];
+const FAMILIAS = `:root { --letra: "Space Grotesk", system-ui, sans-serif; --letra-mono: "JetBrains Mono", ui-monospace, monospace; }`;
+const PROPIAS = `.ds { padding: 24px 16px; display: grid; gap: 16px; max-width: 1280px; margin: 0 auto; }
+.ds-nota { font: 500 13px/1.5 var(--letra-mono); color: var(--tinta-2); margin: 0; max-width: 90ch; }
+.ds-temas { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.ds-tema { background: var(--fondo); color: var(--tinta-1); border: 1px solid var(--linea); border-radius: 8px; padding: 16px; }
+.ds-muestras { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.ds-muestras li { display: grid; grid-template-columns: 28px 1fr; gap: 10px; align-items: center; }
+.ds-color { width: 28px; height: 28px; border-radius: 4px; border: 1px solid var(--linea); }
+.ds-muestras code { font: 500 13px/1.4 var(--letra-mono); }
+.ds-muestras span.ds-uso { display: block; font-size: 14px; color: var(--tinta-2); }
+.ds-panel { position: static; width: min(420px, 100%); max-height: none; border: 1px solid var(--linea); border-radius: 8px; }
+.ds-fila { display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; }`;
+
+const leer = (ruta: string) => readFileSync(join(process.cwd(), ruta), "utf8");
+const esc = (s: string) =>
+  s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+
+/** Las hojas del producto, una tras otra, con las familias como pila (la tarjeta no carga fuentes). */
+export function estilos(): string {
+  const partes = HOJAS.map((h) => `/* ── ${h} ── */\n${leer(h).trimEnd()}`);
+  return `/* GENERADO por scripts/design-sync/bundle.ts — no editar a mano (tests/unit/design-sync.test.ts detecta la deriva). */\n${FAMILIAS}\n${partes.join("\n")}\n`;
+}
+
+function tarjeta(
+  grupo: string,
+  nombre: string,
+  cuerpo: string,
+  fuente: string,
+): string {
+  return `<!-- @dsCard group="${grupo}" name="${nombre}" -->
+<!doctype html>
+<html lang="es" data-theme="oscuro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Big-D · ${esc(nombre)}</title>
+<style>
+${estilos()}${PROPIAS}
+</style>
+</head>
+<body>
+<main class="ds">
+<p class="ojo">Big-D · ${esc(grupo)}</p>
+<h1 style="margin:0;font-size:32px;line-height:1.1">${esc(nombre)}</h1>
+${cuerpo}
+<p class="ds-nota">${fuente}</p>
+</main>
+</body>
+</html>
+`;
+}
+
+function panel(titulo: string, cerrar: string, contenido: string): string {
+  return `<div class="panel ds-panel" role="complementary" aria-label="${esc(titulo)}"><div class="panel-cabeza"><span class="ojo">${esc(titulo)}</span><button type="button" class="cerrar">${esc(cerrar)}</button></div><div class="panel-cuerpo">${contenido}</div></div>`;
+}
+
+/** El bundle entero: ruta dentro de `design-sync/` → contenido. */
+export function bundle(): Record<string, string> {
+  const d = cargarDatos();
+  const atlas = d.atlas.get(PLATAFORMA);
+  if (!atlas) throw new Error(`design-sync: ${PLATAFORMA} no está publicada`);
+  const t = textos("es");
+  const v1 = vistaNivel1(atlas, "es", FECHA);
+  const v2 = vistaNivel2(atlas, "es", FECHA);
+  const tokens = JSON.parse(leer("docs/diseno/assets/tokens.json")) as {
+    temas: Record<string, Record<string, string>>;
+    tipos: { token: string; id: string }[];
+  };
+  const tipos = atlas.gramatica.tipos_de_nodo;
+  const neutros: [string, string][] = [
+    ["fondo", "fondo de página"],
+    ["sup-1", "barra, carriles y lienzo del diagrama"],
+    ["sup-2", "tarjetas, controles y paneles"],
+    ["linea", "filetes y guías (vetada como texto)"],
+    ["tinta-1", "texto principal, marcas, foco"],
+    ["tinta-2", "texto secundario, flujos, bordes de control"],
+  ];
+  const muestras = (tema: string) =>
+    `<ul class="ds-muestras">${[
+      ...neutros.map(([tk, uso]) => [tk, uso] as const),
+      ...tokens.tipos.map(
+        (x) =>
+          [
+            x.token,
+            tipos.find((tp) => tp.id === x.id)?.nombre.es ?? x.id,
+          ] as const,
+      ),
+    ]
+      .map(
+        ([tk, uso]) =>
+          `<li><span class="ds-color" style="background:var(--${tk})"></span><span><code>--${tk} · ${tokens.temas[tema]![tk]}</code><span class="ds-uso">${esc(uso)}</span></span></li>`,
+      )
+      .join("")}</ul>`;
+  const color = `<div class="ds-temas"><section class="ds-tema"><h2 class="ojo">Oscuro (primario)</h2>${muestras("oscuro")}</section><section class="ds-tema tema-claro"><h2 class="ojo">Claro</h2>${muestras("claro")}</section></div>`;
+
+  const letra = `<div class="ds-temas"><section class="ds-tema">
+<p class="ojo">Ojo de sección · JetBrains Mono 12, mayúsculas</p>
+<p style="margin:0;font:700 46px/51px var(--letra);letter-spacing:-0.025em">Título de página</p>
+<p style="margin:0;font:400 17px/26px var(--letra);color:var(--tinta-2)">Subtítulo · Space Grotesk 17 / 26</p>
+<p style="margin:0;font:400 16px/25px var(--letra)">Cuerpo · Space Grotesk 16 / 25. Sin cursiva: solo se sirve la redonda.</p>
+<p style="margin:0;font:500 13px/18px var(--letra-mono);color:var(--tinta-2)">Metadatos · JetBrains Mono 13 / 18 · verificado 2026-09-20 · mapa v0.1.0</p>
+</section></div>`;
+
+  const opciones = opcionesPlataforma(d, "es", "general");
+  const selector = `<label class="campo campo-plataforma"><span class="campo-etiqueta">${esc(t.atlas.plataforma.etiqueta)}</span><span class="select"><select>${opciones
+    .map(
+      (o) =>
+        `<option value="${o.id}"${o.ruta ? "" : " disabled"}${o.id === PLATAFORMA ? " selected" : ""}>${esc(o.ruta ? o.nombre : `${o.nombre} — ${t.atlas.plataforma.pronto}`)}</option>`,
+    )
+    .join(
+      "",
+    )}</select><svg viewBox="-6 -6 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M-4,-1.5 L0,2.5 L4,-1.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></span></label>`;
+
+  const fuente = (que: string) =>
+    `Generado por el motor del diagramador y las vistas del producto sobre la Plataforma Ejemplo (ficticia), consulta ${FECHA}. ${que}`;
+  const tarjetas: [string, string, string, string, string][] = [
+    [
+      "fundamentos/color.html",
+      "Fundamentos",
+      "Color",
+      color,
+      "Tokens generados por scripts/paleta/generar-tokens.mjs y medidos (design-system.md § 3.1–3.2, § 7.1). El color nunca va solo: cada tipo lleva además glifo y etiqueta.",
+    ],
+    [
+      "fundamentos/letra.html",
+      "Fundamentos",
+      "Letra",
+      letra,
+      "Space Grotesk y JetBrains Mono, SIL OFL 1.1 (design-system.md § 3.3). La tarjeta no carga fuentes: se ven donde están instaladas.",
+    ],
+    [
+      "diagrama/leyenda.html",
+      "Diagrama",
+      "Leyenda y nota de marcas",
+      `<section class="leyenda">${v1.leyenda}</section>`,
+      fuente(
+        "toLegend: tipos (color + glifo + etiqueta), modos (trazo + marcador), madurez, vigencia y la nota de marcas (ADR design-system-s1-extensions).",
+      ),
+    ],
+    [
+      "diagrama/vision-general.html",
+      "Diagrama",
+      "Visión general (nivel 1)",
+      `<div class="lienzo-marco"><div class="lienzo">${v1.svg}</div></div>`,
+      fuente("layout + toSVG, vista nivel-1."),
+    ],
+    [
+      "componentes-s1/ventana-de-un-bloque.html",
+      "Componentes · S1",
+      "Ventana de un bloque",
+      `<div class="ds-fila">${panel(t.atlas.ventana.titulo, t.atlas.ficha.cerrar, v1.ventanas["consumo-bi"]!)}${panel(t.atlas.ventana.titulo, t.atlas.ficha.cerrar, v1.ventanas["gobierno"]!)}</div>`,
+      fuente(
+        "Vista «bloque» + toBlockCards: reemplaza a la ficha breve del nivel 1 (ADR design-system-s1-extensions; mirada del usuario 2026-09-29). Lateral desde 900 px, hoja inferior en teléfono.",
+      ),
+    ],
+    [
+      "componentes-s1/ficha-de-un-componente.html",
+      "Componentes · S1",
+      "Ficha de un componente",
+      panel(
+        t.atlas.ficha.titulo,
+        t.atlas.ficha.cerrar,
+        v2.fichas["modelo-semantico"]!,
+      ),
+      fuente("toCard, nivel 2 (design-system.md § 5, «Ficha de nodo»)."),
+    ],
+    [
+      "componentes-s1/selector-de-plataforma.html",
+      "Componentes · S1",
+      "Selector de plataforma",
+      `<div style="max-width:320px">${selector}</div>`,
+      "Las N plataformas por id; las que no tienen mapa dicen «pronto» y no se eligen (ADR design-system-s1-extensions; parada A, 2026-09-27).",
+    ],
+  ];
+
+  const archivos: Record<string, string> = { "styles.css": estilos() };
+  for (const [ruta, grupo, nombre, cuerpo, nota] of tarjetas)
+    archivos[`components/${ruta}`] = tarjeta(grupo, nombre, cuerpo, nota);
+  return archivos;
+}

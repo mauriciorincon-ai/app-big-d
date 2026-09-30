@@ -940,3 +940,82 @@ de la prueba (sacada de `HEAD`) siguió en verde y la nueva lo nombró.
 
 **Suites:** unitarias 795/795 · paquete 526/526 · e2e 300/300 (2,2 min en local: 22 rutas × 3 motores en G11,
 movimiento reducido y axe en las 22 rutas) · determinismo 6/6.
+
+**CI de `a6cb4ca`** (las pruebas de cierre): quality ✓ · lighthouse ✓ · diagramador ubuntu ✓ · macOS ✓ · Vercel ✓ ·
+**e2e ✗**. Dos causas, las dos del gate nuevo y no del producto:
+- **G11 en Chromium/Linux (4 rutas del nivel 1):** «Governance» pisa «2 components», y «2 components» pisa «no block».
+  Medido en los tres motores de macOS: la caja que da `getBBox` a un texto es su caja de línea (ascendente +
+  descendente de la fuente, 1,276 em), y el motor apila esas cajas pegadas a propósito (G15). En el Mac se tocan a
+  0,1 px; Chromium redondea la altura a píxeles enteros, y en Linux el redondeo las solapa algo más de medio píxel.
+  Las letras están a unos 7 px: «Governance» no tiene trazos bajo la línea. El navegador no puede mover un texto en
+  vertical (la línea base la fija el motor); lo que decide es el ancho. Arreglo: entre dos textos, 0,5 px en
+  horizontal y 1,5 px en vertical; dentro de su caja, fuera del lienzo y contra cajas ajenas, todo sigue a 0,5 px.
+  Rojo del ajuste: la meta de la franja a 20 px (caja de línea más alta) → «Governance pisa 2 components» en los
+  tres motores; verde: 300/300.
+- **Flaky en WebKit (ventana de un bloque):** el primer toque llegó antes de que la página hidratara, y la ventana
+  no abrió (pasó al reintentar). `tests/e2e/lib/abrir.ts` reintenta el toque (nunca la aserción de lo que muestra)
+  hasta que el panel se ve; lo usan g11 y reduced-motion.
+
+**Guía de prueba v1 (`docs/GUIA-DE-PRUEBA.html`).** Autocontenida, prefijo `bigd-s1-`, 38 pruebas en 7 bloques
+(A portada, idioma y tema · B visión general con la ventana · C componentes · D recorrido · E Plataforma Ejemplo ·
+F investigador con el kit · G la maqueta en el preview), todas «Nuevo · S1», cada bloque con «Empieza en:».
+- **⭐ 4, diferidas al S4** (las de la orden): una persona sin formación técnica explica las capas (b1) · la paleta
+  en tu pantalla, en los dos temas (b9) · tu teléfono real a 380 px, desplazamiento táctil (b11) · VoiceOver (b8).
+- **⭐⭐ 3 paradas, ~20 min**, en el orden del documento: b1, b9 y b11. Deja fuera la de VoiceOver y lo declara:
+  la lectura en texto la verifica el código por otro camino (G10 nodo a nodo y axe en los dos temas); lo que
+  VoiceOver añade es la experiencia de escucharla.
+- La cabecera dice lo ya aprobado en el S1 (fidelidad, Fabric, la ventana), y dónde probar: el preview del PR #4
+  con sesión (sin escribir la dirección) o el sitio local.
+- Vista como imagen en oscuro a 1280 y en claro a 380: filtros con sus conteos (38 · 38 · 4 · 3), ⭐⭐ muestra las
+  3 paradas, la casilla se recuerda con `bigd-s1-b1`, sin desborde, sin errores.
+- **Gate nuevo `tests/unit/guia-de-prueba.test.ts`**: origen y chip por prueba, ids únicos, ⭐⭐ ⊂ ⭐ y paradas
+  1..K en orden, la cabecera con los mismos conteos que los filtros y cuántas ⭐ deja fuera, «Empieza en:» por
+  bloque, prefijo versionado, sin scripts externos ni URL de despliegue. Rojo: paradas cruzadas, un id repetido,
+  una prueba sin chip, un bloque sin «Empieza en:» y un script de CDN → 4 de 5 en rojo; la cabecera con «3
+  pruebas» → la quinta. Verde 5/5.
+
+**Kit de prueba (`docs/kit-de-prueba/`).** README bilingüe.
+- **Propuesta de muestra**: la Plataforma Norte (ficticia), generada con la misma muestra que usan las pruebas del
+  investigador y pasada por los scripts reales: `validar` (28 afirmaciones) y `verificar-citas` contra páginas
+  locales por el espejo `file://` (26 verificadas, 1 no verificable, 1 no encontrada). Sin rutas locales en los
+  archivos.
+  - Probada como la usaría una persona: copiada al proyecto, build, `/es/investigador/plataforma-norte` muestra
+    los tres grupos (1 · 26 · 1) y el conteo; leída como imagen. Retirada.
+- **Base incompleta**: la misma plataforma con un mapa aprobado sin `fecha_verificacion` en «tablero».
+  - Probada con `pnpm build`: se niega con
+    `data/mapas/plataforma-norte.mapa.yaml · V3 · /nodos/9/fecha_verificacion · tablero · falta el campo…`.
+    Retirada.
+  - Después, build limpio: la carpeta compilada había quedado con la Norte del build anterior y se regeneró antes
+    de cualquier captura.
+- **Gate nuevo `tests/unit/kit-de-prueba.test.ts`**: la muestra valida (esquema, contrato, coherencia y dibujo),
+  su verificación es de esa versión y trae las tres salidas, su plataforma es ficticia y «próximamente». La base
+  incompleta falla al cargar con esa línea exacta. Rojo: otro modelo declarado en la propuesta (la huella deja de
+  coincidir) y la fecha devuelta al mapa → 2 de 4 en rojo; verde 4/4.
+
+**Manual de uso (`docs/MANUAL-DE-USO.md`).** Bilingüe, redactado en cada idioma, para quien usa la app: qué es,
+primeros pasos y 6 funciones (visión general con la ventana · componentes · recorrido · lectura en texto y teclado ·
+varias plataformas con el mismo mapa · el investigador), con sus limitaciones, preguntas frecuentes e historial.
+Los nombres de botones y secciones se contrastaron con los diccionarios de la app en los dos idiomas.
+
+**`design-sync/` nace (regla 16).**
+- **Generado**: `scripts/design-sync/bundle.ts` + `generar.mjs`. Las tarjetas con diagramas salen del motor y de
+  las vistas del producto (`vistaNivel1`, `vistaNivel2`) sobre la Plataforma Ejemplo, con fecha fija; las hojas
+  son las del producto, tal cual.
+- **Contenido**: `styles.css` + 7 tarjetas (Fundamentos: color y letra · Diagrama: leyenda con la nota de marcas y
+  visión general · Componentes · S1: ventana de un bloque, ficha y selector de plataforma).
+- **Revisión**: cada tarjeta leída como imagen (color en los dos temas y la ventana, entre otras), sin peticiones de
+  red. `project.json` sin proyecto todavía: la publicación es del cierre del ciclo (S4), después del ⭐⭐, y la
+  dispara la persona.
+- **Gate nuevo `tests/unit/design-sync.test.ts`**: regenera y compara byte a byte (sin tarjetas de más ni de
+  menos); cada tarjeta con `@dsCard` en la primera línea, sin scripts, hojas, imágenes ni `url()`, y solo dos URL
+  admitidas (el espacio de nombres del SVG y las fuentes ficticias de `example.org`); `project.json` sin tokens.
+  Rojo: una regla nueva en `diagrama.css` sin regenerar → `styles.css` distinto; una tarjeta suelta → nombrada.
+  Verde 3/3.
+- `design-sync/` y `docs/kit-de-prueba/` entran a `.prettierignore`: se comparan byte a byte.
+
+**ADR `decisions/design-system-s1-extensions.md`.** `design-system.md` no se toca: las cuatro decisiones de diseño
+del S1 lo extienden por ADR. Son la ventana de un bloque (reemplaza a la ficha breve), el selector de plataforma
+del atlas, la nota de marcas en su forma A y el estado vacío en contexto. Cada una fue vista por la persona antes
+de construir encima; la planeadora las lleva a la próxima versión del design system.
+
+**Suites:** unitarias 807/807 · e2e 300/300 · paquete 526/526.

@@ -1,0 +1,205 @@
+{
+  "version": 1,
+  "fecha": "2026-09-27",
+  "propuesta_sha256": "c799c1f346dbbc12b8febfdc814a2ae8d8c1b77826b8f86c1ab5b70616eb78ef",
+  "resultados": [
+    {
+      "afirmacion": "A-1",
+      "url": "https://ejemplo.invalid/sistema-admisiones",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "3d09b70c415457501f3da512ddad5d1176f26a79570adc1674b37e4995db9f1f"
+    },
+    {
+      "afirmacion": "A-2",
+      "url": "https://ejemplo.invalid/conector-relacional",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "b6c63acf9f8efe0e9861d1d0ab5ccde6f6a35244a1523a797e1f743f167d4430"
+    },
+    {
+      "afirmacion": "A-3",
+      "url": "https://ejemplo.invalid/captura-cambios",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "5829b290143772ab190aba7de9cc2be421b5ae0a519415a4b6d3ebf901237aa3"
+    },
+    {
+      "afirmacion": "A-4",
+      "url": "https://ejemplo.invalid/capa-cruda",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "47f9963acc3d707814964223a0791fc4a1ab30b16faffcf65dc332633cab9da6"
+    },
+    {
+      "afirmacion": "A-5",
+      "url": "https://ejemplo.invalid/almacen-tablas-abiertas",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "ab7694a407cfee801d93c073b4d967e7cf88ff4fe4cab64b789d71f64f44ac45"
+    },
+    {
+      "afirmacion": "A-6",
+      "url": "https://ejemplo.invalid/motor-transformacion",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "9016a352dd2201929043f2e1cfe31977efdcb4c4d0a67517b8aeefeaed3bf48b"
+    },
+    {
+      "afirmacion": "A-7",
+      "url": "https://ejemplo.invalid/canalizacion-declarativa",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "23727cdeff0a8986d7123c1a3bef45490dd24c5a5c1a078bc933b743929d186c"
+    },
+    {
+      "afirmacion": "A-8",
+      "url": "https://ejemplo.invalid/programador-tareas",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "b13fd39377f671baa6f4eee6b5812a31a52a6291ea921300c4c3dc4fcb8cb233"
+    },
+    {
+      "afirmacion": "A-9",
+      "url": "https://ejemplo.invalid/modelo-semantico",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "d69c27c7283d5f9460223f93664bcdc5bd8448d1eeccebad212bd287b93300e5"
+    },
+    {
+      "afirmacion": "A-10",
+      "url": "https://ejemplo.invalid/tablero",
+      "resultado": "no-encontrada",
+      "http": 200,
+      "sha256": "651b49f44bca645b7dd12126c6914be4210cf8e917b5fbf4d82c12aab9ced6ae",
+      "motivo": "la cita no aparece en la página"
+    },
+    {
+      "afirmacion": "A-11",
+      "url": "https://ejemplo.invalid/agente-datos",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "c4210bf8a549687c8b5b0f0209b6da27cdb2c6fec771808c9e448e53cd81b427"
+    },
+    {
+      "afirmacion": "A-12",
+      "url": "https://ejemplo.invalid/catalogo-central",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "6660152c72d14a30d54bbcee278d0286eb26fb84d00ca8ec453563dcf71abfec"
+    },
+    {
+      "afirmacion": "A-13",
+      "url": "https://ejemplo.invalid/filtros-filas",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "192e1516e79ac69d89e7aad446139dc135a5cf3eb1414af2c127575ea8f75d4f"
+    },
+    {
+      "afirmacion": "A-14",
+      "url": "https://ejemplo.invalid/monitor-capacidad",
+      "resultado": "no-verificable",
+      "http": 200,
+      "sha256": "0a88f33fc1ffad98a705a9c3f1496c12a875e56d7dcd7a57026425cce0b9d01d",
+      "motivo": "la página casi no trae texto (se arma con JavaScript)"
+    },
+    {
+      "afirmacion": "A-15",
+      "url": "https://ejemplo.invalid/sistema-admisiones",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "3d09b70c415457501f3da512ddad5d1176f26a79570adc1674b37e4995db9f1f"
+    },
+    {
+      "afirmacion": "A-16",
+      "url": "https://ejemplo.invalid/sistema-admisiones",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "3d09b70c415457501f3da512ddad5d1176f26a79570adc1674b37e4995db9f1f"
+    },
+    {
+      "afirmacion": "A-17",
+      "url": "https://ejemplo.invalid/captura-cambios",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "5829b290143772ab190aba7de9cc2be421b5ae0a519415a4b6d3ebf901237aa3"
+    },
+    {
+      "afirmacion": "A-18",
+      "url": "https://ejemplo.invalid/conector-relacional",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "b6c63acf9f8efe0e9861d1d0ab5ccde6f6a35244a1523a797e1f743f167d4430"
+    },
+    {
+      "afirmacion": "A-19",
+      "url": "https://ejemplo.invalid/capa-cruda",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "47f9963acc3d707814964223a0791fc4a1ab30b16faffcf65dc332633cab9da6"
+    },
+    {
+      "afirmacion": "A-20",
+      "url": "https://ejemplo.invalid/motor-transformacion",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "9016a352dd2201929043f2e1cfe31977efdcb4c4d0a67517b8aeefeaed3bf48b"
+    },
+    {
+      "afirmacion": "A-21",
+      "url": "https://ejemplo.invalid/canalizacion-declarativa",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "23727cdeff0a8986d7123c1a3bef45490dd24c5a5c1a078bc933b743929d186c"
+    },
+    {
+      "afirmacion": "A-22",
+      "url": "https://ejemplo.invalid/programador-tareas",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "b13fd39377f671baa6f4eee6b5812a31a52a6291ea921300c4c3dc4fcb8cb233"
+    },
+    {
+      "afirmacion": "A-23",
+      "url": "https://ejemplo.invalid/almacen-tablas-abiertas",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "ab7694a407cfee801d93c073b4d967e7cf88ff4fe4cab64b789d71f64f44ac45"
+    },
+    {
+      "afirmacion": "A-24",
+      "url": "https://ejemplo.invalid/modelo-semantico",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "d69c27c7283d5f9460223f93664bcdc5bd8448d1eeccebad212bd287b93300e5"
+    },
+    {
+      "afirmacion": "A-25",
+      "url": "https://ejemplo.invalid/almacen-tablas-abiertas",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "ab7694a407cfee801d93c073b4d967e7cf88ff4fe4cab64b789d71f64f44ac45"
+    },
+    {
+      "afirmacion": "A-26",
+      "url": "https://ejemplo.invalid/catalogo-central",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "6660152c72d14a30d54bbcee278d0286eb26fb84d00ca8ec453563dcf71abfec"
+    },
+    {
+      "afirmacion": "A-27",
+      "url": "https://ejemplo.invalid/filtros-filas",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "192e1516e79ac69d89e7aad446139dc135a5cf3eb1414af2c127575ea8f75d4f"
+    },
+    {
+      "afirmacion": "A-28",
+      "url": "https://ejemplo.invalid/motor-transformacion",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "9016a352dd2201929043f2e1cfe31977efdcb4c4d0a67517b8aeefeaed3bf48b"
+    }
+  ]
+}

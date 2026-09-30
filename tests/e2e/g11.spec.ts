@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
+import { abrir } from "./lib/abrir";
 import { IDIOMAS, PUBLICADAS, RUTAS } from "./lib/rutas";
 
 // G11 del diagramador (CONTRATO § 2) en el producto, a 380 px y en los tres motores: esta spec corre en
@@ -14,7 +15,8 @@ async function problemas(page: Page, alcance: string): Promise<string[]> {
     const out: string[] = [];
     const familia = getComputedStyle(document.body).fontFamily.split(",")[0]!.replace(/"/g, "").trim();
     if (![...document.fonts].some((f) => f.family.replace(/"/g, "") === familia && f.status === "loaded")) out.push(`la fuente ${familia} no cargó`);
-    const pisa = (a: DOMRect, b: DOMRect) => a.x < b.x + b.width - 0.5 && a.x + a.width > b.x + 0.5 && a.y < b.y + b.height - 0.5 && a.y + a.height > b.y + 0.5;
+    const pisa = (a: DOMRect, b: DOMRect, vertical = 0.5) =>
+      a.x < b.x + b.width - 0.5 && a.x + a.width > b.x + 0.5 && a.y < b.y + b.height - vertical && a.y + a.height > b.y + vertical;
     const svgs = [...document.querySelectorAll<SVGSVGElement>(`${sel} svg.dg-svg[viewBox]`)].filter((s) => s.getClientRects().length > 0);
     if (svgs.length === 0) out.push(`sin dibujo visible en ${sel}`);
     for (const svg of svgs) {
@@ -38,7 +40,10 @@ async function problemas(page: Page, alcance: string): Promise<string[]> {
         if (!dentro(b, vb)) out.push(`«${t.txt}» sale del lienzo`);
         if (t.caja && !dentro(b, t.caja)) out.push(`«${t.txt}» se sale de su caja (${t.dueno})`);
         for (const c of cajas) if (c.dueno !== t.dueno && pisa(b, c.b)) out.push(`«${t.txt}» (${t.dueno}) pisa la caja de ${c.dueno}`);
-        for (const o of textos.slice(i + 1)) if (pisa(b, o.b)) out.push(`«${t.txt}» pisa «${o.txt}»`);
+        // Entre dos textos, lo que el navegador decide es el ANCHO (0,5 px). La altura de su caja es la caja de
+        // línea de la fuente, que el motor apila una pegada a la otra (G15: ascendente + descendente); Chromium
+        // la redondea a píxeles enteros y en Linux ese redondeo las solapa ~1 px sin que las letras se toquen.
+        for (const o of textos.slice(i + 1)) if (pisa(b, o.b, 1.5)) out.push(`«${t.txt}» pisa «${o.txt}»`);
       });
     }
     return out;
@@ -69,8 +74,7 @@ for (const idioma of IDIOMAS)
       for (let i = 0; i < n; i++) {
         const b = bloques.nth(i);
         const id = await b.getAttribute("data-dueno");
-        await b.dispatchEvent("click");
-        await expect(panel).toBeVisible();
+        await abrir(b, panel);
         expect(await desborde(page, "#panel-ficha .panel-cuerpo"), `ventana de ${id}`).toBeLessThanOrEqual(0);
         expect(await problemas(page, "#panel-ficha"), `ventana de ${id}`).toEqual([]);
         await page.keyboard.press("Escape");

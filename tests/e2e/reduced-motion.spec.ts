@@ -1,5 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
+import { abrir } from "./lib/abrir";
 import { RUTAS } from "./lib/rutas";
 
 // Movimiento reducido en el sitio entero (regla 5 del CLAUDE.md y contrapeso del ⭐ diferido): en cada ruta
@@ -42,8 +43,7 @@ for (const ruta of RUTAS)
     // Lo que se toca también se abre: la ventana de un bloque, la ficha de un componente o su paso.
     const activable = page.locator(".lienzo .dg-elem").first();
     if (await activable.count()) {
-      await activable.dispatchEvent("click");
-      await expect(page.locator("#panel-ficha")).toBeVisible();
+      await abrir(activable, page.locator("#panel-ficha"));
       await expect(page.locator("#panel-ficha h2")).toBeVisible();
     }
   });
