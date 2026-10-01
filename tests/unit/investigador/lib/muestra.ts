@@ -41,6 +41,7 @@ export function propuestaNorte(mapa: Mapa = mapaNorte()): Propuesta {
       ...mapa.nodos.map((n) => ({ id: `A-${++k}`, sobre: { entidad: "nodo" as const, id: n.id }, enunciado: { es: `Existe ${n.id}.`, en: `${n.id} exists.` }, cita: cita(n.id) })),
       ...mapa.flujos.map((f) => ({ id: `A-${++k}`, sobre: { entidad: "flujo" as const, id: f.id }, enunciado: { es: `Fluye ${f.id}.`, en: `${f.id} flows.` }, cita: cita(f.origen) })),
     ],
+    retiros: [],
     preguntas_guia: [{ pregunta: { es: "¿Hay auditoría de accesos?", en: "Is there access auditing?" }, respondida: false }],
     sin_novedades: false,
   };

@@ -54,6 +54,14 @@ En `propuestas/<AAAA-MM-DD>-<plataforma>[-<capa>]/propuesta.json` (fecha de hoy)
       "cita": { "url": "https://…", "texto": "<pasaje LITERAL de la página>", "titulo": "<título de la página>", "tipo": "oficial", "conflicto_de_interes": { "es": "…", "en": "…" } }
     }
   ],
+  "retiros": [
+    {
+      "id": "R-1",
+      "sobre": { "entidad": "nodo", "id": "<id que el mapa aprobado tiene y tu propuesta ya no>" },
+      "motivo": { "es": "<qué pasó: lo retiró el fabricante, se fusionó en otro, lo reemplazó…>", "en": "…" },
+      "cita": { "url": "https://…", "texto": "<pasaje LITERAL que lo prueba>", "titulo": "…", "tipo": "oficial", "conflicto_de_interes": { "es": "…", "en": "…" } }
+    }
+  ],
   "preguntas_guia": [ { "pregunta": { "es": "…", "en": "…" }, "respondida": true } ],
   "sin_novedades": false
 }
@@ -66,8 +74,13 @@ En `propuestas/<AAAA-MM-DD>-<plataforma>[-<capa>]/propuesta.json` (fecha de hoy)
 - Respeta los límites de la gramática; agrupa en bloques (el nivel 1 del atlas) los componentes de una capa.
 - Un recorrido de referencia (de una fuente a un tablero y a un agente) si la documentación lo permite.
 - `sin_novedades: true` solo si nada cambió respecto del mapa aprobado.
-- Lo que el mapa aprobado tiene y tu propuesta ya no trae se **retira**: la pantalla se lo muestra a la
-  persona y el comando de aprobación lo nombra. No retires nada sin decirlo en el resumen.
+- Lo que el mapa aprobado tiene y tu propuesta ya no trae se **retira**, y **nada sale sin su argumento**:
+  por cada componente que sale, y por cada flujo que sale con sus dos extremos todavía en el mapa, un
+  `retiros[]` con su `motivo` (es y en: qué pasó) y una cita **oficial** del fabricante que lo pruebe (una
+  nota de versión, un anuncio de retiro, la página que dice dónde quedó). El código verifica esa cita como
+  cualquier otra. Un flujo que sale porque sale uno de sus extremos no lo necesita: ese argumento lo da el
+  código. **Si no encuentras la prueba, no lo retires**: déjalo en el mapa y, si dudas de que siga, ponlo
+  como pregunta guía. Sin mapa aprobado (la primera propuesta), `retiros` va vacío.
 
 ## 4. Valida y verifica (código, no opinión)
 1. `node scripts/investigar/validar.mjs propuestas/<carpeta>` — corrige lo que diga; hasta 2 reintentos
@@ -77,11 +90,13 @@ En `propuestas/<AAAA-MM-DD>-<plataforma>[-<capa>]/propuesta.json` (fecha de hoy)
    `dibujo · …` es un texto que no cabe (una palabra más ancha que el bloque, un nombre de más líneas de
    las que tiene la ficha). Se corrige con un nombre más corto que diga lo mismo, en los dos idiomas; jamás
    quitando el componente.
-2. `node scripts/verificar-citas.mjs propuestas/<carpeta>` — baja cada página con curl y busca la cita.
+2. `node scripts/verificar-citas.mjs propuestas/<carpeta>` — baja cada página con curl y busca la cita
+   (la de cada afirmación y la de cada retiro). Un retiro cuya cita no aparece queda sin argumento y la
+   propuesta no se puede aprobar.
    Una cita «no-encontrada» casi siempre es un pasaje no literal: vuelve a abrir la página, cópialo
    exacto, o retira la afirmación. Vuelve a validar y a verificar.
 
 ## 5. Informa
-Termina con un resumen corto: cuántos componentes, flujos y afirmaciones; cuántas citas verificadas, no
+Termina con un resumen corto: cuántos componentes, flujos y afirmaciones; qué sale del mapa y por qué; cuántas citas verificadas, no
 verificables (revisión humana) y no encontradas; qué preguntas guía quedaron sin fuente; y que la
 aprobación la hace una persona en la pantalla del investigador (`/es/investigador/<plataforma>`).

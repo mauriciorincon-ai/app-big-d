@@ -1,6 +1,5 @@
 import {
   coberturaDeRangos,
-  diff,
   validate,
   type Gramatica,
   type Mapa,
@@ -9,6 +8,7 @@ import { aplicarDecisiones, sinAfirmacion } from "./decisiones";
 import { avisosDeDibujo } from "./dibujo";
 import type { Propuesta, Revision, Verificacion } from "./esquema";
 import { huella } from "./huella";
+import { argumentosDeRetiro, retirosDe } from "./retiros";
 
 // Núcleo de scripts/aprobar.mjs (solo humano, D-S1-10): de una propuesta verificada y la decisión de una
 // persona sale el mapa APROBADO y la línea de la revisión. Reglas:
@@ -20,6 +20,8 @@ import { huella } from "./huella";
 //     código); una «no verificable» solo entra si la persona la aprueba explícitamente;
 //   - lo que el mapa aprobado tenía y la propuesta ya no trae (retiros) lo nombra la persona con --retirar, y
 //     tiene que coincidir con el diff (M-21: un retiro no es una afirmación y no puede pasar sin verse);
+//   - y cada retiro trae su argumento: sale por arrastre (pierde un extremo) o con una cita verificada de SU URL;
+//     una cita «no encontrada» deja al retiro sin argumento y no se aprueba (pedido de la persona, 2026-09-30);
 //   - lo rechazado sale del mapa (con lo que depende de ello) y el resultado debe pasar el diagramador en modo
 //     publicación, sin alertas, y dibujarse hoy y al envejecer; si no pasa, no se escribe nada;
 //   - «sin novedades» solo si el contenido es idéntico al mapa aprobado Y la persona no rechazó nada (A-4: un
@@ -74,16 +76,6 @@ function siguienteVersion(anterior?: Mapa): string {
   return `${a}.${(b ?? 0) + 1}.0`;
 }
 
-/** Los componentes y flujos del aprobado que la propuesta ya no trae (un renombre no es un retiro). */
-export function retirosDe(
-  anterior: Mapa | undefined,
-  propuesto: Mapa,
-): string[] {
-  if (!anterior) return [];
-  const d = diff(anterior, propuesto);
-  return [...d.nodos.retirados, ...d.flujos.retirados].sort();
-}
-
 export function aprobar(e: Entrada): { mapa: Mapa; revision: Revision } {
   const fallas: string[] = [];
   if (e.ultimaPropuesta !== undefined && e.carpeta <= e.ultimaPropuesta)
@@ -130,6 +122,21 @@ export function aprobar(e: Entrada): { mapa: Mapa; revision: Revision } {
     fallas.push(
       `los retiros no coinciden con el diff: la propuesta retira [${retiros.join(", ") || "nada"}] y el comando dice --retirar ${pedidos.join(",") || "-"}`,
     );
+  fallas.push(
+    ...argumentosDeRetiro(e.anterior, propuesto, e.propuesta.retiros).fallas,
+  );
+  for (const r of e.propuesta.retiros) {
+    const v = resultado.get(r.id);
+    if (!v) fallas.push(`${r.id} no fue verificado`);
+    else if (v.url !== r.cita.url)
+      fallas.push(
+        `${r.id}: la verificación es de otra URL (${v.url}), no de su cita`,
+      );
+    else if (v.resultado === "no-encontrada")
+      fallas.push(
+        `${r.id}: su cita no aparece en la fuente; el retiro de «${r.sobre.id}» queda sin argumento: vuelve a investigar`,
+      );
+  }
   if (fallas.length) throw new ErrorDeAprobacion(fallas);
 
   const sinNovedades =

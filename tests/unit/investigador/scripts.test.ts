@@ -3,11 +3,11 @@
 // ficticia y páginas de fuente servidas desde disco (espejo file://): validar la propuesta, verificar sus
 // citas con curl y aprobar con la decisión de una persona. data/ y propuestas/ del repo no se tocan.
 import { spawnSync } from "node:child_process";
-import { existsSync, readFileSync, rmSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { afterAll, describe, expect, it } from "vitest";
 import { parse } from "yaml";
-import { PLATAFORMA, propuestaNorte, raizDePrueba } from "./lib/muestra";
+import { BASE, PLATAFORMA, propuestaNorte, raizDePrueba } from "./lib/muestra";
 
 // El script de aprobación se nombra por partes: el candado de la sesión vigila su nombre completo.
 const APROBAR = ["scripts", "apro" + "bar.mjs"].join("/");
@@ -84,6 +84,53 @@ describe("aprobar", () => {
     });
     expect(r.status).toBe(1);
     expect(r.stderr).toContain("BIGD_FECHA_APROBACION no es una fecha AAAA-MM-DD");
+  });
+});
+
+// Pedido de la persona al mirar la lista de retiros (2026-09-30): nada sale del mapa aprobado sin su argumento.
+describe("una segunda propuesta que retira un componente", () => {
+  const carpeta2 = `propuestas/2026-10-01-${PLATAFORMA}`;
+  const CITA = "The capacity monitor is retired and its metrics now live in the operations panel.";
+  const preparar = (conRetiro: boolean) => {
+    const aprobado = parse(readFileSync(join(raiz, "data/mapas", `${PLATAFORMA}.mapa.yaml`), "utf8"));
+    const sale = (f: { origen: string; destino: string }) => f.origen === "monitor-capacidad" || f.destino === "monitor-capacidad";
+    const mapa = { ...aprobado, estado: "propuesta", nodos: aprobado.nodos.filter((n: { id: string }) => n.id !== "monitor-capacidad"), flujos: aprobado.flujos.filter((f: { origen: string; destino: string }) => !sale(f)) };
+    const q = propuestaNorte(mapa);
+    if (conRetiro)
+      q.retiros = [
+        {
+          id: "R-1",
+          sobre: { entidad: "nodo", id: "monitor-capacidad" },
+          motivo: { es: "El fabricante lo retiró; sus métricas pasaron al panel de operación.", en: "The vendor retired it; its metrics moved to the operations panel." },
+          cita: { url: `${BASE}novedades`, texto: CITA, titulo: "Novedades", tipo: "oficial", conflicto_de_interes: q.afirmaciones[0]!.cita.conflicto_de_interes },
+        },
+      ];
+    mkdirSync(join(raiz, carpeta2), { recursive: true });
+    writeFileSync(join(raiz, carpeta2, "propuesta.json"), `${JSON.stringify(q, null, 2)}\n`);
+    writeFileSync(join(raiz, "paginas", "novedades"), `<!doctype html><html><body><main><h1>Novedades</h1><p>${"Texto de relleno de una página de novedades del fabricante. ".repeat(8)}</p><p>${CITA}</p></main></body></html>`);
+    return { q, flujos: aprobado.flujos.filter(sale).map((f: { id: string }) => f.id) };
+  };
+  it("sin retiro, validar lo rechaza y dice qué sale sin argumento", () => {
+    preparar(false);
+    const r = correr("scripts/investigar/validar.mjs", [carpeta2]);
+    expect(r.status).toBe(1);
+    expect(r.stderr).toContain("retiros · el componente «monitor-capacidad» sale del mapa sin argumento");
+  });
+  it("con su retiro: valida, su cita se verifica y la aprobación lo saca del mapa con sus flujos", () => {
+    const { q, flujos } = preparar(true);
+    const v = correr("scripts/investigar/validar.mjs", [carpeta2]);
+    expect(v.status, v.stderr).toBe(0);
+    const c = correr("scripts/verificar-citas.mjs", [carpeta2]);
+    expect(c.status, c.stderr).toBe(0);
+    expect(c.stdout).toContain(`${q.afirmaciones.length} afirmaciones y 1 retiros`);
+    const verif = JSON.parse(readFileSync(join(raiz, carpeta2, "verificacion.json"), "utf8"));
+    expect(verif.resultados.find((x: { afirmacion: string }) => x.afirmacion === "R-1")).toMatchObject({ resultado: "verificada", url: `${BASE}novedades` });
+    const ids = q.afirmaciones.map((a) => a.id).join(",");
+    const r = correr(APROBAR, [carpeta2, "--aprobar", ids, "--rechazar", "-", "--retirar", ["monitor-capacidad", ...flujos].join(",")]);
+    expect(r.status, r.stderr).toBe(0);
+    const mapa = parse(readFileSync(join(raiz, "data/mapas", `${PLATAFORMA}.mapa.yaml`), "utf8"));
+    expect(mapa.nodos.some((n: { id: string }) => n.id === "monitor-capacidad")).toBe(false);
+    expect(mapa.version).toBe("0.2.0");
   });
 });
 

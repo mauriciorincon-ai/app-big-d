@@ -2,13 +2,74 @@
 
 import { useMemo, useState } from "react";
 import { comandoAprobar } from "@/lib/investigador/comando";
-import type { AfirmacionVista, PropuestaVista } from "@/lib/investigador/revision";
+import type { AfirmacionVista, CitaVista, PropuestaVista, RetiroVista, VerificacionVista } from "@/lib/investigador/revision";
 import type { Textos } from "@/lib/i18n";
-import { plural } from "@/lib/atlas/plantilla";
+import { plantilla, plural } from "@/lib/atlas/plantilla";
 import { Comando } from "./Copiar";
 
 type T = Textos["investigador"];
+type TP = T["propuesta"];
 type Decision = "aprobada" | "rechazada" | undefined;
+
+/** La cita con su verificación por código: la misma pieza en una afirmación y en un retiro. */
+function Evidencia({ cita, v, tp, extra }: { cita: CitaVista; v: VerificacionVista; tp: TP; extra?: string }) {
+  return (
+    <>
+      <blockquote className={`evidencia-cita${v?.resultado === "verificada" ? "" : " evidencia-no-verificada"}`} lang="">
+        «{cita.texto}»
+      </blockquote>
+      <span className="verif">
+        <b>{!v ? tp.estado.porDecidir : v.resultado === "verificada" ? tp.verif.verificada : v.resultado === "no-encontrada" ? tp.verif.noEncontrada : tp.verif.noVerificable}</b>
+        {v && (
+          <span className="mono">
+            curl · {v.http ?? "—"}
+            {v.sha256 ? ` · sha256 ${v.sha256.slice(0, 8)}…` : ""}
+            {v.motivo ? ` · ${v.motivo}` : ""}
+            {extra ? ` · ${extra}` : ""}
+          </span>
+        )}
+      </span>
+    </>
+  );
+}
+
+function Fuente({ cita, tp }: { cita: CitaVista; tp: TP }) {
+  return (
+    <>
+      <a href={cita.url} rel="noreferrer noopener" target="_blank">
+        {cita.titulo}
+      </a>
+      <span className="mono">
+        {tp.tipoFuente[cita.tipo]} · {cita.conflicto}
+      </span>
+    </>
+  );
+}
+
+/** Un retiro y por qué sale: su motivo con la cita que lo prueba, o el extremo que se lleva al flujo. */
+function Retiro({ r, tp }: { r: RetiroVista; tp: TP }) {
+  const a = r.argumento;
+  return (
+    <li data-retiro={r.id} data-argumento={a.tipo}>
+      <p className="retiro-cabecera">
+        <span className="diff-marca">{tp.entidad[r.entidad]}</span> <b>{r.nombre}</b> <span className="mono">{r.id}</span>
+      </p>
+      {a.tipo === "arrastre" ? (
+        <p className="retiro-porque">{a.por.length > 1 ? plantilla(tp.retiros.arrastreDos, { a: a.por[0]!, b: a.por[1]! }) : plantilla(tp.retiros.arrastreUno, { a: a.por[0]! })}</p>
+      ) : (
+        <>
+          <p className="retiro-porque">
+            <span className="cod">{a.id}</span> {a.motivo}
+          </p>
+          <Evidencia cita={a.cita} v={a.verificacion} tp={tp} extra={a.verificacion?.resultado === "no-encontrada" ? tp.retiros.sinArgumento : undefined} />
+          <p className="retiro-fuente">
+            <Fuente cita={a.cita} tp={tp} />
+          </p>
+        </>
+      )}
+    </li>
+  );
+}
 
 /**
  * Revisión afirmación por afirmación (maqueta: `investigador.html`, estado «propuesta con cambios»). La
@@ -34,6 +95,8 @@ export function RevisionPropuesta({ carpeta, afirmaciones, retiros = [], t }: { 
   const faltan = afirmaciones.filter((a) => !decision[a.id]).length;
   const aprobadas = afirmaciones.filter((a) => decision[a.id] === "aprobada").map((a) => a.id);
   const rechazadas = afirmaciones.filter((a) => decision[a.id] === "rechazada").map((a) => a.id);
+  // Un retiro cuya cita el código no encontró no tiene argumento: `aprobar` lo rechazaría, así que no se arma el comando.
+  const sinArgumento = retiros.some((r) => r.argumento.tipo === "cita" && r.argumento.verificacion?.resultado === "no-encontrada");
 
   return (
     <>
@@ -63,27 +126,9 @@ export function RevisionPropuesta({ carpeta, afirmaciones, retiros = [], t }: { 
                     {/* De qué habla (M-20): rechazarla retira ESE componente o flujo del mapa. */}
                     <p className="afirmacion-sobre">{a.nombre}</p>
                     <p className="evidencia-afirma">{a.enunciado}</p>
-                    <blockquote className={`evidencia-cita${v?.resultado === "verificada" ? "" : " evidencia-no-verificada"}`} lang="">
-                      «{a.cita.texto}»
-                    </blockquote>
-                    <span className="verif">
-                      <b>{!v ? tp.estado.porDecidir : v.resultado === "verificada" ? tp.verif.verificada : v.resultado === "no-encontrada" ? tp.verif.noEncontrada : tp.verif.noVerificable}</b>
-                      {v && (
-                        <span className="mono">
-                          curl · {v.http ?? "—"}
-                          {v.sha256 ? ` · sha256 ${v.sha256.slice(0, 8)}…` : ""}
-                          {v.motivo ? ` · ${v.motivo}` : ""}
-                          {porCodigo ? ` · ${tp.verif.rechazadaPorCodigo}` : ""}
-                        </span>
-                      )}
-                    </span>
+                    <Evidencia cita={a.cita} v={v} tp={tp} extra={porCodigo ? tp.verif.rechazadaPorCodigo : undefined} />
                     <footer>
-                      <a href={a.cita.url} rel="noreferrer noopener" target="_blank">
-                        {a.cita.titulo}
-                      </a>
-                      <span className="mono">
-                        {tp.tipoFuente[a.cita.tipo]} · {a.cita.conflicto}
-                      </span>
+                      <Fuente cita={a.cita} tp={tp} />
                       {!porCodigo && (
                         <span className="decidir" role="group" aria-label={a.id}>
                           <button type="button" className="boton" aria-pressed={d === "aprobada"} onClick={() => setDecision((x) => ({ ...x, [a.id]: "aprobada" }))}>
@@ -109,16 +154,16 @@ export function RevisionPropuesta({ carpeta, afirmaciones, retiros = [], t }: { 
           <p className="kit-nota">{tp.retiros.nota}</p>
           <ul className="retiros-lista">
             {retiros.map((r) => (
-              <li key={r.id} data-retiro={r.id}>
-                <span className="diff-marca">{tp.entidad[r.entidad]}</span> <b>{r.nombre}</b> <span className="mono">{r.id}</span>
-              </li>
+              <Retiro key={r.id} r={r} tp={tp} />
             ))}
           </ul>
         </section>
       )}
       <section className="aprobar" aria-labelledby="aprobar-t">
         <h3 id="aprobar-t">{tp.comandoTitulo}</h3>
-        {faltan ? (
+        {sinArgumento ? (
+          <p className="kit-nota">{tp.retiros.bloquea}</p>
+        ) : faltan ? (
           <p className="kit-nota" aria-live="polite">
             {plural(tp.faltan, faltan)}
           </p>

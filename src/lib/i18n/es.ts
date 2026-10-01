@@ -181,7 +181,11 @@ export const es: Textos = {
       comandoNota: "Solo una persona lo corre, en su propia terminal abierta en la carpeta del proyecto (dentro de Claude Code el script se niega); la IA no puede. El mapa aprobado entra a data/mapas/ y el atlas lo publica en el siguiente build.",
       retiros: {
         titulo: "Se retiran del mapa",
-        nota: "No son afirmaciones: el mapa aprobado los tiene y esta propuesta ya no. Si apruebas, salen del mapa; el comando los nombra.",
+        nota: "No son afirmaciones: el mapa aprobado los tiene y esta propuesta ya no. Cada uno dice por qué sale: con una cita de la documentación del fabricante que el código verificó, o porque sale uno de sus extremos. Si apruebas, salen del mapa; el comando los nombra.",
+        arrastreUno: "Sale porque también sale «{a}»: un flujo no se queda sin uno de sus extremos.",
+        arrastreDos: "Sale porque también salen sus dos extremos, «{a}» y «{b}».",
+        sinArgumento: "el retiro queda sin argumento",
+        bloquea: "Un retiro no tiene argumento: su cita no aparece en la fuente. Esta propuesta no se puede aprobar; vuelve a correr /investigar.",
       },
       preguntas: "Preguntas guía",
       respondida: "respondida",

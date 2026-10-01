@@ -74,4 +74,8 @@ S1 phase 3 (the Fabric map approved claim by claim) is where the experience is j
 - **The S1 audit hardened the human stop** (findings A-1…A-4, M-15…M-22): the model now writes only its
   `propuesta.json`, the approval refuses to run inside a Claude Code session, retirements are named in the
   command, and «no news» can no longer bypass a rejection or the one-quote-per-claim rule.
+- **Nothing leaves the map without an argument** (the person's request at the removals look, 2026-09-30,
+  D-S1-56): a component, or a flow whose two ends stay, leaves only with an official quote that the code
+  verifies; a flow that loses one of its ends leaves with the code's own argument. Without the proof, the model
+  keeps the element and asks a guiding question.
 

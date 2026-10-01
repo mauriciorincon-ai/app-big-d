@@ -402,7 +402,8 @@ dibuja los niveles 1 y 2 de los dos mapas bilingües y mide cada `tspan` con `ge
     dice «el motor entrega el contenido» sin nombrar la función; y `TextosMotor.ficha` para sus títulos.
 19. **Contrato de la propuesta** — El contrato del diagramador no dice cómo se propone un mapa; el esquema de
     Big-D (`src/lib/investigador/esquema.ts`: afirmación = entidad + id + cita literal; rechazar = sacar del mapa
-    en cascada) sirve de base si otro consumidor necesita el mismo flujo.
+    en cascada; retiro = lo que sale del aprobado, con motivo y cita oficial verificada, salvo el flujo que sale
+    por arrastre, D-S1-56) sirve de base si otro consumidor necesita el mismo flujo.
 17. **Leyenda (§ 4.9)** — La regla del haz («varios modos en una conexión: línea gruesa y una etiqueta que dice
     cuáles, en orden») es gramática, no copy de la app: debería salir en la leyenda generada.
 20. **D-S1-49 — Canal con más de 6 pistas** — § 5.3 da 6 posiciones fijas; el primer mapa real pide 7 en un canal
@@ -1143,10 +1144,54 @@ estándar pide 2500). Categorías ≥ 90 en las 15 (96–98 / 100 / 100 / 100). 
    gusta la señal de envejecimiento pero quiero el símbolo del triángulo de precaución […] ¿y cómo se vería el de 90
    días?». Se cambió la marca (D-S1-55) en la insignia, la leyenda y la píldora del encabezado, y se sirvieron las
    dos edades. La persona: **«Sí, están perfectos 30 y 90 días»**. Aprobada.
-2. **M-20, la cabecera de cada afirmación** — pendiente.
-3. **M-21, la lista de retiros** — pendiente.
+2. **M-20, la cabecera de cada afirmación** (2026-09-30, propuesta de muestra de la Plataforma Ejemplo servida en
+   `/es/investigador/plataforma-ejemplo`; la línea en negrita bajo «A-3 · componente · sin cambio» nombra el
+   componente, o «origen → destino» si es un flujo). Pregunta: «¿Se entiende sobre qué componente es cada
+   afirmación?». La persona: **«sí»**. Aprobada.
+3. **M-21, la lista de retiros** (2026-09-30, la misma propuesta de muestra: «Se retiran del mapa · 2», el
+   componente «Monitor de consumo» y el flujo que llegaba a él). Pregunta: «¿Se entiende qué sale del mapa si
+   apruebas esta propuesta?». La persona: **«Sí, pero intenta siempre que se plantee un argumento sólido, que no
+   queden dudas de por qué sale»**. Aprobada con un pedido, que se cumplió el mismo día (D-S1-56, abajo) y
+   viaja al gate del ciclo como segunda vuelta, sin parada propia.
 4. **M-5, la nota de marcas** — pendiente.
 5. **M-5, el estado vacío en contexto** — pendiente.
+
+### D-S1-56 — Ningún retiro sin argumento (pedido de la persona en la mirada M-21)
+
+Un retiro (algo que el mapa aprobado tiene y la propuesta ya no) solo sale con su argumento, y el código lo exige:
+- **Por arrastre:** un flujo que pierde uno de sus extremos sale porque sale ese extremo; ese argumento lo da el
+  código y la pantalla lo dice («Sale porque también sale «Monitor de consumo»: un flujo no se queda sin uno de
+  sus extremos»).
+- **Con cita:** todo lo demás (un componente, o un flujo cuyos dos extremos siguen) trae un `retiros[]` en la
+  propuesta: `R-n`, `sobre`, `motivo` {es, en} y una cita **oficial** de al menos 40 caracteres.
+  `verificar-citas` la comprueba como a la de una afirmación.
+- **Dónde se exige:** `validarPropuesta` (con el mapa aprobado a la vista: el script `validar.mjs` y el hook de
+  fin lo leen de `data/mapas/`) falla con «retiros · el componente «x» sale del mapa sin argumento…». También
+  falla un retiro de algo que no sale, uno repetido o uno con fuente de tercero. `aprobar` exige además la
+  verificación de cada `R-n`, de su misma URL. Una cita «no encontrada» deja al retiro sin argumento y la
+  aprobación no procede.
+- **La pantalla:** cada retiro muestra su motivo, la cita, su verificación y la fuente (o la frase del
+  arrastre). Primero van los que prueba una cita. Si un retiro queda sin argumento, en lugar del comando aparece
+  «Esta propuesta no se puede aprobar; vuelve a correr /investigar».
+- **La IA:** la skill y el agente aprenden la regla: «si no encuentras la prueba, no lo retires; la duda va como
+  pregunta guía».
+- **Archivos:**
+  - nuevo `src/lib/investigador/retiros.ts` (`retirosDe` se mudó aquí desde `aprobar.ts`);
+  - `esquema.ts` (`esquemaRetiro`; `retiros` con valor por omisión `[]`, así la propuesta cerrada de Fabric
+    sigue valiendo);
+  - `validar.ts`, `aprobar.ts`, `revision.ts`, `RevisionPropuesta.tsx`, diccionarios, `investigador.css`,
+    `verificar-citas.mjs`, `investigar/validar.mjs`, `hooks/validar-al-terminar.mjs`, `SKILL.md`,
+    `investigador.md` y el manual ES/EN.
+- **Gates (¿puede fallar? · rojo · a quién nombró · verde):**
+  - `nucleo.test`: sí. Rojo 5/26 con el código anterior: un componente que sale sin retiro validaba sin fallas;
+    un retiro de tercero, repetido o de algo que no sale pasaba; la aprobación no miraba la cita del retiro.
+    Verde 26/26.
+  - `ui/revision-propuesta.test`: rojo 3/6 con el componente anterior (sin motivo, sin cita y sin frase de
+    arrastre; armaba el comando con un retiro sin argumento). Verde 6/6.
+  - `revision.test` y `scripts.test` de punta a punta: una segunda propuesta que retira un componente (validar,
+    verificar y aprobar en una raíz temporal). Verdes 13/13 y 10/10.
+  - El gate de deriva del kit dio rojo, porque la muestra gana `"retiros": []`. Se regeneró con su receta: dos
+    líneas en `docs/kit-de-prueba/`.
 
 ### Lo que falta
 
@@ -1168,6 +1213,7 @@ estándar pide 2500). Categorías ≥ 90 en las 15 (96–98 / 100 / 100 / 100). 
 - **M-15:** la prueba del script lo corre sin `BIGD_RAIZ`, con `CLAUDECODE` y sobre una carpeta que no existe, para
   que ni un fallo de la guarda pueda tocar el repo.
 - **D-S1-55**, fuera del plan de pagos: la marca de «por revisar» cambió por pedido de la persona en la mirada de C-1.
+- **D-S1-56**, fuera del plan de pagos: todo retiro con su argumento, por pedido de la persona en la mirada de M-21.
 
 ## Desviación del plan
 

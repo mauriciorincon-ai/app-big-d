@@ -29,6 +29,20 @@ export const esquemaAfirmacion = z.strictObject({
   cita: esquemaCita,
 });
 
+/**
+ * Un retiro: algo que el mapa aprobado tiene y esta propuesta ya no trae, con su argumento (pedido de la persona al
+ * mirar la lista de retiros, 2026-09-30: «que no queden dudas de por qué sale»). El motivo dice qué pasó (el
+ * fabricante lo retiró, lo fusionó en otro, lo reemplazó) y la cita, de su documentación, lo prueba; el código la
+ * verifica como a toda cita. Un flujo que sale porque sale uno de sus extremos no lo necesita (src/lib/investigador/
+ * retiros.ts).
+ */
+export const esquemaRetiro = z.strictObject({
+  id: z.string().regex(/^R-[1-9]\d*$/, "id R-1, R-2…"),
+  sobre: z.strictObject({ entidad: z.enum(["nodo", "flujo"]), id }),
+  motivo: textoIdioma,
+  cita: esquemaCita,
+});
+
 export const esquemaPropuesta = z.strictObject({
   version: z.literal(1),
   plataforma: id,
@@ -45,6 +59,8 @@ export const esquemaPropuesta = z.strictObject({
   /** El mapa propuesto completo (estado «propuesta»); lo valida el diagramador. */
   mapa: z.record(z.string(), z.unknown()),
   afirmaciones: z.array(esquemaAfirmacion),
+  /** Sin la clave, ninguno: la propuesta de Fabric (2026-09-27, la primera) no la trae. */
+  retiros: z.array(esquemaRetiro).default([]),
   preguntas_guia: z.array(z.strictObject({ pregunta: textoIdioma, respondida: z.boolean() })),
   sin_novedades: z.boolean(),
 });
@@ -60,6 +76,7 @@ export const esquemaVerificacion = z.strictObject({
   propuesta_sha256: z.string().regex(/^[0-9a-f]{64}$/),
   resultados: z.array(
     z.strictObject({
+      /** El id de la afirmación (A-n) o del retiro (R-n) cuya cita se verificó. */
       afirmacion: z.string(),
       url: z.string(),
       resultado: z.enum(RESULTADOS),
@@ -83,5 +100,6 @@ export const esquemaRevision = z.strictObject({
 
 export type Propuesta = z.infer<typeof esquemaPropuesta>;
 export type Afirmacion = z.infer<typeof esquemaAfirmacion>;
+export type Retiro = z.infer<typeof esquemaRetiro>;
 export type Verificacion = z.infer<typeof esquemaVerificacion>;
 export type Revision = z.infer<typeof esquemaRevision>;

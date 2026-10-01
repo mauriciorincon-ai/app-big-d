@@ -5,8 +5,8 @@ import type { Atlas, Datos, Plataforma } from "@/lib/datos";
 import type { Idioma, Textos } from "@/lib/i18n";
 import { plantilla } from "@/lib/atlas/plantilla";
 import { textosMotor } from "@/lib/atlas";
-import { esquemaPropuesta, esquemaRevision, esquemaVerificacion, type Resultado, type Revision } from "./esquema";
-import { retirosDe } from "./aprobar";
+import { esquemaPropuesta, esquemaRevision, esquemaVerificacion, type Propuesta, type Resultado, type Revision, type Verificacion } from "./esquema";
+import { argumentosDeRetiro } from "./retiros";
 import { huella, sha256 } from "./huella";
 import { validarPropuesta } from "./validar";
 
@@ -26,6 +26,27 @@ export interface BandaVigencia {
 
 export type Cambio = "nuevo" | "renombrado" | "madurez" | "cambiado" | "igual";
 
+/** La verificación de una cita, como la lee la pantalla. */
+export type VerificacionVista = { resultado: Resultado; http: number | null; sha256: string | null; motivo?: string } | null;
+export interface CitaVista {
+  texto: string;
+  url: string;
+  titulo: string;
+  tipo: "oficial" | "tercero";
+  conflicto: string;
+}
+
+/**
+ * Lo que el mapa aprobado tiene y la propuesta ya no trae (M-21), con su argumento (pedido de la persona,
+ * 2026-09-30): sale por arrastre (pierde uno de sus extremos, que también sale) o con su motivo y su cita.
+ */
+export interface RetiroVista {
+  id: string;
+  entidad: "nodo" | "flujo";
+  nombre: string;
+  argumento: { tipo: "arrastre"; por: string[] } | { tipo: "cita"; id: string; motivo: string; cita: CitaVista; verificacion: VerificacionVista };
+}
+
 export interface AfirmacionVista {
   id: string;
   entidad: "nodo" | "flujo";
@@ -33,8 +54,8 @@ export interface AfirmacionVista {
   /** De qué habla, como lo lee la persona: el nombre del componente, u «origen → destino» (M-20). */
   nombre: string;
   enunciado: string;
-  cita: { texto: string; url: string; titulo: string; tipo: "oficial" | "tercero"; conflicto: string };
-  verificacion: { resultado: Resultado; http: number | null; sha256: string | null; motivo?: string } | null;
+  cita: CitaVista;
+  verificacion: VerificacionVista;
   cambio: Cambio;
 }
 
@@ -53,7 +74,7 @@ export interface PropuestaVista {
   diff: { primera: boolean; nuevos: number; renombrados: number; retirados: number; madurez: number };
   afirmaciones: AfirmacionVista[];
   /** Lo que el mapa aprobado tiene y la propuesta ya no trae: no son afirmaciones, se retiran si se aprueba (M-21). */
-  retiros: { id: string; entidad: "nodo" | "flujo"; nombre: string }[];
+  retiros: RetiroVista[];
   preguntas: { pregunta: string; respondida: boolean }[];
 }
 
@@ -170,7 +191,7 @@ export function vistaInvestigador(d: Datos, id: string, idioma: Idioma, fecha: s
   const cob = rangos ?? JSON.parse(readFileSync(join(raiz, "packages/diagramador/metricas/cobertura.json"), "utf8")).fuentes["space-grotesk"].rangos;
   const gramatica = atlas?.gramatica ?? [...d.atlas.values()][0]?.gramatica;
   const fallas = [
-    ...(!forma.success ? forma.error.issues.map((i) => `${i.path.join(".") || "/"} · ${i.message}`) : gramatica ? validarPropuesta(dato, gramatica, cob).fallas : ["no hay gramática cargada"]),
+    ...(!forma.success ? forma.error.issues.map((i) => `${i.path.join(".") || "/"} · ${i.message}`) : gramatica ? validarPropuesta(dato, gramatica, cob, atlas?.mapa).fallas : ["no hay gramática cargada"]),
     // Si el hook de fin se rindió, lo que dejó escrito también se muestra (B-45).
     ...erroresDeValidacion(dir),
   ];
@@ -190,7 +211,7 @@ export function vistaInvestigador(d: Datos, id: string, idioma: Idioma, fecha: s
     fallas,
     verificada,
     ...(verificada && verif?.success ? { fechaVerificacion: verif.data.fecha } : {}),
-    fuentes: new Set(p?.afirmaciones.map((a) => a.cita.url) ?? []).size,
+    fuentes: new Set([...(p?.afirmaciones ?? []), ...(p?.retiros ?? [])].map((a) => a.cita.url)).size,
     diff: dif
       ? { primera: false, nuevos: dif.nodos.nuevos.length, renombrados: dif.nodos.renombrados.length, retirados: dif.nodos.retirados.length, madurez: dif.nodos.madurez.length }
       : { primera: !atlas, nuevos: propuesto?.nodos.length ?? 0, renombrados: 0, retirados: 0, madurez: 0 },
@@ -204,22 +225,38 @@ export function vistaInvestigador(d: Datos, id: string, idioma: Idioma, fecha: s
               sobre: a.sobre.id,
               nombre: nombreDe(propuesto, a.sobre.entidad, a.sobre.id, idioma),
               enunciado: a.enunciado[idioma],
-              cita: { texto: a.cita.texto, url: a.cita.url, titulo: a.cita.titulo, tipo: a.cita.tipo, conflicto: a.cita.conflicto_de_interes[idioma] },
-              verificacion: r ? { resultado: r.resultado, http: r.http, sha256: r.sha256, ...(r.motivo ? { motivo: r.motivo } : {}) } : null,
+              cita: citaDe(a.cita, idioma),
+              verificacion: verificacionDe(r),
               cambio: cambioDe(a.sobre.entidad, a.sobre.id, atlas?.mapa, propuesto, dif),
             };
           })
         : [],
-    retiros:
-      atlas && propuesto && !fallas.length
-        ? retirosDe(atlas.mapa, propuesto).map((x) => {
-            const entidad = atlas.mapa.nodos.some((n) => n.id === x) ? ("nodo" as const) : ("flujo" as const);
-            return { id: x, entidad, nombre: nombreDe(atlas.mapa, entidad, x, idioma) };
-          })
-        : [],
+    retiros: atlas && p && propuesto && !fallas.length ? retirosVista(atlas.mapa, propuesto, p.retiros, resultado, idioma) : [],
     preguntas: p?.preguntas_guia.map((q) => ({ pregunta: q.pregunta[idioma], respondida: q.respondida })) ?? [],
   };
   return vista;
+}
+
+function citaDe(c: Propuesta["afirmaciones"][number]["cita"], idioma: Idioma): CitaVista {
+  return { texto: c.texto, url: c.url, titulo: c.titulo, tipo: c.tipo, conflicto: c.conflicto_de_interes[idioma] };
+}
+
+function verificacionDe(r: Verificacion["resultados"][number] | undefined): VerificacionVista {
+  return r ? { resultado: r.resultado, http: r.http, sha256: r.sha256, ...(r.motivo ? { motivo: r.motivo } : {}) } : null;
+}
+
+/** Los retiros con su argumento: primero los que prueba una cita, después los que salen por arrastre. */
+function retirosVista(anterior: Mapa, propuesto: Mapa, retiros: Propuesta["retiros"], resultado: Map<string, Verificacion["resultados"][number]>, idioma: Idioma): RetiroVista[] {
+  const { argumentos } = argumentosDeRetiro(anterior, propuesto, retiros);
+  const vista = [...argumentos].map(([x, a]): RetiroVista => {
+    const entidad = anterior.nodos.some((n) => n.id === x) ? ("nodo" as const) : ("flujo" as const);
+    const nombre = nombreDe(anterior, entidad, x, idioma);
+    if (a.tipo === "arrastre") return { id: x, entidad, nombre, argumento: { tipo: "arrastre", por: a.por.map((n) => nombreDe(anterior, "nodo", n, idioma)) } };
+    const r = a.retiro;
+    return { id: x, entidad, nombre, argumento: { tipo: "cita", id: r.id, motivo: r.motivo[idioma], cita: citaDe(r.cita, idioma), verificacion: verificacionDe(resultado.get(r.id)) } };
+  });
+  const clave = (r: RetiroVista) => (r.argumento.tipo === "cita" ? `0 ${r.argumento.id.padStart(8, "0")}` : `1 ${r.id}`);
+  return vista.sort((a, b) => (clave(a) < clave(b) ? -1 : clave(a) > clave(b) ? 1 : 0));
 }
 
 /** Conteo de las afirmaciones por resultado de la verificación. */

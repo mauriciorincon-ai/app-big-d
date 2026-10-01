@@ -113,6 +113,16 @@ describe("vista del investigador", () => {
   });
 });
 
+const URL_RETIRO = "https://ejemplo.invalid/novedades";
+const CITA_RETIRO = "This component is retired and no longer part of the platform.";
+const SIN_ARGUMENTO = (que: string, id: string) => `retiros · ${que} «${id}» sale del mapa sin argumento: agrega un retiro con su motivo y una cita que lo pruebe, o devuélvelo al mapa`;
+const retiro = (id: string, entidad: "nodo" | "flujo", sobre: string) => ({
+  id,
+  sobre: { entidad, id: sobre },
+  motivo: { es: `El fabricante retiró ${sobre}.`, en: `The vendor retired ${sobre}.` },
+  cita: { url: URL_RETIRO, texto: CITA_RETIRO, titulo: "Novedades", tipo: "oficial" as const, conflicto_de_interes: { es: "fabricante", en: "vendor" } },
+});
+
 describe("cambios contra un mapa aprobado", () => {
   // Una propuesta sobre la Plataforma Ejemplo (que ya tiene mapa): un renombre, un cambio de madurez, un nodo
   // con otra frase, un flujo cambiado y uno nuevo; el resto igual.
@@ -152,16 +162,44 @@ describe("cambios contra un mapa aprobado", () => {
     expect(p.retiros).toEqual([]);
   });
 
-  it("M-21: lo que la propuesta ya no trae se lista como retiro, con su nombre", () => {
+  it("M-21: lo que la propuesta ya no trae se lista como retiro, con su nombre y el motivo que lo prueba", () => {
     const sin = structuredClone(JSON.parse(readFileSync(join(dir, "propuesta.json"), "utf8")));
     sin.mapa.flujos = sin.mapa.flujos.filter((f: { id: string }) => f.id !== "f-motor-monitor");
     sin.afirmaciones = sin.afirmaciones.filter((a: { sobre: { id: string } }) => a.sobre.id !== "f-motor-monitor");
     writeFileSync(join(dir, "propuesta.json"), JSON.stringify(sin));
-    const v = vistaInvestigador(cargarDatos(join(r2, "data"), REPO), "plataforma-ejemplo", "es", "2026-10-20", r2, RANGOS).propuesta!;
+    const leer = () => vistaInvestigador(cargarDatos(join(r2, "data"), REPO), "plataforma-ejemplo", "es", "2026-10-20", r2, RANGOS).propuesta!;
+    // Sin argumento no hay retiro que mostrar: la propuesta falla (pedido de la persona, 2026-09-30).
+    expect(leer().fallas).toEqual([SIN_ARGUMENTO("el flujo", "f-motor-monitor")]);
+    expect(leer().retiros).toEqual([]);
+    writeFileSync(join(dir, "propuesta.json"), JSON.stringify({ ...sin, retiros: [retiro("R-1", "flujo", "f-motor-monitor")] }));
+    const v = leer();
     expect(v.fallas).toEqual([]);
     const f = m.flujos.find((x) => x.id === "f-motor-monitor")!;
     const nombre = (id: string) => m.nodos.find((n) => n.id === id)!.nombre.es;
-    expect(v.retiros).toEqual([{ id: "f-motor-monitor", entidad: "flujo", nombre: `${nombre(f.origen)} → ${nombre(f.destino)}` }]);
+    expect(v.retiros).toEqual([
+      {
+        id: "f-motor-monitor",
+        entidad: "flujo",
+        nombre: `${nombre(f.origen)} → ${nombre(f.destino)}`,
+        argumento: { tipo: "cita", id: "R-1", motivo: "El fabricante retiró f-motor-monitor.", cita: { texto: CITA_RETIRO, url: URL_RETIRO, titulo: "Novedades", tipo: "oficial", conflicto: "fabricante" }, verificacion: null },
+      },
+    ]);
+  });
+
+  it("un componente que sale trae su cita; sus flujos salen por arrastre y se listan después", () => {
+    const sin = structuredClone(JSON.parse(readFileSync(join(dir, "propuesta.json"), "utf8")));
+    const fuera = (x: { origen?: string; destino?: string }) => x.origen === "monitor-capacidad" || x.destino === "monitor-capacidad";
+    // Los del mapa APROBADO: son los que salen (la prueba anterior ya dejó la propuesta sin f-motor-monitor).
+    const flujosFuera = m.flujos.filter(fuera).map((f) => f.id);
+    sin.mapa.nodos = sin.mapa.nodos.filter((n: { id: string }) => n.id !== "monitor-capacidad");
+    sin.mapa.flujos = sin.mapa.flujos.filter((f: { id: string; origen: string; destino: string }) => !fuera(f));
+    sin.afirmaciones = sin.afirmaciones.filter((a: { sobre: { id: string } }) => a.sobre.id !== "monitor-capacidad" && !flujosFuera.includes(a.sobre.id));
+    writeFileSync(join(dir, "propuesta.json"), JSON.stringify({ ...sin, retiros: [retiro("R-1", "nodo", "monitor-capacidad")] }));
+    const v = vistaInvestigador(cargarDatos(join(r2, "data"), REPO), "plataforma-ejemplo", "es", "2026-10-20", r2, RANGOS).propuesta!;
+    expect(v.fallas).toEqual([]);
+    const monitor = m.nodos.find((n) => n.id === "monitor-capacidad")!.nombre.es;
+    expect(v.retiros.map((r) => [r.id, r.argumento.tipo])).toEqual([["monitor-capacidad", "cita"], ...flujosFuera.sort().map((id: string) => [id, "arrastre"])]);
+    expect(v.retiros.slice(1).every((r) => r.argumento.tipo === "arrastre" && r.argumento.por.join() === monitor)).toBe(true);
   });
 
   it("una propuesta que no es JSON se muestra con la falla", () => {

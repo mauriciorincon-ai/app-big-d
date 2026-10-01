@@ -181,7 +181,11 @@ export const en: Textos = {
       comandoNota: "Only a person runs it, in their own terminal opened in the project folder (inside Claude Code the script refuses); the AI cannot. The approved map goes into data/mapas/ and the atlas publishes it on the next build.",
       retiros: {
         titulo: "Removed from the map",
-        nota: "These are not claims: the approved map has them and this proposal no longer does. If you approve, they leave the map; the command names them.",
+        nota: "These are not claims: the approved map has them and this proposal no longer does. Each one says why it leaves: with a quote from the vendor's documentation that the code verified, or because one of its ends leaves. If you approve, they leave the map; the command names them.",
+        arrastreUno: "It leaves because “{a}” leaves too: a flow cannot keep only one of its ends.",
+        arrastreDos: "It leaves because both its ends leave too, “{a}” and “{b}”.",
+        sinArgumento: "the removal is left without an argument",
+        bloquea: "A removal has no argument: its quote is not in the source. This proposal cannot be approved; run /investigar again.",
       },
       preguntas: "Guiding questions",
       respondida: "answered",

@@ -112,7 +112,8 @@ export interface Textos {
       faltan: readonly [string, string];
       comandoTitulo: string;
       comandoNota: string;
-      retiros: { titulo: string; nota: string };
+      /** Lo que sale del mapa aprobado, cada uno con su argumento (pedido de la persona, 2026-09-30). */
+      retiros: { titulo: string; nota: string; arrastreUno: string; arrastreDos: string; sinArgumento: string; bloquea: string };
       preguntas: string;
       respondida: string;
       sinFuente: string;

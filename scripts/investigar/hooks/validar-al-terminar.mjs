@@ -42,7 +42,11 @@ async function validar() {
   const rutaG = join(RAIZ, "data/gramaticas", `${gid}.gramatica.yaml`);
   if (!existsSync(rutaG)) return [`no existe la gramática «${gid}»`];
   const rangos = JSON.parse(readFileSync(join(RAIZ_REPO, "packages/diagramador/metricas/cobertura.json"), "utf8")).fuentes["space-grotesk"].rangos;
-  fallas.push(...inv.validarPropuesta(dato, parse(readFileSync(rutaG, "utf8")), rangos).fallas);
+  // Con el mapa aprobado a la vista: lo que la propuesta retira de él trae su argumento.
+  // Solo con un id de plataforma bien formado se arma la ruta (el dato lo escribió el modelo).
+  const rutaA = /^[a-z0-9][a-z0-9-]*$/.test(String(dato?.plataforma)) ? join(RAIZ, "data/mapas", `${dato.plataforma}.mapa.yaml`) : null;
+  const anterior = rutaA && existsSync(rutaA) ? parse(readFileSync(rutaA, "utf8")) : undefined;
+  fallas.push(...inv.validarPropuesta(dato, parse(readFileSync(rutaG, "utf8")), rangos, anterior).fallas);
   if (!fallas.length) {
     const rutaV = join(dir, "verificacion.json");
     const v = existsSync(rutaV) ? JSON.parse(readFileSync(rutaV, "utf8")) : null;

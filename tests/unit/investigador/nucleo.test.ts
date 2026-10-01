@@ -16,14 +16,25 @@ import {
   sha256,
   validarPropuesta,
   verificarCita,
+  type Retiro,
   type Verificacion,
 } from "@/lib/investigador";
-import { mapaNorte, propuestaNorte } from "./lib/muestra";
+import { BASE, mapaNorte, propuestaNorte } from "./lib/muestra";
 
 const G = parse(readFileSync("data/gramaticas/plataformas-datos.gramatica.yaml", "utf8")) as Gramatica;
 const RANGOS = JSON.parse(readFileSync("packages/diagramador/metricas/cobertura.json", "utf8")).fuentes["space-grotesk"].rangos;
 const LARGO = "Texto de relleno de una página de documentación. ".repeat(12);
 const SCRIPT = ["scripts", "apro" + "bar.mjs"].join("/");
+const COI = { es: "Fuente del fabricante (ficticio): interés en presentar bien su producto.", en: "Vendor source (fictional): interest in presenting its product well." };
+/** Un retiro con su motivo y una cita oficial (la página del catálogo central dice adónde fue a parar). */
+const retiroDe = (id: string, nodo: string, extra: Partial<Retiro> = {}): Retiro => ({
+  id,
+  sobre: { entidad: "nodo", id: nodo },
+  motivo: { es: `El fabricante retiró ${nodo}; sus funciones pasaron al catálogo central.`, en: `The vendor retired ${nodo}; its functions moved to the central catalogue.` },
+  cita: { url: `${BASE}catalogo-central`, texto: `El componente ${nodo} se retiró y sus funciones viven ahora en el catálogo central.`, titulo: "Ficha de catalogo-central", tipo: "oficial", conflicto_de_interes: COI },
+  ...extra,
+});
+const SIN_ARGUMENTO = (que: string, id: string) => `retiros · ${que} «${id}» sale del mapa sin argumento: agrega un retiro con su motivo y una cita que lo pruebe, o devuélvelo al mapa`;
 
 describe("verificar una cita en la página cruda", () => {
   it("la encuentra aunque cambien mayúsculas, comillas, guiones, espacios y entidades; ignora scripts", () => {
@@ -117,6 +128,43 @@ describe("aplicar la decisión humana", () => {
   });
 });
 
+describe("retiros: todo lo que sale del mapa aprobado trae su argumento (pedido de la persona, 2026-09-30)", () => {
+  const p = propuestaNorte();
+  const base = p.mapa as unknown as Mapa;
+  /** El aprobado tenía un componente más («monitor», con un flujo hacia él) y un flujo más entre dos que siguen. */
+  const anterior = (): Mapa => ({
+    ...base,
+    estado: "aprobada",
+    version: "0.3.0",
+    nodos: [...base.nodos, { ...base.nodos[0]!, id: "monitor", orden: 99, nombre: { es: "Monitor", en: "Monitor" } }],
+    flujos: [...base.flujos, { ...base.flujos[0]!, id: "f-a-monitor", destino: "monitor" }],
+  });
+
+  it("un componente que sale sin retiro falla; el flujo que pierde su extremo sale por arrastre, sin pedir nada", () => {
+    expect(validarPropuesta(p, G, RANGOS, anterior()).fallas).toEqual([SIN_ARGUMENTO("el componente", "monitor")]);
+    expect(validarPropuesta({ ...p, retiros: [retiroDe("R-1", "monitor")] }, G, RANGOS, anterior()).fallas).toEqual([]);
+  });
+  it("un flujo que sale con sus dos extremos en el mapa necesita su propio retiro", () => {
+    const a = anterior();
+    a.flujos = [...a.flujos, { ...base.flujos[0]!, id: "f-extra", origen: base.nodos[0]!.id, destino: base.nodos[1]!.id }];
+    expect(validarPropuesta({ ...p, retiros: [retiroDe("R-1", "monitor")] }, G, RANGOS, a).fallas).toEqual([SIN_ARGUMENTO("el flujo", "f-extra")]);
+    const flujo = retiroDe("R-2", "x", { sobre: { entidad: "flujo", id: "f-extra" } });
+    expect(validarPropuesta({ ...p, retiros: [retiroDe("R-1", "monitor"), flujo] }, G, RANGOS, a).fallas).toEqual([]);
+  });
+  it("un retiro de algo que no sale, repetido o con una fuente de tercero falla; sin mapa aprobado no hay qué retirar", () => {
+    const sigue = retiroDe("R-2", base.nodos[0]!.id);
+    expect(validarPropuesta({ ...p, retiros: [retiroDe("R-1", "monitor"), sigue] }, G, RANGOS, anterior()).fallas).toEqual([`retiros · R-2 habla de un nodo que no sale del mapa aprobado («${base.nodos[0]!.id}»)`]);
+    expect(validarPropuesta({ ...p, retiros: [retiroDe("R-1", "monitor"), retiroDe("R-1", "monitor")] }, G, RANGOS, anterior()).fallas).toEqual(["retiros · R-1 repetido"]);
+    const tercero = retiroDe("R-1", "monitor", { cita: { ...retiroDe("R-1", "monitor").cita, tipo: "tercero" } });
+    expect(validarPropuesta({ ...p, retiros: [tercero] }, G, RANGOS, anterior()).fallas).toEqual(["retiros · R-1 cita una fuente de tercero: un retiro se prueba con la documentación del fabricante"]);
+    expect(validarPropuesta({ ...p, retiros: [retiroDe("R-1", "monitor")] }, G, RANGOS).fallas).toEqual(["retiros · R-1 habla de un nodo que no sale del mapa aprobado («monitor»)"]);
+  });
+  it("la cita de un retiro cumple el esquema de toda cita (40 caracteres como mínimo)", () => {
+    const corta = retiroDe("R-1", "monitor", { cita: { ...retiroDe("R-1", "monitor").cita, texto: "Se retiró." } });
+    expect(validarPropuesta({ ...p, retiros: [corta] }, G, RANGOS, anterior()).fallas).toEqual(["retiros.0.cita.texto · una cita de al menos 40 caracteres"]);
+  });
+});
+
 describe("aprobar", () => {
   const p = propuestaNorte();
   const bytes = JSON.stringify(p);
@@ -138,6 +186,17 @@ describe("aprobar", () => {
       throw e;
     }
     return [];
+  };
+  /** La misma propuesta con sus retiros, su huella y una verificación que incluye la cita de cada retiro. */
+  const conRetiros = (retiros: Retiro[], resultadoRetiro: "verificada" | "no-encontrada" = "verificada") => {
+    const q = { ...p, retiros };
+    const b = JSON.stringify(q);
+    const v = verificacion();
+    return {
+      propuesta: q,
+      propuestaSha256: sha256(b),
+      verificacion: { ...v, propuesta_sha256: sha256(b), resultados: [...v.resultados, ...retiros.map((r) => ({ afirmacion: r.id, url: r.cita.url, resultado: resultadoRetiro, http: 200, sha256: "0".repeat(64) }))] },
+    };
   };
 
   it("todo aprobado: mapa «aprobada» v0.1.0 con la fecha de verificación, y su revisión", () => {
@@ -221,11 +280,29 @@ describe("aprobar", () => {
   it("M-21: lo que la propuesta ya no trae se retira solo si el comando lo nombra, y exactamente eso", () => {
     const anterior = aprobadoIgual();
     anterior.nodos = [...anterior.nodos, { ...anterior.nodos[0]!, id: "extra", orden: 99, nombre: { es: "Extra", en: "Extra" } }];
-    expect(fallas(() => aprobar(entrada({ anterior })))).toEqual(["los retiros no coinciden con el diff: la propuesta retira [extra] y el comando dice --retirar -"]);
-    expect(fallas(() => aprobar(entrada({ anterior, retiradas: ["otro"] })))[0]).toMatch(/^los retiros no coinciden/);
-    const { mapa, revision } = aprobar(entrada({ anterior, retiradas: ["extra"] }));
+    const c = conRetiros([retiroDe("R-1", "extra")]);
+    expect(fallas(() => aprobar(entrada({ ...c, anterior })))).toEqual(["los retiros no coinciden con el diff: la propuesta retira [extra] y el comando dice --retirar -"]);
+    expect(fallas(() => aprobar(entrada({ ...c, anterior, retiradas: ["otro"] })))[0]).toMatch(/^los retiros no coinciden/);
+    const { mapa, revision } = aprobar(entrada({ ...c, anterior, retiradas: ["extra"] }));
     expect(revision.resultado).toBe("aprobada");
     expect(mapa.nodos.some((n) => n.id === "extra")).toBe(false);
+  });
+
+  // Pedido de la persona al mirar la lista de retiros (2026-09-30): «que no queden dudas de por qué sale».
+  it("un retiro sin argumento no se aprueba; su cita se verifica como la de una afirmación", () => {
+    const anterior = aprobadoIgual();
+    anterior.nodos = [...anterior.nodos, { ...anterior.nodos[0]!, id: "monitor", orden: 99, nombre: { es: "Monitor", en: "Monitor" } }];
+    anterior.flujos = [...anterior.flujos, { ...anterior.flujos[0]!, id: "f-a-monitor", destino: "monitor" }];
+    const retiradas = ["f-a-monitor", "monitor"];
+    expect(fallas(() => aprobar(entrada({ anterior, retiradas })))).toEqual([SIN_ARGUMENTO("el componente", "monitor")]);
+    const c = conRetiros([retiroDe("R-1", "monitor")]);
+    const { mapa } = aprobar(entrada({ ...c, anterior, retiradas }));
+    expect(mapa.nodos.some((n) => n.id === "monitor")).toBe(false);
+    expect(mapa.flujos.some((f) => f.id === "f-a-monitor")).toBe(false);
+    const noEncontrada = conRetiros([retiroDe("R-1", "monitor")], "no-encontrada");
+    expect(fallas(() => aprobar(entrada({ ...noEncontrada, anterior, retiradas })))).toEqual(["R-1: su cita no aparece en la fuente; el retiro de «monitor» queda sin argumento: vuelve a investigar"]);
+    const sinVerificar = { ...c, verificacion: { ...c.verificacion, resultados: c.verificacion.resultados.filter((r) => r.afirmacion !== "R-1") } };
+    expect(fallas(() => aprobar(entrada({ ...sinVerificar, anterior, retiradas })))).toEqual(["R-1 no fue verificado"]);
   });
 
   it("B-45: la verificación de una afirmación es de SU cita (la misma URL)", () => {

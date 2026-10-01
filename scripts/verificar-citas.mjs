@@ -1,5 +1,5 @@
 // Verificador de citas POR CÓDIGO (el investigador propone; esto comprueba). Para cada afirmación de una
-// propuesta baja la página con `curl` —sin cookies, sin sesión, sin ningún dato del usuario, con un agente
+// propuesta, y para cada retiro (lo que sale del mapa aprobado, con la cita que prueba por qué), baja la página con `curl` —sin cookies, sin sesión, sin ningún dato del usuario, con un agente
 // genérico— y busca la cita textual en el texto de la página cruda (src/lib/investigador/texto.ts). Resultado
 // por afirmación: verificada · no-encontrada (el código la rechaza) · no-verificable (la revisa una persona),
 // con el código HTTP y la huella SHA-256 de lo que bajó. Escribe verificacion.json junto a la propuesta.
@@ -55,12 +55,14 @@ try {
       return u.toLowerCase();
     }
   };
-  const conId = forma.data.afirmaciones.filter((a) => ids.some((x) => legible(a.cita.url).includes(x)));
+  // Afirmaciones (A-n) y retiros (R-n): toda cita de la propuesta pasa por el mismo camino.
+  const citas = [...forma.data.afirmaciones, ...forma.data.retiros];
+  const conId = citas.filter((a) => ids.some((x) => legible(a.cita.url).includes(x)));
   if (conId.length) throw new Error(`${conId.map((a) => a.id).join(", ")}: la URL de la cita lleva un identificador de quien investiga; no se consulta`);
   const tmp = mkdtempSync(join(tmpdir(), "bigd-citas-"));
   const cache = new Map();
   const resultados = [];
-  for (const a of forma.data.afirmaciones) {
+  for (const a of citas) {
     if (!cache.has(a.cita.url)) cache.set(a.cita.url, bajar(a.cita.url, tmp));
     const b = cache.get(a.cita.url);
     const v = inv.verificarCita(b.http, b.cuerpo ? b.cuerpo.toString("utf8") : null, a.cita.texto);
@@ -77,7 +79,8 @@ try {
   inv.esquemaVerificacion.parse(verificacion);
   writeFileSync(join(dir, "verificacion.json"), `${JSON.stringify(verificacion, null, 2)}\n`);
   const cuenta = (r) => resultados.filter((x) => x.resultado === r).length;
-  console.log(`verificar-citas: ${relative(RAIZ, dir)} · ${resultados.length} afirmaciones · ${cuenta("verificada")} verificadas · ${cuenta("no-verificable")} no verificables · ${cuenta("no-encontrada")} no encontradas · ${cache.size} páginas`);
+  const retiros = forma.data.retiros.length ? ` y ${forma.data.retiros.length} retiros` : "";
+  console.log(`verificar-citas: ${relative(RAIZ, dir)} · ${forma.data.afirmaciones.length} afirmaciones${retiros} · ${cuenta("verificada")} verificadas · ${cuenta("no-verificable")} no verificables · ${cuenta("no-encontrada")} no encontradas · ${cache.size} páginas`);
 } catch (e) {
   console.error(`verificar-citas: ${e.message}`);
   process.exit(1);

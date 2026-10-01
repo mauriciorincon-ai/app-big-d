@@ -3,6 +3,7 @@ import { IDIOMAS } from "../i18n";
 import { sinAfirmacion } from "./decisiones";
 import { avisosDeDibujo } from "./dibujo";
 import { esquemaPropuesta, type Propuesta } from "./esquema";
+import { argumentosDeRetiro } from "./retiros";
 
 // Validación de una propuesta del investigador, TODA por código (la skill la corre al terminar y reintenta
 // hasta 2 veces; la pantalla y `aprobar` la vuelven a correr). Falla con ruta y motivo, jamás completa nada:
@@ -10,7 +11,8 @@ import { esquemaPropuesta, type Propuesta } from "./esquema";
 //   3. coherencia: el mapa es «propuesta» de esa plataforma; cada afirmación habla de algo que existe; todo
 //      componente y flujo tiene afirmación; la cita de un componente es una de sus fuentes, y la de un
 //      flujo, una fuente de alguno de sus extremos.
-//   4. dibujo: las vistas del atlas sin avisos de geometría (un nombre que no cabe, una pieza sin lugar).
+//   4. retiros: con el mapa aprobado a la vista, todo lo que sale trae su argumento (src/lib/investigador/retiros.ts).
+//   5. dibujo: las vistas del atlas sin avisos de geometría (un nombre que no cabe, una pieza sin lugar).
 
 export interface Resultado {
   ok: boolean;
@@ -18,7 +20,7 @@ export interface Resultado {
   propuesta?: Propuesta;
 }
 
-export function validarPropuesta(dato: unknown, gramatica: Gramatica, rangos: readonly (readonly [number, number])[]): Resultado {
+export function validarPropuesta(dato: unknown, gramatica: Gramatica, rangos: readonly (readonly [number, number])[], anterior?: Mapa): Resultado {
   const forma = esquemaPropuesta.safeParse(dato);
   if (!forma.success) return { ok: false, fallas: forma.error.issues.map((i) => `${i.path.join(".") || "/"} · ${i.message}`) };
   const p = forma.data;
@@ -45,6 +47,7 @@ export function validarPropuesta(dato: unknown, gramatica: Gramatica, rangos: re
   }
   // También en «sin novedades»: la exigencia de cita no se apaga con una bandera del modelo (A-3).
   for (const x of sinAfirmacion(mapa, p.afirmaciones)) fallas.push(`afirmaciones · ${x} no tiene ninguna afirmación que lo respalde`);
+  fallas.push(...argumentosDeRetiro(anterior, mapa, p.retiros).fallas);
   fallas.push(...avisosDeDibujo(mapa, gramatica, p.fecha));
   return { ok: fallas.length === 0, fallas, propuesta: p };
 }

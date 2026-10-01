@@ -119,7 +119,13 @@ a ninguna ni pide cuentas.
      - **«Citas verificadas»:** aprobadas de entrada; puedes rechazarlas.
      - **«Rechazadas por el código»:** la cita no está en la fuente.
 
-     Cada afirmación trae su cita y su fuente. Marca **Aprobar** o **Rechazar** en cada una.
+     Cada afirmación dice de qué componente o conexión habla, y trae su cita y su fuente. Marca **Aprobar** o
+     **Rechazar** en cada una.
+
+     Si la propuesta quita algo que el mapa aprobado tenía, aparece en **«Se retiran del mapa»**, y cada retiro
+     dice por qué sale: con una cita de la documentación del fabricante que el código verificó, o porque sale uno
+     de sus extremos (una conexión no se queda con un solo lado). Si la cita de un retiro no aparece en la fuente,
+     la propuesta no se puede aprobar y la página no arma el comando: hay que volver a investigar.
 
   4. Cuando no falte ninguna, copia el comando de **«Aprobar lo marcado»** y córrelo en una terminal abierta en la
      carpeta del proyecto. Solo una persona puede correrlo: la inteligencia artificial tiene un candado que se lo
@@ -250,7 +256,14 @@ manages and controls; it never operates a platform**: it connects to none and as
      - **“Quotes verified”:** approved to start with; you can reject them.
      - **“Rejected by the code”:** the quote is not on the source page.
 
-     Every claim shows its quote and its source. Mark **Approve** or **Reject** on each one.
+     Every claim says which component or connection it is about, and shows its quote and its source. Mark
+     **Approve** or **Reject** on each one.
+
+     If the proposal drops something the approved map had, it appears under **“Removed from the map”**, and
+     each removal says why it leaves: with a quote from the vendor's documentation that the code verified, or
+     because one of its ends leaves (a connection cannot keep only one side). If a removal's quote is not in the
+     source, the proposal cannot be approved and the page does not build the command: it has to be researched
+     again.
 
   4. When nothing is left to decide, copy the **“Approve what is marked”** command and run it in a terminal opened
      in the project folder. Only a person can run it: a lock stops the AI. The approved map goes live on the next

@@ -40,6 +40,9 @@ Reglas que no se negocian:
   retira la afirmación (y lo que afirmaba) o déjalo como pregunta guía sin respuesta.
 - **Nada se completa por inferencia.** Si la documentación no dice la madurez de algo, no la adivinas:
   lo dices en una pregunta guía.
+- **Nada sale del mapa sin su argumento.** Si quitas algo que el mapa aprobado tiene, lo pruebas con una
+  cita oficial en `retiros[]` (motivo + pasaje literal). Sin prueba, se queda; la duda va como pregunta
+  guía.
 - **Neutralidad.** Ninguna plataforma tiene trato especial; describes, no vendes. Cada fuente declara su
   `conflicto_de_interes` (el fabricante tiene interés en presentar bien su producto).
 - **Bilingüe, redactado.** Todo texto del mapa va en español y en inglés, escrito en cada idioma (no una
