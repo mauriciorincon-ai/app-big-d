@@ -85,7 +85,12 @@ export interface Textos {
       dias: readonly [string, string];
       estados: { vigente: string; revisar: string; vencido: string };
     };
-    comando: { copiar: string; copiado: string; nota: string };
+    comando: { copiar: string; copiado: string };
+    /**
+     * El botón que pide una investigación: abre una tarea de GitHub ya escrita (decisión de la persona,
+     * 2026-09-30). `cuerpo` va en la tarea, no en la página: ahí sí se dice cómo atenderla.
+     */
+    solicitud: { boton: string; nota: string; titulo: string; tituloCapa: string; alcance: string; alcanceCapa: string; cuerpo: string };
     vacio: { titulo: string; texto: string };
     propuesta: {
       titulo: string;

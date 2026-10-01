@@ -112,8 +112,11 @@ a ninguna ni pide cuentas.
   1. Entra a **Conocimiento → Investigador** y elige la plataforma. Vas a ver:
      - su **vigencia por capa**, con semáforo de símbolo, texto y días;
      - si ya tiene mapa aprobado, que lo aprobó una persona y cuándo (la fecha, en UTC).
-  2. Si no tiene mapa, la página te da el comando para investigarla (por ejemplo `/investigar databricks`) con el
-     botón **«Copiar»**. Ese comando lo corre una persona en su sesión de Claude Code; la app no lo lanza.
+  2. Si no tiene mapa, o si una capa está por revisar o vencida, toca **«Solicitar investigación»**. Se abre GitHub en
+     otra pestaña con la solicitud ya escrita (por ejemplo «Investigar Databricks»); al confirmarla queda guardada
+     como tarea del repositorio de Big-D, con su fecha. La tarea es pública y solo lleva el nombre de la plataforma.
+     La app no investiga nada: quien atiende la tarea corre la investigación en su sesión de Claude Code (la tarea
+     trae el comando exacto, por ejemplo `/investigar databricks`) y la cierra cuando el mapa se aprueba.
   3. Cuando llega una propuesta, esta pantalla la muestra en tres grupos:
      - **«Necesitan tu decisión»:** el código no pudo comprobar la cita.
      - **«Citas verificadas»:** aprobadas de entrada; puedes rechazarlas.
@@ -249,8 +252,11 @@ manages and controls; it never operates a platform**: it connects to none and as
   1. Go to **Knowledge → Researcher** and pick a platform. You will see:
      - its **freshness per layer**, as a signal with a symbol, a word and the days;
      - if it already has an approved map, that a person approved it and when (the date, in UTC).
-  2. If it has no map, the page gives you the command to research it (for example `/investigar databricks`) with a
-     **“Copy”** button. A person runs that command in their Claude Code session; the app never launches it.
+  2. If it has no map, or a layer is to review or expired, tap **“Request research”**. GitHub opens in another tab
+     with the request already written (for example “Research Databricks”); once you confirm it, it is kept as a
+     task of the Big-D repository, with its date. The task is public and only carries the platform's name. The
+     app researches nothing: whoever handles the task runs the research in their Claude Code session (the task
+     carries the exact command, for example `/investigar databricks`) and closes it once the map is approved.
   3. When a proposal arrives, this screen shows it in three groups:
      - **“Need your decision”:** the code could not check the quote.
      - **“Quotes verified”:** approved to start with; you can reject them.

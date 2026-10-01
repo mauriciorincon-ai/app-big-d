@@ -1153,8 +1153,18 @@ estándar pide 2500). Categorías ≥ 90 en las 15 (96–98 / 100 / 100 / 100). 
    apruebas esta propuesta?». La persona: **«Sí, pero intenta siempre que se plantee un argumento sólido, que no
    queden dudas de por qué sale»**. Aprobada con un pedido, que se cumplió el mismo día (D-S1-56, abajo) y
    viaja al gate del ciclo como segunda vuelta, sin parada propia.
-4. **M-5, la nota de marcas** — pendiente.
-5. **M-5, el estado vacío en contexto** — pendiente.
+4. **M-5, la nota de marcas** (2026-09-30, el párrafo gris sin título al pie de la leyenda de `/es/atlas/fabric`,
+   bajo «Madurez» y «Vigencia»). Primera pregunta mal ubicada («la nota sobre marcas comerciales»): la persona
+   respondió «No encuentro marcas comerciales?». Con la ubicación exacta y la frase literal: **«Sí, de acuerdo con
+   el texto; siempre sé claro»**. Aprobada. Queda anotado que no se encontró a la primera, por no tener título; la
+   persona no pidió cambiarlo y va al gate del ciclo como observación.
+5. **M-5, el estado vacío en contexto** (2026-09-30, `/es/investigador/databricks`, abierta por el constructor:
+   el recuadro «Todavía no hay mapa de Databricks.» con el comando `/investigar databricks` y «Copiar»). La
+   persona: **«No tienes que mencionar esto «Se corre en Claude Code»; mediante ese botón se debe generar una
+   solicitud que debe quedar almacenada en algún punto»**. Sin servidor, las opciones eran una tarea de GitHub, solo
+   este navegador o dejar el comando sin la mención. Pidió «alternativas buenas para no complicar esto»; se le dieron
+   las tres con la recomendación, y eligió **«vamos con la tarea de GitHub»**. Construido como D-S1-57 (abajo); la
+   mirada del resultado viaja al gate del ciclo como segunda vuelta.
 
 ### D-S1-56 — Ningún retiro sin argumento (pedido de la persona en la mirada M-21)
 
@@ -1193,9 +1203,39 @@ Un retiro (algo que el mapa aprobado tiene y la propuesta ya no) solo sale con s
   - El gate de deriva del kit dio rojo, porque la muestra gana `"retiros": []`. Se regeneró con su receta: dos
     líneas en `docs/kit-de-prueba/`.
 
+### D-S1-57 — El botón de investigar deja una solicitud guardada: una tarea de GitHub (decisión de la persona)
+
+- **Qué hace:** «Solicitar investigación» (EN «Request research») reemplaza al bloque del comando con «Copiar», en
+  el estado vacío y en cada capa por revisar o vencida. Es un enlace, sin servidor y sin red desde la app:
+  - abre en otra pestaña `https://github.com/mauriciorincon-ai/app-big-d/issues/new` con título («Investigar
+    Databricks», o «Investigar Microsoft Fabric · capa Ingesta»), etiqueta `investigacion` y un cuerpo que dice cómo
+    atenderla (el comando exacto y cerrar la tarea al aprobar);
+  - la persona la confirma en GitHub y queda guardada con su fecha.
+- **Qué dice la página:** ya no menciona Claude Code ni `propuestas/`. Cuenta que la solicitud queda guardada y
+  que es pública con solo el nombre de la plataforma.
+- **Lo que no cambia:** la investigación jamás corre sola (regla 2). La tarea espera a que una persona la
+  atienda.
+- **Archivos:** `src/lib/investigador/solicitud.ts` (`REPOSITORIO`, `ETIQUETA_SOLICITUD`, `urlSolicitud`),
+  `src/components/investigador/Solicitar.tsx`, la página del investigador, los diccionarios (`solicitud`; sale
+  `comando.nota`), `investigador.css`, el manual ES/EN, la guía (f2 y su historial) y el ADR de extensiones de
+  diseño (decisión 4).
+- **En GitHub:** se creó la etiqueta `investigacion` en el repositorio (para listar las solicitudes pendientes).
+- **Decidido por el constructor (menor, al gate del ciclo):** en la lista de capas el botón va con contorno y
+  más pequeño, alineado con el nombre de la capa. Lleno, solo en el estado vacío, donde es la única acción;
+  nueve botones llenos en la página envejecida pesaban más que el semáforo. La nota «Se abre GitHub…» va una vez
+  bajo la lista, no en cada fila.
+- **Gates (¿puede fallar? · rojo · a quién nombró · verde):**
+  - e2e `investigador.spec` «sin mapa: el estado vacío pide la investigación…»: sí. Rojo contra el build
+    anterior (sin el enlace: `toHaveAttribute("target")` sobre un elemento que no existe). Verde con el nuevo.
+  - `tests/unit/investigador/solicitud.test.ts`: el enlace (plataforma y capa, ES y EN) y el repositorio contra
+    `git remote get-url origin`. Rojo al cambiar `REPOSITORIO` («otro/app-big-d»), verde al volver.
+  - Se retiró, antes de comitearla, una prueba e2e de la fila de una capa por revisar: con el mapa del ejemplo
+    verificado el 2026-09-20, en el build de hoy ninguna capa está por revisar y la prueba no podía fallar. La
+    cubren la prueba unitaria del enlace con capa y la página envejecida de la mirada.
+
 ### Lo que falta
 
-- De la persona: las cuatro miradas de arriba; la decisión sobre «lago de datos» (M-8); el permiso para los 4
+- De la persona (las cinco miradas ya están): la decisión sobre «lago de datos» (M-8); el permiso para los 4
   comentarios del bot (M-12); la prueba en vivo de `/investigar` con el hook `sin-lanzar` (M-17).
 - Del constructor: la pasada de capturas sobre el build final, leída como imagen (M-7), cuando terminen las miradas.
 
@@ -1214,6 +1254,8 @@ Un retiro (algo que el mapa aprobado tiene y la propuesta ya no) solo sale con s
   que ni un fallo de la guarda pueda tocar el repo.
 - **D-S1-55**, fuera del plan de pagos: la marca de «por revisar» cambió por pedido de la persona en la mirada de C-1.
 - **D-S1-56**, fuera del plan de pagos: todo retiro con su argumento, por pedido de la persona en la mirada de M-21.
+- **D-S1-57**, fuera del plan de pagos: el botón de investigar deja una tarea de GitHub, por decisión de la persona en
+  la mirada del estado vacío.
 
 ## Desviación del plan
 
@@ -1251,3 +1293,9 @@ La planeadora las lee aquí; las que tocan el contrato del diagramador viajan ad
 
 **En la Fase 2 de la auditoría:** ver «Auditoría final — Fase 2» (arriba), apartado «Desviaciones del plan de
 pagos».
+
+**Contra la VISION (contrato de alcance, v1.1.1):** la funcionalidad «Investigador a demanda» dice «desde el repo
+lanzas `/investigar <plataforma> [capa]`». Desde D-S1-57 (decisión de la persona, 2026-09-30), la pantalla del
+investigador no da el comando: su botón deja una **solicitud guardada como tarea de GitHub**, y quien la atiende
+corre `/investigar` en su sesión de Claude Code. La skill, su contrato y la regla «jamás corre sola» no cambian;
+cambia el punto de entrada que ve la persona. La planeadora decide si la VISION lo recoge.

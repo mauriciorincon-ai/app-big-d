@@ -15,7 +15,7 @@
 .sem-lista .sem-banda { font-weight: 700; }
 .sem-lista .sem-banda small { display: block; font-weight: 400; font-size: 13px; color: var(--tinta-2); }
 .sem-lista li[data-vencido] { background: var(--sup-1); }
-.sem-lista .comando { grid-column: 1 / -1; }
+.sem-lista .solicitar { grid-column: 2 / -1; }
 .semaforo { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; width: max-content; font: 500 13px/1 var(--letra-mono); color: var(--tinta-1); padding: 6px 10px 6px 8px; border: 1px solid var(--linea); border-radius: 999px; }
 .semaforo-revisar { border-color: var(--tinta-1); font-weight: 700; }
 .semaforo-vencido { background: var(--tinta-1); color: var(--fondo); border-color: var(--tinta-1); font-weight: 700; }
@@ -33,7 +33,9 @@
 .estado { border: 1px solid var(--linea); border-radius: 6px; padding: 18px; background: var(--sup-1); display: grid; gap: 8px; justify-items: start; font-size: 15px; }
 .estado h2 { font-size: 18px; font-weight: 700; margin: 0; }
 .estado p { margin: 0; color: var(--tinta-2); max-width: 72ch; }
-.estado .comando { justify-self: stretch; }
+.solicitar { display: grid; gap: 6px; justify-items: start; }
+.solicitar .kit-nota { margin: 0; }
+.sem-lista .solicitar .boton { min-height: 34px; padding: 0 12px; font-size: 14px; }
 .estado-error { border-color: var(--tinta-1); border-width: 1.5px; }
 .error-lista { margin: 8px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; justify-self: stretch; }
 .error-lista li { font: 500 13px/1.6 var(--letra-mono); padding: 8px 12px; border-left: 2px solid var(--tinta-1); background: var(--sup-2); word-break: break-word; }

@@ -144,11 +144,19 @@ export const es: Textos = {
     comando: {
       copiar: "Copiar",
       copiado: "Copiado",
-      nota: "Se corre en Claude Code, por una persona; la app nunca lo lanza. La propuesta llega a «propuestas/» y se revisa en esta pantalla.",
+    },
+    solicitud: {
+      boton: "Solicitar investigación",
+      nota: "Se abre GitHub con la solicitud ya escrita; al confirmarla queda guardada como tarea del repositorio de Big-D, con su fecha. La tarea es pública: solo lleva el nombre de la plataforma.",
+      titulo: "Investigar {plataforma}",
+      tituloCapa: "Investigar {plataforma} · capa {capa}",
+      alcance: "{plataforma}, la plataforma entera",
+      alcanceCapa: "la capa {capa} de {plataforma}",
+      cuerpo: "Solicitud de investigación pedida desde la pantalla del investigador de Big-D: {alcance}.\n\nCómo atenderla: una persona corre `{comando}` en su sesión de Claude Code. La propuesta llega a `propuestas/` y se revisa en la pantalla del investigador, afirmación por afirmación. Cuando el mapa se apruebe, cierra esta tarea.\n\nEsta tarea es pública: no le agregues datos personales.",
     },
     vacio: {
       titulo: "Todavía no hay mapa de {plataforma}.",
-      texto: "Su mapa llega con una investigación: la corre una persona en su sesión de Claude Code, y la propuesta se revisa aquí, afirmación por afirmación.",
+      texto: "Su mapa llega con una investigación. Pídela aquí: la solicitud queda guardada y, cuando se investigue, la propuesta llega a esta pantalla para revisarla afirmación por afirmación.",
     },
     propuesta: {
       titulo: "Propuesta",

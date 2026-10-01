@@ -3,17 +3,20 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CampoPlataforma } from "@/components/atlas/CampoPlataforma";
 import { MarcaVigencia } from "@/components/atlas/MarcaVigencia";
-import { Comando } from "@/components/investigador/Copiar";
 import { RevisionPropuesta } from "@/components/investigador/RevisionPropuesta";
+import { Solicitar } from "@/components/investigador/Solicitar";
 import { plantilla, plural } from "@/lib/atlas";
 import { datos, fechaDeConsulta } from "@/lib/datos";
 import { esIdioma, textos } from "@/lib/i18n";
 import { conteo, vistaInvestigador } from "@/lib/investigador/revision";
+import { urlSolicitud } from "@/lib/investigador/solicitud";
 // Estilos solo de esta pantalla: no bloquean el pintado del atlas.
 import "@/styles/investigador.css";
 
 // Conocimiento · investigador de una plataforma (fiel a docs/diseno/investigador.html): la vigencia de cada
-// capa con el comando exacto para investigarla, o el estado vacío si la plataforma aún no tiene mapa (A-27);
+// capa, o el estado vacío si la plataforma aún no tiene mapa (A-27); donde hace falta investigar, el botón que
+// deja la solicitud guardada como tarea de GitHub (decisión de la persona, 2026-09-30: la página no explica
+// cómo se corre la investigación);
 // la propuesta pendiente con su verificación y la revisión afirmación por afirmación, que arma el comando de
 // aprobación (lo corre una persona); y el veredicto de la última revisión. Una página estática por
 // plataforma: nada se aprueba ni se investiga desde aquí.
@@ -103,17 +106,20 @@ export default async function Investigador({ params }: PageProps<"/[idioma]/inve
                   <MarcaVigencia estado={b.estado} />
                   {t.vigencia.estados[b.estado]} · {plural(t.vigencia.dias, b.dias)}
                 </span>
-                {b.estado !== "vigente" && <Comando texto={`/investigar ${plataforma} ${b.id}`} copiar={t.comando.copiar} copiado={t.comando.copiado} nota={t.comando.nota} />}
+                {b.estado !== "vigente" && (
+                  <Solicitar href={urlSolicitud(t.solicitud, { id: plataforma, nombre }, { id: b.id, nombre: b.nombre })} texto={t.solicitud.boton} nombre={`${t.solicitud.boton}: ${b.nombre}`} secundario />
+                )}
               </li>
             ))}
           </ul>
+          {v.bandas.some((b) => b.estado !== "vigente") && <p className="kit-nota">{t.solicitud.nota}</p>}
         </section>
       ) : (
         <section className="seccion" aria-labelledby="vacio-t">
           <div className="estado">
             <h2 id="vacio-t">{plantilla(t.vacio.titulo, { plataforma: nombre })}</h2>
             <p>{t.vacio.texto}</p>
-            <Comando texto={`/investigar ${plataforma}`} copiar={t.comando.copiar} copiado={t.comando.copiado} nota={t.comando.nota} />
+            <Solicitar href={urlSolicitud(t.solicitud, { id: plataforma, nombre })} texto={t.solicitud.boton} nota={t.solicitud.nota} />
           </div>
         </section>
       )}

@@ -144,11 +144,19 @@ export const en: Textos = {
     comando: {
       copiar: "Copy",
       copiado: "Copied",
-      nota: "It runs in Claude Code, by a person; the app never launches it. The proposal lands in “propuestas/” and is reviewed on this screen.",
+    },
+    solicitud: {
+      boton: "Request research",
+      nota: "GitHub opens with the request already written; once you confirm it, it is kept as a task of the Big-D repository, with its date. The task is public: it only carries the platform's name.",
+      titulo: "Research {plataforma}",
+      tituloCapa: "Research {plataforma} · {capa} layer",
+      alcance: "{plataforma}, the whole platform",
+      alcanceCapa: "the {capa} layer of {plataforma}",
+      cuerpo: "Research request made from Big-D's researcher screen: {alcance}.\n\nHow to handle it: a person runs `{comando}` in their Claude Code session. The proposal lands in `propuestas/` and is reviewed on the researcher screen, claim by claim. Once the map is approved, close this task.\n\nThis task is public: do not add personal data to it.",
     },
     vacio: {
       titulo: "There is no map of {plataforma} yet.",
-      texto: "Its map comes from a research run: a person launches it in their Claude Code session, and the proposal is reviewed here, claim by claim.",
+      texto: "Its map comes from a research run. Request it here: the request is kept and, once researched, the proposal arrives on this screen to be reviewed claim by claim.",
     },
     propuesta: {
       titulo: "Proposal",
