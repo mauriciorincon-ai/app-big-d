@@ -24,6 +24,24 @@ no batches, no automated `claude -p`, nothing in CI.
   key "or where we otherwise explicitly permit it"; "You may not share your Account login information …
   You also may not make your Account available to anyone else."
 
+## Re-read before the S1 release (2026-09-30)
+
+Both sources re-read on 2026-09-30, before the S1 merge to `main` (the first production deploy, private behind
+Vercel protection):
+- *Legal and compliance*: the same quotes as above (Consumer Terms for Free, Pro and Max; "ordinary, individual
+  usage"; OAuth "designed to support ordinary use of Claude Code"; developers "may not collect, store, or
+  intermediate Claude.ai credentials or session tokens" nor "route requests through Free, Pro, or Max plan
+  credentials on behalf of their users"; nothing prevents "an end user from signing in to the unmodified Claude
+  Code binary with their own Claude subscription"). The page now also details when customers may offer Claude
+  Code in their own products (Commercial Terms, unmodified binary, no intermediated usage); Big-D offers nothing
+  to third parties, so it does not apply.
+- *Consumer Terms of Service*: still effective October 8, 2025, with the same two passages (no automated or
+  non-human access except via an API key or where explicitly permitted; no sharing of account credentials).
+
+**Changes in S1 that touch this posture:** none. The research button now leaves a GitHub issue instead of
+copying the command (D-S1-57): it invokes nothing, and a person still types `/investigar` in their own session.
+The launch guard (`sin-lanzar`) was confirmed live on 2026-09-30: the person's `/investigar` starts normally.
+
 ## Decision — how each 7-S rule is met
 
 | 7-S rule | How Big-D meets it | Gate |
