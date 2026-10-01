@@ -128,6 +128,20 @@ describe("aplicar la decisión humana", () => {
   });
 });
 
+// Decisión de la persona (2026-09-30, M-8): «data lake» es el nombre real y no se traduce. La validación rechaza el
+// calco antes de que la propuesta llegue a la revisión (antes solo lo veía la prueba de los datos ya aprobados).
+describe("vocabulario vetado en lo que la propuesta publicaría", () => {
+  it("un calco en un texto del mapa falla con su ruta; la cita literal de la fuente no cuenta", () => {
+    const m = mapaNorte();
+    m.nodos[0] = { ...m.nodos[0]!, experto: { es: "Guarda todo en un lago de datos de la plataforma.", en: m.nodos[0]!.experto.en } };
+    const p = propuestaNorte(m);
+    expect(validarPropuesta(p, G, RANGOS).fallas).toEqual(["vocabulario · mapa/nodos/0/experto/es · calco de «data lake»: se dice «data lake» y se explica en el glosario"]);
+    const q = propuestaNorte();
+    q.afirmaciones[0] = { ...q.afirmaciones[0]!, cita: { ...q.afirmaciones[0]!.cita, texto: "Esta página literal habla de un lago de datos y no la escribió Big-D." } };
+    expect(validarPropuesta(q, G, RANGOS).fallas).toEqual([]);
+  });
+});
+
 describe("retiros: todo lo que sale del mapa aprobado trae su argumento (pedido de la persona, 2026-09-30)", () => {
   const p = propuestaNorte();
   const base = p.mapa as unknown as Mapa;

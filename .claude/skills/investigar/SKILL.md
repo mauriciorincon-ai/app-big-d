@@ -71,6 +71,8 @@ En `propuestas/<AAAA-MM-DD>-<plataforma>[-<capa>]/propuesta.json` (fecha de hoy)
   La URL de la cita de un nodo es una de sus `fuentes`; la de un flujo, una fuente de su origen o de su
   destino. La cita tiene **al menos 40 caracteres**: un pasaje corto aparece en cualquier página.
 - Rechazar una afirmación saca del mapa lo que afirma: una afirmación por idea, no una por párrafo.
+- Los nombres técnicos que el sector usa en inglés («data lake», «lakehouse») van en inglés también en el texto en
+  español, y se explican en el glosario. «Lago de datos» o «casa del lago» hacen fallar la validación.
 - Respeta los límites de la gramática; agrupa en bloques (el nivel 1 del atlas) los componentes de una capa.
 - Un recorrido de referencia (de una fuente a un tablero y a un agente) si la documentación lo permite.
 - `sin_novedades: true` solo si nada cambió respecto del mapa aprobado.

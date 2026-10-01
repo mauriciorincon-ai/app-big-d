@@ -1065,7 +1065,7 @@ el commit de esta sección; lo que espera a la persona queda abajo, en «Lo que 
 | **M-5** el ADR decía que la persona vio la nota de marcas y el estado vacío | ADR y bitácora corregidos (1–2 vistos, 3–4 del constructor); las dos miradas, abajo |
 | **M-6** faltaba `## Desviación del plan` | Escrita al final de esta bitácora |
 | **M-7** 88 encuadres medidos, no leídos | Pasada sobre el build final leída como imagen: va después de las miradas (abajo) |
-| **M-8** «lago de datos» ×5 en el mapa de Fabric | Gate `datos-vocabulario.test.ts` sobre `data/` con `VETADAS` compartida; las 5 rutas como deuda declarada (`CONOCIDAS`) hasta la decisión de la persona |
+| **M-8** «lago de datos» ×5 en el mapa de Fabric | Gate `datos-vocabulario.test.ts` sobre `data/` con `VETADAS` compartida; las 5 rutas como deuda declarada para el S2 (decisión de la persona, abajo); la validación de propuestas ya rechaza el calco |
 | **M-9** clics sin reintento; el test de 900 px no abría el panel | `abrir`, `abrirConTecla` y `listo` en `tests/e2e/lib/abrir.ts`; el test abre antes de afirmar |
 | **M-10** un YAML roto no nombraba su archivo | `leerYaml` → `archivo · yaml · mensaje` |
 | **M-11** el `select` navega sin aviso (WCAG 3.2.2) | Nota visible enlazada con `aria-describedby` |
@@ -1233,10 +1233,31 @@ Un retiro (algo que el mapa aprobado tiene y la propuesta ya no) solo sale con s
     verificado el 2026-09-20, en el build de hoy ninguna capa está por revisar y la prueba no podía fallar. La
     cubren la prueba unitaria del enlace con capa y la página envejecida de la mirada.
 
+### M-8 — «lago de datos» en el mapa de Fabric: decisión de la persona (2026-09-30)
+
+- **Pregunta:** «¿Dejamos «lago de datos» en el mapa de Fabric para corregirlo en el próximo sprint?», con los cinco
+  lugares (texto para expertos y término «lakehouse» de la ficha Lakehouse, glosario «OneLake» y el título en
+  español de la fuente de dos componentes).
+- **Primera respuesta:** «Pero sí es que este es el nombre real, data lake, ¿para qué se traduce?». Tiene razón,
+  y es lo que dice la regla del design system. La fuente citada es la página de Microsoft en inglés («OneLake, the
+  unified data lake»): el «lago de datos» lo escribió el investigador al redactar en español.
+- **Respuesta a la pregunta repetida:** **«sí»**. Los cinco quedan como **deuda declarada para el S2**
+  (`CONOCIDAS` en `tests/unit/datos-vocabulario.test.ts`, que solo puede achicarse). Se pagan con la próxima
+  investigación de Fabric y su aprobación.
+- **Para que no vuelva a pasar** (decidido por el constructor a partir de la respuesta):
+  - la lista vetada se mudó de las pruebas a `src/lib/datos/vocabulario.ts` (`VETADAS`, `vocabularioVetado`);
+  - `validarPropuesta` rechaza todo texto del mapa propuesto con un calco («vocabulario · mapa/<ruta> · calco
+    de «data lake»…»), antes de que la propuesta llegue a la revisión; las citas, que son literales de la fuente,
+    no cuentan;
+  - el agente y la skill aprenden la regla: «data lake» y «lakehouse» van en inglés también en español, y se
+    explican en el glosario.
+  - Gate: `nucleo.test` «un calco en un texto del mapa falla con su ruta». Rojo 1/27 con el validador anterior,
+    verde 27/27.
+
 ### Lo que falta
 
-- De la persona (las cinco miradas ya están): la decisión sobre «lago de datos» (M-8); el permiso para los 4
-  comentarios del bot (M-12); la prueba en vivo de `/investigar` con el hook `sin-lanzar` (M-17).
+- De la persona (las cinco miradas y M-8 ya están): el permiso para los 4 comentarios del bot (M-12); la prueba
+  en vivo de `/investigar` con el hook `sin-lanzar` (M-17).
 - Del constructor: la pasada de capturas sobre el build final, leída como imagen (M-7), cuando terminen las miradas.
 
 ### Desviaciones del plan de pagos

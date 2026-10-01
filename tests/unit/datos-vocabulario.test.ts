@@ -7,11 +7,13 @@ import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { parse } from "yaml";
-import { VETADAS } from "./lib/vocabulario";
+import { vocabularioVetado } from "@/lib/datos/vocabulario";
 
 /**
- * Deuda declarada: «lago de datos» en el mapa de Fabric aprobado el 2026-09-29. Se paga volviendo a investigar
- * esas afirmaciones (/investigar fabric) y aprobando la propuesta; entonces se borran de aquí.
+ * Deuda declarada: «lago de datos» en el mapa de Fabric aprobado el 2026-09-29. Decisión de la persona
+ * (2026-09-30): «data lake» es el nombre real y no se traduce; se corrige en el S2, la próxima vez que se
+ * investigue Fabric (/investigar fabric) y se apruebe la propuesta; entonces se borran de aquí. La validación de
+ * toda propuesta nueva ya rechaza el calco (src/lib/investigador/validar.ts).
  */
 const CONOCIDAS = new Set([
   "data/mapas/fabric.mapa.yaml /nodos/1/fuentes/0/titulo/es",
@@ -21,20 +23,11 @@ const CONOCIDAS = new Set([
   "data/mapas/fabric.mapa.yaml /glosario/es/OneLake",
 ]);
 
-/** Cada texto del dato con su ruta (JSON Pointer). */
-function textos(v: unknown, ruta = ""): [string, string][] {
-  if (typeof v === "string") return [[ruta, v]];
-  if (Array.isArray(v)) return v.flatMap((x, i) => textos(x, `${ruta}/${i}`));
-  if (v && typeof v === "object") return Object.entries(v).flatMap(([k, x]) => textos(x, `${ruta}/${k}`));
-  return [];
-}
-
 function hallazgos(dir: string): string[] {
   const out: string[] = [];
   for (const sub of ["mapas", "gramaticas"])
     for (const f of readdirSync(join(dir, sub)).filter((x) => x.endsWith(".yaml")).sort())
-      for (const [ruta, t] of textos(parse(readFileSync(join(dir, sub, f), "utf8"))))
-        for (const [re, que] of VETADAS) if (re.test(t)) out.push(`data/${sub}/${f} ${ruta} · ${que}`);
+      for (const { ruta, que } of vocabularioVetado(parse(readFileSync(join(dir, sub, f), "utf8")))) out.push(`data/${sub}/${f} ${ruta} · ${que}`);
   return out;
 }
 

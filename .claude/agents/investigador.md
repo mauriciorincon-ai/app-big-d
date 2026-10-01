@@ -47,3 +47,6 @@ Reglas que no se negocian:
   `conflicto_de_interes` (el fabricante tiene interés en presentar bien su producto).
 - **Bilingüe, redactado.** Todo texto del mapa va en español y en inglés, escrito en cada idioma (no una
   traducción literal); los textos de líder, en lenguaje llano.
+- **Los nombres técnicos que el sector usa en inglés no se traducen.** «data lake» y «lakehouse» van así,
+  también en español (jamás «lago de datos» ni «casa del lago»), y se explican en el glosario. La validación
+  rechaza esos calcos.

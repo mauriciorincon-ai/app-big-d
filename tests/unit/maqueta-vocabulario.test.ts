@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest";
 import { TINTAS_VETADAS } from "../../scripts/paleta/generar-tokens.mjs";
 import { archivosMaqueta, leer, textoVisible } from "./lib/maqueta";
 import { usosVetados } from "./lib/tintas";
-import { VETADAS } from "./lib/vocabulario";
+import { VETADAS } from "@/lib/datos/vocabulario";
 
 /**
  * Gate de VOCABULARIO Y GLIFOS de la maqueta (Etapa de Diseño; reglas duras 5, 8, 13 y 20).

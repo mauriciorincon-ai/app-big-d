@@ -1,4 +1,5 @@
 import { coberturaDeRangos, validate, type Gramatica, type Mapa } from "diagramador";
+import { vocabularioVetado } from "../datos/vocabulario";
 import { IDIOMAS } from "../i18n";
 import { sinAfirmacion } from "./decisiones";
 import { avisosDeDibujo } from "./dibujo";
@@ -11,6 +12,8 @@ import { argumentosDeRetiro } from "./retiros";
 //   3. coherencia: el mapa es «propuesta» de esa plataforma; cada afirmación habla de algo que existe; todo
 //      componente y flujo tiene afirmación; la cita de un componente es una de sus fuentes, y la de un
 //      flujo, una fuente de alguno de sus extremos.
+//   3b. vocabulario: ningún texto del mapa (lo que se publicaría) lleva un calco vetado; las citas, que son literales
+//      de la fuente, no cuentan (M-8; la persona, 2026-09-30: «data lake» es el nombre real y no se traduce).
 //   4. retiros: con el mapa aprobado a la vista, todo lo que sale trae su argumento (src/lib/investigador/retiros.ts).
 //   5. dibujo: las vistas del atlas sin avisos de geometría (un nombre que no cabe, una pieza sin lugar).
 
@@ -47,6 +50,7 @@ export function validarPropuesta(dato: unknown, gramatica: Gramatica, rangos: re
   }
   // También en «sin novedades»: la exigencia de cita no se apaga con una bandera del modelo (A-3).
   for (const x of sinAfirmacion(mapa, p.afirmaciones)) fallas.push(`afirmaciones · ${x} no tiene ninguna afirmación que lo respalde`);
+  for (const v of vocabularioVetado(p.mapa)) fallas.push(`vocabulario · mapa${v.ruta} · ${v.que}`);
   fallas.push(...argumentosDeRetiro(anterior, mapa, p.retiros).fallas);
   fallas.push(...avisosDeDibujo(mapa, gramatica, p.fecha));
   return { ok: fallas.length === 0, fallas, propuesta: p };
