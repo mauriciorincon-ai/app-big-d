@@ -46,7 +46,7 @@ export const en: Textos = {
       madurez: "Maturity",
       fuentes: "Sources",
       verificado: "verified {fecha}",
-      consultado: "checked {fecha}",
+      consultado: "checked {fecha} (UTC)",
       tipoFuente: { oficial: "official", tercero: "third party" },
     },
     leyenda: {
@@ -75,7 +75,7 @@ export const en: Textos = {
       verificadoHace: ["verified {n} day ago", "verified {n} days ago"],
       masViejo: ["oldest check {n} day ago", "oldest check {n} days ago"],
     },
-    consultado: "checked {fecha}",
+    consultado: "checked {fecha} (UTC)",
     version: "map v{version}",
     niveles: { etiqueta: "Reading level", general: "Overview", componentes: "Components", recorrido: "A datum's journey", lado: "Side by side" },
     guia: {
@@ -199,6 +199,6 @@ export const en: Textos = {
       respondida: "answered",
       sinFuente: "no source: stays open, nothing is invented",
     },
-    veredicto: { aprobada: "Approved by a person", sinNovedades: "No news", detalle: "{fecha} (UTC) · {a} approved · {r} rejected · map v{version}" },
+    veredicto: { aprobada: "Approved by a person", sinNovedades: "No news", detalle: "{fecha}\u00a0(UTC)\u00a0· {a}\u00a0approved\u00a0· {r}\u00a0rejected\u00a0· map\u00a0v{version}" },
   },
 };

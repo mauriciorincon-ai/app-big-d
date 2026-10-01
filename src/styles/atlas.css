@@ -19,7 +19,7 @@
 .indice { display: none; flex-wrap: nowrap; gap: 18px; overflow-x: auto; padding: 0 0 8px; margin: 0; list-style: none; scrollbar-width: none; }
 .indice::-webkit-scrollbar { display: none; }
 .mapa[data-desborda] .indice { display: flex; }
-.indice button { flex: none; display: inline-flex; align-items: baseline; gap: 6px; min-height: 36px; padding: 6px 0; font: 600 14px/1 var(--letra); color: var(--tinta-2); background: none; border: 0; border-bottom: 2px solid transparent; cursor: pointer; }
+.indice button { flex: none; white-space: nowrap; display: inline-flex; align-items: baseline; gap: 6px; min-height: 36px; padding: 6px 0; font: 600 14px/1 var(--letra); color: var(--tinta-2); background: none; border: 0; border-bottom: 2px solid transparent; cursor: pointer; }
 .indice button[aria-current="true"] { color: var(--tinta-1); border-bottom-color: var(--tinta-1); }
 .indice .n { font: 500 11px/1 var(--letra-mono); }
 .pista { display: none; align-items: center; gap: 8px; margin: 0 0 10px; font: 500 13px/1.4 var(--letra-mono); color: var(--tinta-2); }
@@ -71,7 +71,12 @@
 
 /* Lectura en texto (G10, generada), plegada. */
 .lectura-seccion { margin-top: 36px; border-top: 1px solid var(--linea); padding-top: 14px; }
-.lectura-seccion summary { cursor: pointer; font-weight: 700; font-size: 15px; min-height: 36px; display: flex; align-items: center; }
+.lectura-seccion summary { cursor: pointer; font-weight: 700; font-size: 15px; min-height: 36px; display: flex; align-items: center; gap: 10px; list-style: none; }
+/* La marca de plegable, dibujada (la maqueta la quitaba con display: flex y el plegable cerrado parecía un título
+   sin contenido, pasada de capturas del S1): apunta abajo cerrada y arriba abierta. Sin transición. */
+.lectura-seccion summary::-webkit-details-marker { display: none; }
+.lectura-seccion summary::after { content: ""; flex: none; width: 7px; height: 7px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-2px) rotate(45deg); }
+.lectura-seccion[open] summary::after { transform: translateY(2px) rotate(-135deg); }
 .dg-lectura { font-size: 15px; }
 /* La base de Tailwind quita los marcadores de lista; la lectura (y la ficha que la cita) los necesita:
    el número dice el orden, la viñeta distingue una conexión de un componente. */
@@ -127,6 +132,8 @@
 .dg-ficha-fecha { font: 500 13px/1.4 var(--letra-mono); color: var(--tinta-2); }
 .dg-ficha .dg-ficha-meta { margin-top: 14px; font: 500 13px/1.4 var(--letra-mono); color: var(--tinta-2); }
 .dg-ficha-meta b { color: var(--tinta-1); font-weight: 600; }
+/* Cada dato del pie en una línea: «consultado 2026-10-01» se partía en «2026-10-» y «01» a 380 px. */
+.dg-ficha-meta span { white-space: nowrap; }
 
 /* Recorrido (nivel 3). */
 .rec-controles { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin: 0 0 14px; }

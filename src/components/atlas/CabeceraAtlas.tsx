@@ -3,6 +3,7 @@ import { opcionesPlataforma, plantilla, rutasAtlas, type Nivel, type Pildora } f
 import { datos, type Atlas } from "@/lib/datos";
 import { textos, type Idioma } from "@/lib/i18n";
 import { CampoPlataforma } from "./CampoPlataforma";
+import { Meta } from "@/components/Meta";
 import { MarcaVigencia } from "./MarcaVigencia";
 import { Niveles } from "./Niveles";
 
@@ -30,11 +31,6 @@ export function CabeceraAtlas({
   guia: { entrada: string; resto: ReactNode };
 }) {
   const t = textos(idioma).atlas;
-  const punto = (
-    <span className="punto" aria-hidden="true">
-      ·
-    </span>
-  );
   return (
     <>
       <div className="encabezado">
@@ -42,18 +38,17 @@ export function CabeceraAtlas({
           <span className="ojo">{ojo}</span>
           <h1>{atlas.plataforma.nombre[idioma]}</h1>
           <p className="sub">{sub}</p>
-          <p className="meta">
-            <b data-vigencia={pildora.estado}>
-              <MarcaVigencia estado={pildora.estado} />
-              {pildora.resumen}
-            </b>
-            {punto}
-            <span>{pildora.detalle}</span>
-            {punto}
-            <span>{plantilla(t.consultado, { fecha })}</span>
-            {punto}
-            <span>{plantilla(t.version, { version: atlas.mapa.version })}</span>
-          </p>
+          <Meta
+            items={[
+              <b key="v" data-vigencia={pildora.estado}>
+                <MarcaVigencia estado={pildora.estado} />
+                {pildora.resumen}
+              </b>,
+              pildora.detalle,
+              plantilla(t.consultado, { fecha }),
+              plantilla(t.version, { version: atlas.mapa.version }),
+            ]}
+          />
         </div>
         <CampoPlataforma opciones={opcionesPlataforma(datos(), idioma, nivel)} actual={atlas.plataforma.id} etiqueta={t.plataforma.etiqueta} pronto={t.plataforma.pronto} nota={t.plataforma.nota} />
       </div>

@@ -27,3 +27,39 @@ export function crossings(geo: Geometria): Cruce[] {
     }
   return out;
 }
+
+/** Aire mínimo entre un tramo vertical y el borde de una tarjeta que pasa a su lado: 5 u. */
+export const AIRE_PISTA = 50;
+
+export interface Pegado {
+  flujo: string;
+  caja: string;
+  /** Distancia al borde, en décimas. */
+  distancia: number;
+}
+
+/**
+ * Tramos verticales que corren a menos de `AIRE_PISTA` del borde de una caja, a su lado (no la cruzan: eso es
+ * D11). La pasada de capturas del S1 lo vio en el primer mapa real: a 2 u, una línea parecía salir de la tarjeta
+ * vecina y la flecha que entraba a ella quedaba montada sobre dos líneas.
+ */
+export function pegados(geo: Geometria): Pegado[] {
+  const out: Pegado[] = [];
+  for (const t of geo.trazados)
+    for (let i = 1; i < t.puntos.length; i++) {
+      const a = t.puntos[i - 1]!;
+      const b = t.puntos[i]!;
+      if (a[0] !== b[0] || a[1] === b[1]) continue;
+      const x = a[0];
+      const y1 = Math.min(a[1], b[1]);
+      const y2 = Math.max(a[1], b[1]);
+      for (const c of geo.cajas) {
+        if (!(y1 < c.caja.y + c.caja.h && y2 > c.caja.y)) continue;
+        const izq = c.caja.x - x;
+        const der = x - (c.caja.x + c.caja.w);
+        const d = izq >= 0 ? izq : der >= 0 ? der : -1;
+        if (d >= 0 && d < AIRE_PISTA) out.push({ flujo: t.id, caja: c.id, distancia: d });
+      }
+    }
+  return out;
+}

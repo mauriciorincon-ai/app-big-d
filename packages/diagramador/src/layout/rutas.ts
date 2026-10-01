@@ -42,18 +42,20 @@ export interface Ruteo {
 
 type Lado = "der" | "izq";
 const INFINITO = Number.MAX_SAFE_INTEGER;
-// ±23 u y no ±25: a 25 u del centro la pista corre sobre el borde de la tarjeta (M-23 de la auditoría del S1).
-const OFFSETS_PISTA = [-50, 50, 150, 230, -150, -230];
+// Hasta ±19 u: a 25 u del centro la pista corre sobre el borde de la tarjeta (M-23 de la auditoría del S1) y a
+// 23 u, a 2 u de él, una línea parecía salir de la tarjeta vecina (pasada de capturas del S1, primer mapa real).
+// Con 6 u de aire, el aviso `pistas:` (5 u) no salta; el paso entre pistas queda en 7 u.
+const OFFSETS_PISTA = [-50, 50, 120, 190, -120, -190];
 /** Separación mínima entre pistas de un canal repartido: 4 u. */
 const PISTA_MIN = 40;
 /** Hueco mínimo entre dos tarjetas de una columna para que un flujo baje derecho con su etiqueta: 30 u. */
 const HUECO_DIRECTO = 300;
-/** Media anchura útil de un canal repartido: 2 u de aire contra cada tarjeta. */
-const MEDIO_UTIL = mitad(CANAL) - 20;
+/** Media anchura útil de un canal repartido: 6 u de aire contra cada tarjeta (las fijas llegan a ±19 u). */
+const MEDIO_UTIL = mitad(CANAL) - 60;
 
 /**
  * Posiciones de las pistas de un canal que pide `n`, relativas a su centro y en el orden en que se asignan.
- * Hasta 6, las fijas de § 5.3. Con más, `n` posiciones parejas en el canal (a 2 u de cada tarjeta) y el mismo
+ * Hasta 6, las fijas de § 5.3. Con más, `n` posiciones parejas en el canal (a 6 u de cada tarjeta) y el mismo
  * orden de las fijas: desde la de la izquierda del centro hacia la derecha y después hacia la izquierda.
  * Por debajo de 4 u entre pistas no se reparte más: el que sobra comparte la última y el motor lo reporta.
  */

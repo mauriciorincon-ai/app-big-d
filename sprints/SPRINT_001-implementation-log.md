@@ -438,6 +438,15 @@ dibuja los niveles 1 y 2 de los dos mapas bilingües y mide cada `tspan` con `ge
     el trazo, que sale de la caja de 12 u y cabe en la insignia de 20 u sin mover nada. La leyenda pasa a caja de
     16 u para las tres marcas. De contorno y en tinta, para no leerse como el triángulo lleno y de color de un tipo
     de nodo («Ingesta» en `plataformas-datos`).
+29. **D-S1-58 — Pistas a 6 u de las tarjetas y aviso `pistas:`** (pasada final de capturas del S1). Con 2 u de aire
+    (M-23), una línea que baja junto a una columna parecía salir de la tarjeta vecina y la flecha que entraba a esa
+    tarjeta quedaba encima de dos líneas. Pistas fijas `[-50, 50, 120, 190, -120, -190]`; reparto parejo dentro de
+    ±19 u (máximo 10 pistas a 4 u); aviso por debajo de 5 u. Propuesta para § 5.3 y para la lista de avisos.
+30. **No partir dentro de un paréntesis corto** (propuesta, pasada final de capturas): «Fabric capacity (F SKU)»
+    se partía entre «(F» y «SKU)».
+31. **Orden de pistas por destino** (propuesta para S2, pasada final de capturas): la punta de una flecha de
+    llegada (8 u) cruza las pistas que corren entre su propia pista y la tarjeta; asignando primero, junto a cada
+    columna, las pistas de los flujos que entran a ella, la punta no queda sobre otra línea.
 
 ## Fase 2 — Atlas nivel 1 en el producto (2026-09-27)
 
@@ -1282,6 +1291,70 @@ solo se sabía corriéndola (regla 15, «¿lo viste correr en el modo en que lo 
   - Nombró las cuatro plataformas abriendo sus archivos. Su intento de listar la carpeta por Bash lo bloqueó el
     candado, como corresponde.
 - **El rojo del hook** ya constaba en `hooks.test` (2 bloqueos para `investigador`, 0 para otros agentes).
+
+### M-7 — Pasada final de capturas, leída como imagen (2026-09-30)
+
+- **La pasada:** `node scripts/capturar-producto.mjs --salida <scratchpad>/capturas-final` sobre el build de
+  `9d9c752` (fecha de consulta 2026-10-01 UTC): 22 rutas, **88 encuadres, 4440 comprobaciones de interacción, 0
+  fallas**, 136 PNG (88 encuadres más 48 con la ficha abierta).
+- **La lectura:** las 136 se leyeron como imagen, 34 por lector, con cuatro lectores en paralelo y la misma lista
+  de qué mirar; las páginas largas, recortadas a tamaño real. Cada lector entregó una fila por archivo y «Leídas: 34
+  de 34». El constructor verificó cada defecto reportado sobre la captura o el código.
+- **Defectos hallados y pagados:**
+  - **D-S1-58 — Pistas pegadas a las tarjetas** (grupos 1 y 3; el más serio). En el nivel 2 y el recorrido de
+    Fabric, la línea punteada Lakehouse → Agente bajaba a 2 u del borde de Lakehouse y de «Almacén de datos
+    (Warehouse)». En el recorrido parecía salir de la tarjeta atenuada, y la flecha que entraba a Warehouse quedaba
+    montada sobre dos líneas. D11 no lo cuenta, porque no cruza.
+    - El motor deja ahora **6 u de aire**: pistas fijas `[-50, 50, 120, 190, -120, -190]` y reparto parejo dentro
+      de ±19 u (con 7 pistas, paso de 6,3 u; con más de 10, el que sobra lo reporta el motor).
+    - Y avisa `pistas: <flujo> corre a N u del borde de <caja>` por debajo de 5 u (`pegados()` en `d11.ts`), así el
+      build, el validador y la aprobación lo ven en cualquier mapa.
+    - Rojo: 15 pruebas del paquete con el ruteo anterior (P1 en nivel 2 y recorrido, P1 y A3 a cuatro edades, las
+      filas de referencias y la invariancia al orden). Verde: 669/669.
+    - **Los 30 golden files no cambiaron un byte:** ningún mapa del contrato usa la tercera pista o las
+      siguientes. Determinismo en tres navegadores: 6/6.
+  - **M4 · La pestaña del nivel actual, cortada a 380 px** («03 Rec…», grupos 1 y 4). `ActivaALaVista` corre la
+    fila lo justo al cargar. No dibuja nada, así que el árbol es el mismo en servidor y cliente.
+  - **M2 · El plegable «Lectura en texto» no parecía plegable** (grupos 1, 3 y 4; viene de la maqueta, que lo
+    quitaba con `display: flex`). Lleva una marca dibujada con bordes, que apunta abajo cerrada y arriba abierta,
+    sin transición.
+  - **M3 · Un «·» que abría línea a 380 px, y «0» separado de «rechazadas»** (grupo 4). El componente `Meta`
+    pega cada separador a su dato; el detalle del veredicto usa espacios no separables entre número y palabra.
+  - **M1 · La fecha de la ficha partida** («2026-10-» / «01», grupo 4): cada dato del pie va en una línea.
+  - **T3 · «04 Processing and transformation» partida en tres renglones** en el índice de capas a 380 px
+    (grupo 1): `white-space: nowrap`.
+  - **T1 · «consultado 2026-10-01» el 30 de septiembre por la noche** (grupos 1 y 3). La fecha de consulta es la
+    UTC del build (D-S1-04), y la de aprobación ya decía «(UTC)» desde B-32. Ahora la de consulta también:
+    «consultado {fecha} (UTC)» / «checked {fecha} (UTC)».
+  - **Gates:**
+    - `tests/e2e/telefono.spec.ts`, 4 pruebas a 380 px: la pestaña actual entera, la marca del plegable que gira,
+      ningún «·» abriendo línea y el número con su palabra, y el pie de la ficha en una línea por dato. Rojo 4/4
+      contra el build anterior y verde 8/8 en los dos proyectos de Chromium.
+    - El aviso `pistas:` y sus pruebas en el paquete.
+- **Visto y dejado como está (al gate del ciclo):**
+  - **T4 · «Fabric capacity (F SKU)»** se parte entre «(F» y «SKU)» en la fila de referencias (EN). Es corte del
+    motor por espacios. Va como propuesta de enmienda: no partir dentro de un paréntesis corto. El dato aprobado
+    no se toca a mano.
+  - **«Agentes» muestra «Vista previa pública»** en lugar de «1 componente»: es D-S1-33 (un bloque de un solo
+    componente muestra su madurez).
+  - **«Vista previa…» abreviada** en una tarjeta del nivel 2: es el corte del motor por ancho (D-S1-17).
+  - **El investigador de la Plataforma Ejemplo** dice «mapa aprobado v0.1.0» con «0 revisiones» y sin veredicto.
+    Es cierto: su mapa viene del contrato, no de una aprobación.
+  - **El panel lateral de la ficha a 1280 tapa parte de la leyenda:** es el diseño de un panel no modal.
+- **Segunda pasada** (build con los arreglos): 88 encuadres, 4440 comprobaciones de interacción, 0 fallas.
+  - **Leídas por el constructor, en recortes a tamaño real:**
+    - el canal de Fabric en el nivel 2 y el recorrido: la punteada ya corre a 6 u, y en el recorrido se ve que sale
+      de Lakehouse;
+    - la pestaña «03 Recorrido de un dato» entera a 380 px;
+    - la línea de metadatos del investigador con cada «·» al final de su línea;
+    - el índice de capas en inglés en una sola línea por capa.
+  - **Queda:** la punta de la flecha que entra a Warehouse (8 u) todavía toca la punteada que pasa a 6 u. Las
+    puntas miden más que el aire del canal; resolverlo pide ordenar las pistas por destino, para que la flecha de
+    llegada no cruce otra pista. Va como propuesta de enmienda para el S2, que trae dos mapas densos más.
+- **e2e:** la corrida completa dio 319/320. La que falló, «/es/atlas/fabric/recorrido: el mismo árbol con y sin la
+  preferencia…» en `desktop-chromium`, venció su espera de 10 s para abrir la ficha en una corrida de 6,3 min (la
+  máquina estaba cargada con un lector todavía trabajando). Repetida 3 veces sola, `reduced-motion.spec`: 402/402.
+  Se anota como tiempo de espera bajo carga, no como defecto.
 
 ### Lo que falta
 

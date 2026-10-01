@@ -132,6 +132,8 @@ h1 { font-size: 32px; line-height: 1.1; font-weight: 700; letter-spacing: -0.025
 .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 16px 0 0; font: 500 13px/1.4 var(--letra-mono); color: var(--tinta-2); }
 .meta b { color: var(--tinta-1); font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
 .meta .punto { color: var(--tinta-2); }
+/* Cada dato con su «·» pegado (componente Meta): al partirse la línea, el separador no abre la siguiente. */
+.meta-dato { display: inline-flex; align-items: center; gap: 10px; }
 
 /* Pie */
 .pie { margin-top: 56px; padding: 24px 16px; border-top: 1px solid var(--linea); font: 500 12px/1.6 var(--letra-mono); color: var(--tinta-2); }
@@ -232,7 +234,7 @@ h1 { font-size: 32px; line-height: 1.1; font-weight: 700; letter-spacing: -0.025
 .indice { display: none; flex-wrap: nowrap; gap: 18px; overflow-x: auto; padding: 0 0 8px; margin: 0; list-style: none; scrollbar-width: none; }
 .indice::-webkit-scrollbar { display: none; }
 .mapa[data-desborda] .indice { display: flex; }
-.indice button { flex: none; display: inline-flex; align-items: baseline; gap: 6px; min-height: 36px; padding: 6px 0; font: 600 14px/1 var(--letra); color: var(--tinta-2); background: none; border: 0; border-bottom: 2px solid transparent; cursor: pointer; }
+.indice button { flex: none; white-space: nowrap; display: inline-flex; align-items: baseline; gap: 6px; min-height: 36px; padding: 6px 0; font: 600 14px/1 var(--letra); color: var(--tinta-2); background: none; border: 0; border-bottom: 2px solid transparent; cursor: pointer; }
 .indice button[aria-current="true"] { color: var(--tinta-1); border-bottom-color: var(--tinta-1); }
 .indice .n { font: 500 11px/1 var(--letra-mono); }
 .pista { display: none; align-items: center; gap: 8px; margin: 0 0 10px; font: 500 13px/1.4 var(--letra-mono); color: var(--tinta-2); }
@@ -284,7 +286,12 @@ h1 { font-size: 32px; line-height: 1.1; font-weight: 700; letter-spacing: -0.025
 
 /* Lectura en texto (G10, generada), plegada. */
 .lectura-seccion { margin-top: 36px; border-top: 1px solid var(--linea); padding-top: 14px; }
-.lectura-seccion summary { cursor: pointer; font-weight: 700; font-size: 15px; min-height: 36px; display: flex; align-items: center; }
+.lectura-seccion summary { cursor: pointer; font-weight: 700; font-size: 15px; min-height: 36px; display: flex; align-items: center; gap: 10px; list-style: none; }
+/* La marca de plegable, dibujada (la maqueta la quitaba con display: flex y el plegable cerrado parecía un título
+   sin contenido, pasada de capturas del S1): apunta abajo cerrada y arriba abierta. Sin transición. */
+.lectura-seccion summary::-webkit-details-marker { display: none; }
+.lectura-seccion summary::after { content: ""; flex: none; width: 7px; height: 7px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-2px) rotate(45deg); }
+.lectura-seccion[open] summary::after { transform: translateY(2px) rotate(-135deg); }
 .dg-lectura { font-size: 15px; }
 /* La base de Tailwind quita los marcadores de lista; la lectura (y la ficha que la cita) los necesita:
    el número dice el orden, la viñeta distingue una conexión de un componente. */
@@ -340,6 +347,8 @@ h1 { font-size: 32px; line-height: 1.1; font-weight: 700; letter-spacing: -0.025
 .dg-ficha-fecha { font: 500 13px/1.4 var(--letra-mono); color: var(--tinta-2); }
 .dg-ficha .dg-ficha-meta { margin-top: 14px; font: 500 13px/1.4 var(--letra-mono); color: var(--tinta-2); }
 .dg-ficha-meta b { color: var(--tinta-1); font-weight: 600; }
+/* Cada dato del pie en una línea: «consultado 2026-10-01» se partía en «2026-10-» y «01» a 380 px. */
+.dg-ficha-meta span { white-space: nowrap; }
 
 /* Recorrido (nivel 3). */
 .rec-controles { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin: 0 0 14px; }
@@ -395,7 +404,7 @@ h1 { font-size: 32px; line-height: 1.1; font-weight: 700; letter-spacing: -0.025
 <main class="ds">
 <p class="ojo">Big-D · Componentes · S1</p>
 <h1 style="margin:0;font-size:32px;line-height:1.1">Ficha de un componente</h1>
-<div class="panel ds-panel" role="complementary" aria-label="Ficha del componente"><div class="panel-cabeza"><span class="ojo">Ficha del componente</span><button type="button" class="cerrar">Cerrar</button></div><div class="panel-cuerpo"><article class="dg-ficha" lang="es" data-ficha="modelo-semantico"><p class="dg-ficha-tipo"><svg class="dg-svg" viewBox="-9 -9 18 18" width="16" height="16" aria-hidden="true"><g class="dg-c-tipo-5"><path d="M0,-7 A7,7 0 1 1 0,7 A7,7 0 1 1 0,-7 Z" fill="currentColor"/></g></svg><span class="dg-ficha-cod">CON</span><span>Consumo analítico e inteligencia de negocio</span></p><h2>Modelo semántico</h2><p class="dg-ficha-lider">Define una sola vez qué significa cada indicador, para que todos los tableros digan lo mismo.</p><h3>Qué hace</h3><p>Capa de métricas y relaciones sobre las tablas limpias, leídas en su lugar; centraliza definiciones y aplica la seguridad por filas.</p><h3>Por qué importa</h3><p>Sin definiciones únicas, dos áreas reportan cifras distintas del mismo indicador.</p><h3>Madurez</h3><p class="dg-ficha-madurez"><svg class="dg-svg" viewBox="-7 -7 14 14" width="14" height="14" aria-hidden="true"><rect class="dg-madurez-caja" x="-3.5" y="-5.5" width="7" height="11" rx="1.5"/><rect class="dg-madurez-nivel" x="-3.5" y="-5.5" width="7" height="11" rx="1"/></svg><span>Disponible de forma general</span></p><h3>Fuentes</h3><ul class="dg-fuentes"><li><a href="https://example.org/ficticia/semantica">Documentación ficticia del modelo semántico</a><span class="dg-ficha-fecha">2026-08-30 · oficial</span></li></ul><p class="dg-ficha-meta"><span>verificado 2026-09-20</span> · <span>consultado 2026-09-26</span></p></article>
+<div class="panel ds-panel" role="complementary" aria-label="Ficha del componente"><div class="panel-cabeza"><span class="ojo">Ficha del componente</span><button type="button" class="cerrar">Cerrar</button></div><div class="panel-cuerpo"><article class="dg-ficha" lang="es" data-ficha="modelo-semantico"><p class="dg-ficha-tipo"><svg class="dg-svg" viewBox="-9 -9 18 18" width="16" height="16" aria-hidden="true"><g class="dg-c-tipo-5"><path d="M0,-7 A7,7 0 1 1 0,7 A7,7 0 1 1 0,-7 Z" fill="currentColor"/></g></svg><span class="dg-ficha-cod">CON</span><span>Consumo analítico e inteligencia de negocio</span></p><h2>Modelo semántico</h2><p class="dg-ficha-lider">Define una sola vez qué significa cada indicador, para que todos los tableros digan lo mismo.</p><h3>Qué hace</h3><p>Capa de métricas y relaciones sobre las tablas limpias, leídas en su lugar; centraliza definiciones y aplica la seguridad por filas.</p><h3>Por qué importa</h3><p>Sin definiciones únicas, dos áreas reportan cifras distintas del mismo indicador.</p><h3>Madurez</h3><p class="dg-ficha-madurez"><svg class="dg-svg" viewBox="-7 -7 14 14" width="14" height="14" aria-hidden="true"><rect class="dg-madurez-caja" x="-3.5" y="-5.5" width="7" height="11" rx="1.5"/><rect class="dg-madurez-nivel" x="-3.5" y="-5.5" width="7" height="11" rx="1"/></svg><span>Disponible de forma general</span></p><h3>Fuentes</h3><ul class="dg-fuentes"><li><a href="https://example.org/ficticia/semantica">Documentación ficticia del modelo semántico</a><span class="dg-ficha-fecha">2026-08-30 · oficial</span></li></ul><p class="dg-ficha-meta"><span>verificado 2026-09-20</span> · <span>consultado 2026-09-26 (UTC)</span></p></article>
 </div></div>
 <p class="ds-nota">Generado por el motor del diagramador y las vistas del producto sobre la Plataforma Ejemplo (ficticia), consulta 2026-09-26. toCard, nivel 2 (design-system.md § 5, «Ficha de nodo»).</p>
 </main>

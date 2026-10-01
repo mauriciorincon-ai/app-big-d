@@ -46,7 +46,7 @@ export const es: Textos = {
       madurez: "Madurez",
       fuentes: "Fuentes",
       verificado: "verificado {fecha}",
-      consultado: "consultado {fecha}",
+      consultado: "consultado {fecha} (UTC)",
       tipoFuente: { oficial: "oficial", tercero: "tercero" },
     },
     leyenda: {
@@ -75,7 +75,7 @@ export const es: Textos = {
       verificadoHace: ["verificado hace {n} día", "verificado hace {n} días"],
       masViejo: ["lo más viejo, hace {n} día", "lo más viejo, hace {n} días"],
     },
-    consultado: "consultado {fecha}",
+    consultado: "consultado {fecha} (UTC)",
     version: "mapa v{version}",
     niveles: { etiqueta: "Nivel de lectura", general: "Visión general", componentes: "Componentes", recorrido: "Recorrido de un dato", lado: "Lado a lado" },
     guia: {
@@ -199,6 +199,6 @@ export const es: Textos = {
       respondida: "respondida",
       sinFuente: "sin fuente: queda abierta, no se inventa",
     },
-    veredicto: { aprobada: "Aprobada por una persona", sinNovedades: "Sin novedades", detalle: "{fecha} (UTC) · {a} aprobadas · {r} rechazadas · mapa v{version}" },
+    veredicto: { aprobada: "Aprobada por una persona", sinNovedades: "Sin novedades", detalle: "{fecha}\u00a0(UTC)\u00a0· {a}\u00a0aprobadas\u00a0· {r}\u00a0rechazadas\u00a0· mapa\u00a0v{version}" },
   },
 };

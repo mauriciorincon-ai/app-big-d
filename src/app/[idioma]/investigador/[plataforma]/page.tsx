@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CampoPlataforma } from "@/components/atlas/CampoPlataforma";
+import { Meta } from "@/components/Meta";
 import { MarcaVigencia } from "@/components/atlas/MarcaVigencia";
 import { RevisionPropuesta } from "@/components/investigador/RevisionPropuesta";
 import { Solicitar } from "@/components/investigador/Solicitar";
@@ -43,11 +44,6 @@ export default async function Investigador({ params }: PageProps<"/[idioma]/inve
   const nombre = v.plataforma.nombre[idioma];
   const gramatica = [...d.atlas.values()][0]?.gramatica;
   const ultima = v.revisiones.at(-1);
-  const punto = (
-    <span className="punto" aria-hidden="true">
-      ·
-    </span>
-  );
   const p = v.propuesta;
 
   return (
@@ -57,13 +53,7 @@ export default async function Investigador({ params }: PageProps<"/[idioma]/inve
           <span className="ojo">{t.ojo}</span>
           <h1>{nombre}</h1>
           <p className="sub">{t.sub}</p>
-          <p className="meta">
-            <span>{v.mapa ? plantilla(t.mapaAprobado, { version: v.mapa.version }) : t.sinMapa}</span>
-            {punto}
-            <span>{plantilla(textos(idioma).atlas.consultado, { fecha })}</span>
-            {punto}
-            <span>{plural(t.historial, v.revisiones.length)}</span>
-          </p>
+          <Meta items={[v.mapa ? plantilla(t.mapaAprobado, { version: v.mapa.version }) : t.sinMapa, plantilla(textos(idioma).atlas.consultado, { fecha }), plural(t.historial, v.revisiones.length)]} />
         </div>
         <CampoPlataforma
           opciones={d.plataformas.map((x) => ({ id: x.id, nombre: x.nombre[idioma], ruta: `/${idioma}/investigador/${x.id}` }))}
@@ -144,21 +134,15 @@ export default async function Investigador({ params }: PageProps<"/[idioma]/inve
             <p className="huella">
               <b>{p.carpeta}</b>
             </p>
-            <p className="meta">
-              <span>{p.fecha}</span>
-              {punto}
-              <span>{plantilla(t.propuesta.modelo, { modelo: p.modelo })}</span>
-              {punto}
-              <span>{plural(t.propuesta.reintentos, p.reintentos)}</span>
-              {punto}
-              <span>{plural(t.propuesta.fuentes, p.fuentes)}</span>
-              {p.fechaVerificacion && (
-                <>
-                  {punto}
-                  <span>{plantilla(t.propuesta.verificadaEl, { fecha: p.fechaVerificacion })}</span>
-                </>
-              )}
-            </p>
+            <Meta
+              items={[
+                p.fecha,
+                plantilla(t.propuesta.modelo, { modelo: p.modelo }),
+                plural(t.propuesta.reintentos, p.reintentos),
+                plural(t.propuesta.fuentes, p.fuentes),
+                ...(p.fechaVerificacion ? [plantilla(t.propuesta.verificadaEl, { fecha: p.fechaVerificacion })] : []),
+              ]}
+            />
           </div>
           <p className="conteo">
             <span>{p.diff.primera ? plantilla(t.propuesta.primera, { n: p.diff.nuevos }) : plantilla(t.propuesta.diff, { nuevos: p.diff.nuevos, renombrados: p.diff.renombrados, retirados: p.diff.retirados, madurez: p.diff.madurez })}</span>

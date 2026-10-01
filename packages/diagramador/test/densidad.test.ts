@@ -5,7 +5,7 @@
 // neutrales. Con el motor de la v0.3.0 daba cuatro avisos (carril exprés, «canal 2: más de 6 pistas», dos
 // etiquetas encimadas, una referencia fuera del lienzo) y la app no lo habría publicado. Ahora: ninguno.
 import { describe, expect, it } from "vitest";
-import { crossings, layout, validate, type Caja, type Mapa } from "../src/index";
+import { crossings, layout, validate, type Caja, type Geometria, type Mapa } from "../src/index";
 import { offsetsPista } from "../src/layout/rutas";
 import { CASOS, disponer, FECHA, VISTAS } from "./lib/casos";
 import { COBERTURA, EJEMPLOS, GRAMATICAS, leerJson } from "./lib/contrato";
@@ -37,7 +37,7 @@ describe("P1 — mapa denso del piloto", () => {
     expect(y("nivel-1")).toBe(3);
     expect(y("nivel-2")).toBe(4);
   });
-  it("el canal con 7 pistas las reparte parejas, todas distintas y a 2 u o más de cada tarjeta", () => {
+  it("el canal con 7 pistas las reparte parejas, todas distintas y a 6 u o más de cada tarjeta", () => {
     const geo = disponer(P1, "nivel-2");
     const verticales = new Set<number>();
     const izq = 80 + 2 * (1520 + 500) + 1520; // borde derecho de la columna 2
@@ -48,7 +48,21 @@ describe("P1 — mapa denso del piloto", () => {
         if (x1 === x2 && y1 !== y2 && x1 > izq && x1 < izq + 500) verticales.add(x1);
       }
     expect(verticales.size).toBe(7);
-    for (const x of verticales) expect(x - izq >= 20 && izq + 500 - x >= 20).toBe(true);
+    for (const x of verticales) expect(x - izq >= 60 && izq + 500 - x >= 60).toBe(true);
+  });
+});
+
+// La pasada final de capturas del S1 (2026-09-30) leyó en el primer mapa real una línea punteada que bajaba a 2 u
+// del borde de dos tarjetas: en el recorrido parecía salir de la tarjeta atenuada, y la flecha que entraba a esa
+// tarjeta quedaba montada sobre dos líneas. D11 no lo cuenta (no cruza), y el M-23 solo miraba «sobre el borde».
+describe("aire de las pistas: ningún tramo vertical corre a menos de 5 u del borde de una tarjeta que pasa a su lado", () => {
+  // El motor lo reporta como aviso (como D11), así el build y la aprobación lo ven en cualquier mapa.
+  const casos: [string, () => Geometria][] = [
+    ...CASOS.map((c) => [c.nombre, () => disponer(c.mapa, c.vista)] as [string, () => Geometria]),
+    ...VISTAS.map((v) => [`P1 · ${v}`, () => disponer(P1, v)] as [string, () => Geometria]),
+  ];
+  it.each(casos)("%s", (_n, geo) => {
+    expect(geo().avisos.filter((a) => a.startsWith("pistas:"))).toEqual([]);
   });
 });
 
@@ -103,8 +117,8 @@ describe("referencias de una fila de franja (enmienda del piloto)", () => {
 });
 
 describe("pistas de un canal (§ 5.3 con la enmienda del piloto)", () => {
-  it("hasta 6, las posiciones fijas, a 2 u de las tarjetas como mínimo (M-23: ±25 u caía sobre su borde)", () => {
-    for (let n = 1; n <= 6; n++) expect(offsetsPista(n)).toEqual([-50, 50, 150, 230, -150, -230]);
+  it("hasta 6, las posiciones fijas, a 6 u de las tarjetas como mínimo (M-23: ±25 u caía sobre su borde; a 2 u, la pasada de capturas la vio pegada)", () => {
+    for (let n = 1; n <= 6; n++) expect(offsetsPista(n)).toEqual([-50, 50, 120, 190, -120, -190]);
   });
   it("ningún tramo vertical corre sobre el borde de una tarjeta (nube-ejemplo: el balanceador y cuatro nodos más)", () => {
     const nube = EJEMPLOS.find((x) => x.sujeto_id === "nube-ejemplo")!;
@@ -129,13 +143,13 @@ describe("pistas de un canal (§ 5.3 con la enmienda del piloto)", () => {
   });
   it("con 7, siete posiciones parejas en el mismo orden (centro, derecha, izquierda) y dentro del canal", () => {
     const o = offsetsPista(7);
-    expect(o).toEqual([0, 76, 152, 228, -76, -152, -228]);
+    expect(o).toEqual([0, 63, 126, 189, -63, -126, -189]);
   });
-  it("no reparte por debajo de 4 u: con 13 ofrece 12 y el que sobra lo reporta el motor", () => {
+  it("no reparte por debajo de 4 u: con 13 ofrece 10 y el que sobra lo reporta el motor", () => {
     const o = offsetsPista(13);
-    expect(o).toHaveLength(12);
+    expect(o).toHaveLength(10);
     const orden = [...o].sort((a, b) => a - b);
     expect(orden.slice(1).map((x, i) => x - orden[i]!).every((d) => d >= 40)).toBe(true);
-    expect(Math.max(...o.map(Math.abs))).toBeLessThanOrEqual(230);
+    expect(Math.max(...o.map(Math.abs))).toBeLessThanOrEqual(190);
   });
 });
