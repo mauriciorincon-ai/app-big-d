@@ -1069,12 +1069,12 @@ el commit de esta sección; lo que espera a la persona queda abajo, en «Lo que 
 | **M-9** clics sin reintento; el test de 900 px no abría el panel | `abrir`, `abrirConTecla` y `listo` en `tests/e2e/lib/abrir.ts`; el test abre antes de afirmar |
 | **M-10** un YAML roto no nombraba su archivo | `leerYaml` → `archivo · yaml · mensaje` |
 | **M-11** el `select` navega sin aviso (WCAG 3.2.2) | Nota visible enlazada con `aria-describedby` |
-| **M-12** el bot de Vercel publicó la URL del preview | `github.silent`; los 4 comentarios viejos esperan a la persona |
+| **M-12** el bot de Vercel publicó la URL del preview | `github.silent`; los 4 comentarios viejos, borrados con el «sí» de la persona (abajo) |
 | **M-13** D-S1-40…45 nombraban dos cosas | Las del motor pasan a 49…54 |
 | **M-14** la UI no medía su piso de 50 % | `src/components/**` en la cobertura con piso 50 y pruebas de componente |
 | **M-15** el candado de `aprobar` se burlaba desde la sesión | `puedeAprobar()` dentro del script: niega en el repo con `CLAUDECODE` o sin TTY |
 | **M-16** nada ataba el mapa publicado a su aprobación | `tests/unit/mapas-aprobados.test.ts`: huella y versión contra la última revisión |
-| **M-17** el modelo podía lanzar al investigador | Hook `sin-lanzar.mjs` sobre `Agent|Task`; la prueba en vivo espera a la persona |
+| **M-17** el modelo podía lanzar al investigador | Hook `sin-lanzar.mjs` sobre `Agent\|Task`; probado en vivo por la persona: su `/investigar` no se bloquea (abajo) |
 | **M-18** Read/Glob/Grep sin límite; `verificar-citas` sin validar | Candado de lectura; `verificar-citas` valida y aborta ante un identificador |
 | **M-19** una propuesta vieja reaparecía | `pendiente()` solo mira carpetas posteriores; `aprobar` exige carpeta posterior a la última |
 | **M-20** la afirmación no decía sobre qué era | `sobre · nombre` en su cabecera (mirada abajo) |
@@ -1254,10 +1254,38 @@ Un retiro (algo que el mapa aprobado tiene y la propuesta ya no) solo sale con s
   - Gate: `nucleo.test` «un calco en un texto del mapa falla con su ruta». Rojo 1/27 con el validador anterior,
     verde 27/27.
 
+### M-12 — Los comentarios del bot con el enlace del preview (2026-09-30)
+
+- **Pregunta:** «¿Borro los 4 comentarios del bot de Vercel que publicaron el enlace de la vista previa en los PR
+  #1 a #4?». Se recomendó borrar y no ocultar: un comentario oculto solo se pliega y el enlace sigue legible. La
+  persona: **«sí»**.
+- **Hecho:** los 4 comentarios (uno por PR, de `vercel[bot]`, del 26 y 27 de septiembre) se borraron con
+  `DELETE /repos/…/issues/comments/<id>`.
+- **Comprobado después:** en los PR #1–#4, cero comentarios, cuerpos, comentarios de código o reseñas con el
+  dominio del preview, y el campo homepage del repositorio vacío.
+- **Lo que queda fuera:** el panel de Deployments de GitHub sigue mostrando el enlace a quien entra al
+  repositorio; se declara en el summary (no se automatiza con un token de administración, regla 17).
+
+### M-17 — Prueba en vivo: el candado `sin-lanzar` no frena el `/investigar` de una persona (2026-09-30)
+
+La documentación de Claude Code no dice si una skill con `context: fork` pasa por el PreToolUse de `Agent|Task`;
+solo se sabía corriéndola (regla 15, «¿lo viste correr en el modo en que lo usa la persona?»).
+
+- **Cómo se probó:** la persona abrió una sesión **nueva** de Claude Code en el repo y escribió
+  `/investigar no-existe`.
+- **Resultado:** el investigador arrancó; el hook no lo bloqueó, porque no apareció el «BLOQUEADO: el
+  investigador solo lo lanza una persona…».
+  - Se detuvo como dicen sus reglas: «la plataforma no-existe no está en el atlas, así que no hay nada que
+    proponer… la regla prohíbe completar nada por inferencia».
+  - No escribió en `propuestas/` (el árbol quedó limpio y el registro de ejecución sin líneas nuevas) y no hizo
+    búsquedas web.
+  - Nombró las cuatro plataformas abriendo sus archivos. Su intento de listar la carpeta por Bash lo bloqueó el
+    candado, como corresponde.
+- **El rojo del hook** ya constaba en `hooks.test` (2 bloqueos para `investigador`, 0 para otros agentes).
+
 ### Lo que falta
 
-- De la persona (las cinco miradas y M-8 ya están): el permiso para los 4 comentarios del bot (M-12); la prueba
-  en vivo de `/investigar` con el hook `sin-lanzar` (M-17).
+- De la persona: nada (las cinco miradas, M-8, M-12 y la prueba en vivo de M-17 ya están).
 - Del constructor: la pasada de capturas sobre el build final, leída como imagen (M-7), cuando terminen las miradas.
 
 ### Desviaciones del plan de pagos
