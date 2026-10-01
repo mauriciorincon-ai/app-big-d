@@ -1356,17 +1356,56 @@ solo se sabía corriéndola (regla 15, «¿lo viste correr en el modo en que lo 
   máquina estaba cargada con un lector todavía trabajando). Repetida 3 veces sola, `reduced-motion.spec`: 402/402.
   Se anota como tiempo de espera bajo carga, no como defecto.
 
+- **El cuarto lector (grupo 2: inglés de la Plataforma Ejemplo y del investigador) llegó después de `32d8eb5`**,
+  sobre la primera pasada: «Leídas: 34 de 34», 4 defectos y 30 sin defecto.
+  - **Los 4 defectos son el mismo: T3**, el índice de capas a 380 px con «04 Processing and transformation» en tres
+    renglones, en las cuatro páginas del atlas en teléfono. Ya estaba pagado. El constructor lo verificó en la
+    segunda pasada, recortando arriba `en_atlas_plataforma-ejemplo__oscuro__380` y
+    `en_atlas_plataforma-ejemplo_recorrido__claro__380`: «04 Proces» va en una línea, al borde de la tira que se
+    desliza; la pestaña «03 A datum's journey» se ve entera, y la fecha dice «checked 2026-10-01 (UTC)».
+  - **Observaciones que ya estaban cubiertas:**
+    - la fecha 2026-10-01 es T1;
+    - la sección «Reading in text» sin marca es M2;
+    - las tiras de pestañas y del índice, cortadas en el borde, se deslizan a propósito («Swipe sideways…»).
+  - **Nota para el gate del ciclo: «Colour» y «colours»**, con grafía británica, en la nota de modos y en la nota de
+    marcas. Vienen tal cual de la maqueta aprobada, y el diccionario tiene que ser fiel a ella. No hay ninguna
+    grafía estadounidense en `en.ts` que choque con estas: es coherente. Se deja como está.
+
+- **e2e con la máquina tranquila** (2026-09-30, sobre `93d2edc`): `E2E_PUERTO=3147 pnpm test:e2e`, **320/320 en
+  47,8 s, sin reintentos** (la corrida cargada había tardado 6,3 min). La falla de 10 s de `reduced-motion` era
+  carga: queda cerrada.
+- **CI de `93d2edc`:** `quality`, `e2e`, `lighthouse`, `diagramador (ubuntu-latest)`, `diagramador
+  (macos-latest)`, Vercel y Vercel Preview Comments, cada uno con conclusión propia `success`.
+
+### `/deploy-check` (2026-09-30, sobre `93d2edc` más el summary)
+
+Cada casilla, con el comando del `ci.yml`:
+
+| § | Estado | Evidencia |
+|---|---|---|
+| 1 Tests | ✅ | `pnpm test` 1019/1019 en 52 archivos; cobertura 98,7 % de líneas, sin errores de glob ni umbrales bajo el resumen. Paquete (comando del job `diagramador`) 669/669. `pnpm test:e2e` 320/320, cero reintentos |
+| 2 Tipos | ✅ | `pnpm typecheck` limpio; ningún `@ts-ignore`, `@ts-expect-error` ni `@ts-nocheck` nuevo contra `origin/main`. El perfil `--python` no aplica |
+| 3 Lint y formato | ✅ | `pnpm lint` limpio. La pasada de capturas mide el área de desplazamiento y hace la pasada de interacción (88 encuadres, 4440 comprobaciones, 0 fallas); `controladores-maqueta` en verde. Movimiento reducido: el árbol no depende de la preferencia (134 e2e). Barrido de tintas vetadas en `pnpm test` |
+| 4 Build | ✅ ⚠️ | `pnpm build` exitoso. Bundle: `out/` 9,3 MB (1,4 MB es la maqueta, A-25), JS 1128 KB, CSS 34 KB, `/es` 13 KB. Contra `main` crece por completo: es el primer sprint con producto (`main` tenía el estampado) |
+| 5 Seguridad | ✅ | `pnpm audit --audit-level high`: sin vulnerabilidades. Sin overrides en `package.json` ni en `pnpm-workspace.yaml`. gitleaks sobre los 39 commits de la rama: sin fugas. Ninguna variable de deploy nueva (ver § 9) |
+| 6 Observabilidad | ✅ | Export estático, sin endpoints. Sentry client-only, inerte sin DSN |
+| 7 A11y y diseño | ✅ | axe en todas las rutas y los dos temas (e2e). Teclado de punta a punta. FIDELIDAD aprobada sobre el preview y las miradas registradas |
+| 8 Performance | ✅ ⚠️ | El job `lighthouse` (mediana de 3) en `success`, con categorías 96–100. El LCP 2455–2772 ms está sobre el estándar de 2500: presupuesto renegociado a 2900 y deuda para S2. Sin `next/image` (export, `unoptimized`) ni consultas |
+| 9 Documentación | ✅ | Barrido de enlaces tras el último `git add`: vacío; campo homepage vacío. Frases aplazadas: limpias en manual, guía, README e i18n. **Se cazó y se pagó una en `.env.example`** (proveedor LLM y claves). Manual y guía al día. ADRs del sprint en `decisions/`. Sin brochure (S4) |
+| 10 Cierre | ✅ | Bitácora al día; summary dentro del PR. 7-S: términos releídos el 2026-09-30 en `decisions/investigator-7s-compliance.md` |
+| 11 Checks | ✅ | `93d2edc`: los 5 checks requeridos y los 2 de Vercel en `success`, ninguno `skipped`. El job `diagramador` corrió por primera vez en este PR (dicho en el summary). Falta leer los checks del commit del summary tras su push |
+| 12 Disco en runtime | ✅ | La app no escribe nada al correr: export estático. Derivados de los scripts: `propuestas/registro-de-ejecucion.jsonl` (fecha, herramienta, URL o consulta, 16 caracteres de huella del id de llamada; sin sesión ni identidad), `propuestas/<carpeta>/{propuesta,verificacion,error-validacion}.json`, `data/mapas` y `data/revisiones` (los escribe `aprobar`). Todos son conocimiento público por diseño y nacen de fuentes públicas. Ninguno desciende de un dato privado. Modo real: `pnpm start` corre en cada e2e y en Lighthouse, y `/investigar` corrió en vivo (M-17). El arnés de capturas declara su árbol y verifica `out/es.html` antes de fotografiar |
+
+**Decisión: MERGE OK**, condicionado a que los checks del commit del summary queden en `success`.
+
 ### Lo que falta
 
-- De la persona: nada (las cinco miradas, M-8, M-12 y la prueba en vivo de M-17 ya están).
-- Del constructor (2026-09-30, tras `32d8eb5`):
-  - el informe del lector del grupo 2 (34 capturas: inglés de la Plataforma Ejemplo y del investigador), con sus
-    defectos verificados y pagados o anotados;
-  - la CI de `32d8eb5` con conclusión propia `success` en cada check;
-  - una corrida completa de e2e con la máquina tranquila (cero inestables);
-  - completar `sprints/SPRINT_001-summary.md` (borrador en el árbol: faltan la fila de la pasada de capturas y la
-    conclusión de los checks) y el informe de `/deploy-check`;
-  - PR #4 listo para revisión → merge de la persona → limpiar el campo homepage → «corre `/cierre-sprint big-d`».
+- Del constructor: hecho todo lo de la lista anterior (lector del grupo 2, CI de `32d8eb5` y `93d2edc`, e2e con la
+  máquina tranquila, summary y `/deploy-check`). Queda leer los checks del commit del summary y marcar el PR #4
+  listo para revisión.
+- De la persona: el merge del PR #4.
+- Después del merge: limpiar el campo homepage (lo reescribe la integración de Vercel) → «corre
+  `/cierre-sprint big-d`».
 
 ### Desviaciones del plan de pagos
 
