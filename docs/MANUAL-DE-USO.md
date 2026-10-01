@@ -51,8 +51,9 @@ a ninguna ni pide cuentas.
   4. La **leyenda**, al pie del mapa, explica cada color, símbolo y tipo de línea.
 - **Cómo leer los estados:** el encabezado del mapa dice su vigencia con un símbolo y un texto: **«vigente ·
   verificado hace N días»**, o cuántos bloques están por revisar o vencidos. Un bloque o un componente solo lleva
-  una insignia cuando su información está **«por revisar»** (desde los 30 días) o **«vencido»** (desde los 60): un
-  símbolo y los días («34 d»), nunca solo un color. Lo vigente no lleva insignia. Si en una fila de referencias ya
+  una insignia cuando su información está **«por revisar»** (desde los 30 días: un triángulo de precaución con «!» y
+  los días, «34 d») o **«vencido»** (desde los 60: la insignia rellena, con una equis y los días), nunca solo un
+  color. Lo vigente no lleva insignia. Si en una fila de referencias ya
   no cabe todo, los nombres se abrevian con «…»; el nombre entero sigue en la ficha y en la lectura en texto.
 - **Limitaciones:** el mapa muestra lo que se aprobó; si una capa aún no tiene componentes, aparece vacía, no
   inventada.
@@ -183,8 +184,8 @@ manages and controls; it never operates a platform**: it connects to none and as
   4. The **legend**, under the map, explains every colour, symbol and line style.
 - **Reading the states:** the map's header gives its freshness as a symbol and a word: **“current · verified N
   days ago”**, or how many blocks are to review or expired. A block or a component carries a badge only when its
-  information is **“to review”** (from 30 days) or **“expired”** (from 60): a symbol and the days (“34 d”), never
-  colour alone. Current information carries no badge. When a row of references no longer fits, names are
+  information is **“to review”** (from 30 days: a warning triangle with “!” and the days, “34 d”) or **“expired”**
+  (from 60: a filled badge with a cross and the days), never colour alone. Current information carries no badge. When a row of references no longer fits, names are
   shortened with “…”; the full name stays in the card and in the text reading.
 - **Limitations:** the map shows what was approved; a layer with no components yet stays empty, never invented.
 

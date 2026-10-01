@@ -335,8 +335,15 @@ async function interactuar(pagina, ruta, tema, ancho, clave) {
     cambio((await boton("reproducir").getAttribute("aria-pressed")) === "false", "«Pausar» no detuvo la reproducción");
   }
 
-  // Investigador: «Copiar» deja en el portapapeles exactamente el comando y lo confirma; cada par
-  // Aprobar/Rechazar marca su decisión.
+  // Investigador: cada par Aprobar/Rechazar marca su decisión; PRIMERO, porque el comando de aprobación (con su
+  // propio «Copiar») solo aparece cuando todo está decidido (lo vio la pasada de la auditoría del S1 con una
+  // propuesta pendiente). Después, «Copiar» deja en el portapapeles exactamente el comando y lo confirma.
+  const decidir = pagina.locator(".decidir button");
+  await marcar(decidir);
+  for (let i = 0; i < (await decidir.count()); i++) {
+    await decidir.nth(i).click();
+    cambio((await decidir.nth(i).getAttribute("aria-pressed")) === "true", "un botón Aprobar/Rechazar no marcó su decisión");
+  }
   const copiar = pagina.locator(".comando button");
   await marcar(copiar);
   const nCopiar = await copiar.count();
@@ -348,12 +355,6 @@ async function interactuar(pagina, ruta, tema, ancho, clave) {
     await pagina.waitForTimeout(80);
     cambio((await b.textContent()) !== antes, `«${antes}» no confirmó la copia de «${texto}»`);
     cambio((await pagina.evaluate(() => navigator.clipboard.readText())) === texto, `«Copiar» no dejó «${texto}» en el portapapeles`);
-  }
-  const decidir = pagina.locator(".decidir button");
-  await marcar(decidir);
-  for (let i = 0; i < (await decidir.count()); i++) {
-    await decidir.nth(i).click();
-    cambio((await decidir.nth(i).getAttribute("aria-pressed")) === "true", "un botón Aprobar/Rechazar no marcó su decisión");
   }
 
   const lienzoFoco = pagina.locator(".lienzo[tabindex]");

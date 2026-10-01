@@ -431,6 +431,12 @@ dibuja los niveles 1 y 2 de los dos mapas bilingües y mide cada `tspan` con `ge
     esta vista ni esta función.
 27. **D-S1-54 — Etiqueta de un flujo dentro de una columna** — se despega 2 u de la tarjeta como la de los
     vecinos (antes la rozaba 1 u; ningún mapa del contrato tenía el caso, lo cazó la vista «bloque»).
+28. **D-S1-55 — Marca de «por revisar»: triángulo de precaución con «!»** (pedido de la persona al mirar el atlas
+    envejecido, 2026-09-30). § 5.4 dibuja el «!» solo (`M0,-5 V1.5 M0,4.2 V4.6`); el motor dibuja
+    `M0,-6.6 L6.8,5 H-6.8 Z M0,-2.3 V0.8 M0,3.05 V3.15` con trazo 1,6: un triángulo de contorno de 14 × 13 u con
+    el trazo, que sale de la caja de 12 u y cabe en la insignia de 20 u sin mover nada. La leyenda pasa a caja de
+    16 u para las tres marcas. De contorno y en tinta, para no leerse como el triángulo lleno y de color de un tipo
+    de nodo («Ingesta» en `plataformas-datos`).
 
 ## Fase 2 — Atlas nivel 1 en el producto (2026-09-27)
 
@@ -1032,6 +1038,136 @@ Hecho: la ventana (con su mirada), G11 en tres motores, movimiento reducido y ax
 de la ventana, A-24 (y A-25, A-29 y A-30 verificadas), guía de prueba v1 con kit, manual bilingüe, `design-sync/`
 y el ADR de extensiones de diseño. Sigue, tras el «continúa»: `/audita-sprint` (obligatoria; su fase 2 paga todos
 los hallazgos) → `/deploy-check` → `SPRINT_001-summary.md` → PR listo.
+
+## Auditoría final — Fase 2: el pago (2026-09-29 → 2026-09-30)
+
+La Fase 1 (`sprints/SPRINT_001-auditoria.md`, `fd5dc0e`) dio **1 crítico, 6 altos, 26 medios y 47 bajos** y el
+veredicto «requiere ajustes». La persona respondió **«Aprobado»** (2026-09-29) a la pregunta «¿Apruebas que corrija
+todo lo que encontró la auditoría?»: aprueba la Fase 1 y el pago de todos los hallazgos. El pago va en `a7ecf4e` y en
+el commit de esta sección; lo que espera a la persona queda abajo, en «Lo que falta».
+
+### Lo pagado
+
+| Hallazgo | Pago |
+|---|---|
+| **C-1** el build se rompía solo el 2026-10-27 | La insignia montada no pasa de la mitad de la tarjeta + 4 u; una fila de referencias llena abrevia los nombres con «…» (el nombre entero sigue en `aria-label`, la ficha y la lectura); la vista «bloque» reserva el lugar de la insignia lateral. El investigador y la aprobación dibujan además a la fecha de «por revisar» y de «vencido» y cada ventana. Marca de «por revisar» = triángulo de precaución (pedido de la persona en su mirada, D-S1-55) |
+| **A-1** el investigador podía reescribir lo que produce el código | Candado: escribe solo `propuestas/<carpeta>/propuesta.json` |
+| **A-2** inyección en el comando de aprobación | `comandoAprobar` valida la carpeta (`^propuestas/[A-Za-z0-9][A-Za-z0-9._-]*$`) y los ids |
+| **A-3** «sin novedades» quitaba la exigencia de cita | Falla sin afirmación; la URL de la verificación debe ser la de la cita |
+| **A-4** «sin novedades» ignoraba un rechazo | `sinNovedades` exige cero rechazadas |
+| **A-5** paso que se sigue a sí mismo o a uno posterior | V5 lo rechaza; `numerarPasos` lanza ante un ciclo; carnadas P2 y P3 |
+| **A-6** tarjetas vecinas sin lugar para su línea | `directo()` exige filas contiguas, sin par de vuelta y un hueco ≥ 300; si no, la línea va por el canal |
+| **M-1** D11 solo en las pruebas del paquete | Aviso `D11:` al final de `layout`; aviso de pista de carril fuera del canal; `crossings = []` sobre cada atlas, vista y ventana |
+| **M-2** guía b3 y manual prometían insignia en todo bloque | Reescritos (b3, manual ES/EN) |
+| **M-3** ADR «código primero» en _proposed_ con dos afirmaciones falsas | _accepted_ (2026-09-29), con evidencia; las dos frases corregidas |
+| **M-4** casilla 7-S inexistente en `/deploy-check` | Casilla § 10 «IA de construcción por suscripción (7-S)», citada en el ADR |
+| **M-5** el ADR decía que la persona vio la nota de marcas y el estado vacío | ADR y bitácora corregidos (1–2 vistos, 3–4 del constructor); las dos miradas, abajo |
+| **M-6** faltaba `## Desviación del plan` | Escrita al final de esta bitácora |
+| **M-7** 88 encuadres medidos, no leídos | Pasada sobre el build final leída como imagen: va después de las miradas (abajo) |
+| **M-8** «lago de datos» ×5 en el mapa de Fabric | Gate `datos-vocabulario.test.ts` sobre `data/` con `VETADAS` compartida; las 5 rutas como deuda declarada (`CONOCIDAS`) hasta la decisión de la persona |
+| **M-9** clics sin reintento; el test de 900 px no abría el panel | `abrir`, `abrirConTecla` y `listo` en `tests/e2e/lib/abrir.ts`; el test abre antes de afirmar |
+| **M-10** un YAML roto no nombraba su archivo | `leerYaml` → `archivo · yaml · mensaje` |
+| **M-11** el `select` navega sin aviso (WCAG 3.2.2) | Nota visible enlazada con `aria-describedby` |
+| **M-12** el bot de Vercel publicó la URL del preview | `github.silent`; los 4 comentarios viejos esperan a la persona |
+| **M-13** D-S1-40…45 nombraban dos cosas | Las del motor pasan a 49…54 |
+| **M-14** la UI no medía su piso de 50 % | `src/components/**` en la cobertura con piso 50 y pruebas de componente |
+| **M-15** el candado de `aprobar` se burlaba desde la sesión | `puedeAprobar()` dentro del script: niega en el repo con `CLAUDECODE` o sin TTY |
+| **M-16** nada ataba el mapa publicado a su aprobación | `tests/unit/mapas-aprobados.test.ts`: huella y versión contra la última revisión |
+| **M-17** el modelo podía lanzar al investigador | Hook `sin-lanzar.mjs` sobre `Agent|Task`; la prueba en vivo espera a la persona |
+| **M-18** Read/Glob/Grep sin límite; `verificar-citas` sin validar | Candado de lectura; `verificar-citas` valida y aborta ante un identificador |
+| **M-19** una propuesta vieja reaparecía | `pendiente()` solo mira carpetas posteriores; `aprobar` exige carpeta posterior a la última |
+| **M-20** la afirmación no decía sobre qué era | `sobre · nombre` en su cabecera (mirada abajo) |
+| **M-21** los retiros no eran visibles ni decididos | `--retirar`, la lista en pantalla y la comprobación contra el diff (mirada abajo) |
+| **M-22** «sin novedades» inalcanzable | `contenido` quita `fuentes[].fecha` |
+| **M-23** pistas sobre el borde de las tarjetas | `OFFSETS_PISTA = [-50, 50, 150, 230, -150, -230]` |
+| **M-24**, **M-25** fichas fuera del lienzo y bloque vacío sin aviso | Avisos en `nivel1` |
+| **M-26** el diff dependía del orden de las claves | Comparación canónica; la revisión usa `huella` |
+| **B-1…B-10** app | Foco de los botones del recorrido, Enter cambia el paso, foco al reabrir, `aria-current`, `rutaInvestigador`, fechas imposibles, 404 con e2e y axe, escucha de hidratación, comentarios caducados, Sentry sin mensajes |
+| **B-11…B-18** textos y guía | Kit de prueba (26 + 3, dominios, un solo `rm -rf`), README «Hoy», guía b3/c4/d4/f3/f7 y título del bloque F, manual, `atlas.spec` sobre `PUBLICADAS`, 404 desde el diccionario, un solo recorrido por mapa, reglas por nombre. B-12 y B-17b van a «Enmiendas» |
+| **B-19…B-28** infraestructura | `verificar` ve archivos nuevos, LHCI fijado con patrón de arranque, rutas de Lighthouse, apagado del arnés, temporales de `cargar-ts`, cabeceras de seguridad, gitleaks sobre el texto a escribir, generador de la muestra del kit, LCP (abajo), `pino` y `verify-ephemeral` fuera |
+| **B-29…B-37** investigador | Hooks fallan cerrados, `curl -q -g`, cita ≥ 40, UTC, revisión validada y fecha validada, escrituras atómicas, contador que se reinicia, `tool_use_id` con huella (35 líneas migradas), sanidad muerta borrada |
+| **B-38…B-43** motor | V4 para el flujo hacia sí mismo, error claro por idioma no declarado, `pasoPrevio` exportado, la ventana enlaza su texto, invariancia al orden sobre todas las salidas; `grupo` se queda (enmienda) |
+| **B-44…B-47** campos sin consumidor | Con M-1, M-16 y M-20 ganan lector `cajas`, `trazados`, `crossings`, `huella` y `sobre`; `reintentos` real, verificación contra la cita; `ficticia` con lector (B-46); el resto se declara como API del reusable (enmienda) |
+
+### Gates nuevos: ¿puede fallar? · rojo · a quién nombró · verde
+
+- **C-1, paquete** (`test/envejecer.test.ts`): sí. Rojo con el motor anterior en 22/32 (insignia de bloque fuera
+  del lienzo; referencia fuera del lienzo; flujo que pisa una insignia de 3 cifras). Verde 32/32, golden intactos.
+- **C-1, app** (`tests/unit/atlas-vigencias.test.ts`): rojo 4 (Fabric a 2026-10-27, 11-25, 11-26 y 2027-11-01,
+  «nivel-2: avisos de geometría»). Verde 13/13. Builds con `BIGD_FECHA_CONSULTA=2026-10-27` y `2027-06-01`: exit 0.
+- **M-1** (`geometria.test.ts`): rojo 2/2 con el motor anterior (`caso-ejemplo` + 6 flujos `llega → valora`: 0
+  avisos). Verde. `atlas.test` «D11 en cada atlas»: su rojo lo da el aviso del motor.
+- **A-5** (`recorrido-orden.test.ts` + P2/P3): rojo 4/4 (validaban sin errores; `numerarPasos` agotaba la memoria
+  en ~2,3 s). Verde.
+- **A-6** (`bloque.test` a/b + ida y vuelta en `geometria.test`): rojo 4. Verde, golden intactos.
+- **M-23** (`densidad.test`): rojo 2/2 (6 tramos sobre bordes). Verde. **M-24**, **M-25**: rojo sin el aviso, verde.
+- **M-26** (`texto.test`): rojo con el diff anterior (los 14 flujos «cambiados»). Verde.
+- **B-39**: rojo 4/4 (`TypeError` sin mensaje). Verde; tres pruebas viejas pasan a probar los dos caminos.
+- **B-41** (`atlas.test`): rojo 4. **B-42** (`propiedades.test`): rojo 2 al quitar el orden en `toBlockCards`.
+  **B-38** (`validar-piloto.test`): rojo 1. Verdes.
+- **Componentes**: B-3 rojo 1, B-1/B-2 rojo 2, M-11 rojo 1, B-4 rojo 4. Verdes.
+- **Datos** (`datos.test`, M-10/B-46/B-17c/B-5/B-6): rojo 6/6 con el cargador anterior. Verde.
+- **B-10** (`observability.test`): rojo 2. **M-12/B-24** (`servidor-config.test`): rojo 2/2. Verdes.
+- **Investigador**: `nucleo.test` rojo 10 (A-2, A-3 ×2, A-4, M-19, M-21, M-22, B-45, `--retirar`, cita de 40).
+  `hooks.test` rojo 18 (A-1 ×6 + mensaje ×6, M-18, B-29 ×2, M-17, B-36, B-35). Verdes 21/21 y 50/50.
+  `revision.test` y `scripts.test` (M-15: sin `BIGD_RAIZ` y con `CLAUDECODE` sale 1 antes de leer nada) en verde.
+- **M-16** (`mapas-aprobados.test`): verde en `data/`; rojo sobre una copia con una palabra editada.
+- **M-14**: rojo con el piso en 99 («lines 94.16% does not meet … 99%»), verde en 50.
+- **B-8** (`reduced-motion.spec`): rojo con un `span` que pinta distinto en servidor y cliente → «Minified React
+  error #418» ×2 (la comparación de `outerHTML` no lo veía). Revertido; verde.
+- **M-8** (`datos-vocabulario.test`): rojo 5 sin `CONOCIDAS`; rojo 1 con el calco plantado en el ejemplo; verde
+  con la deuda declarada.
+- **B-25** (`gitleaks-escritura.test`): corre solo donde está el binario (`skipIf`), métrica `manual`. La prueba
+  es su demo: la carnada canónica sale con 2 en Write, Edit y MultiEdit; el texto limpio y la carnada partida pasan.
+  Corrida local 2/2 (2026-09-30).
+- **D-S1-55** (triángulo): el gate de golden files dio rojo en 30/30 SVG; se regeneraron tras mirarlos como imagen y
+  el diff de los 30 es solo el path de `k-revisar` en `<defs>`.
+
+### CI
+
+- `fd5dc0e`: quality ✓ · e2e ✓ · lighthouse ✓ · diagramador ubuntu ✓ · macOS ✓ · Vercel ✓ (6/6 `success`).
+- `a7ecf4e`: los mismos 6/6 en `success`; Lighthouse con el presupuesto renegociado.
+
+### Presupuesto de LCP (B-27)
+
+Medido en local (lhci 0.15.1, 3 corridas, mediana, móvil simulado) con el presupuesto en 2500 ms: 11 de 15 rutas
+en rojo, entre 2455 y 2772 ms. El elemento LCP es texto (`p.sub`, `p.guia` o `p.kit-nota`) y las fuentes van con
+`display: block` porque G15 prohíbe pintar el texto medido con otra fuente; `/es` pesa 12,9 KB y da 2,61 s, así que
+no es el HTML. Sin precargar la mono no mejora (probado y revertido). **Renegociado a 2900 ms** (venía de 3000; el
+estándar pide 2500). Categorías ≥ 90 en las 15 (96–98 / 100 / 100 / 100). **Plan S2:** subconjunto de las dos woff2
+(83 KB hoy) a los rangos de `cobertura.json`, con métricas y huellas regeneradas, y medir de nuevo.
+
+### Miradas de la Fase 2 (una por mensaje)
+
+1. **C-1, el atlas envejecido** (2026-09-30, Fabric a 30 días en `/es/atlas/fabric/componentes`). La persona: «Sí me
+   gusta la señal de envejecimiento pero quiero el símbolo del triángulo de precaución […] ¿y cómo se vería el de 90
+   días?». Se cambió la marca (D-S1-55) en la insignia, la leyenda y la píldora del encabezado, y se sirvieron las
+   dos edades. La persona: **«Sí, están perfectos 30 y 90 días»**. Aprobada.
+2. **M-20, la cabecera de cada afirmación** — pendiente.
+3. **M-21, la lista de retiros** — pendiente.
+4. **M-5, la nota de marcas** — pendiente.
+5. **M-5, el estado vacío en contexto** — pendiente.
+
+### Lo que falta
+
+- De la persona: las cuatro miradas de arriba; la decisión sobre «lago de datos» (M-8); el permiso para los 4
+  comentarios del bot (M-12); la prueba en vivo de `/investigar` con el hook `sin-lanzar` (M-17).
+- Del constructor: la pasada de capturas sobre el build final, leída como imagen (M-7), cuando terminen las miradas.
+
+### Desviaciones del plan de pagos
+
+- **B-46:** la regla acepta cualquier dominio reservado para ejemplos (RFC 2606/6761: `example.org/.com/.net`,
+  `.example`, `.invalid`, `.test`), no solo `example.org`, porque la muestra del kit usa `ejemplo.invalid`.
+- **B-40:** solo se exporta `pasoPrevio`; los umbrales viven en `util/vigencia.ts` y `contieneTermino` se reusa
+  adentro, sin ampliar la API.
+- **B-43:** `grupo` se queda en español, como `textos` y `fechaConsulta`; va a «Enmiendas».
+- **M-16:** la prueba vive en `tests/unit/mapas-aprobados.test.ts`, no en `tests/unit/datos/`.
+- **B-25:** la prueba de gitleaks corre solo en local (`manual`): la CI no tiene el binario en el job de pruebas.
+- **El arnés de capturas** decide las afirmaciones antes de buscar «Copiar»: el comando de aprobación solo aparece
+  tras decidir, y el orden anterior lo marcaba como control sin efecto.
+- **M-15:** la prueba del script lo corre sin `BIGD_RAIZ`, con `CLAUDECODE` y sobre una carpeta que no existe, para
+  que ni un fallo de la guarda pueda tocar el repo.
+- **D-S1-55**, fuera del plan de pagos: la marca de «por revisar» cambió por pedido de la persona en la mirada de C-1.
 
 ## Desviación del plan
 

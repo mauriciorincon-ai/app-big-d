@@ -6,7 +6,7 @@
 
 `design-system.md` (v0.5.2) is read-only for product work: a design change is proposed in the sprint log as a
 FORMA look and the design system is extended by ADR (S1 order, «Qué NO tocar»). S1 was the first sprint with real
-platform names and the first one where a person used the atlas as a product, so four design decisions were made
+platform names and the first one where a person used the atlas as a product, so five design decisions were made
 outside the mockup, all recorded in `sprints/SPRINT_001-implementation-log.md`. **Decisions 1 and 2 were seen by the
 person before they were built on** (the block window, at the Fabric look of 2026-09-29; the platform selector, at stop
 A). **Decisions 3 and 4 were made by the builder without a FORMA look** (D-S1-34 and D-S1-41, recorded as minor);
@@ -44,11 +44,21 @@ design-system version.
    state lives on its researcher page: the title «Todavía no hay mapa de …», one line on how a map arrives, and the
    exact `/investigar <id>` command block with «Copiar».
 
+5. **«To review» mark: a warning triangle with «!»** (user's request, 2026-09-30). The mockup and the contract
+   (§ 5.4, «por revisar») draw a bare «!»; the person, looking at the Fabric atlas aged to 30 days, asked for the
+   caution triangle. It is an outline triangle (14 × 13 u with its 1.6 u stroke) with the «!» inside, painted in
+   ink like the other state marks, used in the compact badge of the drawing, in the legend and in the map's header
+   pill. It stays an outline so it does not read as the filled, coloured triangle of the «Ingesta» type. «Expired»
+   keeps the filled badge with a cross. User's look, 2026-09-30, at 30 and 90 days: «Sí, están perfectos 30 y 90
+   días». The contract change goes to «Enmiendas al contrato del diagramador» in the S1 summary.
+
 ## Consequences
 
-- `design-sync/` shows items 1–3 as generated cards (Componentes · S1 and the legend card).
+- `design-sync/` shows items 1–3 as generated cards (Componentes · S1 and the legend card), and item 5 in the
+  legend card.
 - The «Ficha breve» row of § 5 is obsolete in the product. The mockup keeps it as the approved reference of its
   time; the fidelity gate compares the map, not that card.
 - Next design-system version (planning house): replace the «Ficha breve» row with «Ventana de un bloque», add
   «Selector de plataforma del atlas» to § 5, close the two § 10 debts (selector and trademark note; empty state
-  in context), and add the window to the movement table (no motion: it opens and closes by attribute).
+  in context), add the window to the movement table (no motion: it opens and closes by attribute), and draw the
+  «to review» mark as the warning triangle (§ 4.8 and the mark table).

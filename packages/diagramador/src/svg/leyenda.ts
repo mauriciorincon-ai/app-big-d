@@ -28,10 +28,11 @@ export function toLegend(grammar: Gramatica, opciones: { language: string; texto
     .map((m) => `<li>${medidorSVG(m.nivel)}<span>${e(m.nombre[l]!)}</span></li>`)
     .join("");
   const marca = (k: string) => `<path d="${MARCAS[k]!.d}" fill="none" stroke="currentColor" stroke-width="${MARCAS[k]!.trazo}" stroke-linecap="round" stroke-linejoin="round"/>`;
+  // Caja de 16: el triángulo de «por revisar» mide 14 × 13 u con su trazo; las tres marcas, a la misma escala.
   const vigencia = [
-    `<li>${svg("-7 -7 14 14", 14, 14, `<g class="dg-marca">${marca("vigente")}</g>`)}<span>${e(t.leyenda.vigente)}</span></li>`,
-    `<li>${svg("-7 -7 14 14", 14, 14, `<g class="dg-marca">${marca("revisar")}</g>`)}<span>${e(t.leyenda.porRevisar)}</span></li>`,
-    `<li>${svg("-7 -7 14 14", 14, 14, `<g class="dg-marca">${marca("vencido")}</g>`)}<span>${e(t.leyenda.vencido)}</span></li>`,
+    `<li>${svg("-8 -8 16 16", 16, 16, `<g class="dg-marca">${marca("vigente")}</g>`)}<span>${e(t.leyenda.vigente)}</span></li>`,
+    `<li>${svg("-8 -8 16 16", 16, 16, `<g class="dg-marca">${marca("revisar")}</g>`)}<span>${e(t.leyenda.porRevisar)}</span></li>`,
+    `<li>${svg("-8 -8 16 16", 16, 16, `<g class="dg-marca">${marca("vencido")}</g>`)}<span>${e(t.leyenda.vencido)}</span></li>`,
   ].join("");
   const regla = plantilla(t.leyenda.reglaVigencia, { revisar: grammar.vigencia.umbral_revisar_dias, vencido: grammar.vigencia.umbral_vencido_dias });
   return (
