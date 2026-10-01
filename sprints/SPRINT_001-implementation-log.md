@@ -1359,7 +1359,14 @@ solo se sabía corriéndola (regla 15, «¿lo viste correr en el modo en que lo 
 ### Lo que falta
 
 - De la persona: nada (las cinco miradas, M-8, M-12 y la prueba en vivo de M-17 ya están).
-- Del constructor: la pasada de capturas sobre el build final, leída como imagen (M-7), cuando terminen las miradas.
+- Del constructor (2026-09-30, tras `32d8eb5`):
+  - el informe del lector del grupo 2 (34 capturas: inglés de la Plataforma Ejemplo y del investigador), con sus
+    defectos verificados y pagados o anotados;
+  - la CI de `32d8eb5` con conclusión propia `success` en cada check;
+  - una corrida completa de e2e con la máquina tranquila (cero inestables);
+  - completar `sprints/SPRINT_001-summary.md` (borrador en el árbol: faltan la fila de la pasada de capturas y la
+    conclusión de los checks) y el informe de `/deploy-check`;
+  - PR #4 listo para revisión → merge de la persona → limpiar el campo homepage → «corre `/cierre-sprint big-d`».
 
 ### Desviaciones del plan de pagos
 
