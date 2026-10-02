@@ -15,7 +15,7 @@ const golden = (idioma: string, vista = "nivel-1") => readFileSync(`packages/dia
 
 describe("cadena de fidelidad: dato de la app + diccionario = golden del diagramador", () => {
   it.each(IDIOMAS.flatMap((idioma) => (["nivel-1", "nivel-2", "recorrido"] as const).map((vista) => [vista, idioma] as const)))("%s en %s", (vista, idioma) => {
-    const geo = layout(atlas.mapa, atlas.gramatica, vista, { textos: textosMotor(), fechaConsulta: "2026-09-26" });
+    const geo = layout(atlas.mapa, atlas.gramatica, vista, { texts: textosMotor(), queryDate: "2026-09-26" });
     expect(toSVG(geo, { language: idioma }) === golden(idioma, vista)).toBe(true);
   });
 });
@@ -116,10 +116,10 @@ describe("M-1 — D11 en cada atlas publicado: ninguna vista ni ventana con un f
   const casos = [...d.atlas.values()].flatMap((a) => {
     const G = a.gramatica;
     const tm = textosMotor();
-    const nivel1 = layout(a.mapa, G, "nivel-1", { textos: tm, fechaConsulta: "2026-09-26" });
+    const nivel1 = layout(a.mapa, G, "nivel-1", { texts: tm, queryDate: "2026-09-26" });
     return [
-      ...(["nivel-1", "nivel-2", "recorrido"] as const).map((v) => [`${a.plataforma.id} · ${v}`, () => layout(a.mapa, G, v, { textos: tm, fechaConsulta: "2026-09-26" })] as const),
-      ...nivel1.vigencia.elementos.map((e) => [`${a.plataforma.id} · ventana ${e.id}`, () => layout(a.mapa, G, "bloque", { textos: tm, fechaConsulta: "2026-09-26", grupo: e.id })] as const),
+      ...(["nivel-1", "nivel-2", "recorrido"] as const).map((v) => [`${a.plataforma.id} · ${v}`, () => layout(a.mapa, G, v, { texts: tm, queryDate: "2026-09-26" })] as const),
+      ...nivel1.vigencia.elementos.map((e) => [`${a.plataforma.id} · ventana ${e.id}`, () => layout(a.mapa, G, "bloque", { texts: tm, queryDate: "2026-09-26", group: e.id })] as const),
     ];
   });
   it.each(casos)("%s", (_n, geo) => {

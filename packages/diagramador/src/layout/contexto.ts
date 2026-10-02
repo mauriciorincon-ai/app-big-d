@@ -5,7 +5,7 @@ import { METRICAS_PILOTO, medidor, type Medidor } from "../texto/metricas";
 import { diasEntre } from "../util/fechas";
 import { estadoVigencia } from "../util/vigencia";
 import { ordenarPor } from "../util/orden";
-import type { Geometria, OpcionesLayout, TextosMotor, Vigencia } from "./tipos";
+import type { Geometria, OpcionesLayout, Plural, TextosMotor, Vigencia } from "./tipos";
 
 // Constantes de § 5.3, en décimas.
 export const M = 80;
@@ -41,7 +41,7 @@ export function contexto(mapa: Mapa, gramatica: Gramatica, opciones: OpcionesLay
   const mono = tabla.fuentes[opciones.fuenteMono ?? "jetbrains-mono"];
   if (!sans || !mono) throw new Error("layout: la tabla de métricas no tiene las fuentes pedidas");
   for (const idioma of gramatica.idiomas)
-    if (!opciones.textos[idioma]) throw new Error(`layout: faltan las cadenas de interfaz en «${idioma}» (options.textos)`);
+    if (!opciones.texts[idioma]) throw new Error(`layout: faltan las cadenas de interfaz en «${idioma}» (options.texts)`);
   const porClase = (c: Banda["clase"]) => ordenarPor(gramatica.bandas.filter((b) => b.clase === c), (b) => b.orden, (b) => b.id);
   return {
     mapa,
@@ -57,8 +57,8 @@ export function contexto(mapa: Mapa, gramatica: Gramatica, opciones: OpcionesLay
     nodo: new Map(mapa.nodos.map((n) => [n.id, n])),
     sans: medidor(sans),
     mono: medidor(mono),
-    textos: opciones.textos,
-    fechaConsulta: opciones.fechaConsulta,
+    textos: opciones.texts,
+    fechaConsulta: opciones.queryDate,
     avisos: [],
   };
 }
@@ -101,8 +101,8 @@ export function porIdioma(ctx: Contexto, f: (idioma: string, t: TextosMotor) => 
   return Object.fromEntries(ctx.idiomas.map((l) => [l, f(l, ctx.textos[l]!)]));
 }
 
-/** Plural de interfaz: [uno, varios]. */
-export const plural = (formas: readonly [string, string], n: number): string => (n === 1 ? formas[0] : formas[1]).replace("{n}", String(n));
+/** Plural de interfaz (§ 8): `one` para n = 1, `other` para lo demás (español e inglés). */
+export const plural = (formas: Plural, n: number): string => (n === 1 ? formas.one : formas.other).replace("{n}", String(n));
 
 export const colX = (i: number): number => M + i * (COL + CANAL);
 export const anchoLienzo = (n: number): number => 2 * M + n * COL + (n - 1) * CANAL;

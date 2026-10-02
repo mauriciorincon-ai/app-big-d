@@ -90,7 +90,7 @@ const ORDEN: Record<Vigencia, number> = { vigente: 0, revisar: 1, vencido: 2 };
 
 /** Vigencia por banda: su componente más viejo manda (el mismo cálculo del motor, nodo por nodo). */
 export function vigenciaPorBanda(atlas: Atlas, idioma: Idioma, fecha: string): BandaVigencia[] {
-  const geo = layout(atlas.mapa, atlas.gramatica, "nivel-2", { textos: textosMotor(), fechaConsulta: fecha });
+  const geo = layout(atlas.mapa, atlas.gramatica, "nivel-2", { texts: textosMotor(), queryDate: fecha });
   const porNodo = new Map(geo.vigencia.elementos.map((e) => [e.id, e]));
   const bandas = [...(["capa", "carril", "transversal"] as const)].flatMap((c) =>
     atlas.gramatica.bandas.filter((b) => b.clase === c).sort((a, b) => a.orden - b.orden),

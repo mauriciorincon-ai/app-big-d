@@ -22,7 +22,7 @@ export function layout(map: Mapa, grammar: Gramatica, view: Vista, options: Opci
 
 function disponer(map: Mapa, grammar: Gramatica, view: Vista, options: OpcionesLayout): Geometria {
   const ctx = contexto(map, grammar, options);
-  if (view === "bloque") return bloque(ctx, options.grupo);
+  if (view === "bloque") return bloque(ctx, options.group);
   if (ctx.carriles.length > 0) return carriles(ctx, view === "nivel-1" ? 1 : 2, view === "recorrido" ? (options.recorrido ?? true) : undefined);
   switch (view) {
     case "nivel-1":

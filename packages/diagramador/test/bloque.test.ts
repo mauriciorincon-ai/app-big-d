@@ -12,7 +12,7 @@ import { TEXTOS } from "./lib/textos";
 
 const P1 = leerJson<Mapa>("carnadas/P1-mapa-denso.mapa.json");
 const MAPAS = [...EJEMPLOS, P1];
-const bloque = (m: Mapa, grupo: string, fecha = FECHA) => layout(m, GRAMATICAS[m.gramatica_id]!, "bloque", { textos: TEXTOS, fechaConsulta: fecha, grupo });
+const bloque = (m: Mapa, grupo: string, fecha = FECHA) => layout(m, GRAMATICAS[m.gramatica_id]!, "bloque", { texts: TEXTOS, queryDate: fecha, group: grupo });
 const grupos = (m: Mapa) => disponer(m, "nivel-1").vigencia.elementos.map((e) => e.id);
 
 describe("vista «bloque»: cada elemento activable del nivel 1, en todos los mapas", () => {
@@ -83,7 +83,7 @@ describe("vista «bloque»: cada elemento activable del nivel 1, en todos los ma
   it("errores explícitos: sin grupo, un bloque o una banda que no existen", () => {
     const m = EJEMPLOS[0]!;
     const G = GRAMATICAS[m.gramatica_id]!;
-    expect(() => layout(m, G, "bloque", { textos: TEXTOS, fechaConsulta: FECHA })).toThrow(/pide `grupo`/);
+    expect(() => layout(m, G, "bloque", { texts: TEXTOS, queryDate: FECHA })).toThrow(/pide `group`/);
     expect(() => bloque(m, "no-existe")).toThrow(/no tiene el bloque «no-existe»/);
     expect(() => bloque(m, "_no-existe")).toThrow(/no tiene la banda «no-existe»/);
   });
@@ -92,7 +92,7 @@ describe("vista «bloque»: cada elemento activable del nivel 1, en todos los ma
 describe("toBlockCards", () => {
   const m = EJEMPLOS.find((x) => x.sujeto_id === "plataforma-ejemplo")!;
   const G = GRAMATICAS[m.gramatica_id]!;
-  const html = (grupo: string, language = "es", fecha?: string) => toBlockCards(m, G, grupo, { language, textos: TEXTOS, fechaConsulta: fecha });
+  const html = (grupo: string, language = "es", fecha?: string) => toBlockCards(m, G, grupo, { language, texts: TEXTOS, queryDate: fecha });
 
   it("una tarjeta por componente, en el orden de su banda, con TODAS sus conexiones (salen y entran)", () => {
     for (const grupo of grupos(m)) {
@@ -114,7 +114,7 @@ describe("toBlockCards", () => {
     expect(h).toMatch(/<li data-flujo="f-semantico-tablero"><svg[^>]*>.*?<\/svg><span>From /);
   });
   it("B-41: con `id`, el contenedor lo lleva (el SVG de la ventana lo enlaza como su versión en texto)", () => {
-    expect(toBlockCards(m, G, "consumo-bi", { language: "es", textos: TEXTOS, id: "v-texto" })).toMatch(/^<div class="dg-tarjetas" id="v-texto" lang="es"/);
+    expect(toBlockCards(m, G, "consumo-bi", { language: "es", texts: TEXTOS, id: "v-texto" })).toMatch(/^<div class="dg-tarjetas" id="v-texto" lang="es"/);
     expect(html("consumo-bi")).toMatch(/^<div class="dg-tarjetas" lang="es"/);
   });
   it("la vigencia solo si no está vigente", () => {
@@ -122,6 +122,6 @@ describe("toBlockCards", () => {
     expect(html("consumo-bi", "es", "2026-10-20")).toContain("Por revisar: verificado hace 30 días.");
   });
   it("sin las cadenas de un idioma, falla", () => {
-    expect(() => toBlockCards(m, G, "consumo-bi", { language: "en", textos: { es: TEXTOS.es! } })).toThrow(/faltan las cadenas/);
+    expect(() => toBlockCards(m, G, "consumo-bi", { language: "en", texts: { es: TEXTOS.es! } })).toThrow(/faltan las cadenas/);
   });
 });

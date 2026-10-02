@@ -15,18 +15,18 @@ const G = GRAMATICAS["plataformas-datos"]!;
 
 describe("errores explícitos", () => {
   it("layout sin las cadenas de un idioma, con una fuente que no existe o un recorrido que no existe", () => {
-    expect(() => layout(M, G, "nivel-1", { textos: { es: TEXTOS.es! }, fechaConsulta: "2026-09-26" })).toThrow(/faltan las cadenas de interfaz en «en»/);
-    expect(() => layout(M, G, "nivel-1", { textos: TEXTOS, fechaConsulta: "2026-09-26", fuente: "otra" })).toThrow(/no tiene las fuentes/);
-    expect(() => layout(M, G, "recorrido", { textos: TEXTOS, fechaConsulta: "2026-09-26", recorrido: "no-existe" })).toThrow(/no tiene el recorrido/);
+    expect(() => layout(M, G, "nivel-1", { texts: { es: TEXTOS.es! }, queryDate: "2026-09-26" })).toThrow(/faltan las cadenas de interfaz en «en»/);
+    expect(() => layout(M, G, "nivel-1", { texts: TEXTOS, queryDate: "2026-09-26", fuente: "otra" })).toThrow(/no tiene las fuentes/);
+    expect(() => layout(M, G, "recorrido", { texts: TEXTOS, queryDate: "2026-09-26", recorrido: "no-existe" })).toThrow(/no tiene el recorrido/);
   });
   it("toSVG, toText y toLegend en un idioma que la gramática no declara", () => {
     const geo = disponer(M, "nivel-1");
     expect(() => toSVG(geo, { language: "fr" })).toThrow(/no declara el idioma/);
-    expect(() => toText(M, G, { language: "fr", textos: TEXTOS })).toThrow(/no declara el idioma/);
-    expect(() => toLegend(G, { language: "fr", textos: TEXTOS })).toThrow(/no declara el idioma/);
+    expect(() => toText(M, G, { language: "fr", texts: TEXTOS })).toThrow(/no declara el idioma/);
+    expect(() => toLegend(G, { language: "fr", texts: TEXTOS })).toThrow(/no declara el idioma/);
     // Declarado en la gramática, pero sin sus cadenas de interfaz:
-    expect(() => toText(M, G, { language: "en", textos: { es: TEXTOS.es! } })).toThrow(/faltan las cadenas/);
-    expect(() => toLegend(G, { language: "en", textos: { es: TEXTOS.es! } })).toThrow(/faltan las cadenas/);
+    expect(() => toText(M, G, { language: "en", texts: { es: TEXTOS.es! } })).toThrow(/faltan las cadenas/);
+    expect(() => toLegend(G, { language: "en", texts: { es: TEXTOS.es! } })).toThrow(/faltan las cadenas/);
   });
   it("el CSS del recorrido solo existe para la vista «recorrido»", () => {
     expect(() => toJourneyCSS(disponer(M, "nivel-2"), ".rec")).toThrow(/no es de la vista/);
@@ -37,7 +37,7 @@ describe("errores explícitos", () => {
     expect(svg).toContain('aria-details="lectura-es"');
   });
   it("un recorrido con nombre explícito es el que se dibuja", () => {
-    expect(layout(M, G, "recorrido", { textos: TEXTOS, fechaConsulta: "2026-09-26", recorrido: "admision-paciente" }).recorrido?.id).toBe("admision-paciente");
+    expect(layout(M, G, "recorrido", { texts: TEXTOS, queryDate: "2026-09-26", recorrido: "admision-paciente" }).recorrido?.id).toBe("admision-paciente");
   });
 });
 

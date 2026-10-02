@@ -30,10 +30,10 @@ export function avisosDeDibujo(mapa: Mapa, gramatica: Gramatica, fechaConsulta: 
   const vistos = new Set<string>();
   const out: string[] = [];
   for (const [k, fecha] of fechas.entries()) {
-    const nivel1 = layout(mapa, gramatica, "nivel-1", { textos, fechaConsulta: fecha });
+    const nivel1 = layout(mapa, gramatica, "nivel-1", { texts: textos, queryDate: fecha });
     const grupos: Pedido[] = nivel1.vigencia.elementos.map((e) => ({ vista: "bloque", nombre: `ventana ${e.id}`, grupo: e.id }));
     for (const { vista, nombre, recorrido, grupo } of [...vistas, ...grupos]) {
-      const geo = vista === "nivel-1" ? nivel1 : layout(mapa, gramatica, vista, { textos, fechaConsulta: fecha, recorrido, grupo });
+      const geo = vista === "nivel-1" ? nivel1 : layout(mapa, gramatica, vista, { texts: textos, queryDate: fecha, recorrido, group: grupo });
       // `geo.avisos` ya trae D11 (el motor lo suma desde la auditoría del S1, M-1).
       for (const a of geo.avisos) {
         // El nivel 2 y el recorrido comparten las cajas, y una fecha repite lo que ya dijo otra: cada aviso

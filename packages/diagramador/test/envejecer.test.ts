@@ -79,9 +79,9 @@ describe("C-1 — los mapas del contrato envejecen sin romper el dibujo", () => 
     const G = GRAMATICAS[m.gramatica_id]!;
     const disponer = (vista: Vista, fecha: string, grupo?: string) =>
       layout(m, G, vista, {
-        textos: TEXTOS,
-        fechaConsulta: fecha,
-        ...(grupo ? { grupo } : {}),
+        texts: TEXTOS,
+        queryDate: fecha,
+        ...(grupo ? { group: grupo } : {}),
       });
     for (const [edad, fecha] of edades(m))
       it(`${nombre} · ${edad} (${fecha})`, () => {

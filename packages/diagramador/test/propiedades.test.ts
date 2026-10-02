@@ -55,11 +55,11 @@ describe("invariancia al orden en todas las salidas (B-42 de la auditoría del S
   const CASO = EJEMPLOS.find((m) => m.sujeto_id === "caso-ejemplo")!;
   const salidas = (m: Mapa): string[] => {
     const G = GRAMATICAS[m.gramatica_id]!;
-    const opc = { language: "es", textos: TEXTOS, fechaConsulta: FECHA };
+    const opc = { language: "es", texts: TEXTOS, queryDate: FECHA };
     const grupos = disponer(m, "nivel-1").vigencia.elementos.map((e) => e.id).sort();
     return [
       ...(["nivel-1", "nivel-2", "recorrido"] as const).map((v) => svg(m, v)),
-      ...grupos.map((g) => toSVG(layout(m, G, "bloque", { textos: TEXTOS, fechaConsulta: FECHA, grupo: g }), { language: "es" })),
+      ...grupos.map((g) => toSVG(layout(m, G, "bloque", { texts: TEXTOS, queryDate: FECHA, group: g }), { language: "es" })),
       ...grupos.map((g) => toBlockCards(m, G, g, opc)),
       toText(m, G, opc),
       ...m.nodos.map((n) => n.id).sort().map((id) => toCard(m, G, id, opc)),

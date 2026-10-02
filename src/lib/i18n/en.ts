@@ -15,8 +15,8 @@ export const en: Textos = {
     sub: "Big-D draws every platform with one visual grammar: its layers, its components and the journey of a piece of data. It plans, manages and controls; it never operates a platform.",
   },
   motor: {
-    componentes: ["{n} component", "{n} components"],
-    fuentes: ["{n} source", "{n} sources"],
+    componentes: { one: "{n} component", other: "{n} components" },
+    fuentes: { one: "{n} source", other: "{n} sources" },
     sinBloque: "no block",
     transversales: "CROSS-CUTTING · SPAN EVERY LAYER",
     envia: "Connects to {nombre}, {modos}",

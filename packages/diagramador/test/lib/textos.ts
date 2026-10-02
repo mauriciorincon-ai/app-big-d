@@ -4,8 +4,8 @@ import type { TextosMotor } from "../../src/index";
 
 export const TEXTOS: Record<string, TextosMotor> = {
   es: {
-    componentes: ["{n} componente", "{n} componentes"],
-    fuentes: ["{n} fuente", "{n} fuentes"],
+    componentes: { one: "{n} componente", other: "{n} componentes" },
+    fuentes: { one: "{n} fuente", other: "{n} fuentes" },
     sinBloque: "sin bloque",
     transversales: "TRANSVERSALES · ABARCAN TODAS LAS CAPAS",
     envia: "Conecta con {nombre}, {modos}",
@@ -51,8 +51,8 @@ export const TEXTOS: Record<string, TextosMotor> = {
     },
   },
   en: {
-    componentes: ["{n} component", "{n} components"],
-    fuentes: ["{n} source", "{n} sources"],
+    componentes: { one: "{n} component", other: "{n} components" },
+    fuentes: { one: "{n} source", other: "{n} sources" },
     sinBloque: "no block",
     transversales: "CROSS-CUTTING · SPAN EVERY LAYER",
     envia: "Connects to {nombre}, {modos}",

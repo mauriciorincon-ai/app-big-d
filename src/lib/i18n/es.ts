@@ -15,8 +15,8 @@ export const es: Textos = {
     sub: "Big-D dibuja cada plataforma con una sola gramática visual: sus capas, sus componentes y el recorrido de un dato. Planea, gestiona y controla; jamás opera una plataforma.",
   },
   motor: {
-    componentes: ["{n} componente", "{n} componentes"],
-    fuentes: ["{n} fuente", "{n} fuentes"],
+    componentes: { one: "{n} componente", other: "{n} componentes" },
+    fuentes: { one: "{n} fuente", other: "{n} fuentes" },
     sinBloque: "sin bloque",
     transversales: "TRANSVERSALES · ABARCAN TODAS LAS CAPAS",
     envia: "Conecta con {nombre}, {modos}",

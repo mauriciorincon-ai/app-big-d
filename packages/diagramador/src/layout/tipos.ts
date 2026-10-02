@@ -80,12 +80,18 @@ export interface Geometria {
   avisos: string[];
 }
 
+/** Un plural de interfaz como dato por idioma (§ 8 v0.4.0): `one` para n = 1, `other` para lo demás; «{n}» es el número. */
+export interface Plural {
+  one: string;
+  other: string;
+}
+
 /** Cadenas de interfaz que el motor dibuja, por idioma (D-S1-06): llegan de la app, el paquete no las trae. */
 export interface TextosMotor {
   /** «{n} componente» / «{n} componentes». */
-  componentes: readonly [string, string];
+  componentes: Plural;
   /** «{n} fuente» / «{n} fuentes». */
-  fuentes: readonly [string, string];
+  fuentes: Plural;
   sinBloque: string;
   /** Rótulo sobre las franjas transversales. */
   transversales: string;
@@ -130,13 +136,14 @@ export interface TextosMotor {
 }
 
 export interface OpcionesLayout {
-  textos: Record<string, TextosMotor>;
+  /** Cadenas de interfaz por idioma (§ 8: los nombres de la API van en inglés; los del dato, en español). */
+  texts: Record<string, TextosMotor>;
   /** Fecha de consulta (AAAA-MM-DD) para el semáforo de vigencia (§ 4.8): una entrada, jamás el reloj. */
-  fechaConsulta: string;
+  queryDate: string;
   /** Recorrido a dibujar en la vista «recorrido» (por defecto, el primero). */
   recorrido?: string;
   /** Elemento del nivel 1 que se abre en la vista «bloque»: el id de un bloque o «_<banda>» (sus nodos sin bloque). */
-  grupo?: string;
+  group?: string;
   /** Tabla de métricas (por defecto, la del piloto) y fuentes de interfaz y mono dentro de ella. */
   metricas?: import("../texto/metricas").TablaMetricas;
   fuente?: string;

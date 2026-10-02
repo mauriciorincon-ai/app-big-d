@@ -38,7 +38,7 @@ export const SALIDAS: { archivo: string; svg: () => string }[] = [
     const g = GRAMATICAS[m.gramatica_id]!;
     return g.idiomas.map((idioma) => ({
       archivo: `${sujeto}.bloque-${grupo}.${idioma}.svg`,
-      svg: () => toSVG(layout(m, g, "bloque", { textos: TEXTOS, fechaConsulta: FECHA, grupo }), { language: idioma }),
+      svg: () => toSVG(layout(m, g, "bloque", { texts: TEXTOS, queryDate: FECHA, group: grupo }), { language: idioma }),
     }));
   }),
 ];

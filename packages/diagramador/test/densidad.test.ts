@@ -129,7 +129,7 @@ describe("pistas de un canal (§ 5.3 con la enmienda del piloto)", () => {
       m.flujos.push({ ...m.flujos.find((f) => f.id === "f1")!, id: `fx${i}`, destino: `extra-${i}` });
     }
     for (const vista of ["nivel-1", "nivel-2"] as const) {
-      const geo = layout(m, GRAMATICAS[m.gramatica_id]!, vista, { textos: TEXTOS, fechaConsulta: FECHA });
+      const geo = layout(m, GRAMATICAS[m.gramatica_id]!, vista, { texts: TEXTOS, queryDate: FECHA });
       const sobreBorde = geo.trazados.flatMap((t) =>
         t.puntos.slice(1).flatMap((b, k) => {
           const a = t.puntos[k]!;

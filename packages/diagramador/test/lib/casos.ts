@@ -21,4 +21,4 @@ export const CASOS: Caso[] = [
 ];
 
 export const disponer = (mapa: Mapa, vista: Vista, fecha = FECHA): Geometria =>
-  layout(mapa, GRAMATICAS[mapa.gramatica_id]!, vista, { textos: TEXTOS, fechaConsulta: fecha });
+  layout(mapa, GRAMATICAS[mapa.gramatica_id]!, vista, { texts: TEXTOS, queryDate: fecha });

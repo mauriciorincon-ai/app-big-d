@@ -50,7 +50,7 @@ describe("vigencia en la geometría", () => {
 
 describe("vigencia en la lectura en texto", () => {
   const g = GRAMATICAS[ejemplo.gramatica_id]!;
-  const lectura = (fecha: string | undefined, language = "es") => toText(ejemplo, g, { language, textos: TEXTOS, ...(fecha ? { fechaConsulta: fecha } : {}) });
+  const lectura = (fecha: string | undefined, language = "es") => toText(ejemplo, g, { language, texts: TEXTOS, ...(fecha ? { queryDate: fecha } : {}) });
   const nodos = ejemplo.nodos.length;
 
   it("lo vigente no se marca, y sin fecha no se dice nada", () => {

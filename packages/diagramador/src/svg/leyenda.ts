@@ -1,4 +1,4 @@
-// `toLegend(grammar, { language, textos })` (§ 4.9): la leyenda generada de la gramática, con los MISMOS
+// `toLegend(grammar, { language, texts })` (§ 4.9): la leyenda generada de la gramática, con los MISMOS
 // paths del diagrama: tipos (glifo + etiqueta + nombre), modos (trazo + marcador + nombre + descripción),
 // madurez (medidor + nombre) y vigencia (marca + regla de días), más la nota de marcas (D7). HTML con
 // SVG en línea; los colores entran por las mismas clases del diagrama (G13).
@@ -14,9 +14,9 @@ import { idiomaPedido } from "../texto/idioma";
 const svg = (caja: string, w: number, h: number, cuerpo: string) => `<svg class="dg-svg" viewBox="${caja}" width="${w}" height="${h}" aria-hidden="true">${cuerpo}</svg>`;
 
 
-export function toLegend(grammar: Gramatica, opciones: { language: string; textos: Record<string, TextosMotor> }): string {
+export function toLegend(grammar: Gramatica, opciones: { language: string; texts: Record<string, TextosMotor> }): string {
   const l = opciones.language;
-  const t = idiomaPedido("toLegend", grammar, l, opciones.textos);
+  const t = idiomaPedido("toLegend", grammar, l, opciones.texts);
   const e = escapar;
   const tipos = grammar.tipos_de_nodo
     .map((tp) => {

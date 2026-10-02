@@ -56,13 +56,13 @@ export interface VistaAtlas {
 
 function disponer(atlas: Atlas, idioma: Idioma, fechaConsulta: string, vista: Vista): { geo: Geometria; comun: VistaAtlas } {
   const tm = textosMotor();
-  const geo = layout(atlas.mapa, atlas.gramatica, vista, { textos: tm, fechaConsulta });
+  const geo = layout(atlas.mapa, atlas.gramatica, vista, { texts: tm, queryDate: fechaConsulta });
   if (geo.avisos.length) throw new Error(`atlas ${atlas.plataforma.id}, ${vista}: avisos de geometría\n${geo.avisos.join("\n")}`);
   return {
     geo,
     comun: {
       svg: toSVG(geo, { language: idioma, textId: ID_LECTURA, hintId: ID_PISTA }),
-      lectura: toText(atlas.mapa, atlas.gramatica, { language: idioma, textos: tm, id: ID_LECTURA, fechaConsulta }),
+      lectura: toText(atlas.mapa, atlas.gramatica, { language: idioma, texts: tm, id: ID_LECTURA, queryDate: fechaConsulta }),
       columnas: geo.columnas.map((c) => ({ banda: c.banda, x: c.x / 10, numero: c.numero, nombre: c.nombre[idioma]! })),
       capas: geo.columnas.length,
       franjas: geo.filas.length,
@@ -74,7 +74,7 @@ function disponer(atlas: Atlas, idioma: Idioma, fechaConsulta: string, vista: Vi
 /** Las fichas de todos los nodos (§ 4.5), por id: el panel muestra la del nodo activado. */
 function fichas(atlas: Atlas, idioma: Idioma, fechaConsulta: string): Record<string, string> {
   const tm = textosMotor();
-  return Object.fromEntries(atlas.mapa.nodos.map((n) => [n.id, toCard(atlas.mapa, atlas.gramatica, n.id, { language: idioma, textos: tm, fechaConsulta })]));
+  return Object.fromEntries(atlas.mapa.nodos.map((n) => [n.id, toCard(atlas.mapa, atlas.gramatica, n.id, { language: idioma, texts: tm, queryDate: fechaConsulta })]));
 }
 
 export interface VistaNivel1 extends VistaAtlas {
@@ -97,7 +97,7 @@ function ventanas(atlas: Atlas, idioma: Idioma, fechaConsulta: string, elementos
   const componentes = rutasAtlas(atlas, idioma).componentes!;
   return Object.fromEntries(
     elementos.map((id) => {
-      const geo = layout(atlas.mapa, atlas.gramatica, "bloque", { textos: tm, fechaConsulta, grupo: id });
+      const geo = layout(atlas.mapa, atlas.gramatica, "bloque", { texts: tm, queryDate: fechaConsulta, group: id });
       if (geo.avisos.length) throw new Error(`atlas ${atlas.plataforma.id}, ventana ${id}: avisos de geometría\n${geo.avisos.join("\n")}`);
       const banda = id.startsWith("_") ? atlas.gramatica.bandas.find((b) => b.id === id.slice(1)) : undefined;
       const bloque = banda ? undefined : atlas.mapa.bloques.find((b) => b.id === id);
@@ -106,7 +106,7 @@ function ventanas(atlas: Atlas, idioma: Idioma, fechaConsulta: string, elementos
       const prefijo = `${atlas.plataforma.id}-bl-${id.replace(/^_/, "banda-")}-${idioma}`;
       // Las tarjetas de texto son la versión en texto del dibujo de la ventana (G10, B-41 de la auditoría del S1).
       const svg = toSVG(geo, { language: idioma, prefix: prefijo, textId: `${prefijo}-texto` });
-      const tarjetas = toBlockCards(atlas.mapa, atlas.gramatica, id, { language: idioma, textos: tm, fechaConsulta, id: `${prefijo}-texto` });
+      const tarjetas = toBlockCards(atlas.mapa, atlas.gramatica, id, { language: idioma, texts: tm, queryDate: fechaConsulta, id: `${prefijo}-texto` });
       return [
         id,
         `<h2>${esc(nombre)}</h2><p class="ventana-lider">${esc(frase)}</p><div class="ventana-lienzo">${svg}</div>${tarjetas}<p class="ventana-mas"><a href="${esc(componentes)}">${esc(t.verComponentes)}</a></p>`,
@@ -119,7 +119,7 @@ export function vistaNivel1(atlas: Atlas, idioma: Idioma, fechaConsulta: string)
   const { geo, comun } = disponer(atlas, idioma, fechaConsulta, "nivel-1");
   return {
     ...comun,
-    leyenda: toLegend(atlas.gramatica, { language: idioma, textos: textosMotor() }),
+    leyenda: toLegend(atlas.gramatica, { language: idioma, texts: textosMotor() }),
     ventanas: ventanas(atlas, idioma, fechaConsulta, geo.vigencia.elementos.map((e) => e.id)),
   };
 }

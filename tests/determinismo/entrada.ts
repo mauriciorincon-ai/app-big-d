@@ -38,13 +38,13 @@ const BLOQUES = [
 (globalThis as unknown as { diagramadorGolden: () => { archivo: string; svg: string }[] }).diagramadorGolden = () => [
   ...casos().flatMap((c) => {
     const g = GRAMATICAS[c.mapa.gramatica_id]!;
-    const geo = layout(c.mapa, g, c.vista, { textos: TEXTOS, fechaConsulta: FECHA });
+    const geo = layout(c.mapa, g, c.vista, { texts: TEXTOS, queryDate: FECHA });
     return g.idiomas.map((idioma) => ({ archivo: `${c.clave}.${c.vista}.${idioma}.svg`, svg: toSVG(geo, { language: idioma }) }));
   }),
   ...BLOQUES.flatMap(([m, grupo]) => {
     const mapa = m as unknown as Mapa;
     const g = GRAMATICAS[mapa.gramatica_id]!;
-    const geo = layout(mapa, g, "bloque", { textos: TEXTOS, fechaConsulta: FECHA, grupo });
+    const geo = layout(mapa, g, "bloque", { texts: TEXTOS, queryDate: FECHA, group: grupo });
     return g.idiomas.map((idioma) => ({ archivo: `${mapa.sujeto_id}.bloque-${grupo}.${idioma}.svg`, svg: toSVG(geo, { language: idioma }) }));
   }),
 ];

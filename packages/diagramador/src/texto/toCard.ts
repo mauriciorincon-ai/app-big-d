@@ -1,4 +1,4 @@
-// `toCard(map, grammar, nodeId, { language, textos, fechaConsulta? })` (§ 4.5): la ficha de un nodo en HTML,
+// `toCard(map, grammar, nodeId, { language, texts, queryDate? })` (§ 4.5): la ficha de un nodo en HTML,
 // sobre un mapa YA VALIDADO. Qué es (tipo con su glifo), qué hace (registro de experto), por qué importa,
 // términos (los del nodo y los del glosario del mapa que aparecen en sus textos, marcados como tales),
 // madurez (medidor + nombre completo, D6), fuentes con fecha y tipo, y fechas de verificación y consulta
@@ -16,15 +16,15 @@ import { compararCodigo } from "../util/orden";
 
 export interface OpcionesFicha {
   language: string;
-  textos: Record<string, TextosMotor>;
+  texts: Record<string, TextosMotor>;
   /** Fecha de consulta (AAAA-MM-DD): con ella la ficha la dice y marca lo por revisar o vencido. */
-  fechaConsulta?: string;
+  queryDate?: string;
 }
 
 
 export function toCard(map: Mapa, grammar: Gramatica, nodeId: string, opciones: OpcionesFicha): string {
   const l = opciones.language;
-  const t = idiomaPedido("toCard", grammar, l, opciones.textos);
+  const t = idiomaPedido("toCard", grammar, l, opciones.texts);
   const n = map.nodos.find((x) => x.id === nodeId);
   if (!n) throw new Error(`toCard: el mapa no tiene el nodo «${nodeId}»`);
   const e = escapar;
@@ -48,9 +48,9 @@ export function toCard(map: Mapa, grammar: Gramatica, nodeId: string, opciones: 
   );
 
   const meta = [`<span>${e(plantilla(f.verificado, { fecha: n.fecha_verificacion }))}</span>`];
-  if (opciones.fechaConsulta) {
-    meta.push(`<span>${e(plantilla(f.consultado, { fecha: opciones.fechaConsulta }))}</span>`);
-    const frase = fraseVigencia(grammar, t, n.fecha_verificacion, opciones.fechaConsulta);
+  if (opciones.queryDate) {
+    meta.push(`<span>${e(plantilla(f.consultado, { fecha: opciones.queryDate }))}</span>`);
+    const frase = fraseVigencia(grammar, t, n.fecha_verificacion, opciones.queryDate);
     if (frase) meta.push(`<b>${e(frase)}</b>`);
   }
 
