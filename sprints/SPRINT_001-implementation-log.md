@@ -1274,6 +1274,14 @@ Un retiro (algo que el mapa aprobado tiene y la propuesta ya no) solo sale con s
   dominio del preview, y el campo homepage del repositorio vacío.
 - **Lo que queda fuera:** el panel de Deployments de GitHub sigue mostrando el enlace a quien entra al
   repositorio; se declara en el summary (no se automatiza con un token de administración, regla 17).
+- **Volvió (2026-10-01):** al push de `9d9c752`, el mismo que registró el borrado, `vercel[bot]` creó un comentario
+  nuevo en el PR #4 con el enlace del preview, y lo edita en cada push. `"github": { "silent": true }` en
+  `vercel.json` no lo frena. Pregunta: «¿puedo borrar un comentario automático que el bot de Vercel volvió a dejar
+  en el PR #4 con el enlace de la vista previa?». La persona: **«si»**. Se borra después del push de este commit, el
+  último del sprint, cuando termine su despliegue, para que el bot no lo vuelva a crear antes del merge; la
+  comprobación va en el informe de cierre.
+- **Prevención para el S2:** apagar los comentarios del bot en la configuración Git del proyecto en Vercel. Solo
+  la persona puede hacerlo desde su cuenta.
 
 ### M-17 — Prueba en vivo: el candado `sin-lanzar` no frena el `/investigar` de una persona (2026-09-30)
 
@@ -1400,9 +1408,10 @@ Cada casilla, con el comando del `ci.yml`:
 
 ### Lo que falta
 
-- Del constructor: hecho todo lo de la lista anterior (lector del grupo 2, CI de `32d8eb5` y `93d2edc`, e2e con la
-  máquina tranquila, summary y `/deploy-check`). Queda leer los checks del commit del summary y marcar el PR #4
-  listo para revisión.
+- **PR #4 listo para revisión** desde `a91371c` (2026-09-30): los 7 checks en `success`, ninguno `skipped`; la
+  descripción del PR, al día y sin enlaces.
+- Del constructor: borrar el comentario del bot tras el despliegue de este commit (M-12, «Volvió») y leer sus
+  checks.
 - De la persona: el merge del PR #4.
 - Después del merge: limpiar el campo homepage (lo reescribe la integración de Vercel) → «corre
   `/cierre-sprint big-d`».

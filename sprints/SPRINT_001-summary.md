@@ -320,6 +320,7 @@ contrato del diagramador».
 | «lago de datos» ×5 en el mapa de Fabric | Un mapa aprobado no se corrige a mano; decisión de la persona («data lake» no se traduce) | **S2**, con la próxima investigación de Fabric; la validación ya rechaza el calco en toda propuesta nueva |
 | CSP | El export estático trae scripts en línea | S2 o S3, con hashes en el build |
 | El panel de Deployments de GitHub muestra el enlace del preview | Lo escribe la integración de Vercel; no se automatiza con un token de administración (regla 17) | Revisión en cada cierre |
+| `vercel[bot]` comenta el enlace del preview en cada PR y lo edita en cada push | `"github": { "silent": true }` en `vercel.json` no lo frena; el comentario del PR #4 se borra tras el último push del sprint, con el «sí» de la persona (M-12) | **S2**: la persona apaga los comentarios del bot en la configuración Git del proyecto en Vercel |
 | La maqueta se sirve en los deploys privados | Referencia de fidelidad durante H1 (A-25) | Cierre del ciclo (S4), por ADR |
 | `packages/diagramador/README.md` dice «aún no existe» | Es copia fijada del contrato | Enmienda 38 (planeadora) |
 
