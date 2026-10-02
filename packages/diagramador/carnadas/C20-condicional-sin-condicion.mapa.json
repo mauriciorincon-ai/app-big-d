@@ -1,0 +1,663 @@
+{
+  "contrato_version": "0.3.0",
+  "gramatica_id": "agentes-ia",
+  "gramatica_version": "1.1.0",
+  "sujeto_id": "agente-ejemplo",
+  "sujeto_nombre": {
+    "es": "Agente Ejemplo (ficticio)",
+    "en": "Example Agent (fictional)"
+  },
+  "version": "0.1.0",
+  "fecha_actualizacion": "2026-09-25",
+  "estado": "aprobada",
+  "refs_externas": [
+    "ficticio: un agente de informes con dos rutas condicionales, una guardia determinista y una pausa humana; ningún nodo describe un sistema real"
+  ],
+  "bloques": [
+    {
+      "id": "entrada-caso",
+      "nombre": {
+        "es": "Entrada del caso",
+        "en": "Case intake"
+      },
+      "banda_id": "entrada",
+      "lider": {
+        "es": "Por donde llega el pedido de informe.",
+        "en": "Where the report request comes in."
+      }
+    },
+    {
+      "id": "equipo",
+      "nombre": {
+        "es": "Equipo de agentes",
+        "en": "Agent team"
+      },
+      "banda_id": "agentes",
+      "lider": {
+        "es": "Los dos agentes que analizan y redactan.",
+        "en": "The two agents that analyse and write."
+      }
+    },
+    {
+      "id": "controles",
+      "nombre": {
+        "es": "Controles",
+        "en": "Checks"
+      },
+      "banda_id": "reglas",
+      "lider": {
+        "es": "Lo que el código verifica antes de entregar.",
+        "en": "What the code checks before delivering."
+      }
+    }
+  ],
+  "nodos": [
+    {
+      "id": "recepcion",
+      "banda_id": "entrada",
+      "tipo_id": "herramienta",
+      "bloque_id": "entrada-caso",
+      "orden": 1,
+      "nombre": {
+        "es": "Recepción del caso",
+        "en": "Case intake"
+      },
+      "lider": {
+        "es": "Recibe el pedido de informe y lo convierte en un caso con sus datos.",
+        "en": "Receives the report request and turns it into a case with its data."
+      },
+      "experto": {
+        "es": "Nodo de herramienta sin modelo: valida el pedido contra el esquema del caso y registra la hora de entrada.",
+        "en": "Tool node without a model: validates the request against the case schema and records the entry time."
+      },
+      "por_que_importa": {
+        "es": "Un pedido mal formado que entra al grafo produce un informe sobre nada.",
+        "en": "A malformed request that enters the graph produces a report about nothing."
+      },
+      "madurez": "implementado",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticio/agente/recepcion",
+          "titulo": {
+            "es": "Código ficticio del nodo recepcion",
+            "en": "Fictional code of node recepcion"
+          },
+          "fecha": "2026-09-20",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-25"
+    },
+    {
+      "id": "coordinador",
+      "banda_id": "orquestacion",
+      "tipo_id": "enrutador",
+      "orden": 1,
+      "nombre": {
+        "es": "Coordinador",
+        "en": "Coordinator"
+      },
+      "lider": {
+        "es": "Mira qué tan complejo es el caso y decide qué agente lo toma.",
+        "en": "Looks at how complex the case is and decides which agent takes it."
+      },
+      "experto": {
+        "es": "Arista condicional sobre la señal de complejidad calculada por código; no consulta ningún modelo para decidir.",
+        "en": "Conditional edge over the complexity signal computed by code; it asks no model to decide."
+      },
+      "por_que_importa": {
+        "es": "Si un modelo decidiera la ruta, el mismo caso podría ir por caminos distintos cada vez.",
+        "en": "If a model chose the route, the same case could take a different path every time."
+      },
+      "madurez": "implementado",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticio/agente/coordinador",
+          "titulo": {
+            "es": "Código ficticio del nodo coordinador",
+            "en": "Fictional code of node coordinador"
+          },
+          "fecha": "2026-09-20",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-25"
+    },
+    {
+      "id": "analista",
+      "banda_id": "agentes",
+      "tipo_id": "modelo",
+      "bloque_id": "equipo",
+      "orden": 1,
+      "nombre": {
+        "es": "Agente analista",
+        "en": "Analyst agent"
+      },
+      "lider": {
+        "es": "Estudia el caso y saca los hallazgos con sus cifras.",
+        "en": "Studies the case and draws out the findings with their figures."
+      },
+      "experto": {
+        "es": "Nodo con modelo de lenguaje; recibe el caso y devuelve hallazgos estructurados con la fuente de cada cifra.",
+        "en": "Language-model node; receives the case and returns structured findings with the source of every figure."
+      },
+      "por_que_importa": {
+        "es": "Sin hallazgos con fuente, el redactor inventa.",
+        "en": "Without sourced findings, the writer makes things up."
+      },
+      "madurez": "implementado",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticio/agente/analista",
+          "titulo": {
+            "es": "Código ficticio del nodo analista",
+            "en": "Fictional code of node analista"
+          },
+          "fecha": "2026-09-20",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-25"
+    },
+    {
+      "id": "redactor",
+      "banda_id": "agentes",
+      "tipo_id": "modelo",
+      "bloque_id": "equipo",
+      "orden": 1,
+      "nombre": {
+        "es": "Agente redactor",
+        "en": "Writer agent"
+      },
+      "lider": {
+        "es": "Escribe el borrador del informe con los hallazgos.",
+        "en": "Writes the report draft from the findings."
+      },
+      "experto": {
+        "es": "Nodo con modelo de lenguaje; produce el borrador en el formato del informe y conserva las cifras tal como llegan.",
+        "en": "Language-model node; produces the draft in the report format and keeps the figures exactly as they arrive."
+      },
+      "por_que_importa": {
+        "es": "Es el nodo que más texto genera: es donde una cifra puede cambiar sin que nadie lo note.",
+        "en": "It is the node that generates the most text: where a figure can change without anyone noticing."
+      },
+      "madurez": "implementado",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticio/agente/redactor",
+          "titulo": {
+            "es": "Código ficticio del nodo redactor",
+            "en": "Fictional code of node redactor"
+          },
+          "fecha": "2026-09-20",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-25"
+    },
+    {
+      "id": "guardia-cifras",
+      "banda_id": "reglas",
+      "tipo_id": "regla",
+      "bloque_id": "controles",
+      "orden": 1,
+      "nombre": {
+        "es": "Guardia de cifras",
+        "en": "Figures guard"
+      },
+      "lider": {
+        "es": "Cuenta las cifras del borrador que no tienen fuente en los hallazgos.",
+        "en": "Counts the figures in the draft that have no source in the findings."
+      },
+      "experto": {
+        "es": "Regla determinista: compara cada número del borrador con los hallazgos y emite la señal de cifras sin fuente.",
+        "en": "Deterministic rule: compares every number in the draft with the findings and emits the unsourced-figures signal."
+      },
+      "por_que_importa": {
+        "es": "Sin esta guardia, un informe con una cifra inventada llega a una persona con cara de verdad.",
+        "en": "Without this guard, a report with an invented figure reaches a person looking like the truth."
+      },
+      "madurez": "implementado",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticio/agente/guardia-cifras",
+          "titulo": {
+            "es": "Código ficticio del nodo guardia-cifras",
+            "en": "Fictional code of node guardia-cifras"
+          },
+          "fecha": "2026-09-20",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-25"
+    },
+    {
+      "id": "revision-humana",
+      "banda_id": "pausa-humana",
+      "tipo_id": "pausa-humana",
+      "orden": 1,
+      "nombre": {
+        "es": "Revisión humana",
+        "en": "Human review"
+      },
+      "lider": {
+        "es": "Una persona revisa el borrador cuando la guardia encontró cifras dudosas.",
+        "en": "A person reviews the draft when the guard found doubtful figures."
+      },
+      "experto": {
+        "es": "Pausa del grafo con estado guardado; se reanuda con la decisión de la persona.",
+        "en": "Graph pause with saved state; it resumes with the person's decision."
+      },
+      "por_que_importa": {
+        "es": "Es la única salida de un caso dudoso: nada se entrega sin alguien que lo mire.",
+        "en": "It is the only way out for a doubtful case: nothing is delivered without someone looking at it."
+      },
+      "madurez": "implementado",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticio/agente/revision-humana",
+          "titulo": {
+            "es": "Código ficticio del nodo revision-humana",
+            "en": "Fictional code of node revision-humana"
+          },
+          "fecha": "2026-09-20",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-25"
+    },
+    {
+      "id": "entrega",
+      "banda_id": "salida",
+      "tipo_id": "herramienta",
+      "orden": 1,
+      "nombre": {
+        "es": "Entrega del informe",
+        "en": "Report delivery"
+      },
+      "lider": {
+        "es": "Guarda el informe final y avisa a quien lo pidió.",
+        "en": "Stores the final report and notifies whoever asked for it."
+      },
+      "experto": {
+        "es": "Nodo de herramienta: escribe el informe, su versión y la lista de verificaciones que pasó.",
+        "en": "Tool node: writes the report, its version and the list of checks it passed."
+      },
+      "por_que_importa": {
+        "es": "Un informe sin la lista de verificaciones no se puede auditar después.",
+        "en": "A report without its list of checks cannot be audited later."
+      },
+      "madurez": "implementado",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticio/agente/entrega",
+          "titulo": {
+            "es": "Código ficticio del nodo entrega",
+            "en": "Fictional code of node entrega"
+          },
+          "fecha": "2026-09-20",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-25"
+    },
+    {
+      "id": "filtro-salida",
+      "banda_id": "guardarrailes",
+      "tipo_id": "regla",
+      "orden": 1,
+      "nombre": {
+        "es": "Filtro de salida",
+        "en": "Output filter"
+      },
+      "lider": {
+        "es": "Revisa que el informe no contenga datos personales ni instrucciones ajenas.",
+        "en": "Checks that the report contains no personal data and no foreign instructions."
+      },
+      "experto": {
+        "es": "Regla determinista sobre el texto final: patrones de datos personales y de instrucciones inyectadas; bloquea la entrega si encuentra alguno.",
+        "en": "Deterministic rule over the final text: patterns of personal data and injected instructions; it blocks delivery if it finds any."
+      },
+      "por_que_importa": {
+        "es": "Es lo que el agente no puede hacer nunca, escrito en código y no en una instrucción.",
+        "en": "It is what the agent may never do, written in code rather than in an instruction."
+      },
+      "madurez": "implementado",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticio/agente/filtro-salida",
+          "titulo": {
+            "es": "Código ficticio del nodo filtro-salida",
+            "en": "Fictional code of node filtro-salida"
+          },
+          "fecha": "2026-09-20",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-25"
+    },
+    {
+      "id": "medidor",
+      "banda_id": "trazas-costo",
+      "tipo_id": "herramienta",
+      "orden": 1,
+      "nombre": {
+        "es": "Medidor de consumo",
+        "en": "Usage meter"
+      },
+      "lider": {
+        "es": "Anota cuánto costó cada corrida y guarda su rastro.",
+        "en": "Records what each run cost and keeps its trail."
+      },
+      "experto": {
+        "es": "Recibe el consumo de cada nodo con modelo y lo escribe con el identificador de la corrida.",
+        "en": "Receives the usage of every model node and writes it with the run identifier."
+      },
+      "por_que_importa": {
+        "es": "Sin medida por corrida, el costo se descubre en la factura.",
+        "en": "Without a per-run measure, the cost is discovered on the bill."
+      },
+      "madurez": "en-construccion",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticio/agente/medidor",
+          "titulo": {
+            "es": "Código ficticio del nodo medidor",
+            "en": "Fictional code of node medidor"
+          },
+          "fecha": "2026-09-20",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-25"
+    }
+  ],
+  "flujos": [
+    {
+      "id": "f1",
+      "origen": "recepcion",
+      "destino": "coordinador",
+      "modo_id": "secuencia",
+      "que_viaja": {
+        "es": "Caso validado",
+        "en": "Validated case"
+      },
+      "lider": {
+        "es": "El caso pasa al coordinador.",
+        "en": "The case goes to the coordinator."
+      }
+    },
+    {
+      "id": "f2",
+      "origen": "coordinador",
+      "destino": "analista",
+      "modo_id": "condicional",
+      "que_viaja": {
+        "es": "Encargo de análisis",
+        "en": "Analysis assignment"
+      },
+      "lider": {
+        "es": "Los casos complejos van primero al analista.",
+        "en": "Complex cases go to the analyst first."
+      }
+    },
+    {
+      "id": "f3",
+      "origen": "coordinador",
+      "destino": "redactor",
+      "modo_id": "condicional",
+      "que_viaja": {
+        "es": "Encargo de redacción",
+        "en": "Writing assignment"
+      },
+      "lider": {
+        "es": "Los casos simples van directo al redactor.",
+        "en": "Simple cases go straight to the writer."
+      },
+      "condicion": {
+        "senal": "complejidad",
+        "operador": "<",
+        "valor": 3
+      }
+    },
+    {
+      "id": "f4",
+      "origen": "analista",
+      "destino": "redactor",
+      "modo_id": "secuencia",
+      "que_viaja": {
+        "es": "Hallazgos con fuente",
+        "en": "Sourced findings"
+      },
+      "lider": {
+        "es": "El analista entrega sus hallazgos al redactor.",
+        "en": "The analyst hands its findings to the writer."
+      }
+    },
+    {
+      "id": "f5",
+      "origen": "redactor",
+      "destino": "guardia-cifras",
+      "modo_id": "secuencia",
+      "que_viaja": {
+        "es": "Borrador",
+        "en": "Draft"
+      },
+      "lider": {
+        "es": "Todo borrador pasa por la guardia.",
+        "en": "Every draft goes through the guard."
+      }
+    },
+    {
+      "id": "f6",
+      "origen": "guardia-cifras",
+      "destino": "revision-humana",
+      "modo_id": "condicional",
+      "que_viaja": {
+        "es": "Borrador con cifras dudosas",
+        "en": "Draft with doubtful figures"
+      },
+      "lider": {
+        "es": "Si hay cifras sin fuente, una persona revisa.",
+        "en": "If there are unsourced figures, a person reviews."
+      },
+      "condicion": {
+        "senal": "cifras-sin-fuente",
+        "operador": ">",
+        "valor": 0
+      }
+    },
+    {
+      "id": "f7",
+      "origen": "guardia-cifras",
+      "destino": "entrega",
+      "modo_id": "condicional",
+      "que_viaja": {
+        "es": "Borrador verificado",
+        "en": "Verified draft"
+      },
+      "lider": {
+        "es": "Si todo tiene fuente, se entrega.",
+        "en": "If everything has a source, it is delivered."
+      },
+      "condicion": {
+        "senal": "cifras-sin-fuente",
+        "operador": "=",
+        "valor": 0
+      }
+    },
+    {
+      "id": "f8",
+      "origen": "revision-humana",
+      "destino": "entrega",
+      "modo_id": "reanudacion",
+      "que_viaja": {
+        "es": "Borrador aprobado por una persona",
+        "en": "Draft approved by a person"
+      },
+      "lider": {
+        "es": "La persona aprueba y el agente sigue.",
+        "en": "The person approves and the agent continues."
+      }
+    },
+    {
+      "id": "f9",
+      "origen": "filtro-salida",
+      "destino": "entrega",
+      "modo_id": "secuencia",
+      "que_viaja": {
+        "es": "Veredicto del filtro",
+        "en": "Filter verdict"
+      },
+      "lider": {
+        "es": "El filtro dice si el informe puede salir.",
+        "en": "The filter says whether the report may go out."
+      }
+    },
+    {
+      "id": "f10",
+      "origen": "redactor",
+      "destino": "medidor",
+      "modo_id": "secuencia",
+      "que_viaja": {
+        "es": "Consumo de la corrida",
+        "en": "Run usage"
+      },
+      "lider": {
+        "es": "El redactor reporta cuánto gastó.",
+        "en": "The writer reports what it spent."
+      }
+    }
+  ],
+  "recorridos": [
+    {
+      "id": "caso-complejo",
+      "titulo": {
+        "es": "Un caso complejo, con cifras dudosas",
+        "en": "A complex case, with doubtful figures"
+      },
+      "pasos": [
+        {
+          "id": "p1",
+          "nodo_id": "recepcion",
+          "que_pasa": {
+            "es": "Llega el pedido",
+            "en": "The request arrives"
+          },
+          "lider": {
+            "es": "Alguien pide un informe.",
+            "en": "Someone asks for a report."
+          },
+          "experto": {
+            "es": "El pedido pasa la validación de esquema y recibe su identificador de corrida.",
+            "en": "The request passes schema validation and receives its run identifier."
+          }
+        },
+        {
+          "id": "p2",
+          "nodo_id": "coordinador",
+          "que_pasa": {
+            "es": "Se decide la ruta",
+            "en": "The route is decided"
+          },
+          "lider": {
+            "es": "El caso es complejo: va al analista.",
+            "en": "The case is complex: it goes to the analyst."
+          },
+          "experto": {
+            "es": "La señal de complejidad vale 4; la arista condicional con umbral 3 se toma.",
+            "en": "The complexity signal is 4; the conditional edge with threshold 3 is taken."
+          }
+        },
+        {
+          "id": "p3",
+          "nodo_id": "analista",
+          "que_pasa": {
+            "es": "Se analiza",
+            "en": "It is analysed"
+          },
+          "lider": {
+            "es": "El analista saca los hallazgos.",
+            "en": "The analyst draws out the findings."
+          },
+          "experto": {
+            "es": "Hallazgos estructurados con fuente por cifra.",
+            "en": "Structured findings with a source per figure."
+          }
+        },
+        {
+          "id": "p4",
+          "nodo_id": "redactor",
+          "que_pasa": {
+            "es": "Se redacta",
+            "en": "It is written"
+          },
+          "lider": {
+            "es": "El redactor escribe el borrador.",
+            "en": "The writer writes the draft."
+          },
+          "experto": {
+            "es": "Borrador en el formato del informe.",
+            "en": "Draft in the report format."
+          }
+        },
+        {
+          "id": "p5",
+          "nodo_id": "guardia-cifras",
+          "que_pasa": {
+            "es": "Se cuentan las cifras sin fuente",
+            "en": "Unsourced figures are counted"
+          },
+          "lider": {
+            "es": "La guardia encuentra una cifra sin fuente.",
+            "en": "The guard finds one figure without a source."
+          },
+          "experto": {
+            "es": "La señal de cifras sin fuente vale 1; la arista hacia la pausa humana se toma.",
+            "en": "The unsourced-figures signal is 1; the edge to the human pause is taken."
+          }
+        },
+        {
+          "id": "p6",
+          "nodo_id": "revision-humana",
+          "que_pasa": {
+            "es": "Una persona revisa",
+            "en": "A person reviews"
+          },
+          "lider": {
+            "es": "La persona corrige la cifra y aprueba.",
+            "en": "The person corrects the figure and approves."
+          },
+          "experto": {
+            "es": "El grafo queda en pausa con su estado guardado hasta la respuesta.",
+            "en": "The graph pauses with its state saved until the answer."
+          }
+        },
+        {
+          "id": "p7",
+          "nodo_id": "entrega",
+          "que_pasa": {
+            "es": "Se entrega",
+            "en": "It is delivered"
+          },
+          "lider": {
+            "es": "El informe sale con su lista de verificaciones.",
+            "en": "The report goes out with its list of checks."
+          },
+          "experto": {
+            "es": "Se escribe el informe, su versión y las verificaciones que pasó.",
+            "en": "The report, its version and the checks it passed are written."
+          }
+        }
+      ]
+    }
+  ],
+  "glosario": {
+    "es": {
+      "señal": "Un número que el código calcula en cada corrida y que decide por dónde sigue el agente."
+    },
+    "en": {
+      "signal": "A number the code computes on every run and that decides where the agent goes next."
+    }
+  }
+}

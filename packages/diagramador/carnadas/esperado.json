@@ -1,0 +1,343 @@
+{
+  "contrato_version": "0.3.0",
+  "nota": "Cada carnada debe fallar por SU regla y con SU id; los mapas reales deben aceptarse. `fase` dice en qué fase de la validación (1 esquema · 2 reglas en código) se espera la detección. `cobertura: true` marca la carnada que necesita la tabla de cobertura de la fuente como entrada de validate (V15). Se reporta «detectó k de n».",
+  "casos": [
+    {
+      "archivo": "C01-gramatica-incompatible.mapa.json",
+      "clase": "mapa",
+      "gramatica": "plataformas-datos",
+      "modo": "privado",
+      "tipo": "error",
+      "fase": 2,
+      "regla": "V1",
+      "id": "plataforma-ejemplo",
+      "descripcion": "El mapa declara una versión de gramática incompatible"
+    },
+    {
+      "archivo": "C02-tipo-inexistente.mapa.json",
+      "clase": "mapa",
+      "gramatica": "plataformas-datos",
+      "modo": "privado",
+      "tipo": "error",
+      "fase": 2,
+      "regla": "V2",
+      "id": "conector-relacional",
+      "descripcion": "Un nodo usa un tipo que la gramática no tiene"
+    },
+    {
+      "archivo": "C03-capa-inventada.mapa.json",
+      "clase": "mapa",
+      "gramatica": "plataformas-datos",
+      "modo": "privado",
+      "tipo": "error",
+      "fase": 2,
+      "regla": "V2",
+      "id": "captura-cambios",
+      "descripcion": "Un nodo vive en una capa fuera de la gramática común (RF-09.6)"
+    },
+    {
+      "archivo": "C04-nodo-sin-fuente.mapa.json",
+      "clase": "mapa",
+      "gramatica": "plataformas-datos",
+      "modo": "privado",
+      "tipo": "error",
+      "fase": 1,
+      "regla": "V3",
+      "id": "capa-cruda",
+      "descripcion": "Un nodo sin fuente (RF-09.6)"
+    },
+    {
+      "archivo": "C05-nodo-sin-registro-lider.mapa.json",
+      "clase": "mapa",
+      "gramatica": "plataformas-datos",
+      "modo": "privado",
+      "tipo": "error",
+      "fase": 1,
+      "regla": "V3",
+      "id": "canalizacion-declarativa",
+      "descripcion": "Un nodo sin la explicación para líderes"
+    },
+    {
+      "archivo": "C06-flujo-a-nodo-inexistente.mapa.json",
+      "clase": "mapa",
+      "gramatica": "plataformas-datos",
+      "modo": "privado",
+      "tipo": "error",
+      "fase": 2,
+      "regla": "V4",
+      "id": "f-semantico-tablero",
+      "descripcion": "Un flujo hacia un nodo que no existe (RF-09.6)"
+    },
+    {
+      "archivo": "C07-recorrido-no-llega-al-consumo.mapa.json",
+      "clase": "mapa",
+      "gramatica": "plataformas-datos",
+      "modo": "privado",
+      "tipo": "error",
+      "fase": 2,
+      "regla": "V5",
+      "id": "admision-paciente",
+      "descripcion": "El recorrido no llega al consumo (RF-09.5)"
+    },
+    {
+      "archivo": "C08-paso-sin-flujo.mapa.json",
+      "clase": "mapa",
+      "gramatica": "plataformas-datos",
+      "modo": "privado",
+      "tipo": "error",
+      "fase": 2,
+      "regla": "V5",
+      "id": "admision-paciente/p4",
+      "descripcion": "Dos pasos seguidos que ningún flujo declarado une"
+    },
+    {
+      "archivo": "C09-id-duplicado.mapa.json",
+      "clase": "mapa",
+      "gramatica": "plataformas-datos",
+      "modo": "privado",
+      "tipo": "error",
+      "fase": 2,
+      "regla": "V6",
+      "id": "tablero",
+      "descripcion": "Dos nodos con el mismo id"
+    },
+    {
+      "archivo": "C10-once-bloques.mapa.json",
+      "clase": "mapa",
+      "gramatica": "plataformas-datos",
+      "modo": "privado",
+      "tipo": "error",
+      "fase": 2,
+      "regla": "V7",
+      "id": "plataforma-ejemplo",
+      "descripcion": "Once bloques cuando la gramática permite de 5 a 8"
+    },
+    {
+      "archivo": "C11-propuesta-en-publicacion.mapa.json",
+      "clase": "mapa",
+      "gramatica": "plataformas-datos",
+      "modo": "publicacion",
+      "tipo": "error",
+      "fase": 2,
+      "regla": "V8",
+      "id": "plataforma-ejemplo",
+      "descripcion": "Un mapa en estado propuesta que se intenta publicar"
+    },
+    {
+      "archivo": "C12-termino-sin-explicar.mapa.json",
+      "clase": "mapa",
+      "gramatica": "plataformas-datos",
+      "modo": "privado",
+      "tipo": "alerta",
+      "fase": 2,
+      "regla": "V9",
+      "id": "tablero",
+      "descripcion": "Un término técnico en el texto para líderes sin explicación, en los dos idiomas (RF-09.7)"
+    },
+    {
+      "archivo": "C13-lider-demasiado-largo.mapa.json",
+      "clase": "mapa",
+      "gramatica": "plataformas-datos",
+      "modo": "privado",
+      "tipo": "alerta",
+      "fase": 2,
+      "regla": "V10",
+      "id": "modelo-semantico",
+      "descripcion": "Un texto para líderes de más de dos frases"
+    },
+    {
+      "archivo": "C14-fuente-sin-https.mapa.json",
+      "clase": "mapa",
+      "gramatica": "plataformas-datos",
+      "modo": "privado",
+      "tipo": "error",
+      "fase": 1,
+      "regla": "V3",
+      "id": "motor-transformacion",
+      "descripcion": "Una fuente con dirección no segura"
+    },
+    {
+      "archivo": "C15-bloque-en-otra-banda.mapa.json",
+      "clase": "mapa",
+      "gramatica": "plataformas-datos",
+      "modo": "privado",
+      "tipo": "error",
+      "fase": 2,
+      "regla": "V3",
+      "id": "programador-tareas",
+      "descripcion": "Un nodo asignado a un bloque anclado en otra banda"
+    },
+    {
+      "archivo": "C16-recorrido-empieza-fuera.mapa.json",
+      "clase": "mapa",
+      "gramatica": "plataformas-datos",
+      "modo": "privado",
+      "tipo": "error",
+      "fase": 2,
+      "regla": "V5",
+      "id": "admision-paciente",
+      "descripcion": "El recorrido no empieza en las fuentes"
+    },
+    {
+      "archivo": "C17-bifurcacion-sin-tipo.mapa.json",
+      "clase": "mapa",
+      "gramatica": "plataformas-datos",
+      "modo": "privado",
+      "tipo": "error",
+      "fase": 2,
+      "regla": "V12",
+      "id": "admision-paciente/p5",
+      "descripcion": "De un paso salen dos ramas y no se declara si son paralelas o alternativas"
+    },
+    {
+      "archivo": "C18-siete-nodos-en-una-banda.mapa.json",
+      "clase": "mapa",
+      "gramatica": "plataformas-datos",
+      "modo": "privado",
+      "tipo": "error",
+      "fase": 2,
+      "regla": "V11",
+      "id": "ingesta",
+      "descripcion": "Siete nodos en una banda cuya gramática admite seis (P10, G-Diseño)"
+    },
+    {
+      "archivo": "C19-caracter-fuera-de-la-fuente.mapa.json",
+      "clase": "mapa",
+      "gramatica": "plataformas-datos",
+      "modo": "privado",
+      "tipo": "error",
+      "fase": 2,
+      "regla": "V15",
+      "id": "tablero",
+      "descripcion": "Un carácter que la tabla de métricas no cubre (U+2713 ✓) dentro de un texto: rompe G15 y G1 (F-006)",
+      "cobertura": true
+    },
+    {
+      "archivo": "C20-condicional-sin-condicion.mapa.json",
+      "clase": "mapa",
+      "gramatica": "agentes-ia",
+      "modo": "privado",
+      "tipo": "error",
+      "fase": 2,
+      "regla": "V13",
+      "id": "f2",
+      "descripcion": "Un flujo de un modo que exige condición (condicional) sin `condicion` (pedido de planlang)"
+    },
+    {
+      "archivo": "C21-texto-sin-un-idioma.mapa.json",
+      "clase": "mapa",
+      "gramatica": "plataformas-datos",
+      "modo": "privado",
+      "tipo": "error",
+      "fase": 2,
+      "regla": "V14",
+      "id": "capa-cruda",
+      "descripcion": "Un texto sin uno de los idiomas que la gramática declara (bilingüe integral, 6-B)"
+    },
+    {
+      "archivo": "GC1-orden-repetido.gramatica.json",
+      "clase": "gramatica",
+      "modo": "privado",
+      "tipo": "error",
+      "fase": 2,
+      "regla": "G3",
+      "id": "almacenamiento",
+      "descripcion": "Dos capas con el mismo orden"
+    },
+    {
+      "archivo": "GC2-umbrales-invertidos.gramatica.json",
+      "clase": "gramatica",
+      "modo": "privado",
+      "tipo": "error",
+      "fase": 2,
+      "regla": "G6",
+      "id": "plataformas-datos",
+      "descripcion": "El umbral de revisión no es menor que el de vencimiento"
+    },
+    {
+      "archivo": "GC3-capas-y-carriles.gramatica.json",
+      "clase": "gramatica",
+      "modo": "privado",
+      "tipo": "error",
+      "fase": 2,
+      "regla": "G4",
+      "id": "plataformas-datos",
+      "descripcion": "Capas y carriles mezclados en una gramática (P8)"
+    },
+    {
+      "archivo": "GC4-recorrido-a-banda-inexistente.gramatica.json",
+      "clase": "gramatica",
+      "modo": "privado",
+      "tipo": "error",
+      "fase": 2,
+      "regla": "G5",
+      "id": "tableros",
+      "descripcion": "El recorrido de referencia apunta a una banda que no existe"
+    },
+    {
+      "archivo": "GC5-idioma-base-no-declarado.gramatica.json",
+      "clase": "gramatica",
+      "modo": "privado",
+      "tipo": "error",
+      "fase": 2,
+      "regla": "G7",
+      "id": "plataformas-datos",
+      "descripcion": "El idioma base no está entre los idiomas declarados"
+    },
+    {
+      "archivo": "A1-cinco-bloques.mapa.json",
+      "clase": "mapa",
+      "gramatica": "plataformas-datos",
+      "modo": "publicacion",
+      "tipo": "acepta",
+      "fase": null,
+      "regla": null,
+      "id": null,
+      "descripcion": "El mínimo de bloques de la gramática (5)"
+    },
+    {
+      "archivo": "A2-ocho-bloques.mapa.json",
+      "clase": "mapa",
+      "gramatica": "plataformas-datos",
+      "modo": "publicacion",
+      "tipo": "acepta",
+      "fase": null,
+      "regla": null,
+      "id": null,
+      "descripcion": "El máximo de bloques de la gramática (8)"
+    },
+    {
+      "archivo": "A3-cuatro-modos-en-un-par.mapa.json",
+      "clase": "mapa",
+      "gramatica": "plataformas-datos",
+      "modo": "publicacion",
+      "tipo": "acepta",
+      "fase": null,
+      "regla": null,
+      "id": null,
+      "descripcion": "Un flujo agregado con los CUATRO modos entre dos bloques (origen → entrada): debe aceptarse y, en el nivel 1, dibujarse como una línea con la etiqueta de los cuatro marcadores que cabe en el canal a 380 px, sin avisos de geometría (P4, G-Diseño)"
+    },
+    {
+      "archivo": "../ejemplos/plataforma-ejemplo.mapa.json",
+      "clase": "mapa",
+      "gramatica": "plataformas-datos",
+      "modo": "publicacion",
+      "tipo": "acepta",
+      "fase": null,
+      "regla": null,
+      "id": null,
+      "descripcion": "El mapa real del piloto (bilingüe): debe aceptarse sin errores ni alertas"
+    },
+    {
+      "archivo": "../ejemplos/agente-ejemplo.mapa.json",
+      "clase": "mapa",
+      "gramatica": "agentes-ia",
+      "modo": "publicacion",
+      "tipo": "acepta",
+      "fase": null,
+      "regla": null,
+      "id": null,
+      "descripcion": "El mapa real de agentes-ia (bilingüe, con condiciones en los flujos condicionales): debe aceptarse sin errores ni alertas"
+    }
+  ]
+}

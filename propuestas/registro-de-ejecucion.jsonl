@@ -1,0 +1,35 @@
+{"fecha_hora":"2026-09-27T22:00:29.781Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/fundamentals/microsoft-fabric-overview","llamada":"abf42494a6a62b0e"}
+{"fecha_hora":"2026-09-27T22:00:31.268Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview","llamada":"32a53a626ffa0fe8"}
+{"fecha_hora":"2026-09-27T22:00:40.799Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/mirroring/overview","llamada":"1734f583517299ff"}
+{"fecha_hora":"2026-09-27T22:00:42.559Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/data-factory/what-is-copy-job","llamada":"06857ab1f71f6d87"}
+{"fecha_hora":"2026-09-27T22:00:44.418Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/real-time-intelligence/event-streams/overview","llamada":"2935171f655a6ab7"}
+{"fecha_hora":"2026-09-27T22:01:04.494Z","herramienta":"WebSearch","consulta":"Fabric data agent \"generally available\" 2026","llamada":"6c88f6b81cf07417"}
+{"fecha_hora":"2026-09-27T22:01:04.496Z","herramienta":"WebSearch","consulta":"Microsoft Fabric \"generally available\" workloads announcement blog.fabric.microsoft.com Lakehouse Warehouse OneLake","llamada":"b902c5681ab8ed39"}
+{"fecha_hora":"2026-09-27T22:01:05.063Z","herramienta":"WebSearch","consulta":"Fabric \"Copy job\" \"generally available\" blog","llamada":"b06399dd805de482"}
+{"fecha_hora":"2026-09-27T22:01:10.011Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/data-science/concept-data-agent","llamada":"28d9e0fd739cf93a"}
+{"fecha_hora":"2026-09-27T22:01:14.395Z","herramienta":"WebFetch","url":"https://blog.fabric.microsoft.com/en-US/blog/simplify-your-data-ingestion-with-copy-job-general-availability-announcement/","llamada":"389015cb7c4a8ca2"}
+{"fecha_hora":"2026-09-27T22:01:19.739Z","herramienta":"WebFetch","url":"https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/","llamada":"a40dae17197cec7a"}
+{"fecha_hora":"2026-09-27T22:01:44.782Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/fundamentals/whats-new","llamada":"58b227aa125dd4bf"}
+{"fecha_hora":"2026-09-27T22:02:06.547Z","herramienta":"WebFetch","url":"https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/","llamada":"f5d2aa29641524f9"}
+{"fecha_hora":"2026-09-27T22:02:29.473Z","herramienta":"WebFetch","url":"https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/","llamada":"9cd45634d219f716"}
+{"fecha_hora":"2026-09-27T22:05:03.889Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/fundamentals/whats-new-archive","llamada":"f5d584e296621138"}
+{"fecha_hora":"2026-09-27T22:05:48.686Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/data-warehouse/whats-new","llamada":"3fa4b82f4665eae9"}
+{"fecha_hora":"2026-09-27T22:05:49.893Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/real-time-intelligence/overview","llamada":"ae011083f1563769"}
+{"fecha_hora":"2026-09-27T22:06:01.506Z","herramienta":"WebSearch","consulta":"learn.microsoft.com fabric real-time intelligence \"Eventhouse\" \"generally available\" what's new","llamada":"ca4e5e9d1a6ab3f4"}
+{"fecha_hora":"2026-09-27T22:06:22.231Z","herramienta":"WebFetch","url":"https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/","llamada":"e850c7be3f18baa8"}
+{"fecha_hora":"2026-09-27T22:06:33.444Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/fundamentals/whats-new-archive","llamada":"fdb7b77226a90acc"}
+{"fecha_hora":"2026-09-27T22:06:41.708Z","herramienta":"WebFetch","url":"https://community.fabric.microsoft.com/t5/Fabric-Updates-Blog/Simplify-Your-Data-Ingestion-with-Copy-Job-Generally-Available/ba-p/5172869","llamada":"1f7a117ab073b6d4"}
+{"fecha_hora":"2026-09-27T22:07:50.890Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/data-engineering/lakehouse-overview","llamada":"d329d8de86e83394"}
+{"fecha_hora":"2026-09-27T22:07:52.566Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/data-warehouse/data-warehousing","llamada":"ffd40bac882454f8"}
+{"fecha_hora":"2026-09-27T22:07:54.398Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/data-engineering/data-engineering-overview","llamada":"e0a6070205c1a7fb"}
+{"fecha_hora":"2026-09-27T22:08:00.843Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/data-factory/dataflows-gen2-overview","llamada":"e17b07eccf30ce91"}
+{"fecha_hora":"2026-09-27T22:08:02.445Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/fundamentals/direct-lake-overview","llamada":"e96adf2b8e62a691"}
+{"fecha_hora":"2026-09-27T22:08:04.347Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/data-factory/pipeline-overview","llamada":"cb5b07e3cfff3376"}
+{"fecha_hora":"2026-09-27T22:08:09.176Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/onelake/security/get-started-security","llamada":"853e655bbd771e05"}
+{"fecha_hora":"2026-09-27T22:08:10.837Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/governance/information-protection","llamada":"1dccbd7d5ace6435"}
+{"fecha_hora":"2026-09-27T22:08:12.045Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/governance/onelake-catalog-overview","llamada":"ac57c5e819337397"}
+{"fecha_hora":"2026-09-27T22:08:34.242Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/enterprise/licenses","llamada":"90c76e6499942d04"}
+{"fecha_hora":"2026-09-27T22:08:35.867Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/enterprise/metrics-app","llamada":"98fbbc7330a4f3a8"}
+{"fecha_hora":"2026-09-27T22:08:37.348Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/cicd/cicd-overview","llamada":"7244c745a007e9f2"}
+{"fecha_hora":"2026-09-27T22:24:59.216Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/fundamentals/whats-new-archive","llamada":"800a05cd4bbe56e1"}
+{"fecha_hora":"2026-09-27T22:25:21.007Z","herramienta":"WebFetch","url":"https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/","llamada":"ccdd3b8389ff5c1e"}

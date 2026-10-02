@@ -1,0 +1,18 @@
+# Copia fijada del contrato del diagramador: byte a byte con la planeadora (CONTRATO.lock).
+# Un formateador cambia bytes y rompe la huella.
+packages/diagramador/CONTRATO.md
+packages/diagramador/CHANGELOG.md
+packages/diagramador/REGISTRO-DE-FALLAS.md
+packages/diagramador/README.md
+packages/diagramador/CONTRATO.lock
+packages/diagramador/esquema/
+packages/diagramador/gramaticas/
+packages/diagramador/ejemplos/
+packages/diagramador/carnadas/
+packages/diagramador/metricas/
+# Golden files del diagramador: se comparan por huella SHA-256.
+packages/diagramador/test/golden/
+
+# Derivados comparados byte a byte (tests/unit/design-sync.test.ts, tests/unit/kit-de-prueba.test.ts)
+design-sync/
+docs/kit-de-prueba/

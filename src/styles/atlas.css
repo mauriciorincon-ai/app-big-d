@@ -1,0 +1,174 @@
+/* Big-D — pantalla del ATLAS, portada de la maqueta aprobada (docs/diseno/assets/bigd.css: niveles, guía,
+   lienzo deslizable, ficha breve, leyenda y lectura). La leyenda y la lectura en texto las GENERA el
+   diagramador (clases dg-leyenda* y dg-lectura); aquí solo se acomodan como la maqueta. Colores solo por
+   variable. */
+.abrir { margin: 26px 0 0; max-width: 380px; }
+
+/* Niveles */
+.niveles { display: flex; gap: 28px; margin: 0 0 24px; padding: 0; list-style: none; border-bottom: 1px solid var(--linea); overflow-x: auto; scrollbar-width: none; }
+.niveles::-webkit-scrollbar { display: none; }
+.niveles li { flex: none; }
+.niveles a, .niveles span.pend { display: inline-flex; align-items: baseline; gap: 8px; min-height: 44px; padding: 12px 0; font-size: 15px; color: var(--tinta-2); text-decoration: none; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.niveles a[aria-current="page"] { color: var(--tinta-1); font-weight: 700; border-bottom-color: var(--tinta-1); }
+.niveles .n { font: 500 12px/1 var(--letra-mono); }
+.guia { font-size: 16px; color: var(--tinta-2); max-width: 72ch; margin: 0 0 18px; }
+.guia b { color: var(--tinta-1); font-weight: 700; }
+
+/* Lienzo con desplazamiento lateral: el diagrama jamás se encoge ni se transpone (P5). */
+.mapa { position: relative; }
+.indice { display: none; flex-wrap: nowrap; gap: 18px; overflow-x: auto; padding: 0 0 8px; margin: 0; list-style: none; scrollbar-width: none; }
+.indice::-webkit-scrollbar { display: none; }
+.mapa[data-desborda] .indice { display: flex; }
+.indice button { flex: none; white-space: nowrap; display: inline-flex; align-items: baseline; gap: 6px; min-height: 36px; padding: 6px 0; font: 600 14px/1 var(--letra); color: var(--tinta-2); background: none; border: 0; border-bottom: 2px solid transparent; cursor: pointer; }
+.indice button[aria-current="true"] { color: var(--tinta-1); border-bottom-color: var(--tinta-1); }
+.indice .n { font: 500 11px/1 var(--letra-mono); }
+.pista { display: none; align-items: center; gap: 8px; margin: 0 0 10px; font: 500 13px/1.4 var(--letra-mono); color: var(--tinta-2); }
+.mapa[data-desborda] .pista { display: flex; }
+.lienzo-marco { position: relative; border: 1px solid var(--linea); border-radius: 6px; background-color: var(--sup-1); background-image: radial-gradient(var(--linea) 1px, transparent 1.2px); background-size: 16px 16px; background-position: 8px 8px; }
+.lienzo { overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; scroll-behavior: smooth; padding: 20px 8px 16px; outline-offset: -3px; }
+.lienzo svg { display: block; }
+.lienzo-marco::before, .lienzo-marco::after { content: ""; position: absolute; top: 0; bottom: 0; width: 40px; pointer-events: none; opacity: 0; transition: opacity var(--t-rapida); z-index: 1; border-radius: 6px; }
+.lienzo-marco::before { left: 0; background: linear-gradient(to right, var(--sup-1), transparent); }
+.lienzo-marco::after { right: 0; background: linear-gradient(to left, var(--sup-1), transparent); }
+.lienzo-marco[data-mas-izq]::before, .lienzo-marco[data-mas-der]::after { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .lienzo { scroll-behavior: auto; } .lienzo-marco::before, .lienzo-marco::after { transition: none; } }
+.saltar-diagrama { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.saltar-diagrama:focus { position: static; width: auto; height: auto; clip-path: none; display: inline-block; margin: 0 0 8px; color: var(--tinta-1); font-weight: 700; }
+
+/* Leyenda (generada): tipos a la izquierda en dos columnas, modos a la derecha con su nota; madurez y
+   vigencia debajo; la nota de marcas cierra. Las secciones siguen el orden del contrato (§ 4.9). */
+.leyenda { display: grid; gap: 28px 48px; margin-top: 36px; }
+.leyenda-motor, .leyenda .dg-leyenda { display: contents; }
+.leyenda .dg-leyenda > section:nth-of-type(1) { order: 1; }
+.leyenda .dg-leyenda > section:nth-of-type(2) { order: 2; }
+.leyenda > .lg-nota { order: 3; margin-top: -14px; }
+.leyenda .dg-leyenda > section:nth-of-type(3) { order: 4; }
+.leyenda .dg-leyenda > section:nth-of-type(4) { order: 5; }
+.leyenda .dg-leyenda-nota { order: 6; }
+@media (min-width: 900px) {
+  .leyenda { grid-template-columns: 1.5fr 1fr; }
+  .leyenda .dg-leyenda > section:nth-of-type(1) { grid-column: 1; grid-row: 1 / span 2; }
+  .leyenda .dg-leyenda > section:nth-of-type(2) { grid-column: 2; grid-row: 1; }
+  .leyenda > .lg-nota { grid-column: 2; grid-row: 2; }
+  .leyenda .dg-leyenda > section:nth-of-type(3) { grid-column: 1; grid-row: 3; }
+  .leyenda .dg-leyenda > section:nth-of-type(4) { grid-column: 2; grid-row: 3; }
+  .leyenda .dg-leyenda-nota { grid-column: 1 / -1; grid-row: 4; }
+}
+.leyenda h2 { margin: 0 0 4px; padding-bottom: 10px; font-size: 13px; font-weight: 700; letter-spacing: 0.02em; border-bottom: 1px solid var(--linea); }
+.dg-leyenda-lista { margin: 0; padding: 0; list-style: none; }
+.dg-leyenda-lista li { display: grid; grid-template-columns: 22px 1fr; align-items: center; gap: 10px; min-height: 36px; padding: 6px 0; border-bottom: 1px solid var(--linea); font-size: 14px; }
+.dg-leyenda-lista li:has(> .dg-leyenda-cod) { grid-template-columns: 22px 44px 1fr; }
+.dg-leyenda-lista li > svg { justify-self: center; }
+.leyenda .dg-leyenda > section:nth-of-type(2) li { grid-template-columns: 62px 1fr; }
+/* Tipos: rejilla de dos columnas desde 900 px, con 20 px entre filas (maqueta: `.lg-lista.dos` + `.dos`). */
+.leyenda .dg-leyenda > section:nth-of-type(1) .dg-leyenda-lista { display: grid; gap: 20px; }
+@media (min-width: 900px) { .leyenda .dg-leyenda > section:nth-of-type(1) .dg-leyenda-lista { grid-template-columns: 1fr 1fr; } }
+/* Modos: nombre y frase con el mismo peso, como la maqueta. */
+.leyenda .dg-leyenda-lista b { font-weight: inherit; }
+.dg-leyenda-cod { font: 600 11px/1 var(--letra-mono); letter-spacing: 0.06em; color: var(--tinta-2); }
+.lg-nota, .dg-leyenda section > p, .dg-leyenda-nota { font-size: 13px; color: var(--tinta-2); margin: 14px 0 0; max-width: 60ch; }
+.dg-leyenda-nota { max-width: 72ch; margin: 0; }
+
+/* Lectura en texto (G10, generada), plegada. */
+.lectura-seccion { margin-top: 36px; border-top: 1px solid var(--linea); padding-top: 14px; }
+.lectura-seccion summary { cursor: pointer; font-weight: 700; font-size: 15px; min-height: 36px; display: flex; align-items: center; gap: 10px; list-style: none; }
+/* La marca de plegable, dibujada (la maqueta la quitaba con display: flex y el plegable cerrado parecía un título
+   sin contenido, pasada de capturas del S1): apunta abajo cerrada y arriba abierta. Sin transición. */
+.lectura-seccion summary::-webkit-details-marker { display: none; }
+.lectura-seccion summary::after { content: ""; flex: none; width: 7px; height: 7px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-2px) rotate(45deg); }
+.lectura-seccion[open] summary::after { transform: translateY(2px) rotate(-135deg); }
+.dg-lectura { font-size: 15px; }
+/* La base de Tailwind quita los marcadores de lista; la lectura (y la ficha que la cita) los necesita:
+   el número dice el orden, la viñeta distingue una conexión de un componente. */
+.dg-lectura ol { list-style: decimal; }
+.dg-lectura ul { list-style: disc; }
+.dg-lectura ol { margin: 6px 0 0; padding-left: 22px; }
+.dg-lectura > ol { margin-top: 12px; }
+.dg-lectura > ol > li { margin: 0 0 12px; }
+.dg-lectura ul { padding-left: 18px; margin: 4px 0; }
+.dg-lectura li[data-flujo] { color: var(--tinta-2); }
+.dg-lectura h3 { font-size: 15px; font-weight: 700; margin: 18px 0 6px; }
+/* El recorrido trae su numeración escrita por el motor (1…5, 6a → 7a, 6b): la lista no suma otra. */
+.dg-lectura section[data-recorrido] ol, .dg-lectura section[data-recorrido] ul { list-style: none; }
+.dg-lectura section[data-recorrido] ol { padding-left: 22px; }
+.dg-lectura section[data-recorrido] ul { padding-left: 22px; }
+
+/* Campo «Plataforma» (kit: `.campo` + `.select`; forma aprobada en la parada A del S1). */
+.campo { display: grid; gap: 6px; min-width: 220px; }
+.campo-etiqueta { font: 600 12px/1 var(--letra-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--tinta-2); }
+.campo-nota { font: 400 13px/1.4 var(--letra); color: var(--tinta-2); max-width: 34ch; margin: 0; }
+.campo select { font: 400 15px/1.3 var(--letra); color: var(--tinta-1); background: var(--sup-1); border: 1px solid var(--linea); border-bottom-color: var(--tinta-2); border-radius: 4px; padding: 9px 12px; min-height: 40px; width: 100%; }
+.campo select:focus-visible { outline: 2px solid var(--tinta-1); outline-offset: 1px; }
+.select { position: relative; display: block; }
+.select select { appearance: none; padding-right: 32px; cursor: pointer; }
+.select svg { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); pointer-events: none; }
+.campo-plataforma { min-width: 280px; }
+@media (max-width: 719px) { .campo-plataforma { min-width: 0; width: 100%; } }
+
+/* Panel de la ficha (niveles 2 y 3): hoja inferior en teléfono, panel lateral desde 900 px. Sin sombra. */
+.panel { position: fixed; z-index: 20; background: var(--sup-1); border-top: 1px solid var(--linea); display: flex; flex-direction: column; left: 0; right: 0; bottom: 0; max-height: 72vh; border-radius: 8px 8px 0 0; }
+.panel[hidden] { display: none; }
+@media (min-width: 900px) { .panel { left: auto; top: 0; bottom: 0; width: 420px; max-height: none; border-top: 0; border-left: 1px solid var(--linea); border-radius: 0; } }
+.panel-cabeza { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 20px; border-bottom: 1px solid var(--linea); }
+.panel-cuerpo { overflow-y: auto; padding: 16px 20px 28px; }
+.cerrar { font: 600 14px/1 var(--letra); color: var(--tinta-1); background: none; border: 0; border-bottom: 1.5px solid var(--tinta-1); padding: 4px 0; min-height: 36px; cursor: pointer; }
+/* Ficha (generada por el motor, `toCard`). */
+.dg-ficha h2 { font-size: 22px; font-weight: 700; line-height: 1.2; letter-spacing: -0.01em; margin: 6px 0 8px; }
+.dg-ficha h3 { font: 600 12px/1 var(--letra-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--tinta-2); margin: 20px 0 6px; }
+.dg-ficha p { margin: 0; font-size: 15px; }
+.dg-ficha .dg-ficha-lider { font-size: 16px; }
+.dg-ficha-tipo { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--tinta-2); }
+.dg-ficha .dg-ficha-tipo { font-size: 13px; }
+.dg-ficha-cod { font: 600 11px/1 var(--letra-mono); letter-spacing: 0.06em; color: var(--tinta-2); }
+.dg-terminos { margin: 0; }
+.dg-terminos > div { padding: 8px 0; border-top: 1px solid var(--linea); }
+.dg-terminos dt { font-weight: 700; font-size: 14px; display: inline-flex; gap: 8px; align-items: baseline; }
+.dg-terminos dd { margin: 2px 0 0; font-size: 14px; color: var(--tinta-2); }
+.dg-del-glosario dt { border-bottom: 1.5px dotted var(--tinta-2); }
+.dg-ficha-madurez { display: inline-flex; align-items: center; gap: 8px; }
+.dg-fuentes { margin: 0; padding: 0; list-style: none; }
+.dg-fuentes li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; padding: 8px 0; border-top: 1px solid var(--linea); font-size: 14px; }
+.dg-fuentes a { color: var(--tinta-1); text-decoration: underline; }
+.dg-ficha-fecha { font: 500 13px/1.4 var(--letra-mono); color: var(--tinta-2); }
+.dg-ficha .dg-ficha-meta { margin-top: 14px; font: 500 13px/1.4 var(--letra-mono); color: var(--tinta-2); }
+.dg-ficha-meta b { color: var(--tinta-1); font-weight: 600; }
+/* Cada dato del pie en una línea: «consultado 2026-10-01» se partía en «2026-10-» y «01» a 380 px. */
+.dg-ficha-meta span { white-space: nowrap; }
+
+/* Recorrido (nivel 3). */
+.rec-controles { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin: 0 0 14px; }
+.boton { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 16px; font: 600 15px/1 var(--letra); color: var(--fondo); background: var(--tinta-1); border: 1.5px solid var(--tinta-1); border-radius: 4px; cursor: pointer; }
+.boton-sec { color: var(--tinta-1); background: transparent; }
+.boton[aria-pressed="true"] { text-decoration: underline; text-underline-offset: 4px; }
+.boton:disabled, .boton[aria-disabled="true"] { opacity: 0.45; cursor: not-allowed; }
+.rec-pos { color: var(--tinta-2); min-width: 12ch; text-align: center; }
+.pasos { margin-top: 28px; }
+.pasos-lista { margin: 12px 0 0; padding: 0; list-style: none; }
+.pasos-lista li { display: grid; grid-template-columns: 40px 1fr; gap: 12px; padding: 12px 0; border-top: 1px solid var(--linea); font-size: 15px; }
+.pasos-lista li[aria-current] { border-left: 3px solid var(--tinta-1); padding-left: 12px; background: var(--sup-1); }
+.paso-n { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 16px; background: var(--tinta-1); color: var(--fondo); font: 700 13px/1 var(--letra-mono); }
+.paso-nodo { color: var(--tinta-2); }
+.paso-lider { margin: 4px 0 0; }
+.paso-experto { margin: 4px 0 0; color: var(--tinta-2); font-size: 14px; }
+.paso-rama { margin: 6px 0 0; font-size: 14px; font-weight: 600; }
+/* Movimiento reducido: «Reproducir» sigue en el DOM (el árbol no depende de la preferencia) y el CSS lo
+   oculta; el controlador además se niega a reproducir. */
+@media (prefers-reduced-motion: reduce) { .rec [data-rec="reproducir"] { display: none; } }
+
+/* Ventana de un bloque del nivel 1 (pedido del usuario al mirar Fabric): su nombre y su frase, sus componentes
+   dibujados por el motor (vista «bloque», a escala 1) y una tarjeta de texto por componente (`toBlockCards`). */
+.panel-cuerpo > h2 { font-size: 22px; font-weight: 700; line-height: 1.2; letter-spacing: -0.01em; margin: 4px 0 6px; }
+.ventana-lider { margin: 0; font-size: 16px; }
+.ventana-lienzo { margin: 18px 0 6px; }
+.dg-tarjetas { display: grid; gap: 12px; margin-top: 8px; }
+.dg-tarjeta { padding: 14px 16px; border: 1px solid var(--linea); border-radius: 6px; background: var(--fondo); }
+.dg-tarjeta h3 { font-size: 16px; font-weight: 700; line-height: 1.25; margin: 8px 0 6px; }
+.dg-tarjeta p { margin: 0; font-size: 14px; }
+.dg-tarjeta .dg-ficha-madurez { color: var(--tinta-2); }
+.dg-tarjeta .dg-tarjeta-lider { margin-top: 8px; font-size: 15px; }
+.dg-tarjeta .dg-tarjeta-vigencia { margin-top: 6px; font: 500 13px/1.4 var(--letra-mono); }
+.dg-conexiones { list-style: none; margin: 10px 0 0; padding: 0; }
+.dg-conexiones li { display: flex; gap: 10px; align-items: flex-start; padding: 7px 0; border-top: 1px solid var(--linea); font-size: 14px; color: var(--tinta-2); }
+.dg-conexiones .dg-svg { flex: none; margin-top: 4px; color: var(--tinta-1); }
+.ventana-mas { margin: 18px 0 0; font-size: 15px; }
+.ventana-mas a { color: var(--tinta-1); text-decoration: underline; }

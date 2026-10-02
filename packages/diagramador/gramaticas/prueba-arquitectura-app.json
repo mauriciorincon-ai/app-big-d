@@ -1,0 +1,217 @@
+{
+  "contrato_version": "0.3.0",
+  "id": "prueba-arquitectura-app",
+  "version": "0.1.0",
+  "nombre": {
+    "es": "Arquitectura de app (prueba)"
+  },
+  "descripcion": "Prueba de generalidad: el BLUEPRINT de una app del portafolio.",
+  "idiomas": [
+    "es"
+  ],
+  "idioma_base": "es",
+  "bandas": [
+    {
+      "id": "cliente",
+      "nombre": {
+        "es": "Cliente"
+      },
+      "clase": "capa",
+      "orden": 1,
+      "pregunta_lider": {
+        "es": "¿Qué ve el usuario?"
+      }
+    },
+    {
+      "id": "app",
+      "nombre": {
+        "es": "Aplicación"
+      },
+      "clase": "capa",
+      "orden": 2,
+      "pregunta_lider": {
+        "es": "¿Dónde vive la lógica?"
+      }
+    },
+    {
+      "id": "servicios",
+      "nombre": {
+        "es": "Servicios"
+      },
+      "clase": "capa",
+      "orden": 3,
+      "pregunta_lider": {
+        "es": "¿Qué servicios usa?"
+      }
+    },
+    {
+      "id": "datos",
+      "nombre": {
+        "es": "Datos"
+      },
+      "clase": "capa",
+      "orden": 4,
+      "pregunta_lider": {
+        "es": "¿Dónde se guarda?"
+      }
+    },
+    {
+      "id": "externos",
+      "nombre": {
+        "es": "Externos"
+      },
+      "clase": "capa",
+      "orden": 5,
+      "pregunta_lider": {
+        "es": "¿Con quién habla afuera?"
+      }
+    },
+    {
+      "id": "seguridad",
+      "nombre": {
+        "es": "Seguridad"
+      },
+      "clase": "transversal",
+      "orden": 1,
+      "pregunta_lider": {
+        "es": "¿Qué protege qué?"
+      }
+    },
+    {
+      "id": "observabilidad",
+      "nombre": {
+        "es": "Observabilidad"
+      },
+      "clase": "transversal",
+      "orden": 2,
+      "pregunta_lider": {
+        "es": "¿Cómo se ve que funciona?"
+      }
+    }
+  ],
+  "tipos_de_nodo": [
+    {
+      "id": "interfaz",
+      "nombre": {
+        "es": "Interfaz"
+      },
+      "token_color": "tipo-1",
+      "glifo": "circulo",
+      "etiqueta_corta": {
+        "es": "UI"
+      }
+    },
+    {
+      "id": "logica",
+      "nombre": {
+        "es": "Lógica"
+      },
+      "token_color": "tipo-2",
+      "glifo": "rombo",
+      "etiqueta_corta": {
+        "es": "LOG"
+      }
+    },
+    {
+      "id": "persistencia",
+      "nombre": {
+        "es": "Persistencia"
+      },
+      "token_color": "tipo-3",
+      "glifo": "cuadrado",
+      "etiqueta_corta": {
+        "es": "PER"
+      }
+    },
+    {
+      "id": "integracion",
+      "nombre": {
+        "es": "Integración"
+      },
+      "token_color": "tipo-4",
+      "glifo": "triangulo",
+      "etiqueta_corta": {
+        "es": "INT"
+      }
+    },
+    {
+      "id": "control",
+      "nombre": {
+        "es": "Control"
+      },
+      "token_color": "tipo-5",
+      "glifo": "escudo",
+      "etiqueta_corta": {
+        "es": "CTL"
+      }
+    }
+  ],
+  "modos_de_flujo": [
+    {
+      "id": "peticion",
+      "nombre": {
+        "es": "Petición"
+      },
+      "estilo_linea": "continua",
+      "marcador": "ninguno",
+      "descripcion": {
+        "es": "Pide y espera"
+      }
+    },
+    {
+      "id": "evento",
+      "nombre": {
+        "es": "Evento"
+      },
+      "estilo_linea": "discontinua",
+      "marcador": "onda",
+      "descripcion": {
+        "es": "Avisa sin esperar"
+      }
+    }
+  ],
+  "escala_madurez": [
+    {
+      "id": "disponible",
+      "nombre": {
+        "es": "Disponible"
+      },
+      "nivel": 4,
+      "disponible": true
+    },
+    {
+      "id": "en-prueba",
+      "nombre": {
+        "es": "En prueba"
+      },
+      "nivel": 1,
+      "disponible": false
+    }
+  ],
+  "vigencia": {
+    "umbral_revisar_dias": 30,
+    "umbral_vencido_dias": 60
+  },
+  "recorrido_referencia": {
+    "desde_bandas": [
+      "cliente"
+    ],
+    "hasta_bandas": [
+      "cliente"
+    ],
+    "llegadas": "alguna"
+  },
+  "limites": {
+    "bloques_min": 1,
+    "bloques_max": 7,
+    "frases_lider_max": 2,
+    "nodos_por_banda_max": 6
+  },
+  "terminos_a_explicar": {
+    "es": [
+      "api",
+      "rls",
+      "ssr"
+    ]
+  }
+}

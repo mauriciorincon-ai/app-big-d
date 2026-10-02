@@ -1,0 +1,228 @@
+{
+  "contrato_version": "0.3.0",
+  "id": "prueba-agentes-ia",
+  "version": "0.1.0",
+  "nombre": {
+    "es": "Agentes y flujos de IA (prueba)"
+  },
+  "descripcion": "Prueba de generalidad: un sistema de agentes con herramientas y memoria.",
+  "idiomas": [
+    "es"
+  ],
+  "idioma_base": "es",
+  "bandas": [
+    {
+      "id": "interfaz",
+      "nombre": {
+        "es": "Interfaz"
+      },
+      "clase": "capa",
+      "orden": 1,
+      "pregunta_lider": {
+        "es": "¿Dónde pregunta la persona?"
+      }
+    },
+    {
+      "id": "orquestacion",
+      "nombre": {
+        "es": "Orquestación"
+      },
+      "clase": "capa",
+      "orden": 2,
+      "pregunta_lider": {
+        "es": "¿Quién reparte el trabajo?"
+      }
+    },
+    {
+      "id": "agentes",
+      "nombre": {
+        "es": "Agentes"
+      },
+      "clase": "capa",
+      "orden": 3,
+      "pregunta_lider": {
+        "es": "¿Quién razona?"
+      }
+    },
+    {
+      "id": "herramientas",
+      "nombre": {
+        "es": "Herramientas"
+      },
+      "clase": "capa",
+      "orden": 4,
+      "pregunta_lider": {
+        "es": "¿Con qué actúa?"
+      }
+    },
+    {
+      "id": "memoria",
+      "nombre": {
+        "es": "Memoria y datos"
+      },
+      "clase": "capa",
+      "orden": 5,
+      "pregunta_lider": {
+        "es": "¿Qué recuerda?"
+      }
+    },
+    {
+      "id": "guardarrailes",
+      "nombre": {
+        "es": "Guardarraíles"
+      },
+      "clase": "transversal",
+      "orden": 1,
+      "pregunta_lider": {
+        "es": "¿Qué no puede hacer?"
+      }
+    },
+    {
+      "id": "costo",
+      "nombre": {
+        "es": "Costo"
+      },
+      "clase": "transversal",
+      "orden": 2,
+      "pregunta_lider": {
+        "es": "¿Cuánto cuesta?"
+      }
+    }
+  ],
+  "tipos_de_nodo": [
+    {
+      "id": "agente",
+      "nombre": {
+        "es": "Agente"
+      },
+      "token_color": "tipo-1",
+      "glifo": "estrella",
+      "etiqueta_corta": {
+        "es": "AGT"
+      }
+    },
+    {
+      "id": "herramienta",
+      "nombre": {
+        "es": "Herramienta"
+      },
+      "token_color": "tipo-2",
+      "glifo": "triangulo",
+      "etiqueta_corta": {
+        "es": "HER"
+      }
+    },
+    {
+      "id": "memoria",
+      "nombre": {
+        "es": "Memoria"
+      },
+      "token_color": "tipo-3",
+      "glifo": "cuadrado",
+      "etiqueta_corta": {
+        "es": "MEM"
+      }
+    },
+    {
+      "id": "modelo",
+      "nombre": {
+        "es": "Modelo"
+      },
+      "token_color": "tipo-4",
+      "glifo": "circulo",
+      "etiqueta_corta": {
+        "es": "MOD"
+      }
+    },
+    {
+      "id": "control",
+      "nombre": {
+        "es": "Control"
+      },
+      "token_color": "tipo-5",
+      "glifo": "escudo",
+      "etiqueta_corta": {
+        "es": "CTL"
+      }
+    }
+  ],
+  "modos_de_flujo": [
+    {
+      "id": "invoca",
+      "nombre": {
+        "es": "Invoca"
+      },
+      "estilo_linea": "continua",
+      "marcador": "ninguno",
+      "descripcion": {
+        "es": "Pide una acción"
+      }
+    },
+    {
+      "id": "devuelve",
+      "nombre": {
+        "es": "Devuelve"
+      },
+      "estilo_linea": "discontinua",
+      "marcador": "cuadros",
+      "descripcion": {
+        "es": "Entrega un resultado"
+      }
+    },
+    {
+      "id": "lee",
+      "nombre": {
+        "es": "Lee"
+      },
+      "estilo_linea": "punteada",
+      "marcador": "ida-y-vuelta",
+      "descripcion": {
+        "es": "Consulta memoria"
+      }
+    }
+  ],
+  "escala_madurez": [
+    {
+      "id": "disponible",
+      "nombre": {
+        "es": "Disponible"
+      },
+      "nivel": 4,
+      "disponible": true
+    },
+    {
+      "id": "en-prueba",
+      "nombre": {
+        "es": "En prueba"
+      },
+      "nivel": 1,
+      "disponible": false
+    }
+  ],
+  "vigencia": {
+    "umbral_revisar_dias": 30,
+    "umbral_vencido_dias": 60
+  },
+  "recorrido_referencia": {
+    "desde_bandas": [
+      "interfaz"
+    ],
+    "hasta_bandas": [
+      "interfaz"
+    ],
+    "llegadas": "alguna"
+  },
+  "limites": {
+    "bloques_min": 1,
+    "bloques_max": 7,
+    "frases_lider_max": 2,
+    "nodos_por_banda_max": 6
+  },
+  "terminos_a_explicar": {
+    "es": [
+      "token",
+      "embedding",
+      "prompt"
+    ]
+  }
+}

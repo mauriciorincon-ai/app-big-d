@@ -5,7 +5,11 @@
 > **Primera app del portafolio con especificación completa del usuario, primera con perfil
 > exportado estático y PILOTO del primer reusable de la casa (el diagramador).** Nace con el
 > pipeline completo desde el día 0 (Etapa de Diseño · dos filtros ⭐/⭐⭐ · cierre en dos actos ·
-> cero enlaces · bilingüe integral).
+> cero enlaces · bilingüe integral). **Sincronizada por última vez en la planeadora el 2026-09-27
+> (S1, fase 0): sección Stack/IA + regla 7-S; aplica además los deltas del kit v1.30.0/v1.31.0.**
+> **Deltas aplicados en la app el 2026-09-27 (S1, fase 0), desde `kit-app/CLAUDE.md` v1.32.0:** dos clases
+> de mirada (regla 10), `gh pr checks` tras cada push y métrica `manual` (regla 15), «preview del PR #N» en el
+> README de diseño (regla 17), comprobación mecánica de dependencias (regla 18) y reglas 21 y 22.
 
 ## Las dos casas (regla dura)
 
@@ -139,9 +143,20 @@ y reproducible con conocimiento de las plataformas, ni el atlas neutral (mercado
 - **Investigador:** `.claude/skills/investigar/` + hooks; escribe en `propuestas/`; US$0 (suscripción
   del usuario). Adaptador por API = roadmap.
 - **Backend/BD/Auth:** **NINGUNO** (adaptación declarada: el conocimiento son archivos versionados; no hay usuarios).
-- **IA embebida:** **adapter multi-proveedor conmutable por env** (Azure AI Foundry / Claude API /
-  Gemini / Groq / self-host OpenAI-compatible) — el proveedor inicial se decide por **ADR de cada
-  app** en el sprint que active IA; patrón obligatorio en skill `ia-embebida`.
+- **IA generativa: SOLO skills de Claude Code, operadas con la suscripción del usuario (decisión del
+  usuario, 2026-09-26: «no quiero usar Groq teniéndote a ti»).** No existe adaptador de proveedores,
+  no hay claves de API, no hay llamadas a Groq, Gemini, Azure ni a la API de Claude desde el código
+  de la app. Toda funcionalidad que necesite un modelo de lenguaje (hoy el investigador `/investigar`;
+  mañana el entrevistador, si entra) se implementa como skill en `.claude/skills/` que el usuario
+  invoca en su sesión de Claude Code, con contrato de entrada/salida validado por esquema y hooks de
+  registro. El patrón `ia-embebida` del kit aplica solo en su parte de contrato (Zod, guardrails,
+  persistencia de propuestas), no en su cliente HTTP. Un `fetch` a un proveedor de modelos es
+  hallazgo Crítico. **Aplica el apartado 7-S de los estándares (IA de construcción por suscripción,
+  regla 21 del kit v1.30.0) en su forma más simple:** la skill corre **interactiva en la sesión del
+  usuario**, con el binario oficial sin modificar; ningún lote, ningún `claude -p` automatizado, nada
+  en CI; el token jamás sale del binario ni entra a variables de entorno, trazas o repo; **ADR de
+  cumplimiento** con la lectura de los términos vigentes y re-lectura antes de cada release; la vía
+  para terceros (si alguna vez) sería clave de API (roadmap D5, hoy no deseado).
 - **Tests:** Vitest (unit/integration) + Playwright (e2e) + Testing Library + @axe-core/playwright.
 - **Perfil ESCRITORIO (kit v1.27.0, si la app se estampó con `--escritorio`):** Tauri (Rust + webview
   React/TypeScript/Tailwind vía Vite); sin Supabase ni Vercel por defecto (backend solo por ADR);
@@ -282,6 +297,15 @@ decisions/NNN-titulo.md   (ADRs de implementación)
    mirada real con todos los gates de palabra cumplidos; 3ª ocurrencia de la clase. Es la
    regla 15-hermana del lado humano: una mirada satisfecha sin mirada es un gate que nunca
    ejecutó.)*
+   **Dos clases de mirada (kit v1.31.0, método v1.33.0):** la de **FORMA** (qué se construye:
+   estado nuevo, pantalla, estructura) abre parada antes de construir encima. La de **TEXTO**
+   (si un copy se entiende) **no bloquea**: maquetas igual, registras «maquetado, no visto» y su
+   veredicto viaja al gate humano del MVP; mientras, la vigilan los gates automáticos
+   (diccionario fiel a la maqueta, fidelidad, maquetas que caben). Toda mirada va en **matriz
+   de una fila** (archivo · botón/estado · qué mirar · respuesta esperada), nunca preguntas
+   sueltas. **Las segundas vueltas no abren parada**: copy retocado por su propio veredicto y
+   filas sin respuesta se aplican, se registran y se ven al cierre de fase. *(Angel Ghost S2:
+   el usuario cortó las paradas de copy — «así no vamos a avanzar nada».)*
 11. **Guía de prueba viva y ACUMULATIVA (`docs/GUIA-DE-PRUEBA.html`, OBLIGATORIA en todo sprint
    con UI — reglas duras del pipeline, G-Metodo 2026-07-12 ×2).** HTML visual y **AUTOCONTENIDO**
    (cero CDNs; casillas con `localStorage` bajo **prefijo versionado por sprint** — cambia en
@@ -402,6 +426,11 @@ decisions/NNN-titulo.md   (ADRs de implementación)
    vez con el perfil con que la app se DISTRIBUYE, y el summary lo dice *(Angel Ghost S1: el
    `catch_unwind` que protegía el parseo de PDF pasaba todos sus tests en debug y era letra
    muerta en release, donde `panic = "abort"` lo anula)*.
+   **Y `gh pr checks` DESPUÉS DE CADA PUSH (kit v1.31.0), no al cierre de la fase:** un rojo
+   que nadie mira es un gate que no ejecutó para ti *(Angel Ghost S2: tres corridas en rojo sin
+   mirar en una fase; desde entonces cada push termina leyendo sus checks)*. **Y una métrica
+   del kit que la CI NO puede medir se declara `manual` con su corrida local registrada**, o
+   no se declara: el WER vivió dos sprints «en CI» sin que el runner tuviera modelos de voz.
 16. **El bundle publicable del design system es un ARTEFACTO DEL REPO (kit v1.17.0).** `design-sync/`
    se versiona aquí como **espejo 1:1** de lo publicado en Claude Design, y la jerarquía es fija:
    `design-system.md` (fuente de verdad) → `design-sync/` (bundle, deriva) → el proyecto remoto
@@ -454,6 +483,9 @@ decisions/NNN-titulo.md   (ADRs de implementación)
    ciega la ventana entre él y el push (los artefactos de `.lighthouseci/` entraron así al PR
    del S5 de hoja-de-vida con seis falsos positivos), y el comentario de un spec que cita el
    dominio de preview es una fuga igual que una URL en el README.
+   **El README de diseño registra «preview del PR #N», jamás la URL (kit v1.32.0):** el registro
+   de G-Diseño identifica dónde se aprobó por el número del PR cuyo preview recorrió el usuario; la
+   URL exacta vive en la planeadora.
 
 18. **PRs de dependencias: máximo DOS abiertos y el lockfile NO se pelea (kit v1.24.0 — regla
    del usuario 2026-08-22).** dependabot con techo real de 2 (limit 1 por ecosistema, todo
@@ -465,6 +497,10 @@ decisions/NNN-titulo.md   (ADRs de implementación)
    CI pasa VERDE porque **ninguna puerta compara el resultado contra la INTENCIÓN del PR**:
    leer la salida del install ES el gate. `pnpm peers check` corre en quality (es lo único que
    ve un peer insatisfecho). Overrides: en `pnpm-workspace.yaml`, jamás en `package.json`.
+   **Comprobación MECÁNICA (kit v1.32.0):** `scripts/verificar-dependencias.mjs` compara las
+   versiones de `pnpm-lock.yaml` del PR contra `origin/main` y falla si alguna quedó por debajo;
+   corre en el job `quality` en cada PR. Leer la salida del install sigue siendo obligatorio; el
+   script es la red que no depende de que alguien la lea.
 19. **Todo puente entre dos lenguajes exige su GATE DE CONTRATO, en el mismo sprint que lo
    cruza (kit v1.28.0).** Donde un dato cambia de lenguaje o de runtime —Rust→TS por eventos
    de Tauri, worker→UI por `postMessage`, servidor→cliente por JSON, Swift→Rust por FFI— la
@@ -478,6 +514,28 @@ decisions/NNN-titulo.md   (ADRs de implementación)
    ninguno de los 153 tests verdes lo vio; lo cazó el auditor independiente. Tres defectos de
    la misma clase en un sprint.)* Patrón completo en la planeadora:
    `wiki/patterns/gate-de-contrato-entre-lenguajes.md` (RO).
+
+21. **IA de construcción por suscripción (estándar 7-S, kit v1.30.0).** Si un agente o un lote de
+    esta app usa la **suscripción del usuario** como proveedor de modelo (binario oficial de Claude Code en
+    modo no interactivo): solo el binario sin modificar y la sesión propia del usuario · el token **jamás**
+    entra a variables de entorno, trazas, LangSmith ni al repo · la invocación corre en un **directorio
+    temporal limpio con MCP vacío** (esta constitución NO entra al prompt del agente) · los lotes se corren
+    **fuera de CI**, pequeños y espaciados · existe un **ADR de cumplimiento** con la lectura de los términos
+    vigentes, re-leídos antes de cada release, y un **interruptor a proveedor por clave** · prohibido exponer
+    el patrón a terceros (para usuarios externos, siempre clave de API). *(Primera app: planlang; el spike
+    de su F1 fijó los flags y el costo por llamada.)*
+22. **Todo control dibujado tiene su script cargado, y una pasada de INTERACCIÓN lo demuestra (kit
+    v1.32.0).** Un botón, un panel, una ficha o un conmutador que aparece en una maqueta o en una pantalla
+    solo cuenta si su controlador está cargado y hace algo: (a) el gate `tests/unit/controladores-maqueta`
+    (plantilla del kit; cada app lo endurece) falla si una página dibuja controles sin script o con un
+    `src` que no existe; (b) **el arnés de capturas incluye una pasada de interacción**: activa cada
+    control (abrir panel, cambiar tema, cambiar idioma, siguiente paso) y comprueba que ALGO cambió en el
+    DOM o en la captura antes de darlo por bueno — una captura de un panel cerrado «mide bien» y no dice
+    nada. *(Origen: Big-D, Etapa de Diseño — la ficha del nivel 2 no cargó su script desde la mirada 2 y
+    cuatro miradas con capturas no lo vieron; lo cazó el auditor independiente.)* Y **el generador de la
+    maqueta nace EN EL REPO desde la fase 0** de la Etapa de Diseño, con su gate de deriva byte a byte
+    (regenerar = mismos bytes): un generador fuera del repo hace inauditable la regla 8 y deja la
+    referencia sin fuente.
 
 ## Estándares (los 6+1, gates en CI)
 

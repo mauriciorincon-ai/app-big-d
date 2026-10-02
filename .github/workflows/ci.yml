@@ -23,9 +23,14 @@ jobs:
         with: { node-version: 22, cache: pnpm }
       - run: pnpm install --frozen-lockfile
       - run: pnpm peers check     # unico gate que ve un peer insatisfecho (kit v1.24.0 — caso @supabase/ssr)
+      - name: Regla 18 — ningun paquete por debajo de main (kit v1.32.0)
+        if: github.event_name == 'pull_request'
+        run: |
+          git fetch origin main --depth=1
+          node scripts/verificar-dependencias.mjs origin/main
       - run: pnpm typecheck
       - run: pnpm lint
-      - run: pnpm test            # vitest run --coverage (umbral 70% en vitest.config)
+      - run: pnpm test            # vitest run --coverage (umbrales en vitest.config: 70 global · 80 motores y lib · 50 componentes)
       - run: pnpm build
       - run: pnpm audit --audit-level high
 
@@ -38,7 +43,7 @@ jobs:
       - uses: actions/setup-node@v7
         with: { node-version: 22, cache: pnpm }
       - run: pnpm install --frozen-lockfile
-      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm exec playwright install --with-deps chromium firefox webkit   # firefox y webkit: solo g11.spec (G11 en tres motores)
       - run: pnpm test:e2e        # incluye scans axe (@axe-core/playwright)
       # El primer reintento graba trace (playwright.config `trace: on-first-retry`) con
       # consola, errores y DOM — se sube SOLO cuando algo falla (kit v1.26.0).
@@ -70,9 +75,39 @@ jobs:
         # UNA corrida NO es una medicion (kit v1.26.0): el servidor recien levantado dio un
         # falso rojo reproducible en hoja-de-vida S7 y casi se paga con optimizacion a ciegas.
         # Tres corridas por URL y se asevera sobre la MEDIANA (median-run), nunca la optimista.
+        # B-20 de la auditoría del S1: versión fijada (como toda herramienta del CI) y el arranque del
+        # servidor esperado por su línea real, no «a ciegas» con el tiempo por defecto.
         run: |
-          npm i -g @lhci/cli
+          npm i -g @lhci/cli@0.15.1
           URLS=$(node -e "console.log(require('./lighthouse-urls.json').map(u=>'--url=http://localhost:3000'+u).join(' '))")
-          lhci collect --startServerCommand="pnpm start" --numberOfRuns=3 $URLS
+          lhci collect --startServerCommand="pnpm start" --startServerReadyPattern="Accepting connections" --numberOfRuns=3 $URLS
           lhci assert --budgetsFile=./perf-budget.json --aggregationMethod=median-run
           lhci assert --config=./lighthouse-categorias.json --aggregationMethod=median-run
+
+  diagramador:
+    # G1 del reusable (CONTRATO § 2, D-S1-12): las pruebas del paquete en Node (carnadas, golden files,
+    # D11, G5, G6, G10, deriva del validador) y la MISMA huella de cada SVG en Chromium, Firefox y WebKit,
+    # en Linux y en macOS. Sin `needs`: corre aunque otro job falle (un job saltado no es verde, regla 15).
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6   # SIN `version`: la lee de "packageManager" del package.json (fuente unica, kit v1.10.2)
+      - uses: actions/setup-node@v7
+        with: { node-version: 22, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - name: Paquete en Node — carnadas, golden files, D11, propiedades, lock del contrato y G3
+        run: pnpm exec vitest run packages/diagramador tests/unit/diagramador-esquemas.test.ts tests/unit/contrato-lock.test.ts tests/unit/g3-neutralidad.test.ts
+      - run: pnpm exec playwright install --with-deps chromium firefox webkit
+      - name: G1 en los tres navegadores — misma huella que los golden files de Node
+        run: pnpm exec playwright test -c playwright.determinismo.config.ts
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: determinismo-${{ matrix.os }}
+          path: test-results/
+          retention-days: 7
+          if-no-files-found: ignore

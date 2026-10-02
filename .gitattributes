@@ -1,0 +1,2 @@
+# Golden files del diagramador: se comparan byte a byte y por huella; git no convierte finales de línea.
+packages/diagramador/test/golden/** -text

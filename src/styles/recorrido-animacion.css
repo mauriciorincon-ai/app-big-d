@@ -1,0 +1,10 @@
+/* Capa de ANIMACIÓN del recorrido (G12), aparte del resto: existe solo sin movimiento reducido. Con
+   movimiento reducido no hay transición ni animación y el SVG es el mismo. Solo propiedades baratas
+   (opacidad, grosor, desplazamiento del trazo): nada cambia de forma ni de posición. Portada de
+   docs/diseno/assets/recorrido-animacion.css con las clases del motor. */
+@media (prefers-reduced-motion: no-preference) {
+  .rec[data-animando] .dg-flujo .dg-linea { transition: stroke-width 240ms ease, stroke 240ms ease; }
+  .rec[data-animando] .dg-nodo, .rec[data-animando] .dg-flujo { transition: opacity 320ms ease; }
+  .rec[data-animando] .dg-nodo .dg-paso-insignia rect { animation: dg-late 1.6s ease-in-out infinite; }
+  @keyframes dg-late { 0%, 100% { stroke-width: 2; } 50% { stroke-width: 5; } }
+}

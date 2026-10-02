@@ -28,11 +28,21 @@ Corre cada verificación en orden y reporta estado:
       líneas posteriores al resumen.
 
 ### 2. Type safety
+- [ ] **(perfil `--python`, kit v1.30.0)** desde `agents/`: `ruff check .` · `ruff format --check .` · `pytest` verdes
+      con EL comando del CI (cobertura ≥ umbral del `pyproject.toml`); `pip-audit --skip-editable` limpio.
 - [ ] `pnpm typecheck` sin errores.
 - [ ] Sin `@ts-ignore` nuevos sin justificación en comentario.
 
 ### 3. Lint y formato
 - [ ] `pnpm lint` sin warnings nuevos.
+- [ ] **La pasada de capturas mide el ÁREA DE DESPLAZAMIENTO (kit v1.31.0):** por cada encuadre,
+      `scrollHeight`/`scrollWidth` contra el alto/ancho visible del contenedor (test o script de
+      fidelidad); un desborde es un rojo aunque la comparación por píxel pase *(Angel Ghost: 15 px
+      de desborde sobrevivieron a 60 encuadres comparados al 0,15 %)*.
+- [ ] **La pasada de capturas incluye una pasada de INTERACCIÓN (kit v1.32.0, regla 22):** por cada
+      control dibujado (botón, panel, ficha, conmutador de tema/idioma, siguiente paso) el arnés lo
+      activa y comprueba que algo cambió (DOM o captura); el gate `controladores-maqueta` está en verde
+      *(Big-D: la ficha del nivel 2 sin script sobrevivió a cuatro miradas con capturas de un panel cerrado)*.
 - [ ] `prefers-reduced-motion` respetado si hay animaciones nuevas — **y la FORMA del árbol no
       depende de `useReducedMotion()`** (kit v1.26.0): test unitario «mismo HTML con `null` /
       `true` / `false`» sobre cada componente de motion nuevo o tocado + axe bajo emulación de
@@ -125,6 +135,11 @@ Corre cada verificación en orden y reporta estado:
 - [ ] Bitácora `sprints/SPRINT_NNN-implementation-log.md` al día en este repo.
 - [ ] Si este merge cierra el sprint: `sprints/SPRINT_NNN-summary.md` generado (plantilla en CLAUDE.md) — es lo que la planeadora lee para la retrospectiva.
 - [ ] (Si aplicó IA embebida) checklist del skill `ia-embebida` completo.
+- [ ] **IA de construcción por suscripción (7-S, estándares; CLAUDE.md «IA de construcción por suscripción»):**
+      si la app tiene una skill que corre con la suscripción de la persona (Big-D: `/investigar`), **antes de
+      cada release** relee los términos vigentes y deja la fecha y lo leído en su ADR de cumplimiento
+      (Big-D: `decisions/investigator-7s-compliance.md`). Sin relectura fechada, el release no sale.
+      *(Añadida en Big-D S1 por la auditoría, M-4: el ADR remitía a esta casilla y no existía.)*
 
 ### 11. Los checks del PR — ¿EJECUTARON, o solo no están en rojo? (kit v1.16.0)
 

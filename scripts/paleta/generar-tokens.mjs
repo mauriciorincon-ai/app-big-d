@@ -3,6 +3,7 @@
 // Salidas DERIVADAS (no se editan a mano; el gate `paleta-diagramador` detecta deriva):
 //   docs/diseno/assets/tokens.json  — hex por tema, para el gate y el futuro renderizador
 //   docs/diseno/assets/tokens.css   — variables CSS por tema ([data-theme] + prefers-color-scheme)
+//   src/styles/tokens.css           — la misma hoja, para el producto
 // Uso: `pnpm tokens` (escribe) · importado por el test (compara sin escribir).
 import { writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
@@ -216,5 +217,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     JSON.stringify(t, null, 2) + "\n",
   );
   writeFileSync(join(raiz, "docs/diseno/assets/tokens.css"), css(t));
-  console.log("tokens: docs/diseno/assets/tokens.{json,css}");
+  // El producto consume la MISMA hoja (design-system.md § 9); el gate compara las dos con el generador.
+  writeFileSync(join(raiz, "src/styles/tokens.css"), css(t));
+  console.log("tokens: docs/diseno/assets/tokens.{json,css} · src/styles/tokens.css");
 }

@@ -19,7 +19,8 @@ import {
  * de los MÍNIMOS escritos aquí (D79): bajar el umbral y la paleta a la vez ya no deja el gate verde.
  *
  * Demo en rojo (regla 15): la paleta provisional del spike (Okabe-Ito, naranja #E69F00 en tipo-1)
- * en el tema claro — registrada en sprints/ETAPA-DISENO-implementation-log.md.
+ * en el tema claro — registrada en sprints/ETAPA-DISENO-implementation-log.md. A-24 (S1, fase 4): «un token
+ * por tipo» ahora se compara contra la gramática, con su demo en rojo en SPRINT_001-implementation-log.md.
  */
 type Tokens = ReturnType<typeof construir>;
 /** Mínimos declarados (D79), literales a propósito: no se importan del generador que produce la paleta. */
@@ -58,7 +59,16 @@ describe("paleta del diagramador — tokens generados, sin deriva", () => {
       css(construir()),
     );
   });
+  it("la hoja del producto (src/styles/tokens.css) es la misma que genera el generador", () => {
+    expect(readFileSync("src/styles/tokens.css", "utf8")).toBe(css(construir()));
+  });
   it("hay exactamente un token por tipo de la gramática y ninguno repetido", () => {
+    // Contra la gramática del contrato (A-24): el mismo tipo con el mismo token, ni uno de más ni de menos.
+    const gramatica = JSON.parse(readFileSync("packages/diagramador/gramaticas/plataformas-datos.json", "utf8")) as {
+      tipos_de_nodo: { id: string; token_color: string }[];
+    };
+    const deLaGramatica = gramatica.tipos_de_nodo.map((t) => `${t.id} → ${t.token_color}`).sort();
+    expect(tokens.tipos.map((t) => `${t.id} → ${t.token}`).sort()).toEqual(deLaGramatica);
     expect(new Set(tipos).size).toBe(tipos.length);
     for (const tema of temas) {
       const hex = tipos.map((t) => tokens.temas[tema][t]);

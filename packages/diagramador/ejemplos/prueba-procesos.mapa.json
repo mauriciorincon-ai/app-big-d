@@ -1,0 +1,290 @@
+{
+  "contrato_version": "0.3.0",
+  "gramatica_id": "prueba-procesos",
+  "gramatica_version": "0.1.0",
+  "sujeto_id": "caso-ejemplo",
+  "sujeto_nombre": {
+    "es": "Caso Ejemplo (ficticio)"
+  },
+  "version": "0.1.0",
+  "fecha_actualizacion": "2026-09-20",
+  "estado": "aprobada",
+  "bloques": [],
+  "nodos": [
+    {
+      "id": "llega",
+      "banda_id": "paciente",
+      "tipo_id": "evento",
+      "orden": 1,
+      "nombre": {
+        "es": "Llega al hospital"
+      },
+      "lider": {
+        "es": "La persona entra por urgencias."
+      },
+      "experto": {
+        "es": "Detalle experto de prueba: llega al hospital."
+      },
+      "por_que_importa": {
+        "es": "Sin esta pieza el recorrido de prueba se corta."
+      },
+      "madurez": "disponible",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/prueba",
+          "titulo": {
+            "es": "Fuente ficticia de prueba"
+          },
+          "fecha": "2026-09-01",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    },
+    {
+      "id": "registra",
+      "banda_id": "admisiones",
+      "tipo_id": "tarea",
+      "orden": 2,
+      "nombre": {
+        "es": "Registra el ingreso"
+      },
+      "lider": {
+        "es": "Se crea la admisión."
+      },
+      "experto": {
+        "es": "Detalle experto de prueba: registra el ingreso."
+      },
+      "por_que_importa": {
+        "es": "Sin esta pieza el recorrido de prueba se corta."
+      },
+      "madurez": "disponible",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/prueba",
+          "titulo": {
+            "es": "Fuente ficticia de prueba"
+          },
+          "fecha": "2026-09-01",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    },
+    {
+      "id": "valora",
+      "banda_id": "enfermeria",
+      "tipo_id": "decision",
+      "orden": 3,
+      "nombre": {
+        "es": "Valora la urgencia"
+      },
+      "lider": {
+        "es": "Se decide qué tan urgente es."
+      },
+      "experto": {
+        "es": "Detalle experto de prueba: valora la urgencia."
+      },
+      "por_que_importa": {
+        "es": "Sin esta pieza el recorrido de prueba se corta."
+      },
+      "madurez": "disponible",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/prueba",
+          "titulo": {
+            "es": "Fuente ficticia de prueba"
+          },
+          "fecha": "2026-09-01",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    },
+    {
+      "id": "atiende",
+      "banda_id": "enfermeria",
+      "tipo_id": "tarea",
+      "orden": 4,
+      "nombre": {
+        "es": "Atiende"
+      },
+      "lider": {
+        "es": "Se presta la atención."
+      },
+      "experto": {
+        "es": "Detalle experto de prueba: atiende."
+      },
+      "por_que_importa": {
+        "es": "Sin esta pieza el recorrido de prueba se corta."
+      },
+      "madurez": "disponible",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/prueba",
+          "titulo": {
+            "es": "Fuente ficticia de prueba"
+          },
+          "fecha": "2026-09-01",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    },
+    {
+      "id": "factura",
+      "banda_id": "facturacion",
+      "tipo_id": "tarea",
+      "orden": 5,
+      "nombre": {
+        "es": "Factura"
+      },
+      "lider": {
+        "es": "Se registra el cobro."
+      },
+      "experto": {
+        "es": "Detalle experto de prueba: factura."
+      },
+      "por_que_importa": {
+        "es": "Sin esta pieza el recorrido de prueba se corta."
+      },
+      "madurez": "disponible",
+      "fuentes": [
+        {
+          "url": "https://example.org/ficticia/prueba",
+          "titulo": {
+            "es": "Fuente ficticia de prueba"
+          },
+          "fecha": "2026-09-01",
+          "tipo": "oficial"
+        }
+      ],
+      "fecha_verificacion": "2026-09-20"
+    }
+  ],
+  "flujos": [
+    {
+      "id": "f1",
+      "origen": "llega",
+      "destino": "registra",
+      "modo_id": "secuencia",
+      "que_viaja": {
+        "es": "Datos del paciente"
+      },
+      "lider": {
+        "es": "Datos del paciente."
+      }
+    },
+    {
+      "id": "f2",
+      "origen": "registra",
+      "destino": "valora",
+      "modo_id": "mensaje",
+      "que_viaja": {
+        "es": "Aviso de ingreso"
+      },
+      "lider": {
+        "es": "Aviso de ingreso."
+      }
+    },
+    {
+      "id": "f3",
+      "origen": "valora",
+      "destino": "atiende",
+      "modo_id": "secuencia",
+      "que_viaja": {
+        "es": "Prioridad"
+      },
+      "lider": {
+        "es": "Prioridad."
+      }
+    },
+    {
+      "id": "f4",
+      "origen": "atiende",
+      "destino": "factura",
+      "modo_id": "mensaje",
+      "que_viaja": {
+        "es": "Servicios prestados"
+      },
+      "lider": {
+        "es": "Servicios prestados."
+      }
+    }
+  ],
+  "recorridos": [
+    {
+      "id": "caso",
+      "titulo": {
+        "es": "El caso de un paciente ficticio"
+      },
+      "pasos": [
+        {
+          "id": "p1",
+          "nodo_id": "llega",
+          "que_pasa": {
+            "es": "Llega"
+          },
+          "lider": {
+            "es": "Llega."
+          },
+          "experto": {
+            "es": "Detalle experto: llega."
+          }
+        },
+        {
+          "id": "p2",
+          "nodo_id": "registra",
+          "que_pasa": {
+            "es": "Se registra"
+          },
+          "lider": {
+            "es": "Se registra."
+          },
+          "experto": {
+            "es": "Detalle experto: se registra."
+          }
+        },
+        {
+          "id": "p3",
+          "nodo_id": "valora",
+          "que_pasa": {
+            "es": "Se valora"
+          },
+          "lider": {
+            "es": "Se valora."
+          },
+          "experto": {
+            "es": "Detalle experto: se valora."
+          }
+        },
+        {
+          "id": "p4",
+          "nodo_id": "atiende",
+          "que_pasa": {
+            "es": "Se atiende"
+          },
+          "lider": {
+            "es": "Se atiende."
+          },
+          "experto": {
+            "es": "Detalle experto: se atiende."
+          }
+        },
+        {
+          "id": "p5",
+          "nodo_id": "factura",
+          "que_pasa": {
+            "es": "Se factura"
+          },
+          "lider": {
+            "es": "Se factura."
+          },
+          "experto": {
+            "es": "Detalle experto: se factura."
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,452 @@
+<!-- @dsCard group="Diagrama" name="Visión general (nivel 1)" -->
+<!doctype html>
+<html lang="es" data-theme="oscuro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Big-D · Visión general (nivel 1)</title>
+<style>
+/* GENERADO por scripts/design-sync/bundle.ts — no editar a mano (tests/unit/design-sync.test.ts detecta la deriva). */
+:root { --letra: "Space Grotesk", system-ui, sans-serif; --letra-mono: "JetBrains Mono", ui-monospace, monospace; }
+/* ── src/styles/tokens.css ── */
+/* GENERADO por scripts/paleta/generar-tokens.mjs — no editar a mano (el gate detecta deriva). */
+/* Oscuro es el primario: sin preferencia ni elección, manda oscuro. */
+:root,
+:root[data-theme="oscuro"] {
+  color-scheme: dark;
+  --fondo: #0b0f14;
+  --sup-1: #12161c;
+  --sup-2: #1b2128;
+  --linea: #383e45;
+  --tinta-1: #e8ebf1;
+  --tinta-2: #b9bec6;
+  --tipo-1: #95c9ff;
+  --tipo-2: #ac8ff8;
+  --tipo-3: #f09638;
+  --tipo-4: #e36364;
+  --tipo-5: #6ace7c;
+  --tipo-6: #fa87cb;
+  --tipo-7: #7a8b9e;
+  --tipo-8: #1fbdcb;
+}
+:root[data-theme="claro"],
+.tema-claro {
+  color-scheme: light;
+  --fondo: #f2f4f6;
+  --sup-1: #f9fafc;
+  --sup-2: #ffffff;
+  --linea: #d1d5d9;
+  --tinta-1: #161b21;
+  --tinta-2: #3d434a;
+  --tipo-1: #0060a6;
+  --tipo-2: #8264c8;
+  --tipo-3: #d27908;
+  --tipo-4: #c74a4d;
+  --tipo-5: #017f31;
+  --tipo-6: #9e3378;
+  --tipo-7: #39495a;
+  --tipo-8: #0098a4;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    color-scheme: light;
+    --fondo: #f2f4f6;
+    --sup-1: #f9fafc;
+    --sup-2: #ffffff;
+    --linea: #d1d5d9;
+    --tinta-1: #161b21;
+    --tinta-2: #3d434a;
+    --tipo-1: #0060a6;
+    --tipo-2: #8264c8;
+    --tipo-3: #d27908;
+    --tipo-4: #c74a4d;
+    --tipo-5: #017f31;
+    --tipo-6: #9e3378;
+    --tipo-7: #39495a;
+    --tipo-8: #0098a4;
+  }
+}
+/* El papel es siempre claro: la vista de impresión (.tema-claro) y la impresión real. */
+@media print {
+  :root,
+  :root[data-theme="oscuro"] {
+    color-scheme: light;
+    --fondo: #f2f4f6;
+    --sup-1: #f9fafc;
+    --sup-2: #ffffff;
+    --linea: #d1d5d9;
+    --tinta-1: #161b21;
+    --tinta-2: #3d434a;
+    --tipo-1: #0060a6;
+    --tipo-2: #8264c8;
+    --tipo-3: #d27908;
+    --tipo-4: #c74a4d;
+    --tipo-5: #017f31;
+    --tipo-6: #9e3378;
+    --tipo-7: #39495a;
+    --tipo-8: #0098a4;
+  }
+}
+/* ── src/styles/base.css ── */
+/* Big-D — hoja base del producto, portada de la maqueta aprobada (docs/diseno/assets/bigd.css,
+   design-system.md v0.5.1). Colores solo por variable (tokens.css, generado y medido). Las familias
+   llegan como variables desde next/font/local (--letra, --letra-mono): son los mismos woff2 de la
+   tabla de métricas (G15). La maqueta es de solo lectura; el producto la obedece. */
+:root {
+  --ancho-pagina: 1280px;
+  --t-rapida: 120ms;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; background: var(--fondo); }
+body { margin: 0; background: var(--fondo); color: var(--tinta-1); font: 400 16px/1.55 var(--letra); font-kerning: normal; }
+a { color: inherit; text-underline-offset: 3px; }
+:focus-visible { outline: 2px solid var(--tinta-1); outline-offset: 3px; border-radius: 2px; }
+.solo-lector { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.mono { font-family: var(--letra-mono); font-size: 0.875em; letter-spacing: 0.01em; }
+.ojo { font: 600 12px/1 var(--letra-mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--tinta-2); }
+
+/* Barra */
+.barra { display: flex; align-items: center; gap: 28px; min-height: 60px; padding: 0 24px; border-bottom: 1px solid var(--linea); }
+.marca { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; font-size: 19px; letter-spacing: -0.02em; text-decoration: none; }
+.marca-signo { width: 22px; height: 22px; display: block; }
+.marca-sello { font: 500 11px/1 var(--letra-mono); letter-spacing: 0.14em; color: var(--tinta-2); }
+.nav { display: flex; gap: 22px; margin: 0; padding: 0; list-style: none; font-size: 15px; }
+.nav > li > a, .nav > li > span { display: inline-flex; align-items: center; min-height: 60px; padding: 0 2px; text-decoration: none; color: var(--tinta-2); border-bottom: 2px solid transparent; }
+.nav a[aria-current] { color: var(--tinta-1); font-weight: 700; border-bottom-color: var(--tinta-1); }
+.ajustes { display: flex; gap: 22px; margin-left: auto; }
+.alterna { display: inline-flex; align-items: center; gap: 4px; font: 500 13px/1 var(--letra-mono); }
+.alterna button, .alterna a { font: inherit; color: var(--tinta-2); background: none; border: 0; padding: 8px 4px; min-height: 36px; cursor: pointer; border-radius: 3px; text-decoration: none; display: inline-flex; align-items: center; }
+.alterna button[aria-pressed="true"], .alterna a[aria-current="true"] { color: var(--tinta-1); font-weight: 700; text-decoration: underline; text-underline-offset: 5px; text-decoration-thickness: 2px; }
+.alterna .sep { color: var(--tinta-2); }
+@media (max-width: 719px) { .barra { flex-wrap: wrap; gap: 0 20px; padding: 0 16px; min-height: 0; } .marca { min-height: 56px; } .ajustes { margin-left: auto; min-height: 56px; align-items: center; } .nav { order: 3; width: 100%; border-top: 1px solid var(--linea); gap: 18px; } .nav > li > a, .nav > li > span { min-height: 44px; } }
+
+/* Página */
+.pagina { max-width: var(--ancho-pagina); margin: 0 auto; padding: 28px 16px 64px; }
+@media (min-width: 720px) { .pagina { padding: 40px 32px 80px; } }
+.encabezado { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px 32px; margin-bottom: 28px; }
+.encabezado .ojo { display: block; margin-bottom: 14px; }
+h1 { font-size: 32px; line-height: 1.1; font-weight: 700; letter-spacing: -0.025em; margin: 0; }
+@media (min-width: 720px) { h1 { font-size: 46px; } }
+.sub { margin: 10px 0 0; color: var(--tinta-2); font-size: 17px; max-width: 60ch; }
+.meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 16px 0 0; font: 500 13px/1.4 var(--letra-mono); color: var(--tinta-2); }
+.meta b { color: var(--tinta-1); font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+.meta .punto { color: var(--tinta-2); }
+/* Cada dato con su «·» pegado (componente Meta): al partirse la línea, el separador no abre la siguiente. */
+.meta-dato { display: inline-flex; align-items: center; gap: 10px; }
+
+/* Pie */
+.pie { margin-top: 56px; padding: 24px 16px; border-top: 1px solid var(--linea); font: 500 12px/1.6 var(--letra-mono); color: var(--tinta-2); }
+@media (min-width: 720px) { .pie { padding: 24px 32px; } }
+.pie p { margin: 0 auto; max-width: var(--ancho-pagina); }
+
+/* Saltos: invisibles hasta recibir el foco; «Saltar al contenido» es el primer Tab. */
+.saltar { position: absolute; left: 8px; top: -80px; z-index: 60; padding: 10px 14px; background: var(--tinta-1); color: var(--fondo); font-weight: 700; text-decoration: none; border-radius: 4px; }
+.saltar:focus { top: 8px; }
+
+/* 404: el mensaje en los dos idiomas y un regreso por idioma. */
+.regresos { display: flex; flex-wrap: wrap; gap: 8px 24px; margin: 20px 0 0; padding: 0; list-style: none; font-size: 17px; }
+/* ── src/styles/diagrama.css ── */
+/* Big-D — hoja del DIAGRAMA (G13): el SVG del motor no trae colores; todo entra por variable desde
+   tokens.css, así que un mismo SVG sirve a los dos temas. Portada de docs/diseno/assets/diagrama.css
+   (clases `db-*` de la maqueta → `dg-*` del motor). La letra la hereda de la página (G15). */
+.dg-svg { display: block; }
+/* Avances fraccionarios también en Chromium/Linux, que sin esto redondea cada texto a píxeles enteros y
+   puede dibujarlo hasta 1 px más ancho que la tabla de métricas (G15, medido en la CI del S1). */
+.dg-svg text { font-family: var(--letra); text-rendering: geometricPrecision; }
+.dg-svg [tabindex]:focus { outline: none; }
+.dg-guia { stroke: var(--linea); stroke-width: 1; stroke-dasharray: 2 5; fill: none; }
+.dg-t-num { font: 500 12px var(--letra-mono); letter-spacing: 0.1em; fill: var(--tinta-2); }
+.dg-t-banda { font-size: 17px; font-weight: 700; fill: var(--tinta-1); }
+.dg-t-banda-franja { font-size: 15px; }
+.dg-t-pregunta { font-size: 14px; fill: var(--tinta-2); }
+.dg-t-pregunta-franja { font-size: 13px; }
+.dg-t-nombre { font-size: 16px; font-weight: 700; fill: var(--tinta-1); }
+.dg-t-nombre-compacto { font-size: 14px; }
+.dg-t-nombre-nodo { font-size: 13px; }
+.dg-t-meta { font-size: 13px; fill: var(--tinta-2); }
+.dg-t-meta-compacta { font-size: 12px; }
+.dg-t-ref { font-size: 13px; font-weight: 700; fill: var(--tinta-1); }
+.dg-card { fill: var(--sup-2); stroke: var(--linea); stroke-width: 1; }
+.dg-fantasma { stroke-dasharray: 5 4; stroke: var(--tinta-2); }
+.dg-linea { fill: none; stroke: var(--tinta-2); stroke-width: 1.6; }
+.dg-punta { fill: var(--tinta-2); }
+.dg-etiqueta rect, .dg-ref rect { fill: var(--sup-1); stroke: var(--linea); stroke-width: 1; }
+.dg-marca { color: var(--tinta-1); }
+.dg-marca-suave { color: var(--tinta-2); }
+.dg-franja-filete { stroke: var(--linea); stroke-width: 1; fill: none; }
+.dg-elem { cursor: pointer; }
+.dg-elem:focus-visible [data-caja], .dg-elem[aria-current="true"] [data-caja] { stroke: var(--tinta-1); stroke-width: 2; }
+/* Modos de flujo: estilo de línea + marcador (G7); varios modos = haz. */
+.dg-linea-discontinua .dg-linea { stroke-dasharray: 8 5; }
+.dg-linea-punteada .dg-linea { stroke-dasharray: 0.1 5.5; stroke-linecap: round; stroke-width: 2.8; }
+.dg-haz .dg-linea { stroke-width: 4; }
+.dg-doble-ext { stroke-width: 6.5; }
+.dg-doble-int { stroke: var(--sup-1); stroke-width: 2.5; }
+/* Madurez = medidor (D13): 0 anunciado con contorno discontinuo; −1 retirado, tachado. */
+.dg-madurez-caja { fill: none; stroke: var(--tinta-2); stroke-width: 1.2; }
+.dg-madurez-anunciado { stroke-dasharray: 2 1.5; }
+.dg-madurez-nivel { fill: var(--tinta-2); stroke: none; }
+.dg-madurez-tachado { fill: none; stroke: var(--tinta-2); stroke-width: 1.2; }
+/* Tipos de nodo: el matiz vive en el filete y el glifo, nunca bajo el texto (D14). */
+.dg-c-tipo-1 { color: var(--tipo-1); } .dg-c-tipo-2 { color: var(--tipo-2); } .dg-c-tipo-3 { color: var(--tipo-3); } .dg-c-tipo-4 { color: var(--tipo-4); }
+.dg-c-tipo-5 { color: var(--tipo-5); } .dg-c-tipo-6 { color: var(--tipo-6); } .dg-c-tipo-7 { color: var(--tipo-7); } .dg-c-tipo-8 { color: var(--tipo-8); }
+.dg-f-tipo-1 { fill: var(--tipo-1); } .dg-f-tipo-2 { fill: var(--tipo-2); } .dg-f-tipo-3 { fill: var(--tipo-3); } .dg-f-tipo-4 { fill: var(--tipo-4); }
+.dg-f-tipo-5 { fill: var(--tipo-5); } .dg-f-tipo-6 { fill: var(--tipo-6); } .dg-f-tipo-7 { fill: var(--tipo-7); } .dg-f-tipo-8 { fill: var(--tipo-8); }
+.dg-f-ninguno { fill: var(--tinta-2); }
+/* Vigencia (§ 4.8): se marca la excepción; sin matiz, peso y relleno de la tinta. */
+.dg-insignia rect { fill: var(--sup-2); stroke: var(--tinta-1); stroke-width: 1.5; }
+.dg-insignia-marca { color: var(--tinta-1); }
+.dg-t-insignia { font: 700 12px var(--letra-mono); fill: var(--tinta-1); }
+.dg-insignia-vencido rect { fill: var(--tinta-1); }
+.dg-insignia-vencido .dg-insignia-marca { color: var(--sup-1); }
+.dg-insignia-vencido .dg-t-insignia { fill: var(--sup-1); }
+/* Nivel 2 y recorrido. */
+.dg-nodo[aria-current="true"] [data-caja] { stroke: var(--tinta-1); stroke-width: 2; }
+.dg-paso-insignia rect { fill: var(--tinta-1); stroke: var(--sup-1); stroke-width: 2; }
+.dg-t-paso { font: 700 12px var(--letra-mono); fill: var(--sup-1); }
+.dg-rama { color: var(--tinta-1); }
+@media (forced-colors: active) {
+  .dg-card, .dg-etiqueta rect, .dg-ref rect, .dg-insignia rect { fill: Canvas; stroke: CanvasText; }
+  .dg-linea { stroke: CanvasText; } .dg-punta { fill: CanvasText; }
+  .dg-insignia-vencido rect { fill: CanvasText; } .dg-insignia-vencido .dg-t-insignia { fill: Canvas; } .dg-insignia-vencido .dg-insignia-marca { color: Canvas; }
+  .dg-doble-int { stroke: Canvas; }
+}
+/* ── src/styles/atlas.css ── */
+/* Big-D — pantalla del ATLAS, portada de la maqueta aprobada (docs/diseno/assets/bigd.css: niveles, guía,
+   lienzo deslizable, ficha breve, leyenda y lectura). La leyenda y la lectura en texto las GENERA el
+   diagramador (clases dg-leyenda* y dg-lectura); aquí solo se acomodan como la maqueta. Colores solo por
+   variable. */
+.abrir { margin: 26px 0 0; max-width: 380px; }
+
+/* Niveles */
+.niveles { display: flex; gap: 28px; margin: 0 0 24px; padding: 0; list-style: none; border-bottom: 1px solid var(--linea); overflow-x: auto; scrollbar-width: none; }
+.niveles::-webkit-scrollbar { display: none; }
+.niveles li { flex: none; }
+.niveles a, .niveles span.pend { display: inline-flex; align-items: baseline; gap: 8px; min-height: 44px; padding: 12px 0; font-size: 15px; color: var(--tinta-2); text-decoration: none; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.niveles a[aria-current="page"] { color: var(--tinta-1); font-weight: 700; border-bottom-color: var(--tinta-1); }
+.niveles .n { font: 500 12px/1 var(--letra-mono); }
+.guia { font-size: 16px; color: var(--tinta-2); max-width: 72ch; margin: 0 0 18px; }
+.guia b { color: var(--tinta-1); font-weight: 700; }
+
+/* Lienzo con desplazamiento lateral: el diagrama jamás se encoge ni se transpone (P5). */
+.mapa { position: relative; }
+.indice { display: none; flex-wrap: nowrap; gap: 18px; overflow-x: auto; padding: 0 0 8px; margin: 0; list-style: none; scrollbar-width: none; }
+.indice::-webkit-scrollbar { display: none; }
+.mapa[data-desborda] .indice { display: flex; }
+.indice button { flex: none; white-space: nowrap; display: inline-flex; align-items: baseline; gap: 6px; min-height: 36px; padding: 6px 0; font: 600 14px/1 var(--letra); color: var(--tinta-2); background: none; border: 0; border-bottom: 2px solid transparent; cursor: pointer; }
+.indice button[aria-current="true"] { color: var(--tinta-1); border-bottom-color: var(--tinta-1); }
+.indice .n { font: 500 11px/1 var(--letra-mono); }
+.pista { display: none; align-items: center; gap: 8px; margin: 0 0 10px; font: 500 13px/1.4 var(--letra-mono); color: var(--tinta-2); }
+.mapa[data-desborda] .pista { display: flex; }
+.lienzo-marco { position: relative; border: 1px solid var(--linea); border-radius: 6px; background-color: var(--sup-1); background-image: radial-gradient(var(--linea) 1px, transparent 1.2px); background-size: 16px 16px; background-position: 8px 8px; }
+.lienzo { overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; scroll-behavior: smooth; padding: 20px 8px 16px; outline-offset: -3px; }
+.lienzo svg { display: block; }
+.lienzo-marco::before, .lienzo-marco::after { content: ""; position: absolute; top: 0; bottom: 0; width: 40px; pointer-events: none; opacity: 0; transition: opacity var(--t-rapida); z-index: 1; border-radius: 6px; }
+.lienzo-marco::before { left: 0; background: linear-gradient(to right, var(--sup-1), transparent); }
+.lienzo-marco::after { right: 0; background: linear-gradient(to left, var(--sup-1), transparent); }
+.lienzo-marco[data-mas-izq]::before, .lienzo-marco[data-mas-der]::after { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .lienzo { scroll-behavior: auto; } .lienzo-marco::before, .lienzo-marco::after { transition: none; } }
+.saltar-diagrama { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.saltar-diagrama:focus { position: static; width: auto; height: auto; clip-path: none; display: inline-block; margin: 0 0 8px; color: var(--tinta-1); font-weight: 700; }
+
+/* Leyenda (generada): tipos a la izquierda en dos columnas, modos a la derecha con su nota; madurez y
+   vigencia debajo; la nota de marcas cierra. Las secciones siguen el orden del contrato (§ 4.9). */
+.leyenda { display: grid; gap: 28px 48px; margin-top: 36px; }
+.leyenda-motor, .leyenda .dg-leyenda { display: contents; }
+.leyenda .dg-leyenda > section:nth-of-type(1) { order: 1; }
+.leyenda .dg-leyenda > section:nth-of-type(2) { order: 2; }
+.leyenda > .lg-nota { order: 3; margin-top: -14px; }
+.leyenda .dg-leyenda > section:nth-of-type(3) { order: 4; }
+.leyenda .dg-leyenda > section:nth-of-type(4) { order: 5; }
+.leyenda .dg-leyenda-nota { order: 6; }
+@media (min-width: 900px) {
+  .leyenda { grid-template-columns: 1.5fr 1fr; }
+  .leyenda .dg-leyenda > section:nth-of-type(1) { grid-column: 1; grid-row: 1 / span 2; }
+  .leyenda .dg-leyenda > section:nth-of-type(2) { grid-column: 2; grid-row: 1; }
+  .leyenda > .lg-nota { grid-column: 2; grid-row: 2; }
+  .leyenda .dg-leyenda > section:nth-of-type(3) { grid-column: 1; grid-row: 3; }
+  .leyenda .dg-leyenda > section:nth-of-type(4) { grid-column: 2; grid-row: 3; }
+  .leyenda .dg-leyenda-nota { grid-column: 1 / -1; grid-row: 4; }
+}
+.leyenda h2 { margin: 0 0 4px; padding-bottom: 10px; font-size: 13px; font-weight: 700; letter-spacing: 0.02em; border-bottom: 1px solid var(--linea); }
+.dg-leyenda-lista { margin: 0; padding: 0; list-style: none; }
+.dg-leyenda-lista li { display: grid; grid-template-columns: 22px 1fr; align-items: center; gap: 10px; min-height: 36px; padding: 6px 0; border-bottom: 1px solid var(--linea); font-size: 14px; }
+.dg-leyenda-lista li:has(> .dg-leyenda-cod) { grid-template-columns: 22px 44px 1fr; }
+.dg-leyenda-lista li > svg { justify-self: center; }
+.leyenda .dg-leyenda > section:nth-of-type(2) li { grid-template-columns: 62px 1fr; }
+/* Tipos: rejilla de dos columnas desde 900 px, con 20 px entre filas (maqueta: `.lg-lista.dos` + `.dos`). */
+.leyenda .dg-leyenda > section:nth-of-type(1) .dg-leyenda-lista { display: grid; gap: 20px; }
+@media (min-width: 900px) { .leyenda .dg-leyenda > section:nth-of-type(1) .dg-leyenda-lista { grid-template-columns: 1fr 1fr; } }
+/* Modos: nombre y frase con el mismo peso, como la maqueta. */
+.leyenda .dg-leyenda-lista b { font-weight: inherit; }
+.dg-leyenda-cod { font: 600 11px/1 var(--letra-mono); letter-spacing: 0.06em; color: var(--tinta-2); }
+.lg-nota, .dg-leyenda section > p, .dg-leyenda-nota { font-size: 13px; color: var(--tinta-2); margin: 14px 0 0; max-width: 60ch; }
+.dg-leyenda-nota { max-width: 72ch; margin: 0; }
+
+/* Lectura en texto (G10, generada), plegada. */
+.lectura-seccion { margin-top: 36px; border-top: 1px solid var(--linea); padding-top: 14px; }
+.lectura-seccion summary { cursor: pointer; font-weight: 700; font-size: 15px; min-height: 36px; display: flex; align-items: center; gap: 10px; list-style: none; }
+/* La marca de plegable, dibujada (la maqueta la quitaba con display: flex y el plegable cerrado parecía un título
+   sin contenido, pasada de capturas del S1): apunta abajo cerrada y arriba abierta. Sin transición. */
+.lectura-seccion summary::-webkit-details-marker { display: none; }
+.lectura-seccion summary::after { content: ""; flex: none; width: 7px; height: 7px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-2px) rotate(45deg); }
+.lectura-seccion[open] summary::after { transform: translateY(2px) rotate(-135deg); }
+.dg-lectura { font-size: 15px; }
+/* La base de Tailwind quita los marcadores de lista; la lectura (y la ficha que la cita) los necesita:
+   el número dice el orden, la viñeta distingue una conexión de un componente. */
+.dg-lectura ol { list-style: decimal; }
+.dg-lectura ul { list-style: disc; }
+.dg-lectura ol { margin: 6px 0 0; padding-left: 22px; }
+.dg-lectura > ol { margin-top: 12px; }
+.dg-lectura > ol > li { margin: 0 0 12px; }
+.dg-lectura ul { padding-left: 18px; margin: 4px 0; }
+.dg-lectura li[data-flujo] { color: var(--tinta-2); }
+.dg-lectura h3 { font-size: 15px; font-weight: 700; margin: 18px 0 6px; }
+/* El recorrido trae su numeración escrita por el motor (1…5, 6a → 7a, 6b): la lista no suma otra. */
+.dg-lectura section[data-recorrido] ol, .dg-lectura section[data-recorrido] ul { list-style: none; }
+.dg-lectura section[data-recorrido] ol { padding-left: 22px; }
+.dg-lectura section[data-recorrido] ul { padding-left: 22px; }
+
+/* Campo «Plataforma» (kit: `.campo` + `.select`; forma aprobada en la parada A del S1). */
+.campo { display: grid; gap: 6px; min-width: 220px; }
+.campo-etiqueta { font: 600 12px/1 var(--letra-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--tinta-2); }
+.campo-nota { font: 400 13px/1.4 var(--letra); color: var(--tinta-2); max-width: 34ch; margin: 0; }
+.campo select { font: 400 15px/1.3 var(--letra); color: var(--tinta-1); background: var(--sup-1); border: 1px solid var(--linea); border-bottom-color: var(--tinta-2); border-radius: 4px; padding: 9px 12px; min-height: 40px; width: 100%; }
+.campo select:focus-visible { outline: 2px solid var(--tinta-1); outline-offset: 1px; }
+.select { position: relative; display: block; }
+.select select { appearance: none; padding-right: 32px; cursor: pointer; }
+.select svg { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); pointer-events: none; }
+.campo-plataforma { min-width: 280px; }
+@media (max-width: 719px) { .campo-plataforma { min-width: 0; width: 100%; } }
+
+/* Panel de la ficha (niveles 2 y 3): hoja inferior en teléfono, panel lateral desde 900 px. Sin sombra. */
+.panel { position: fixed; z-index: 20; background: var(--sup-1); border-top: 1px solid var(--linea); display: flex; flex-direction: column; left: 0; right: 0; bottom: 0; max-height: 72vh; border-radius: 8px 8px 0 0; }
+.panel[hidden] { display: none; }
+@media (min-width: 900px) { .panel { left: auto; top: 0; bottom: 0; width: 420px; max-height: none; border-top: 0; border-left: 1px solid var(--linea); border-radius: 0; } }
+.panel-cabeza { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 20px; border-bottom: 1px solid var(--linea); }
+.panel-cuerpo { overflow-y: auto; padding: 16px 20px 28px; }
+.cerrar { font: 600 14px/1 var(--letra); color: var(--tinta-1); background: none; border: 0; border-bottom: 1.5px solid var(--tinta-1); padding: 4px 0; min-height: 36px; cursor: pointer; }
+/* Ficha (generada por el motor, `toCard`). */
+.dg-ficha h2 { font-size: 22px; font-weight: 700; line-height: 1.2; letter-spacing: -0.01em; margin: 6px 0 8px; }
+.dg-ficha h3 { font: 600 12px/1 var(--letra-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--tinta-2); margin: 20px 0 6px; }
+.dg-ficha p { margin: 0; font-size: 15px; }
+.dg-ficha .dg-ficha-lider { font-size: 16px; }
+.dg-ficha-tipo { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--tinta-2); }
+.dg-ficha .dg-ficha-tipo { font-size: 13px; }
+.dg-ficha-cod { font: 600 11px/1 var(--letra-mono); letter-spacing: 0.06em; color: var(--tinta-2); }
+.dg-terminos { margin: 0; }
+.dg-terminos > div { padding: 8px 0; border-top: 1px solid var(--linea); }
+.dg-terminos dt { font-weight: 700; font-size: 14px; display: inline-flex; gap: 8px; align-items: baseline; }
+.dg-terminos dd { margin: 2px 0 0; font-size: 14px; color: var(--tinta-2); }
+.dg-del-glosario dt { border-bottom: 1.5px dotted var(--tinta-2); }
+.dg-ficha-madurez { display: inline-flex; align-items: center; gap: 8px; }
+.dg-fuentes { margin: 0; padding: 0; list-style: none; }
+.dg-fuentes li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; padding: 8px 0; border-top: 1px solid var(--linea); font-size: 14px; }
+.dg-fuentes a { color: var(--tinta-1); text-decoration: underline; }
+.dg-ficha-fecha { font: 500 13px/1.4 var(--letra-mono); color: var(--tinta-2); }
+.dg-ficha .dg-ficha-meta { margin-top: 14px; font: 500 13px/1.4 var(--letra-mono); color: var(--tinta-2); }
+.dg-ficha-meta b { color: var(--tinta-1); font-weight: 600; }
+/* Cada dato del pie en una línea: «consultado 2026-10-01» se partía en «2026-10-» y «01» a 380 px. */
+.dg-ficha-meta span { white-space: nowrap; }
+
+/* Recorrido (nivel 3). */
+.rec-controles { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin: 0 0 14px; }
+.boton { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 16px; font: 600 15px/1 var(--letra); color: var(--fondo); background: var(--tinta-1); border: 1.5px solid var(--tinta-1); border-radius: 4px; cursor: pointer; }
+.boton-sec { color: var(--tinta-1); background: transparent; }
+.boton[aria-pressed="true"] { text-decoration: underline; text-underline-offset: 4px; }
+.boton:disabled, .boton[aria-disabled="true"] { opacity: 0.45; cursor: not-allowed; }
+.rec-pos { color: var(--tinta-2); min-width: 12ch; text-align: center; }
+.pasos { margin-top: 28px; }
+.pasos-lista { margin: 12px 0 0; padding: 0; list-style: none; }
+.pasos-lista li { display: grid; grid-template-columns: 40px 1fr; gap: 12px; padding: 12px 0; border-top: 1px solid var(--linea); font-size: 15px; }
+.pasos-lista li[aria-current] { border-left: 3px solid var(--tinta-1); padding-left: 12px; background: var(--sup-1); }
+.paso-n { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 16px; background: var(--tinta-1); color: var(--fondo); font: 700 13px/1 var(--letra-mono); }
+.paso-nodo { color: var(--tinta-2); }
+.paso-lider { margin: 4px 0 0; }
+.paso-experto { margin: 4px 0 0; color: var(--tinta-2); font-size: 14px; }
+.paso-rama { margin: 6px 0 0; font-size: 14px; font-weight: 600; }
+/* Movimiento reducido: «Reproducir» sigue en el DOM (el árbol no depende de la preferencia) y el CSS lo
+   oculta; el controlador además se niega a reproducir. */
+@media (prefers-reduced-motion: reduce) { .rec [data-rec="reproducir"] { display: none; } }
+
+/* Ventana de un bloque del nivel 1 (pedido del usuario al mirar Fabric): su nombre y su frase, sus componentes
+   dibujados por el motor (vista «bloque», a escala 1) y una tarjeta de texto por componente (`toBlockCards`). */
+.panel-cuerpo > h2 { font-size: 22px; font-weight: 700; line-height: 1.2; letter-spacing: -0.01em; margin: 4px 0 6px; }
+.ventana-lider { margin: 0; font-size: 16px; }
+.ventana-lienzo { margin: 18px 0 6px; }
+.dg-tarjetas { display: grid; gap: 12px; margin-top: 8px; }
+.dg-tarjeta { padding: 14px 16px; border: 1px solid var(--linea); border-radius: 6px; background: var(--fondo); }
+.dg-tarjeta h3 { font-size: 16px; font-weight: 700; line-height: 1.25; margin: 8px 0 6px; }
+.dg-tarjeta p { margin: 0; font-size: 14px; }
+.dg-tarjeta .dg-ficha-madurez { color: var(--tinta-2); }
+.dg-tarjeta .dg-tarjeta-lider { margin-top: 8px; font-size: 15px; }
+.dg-tarjeta .dg-tarjeta-vigencia { margin-top: 6px; font: 500 13px/1.4 var(--letra-mono); }
+.dg-conexiones { list-style: none; margin: 10px 0 0; padding: 0; }
+.dg-conexiones li { display: flex; gap: 10px; align-items: flex-start; padding: 7px 0; border-top: 1px solid var(--linea); font-size: 14px; color: var(--tinta-2); }
+.dg-conexiones .dg-svg { flex: none; margin-top: 4px; color: var(--tinta-1); }
+.ventana-mas { margin: 18px 0 0; font-size: 15px; }
+.ventana-mas a { color: var(--tinta-1); text-decoration: underline; }
+.ds { padding: 24px 16px; display: grid; gap: 16px; max-width: 1280px; margin: 0 auto; }
+.ds-nota { font: 500 13px/1.5 var(--letra-mono); color: var(--tinta-2); margin: 0; max-width: 90ch; }
+.ds-temas { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.ds-tema { background: var(--fondo); color: var(--tinta-1); border: 1px solid var(--linea); border-radius: 8px; padding: 16px; }
+.ds-muestras { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.ds-muestras li { display: grid; grid-template-columns: 28px 1fr; gap: 10px; align-items: center; }
+.ds-color { width: 28px; height: 28px; border-radius: 4px; border: 1px solid var(--linea); }
+.ds-muestras code { font: 500 13px/1.4 var(--letra-mono); }
+.ds-muestras span.ds-uso { display: block; font-size: 14px; color: var(--tinta-2); }
+.ds-panel { position: static; width: min(420px, 100%); max-height: none; border: 1px solid var(--linea); border-radius: 8px; }
+.ds-fila { display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
+</style>
+</head>
+<body>
+<main class="ds">
+<p class="ojo">Big-D · Diagrama</p>
+<h1 style="margin:0;font-size:32px;line-height:1.1">Visión general (nivel 1)</h1>
+<div class="lienzo-marco"><div class="lienzo"><svg xmlns="http://www.w3.org/2000/svg" id="plataforma-ejemplo-n1-es-lienzo" class="dg-svg dg-nivel-1" lang="es" viewBox="0 0 1178 648" width="1178" height="648" role="graphics-document document" aria-labelledby="plataforma-ejemplo-n1-es-titulo" aria-describedby="plataforma-ejemplo-n1-es-desc" aria-details="lectura-texto" data-vista="nivel-1">
+<title id="plataforma-ejemplo-n1-es-titulo">Plataforma Ejemplo (ficticia) · visión general</title>
+<desc id="plataforma-ejemplo-n1-es-desc">Mapa de Plataforma Ejemplo (ficticia): 6 capas de izquierda a derecha y 3 franjas transversales abajo.</desc>
+<defs><path id="plataforma-ejemplo-n1-es-g-triangulo" d="M0,-7.5 L7.5,6 L-7.5,6 Z" fill="currentColor"/><path id="plataforma-ejemplo-n1-es-g-cuadrado" d="M-6.5,-6.5 H6.5 V6.5 H-6.5 Z" fill="currentColor"/><path id="plataforma-ejemplo-n1-es-g-rombo" d="M0,-8 L8,0 L0,8 L-8,0 Z" fill="currentColor"/><path id="plataforma-ejemplo-n1-es-g-escudo" d="M0,-7.5 L6.5,-5 V0 C6.5,4 3.5,6.3 0,7.8 C-3.5,6.3 -6.5,4 -6.5,0 V-5 Z" fill="currentColor"/><path id="plataforma-ejemplo-n1-es-g-circulo" d="M0,-7 A7,7 0 1 1 0,7 A7,7 0 1 1 0,-7 Z" fill="currentColor"/><path id="plataforma-ejemplo-n1-es-g-estrella" d="M0.0,-8.2 L2.1,-2.8 L7.8,-2.5 L3.3,1.1 L4.8,6.6 L0.0,3.5 L-4.8,6.6 L-3.3,1.1 L-7.8,-2.5 L-2.1,-2.8 Z" fill="currentColor"/><path id="plataforma-ejemplo-n1-es-g-anillo" d="M0,-6 A6,6 0 1 1 0,6 A6,6 0 1 1 0,-6 Z" fill="none" stroke="currentColor" stroke-width="2.6"/><path id="plataforma-ejemplo-n1-es-g-barras" d="M-7.5,2 H-4 V7.5 H-7.5 Z M-1.75,-2.5 H1.75 V7.5 H-1.75 Z M4,-7.5 H7.5 V7.5 H4 Z" fill="currentColor"/><path id="plataforma-ejemplo-n1-es-m-cuadros" d="M-5.5,-2.5 H-1.5 V1.5 H-5.5 Z M1.5,-2.5 H5.5 V1.5 H1.5 Z M-5.5,3.5 H5.5" fill="currentColor" stroke="currentColor" stroke-width="1.2"/><path id="plataforma-ejemplo-n1-es-m-onda" d="M-6,0 C-4.5,-4.5 -1.5,-4.5 0,0 S4.5,4.5 6,0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path id="plataforma-ejemplo-n1-es-m-ida-y-vuelta" d="M-5.5,-2.5 H4 M1.5,-5 L4.5,-2.5 L1.5,0 M5.5,2.5 H-4 M-1.5,0 L-4.5,2.5 L-1.5,5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path id="plataforma-ejemplo-n1-es-m-enlace" d="M-1.2,-3 H-3.5 A3,3 0 0 0 -3.5,3 H-1.2 M1.2,-3 H3.5 A3,3 0 0 1 3.5,3 H1.2 M-2.5,0 H2.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path id="plataforma-ejemplo-n1-es-k-vigente" d="M-4.5,0.5 L-1.5,3.5 L4.5,-3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path id="plataforma-ejemplo-n1-es-k-revisar" d="M0,-6.6 L6.8,5 H-6.8 Z M0,-2.3 V0.8 M0,3.05 V3.15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path id="plataforma-ejemplo-n1-es-k-vencido" d="M-3.8,-3.8 L3.8,3.8 M3.8,-3.8 L-3.8,3.8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path id="plataforma-ejemplo-n1-es-k-envia" d="M0,5 V-4 M-3.5,-1 L0,-4.5 L3.5,-1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path id="plataforma-ejemplo-n1-es-k-recibe" d="M0,-5 V4 M-3.5,1 L0,4.5 L3.5,1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path id="plataforma-ejemplo-n1-es-k-doc" d="M-4,-5.5 H2 L4.5,-3 V5.5 H-4 Z M-1.5,-1 H2 M-1.5,2 H2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path id="plataforma-ejemplo-n1-es-k-rama" d="M-5,-3 H5 M-5,3 H5 M1.5,-6 L5,-3 L1.5,0 M1.5,0 L5,3 L1.5,6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></defs>
+<g class="dg-guias" aria-hidden="true" data-dueno="canales"><path class="dg-guia" d="M185,0 V340"/><path class="dg-guia" d="M387,0 V340"/><path class="dg-guia" d="M589,0 V340"/><path class="dg-guia" d="M791,0 V340"/><path class="dg-guia" d="M993,0 V340"/></g>
+<g id="plataforma-ejemplo-n1-es-b-fuentes" role="group" aria-label="Fuentes: ¿De dónde vienen los datos?" data-dueno="fuentes"><text class="dg-t-num"><tspan x="8" y="16.3">01</tspan></text><text class="dg-t-banda"><tspan x="8" y="42.4">Fuentes</tspan></text><text class="dg-t-pregunta"><tspan x="8" y="88.3">¿De dónde vienen los</tspan><tspan x="8" y="107.3">datos?</tspan></text></g>
+<g id="plataforma-ejemplo-n1-es-b-ingesta" role="group" aria-label="Ingesta: ¿Cómo entran los datos a la plataforma?" data-dueno="ingesta"><text class="dg-t-num"><tspan x="210" y="16.3">02</tspan></text><text class="dg-t-banda"><tspan x="210" y="42.4">Ingesta</tspan></text><text class="dg-t-pregunta"><tspan x="210" y="88.3">¿Cómo entran los</tspan><tspan x="210" y="107.3">datos a la</tspan><tspan x="210" y="126.3">plataforma?</tspan></text></g>
+<g id="plataforma-ejemplo-n1-es-b-almacenamiento" role="group" aria-label="Almacenamiento: ¿Dónde y en qué formato se guardan?" data-dueno="almacenamiento"><text class="dg-t-num"><tspan x="412" y="16.3">03</tspan></text><text class="dg-t-banda"><tspan x="412" y="42.4">Almacenamiento</tspan></text><text class="dg-t-pregunta"><tspan x="412" y="88.3">¿Dónde y en qué</tspan><tspan x="412" y="107.3">formato se guardan?</tspan></text></g>
+<g id="plataforma-ejemplo-n1-es-b-procesamiento" role="group" aria-label="Procesamiento y transformación: ¿Con qué motor se limpian, combinan y preparan?" data-dueno="procesamiento"><text class="dg-t-num"><tspan x="614" y="16.3">04</tspan></text><text class="dg-t-banda"><tspan x="614" y="42.4">Procesamiento y</tspan><tspan x="614" y="63.4">transformación</tspan></text><text class="dg-t-pregunta"><tspan x="614" y="88.3">¿Con qué motor se</tspan><tspan x="614" y="107.3">limpian, combinan y</tspan><tspan x="614" y="126.3">preparan?</tspan></text></g>
+<g id="plataforma-ejemplo-n1-es-b-consumo" role="group" aria-label="Consumo: ¿Cómo llegan a tableros, reportes y aplicaciones?" data-dueno="consumo"><text class="dg-t-num"><tspan x="816" y="16.3">05</tspan></text><text class="dg-t-banda"><tspan x="816" y="42.4">Consumo</tspan></text><text class="dg-t-pregunta"><tspan x="816" y="88.3">¿Cómo llegan a</tspan><tspan x="816" y="107.3">tableros, reportes y</tspan><tspan x="816" y="126.3">aplicaciones?</tspan></text></g>
+<g id="plataforma-ejemplo-n1-es-b-ia" role="group" aria-label="Inteligencia artificial: ¿Cómo se construyen modelos y agentes sobre los datos?" data-dueno="ia"><text class="dg-t-num"><tspan x="1018" y="16.3">06</tspan></text><text class="dg-t-banda"><tspan x="1018" y="42.4">Inteligencia</tspan><tspan x="1018" y="63.4">artificial</tspan></text><text class="dg-t-pregunta"><tspan x="1018" y="88.3">¿Cómo se</tspan><tspan x="1018" y="107.3">construyen modelos</tspan><tspan x="1018" y="126.3">y agentes sobre los</tspan><tspan x="1018" y="145.3">datos?</tspan></text></g>
+<g id="plataforma-ejemplo-n1-es-e-origen" class="dg-elem" role="graphics-symbol img" tabindex="0" aria-label="Sistemas de origen. Donde nacen los datos del negocio. Componentes: Sistema de admisiones." aria-describedby="pista-activar" data-dueno="origen" data-nodos="sistema-admisiones"><rect class="dg-card" data-caja="" x="8" y="168" width="152" height="104" rx="6"/><path class="dg-f-tipo-7" d="M14,168 H12 V272 H14 A6,6 0 0 1 8,266 V174 A6,6 0 0 1 14,168 Z"/><use class="dg-c-tipo-7" href="#plataforma-ejemplo-n1-es-g-anillo" x="31" y="190.9"/><text class="dg-t-nombre"><tspan x="46" y="196.5">Sistemas de</tspan><tspan x="46" y="216.5">origen</tspan></text><text class="dg-t-meta"><tspan x="26" y="253.5">1 componente</tspan></text></g>
+<g id="plataforma-ejemplo-n1-es-e-entrada" class="dg-elem" role="graphics-symbol img" tabindex="0" aria-label="Entrada de datos. Trae los datos a la plataforma, en tandas o a medida que cambian. Componentes: Conector de bases relacionales, Captura de cambios." aria-describedby="pista-activar" data-dueno="entrada" data-nodos="conector-relacional captura-cambios"><rect class="dg-card" data-caja="" x="210" y="168" width="152" height="104" rx="6"/><path class="dg-f-tipo-1" d="M216,168 H214 V272 H216 A6,6 0 0 1 210,266 V174 A6,6 0 0 1 216,168 Z"/><use class="dg-c-tipo-1" href="#plataforma-ejemplo-n1-es-g-triangulo" x="233" y="190.9"/><text class="dg-t-nombre"><tspan x="248" y="196.5">Entrada de</tspan><tspan x="248" y="216.5">datos</tspan></text><text class="dg-t-meta"><tspan x="228" y="253.5">2 componentes</tspan></text></g>
+<g id="plataforma-ejemplo-n1-es-e-almacen" class="dg-elem" role="graphics-symbol img" tabindex="0" aria-label="Almacén central. Guarda todos los datos en un formato que otras herramientas pueden leer. Componentes: Zona de datos crudos, Tablas limpias en formato abierto." aria-describedby="pista-activar" data-dueno="almacen" data-nodos="capa-cruda almacen-tablas-abiertas"><rect class="dg-card" data-caja="" x="412" y="168" width="152" height="104" rx="6"/><path class="dg-f-tipo-2" d="M418,168 H416 V272 H418 A6,6 0 0 1 412,266 V174 A6,6 0 0 1 418,168 Z"/><use class="dg-c-tipo-2" href="#plataforma-ejemplo-n1-es-g-cuadrado" x="435" y="190.9"/><text class="dg-t-nombre"><tspan x="450" y="196.5">Almacén</tspan><tspan x="450" y="216.5">central</tspan></text><text class="dg-t-meta"><tspan x="430" y="253.5">2 componentes</tspan></text></g>
+<g id="plataforma-ejemplo-n1-es-e-preparacion" class="dg-elem" role="graphics-symbol img" tabindex="0" aria-label="Preparación. Limpia y combina los datos para que sirvan. Componentes: Motor de transformación, Canalizaciones declarativas." aria-describedby="pista-activar" data-dueno="preparacion" data-nodos="motor-transformacion canalizacion-declarativa"><rect class="dg-card" data-caja="" x="614" y="168" width="152" height="104" rx="6"/><path class="dg-f-tipo-3" d="M620,168 H618 V272 H620 A6,6 0 0 1 614,266 V174 A6,6 0 0 1 620,168 Z"/><use class="dg-c-tipo-3" href="#plataforma-ejemplo-n1-es-g-rombo" x="637" y="190.9"/><text class="dg-t-nombre"><tspan x="652" y="196.5">Preparación</tspan></text><text class="dg-t-meta"><tspan x="632" y="253.5">2 componentes</tspan></text></g>
+<g id="plataforma-ejemplo-n1-es-e-consumo-bi" class="dg-elem" role="graphics-symbol img" tabindex="0" aria-label="Tableros. Convierte los datos en indicadores que la gente consulta. Componentes: Modelo semántico, Tablero de ocupación." aria-describedby="pista-activar" data-dueno="consumo-bi" data-nodos="modelo-semantico tablero"><rect class="dg-card" data-caja="" x="816" y="168" width="152" height="104" rx="6"/><path class="dg-f-tipo-5" d="M822,168 H820 V272 H822 A6,6 0 0 1 816,266 V174 A6,6 0 0 1 822,168 Z"/><use class="dg-c-tipo-5" href="#plataforma-ejemplo-n1-es-g-circulo" x="839" y="190.9"/><text class="dg-t-nombre"><tspan x="854" y="196.5">Tableros</tspan></text><text class="dg-t-meta"><tspan x="834" y="253.5">2 componentes</tspan></text></g>
+<g id="plataforma-ejemplo-n1-es-e-agentes" class="dg-elem" role="graphics-symbol img" tabindex="0" aria-label="Agentes. Responde preguntas usando los datos como contexto. Componentes: Agente de preguntas sobre datos." aria-describedby="pista-activar" data-dueno="agentes" data-nodos="agente-datos"><rect class="dg-card" data-caja="" x="1018" y="168" width="152" height="104" rx="6"/><path class="dg-f-tipo-6" d="M1024,168 H1022 V272 H1024 A6,6 0 0 1 1018,266 V174 A6,6 0 0 1 1024,168 Z"/><use class="dg-c-tipo-6" href="#plataforma-ejemplo-n1-es-g-estrella" x="1041" y="190.9"/><text class="dg-t-nombre"><tspan x="1056" y="196.5">Agentes</tspan></text><g class="dg-madurez"><rect class="dg-madurez-caja" x="1036.5" y="225.5" width="7" height="11" rx="1.5"/><rect class="dg-madurez-nivel" x="1036.5" y="228.5" width="7" height="8" rx="1"/></g><text class="dg-t-meta"><tspan x="1050" y="235.5">Vista previa</tspan><tspan x="1050" y="253.5">pública</tspan></text></g>
+<g class="dg-flujo dg-haz" aria-hidden="true" data-dueno="origen.entrada"><path class="dg-linea" d="M160,220 L202,220"/><path class="dg-punta" d="M210,220 L201,224.5 L201,215.5 Z"/></g>
+<g class="dg-flujo dg-haz" aria-hidden="true" data-dueno="entrada.almacen"><path class="dg-linea" d="M362,220 L404,220"/><path class="dg-punta" d="M412,220 L403,224.5 L403,215.5 Z"/></g>
+<g class="dg-flujo dg-linea-discontinua" aria-hidden="true" data-dueno="almacen.preparacion"><path class="dg-linea" d="M564,209 L606,209"/><path class="dg-punta" d="M614,209 L605,213.5 L605,204.5 Z"/></g>
+<g class="dg-flujo dg-linea-discontinua" aria-hidden="true" data-dueno="preparacion.almacen"><path class="dg-linea" d="M614,231 L572,231"/><path class="dg-punta" d="M564,231 L573,226.5 L573,235.5 Z"/></g>
+<g class="dg-flujo dg-linea-doble" aria-hidden="true" data-dueno="almacen.consumo-bi"><path class="dg-linea dg-doble-ext" d="M533.6,272 L533.6,286 Q533.6,296 543.6,296 L853.6,296 Q861.6,296 861.6,288 L861.6,280"/><path class="dg-linea dg-doble-int" d="M533.6,272 L533.6,286 Q533.6,296 543.6,296 L853.6,296 Q861.6,296 861.6,288 L861.6,280"/><path class="dg-punta" d="M861.6,272 L866.1,281 L857.1,281 Z"/></g>
+<g class="dg-flujo dg-linea-punteada" aria-hidden="true" data-dueno="almacen.agentes"><path class="dg-linea" d="M497.1,272 L497.1,308 Q497.1,318 507.1,318 L1053.6,318 Q1063.6,318 1063.6,308 L1063.6,280"/><path class="dg-punta" d="M1063.6,272 L1068.1,281 L1059.1,281 Z"/></g>
+<g class="dg-etiqueta" aria-hidden="true" data-dueno="origen.entrada"><rect x="162" y="211" width="38" height="18" rx="9"/><use class="dg-marca" href="#plataforma-ejemplo-n1-es-m-cuadros" x="173" y="220"/><use class="dg-marca" href="#plataforma-ejemplo-n1-es-m-onda" x="189" y="220"/></g>
+<g class="dg-etiqueta" aria-hidden="true" data-dueno="entrada.almacen"><rect x="364" y="211" width="38" height="18" rx="9"/><use class="dg-marca" href="#plataforma-ejemplo-n1-es-m-cuadros" x="375" y="220"/><use class="dg-marca" href="#plataforma-ejemplo-n1-es-m-onda" x="391" y="220"/></g>
+<g class="dg-etiqueta" aria-hidden="true" data-dueno="almacen.preparacion"><rect x="574" y="200" width="22" height="18" rx="9"/><use class="dg-marca" href="#plataforma-ejemplo-n1-es-m-cuadros" x="585" y="209"/></g>
+<g class="dg-etiqueta" aria-hidden="true" data-dueno="preparacion.almacen"><rect x="582" y="222" width="22" height="18" rx="9"/><use class="dg-marca" href="#plataforma-ejemplo-n1-es-m-cuadros" x="593" y="231"/></g>
+<g class="dg-etiqueta" aria-hidden="true" data-dueno="almacen.consumo-bi"><rect x="686.6" y="287" width="22" height="18" rx="9"/><use class="dg-marca" href="#plataforma-ejemplo-n1-es-m-enlace" x="697.6" y="296"/></g>
+<g class="dg-etiqueta" aria-hidden="true" data-dueno="almacen.agentes"><rect x="951.6" y="309" width="22" height="18" rx="9"/><use class="dg-marca" href="#plataforma-ejemplo-n1-es-m-ida-y-vuelta" x="962.6" y="318"/></g>
+<g class="dg-rotulo" aria-hidden="true" data-dueno="franjas"><text class="dg-t-num"><tspan x="8" y="366.3">TRANSVERSALES · ABARCAN TODAS LAS CAPAS</tspan></text></g>
+<g id="plataforma-ejemplo-n1-es-b-gobierno" role="group" aria-label="Gobierno y seguridad: ¿Quién puede ver qué, y cómo se audita?" data-dueno="gobierno"><path class="dg-franja-filete" d="M8,380 H1170"/><text class="dg-t-banda dg-t-banda-franja"><tspan x="22" y="406.2">Gobierno y seguridad</tspan></text><text class="dg-t-pregunta dg-t-pregunta-franja"><tspan x="22" y="427.5">¿Quién puede ver qué, y cómo</tspan><tspan x="22" y="444.5">se audita?</tspan></text></g>
+<g id="plataforma-ejemplo-n1-es-e-gobierno" class="dg-elem dg-elem-compacto" role="graphics-symbol img" tabindex="0" aria-label="Gobierno. Decide quién ve qué y deja rastro de cada acceso. Componentes: Catálogo central, Filtros por fila y enmascaramiento." aria-describedby="pista-activar" data-dueno="gobierno" data-nodos="catalogo-central filtros-filas"><rect class="dg-card" data-caja="" x="230" y="390" width="180" height="60" rx="6"/><path class="dg-f-tipo-4" d="M236,390 H234 V450 H236 A6,6 0 0 1 230,444 V396 A6,6 0 0 1 236,390 Z"/><use class="dg-c-tipo-4" href="#plataforma-ejemplo-n1-es-g-escudo" x="252" y="420"/><text class="dg-t-nombre dg-t-nombre-compacto"><tspan x="270" y="416.8">Gobierno</tspan></text><text class="dg-t-meta dg-t-meta-compacta"><tspan x="270" y="432.7">2 componentes</tspan></text></g>
+<g id="plataforma-ejemplo-n1-es-r-gobierno.almacen" class="dg-ref" role="graphics-symbol img" aria-label="Conecta con Almacén central, a demanda" data-dueno="gobierno.almacen"><rect x="418" y="405" width="163" height="30" rx="15"/><use class="dg-marca" href="#plataforma-ejemplo-n1-es-k-envia" x="434" y="420"/><use class="dg-marca" href="#plataforma-ejemplo-n1-es-m-ida-y-vuelta" x="453" y="420"/><text class="dg-t-ref"><tspan x="464" y="424.5">Almacén central</tspan></text></g>
+<g id="plataforma-ejemplo-n1-es-r-gobierno.consumo-bi" class="dg-ref" role="graphics-symbol img" aria-label="Conecta con Tableros, a demanda" data-dueno="gobierno.consumo-bi"><rect x="824.3" y="405" width="135.3" height="30" rx="15"/><use class="dg-marca" href="#plataforma-ejemplo-n1-es-k-envia" x="840.3" y="420"/><use class="dg-marca" href="#plataforma-ejemplo-n1-es-m-ida-y-vuelta" x="859.3" y="420"/><text class="dg-t-ref"><tspan x="870.3" y="424.5">Tableros</tspan></text></g>
+<g id="plataforma-ejemplo-n1-es-b-operacion" role="group" aria-label="Operación y costo: ¿Cómo se vigila, se despliega y se paga?" data-dueno="operacion"><path class="dg-franja-filete" d="M8,470 H1170"/><text class="dg-t-banda dg-t-banda-franja"><tspan x="22" y="496.2">Operación y costo</tspan></text><text class="dg-t-pregunta dg-t-pregunta-franja"><tspan x="22" y="517.5">¿Cómo se vigila, se despliega y</tspan><tspan x="22" y="534.5">se paga?</tspan></text></g>
+<g id="plataforma-ejemplo-n1-es-e-_operacion" class="dg-elem dg-elem-compacto dg-elem-fantasma" role="graphics-symbol img" tabindex="0" aria-label="Operación y costo: Monitor de consumo." aria-describedby="pista-activar" data-dueno="_operacion" data-nodos="monitor-capacidad"><rect class="dg-card dg-fantasma" data-caja="" x="230" y="480" width="180" height="60" rx="6"/><path class="dg-f-tipo-8" d="M236,480 H234 V540 H236 A6,6 0 0 1 230,534 V486 A6,6 0 0 1 236,480 Z"/><use class="dg-c-tipo-8" href="#plataforma-ejemplo-n1-es-g-barras" x="252" y="510"/><text class="dg-t-nombre dg-t-nombre-compacto"><tspan x="270" y="498.3">Monitor de</tspan><tspan x="270" y="515.3">consumo</tspan></text><text class="dg-t-meta dg-t-meta-compacta"><tspan x="270" y="531.2">sin bloque</tspan></text></g>
+<g id="plataforma-ejemplo-n1-es-r-preparacion._operacion" class="dg-ref" role="graphics-symbol img" aria-label="Recibe de Preparación, continuo" data-dueno="preparacion._operacion"><rect x="621.8" y="495" width="136.3" height="30" rx="15"/><use class="dg-marca" href="#plataforma-ejemplo-n1-es-k-recibe" x="637.8" y="510"/><use class="dg-marca" href="#plataforma-ejemplo-n1-es-m-onda" x="656.8" y="510"/><text class="dg-t-ref"><tspan x="667.8" y="514.5">Preparación</tspan></text></g>
+<g id="plataforma-ejemplo-n1-es-b-orquestacion" role="group" aria-label="Orquestación: ¿Quién decide qué se ejecuta y cuándo?" data-dueno="orquestacion"><path class="dg-franja-filete" d="M8,560 H1170"/><text class="dg-t-banda dg-t-banda-franja"><tspan x="22" y="586.2">Orquestación</tspan></text><text class="dg-t-pregunta dg-t-pregunta-franja"><tspan x="22" y="607.5">¿Quién decide qué se ejecuta</tspan><tspan x="22" y="624.5">y cuándo?</tspan></text></g>
+<g id="plataforma-ejemplo-n1-es-e-_orquestacion" class="dg-elem dg-elem-compacto dg-elem-fantasma" role="graphics-symbol img" tabindex="0" aria-label="Orquestación: Programador de tareas." aria-describedby="pista-activar" data-dueno="_orquestacion" data-nodos="programador-tareas"><rect class="dg-card dg-fantasma" data-caja="" x="230" y="570" width="180" height="60" rx="6"/><path class="dg-f-tipo-3" d="M236,570 H234 V630 H236 A6,6 0 0 1 230,624 V576 A6,6 0 0 1 236,570 Z"/><use class="dg-c-tipo-3" href="#plataforma-ejemplo-n1-es-g-rombo" x="252" y="600"/><text class="dg-t-nombre dg-t-nombre-compacto"><tspan x="270" y="588.3">Programador de</tspan><tspan x="270" y="605.3">tareas</tspan></text><text class="dg-t-meta dg-t-meta-compacta"><tspan x="270" y="621.2">sin bloque</tspan></text></g>
+<g id="plataforma-ejemplo-n1-es-r-_orquestacion.preparacion" class="dg-ref" role="graphics-symbol img" aria-label="Conecta con Preparación, a demanda" data-dueno="_orquestacion.preparacion"><rect x="621.8" y="585" width="136.3" height="30" rx="15"/><use class="dg-marca" href="#plataforma-ejemplo-n1-es-k-envia" x="637.8" y="600"/><use class="dg-marca" href="#plataforma-ejemplo-n1-es-m-ida-y-vuelta" x="656.8" y="600"/><text class="dg-t-ref"><tspan x="667.8" y="604.5">Preparación</tspan></text></g>
+</svg>
+</div></div>
+<p class="ds-nota">Generado por el motor del diagramador y las vistas del producto sobre la Plataforma Ejemplo (ficticia), consulta 2026-09-26. layout + toSVG, vista nivel-1.</p>
+</main>
+</body>
+</html>

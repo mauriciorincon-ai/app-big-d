@@ -14,12 +14,15 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     setupFiles: ["./tests/setup.ts"],
-    include: ["tests/unit/**/*.test.{ts,tsx}"],
+    // El diagramador lleva sus propias pruebas dentro del paquete (regla del reusable).
+    include: ["tests/unit/**/*.test.{ts,tsx}", "packages/diagramador/test/**/*.test.ts"],
     coverage: {
       provider: "v8",
       // Solo *.ts: un include de directorio hace que v8 intente parsear .gitkeep y truene
       // con PARSE_ERROR (K8, ds S1).
-      include: ["src/lib/**/*.ts", "src/engine/**/*.ts"],
+      // Los componentes también (M-14 de la auditoría del S1): la regla de desarrollo 2 pide UI > 50 %.
+      include: ["src/lib/**/*.ts", "src/engine/**/*.ts", "packages/diagramador/src/**/*.ts", "src/components/**/*.{ts,tsx}"],
+      exclude: ["**/*.d.ts"],
       thresholds: {
         lines: 70,
         functions: 70,
@@ -36,6 +39,20 @@ export default defineConfig({
           statements: 80,
         },
         "src/lib/**/*.ts": {
+          lines: 80,
+          functions: 80,
+          branches: 80,
+          statements: 80,
+        },
+        // UI: el piso de la regla de desarrollo 2.
+        "src/components/**/*.{ts,tsx}": {
+          lines: 50,
+          functions: 50,
+          branches: 50,
+          statements: 50,
+        },
+        // El diagramador es motor puro (S1): el mismo piso que src/engine.
+        "packages/diagramador/src/**/*.ts": {
           lines: 80,
           functions: 80,
           branches: 80,

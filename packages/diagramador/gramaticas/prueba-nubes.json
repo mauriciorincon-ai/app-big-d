@@ -1,0 +1,183 @@
+{
+  "contrato_version": "0.3.0",
+  "id": "prueba-nubes",
+  "version": "0.1.0",
+  "nombre": {
+    "es": "Nubes (prueba)"
+  },
+  "descripcion": "Prueba de generalidad: arquitectura de una nube genérica.",
+  "idiomas": [
+    "es"
+  ],
+  "idioma_base": "es",
+  "bandas": [
+    {
+      "id": "acceso",
+      "nombre": {
+        "es": "Acceso"
+      },
+      "clase": "capa",
+      "orden": 1,
+      "pregunta_lider": {
+        "es": "¿Por dónde entra una petición?"
+      }
+    },
+    {
+      "id": "computo",
+      "nombre": {
+        "es": "Cómputo"
+      },
+      "clase": "capa",
+      "orden": 2,
+      "pregunta_lider": {
+        "es": "¿Dónde se ejecuta?"
+      }
+    },
+    {
+      "id": "datos",
+      "nombre": {
+        "es": "Datos"
+      },
+      "clase": "capa",
+      "orden": 3,
+      "pregunta_lider": {
+        "es": "¿Dónde se guarda?"
+      }
+    },
+    {
+      "id": "identidad",
+      "nombre": {
+        "es": "Identidad"
+      },
+      "clase": "transversal",
+      "orden": 1,
+      "pregunta_lider": {
+        "es": "¿Quién es quién?"
+      }
+    },
+    {
+      "id": "red",
+      "nombre": {
+        "es": "Red"
+      },
+      "clase": "transversal",
+      "orden": 2,
+      "pregunta_lider": {
+        "es": "¿Qué puede hablar con qué?"
+      }
+    }
+  ],
+  "tipos_de_nodo": [
+    {
+      "id": "servicio-computo",
+      "nombre": {
+        "es": "Cómputo"
+      },
+      "token_color": "tipo-1",
+      "glifo": "rombo",
+      "etiqueta_corta": {
+        "es": "CMP"
+      }
+    },
+    {
+      "id": "servicio-datos",
+      "nombre": {
+        "es": "Datos"
+      },
+      "token_color": "tipo-2",
+      "glifo": "cuadrado",
+      "etiqueta_corta": {
+        "es": "DAT"
+      }
+    },
+    {
+      "id": "servicio-red",
+      "nombre": {
+        "es": "Red"
+      },
+      "token_color": "tipo-3",
+      "glifo": "triangulo",
+      "etiqueta_corta": {
+        "es": "RED"
+      }
+    },
+    {
+      "id": "servicio-identidad",
+      "nombre": {
+        "es": "Identidad"
+      },
+      "token_color": "tipo-4",
+      "glifo": "escudo",
+      "etiqueta_corta": {
+        "es": "IDN"
+      }
+    }
+  ],
+  "modos_de_flujo": [
+    {
+      "id": "sincrono",
+      "nombre": {
+        "es": "Síncrono"
+      },
+      "estilo_linea": "continua",
+      "marcador": "ninguno",
+      "descripcion": {
+        "es": "Espera la respuesta"
+      }
+    },
+    {
+      "id": "asincrono",
+      "nombre": {
+        "es": "Asíncrono"
+      },
+      "estilo_linea": "discontinua",
+      "marcador": "cuadros",
+      "descripcion": {
+        "es": "No espera la respuesta"
+      }
+    }
+  ],
+  "escala_madurez": [
+    {
+      "id": "disponible",
+      "nombre": {
+        "es": "Disponible"
+      },
+      "nivel": 4,
+      "disponible": true
+    },
+    {
+      "id": "en-prueba",
+      "nombre": {
+        "es": "En prueba"
+      },
+      "nivel": 1,
+      "disponible": false
+    }
+  ],
+  "vigencia": {
+    "umbral_revisar_dias": 30,
+    "umbral_vencido_dias": 60
+  },
+  "recorrido_referencia": {
+    "desde_bandas": [
+      "acceso"
+    ],
+    "hasta_bandas": [
+      "datos"
+    ],
+    "llegadas": "alguna"
+  },
+  "limites": {
+    "bloques_min": 1,
+    "bloques_max": 6,
+    "frases_lider_max": 2,
+    "nodos_por_banda_max": 6
+  },
+  "terminos_a_explicar": {
+    "es": [
+      "api",
+      "vpc"
+    ]
+  }
+}
