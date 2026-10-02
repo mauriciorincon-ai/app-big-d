@@ -7,7 +7,7 @@ import type { Nodo, Recorrido } from "../tipos";
 import { mitad, type Decimas } from "../util/numeros";
 import { ordenarPor } from "../util/orden";
 import { pasoPrevio } from "../util/recorrido";
-import { M, anchoLienzo, colX, diasDe, nodosDe, plural, porIdioma, resumenVigencia, vigenciaDe, type Contexto } from "./contexto";
+import { M, anchoLienzo, colX, diasDe, nodosDe, plural, porIdioma, resumenVigencia, rotuloMadurez, vigenciaDe, type Contexto } from "./contexto";
 import { g, plantilla, rect, texto, simbolo } from "./escena";
 import {
   X_FICHAS,
@@ -114,7 +114,7 @@ export function tarjetaNodo(
     if (!mad.disponible) {
       hijos.push(medidor(mad.nivel, x + 160, yr + 80));
       const max = docX - 60 - 40 - (x + 240);
-      const nombre = Object.fromEntries(ctx.idiomas.map((l) => [l, [ctx.sans.abreviar(mad.nombre[l]!, 12, 400, max)]]));
+      const nombre = Object.fromEntries(ctx.idiomas.map((l) => [l, [ctx.sans.abreviar(rotuloMadurez(mad, l), 12, 400, max)]]));
       hijos.push(texto("dg-t-meta dg-t-meta-compacta", x + 240, ctx.sans.base(yr, 12, 16), 160, nombre));
     }
     hijos.push(simbolo("k-doc", docX, yr + 80, "dg-marca-suave"));

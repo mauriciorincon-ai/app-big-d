@@ -20,3 +20,18 @@ function diaCivil(fecha: string): number {
 export function diasEntre(desde: string, hasta: string): number {
   return diaCivil(hasta) - diaCivil(desde);
 }
+
+/** La fecha civil `dias` después de `fecha` (negativo: antes). Inversa entera de `diaCivil`, sin `Date` (G2). */
+export function sumarDias(fecha: string, dias: number): string {
+  const z = diaCivil(fecha) + dias;
+  const era = Math.floor(z / 146097);
+  const dde = z - era * 146097;
+  const ade = Math.floor((dde - Math.floor(dde / 1460) + Math.floor(dde / 36524) - Math.floor(dde / 146096)) / 365);
+  const ddea = dde - (365 * ade + Math.floor(ade / 4) - Math.floor(ade / 100));
+  const mp = Math.floor((5 * ddea + 2) / 153);
+  const dia = ddea - Math.floor((153 * mp + 2) / 5) + 1;
+  const mes = mp < 10 ? mp + 3 : mp - 9;
+  const a = ade + era * 400 + (mes <= 2 ? 1 : 0);
+  const dos = (n: number) => String(n).padStart(2, "0");
+  return `${String(a).padStart(4, "0")}-${dos(mes)}-${dos(dia)}`;
+}

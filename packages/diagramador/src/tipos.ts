@@ -41,6 +41,8 @@ export interface NivelMadurez {
   nombre: TextoIdioma;
   nivel: number;
   disponible: boolean;
+  /** Opcional, por idioma (0.4.0, D-S1-17): lo que se dibuja en bloques y nodos, donde el nombre largo no cabe. */
+  etiqueta_corta?: TextoIdioma;
 }
 
 export interface Gramatica {

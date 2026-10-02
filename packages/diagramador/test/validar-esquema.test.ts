@@ -119,9 +119,9 @@ describe("reglas de la fase 2 que las carnadas no ejercitan", () => {
     const m = mapa((x) => (x.recorridos[0].pasos = x.recorridos[0].pasos.slice(0, 5).map((p: Record<string, unknown>) => ({ ...p, bifurca: undefined }))));
     expect(privado(m, g).errores.some((e) => /no llega a ninguna/.test(e.mensaje))).toBe(true);
   });
-  it("V15 sin cobertura no corre y lo declara como aviso", () => {
+  it("V15 sin cobertura y V16 sin cadenas de interfaz no corren, y lo declaran como avisos", () => {
     const inf = privado(M);
-    expect(inf.avisos.map((a) => a.regla)).toEqual(["V15"]);
+    expect(inf.avisos.map((a) => a.regla)).toEqual(["V15", "V16"]);
     expect(inf.ok).toBe(true);
   });
   it("V14 en un diccionario: términos solo en un idioma", () => {

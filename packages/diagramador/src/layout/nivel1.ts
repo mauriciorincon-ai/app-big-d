@@ -4,7 +4,7 @@
 import type { Banda, Bloque, Nodo } from "../tipos";
 import { mitad, type Decimas } from "../util/numeros";
 import { ordenarPor } from "../util/orden";
-import { M, anchoLienzo, colX, diasDe, nodosDe, peorMadurez, plural, porIdioma, resumenVigencia, vigenciaDe, type Contexto } from "./contexto";
+import { M, anchoLienzo, colX, diasDe, nodosDe, peorMadurez, plural, porIdioma, resumenVigencia, rotuloMadurez, vigenciaDe, type Contexto } from "./contexto";
 import { g, plantilla, texto, simbolo } from "./escena";
 import {
   X_FICHAS,
@@ -100,7 +100,7 @@ export function tarjetaBloque(ctx: Contexto, e: Elem, caja: Caja, rotulos: Geome
   const peor = peorMadurez(ctx, e.nodos);
   const conMadurez = peor !== undefined && !peor.disponible;
   const anchoMadurez = w - 320 - 100;
-  const madurez = conMadurez ? Object.fromEntries(ctx.idiomas.map((l) => [l, partir(ctx, peor.nombre[l]!, 13, 400, anchoMadurez, `madurez de ${e.id}`, l)])) : {};
+  const madurez = conMadurez ? Object.fromEntries(ctx.idiomas.map((l) => [l, partir(ctx, rotuloMadurez(peor, l), 13, 400, anchoMadurez, `madurez de ${e.id}`, l)])) : {};
   const dosLineas = conMadurez && ctx.idiomas.some((l) => madurez[l]!.length > 1);
   const fila = 180;
   const cuenta = unaLinea(ctx, (l) => plural(ctx.textos[l]!.componentes, e.nodos.length));

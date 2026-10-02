@@ -2,8 +2,9 @@ import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { coberturaDeRangos, validate, validateGrammar, type Cobertura, type Entrada, type Gramatica, type Mapa } from "diagramador";
 import { parse } from "yaml";
-import { IDIOMAS } from "@/lib/i18n";
+import { IDIOMAS, textos } from "@/lib/i18n";
 import { esquemaPlataforma, type Plataforma } from "./esquemas";
+import { fechaDeConsulta } from "./fecha";
 import { migrarContrato } from "./migrar";
 
 // Cargador del dato en el BUILD (el sitio es estático: el navegador no valida). Lee data/ — YAML 1.2, un
@@ -57,8 +58,11 @@ function cobertura(raiz: string): Cobertura {
   return coberturaDeRangos(tabla.fuentes["space-grotesk"].rangos);
 }
 
-/** `dir` = la carpeta de datos; `raiz` = la del repo (para la cobertura de la fuente). */
-export function cargarDatos(dir = join(process.cwd(), "data"), raiz = process.cwd()): Datos {
+/**
+ * `dir` = la carpeta de datos; `raiz` = la del repo (para la cobertura de la fuente); `fecha` = el «hoy» de las
+ * cuatro edades en que V16 dibuja cada mapa (la fecha de consulta del build).
+ */
+export function cargarDatos(dir = join(process.cwd(), "data"), raiz = process.cwd(), fecha = fechaDeConsulta()): Datos {
   const fallas: string[] = [];
   // Un YAML mal formado rompía la carga con «Map keys must be unique at line 2», sin decir qué archivo.
   const leerYaml = (ruta: string, archivo: string): unknown => {
@@ -110,6 +114,7 @@ export function cargarDatos(dir = join(process.cwd(), "data"), raiz = process.cw
   }
 
   const cob = cobertura(raiz);
+  const motor = Object.fromEntries(IDIOMAS.map((i) => [i, textos(i).motor]));
   const atlas = new Map<string, Atlas>();
   const conPlataforma = new Set(plataformas.map((p) => `${p.id}.mapa.yaml`));
   for (const f of readdirSync(join(dir, "mapas")).filter((x) => x.endsWith(".mapa.yaml")).sort())
@@ -136,7 +141,8 @@ export function cargarDatos(dir = join(process.cwd(), "data"), raiz = process.cw
     }
     const g = gramatica(gid);
     if (!g) continue;
-    const inf = validate(dato, g, { mode: "publicacion", coverage: cob });
+    // V16 (0.4.0): en publicación el validador dibuja el mapa a cuatro edades y todo aviso de geometría es error.
+    const inf = validate(dato, g, { mode: "publicacion", coverage: cob, texts: motor, queryDate: fecha });
     for (const e of [...inf.errores, ...inf.alertas]) fallas.push(linea(archivo, e));
     if (!inf.ok || inf.alertas.length) continue;
     const mapa = dato as unknown as Mapa;

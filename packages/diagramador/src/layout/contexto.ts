@@ -96,6 +96,9 @@ export function peorMadurez(ctx: Contexto, nodos: readonly Nodo[]): NivelMadurez
   )[0];
 }
 
+/** Lo que se dibuja de una madurez en bloques y nodos: su `etiqueta_corta` si la gramática la trae; si no, el nombre (0.4.0). */
+export const rotuloMadurez = (m: NivelMadurez, idioma: string): string => m.etiqueta_corta?.[idioma] ?? m.nombre[idioma]!;
+
 /** Cadena por idioma a partir de una función. */
 export function porIdioma(ctx: Contexto, f: (idioma: string, t: TextosMotor) => string): Record<string, string> {
   return Object.fromEntries(ctx.idiomas.map((l) => [l, f(l, ctx.textos[l]!)]));

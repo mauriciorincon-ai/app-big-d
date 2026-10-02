@@ -4,11 +4,12 @@ import {
   type Gramatica,
   type Mapa,
 } from "diagramador";
+import { textosMotor } from "../atlas";
 import { aplicarDecisiones, sinAfirmacion } from "./decisiones";
-import { avisosDeDibujo } from "./dibujo";
 import type { Propuesta, Revision, Verificacion } from "./esquema";
 import { huella } from "./huella";
 import { argumentosDeRetiro, retirosDe } from "./retiros";
+import { dibujo } from "./validar";
 
 // Núcleo de scripts/aprobar.mjs (solo humano, D-S1-10): de una propuesta verificada y la decisión de una
 // persona sale el mapa APROBADO y la línea de la revisión. Reglas:
@@ -162,16 +163,18 @@ export function aprobar(e: Entrada): { mapa: Mapa; revision: Revision } {
       fecha_verificacion: e.verificacion.fecha,
     })),
   };
+  // Lo que quedó tras las decisiones también tiene que dibujarse: en publicación, V16 dibuja a cuatro edades y
+  // todo aviso es error (el build no publica un dibujo con avisos).
   const inf = validate(mapa, e.gramatica, {
     mode: "publicacion",
     coverage: coberturaDeRangos(e.rangos),
+    texts: textosMotor(),
+    queryDate: e.fecha,
   });
   for (const x of [...inf.errores, ...inf.alertas])
-    fallas.push(`mapa${x.ruta} · ${x.regla} · ${x.id} · ${x.mensaje}`);
+    if (x.regla !== "V16") fallas.push(`mapa${x.ruta} · ${x.regla} · ${x.id} · ${x.mensaje}`);
   if (!mapa.nodos.length) fallas.push("no queda ningún componente aprobado");
-  // Lo que quedó tras las decisiones también tiene que dibujarse: el build no publica un dibujo con avisos.
-  if (inf.ok && mapa.nodos.length)
-    fallas.push(...avisosDeDibujo(mapa, e.gramatica, e.fecha));
+  fallas.push(...dibujo(inf.errores));
   if (fallas.length) throw new ErrorDeAprobacion(fallas);
   return {
     mapa,
