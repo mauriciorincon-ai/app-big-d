@@ -217,6 +217,19 @@ Decisiones D-S2-01 a D-S2-11 y los siete hechos que cambiaron el trabajo: en el 
   «Legacy»); el bot siguió comentando con él puesto. La persona apagó los comentarios en la configuración Git del
   proyecto; se verifica en cada push del PR.
 
+### Fuentes y LCP (deuda del S1, D-S2-04) y el campo homepage (D-S2-11)
+
+- **El recorte ya estaba hecho, verificado por el constructor:** un lector del `cmap` de cada WOFF2 (directorio de
+  tablas + brotli de Node, en el scratchpad) contra `cobertura.json`: Space Grotesk 464 = 464 y JetBrains Mono
+  432 = 432, cero de más y cero de menos (35.724 y 47.412 bytes). Lo que ahorraría bytes (glifos alternos, rasgos,
+  ejes) cambia `docs/diseno/assets/fuentes/` (solo lectura) y la cadena G15: va a «Enmiendas».
+- **ADR `decisions/lcp-budget-by-profile.md`:** techo de 3,0 s por el estándar 5 v2.17.0 y la regla 23 (perfil
+  «texto medido con tabla de métricas + `display: block`»); `perf-budget.json` sigue en 2900 ms, que la CI
+  afirma con mediana de 3. La medida con las rutas nuevas va al cierre del sprint.
+- **ADR `decisions/csp-static-export.md`** con el porqué de la meta, la política y sus gates.
+- **Campo homepage:** de «prueba» a la URL del propio repo (`gh repo edit --homepage`; verificado con
+  `gh repo view`), como pide la regla 17 de v1.32.1. Se re-verifica tras el merge.
+
 ## Desviación del plan
 
 Lo que el plan aprobado ya declaró frente a la orden y a `SPRINT_002.md`:
