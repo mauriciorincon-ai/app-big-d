@@ -1,4 +1,4 @@
-// Modelo de datos del contrato v0.3.0 (§ 3). Escrito a mano desde los JSON Schema de `esquema/`, que son
+// Modelo de datos del contrato v0.4.0 (§ 3). Escrito a mano desde los JSON Schema de `esquema/`, que son
 // la fuente normativa: el esquema valida la forma y estos tipos solo describen lo que ya pasó por él.
 
 /** Mapa de idioma: una cadena por idioma declarado en la gramática (§ 3.0). */

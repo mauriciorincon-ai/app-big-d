@@ -19,7 +19,7 @@ import { A3 } from "./lib/casos";
 import { EJEMPLOS, GRAMATICAS, leerJson } from "./lib/contrato";
 import { TEXTOS } from "./lib/textos";
 
-const P1 = leerJson<Mapa>("test/carnadas-piloto/P1-mapa-denso.mapa.json");
+const P1 = leerJson<Mapa>("carnadas/P1-mapa-denso.mapa.json");
 // Y un flujo entre dos fichas de una franja (A-6 a): con una ficha envejecida, sale del borde de la reserva.
 const conFlujoEnFranja = structuredClone(EJEMPLOS.find((m) => m.sujeto_id === "plataforma-ejemplo")!);
 conFlujoEnFranja.flujos.push({ ...conFlujoEnFranja.flujos.find((f) => f.id === "f-catalogo-limpias")!, id: "f-catalogo-filtros", destino: "filtros-filas" });

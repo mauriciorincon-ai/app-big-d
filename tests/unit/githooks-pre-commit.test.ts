@@ -21,7 +21,8 @@ function repo(archivo: string, contenido: string) {
   writeFileSync(join(dir, archivo), contenido);
   git("add", archivo);
 }
-const correr = (env: NodeJS.ProcessEnv) => spawnSync("sh", [HOOK], { cwd: dir, encoding: "utf8", env });
+// Un ambiente mínimo (sin el PATH de la sesión); Next declara `NODE_ENV` obligatorio en ProcessEnv.
+const correr = (env: Record<string, string | undefined>) => spawnSync("sh", [HOOK], { cwd: dir, encoding: "utf8", env: env as NodeJS.ProcessEnv });
 
 afterEach(() => rmSync(dir, { recursive: true, force: true }));
 

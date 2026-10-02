@@ -51,7 +51,7 @@ describe("invariancia al orden de los datos (D3)", () => {
 describe("invariancia al orden en todas las salidas (B-42 de la auditoría del S1)", () => {
   // Además de las tres vistas: la vista «bloque» de cada grupo, sus tarjetas, la lectura en texto y la ficha de
   // cada nodo; sobre el mapa de ejemplo, el mapa denso del piloto (P1) y un mapa de carriles (caso-ejemplo).
-  const P1 = leerJson<Mapa>("test/carnadas-piloto/P1-mapa-denso.mapa.json");
+  const P1 = leerJson<Mapa>("carnadas/P1-mapa-denso.mapa.json");
   const CASO = EJEMPLOS.find((m) => m.sujeto_id === "caso-ejemplo")!;
   const salidas = (m: Mapa): string[] => {
     const G = GRAMATICAS[m.gramatica_id]!;

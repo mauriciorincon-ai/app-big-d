@@ -1,2 +1,2 @@
 // Versión del contrato que este paquete implementa (CONTRATO.lock la fija con su huella).
-export const CONTRATO_VERSION = "0.3.0";
+export const CONTRATO_VERSION = "0.4.0";

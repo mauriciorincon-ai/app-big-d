@@ -4,6 +4,7 @@ import { coberturaDeRangos, validate, validateGrammar, type Cobertura, type Entr
 import { parse } from "yaml";
 import { IDIOMAS } from "@/lib/i18n";
 import { esquemaPlataforma, type Plataforma } from "./esquemas";
+import { migrarContrato } from "./migrar";
 
 // Cargador del dato en el BUILD (el sitio es estático: el navegador no valida). Lee data/ — YAML 1.2, un
 // archivo por entidad — y lo valida entero antes de dibujar nada: plataformas con Zod, gramáticas y mapas
@@ -91,7 +92,8 @@ export function cargarDatos(dir = join(process.cwd(), "data"), raiz = process.cw
     let g: Gramatica | null = null;
     if (!existsSync(join(dir, "gramaticas", `${id}.gramatica.yaml`))) fallas.push(`${archivo} · no existe`);
     else {
-      const dato = leerYaml(join(dir, "gramaticas", `${id}.gramatica.yaml`), archivo);
+      const leida = leerYaml(join(dir, "gramaticas", `${id}.gramatica.yaml`), archivo);
+      const dato = leida === ROTO ? ROTO : migrarContrato(leida);
       const inf = dato === ROTO ? undefined : validateGrammar(dato);
       if (!inf) {
         gramaticas.set(id, null);
@@ -126,7 +128,7 @@ export function cargarDatos(dir = join(process.cwd(), "data"), raiz = process.cw
     }
     const leido = leerYaml(join(dir, "mapas", `${p.id}.mapa.yaml`), archivo);
     if (leido === ROTO) continue;
-    const dato = leido as Record<string, unknown> | null;
+    const dato = migrarContrato(leido) as Record<string, unknown> | null;
     const gid = dato?.gramatica_id;
     if (typeof gid !== "string") {
       fallas.push(`${archivo} · /gramatica_id · falta`);

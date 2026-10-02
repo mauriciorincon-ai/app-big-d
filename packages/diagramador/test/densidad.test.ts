@@ -11,7 +11,7 @@ import { CASOS, disponer, FECHA, VISTAS } from "./lib/casos";
 import { COBERTURA, EJEMPLOS, GRAMATICAS, leerJson } from "./lib/contrato";
 import { TEXTOS } from "./lib/textos";
 
-const P1 = leerJson<Mapa>("test/carnadas-piloto/P1-mapa-denso.mapa.json");
+const P1 = leerJson<Mapa>("carnadas/P1-mapa-denso.mapa.json");
 const G = GRAMATICAS[P1.gramatica_id]!;
 const cruza = (p: Caja, q: Caja) => p.x < q.x + q.w && p.x + p.w > q.x && p.y < q.y + q.h && p.y + p.h > q.y;
 

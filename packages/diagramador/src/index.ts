@@ -1,4 +1,4 @@
-// Diagramador — API pública (CONTRATO v0.3.0 § 8). Funciones puras: sin I/O, sin reloj, sin red.
+// Diagramador — API pública (CONTRATO v0.4.0 § 8). Funciones puras: sin I/O, sin reloj, sin red.
 export { CONTRATO_VERSION } from "./version";
 export { validate, validateGrammar } from "./validar";
 export type { Cobertura, Entrada, Informe, Modo } from "./validar";

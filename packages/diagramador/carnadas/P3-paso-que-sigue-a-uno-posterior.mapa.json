@@ -1,5 +1,5 @@
 {
-  "contrato_version": "0.3.0",
+  "contrato_version": "0.4.0",
   "gramatica_id": "plataformas-datos",
   "gramatica_version": "0.2.0",
   "sujeto_id": "plataforma-ejemplo",
@@ -923,23 +923,6 @@
           }
         },
         {
-          "id": "p6",
-          "nodo_id": "modelo-semantico",
-          "sigue_de": "p5",
-          "que_pasa": {
-            "es": "Se vuelve indicador",
-            "en": "Becomes an indicator"
-          },
-          "lider": {
-            "es": "Cuenta dentro del indicador de admisiones del día.",
-            "en": "It counts inside the day's admissions indicator."
-          },
-          "experto": {
-            "es": "Lectura sin copia por el modelo semántico; aplica la seguridad por filas.",
-            "en": "Read without copy by the semantic model; row-level security applies."
-          }
-        },
-        {
           "id": "p7",
           "nodo_id": "tablero",
           "sigue_de": "p6",
@@ -957,6 +940,23 @@
           }
         },
         {
+          "id": "p6",
+          "nodo_id": "modelo-semantico",
+          "sigue_de": "p5",
+          "que_pasa": {
+            "es": "Se vuelve indicador",
+            "en": "Becomes an indicator"
+          },
+          "lider": {
+            "es": "Cuenta dentro del indicador de admisiones del día.",
+            "en": "It counts inside the day's admissions indicator."
+          },
+          "experto": {
+            "es": "Lectura sin copia por el modelo semántico; aplica la seguridad por filas.",
+            "en": "Read without copy by the semantic model; row-level security applies."
+          }
+        },
+        {
           "id": "p8",
           "nodo_id": "agente-datos",
           "sigue_de": "p5",
@@ -971,23 +971,6 @@
           "experto": {
             "es": "Consulta a demanda bajo los permisos del catálogo; funcionalidad en vista previa.",
             "en": "The agent reads the clean tables under the catalog's permissions."
-          }
-        },
-        {
-          "id": "px",
-          "nodo_id": "tablero",
-          "sigue_de": "px",
-          "que_pasa": {
-            "es": "Aparece en el tablero",
-            "en": "Shows on the dashboard"
-          },
-          "lider": {
-            "es": "La dirección ve la ocupación actualizada.",
-            "en": "Management sees the updated occupancy."
-          },
-          "experto": {
-            "es": "Consulta a demanda del tablero al modelo semántico.",
-            "en": "On-request query from the dashboard to the semantic model."
           }
         }
       ]

@@ -10,7 +10,7 @@ import { disponer, FECHA } from "./lib/casos";
 import { EJEMPLOS, GRAMATICAS, leerJson } from "./lib/contrato";
 import { TEXTOS } from "./lib/textos";
 
-const P1 = leerJson<Mapa>("test/carnadas-piloto/P1-mapa-denso.mapa.json");
+const P1 = leerJson<Mapa>("carnadas/P1-mapa-denso.mapa.json");
 const MAPAS = [...EJEMPLOS, P1];
 const bloque = (m: Mapa, grupo: string, fecha = FECHA) => layout(m, GRAMATICAS[m.gramatica_id]!, "bloque", { textos: TEXTOS, fechaConsulta: fecha, grupo });
 const grupos = (m: Mapa) => disponer(m, "nivel-1").vigencia.elementos.map((e) => e.id);
