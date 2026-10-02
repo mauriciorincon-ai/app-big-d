@@ -9,7 +9,7 @@ export function ConmutadorIdioma({ actual, etiqueta }: { actual: Idioma; etiquet
   return (
     <div className="alterna" role="group" aria-label={etiqueta}>
       {IDIOMAS.map((idioma, i) => (
-        <span key={idioma} style={{ display: "contents" }}>
+        <span key={idioma} className="alterna-par">
           {i > 0 && <span className="sep" aria-hidden="true">/</span>}
           <a
             href={rutaEnIdioma(ruta, idioma)}
