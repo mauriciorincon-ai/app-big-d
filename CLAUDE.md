@@ -5,11 +5,14 @@
 > **Primera app del portafolio con especificación completa del usuario, primera con perfil
 > exportado estático y PILOTO del primer reusable de la casa (el diagramador).** Nace con el
 > pipeline completo desde el día 0 (Etapa de Diseño · dos filtros ⭐/⭐⭐ · cierre en dos actos ·
-> cero enlaces · bilingüe integral). **Sincronizada por última vez en la planeadora el 2026-09-27
+> cero enlaces · bilingüe integral). **Sincronizada con el CONTRATO v0.4.0 el 2026-10-01 (líneas del diagramador regeneradas: V1–V16, franjas abajo, sin angosta). Sincronizada antes el 2026-09-27
 > (S1, fase 0): sección Stack/IA + regla 7-S; aplica además los deltas del kit v1.30.0/v1.31.0.**
 > **Deltas aplicados en la app el 2026-09-27 (S1, fase 0), desde `kit-app/CLAUDE.md` v1.32.0:** dos clases
 > de mirada (regla 10), `gh pr checks` tras cada push y métrica `manual` (regla 15), «preview del PR #N» en el
 > README de diseño (regla 17), comprobación mecánica de dependencias (regla 18) y reglas 21 y 22.
+> **Deltas aplicados en la app el 2026-10-02 (S2, fase 0):** líneas del diagramador v0.4.0 desde
+> `ordenes/CLAUDE-md-para-app.md`; desde `kit-app/CLAUDE.md` v1.33.0, la regla 23 (matriz de envejecimiento y
+> LCP por perfil) y la regla 17 de v1.32.1 (el campo homepage apunta al propio repo).
 
 ## Las dos casas (regla dura)
 
@@ -85,10 +88,12 @@ y reproducible con conocimiento de las plataformas, ni el atlas neutral (mercado
    vigencia 30/60 días calculada contra la fecha de evaluación (informe) o de consulta (atlas y demo).
 7. **EL DIAGRAMADOR ES UN REUSABLE DE LA CASA; ESTA APP ES SU PILOTO, NO SU DUEÑA.**
    `packages/diagramador/` **no importa nada de la app**, no contiene ningún nombre de plataforma ni
-   de dominio (lint G3), lleva sus propias pruebas y cumple el `CONTRATO.md` **v0.3.0** (v0.2.0 hoy;
-   los tokens visuales e idiomas entran en G-Diseño): garantías G1–G15, reglas D1–D12, validación
-   V1–V12, **las 24 carnadas y las carnadas nuevas que nazcan**, cero flujos que atraviesen nodos
-   (D11), texto dentro del lienzo a 380 px (G11), serializador SVG propio (D8). Lleva
+   de dominio (lint G3), lleva sus propias pruebas y cumple el `CONTRATO.md` **v0.4.0** (2026-10-01):
+   garantías G1–G15, reglas D1–D15, validación G1–G7 y V1–V16 con `coverage`, **los 34 casos de
+   carnada y los que nazcan**, avisos de geometría § 5.6 con **matriz de envejecimiento** (todo mapa a
+   cuatro edades), cero flujos que atraviesen nodos (D11), texto dentro del lienzo a 380 px en una sola
+   disposición horizontal con lienzo deslizable (G11), mapas de idioma `{es, en}`, serializador SVG
+   propio (D8), `text-rendering: geometricPrecision` en la hoja (G15). Lleva
    `packages/diagramador/CONTRATO.lock` con la versión y la **huella SHA-256** del contrato copiado
    (`shasum -a 256`); `/cierre-sprint` la compara con la de la planeadora. Arquitectura fijada por
    el spike y la investigación (P1): **colocación propia por bandas + ruteo ortogonal por canales**;
@@ -462,10 +467,12 @@ decisions/NNN-titulo.md   (ADRs de implementación)
    `BLUEPRINT.html` (documenta dominio y protección como "qué ve quién sin sesión" **sin escribir
    la URL** — la URL exacta vive en la planeadora, que es privada), ni el manual, ni la guía
    (su campo de URL se llena EN USO, desde la orden), ni `package.json`. El CTA público de la app
-   es la **«lista de espera»** — sin promesa de otorgamiento. **La limpieza del campo homepage
-   es RECURRENTE, no de una vez (kit v1.22.0):** la GitHub App de Vercel lo reescribe tras cada
-   deploy de producción (confirmado en vivo) — se re-verifica tras CADA merge a `main`, y JAMÁS
-   se automatiza con un PAT de administración como secret en un repo público. Y **los documentos
+   es la **«lista de espera»** — sin promesa de otorgamiento. **El campo homepage del repo APUNTA AL PROPIO
+   REPO (kit v1.32.1; antes «limpieza recurrente», v1.22.0):** la GitHub App de Vercel reescribe
+   el campo solo cuando está VACÍO — con cualquier valor puesto deja de tocarlo (experiencia del
+   usuario en otra app y en planlang). El estampador lo fija al crear el repo (`gh repo edit
+   --homepage <url del repo>`); se verifica una vez tras el primer deploy de producción y en
+   `/deploy-check`. JAMÁS se automatiza con un PAT de administración como secret en un repo público. Y **los documentos
    que NARRAN el barrido escriben los patrones sin el literal** (clase de carácter, p. ej.
    `vercel[.]app`): un summary que cita el patrón tal cual rompe el grep y el gate deja de ser
    binario. **El comando del barrido corre sobre TODOS los archivos versionados** (kit
@@ -536,6 +543,16 @@ decisions/NNN-titulo.md   (ADRs de implementación)
     maqueta nace EN EL REPO desde la fase 0** de la Etapa de Diseño, con su gate de deriva byte a byte
     (regenerar = mismos bytes): un generador fuera del repo hace inauditable la regla 8 y deja la
     referencia sin fuente.
+23. **Matriz de envejecimiento (kit v1.33.0, método v1.36.0).** Todo dato con **fecha de cambio de
+    estado** (vigente → por revisar → vencido; publicado → archivado; suscripción activa → caducada) trae,
+    **desde el sprint que lo introduce**, un gate que construye o dibuja la página **en cada fecha en que
+    algo cambia de estado** (hoy, cada umbral, +100 días) y exige cero avisos. La fecha de consulta es una
+    **perilla de build** (nunca el reloj), y la guía de prueba la usa para mostrar los estados. *(Origen:
+    Big-D S1 — el atlas pasó todo en verde y se habría roto solo 27 días después, cuando el primer mapa
+    pasaba a «por revisar»; lo vio un auditor, no una prueba. Un gate que solo mira hoy no ve lo que el
+    calendario toca.)* **LCP por perfil:** si la app mide texto con una tabla de métricas (G15) y por eso
+    sirve sus fuentes con `display: block`, el presupuesto de LCP es **3,0 s declarado por ADR** (estándares
+    v2.17.0), con el subconjunto de las fuentes a su cobertura como deuda pagable.
 
 ## Estándares (los 6+1, gates en CI)
 
@@ -665,13 +682,16 @@ pr: <link>
   de reproducibilidad) · `legibilidad.ts` (presupuesto ≤ 50 palabras / ≤ 95 sílabas; detector de
   jerga es/en). Todo puro, entero, con semilla; propiedades con fast-check (monotonía **corregida**:
   la posición del líder nunca empeora; invariancia al orden; suma de pesos; reproducibilidad).
-- **Diagramador (`packages/diagramador/`):** `validar` (esquema + V1–V12, informe `{doc, fase, regla,
-  ruta, id, mensaje}`) · `layout` (bandas → columnas fijas por gramática, nodos de altura uniforme,
-  franjas arriba; canales entre columnas y filas para el ruteo ortogonal; cero cruces D11) · `toSVG`
-  (serializador propio, orden de atributos fijo, números cuantizados, `-0` normalizado, roles
-  `graphics-*`, un SVG por idioma) · `toText` (equivalente textual G10) · `compare` (lado a lado,
-  bandas alineadas G5) · `diff` (cambios entre mapas) · vistas nivel 1/2/3 + angosta 380 px ·
-  `CONTRATO.lock`. Carnadas de `reusables/diagramador/carnadas/` como suite obligatoria.
+- **Diagramador (`packages/diagramador/`, CONTRATO v0.4.0):** `validate`/`validateGrammar` (esquema +
+  G1–G7 + V1–V16 con cobertura; informe en tres listas `errores · alertas · avisos`, entradas `{doc, fase,
+  regla, ruta, id, idioma?, mensaje}`) · `layout` (bandas → columnas fijas por gramática, nodos de altura
+  uniforme, **franjas abajo**, carril exprés y canales con pistas a 6 u; vistas `nivel1 · nivel2 · recorrido
+  · carriles · bloque`; geometría + avisos § 5.6; cero cruces D11 a cuatro edades) · `toSVG` (serializador
+  propio, orden de atributos fijo, números cuantizados, `-0` normalizado, roles `graphics-*`, un SVG por
+  idioma, `<defs>` con espacio de nombres) · `toText`/`toCard`/`toBlockCards`/`toLegend` con
+  `options.texts` y `queryDate` · `compare` (lado a lado, bandas alineadas G5, N del consumidor, nivel por
+  banda — **S2**) · `diff` (JSON canónico) · **una sola disposición horizontal con lienzo deslizable** (sin
+  angosta) · `CONTRATO.lock`. Los 34 casos de `reusables/diagramador/carnadas/` como suite obligatoria.
 - **Datos (`data/`):** esquemas Zod → JSON Schema; carga que falla con campo e id; instantáneas
   `snapshots/<fecha>.json` con SHA-256 (RFC 8785); gramática `plataformas-datos` copiada de la
   planeadora con huella; mapas por plataforma (`mapas/<plataforma>.mapa.yaml`), incluida la

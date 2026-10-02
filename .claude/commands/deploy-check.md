@@ -107,7 +107,7 @@ Corre cada verificación en orden y reporta estado:
       archivo del repo ni campo de GitHub contenga la URL de producción o de previews:
       ```
       git grep -nE "vercel[.]app|workers[.]dev|pages[.]dev" -- ':!pnpm-lock.yaml'   # TODOS los archivos versionados — jamás include-list (kit v1.23.0: wrangler.jsonc pasó un gate con lista); suma el host real del stack si difiere
-      gh repo view --json homepageUrl -q .homepageUrl   # el campo About/website debe estar vacío o apuntar al repo
+      gh repo view --json homepageUrl -q .homepageUrl   # el campo About/website APUNTA AL PROPIO REPO (kit v1.32.1); si está vacío, Vercel lo reescribe
       ```
       README, BLUEPRINT ("qué ve quién" sin la URL), manual, guía (su campo de URL se llena EN
       USO), CTAs. *La producción se muestra (brochure), jamás se entrega (link).* Si este sprint
@@ -130,6 +130,11 @@ Corre cada verificación en orden y reporta estado:
 - [ ] **`docs/MANUAL-DE-USO.md` actualizado con las features de este sprint** (qué hace, cómo se usa, limitaciones — en lenguaje de usuario final). Feature sin manual = sprint no cierra.
 - [ ] CHANGELOG entry (si el proyecto lo usa).
 - [ ] Si hay decisión arquitectónica: ADR en `decisions/` de este repo.
+- [ ] **Matriz de envejecimiento (kit v1.33.0 — regla 23):** si la app tiene datos con fecha de cambio de
+      estado, el gate que construye la página en cada una de esas fechas está en verde (y nació en rojo).
+      Big-D: `packages/diagramador/test/envejecer.test.ts` (cada mapa a cuatro edades, todas las vistas y
+      `compare`) y `tests/unit/atlas-vigencias.test.ts` (cada página en cada fecha), con la perilla
+      `BIGD_FECHA_CONSULTA`.
 
 ### 10. Cierre del sprint (las dos casas)
 - [ ] Bitácora `sprints/SPRINT_NNN-implementation-log.md` al día en este repo.
