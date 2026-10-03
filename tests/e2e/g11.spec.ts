@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import { abrir } from "./lib/abrir";
+import { abrir, listo } from "./lib/abrir";
 import { IDIOMAS, PUBLICADAS, RUTAS } from "./lib/rutas";
 
 // G11 del diagramador (CONTRATO § 2) en el producto, a 380 px y en los tres motores: esta spec corre en
@@ -81,3 +81,23 @@ for (const idioma of IDIOMAS)
         await expect(panel).toBeHidden();
       }
     });
+
+// El lado a lado se dibuja en ancho (en teléfono es una lista por banda): ahí, cada fila con sus bloques y con sus
+// componentes desplegados, en los tres motores. Todas las publicadas, página por página (tres a la vez).
+test.describe("lado a lado en ancho", () => {
+  test.use({ viewport: { width: 1400, height: 900 } });
+  for (const idioma of IDIOMAS)
+    test(`/${idioma}/comparar: el texto de cada fila cabe, con bloques y desplegado`, async ({ page }) => {
+      const paginas = Math.ceil(PUBLICADAS.length / 3);
+      for (let pagina = 1; pagina <= paginas; pagina++) {
+        await page.goto(`/${idioma}/comparar?plataformas=${PUBLICADAS.join(",")}&pagina=${pagina}`);
+        await listo(page);
+        const visibles = await page.locator(".lado-fila").evaluateAll((fs) => fs.filter((f) => f.getClientRects().length).map((f) => (f as HTMLElement).dataset.fila));
+        expect(visibles).toEqual(PUBLICADAS.slice((pagina - 1) * 3, pagina * 3));
+        expect(await problemas(page, ".lado-ancho .lienzo"), `página ${pagina}, bloques`).toEqual([]);
+        await page.locator(".lado-ancho .lado-todo").click();
+        await expect(page.locator(".lado-ancho .lado-todo")).toHaveAttribute("aria-expanded", "true");
+        expect(await problemas(page, ".lado-ancho .lienzo"), `página ${pagina}, desplegado`).toEqual([]);
+      }
+    });
+});

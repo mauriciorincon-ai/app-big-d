@@ -332,6 +332,119 @@ Decisiones D-S2-01 a D-S2-11 y los siete hechos que cambiaron el trabajo: en el 
   nombra `braces`. Verde al restaurar.
 - **Deuda (al summary):** retirar la excepción en cuanto haya corrección; `/deploy-check` la revisa.
 
+## Fase 2 — El lado a lado en producto («continúa» 2026-10-02)
+
+### La CSP bloqueaba los estilos al cambiar de nivel sin recargar (defecto de la fase 0)
+
+- **Síntoma:** al pasar del nivel 1 al recorrido con las pestañas de nivel, la consola registra
+  `style-src-elem · inline` y los pasos del recorrido llegan sin sus reglas. **Causa:** Next cambia de página sin
+  recargar y React inserta el `<style>` de la página nueva (las reglas de los pasos, `toJourneyCSS`) bajo la
+  política de la primera, que no trae su huella. La prueba de la fase 0 (`csp.spec`) abría cada ruta con `goto`:
+  nunca cambió de página desde dentro. Lo encontré al diseñar `/comparar`, que también lleva estilos en línea.
+- **Arreglo:** cada página lleva en `style-src` las huellas de los estilos en línea de todas las páginas del sitio
+  (hoy 4). Los scripts no: React no ejecuta un `<script>` en línea que inserta en el cliente.
+- **Gate:** `csp.spec` recorre las pestañas de nivel de cada plataforma publicada, en los dos idiomas, sin recargar
+  (una marca en `window` sobrevive), y exige cero violaciones; `csp.test` suma la prueba de la función. ¿Puede
+  fallar? Sí. **Rojo:** inyector sin las huellas del sitio → las 4 rutas nombran `style-src-elem · inline`, y la
+  prueba unitaria «suma los estilos de las demás páginas». **Verde** al restaurar.
+
+### `/[idioma]/comparar`: el lado a lado en producto
+
+- **Qué hay en la página** (fiel a `lado-a-lado.html`, con la forma de M1):
+  - encabezado («Cuatro plataformas, el mismo mapa»: el número en palabras sale de los datos), consulta y «vigencia
+    por plataforma en cada fila»; pestañas de nivel con «04 Lado a lado» actual;
+  - selector de plataformas (`details` con casillas; orden por id; la última elegida no se quita) y paginación de
+    tres en ancho (`POR_PAGINA`, constante declarada de la vista);
+  - el lienzo: índice de bandas y pista si desborda, «Saltar el diagrama», **el botón «Desplegar todo» / «Contraer
+    todo» arriba a la derecha del recuadro, en su franja, fuera de lo que se desliza**, la cabecera de bandas y una
+    fila por plataforma; tocar un bloque abre su ventana (la del nivel 1, con banda y plataforma arriba) y, desplegado,
+    tocar un componente abre su ficha;
+  - Databricks y Snowflake como filas «próximamente», con su nombre, sin contenido inventado y un enlace a su página
+    del investigador; el texto queda a la vista al deslizar;
+  - teléfono (< 900 px): pestañas de banda, todas las elegidas apiladas (sin paginar), un plegable por bloque con sus
+    tarjetas, y el mismo botón despliega o contrae todos;
+  - leyenda del motor y la lectura en texto de cada plataforma publicada (G10: la cabecera apunta a la raíz de las
+    lecturas y cada fila a la suya).
+- **Cómo funciona (D-S2-07 simplificado tras M1):** cada fila son dos SVG del build (`compare([mapa], …, { part:
+  "rows" })` con todas las bandas en 1 y en 2); el botón cambia un atributo del lienzo y el CSS muestra una u otra. Qué
+  plataformas y qué página viven en la URL (`?plataformas=a,b&pagina=2`, limpia con todas y la página 1); un script en
+  línea, antes de pintar, pone dos atributos en el `<html>` y unas reglas generadas por plataforma muestran las filas.
+  El componente lee la URL con `useSyncExternalStore` y la escribe con `history.replaceState`: el árbol de React no
+  depende de la URL (mismo HTML en servidor y cliente) y una URL con consulta no salta al hidratar. Nada se vuelve a
+  dibujar en el cliente. El script y el componente aplican la misma regla (`estado-lado.ts`): una prueba ejecuta el
+  script y lo compara consulta por consulta.
+- **Navegación:** la pestaña 04 de los niveles lleva a `/comparar` desde cada vista del atlas (en `/comparar`, las
+  01–03 son las de la primera plataforma publicada); la barra marca «Atlas» también aquí; el conmutador de idioma
+  suma la consulta al tocar (la selección y la página viajan al otro idioma).
+- **Decisiones menores (registradas, al gate del ciclo):**
+  - en el teléfono, las tarjetas de cada bloque son las de su ventana (`toBlockCards`: tipo, madurez, frase y
+    conexiones), más ricas que las de la maqueta; el resumen lleva el glifo del tipo, tomado de la primera tarjeta
+    (el mismo componente que da el tipo al bloque, § 4.1);
+  - un grupo sin bloque de un solo componente se dibuja con el nombre del componente: su ventana se titula igual;
+  - la página lleva leyenda y lectura en texto, que la maqueta del lado a lado no dibujaba (el plan las pedía, y G10);
+  - el texto de versión y vigencia de cada fila sale en la letra del cuerpo y no en la mono: la regla general del
+    SVG le gana a la clase, igual que en la maqueta (lo aprobado); el motor lo mide con la mono, más ancha (lado
+    seguro). A «Enmiendas» como nota.
+- **Defectos que vieron los gates mientras se construía (y se arreglaron):**
+  - axe: la cabecera apuntaba con `aria-details` a una lectura que no existía en esta página → raíz común;
+  - pasada de interacción: en ancho, tocar en el índice una banda que el lienzo no puede llevar al borde marcaba la
+    última; ahora queda marcada la tocada mientras el lienzo siga donde la dejó (vale también para el atlas);
+  - pasada de interacción: la ventana de un grupo sin bloque se titulaba con la banda y la tarjeta decía el componente;
+  - e2e: al pasar a la última página, el foco se perdía (se movía a «Anterior» mientras seguía deshabilitado);
+  - captura: con una página de solo «próximamente», la línea de la fila no llegaba al final del dibujo.
+
+| Gate | ¿Puede fallar? | Rojo (mutación) | A quién nombró | Verde |
+|---|---|---|---|---|
+| Script previo = regla del componente (`lado.test`, propiedad) | sí: son dos códigos | el script acepta «2x» como página | «el script previo al pintado aplica la misma regla» | restaurado |
+| Ida y vuelta de la consulta | sí | la página 2 no se escribe | «URL limpia», «ida y vuelta» | restaurado |
+| Todo lo que se toca abre algo, nada sobra | sí | sin una ficha de componente | «todo lo que se toca abre algo» (es, en) | restaurado |
+| El teléfono agrupa como el motor | sí, **solo con un mapa de dos bloques por banda** (con los datos de hoy, la mutación pasaba en verde: se agregó el caso) | bloques al revés dentro de la banda | «el teléfono agrupa como el motor dibujó» | restaurado |
+| Glifo del resumen = tipo del bloque | sí, **solo con un bloque de tipos mezclados** (mismo hallazgo: se agregó el caso) | glifo de la última tarjeta | ídem | restaurado |
+| Neutralidad y N plataformas | sí | sin ordenar por id | «N plataformas», «neutralidad» | restaurado |
+| Ids sin choque en la página | sí | mismo prefijo en las dos variantes | «los ids del dibujo no chocan» | restaurado |
+| CSS por plataforma | sí | sin las reglas del teléfono | «CSS generado» | restaurado |
+| Matriz de envejecimiento sobre `/comparar` | sí | lanzar en «vencido» | 4 fechas (2026-11-19 …) | restaurado |
+| `lado.spec` (e2e, cuatro mutaciones a la vez) | sí | sin script previo · filas contraídas en la rejilla de bloques · sin limpiar el `<html>` | «primer pintado», «sin mover las columnas», «próximamente… al salir» | restaurado |
+| Idioma con consulta (e2e) | sí, **solo sin los cuatro manejadores**: el puntero ya completaba el enlace | sin manejadores | «el idioma conserva la consulta» (`/en/comparar` sin `?pagina=2`) | restaurado |
+| `Lado` en Testing Library | sí | sin abrir los plegables · última elegida quitable | «Desplegar todo…», «el selector y la paginación…» | restaurado |
+
+### Versionado de mapas (D-S2-09)
+
+- **El script de aprobación** (lo corre una persona) archiva, antes de sobrescribir, el mapa que había si la versión
+  cambia: `data/mapas/versiones/<id>-<versión>.mapa.yaml`, con sus mismos bytes; si ese archivo ya existe con otros
+  bytes, no escribe nada. El ensayo sobre una copia de `data/` lo hace igual y la carga lo valida.
+- **El cargador** lee las versiones: nombre `<id>-<versión>`, plataforma publicada, misma versión que el nombre,
+  anterior a la vigente, y valida como un mapa publicado (V16 incluido: la página de diferencias las dibuja). Las da
+  de la más vieja a la más nueva (`0.0.10` después de `0.0.9`).
+- **La comprobación de aprobados** (`mapasSinAprobacion`): cada versión archivada de una plataforma real es,
+  huella y versión, una línea de su `revisiones/<id>.jsonl`; y toda versión aprobada que no es la vigente está
+  archivada. Hoy Fabric no tiene versiones anteriores: la primera llega con su reinvestigación (fase 3).
+
+| Gate | ¿Puede fallar? | Rojo (mutación) | A quién nombró | Verde |
+|---|---|---|---|---|
+| Archiva con los mismos bytes (`scripts.test`, de punta a punta en una raíz temporal) | sí | sin el paso de archivo | «…y archiva la versión anterior» | restaurado |
+| Una versión no anterior a la vigente | sí | `>` en lugar de `>=` | «cada forma rota nombra su archivo» | restaurado |
+| Orden de versiones | sí | sin ordenar | «de la más vieja a la más nueva» | restaurado |
+| Archivada = aprobada, y ninguna falta | sí | huella sin comparar | «una versión archivada que no aprobó nadie…» | restaurado |
+
+### Capturas, Lighthouse y paquete de diseño
+
+- **Pasada de capturas e interacción** (`capturar-producto.mjs`, ahora con los controles del lado a lado: selector,
+  paginación, los dos botones, pestañas de banda y plegables): 24 rutas × 2 temas × 2 anchos = 96 encuadres, 5524
+  comprobaciones, **0 fallas**. Leídas como imagen las de `/comparar` (1280 y 380, los dos temas y los dos idiomas),
+  contraído, desplegado, página 2, URL con selección y el teléfono desplegado.
+- **Frente a la maqueta** (pares producto | maqueta): el conmutador «Ver: bloques / componentes» es ahora el botón
+  (M1); **a 1280 px el lado a lado se desliza** (la rejilla es la de componentes, 1496 u, para que desplegar no mueva
+  columnas; la maqueta, a 118 u, cabía), con su índice de bandas; filas «próximamente» (dato real); leyenda y
+  lectura; en el teléfono, tarjetas más ricas. Para mirar en M2.
+- **Lighthouse local** (Lighthouse 13.4.1, mediana de 3): `/es/comparar` LCP 2765 ms, CLS 0, TBT 4 ms, 401 KB,
+  scripts 155 KB, categorías 96/100/100/100/100; `/en/comparar` igual; `/es/atlas/fabric` LCP 2476 ms. Las dos rutas
+  entran en `lighthouse-urls.json`.
+- **`design-sync/`:** la hoja `lado.css` entra al paquete y una tarjeta nueva, «Componentes · S2 / Lado a lado»
+  (contraído y desplegado, sobre la Plataforma Ejemplo). Su prueba de deriva, en verde.
+- **Corridas:** `pnpm test` 1265 + 5; e2e 470 en verde (6 saltadas a propósito: las de ancho en el proyecto de
+  teléfono), en 55,8 s.
+
 ## Desviación del plan
 
 Lo que el plan aprobado ya declaró frente a la orden y a `SPRINT_002.md`:

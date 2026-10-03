@@ -20,12 +20,15 @@ function suscribir(avisar: () => void) {
 export function PanelFicha({
   fichas,
   titulo,
+  titulos,
   cerrar: textoCerrar,
   objetivo = ".lienzo .dg-nodo",
   clave = "data-nodo",
 }: {
   fichas: Record<string, string>;
   titulo: string;
+  /** El título de algunas fichas, si no es `titulo` (en el lado a lado, la ventana de un bloque). */
+  titulos?: Record<string, string>;
   cerrar: string;
   /** Qué elementos del lienzo abren el panel, y el atributo que dice cuál contenido mostrar. */
   objetivo?: string;
@@ -128,7 +131,7 @@ export function PanelFicha({
     >
       <div className="panel-cabeza">
         <span className="ojo" id="panel-titulo">
-          {titulo}
+          {(activo && titulos?.[activo]) || titulo}
         </span>
         <button type="button" className="cerrar" onClick={cerrarPanel}>
           {textoCerrar}

@@ -57,7 +57,7 @@ export interface VistaAtlas {
 function disponer(atlas: Atlas, idioma: Idioma, fechaConsulta: string, vista: Vista): { geo: Geometria; comun: VistaAtlas } {
   const tm = textosMotor();
   const geo = layout(atlas.mapa, atlas.gramatica, vista, { texts: tm, queryDate: fechaConsulta });
-  if (geo.avisos.length) throw new Error(`atlas ${atlas.plataforma.id}, ${vista}: avisos de geometría\n${geo.avisos.join("\n")}`);
+  if (geo.avisos.length) throw new Error(`atlas ${atlas.plataforma.id}, ${vista}: avisos de geometría\n${geo.avisos.map((a) => a.mensaje).join("\n")}`);
   return {
     geo,
     comun: {
@@ -72,7 +72,7 @@ function disponer(atlas: Atlas, idioma: Idioma, fechaConsulta: string, vista: Vi
 }
 
 /** Las fichas de todos los nodos (§ 4.5), por id: el panel muestra la del nodo activado. */
-function fichas(atlas: Atlas, idioma: Idioma, fechaConsulta: string): Record<string, string> {
+export function fichas(atlas: Atlas, idioma: Idioma, fechaConsulta: string): Record<string, string> {
   const tm = textosMotor();
   return Object.fromEntries(atlas.mapa.nodos.map((n) => [n.id, toCard(atlas.mapa, atlas.gramatica, n.id, { language: idioma, texts: tm, queryDate: fechaConsulta })]));
 }
@@ -83,25 +83,33 @@ export interface VistaNivel1 extends VistaAtlas {
   ventanas: Record<string, string>;
 }
 
-const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+export const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
 /**
  * Ventana de un elemento del nivel 1 (pedido del usuario en la mirada de Fabric): su nombre y su frase, sus
  * componentes dibujados por el motor (vista «bloque»: la tarjeta del nivel 2 y los flujos entre ellos), sus
  * tarjetas de texto (`toBlockCards`) y el paso al nivel 2. Un aviso de geometría rompe el build, como en las
- * demás vistas.
+ * demás vistas. `ojo`: una línea sobre el nombre (en el lado a lado, la banda y la plataforma); `nombre`: el título,
+ * si no es el del bloque o la banda (en el lado a lado, el de la tarjeta que se tocó).
  */
-function ventanas(atlas: Atlas, idioma: Idioma, fechaConsulta: string, elementos: readonly string[]): Record<string, string> {
+export function ventanas(
+  atlas: Atlas,
+  idioma: Idioma,
+  fechaConsulta: string,
+  elementos: readonly string[],
+  ojo?: (id: string) => string,
+  nombrar?: (id: string) => string | undefined,
+): Record<string, string> {
   const tm = textosMotor();
   const t = textos(idioma).atlas.ventana;
   const componentes = rutasAtlas(atlas, idioma).componentes!;
   return Object.fromEntries(
     elementos.map((id) => {
       const geo = layout(atlas.mapa, atlas.gramatica, "bloque", { texts: tm, queryDate: fechaConsulta, group: id });
-      if (geo.avisos.length) throw new Error(`atlas ${atlas.plataforma.id}, ventana ${id}: avisos de geometría\n${geo.avisos.join("\n")}`);
+      if (geo.avisos.length) throw new Error(`atlas ${atlas.plataforma.id}, ventana ${id}: avisos de geometría\n${geo.avisos.map((a) => a.mensaje).join("\n")}`);
       const banda = id.startsWith("_") ? atlas.gramatica.bandas.find((b) => b.id === id.slice(1)) : undefined;
       const bloque = banda ? undefined : atlas.mapa.bloques.find((b) => b.id === id);
-      const nombre = banda ? banda.nombre[idioma]! : bloque!.nombre[idioma]!;
+      const nombre = nombrar?.(id) ?? (banda ? banda.nombre[idioma]! : bloque!.nombre[idioma]!);
       const frase = banda ? banda.pregunta_lider[idioma]! : bloque!.lider[idioma]!;
       const prefijo = `${atlas.plataforma.id}-bl-${id.replace(/^_/, "banda-")}-${idioma}`;
       // Las tarjetas de texto son la versión en texto del dibujo de la ventana (G10, B-41 de la auditoría del S1).
@@ -109,7 +117,7 @@ function ventanas(atlas: Atlas, idioma: Idioma, fechaConsulta: string, elementos
       const tarjetas = toBlockCards(atlas.mapa, atlas.gramatica, id, { language: idioma, texts: tm, queryDate: fechaConsulta, id: `${prefijo}-texto` });
       return [
         id,
-        `<h2>${esc(nombre)}</h2><p class="ventana-lider">${esc(frase)}</p><div class="ventana-lienzo">${svg}</div>${tarjetas}<p class="ventana-mas"><a href="${esc(componentes)}">${esc(t.verComponentes)}</a></p>`,
+        `${ojo ? ojo(id) : ""}<h2>${esc(nombre)}</h2><p class="ventana-lider">${esc(frase)}</p><div class="ventana-lienzo">${svg}</div>${tarjetas}<p class="ventana-mas"><a href="${esc(componentes)}">${esc(t.verComponentes)}</a></p>`,
       ];
     }),
   );

@@ -6,7 +6,7 @@
 // la persona con `/design-sync` al cierre del ciclo (S4), y `project.json` no lo toca este generador.
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { opcionesPlataforma, vistaNivel1, vistaNivel2 } from "@/lib/atlas";
+import { opcionesPlataforma, vistaLado, vistaNivel1, vistaNivel2 } from "@/lib/atlas";
 import { cargarDatos } from "@/lib/datos";
 import { textos } from "@/lib/i18n";
 
@@ -18,6 +18,7 @@ const HOJAS = [
   "src/styles/base.css",
   "src/styles/diagrama.css",
   "src/styles/atlas.css",
+  "src/styles/lado.css",
 ];
 const FAMILIAS = `:root { --letra: "Space Grotesk", system-ui, sans-serif; --letra-mono: "JetBrains Mono", ui-monospace, monospace; }`;
 const PROPIAS = `.ds { padding: 24px 16px; display: grid; gap: 16px; max-width: 1280px; margin: 0 auto; }
@@ -87,6 +88,12 @@ export function bundle(): Record<string, string> {
   const t = textos("es");
   const v1 = vistaNivel1(atlas, "es", FECHA);
   const v2 = vistaNivel2(atlas, "es", FECHA);
+  // El lado a lado de la vitrina: solo la plataforma ficticia (ningún fabricante en la vitrina), con sus bloques y
+  // con sus componentes desplegados por el mismo botón (forma aprobada en la mirada M1 del S2).
+  const vl = vistaLado({ ...d, plataformas: d.plataformas.filter((p) => p.id === PLATAFORMA), atlas: new Map([[PLATAFORMA, atlas]]) }, "es", FECHA);
+  const fila = vl.filas[0]!;
+  const lado = (desplegado: boolean) =>
+    `<div class="lienzo-marco"><div class="lienzo-cabeza"><button type="button" class="boton boton-sec lado-todo" aria-expanded="${desplegado}">${esc(desplegado ? t.atlas.lado.contraer : t.atlas.lado.desplegar)}</button></div><div class="lienzo"${desplegado ? " data-todo" : ""}><div class="lado-cabecera">${vl.cabecera}</div><div class="lado-filas"><div class="lado-fila" data-fila="${fila.id}" data-inicio><div data-variante="n1">${fila.n1}</div><div data-variante="n2">${fila.n2}</div></div></div></div></div>`;
   const tokens = JSON.parse(leer("docs/diseno/assets/tokens.json")) as {
     temas: Record<string, Record<string, string>>;
     tipos: { token: string; id: string }[];
@@ -188,6 +195,15 @@ export function bundle(): Record<string, string> {
         v2.fichas["modelo-semantico"]!,
       ),
       fuente("toCard, nivel 2 (design-system.md § 5, «Ficha de nodo»)."),
+    ],
+    [
+      "componentes-s2/lado-a-lado.html",
+      "Componentes · S2",
+      "Lado a lado",
+      `${lado(false)}${lado(true)}`,
+      fuente(
+        "compare, parte «header» y «rows» con levelByBand: la fila con sus bloques y con todos sus componentes; un solo botón arriba a la derecha del recuadro alterna entre las dos, sin mover las columnas (mirada M1 del S2, 2026-10-02).",
+      ),
     ],
     [
       "componentes-s1/selector-de-plataforma.html",

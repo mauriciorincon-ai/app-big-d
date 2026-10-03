@@ -66,6 +66,35 @@ export interface Textos {
       pasos: string;
     };
     plataforma: { etiqueta: string; pronto: string; elegir: string; notaInicio: string; nota: string; notaInvestigador: string };
+    /** Lado a lado (`/[idioma]/comparar`). Plurales [uno, varios]; `numeros` escribe en palabras los que caben. */
+    lado: {
+      titulo: string;
+      ojo: string;
+      h1: readonly [string, string];
+      sub: string;
+      vigenciaPorFila: string;
+      guia: { entrada: string; resto: string };
+      selector: string;
+      orden: string;
+      paginacion: string;
+      anterior: string;
+      siguiente: string;
+      rango: string;
+      rangoUno: string;
+      desplegar: string;
+      contraer: string;
+      mapa: string;
+      lienzo: string;
+      pista: string;
+      pistaActivar: string;
+      pronto: string;
+      prontoFila: string;
+      prontoEnlace: string;
+      bandas: string;
+      sinComponentes: string;
+      ventanaDe: string;
+      numeros: readonly string[];
+    };
   };
   investigador: {
     titulo: string;

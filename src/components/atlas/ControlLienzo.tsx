@@ -7,7 +7,8 @@ import { useEffect } from "react";
  * estables). No dibuja el mapa: lo encuentra dentro de `#{mapa}` y le suma
  *   - desborde: `data-desborda` en la sección cuando el SVG no cabe (aparecen el índice y la pista);
  *   - sombras de borde: `data-mas-izq` / `data-mas-der` en el marco según lo que queda oculto;
- *   - índice de capas: cada botón `[data-col]` desplaza el lienzo hasta la x de su capa.
+ *   - índice de capas: cada botón `[data-col]` desplaza el lienzo hasta la x de su capa, y queda marcado mientras el
+ *     lienzo siga donde lo dejó (una capa del final que no llega al borde izquierdo ya no marca la última; S2).
  * Lo que abre un elemento activable (la ventana de un bloque en el nivel 1, la ficha de un componente en los
  * niveles 2 y 3) es de `PanelFicha`.
  * Con teclado, el lienzo es una región enfocable y las flechas lo desplazan (lo hace el navegador).
@@ -20,6 +21,7 @@ export function ControlLienzo({ mapa }: { mapa: string }) {
     const marco = raiz?.querySelector<HTMLElement>(".lienzo-marco");
     if (!raiz || !lienzo || !marco) return;
     const botones = [...raiz.querySelectorAll<HTMLElement>(".indice [data-col]")];
+    let elegido: { boton: HTMLElement; destino: number } | null = null;
 
     function medir() {
       const sobra = lienzo!.scrollWidth - lienzo!.clientWidth;
@@ -31,6 +33,7 @@ export function ControlLienzo({ mapa }: { mapa: string }) {
       let actual: HTMLElement | null = null;
       for (const b of botones) if (Number(b.dataset.x) <= lienzo!.scrollLeft + 40) actual = b;
       if (sobra > 2 && lienzo!.scrollLeft >= sobra - 2) actual = botones[botones.length - 1] ?? actual;
+      if (elegido && Math.abs(lienzo!.scrollLeft - elegido.destino) <= 2) actual = elegido.boton;
       for (const b of botones) b.setAttribute("aria-current", String(b === actual));
     }
 
@@ -38,6 +41,8 @@ export function ControlLienzo({ mapa }: { mapa: string }) {
       const objetivo = ev.target as Element;
       const boton = objetivo.closest<HTMLElement>(".indice [data-col]");
       if (boton) {
+        const sobra = lienzo!.scrollWidth - lienzo!.clientWidth;
+        elegido = { boton, destino: Math.min(Math.max(0, sobra), Math.max(0, Number(boton.dataset.x) - 8)) };
         lienzo!.scrollLeft = Math.max(0, Number(boton.dataset.x) - 8);
         medir();
       }

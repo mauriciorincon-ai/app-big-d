@@ -1,7 +1,8 @@
 // Las rutas del export, sacadas del dato (N plataformas, jamás una lista a mano): la raíz de cada idioma, las
 // vistas del atlas de cada plataforma publicada y el investigador de todas. Si una plataforma se publica,
 // sus rutas entran solas a las pruebas que recorren el sitio entero (g11, reduced-motion). El recorrido solo
-// si su mapa trae uno (B-17 d de la auditoría del S1: se suponía en toda plataforma publicada).
+// si su mapa trae uno (B-17 d de la auditoría del S1: se suponía en toda plataforma publicada). El lado a lado
+// (S2), una por idioma.
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { parse } from "yaml";
@@ -14,6 +15,8 @@ const plataformas = readdirSync(join(DATOS, "plataformas"))
   .map((f) => parse(readFileSync(join(DATOS, "plataformas", f), "utf8")) as { id: string; estado: string });
 
 export const PUBLICADAS = plataformas.filter((p) => p.estado === "publicada").map((p) => p.id);
+/** Todas las plataformas, en orden de id (el del lado a lado). */
+export const PLATAFORMAS = plataformas.map((p) => p.id);
 export const VISTAS_ATLAS = ["", "/componentes", "/recorrido"] as const;
 /** Las vistas que existen para una plataforma publicada: el recorrido, si su mapa trae uno. */
 export function vistasDe(id: string): string[] {
@@ -24,6 +27,7 @@ export function vistasDe(id: string): string[] {
 export { IDIOMAS };
 export const RUTAS = IDIOMAS.flatMap((i) => [
   `/${i}`,
+  `/${i}/comparar`,
   ...PUBLICADAS.flatMap((p) => vistasDe(p).map((v) => `/${i}/atlas/${p}${v}`)),
   ...plataformas.map((p) => `/${i}/investigador/${p.id}`),
 ]);
