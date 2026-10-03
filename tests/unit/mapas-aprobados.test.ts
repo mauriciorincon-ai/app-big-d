@@ -1,7 +1,7 @@
 // @vitest-environment node
 // M-16 de la auditoría del S1: el mapa publicado de cada plataforma real es EXACTAMENTE el que aprobó una
 // persona (huella y versión de la última línea de data/revisiones/). Una palabra cambiada a mano lo rompe.
-import { cpSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { appendFileSync, cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterAll, describe, expect, it } from "vitest";
@@ -25,5 +25,24 @@ describe("los mapas publicados son los aprobados", () => {
     writeFileSync(ruta, texto.slice(0, i) + texto.slice(i).replace(/(es: )(\S)/, "$1Casi $2"));
     const f = mapasSinAprobacion(cargarDatos(copia), copia);
     expect(f).toEqual([expect.stringMatching(/^data\/mapas\/fabric\.mapa\.yaml · su huella no es la que aprobó una persona/)]);
+  });
+  // D-S2-09: una versión archivada también es la que aprobó una persona, y ninguna aprobada falta del archivo.
+  it("una versión archivada que no aprobó nadie, o una aprobada que falta del archivo, lo rompe", () => {
+    const otra = mkdtempSync(join(tmpdir(), "bigd-versiones-"));
+    try {
+      cpSync("data", otra, { recursive: true });
+      mkdirSync(join(otra, "mapas/versiones"));
+      const texto = readFileSync(join(otra, "mapas/fabric.mapa.yaml"), "utf8");
+      writeFileSync(join(otra, "mapas/versiones/fabric-0.0.1.mapa.yaml"), texto.replace(/^version: 0\.1\.0$/m, "version: 0.0.1"));
+      appendFileSync(join(otra, "revisiones/fabric.jsonl"), readFileSync(join(otra, "revisiones/fabric.jsonl"), "utf8").trim().split("\n").at(-1)!.replace('"mapa_version":"0.1.0"', '"mapa_version":"0.0.5"') + "\n");
+      const f = mapasSinAprobacion(cargarDatos(otra), otra);
+      expect(f).toEqual([
+        expect.stringMatching(/^data\/mapas\/fabric\.mapa\.yaml · versión 0\.1\.0; la aprobada es 0\.0\.5$/),
+        expect.stringMatching(/^data\/mapas\/versiones\/fabric-0\.0\.1\.mapa\.yaml · no es la versión 0\.0\.1 que aprobó una persona/),
+        "data/mapas/versiones/fabric-0.0.5.mapa.yaml · falta: la versión 0.0.5 se aprobó y no está archivada",
+      ]);
+    } finally {
+      rmSync(otra, { recursive: true, force: true });
+    }
   });
 });

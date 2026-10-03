@@ -116,7 +116,7 @@ describe("una segunda propuesta que retira un componente", () => {
     expect(r.status).toBe(1);
     expect(r.stderr).toContain("retiros · el componente «monitor-capacidad» sale del mapa sin argumento");
   });
-  it("con su retiro: valida, su cita se verifica y la aprobación lo saca del mapa con sus flujos", () => {
+  it("con su retiro: valida, su cita se verifica y la aprobación lo saca del mapa con sus flujos (y archiva la versión anterior)", async () => {
     const { q, flujos } = preparar(true);
     const v = correr("scripts/investigar/validar.mjs", [carpeta2]);
     expect(v.status, v.stderr).toBe(0);
@@ -126,8 +126,13 @@ describe("una segunda propuesta que retira un componente", () => {
     const verif = JSON.parse(readFileSync(join(raiz, carpeta2, "verificacion.json"), "utf8"));
     expect(verif.resultados.find((x: { afirmacion: string }) => x.afirmacion === "R-1")).toMatchObject({ resultado: "verificada", url: `${BASE}novedades` });
     const ids = q.afirmaciones.map((a) => a.id).join(",");
+    const primera = readFileSync(join(raiz, "data/mapas", `${PLATAFORMA}.mapa.yaml`));
     const r = correr(APROBAR, [carpeta2, "--aprobar", ids, "--rechazar", "-", "--retirar", ["monitor-capacidad", ...flujos].join(",")]);
     expect(r.status, r.stderr).toBe(0);
+    // D-S2-09: la versión anterior queda archivada con sus mismos bytes, y el cargador la lee.
+    expect(readFileSync(join(raiz, "data/mapas/versiones", `${PLATAFORMA}-0.1.0.mapa.yaml`)).equals(primera)).toBe(true);
+    const { cargarDatos } = await import("@/lib/datos");
+    expect(cargarDatos(join(raiz, "data"), process.cwd()).versiones.get(PLATAFORMA)!.map((v) => v.version)).toEqual(["0.1.0"]);
     const mapa = parse(readFileSync(join(raiz, "data/mapas", `${PLATAFORMA}.mapa.yaml`), "utf8"));
     expect(mapa.nodos.some((n: { id: string }) => n.id === "monitor-capacidad")).toBe(false);
     expect(mapa.version).toBe("0.2.0");

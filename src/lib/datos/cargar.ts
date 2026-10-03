@@ -19,11 +19,21 @@ export interface Atlas {
   gramatica: Gramatica;
 }
 
+/** Una versión anterior de un mapa publicado, archivada byte a byte al aprobar la siguiente (D-S2-09). */
+export interface VersionArchivada {
+  version: string;
+  mapa: Mapa;
+  /** `data/mapas/versiones/<id>-<versión>.mapa.yaml`. */
+  archivo: string;
+}
+
 export interface Datos {
   /** Todas las plataformas, publicadas o no, ordenadas por id (el mismo orden en todos los idiomas). */
   plataformas: Plataforma[];
   /** Las publicadas, con su mapa y su gramática ya validados. */
   atlas: Map<string, Atlas>;
+  /** Las versiones anteriores de cada mapa publicado, de la más vieja a la más nueva (sin la vigente). */
+  versiones: Map<string, VersionArchivada[]>;
 }
 
 export class ErrorDeDatos extends Error {
@@ -34,6 +44,14 @@ export class ErrorDeDatos extends Error {
 }
 
 const porId = (a: { id: string }, b: { id: string }) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0);
+/** Orden de versiones X.Y.Z por sus números (0.10.0 va después de 0.9.0). */
+export function compararVersion(a: string, b: string): number {
+  const x = a.split(".").map(Number);
+  const y = b.split(".").map(Number);
+  for (let i = 0; i < 3; i++) if (x[i] !== y[i]) return (x[i] ?? 0) - (y[i] ?? 0);
+  return 0;
+}
+const VERSIONADO = /^([a-z0-9]+(?:-[a-z0-9]+)*)-(\d+\.\d+\.\d+)\.mapa\.yaml$/;
 /**
  * ¿La URL es de un dominio reservado para ejemplos (RFC 2606 y 6761)? example.org/.com/.net y los dominios de
  * primer nivel .example, .invalid y .test: ninguno puede ser el de una institución real.
@@ -161,8 +179,40 @@ export function cargarDatos(dir = join(process.cwd(), "data"), raiz = process.cw
     atlas.set(p.id, { plataforma: p, mapa, gramatica: g });
   }
 
+  // Versiones archivadas (D-S2-09): cada una es de una plataforma publicada, anterior a su mapa vigente, de la
+  // misma gramática, y se valida y dibuja como un mapa publicado (la página de diferencias la dibuja). Que sea
+  // EXACTAMENTE la que aprobó una persona lo comprueba `mapasSinAprobacion`, con las huellas de data/revisiones/.
+  const versiones = new Map<string, VersionArchivada[]>();
+  const dirVersiones = join(dir, "mapas", "versiones");
+  const archivadas = existsSync(dirVersiones) ? readdirSync(dirVersiones).filter((x) => x.endsWith(".mapa.yaml")).sort() : [];
+  for (const f of archivadas) {
+    const archivo = `data/mapas/versiones/${f}`;
+    const m = VERSIONADO.exec(f);
+    if (!m) {
+      fallas.push(`${archivo} · nombre · se llama <plataforma>-<versión>.mapa.yaml (p. ej. fabric-0.1.0.mapa.yaml)`);
+      continue;
+    }
+    const [, id, version] = m as unknown as [string, string, string];
+    const vigente = atlas.get(id);
+    if (!vigente) {
+      fallas.push(`${archivo} · versión archivada de «${id}», que no tiene un mapa publicado`);
+      continue;
+    }
+    const leido = leerYaml(join(dirVersiones, f), archivo);
+    if (leido === ROTO) continue;
+    const dato = migrarContrato(leido) as Record<string, unknown> | null;
+    const inf = validate(dato, vigente.gramatica, { mode: "publicacion", coverage: cob, texts: motor, queryDate: fecha });
+    for (const e of [...inf.errores, ...inf.alertas]) fallas.push(linea(archivo, e));
+    if (!inf.ok || inf.alertas.length) continue;
+    const mapa = dato as unknown as Mapa;
+    if (mapa.sujeto_id !== id) fallas.push(`${archivo} · /sujeto_id · «${mapa.sujeto_id}» no es la plataforma del nombre («${id}»)`);
+    if (mapa.version !== version) fallas.push(`${archivo} · /version · dice ${mapa.version} y el nombre ${version}`);
+    if (compararVersion(version, vigente.mapa.version) >= 0) fallas.push(`${archivo} · /version · ${version} no es anterior a la vigente (${vigente.mapa.version})`);
+    versiones.set(id, [...(versiones.get(id) ?? []), { version, mapa, archivo }].sort((a, b) => compararVersion(a.version, b.version)));
+  }
+
   if (fallas.length) throw new ErrorDeDatos(fallas);
-  return { plataformas, atlas };
+  return { plataformas, atlas, versiones };
 }
 
 let memoria: Datos | undefined;

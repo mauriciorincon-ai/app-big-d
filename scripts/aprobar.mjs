@@ -5,6 +5,8 @@
 // accidente. La pantalla de revisión del investigador arma el comando con las decisiones.
 //
 // Con la propuesta verificada y la decisión por afirmación escribe:
+//   data/mapas/versiones/<plataforma>-<versión>.mapa.yaml   el mapa que había, byte a byte, si la versión cambia
+//                                       (D-S2-09: nada aprobado se pierde; la página de diferencias lo dibuja)
 //   data/mapas/<plataforma>.mapa.yaml   el mapa aprobado (solo lo aprobado; valida en modo publicación)
 //   data/plataformas/<plataforma>.yaml  estado «publicada»
 //   data/revisiones/<plataforma>.jsonl  una línea con la decisión (también «sin novedades»), la última
@@ -15,7 +17,7 @@
 import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, renameSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, relative } from "node:path";
-import { stringify } from "yaml";
+import { parse, stringify } from "yaml";
 import { cargarTs, RAIZ_REPO } from "./lib/cargar-ts.mjs";
 import { carpetaPropuesta, gramaticaDe, hoy, leerYaml, puedeAprobar, RAIZ, rangos } from "./investigar/comun.mjs";
 
@@ -25,7 +27,28 @@ function escribirEntero(ruta, texto) {
   renameSync(`${ruta}.tmp`, ruta);
 }
 
+/**
+ * Antes de sobrescribir un mapa con otra versión, la que había se archiva con sus mismos bytes (su huella es la que
+ * aprobó una persona). Si el archivo ya existe con otros bytes, no se toca nada.
+ */
+function archivarAnterior(raiz, id, mapa) {
+  const ruta = join(raiz, "data/mapas", `${id}.mapa.yaml`);
+  if (!existsSync(ruta)) return;
+  const bytes = readFileSync(ruta);
+  const version = parse(bytes.toString("utf8")).version;
+  if (version === mapa.version) return;
+  const dir = join(raiz, "data/mapas/versiones");
+  const destino = join(dir, `${id}-${version}.mapa.yaml`);
+  if (existsSync(destino)) {
+    if (!readFileSync(destino).equals(bytes)) throw new Error(`data/mapas/versiones/${id}-${version}.mapa.yaml ya existe con otro contenido: no se sobrescribe una versión aprobada`);
+    return;
+  }
+  mkdirSync(dir, { recursive: true });
+  escribirEntero(destino, bytes);
+}
+
 function escribir(raiz, id, mapa, revision, carpeta, fecha) {
+  archivarAnterior(raiz, id, mapa);
   // La fecha es la del día en UTC (B-32): en otra zona horaria puede no ser la de la persona.
   const cabecera = `# APROBADO por una persona el ${fecha} (UTC) desde ${carpeta} (scripts/aprobar.mjs).\n# Solo contiene afirmaciones aprobadas. No se edita a mano: se vuelve a investigar.\n`;
   escribirEntero(join(raiz, "data/mapas", `${id}.mapa.yaml`), cabecera + stringify(mapa, { lineWidth: 0, version: "1.2" }));
