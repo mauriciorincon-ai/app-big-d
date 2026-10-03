@@ -5,6 +5,8 @@ import type { TextoIdioma } from "../tipos";
 import type { Decimas } from "../util/numeros";
 
 export type Vista = "nivel1" | "nivel2" | "recorrido" | "bloque";
+/** Lo que puede dibujar una geometría: las vistas de `layout` y el lado a lado de `compare` (§ 4.4). */
+export type VistaGeometria = Vista | "compare";
 /**
  * Clase de un aviso de geometría (§ 5.6). `texto` es extensión del piloto (va a «Enmiendas»): un texto con más
  * líneas que su caja, una palabra que no cabe sola o una cabecera de franja más alta que su fila.
@@ -12,7 +14,7 @@ export type Vista = "nivel1" | "nivel2" | "recorrido" | "bloque";
 export type TipoAviso = "D11" | "pistas" | "fuera-del-lienzo" | "encima" | "etiqueta" | "bloque-vacio" | "canal" | "carriles" | "texto";
 /** Aviso de geometría con forma fija (§ 5.6): `id` es el elemento que lo causa; `mensaje` empieza por «<tipo>: ». */
 export interface Aviso {
-  vista: Vista;
+  vista: VistaGeometria;
   tipo: TipoAviso;
   id: string;
   mensaje: string;
@@ -70,7 +72,12 @@ export interface PasoGeo {
 }
 
 export interface Geometria {
-  vista: Vista;
+  vista: VistaGeometria;
+  /**
+   * Variante del dibujo de una misma vista, para el espacio de nombres por defecto de `toSVG` (D8): en el lado a lado,
+   * «n1» con la rejilla de componentes contraída y «n2» con alguna banda desplegada; así las dos de una fila conviven.
+   */
+  variante?: string;
   sujeto: string;
   gramatica: string;
   idiomas: string[];
@@ -127,9 +134,29 @@ export interface TextosMotor {
   /** Vigencia en palabras para el nombre accesible: «{n}» días. */
   porRevisar: string;
   vencido: string;
-  /** Títulos y descripciones del SVG por vista: «{sujeto}», «{capas}», «{franjas}», «{nodos}», «{recorrido}», «{bloque}». */
-  titulo: Record<Vista, string>;
-  descripcion: Record<Vista, string>;
+  /**
+   * Títulos y descripciones del SVG por vista: «{sujeto}», «{capas}», «{franjas}», «{nodos}», «{recorrido}», «{bloque}»;
+   * en el lado a lado, «{sujetos}» y «{mapas}».
+   */
+  titulo: Record<VistaGeometria, string>;
+  descripcion: Record<VistaGeometria, string>;
+  /** Lado a lado (§ 4.4) y sus marcas de diferencia (§ 4.7). */
+  lado: {
+    /** Rótulo de cada fila, por el estado de su nodo más viejo: «{version}» y «{n}» días. */
+    fila: Plural;
+    filaRevisar: string;
+    filaVencido: string;
+    /** Cuenta del bloque compacto: «{n} comp.». */
+    comp: Plural;
+    sinComponentes: string;
+    /** Palabra de cada marca de diferencia: va siempre con su glifo (G7). */
+    marcas: { nuevo: string; retirado: string; renombrado: string; madurez: string };
+    /**
+     * Lista explicativa (`diffToText`): qué cambió en cada componente («{banda}», «{madurez}», «{antes}», «{ahora}»),
+     * cuántos flujos o pasos cambiaron («{n}») y la línea de «sin diferencias».
+     */
+    detalle: { nuevo: string; retirado: string; renombrado: string; madurez: string; otros: Plural; ninguna: string };
+  };
   /** Nombre accesible de un paso: «{numero}» y «{que}». */
   paso: string;
   /** Lectura en texto (G10): «{nombre}», «{modo}» y «{que}». */

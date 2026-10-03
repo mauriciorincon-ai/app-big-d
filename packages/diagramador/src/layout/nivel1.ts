@@ -38,7 +38,7 @@ export interface Elem {
 }
 
 /** Elementos de una banda: sus bloques (por id) y, si quedan nodos sin bloque, una caja «N componentes». */
-function elementosDe(ctx: Contexto, b: Banda): Elem[] {
+export function elementosDe(ctx: Contexto, b: Banda): Elem[] {
   const nodos = nodosDe(ctx, b.id);
   const bloques = ordenarPor(ctx.mapa.bloques.filter((x) => x.banda_id === b.id), (x) => x.id);
   const out: Elem[] = bloques.map((bl) => ({ id: bl.id, banda: b, fantasma: false, bloque: bl, nodos: nodos.filter((n) => n.bloque_id === bl.id) }));
@@ -54,7 +54,7 @@ function elementosDe(ctx: Contexto, b: Banda): Elem[] {
  * Nombre de la tarjeta (§ 4.1): el del bloque; sin bloque, el del único nodo, y con varios nodos la caja
  * no lleva nombre (solo «N componentes»). En la ficha de franja la maqueta nombra con «N componentes».
  */
-function nombreElem(ctx: Contexto, e: Elem, l: string, ficha = false): string {
+export function nombreElem(ctx: Contexto, e: Elem, l: string, ficha = false): string {
   if (e.bloque) return e.bloque.nombre[l]!;
   if (e.nodos.length === 1) return e.nodos[0]!.nombre[l]!;
   return ficha ? plural(ctx.textos[l]!.componentes, e.nodos.length) : "";
@@ -65,7 +65,7 @@ function nombreRef(ctx: Contexto, e: Elem, l: string): string {
   return nombreElem(ctx, e, l) || e.banda.nombre[l]!;
 }
 
-function tipoDe(ctx: Contexto, e: Elem) {
+export function tipoDe(ctx: Contexto, e: Elem) {
   const t = e.nodos[0] ? ctx.tipo.get(e.nodos[0].tipo_id) : undefined;
   return t ?? { token_color: "ninguno", glifo: undefined };
 }

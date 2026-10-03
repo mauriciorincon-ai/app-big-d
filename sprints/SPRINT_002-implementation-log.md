@@ -251,6 +251,57 @@ Decisiones D-S2-01 a D-S2-11 y los siete hechos que cambiaron el trabajo: en el 
   `mapas-aprobados` nombra `data/mapas/fabric.mapa.yaml · V16 · nivel2 · pistas: f-lakehouse-agente corre bajo la
   punta de f-dataflow-warehouse`. **Verde** al restaurarla: `pnpm test` 1081/1081.
 
+### `compare` y las diferencias dibujables (§ 4.4, § 4.7)
+
+- **`compare(maps, grammar, { texts, queryDate, levelByBand?, n?, page?, part?, marks? })`** →
+  `packages/diagramador/src/layout/compare.ts`:
+  - **columnas:** capas y franjas en el orden de la gramática;
+  - **rejillas:** sin `levelByBand`, la de bloques de § 5.3 (118 u a 14 u, viewBox 1190; bloque compacto 118 × 64);
+    con `levelByBand`, la de componentes (152 u, viewBox 1496; nodos 152 × 88 a 8 u), **aunque ninguna banda esté
+    en 2**, para que desplegar no mueva columnas;
+  - **filas:** orden por `sujeto_id`; `n`/`page` del consumidor (el motor no conoce el 3); ids con prefijo por mapa
+    (D12) y `data-mapa`; gramáticas distintas, bandas que no existen o marcas sin dos mapas lanzan un error claro.
+- **El producto: filas independientes en lugar de `toCompareCSS` (simplificación de D-S2-07, registrada).** Con la
+  forma aprobada en M1 (un solo botón despliega todo y contrae todo), cada fila sale de `compare([mapa], …,
+  { part: "rows" })` en sus dos variantes (`levelByBand: {}` y todas en 2) y el botón alterna entre los dos SVG; la
+  cabecera, de `part: "header"`. Las dos variantes tienen espacios de nombres distintos (`variante` «n1»/«n2» en la
+  geometría). Propiedad probada: cada fila sola es su fila de la comparación entera, trasladada.
+- **Decisiones menores (registradas, al gate del ciclo):**
+  - el nodo del lado a lado usa las medidas de la maqueta (`nodoComp`): glifo 3 u más cerca del filete y 7 u más
+    para el nombre; con las del nivel 2, «enmascaramiento» no cabía (aviso visto);
+  - **el lado a lado no lleva insignias de vigencia:** en el bloque compacto la insignia montada no cabe a 118 u y se
+    salía a la columna vecina; en el nivel 2 pisaba el nombre del bloque. La matriz de envejecimiento lo vio (44, 75,
+    22 y 30 avisos según la variante). El estado va en palabras en el rótulo de cada fila
+    («v0.1.0 · por revisar · 34 días») y en el nombre accesible de cada tarjeta, como la maqueta, que no las dibuja.
+- **Marcas de diferencia (`marks`, D-S2-08):** una píldora glifo + palabra por clase presente (nuevo, renombrado,
+  madurez en la fila nueva; retirado, llena, en la anterior), montada 2 u bajo el borde de su tarjeta. Si no caben en
+  el ancho de la tarjeta, pasan a otra fila (a 118 u, «madurez» + «nuevo» se metían en la columna vecina: el aviso
+  `encima:` lo vio en la primera captura). Sus paths (los de la maqueta) solo van en el `<defs>` del lado a lado,
+  para no tocar los 30 golden de las demás vistas. § 5.4 no los trae: a «Enmiendas».
+- **`diffToText(before, after, grammar, { language, texts })`:** la lista explicativa, en el orden de las clases, con
+  glifo + palabra, nombre, banda y qué cambió («Antes «Conector JDBC». Mismo componente.»); sin cambios lo dice; los
+  flujos y pasos se cuentan. § 8 no la trae: a «Enmiendas».
+- **Textos nuevos del motor** (`texts.lado`, `titulo.compare`, `descripcion.compare`) en la app y en las pruebas.
+  Copy de las marcas y de la lista: mirada de TEXTO, «maquetado, no visto».
+- **Golden: 14 nuevos** (`lado.bloques`, `lado.pagina-2`, `lado.contraido`, `lado.una-banda`, `lado.desplegado`,
+  `lado.diferencias` y `lado.diferencias-desplegado`, ES y EN), con los mismos casos en Node y en el navegador
+  (`test/lib/lado.ts` sin `fs`). Determinismo local: los 44 SVG con la misma huella en Chromium, Firefox y WebKit; G15
+  mide ahora 1734 textos (el más ajustado, 97,1 %). Revisados como imagen en los dos idiomas (bloques, desplegado y
+  las dos diferencias).
+
+| Gate | ¿Puede fallar? | Rojo (mutación de una línea) | A quién nombró | Verde |
+|---|---|---|---|---|
+| G5 entre N mapas | sí: las columnas podrían depender de las filas | franjas al revés con más de 2 mapas | «columnas…», «G5 entre N mapas», «fila sola» | restaurado |
+| Invariancia al orden | sí: sin orden por `sujeto_id` | orden de llegada | «invariancia al orden», «n y page» | restaurado |
+| El nivel por banda no mueve columnas | sí: la rejilla podría seguir al despliegue | rejilla según `desplegada` | «no mueve columnas», «desplegar una banda», «columnas» | restaurado |
+| Fila independiente = fila trasladada | sí: un margen propio la corre | filas solas desde 4 u | «la fila de un mapa sola», «cabecera sola» | restaurado |
+| Píldoras dentro de su tarjeta | sí: sin partir en filas se salen | sin el salto de fila | «las píldoras no salen…», matriz «diferencias» | restaurado |
+| Matriz de envejecimiento en `compare` | sí | las insignias, de verdad (antes de la decisión) | 44/75/22/30 avisos `fuera-del-lienzo`/`encima` | sin insignias |
+| `diffToText` en orden de clases | sí | orden sin la clase | «una línea por componente», «glifo de su clase» | restaurado |
+
+- **Corridas:** `pnpm test` 1220/1220 (`compare.ts` 95 % de líneas, `diffToText.ts` 100 %); determinismo 6/6 en tres
+  motores; CI de `28676d2` y `8a647b9` en `success` en los cinco checks y Vercel, cero comentarios del bot.
+
 ## Desviación del plan
 
 Lo que el plan aprobado ya declaró frente a la orden y a `SPRINT_002.md`:

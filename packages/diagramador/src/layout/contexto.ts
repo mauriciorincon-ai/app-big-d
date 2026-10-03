@@ -5,7 +5,7 @@ import { METRICAS_PILOTO, medidor, type Medidor } from "../texto/metricas";
 import { diasEntre } from "../util/fechas";
 import { estadoVigencia } from "../util/vigencia";
 import { ordenarPor } from "../util/orden";
-import type { Aviso, Geometria, OpcionesLayout, Plural, TextosMotor, TipoAviso, Vigencia, Vista } from "./tipos";
+import type { Aviso, Geometria, OpcionesLayout, Plural, TextosMotor, TipoAviso, Vigencia, VistaGeometria } from "./tipos";
 
 // Constantes de § 5.3, en décimas.
 export const M = 80;
@@ -32,11 +32,11 @@ export interface Contexto {
   mono: Medidor;
   textos: Record<string, TextosMotor>;
   fechaConsulta: string;
-  vista: Vista;
+  vista: VistaGeometria;
   avisos: Aviso[];
 }
 
-export function contexto(mapa: Mapa, gramatica: Gramatica, opciones: OpcionesLayout, vista: Vista): Contexto {
+export function contexto(mapa: Mapa, gramatica: Gramatica, opciones: OpcionesLayout, vista: VistaGeometria): Contexto {
   const tabla = opciones.metricas ?? METRICAS_PILOTO;
   const sans = tabla.fuentes[opciones.fuente ?? "space-grotesk"];
   const mono = tabla.fuentes[opciones.fuenteMono ?? "jetbrains-mono"];

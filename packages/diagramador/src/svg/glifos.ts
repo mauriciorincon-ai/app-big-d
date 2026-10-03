@@ -37,3 +37,14 @@ export const MARCAS: Record<string, { d: string; trazo: string }> = {
   doc: { d: "M-4,-5.5 H2 L4.5,-3 V5.5 H-4 Z M-1.5,-1 H2 M-1.5,2 H2", trazo: "1.3" },
   rama: { d: "M-5,-3 H5 M-5,3 H5 M1.5,-6 L5,-3 L1.5,0 M1.5,0 L5,3 L1.5,6", trazo: "1.6" },
 };
+
+/**
+ * Marcas de diferencia (§ 4.7): + nuevo, − retirado, → renombrado, ▮ madurez, con los paths de la maqueta aprobada
+ * (§ 5.4 no los trae: va a «Enmiendas»). Solo las lleva el lado a lado, así el `<defs>` de las demás vistas no cambia.
+ */
+export const DIFERENCIAS: Record<string, { d: string; trazo: string }> = {
+  nuevo: { d: "M0,-4.5 V4.5 M-4.5,0 H4.5", trazo: "2" },
+  retirado: { d: "M-4.5,0 H4.5", trazo: "2" },
+  renombrado: { d: "M-5,0 H4 M1,-3.5 L4.5,0 L1,3.5", trazo: "1.8" },
+  madurez: { d: "M-3.5,4.5 V-1 M0,4.5 V-4.5 M3.5,4.5 V1.5", trazo: "2" },
+};

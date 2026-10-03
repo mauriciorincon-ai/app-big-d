@@ -2,6 +2,7 @@
 // packages/diagramador/test/golden.test.ts, con los datos importados como JSON (esbuild los empaqueta; el
 // navegador no lee archivos). Expone `window.diagramadorGolden()` → [{ archivo, svg }].
 import { layout, toSVG, type Gramatica, type Mapa, type Vista } from "../../packages/diagramador/src/index";
+import { mapasLado, salidasLado, versiones } from "../../packages/diagramador/test/lib/lado";
 import { TEXTOS } from "../../packages/diagramador/test/lib/textos";
 import gAgentes from "../../packages/diagramador/gramaticas/agentes-ia.json";
 import gPlataformas from "../../packages/diagramador/gramaticas/plataformas-datos.json";
@@ -16,6 +17,8 @@ import mPApp from "../../packages/diagramador/ejemplos/prueba-arquitectura-app.m
 import mPNubes from "../../packages/diagramador/ejemplos/prueba-nubes.mapa.json";
 import mPProcesos from "../../packages/diagramador/ejemplos/prueba-procesos.mapa.json";
 import mA3 from "../../packages/diagramador/carnadas/A3-cuatro-modos-en-un-par.mapa.json";
+import mA2 from "../../packages/diagramador/carnadas/A2-ocho-bloques.mapa.json";
+import mP1 from "../../packages/diagramador/carnadas/P1-mapa-denso.mapa.json";
 
 const FECHA = "2026-09-26";
 const VISTAS: Vista[] = ["nivel1", "nivel2", "recorrido"];
@@ -47,4 +50,13 @@ const BLOQUES = [
     const geo = layout(mapa, g, "bloque", { texts: TEXTOS, queryDate: FECHA, group: grupo });
     return g.idiomas.map((idioma) => ({ archivo: `${mapa.sujeto_id}.bloque-${grupo}.${idioma}.svg`, svg: toSVG(geo, { language: idioma }) }));
   }),
+  // El lado a lado y las diferencias: los mismos casos que `SALIDAS_LADO` en golden.test.ts.
+  ...(() => {
+    const ejemplo = mPlataforma as unknown as Mapa;
+    const g = GRAMATICAS["plataformas-datos"]!;
+    const { antes, despues } = versiones(ejemplo);
+    return salidasLado(g, mapasLado(ejemplo, mP1 as unknown as Mapa, mA2 as unknown as Mapa, mA3 as unknown as Mapa), antes, despues).flatMap((s) =>
+      g.idiomas.map((idioma) => ({ archivo: `${s.archivo}.${idioma}.svg`, svg: s.svg(idioma) })),
+    );
+  })(),
 ];
