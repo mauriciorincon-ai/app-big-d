@@ -4,7 +4,7 @@
 // motores: una CSP puede romper en uno solo. La maqueta (`/diseno/`) trae la suya por cabecera, fija.
 import { expect, test, type Page } from "@playwright/test";
 import { abrir, listo } from "./lib/abrir";
-import { RUTAS } from "./lib/rutas";
+import { IDIOMAS, PUBLICADAS, RUTAS } from "./lib/rutas";
 
 declare global {
   interface Window {
@@ -42,6 +42,27 @@ for (const ruta of RUTAS)
     expect(await page.evaluate(() => window.__violaciones)).toEqual([]);
     expect(errores).toEqual([]);
   });
+
+// Al cambiar de nivel con las pestañas, Next no recarga: React inserta el `<style>` de la página nueva (las reglas de
+// los pasos del recorrido) bajo la CSP de la primera. Por eso cada página lleva las huellas de estilo del sitio entero
+// (S2, fase 2: el recorrido llegaba sin sus reglas desde el nivel 1).
+for (const idioma of IDIOMAS)
+  for (const p of PUBLICADAS)
+    test(`/${idioma}/atlas/${p}: las pestañas de nivel cambian de página sin recargar y sin una sola violación`, async ({ page }) => {
+      await escucharViolaciones(page);
+      await page.goto(`/${idioma}/atlas/${p}`);
+      await listo(page);
+      await page.evaluate(() => ((window as unknown as { __sinRecargar: boolean }).__sinRecargar = true));
+      const destinos = await page.locator(".niveles a[href]").evaluateAll((as) => as.map((a) => a.getAttribute("href")!));
+      expect(destinos.length).toBeGreaterThan(1);
+      for (const destino of destinos) {
+        await page.locator(`.niveles a[href="${destino}"]`).click();
+        await expect(page).toHaveURL(new RegExp(`${destino.replace(/[.?]/g, "\\$&")}$`));
+        await expect(page.locator(`.niveles a[href="${destino}"]`)).toHaveAttribute("aria-current", "page");
+      }
+      expect(await page.evaluate(() => (window as unknown as { __sinRecargar?: boolean }).__sinRecargar)).toBe(true);
+      expect(await page.evaluate(() => window.__violaciones)).toEqual([]);
+    });
 
 test("la maqueta trae su CSP de cabecera, sin scripts en línea", async ({ request }) => {
   const r = await request.get("/diseno/index.html");

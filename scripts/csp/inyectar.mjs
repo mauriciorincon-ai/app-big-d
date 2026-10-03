@@ -6,6 +6,10 @@
 // `<meta charSet>`, antes de cualquier script. Se niega a publicar una página con `style="…"` o un manejador
 // `on…=` en línea (pedirían `'unsafe-hashes'`). La maqueta (`out/diseno/`) no pasa por aquí: lleva su propia CSP
 // de cabecera, fija, en `vercel.json` y `serve.json`. Correrlo dos veces da los mismos bytes.
+// Los estilos en línea de TODAS las páginas van en la política de cada una: al cambiar de página sin recargar
+// (un `<Link>` de Next), React inserta el `<style>` de la página nueva bajo la política de la primera (S2, fase 2:
+// las reglas de los pasos del recorrido quedaban bloqueadas al llegar desde el nivel 1). Los scripts no: React no
+// ejecuta un `<script>` en línea que inserta en el cliente.
 //
 // Uso: node scripts/csp/inyectar.mjs [carpeta]   (por defecto, out/)
 import { createHash } from "node:crypto";
@@ -41,19 +45,29 @@ export function politica({ scripts, estilos, conectar = [] }) {
 }
 
 /**
- * El HTML con su CSP. Lanza si la página trae lo que una CSP con huellas no puede permitir sin `unsafe-hashes`.
+ * Las huellas de los `<style>` en línea de una página.
  * @param {string} html
- * @param {{ conectar?: string[], archivo?: string }} [opciones]
+ * @returns {string[]}
+ */
+export function estilosEnLinea(html) {
+  return unicas([...html.matchAll(ESTILO_EN_LINEA)].map((m) => huella(m[1])));
+}
+
+/**
+ * El HTML con su CSP. Lanza si la página trae lo que una CSP con huellas no puede permitir sin `unsafe-hashes`.
+ * `estilosDelSitio`: las huellas de estilo de las demás páginas, a las que se llega sin recargar.
+ * @param {string} html
+ * @param {{ conectar?: string[], archivo?: string, estilosDelSitio?: string[] }} [opciones]
  * @returns {{ html: string, scripts: number, estilos: number }}
  */
-export function conCSP(html, { conectar = [], archivo = "página" } = {}) {
+export function conCSP(html, { conectar = [], archivo = "página", estilosDelSitio = [] } = {}) {
   const limpio = html.replace(META, "");
   if (!limpio.includes(CHARSET)) throw new Error(`${archivo}: no trae ${CHARSET}; la CSP tiene que ir antes de cualquier script`);
   const sinCodigo = limpio.replace(SCRIPT_EN_LINEA, "").replace(ESTILO_EN_LINEA, "");
   const atributo = sinCodigo.match(/<[a-zA-Z][^>]*?\s(style|on[a-z]+)=/);
   if (atributo) throw new Error(`${archivo}: trae el atributo en línea «${atributo[1]}=»; muévelo a una clase o a un script`);
   const scripts = unicas([...limpio.matchAll(SCRIPT_EN_LINEA)].map((m) => huella(m[1])));
-  const estilos = unicas([...limpio.matchAll(ESTILO_EN_LINEA)].map((m) => huella(m[1])));
+  const estilos = unicas([...estilosEnLinea(limpio), ...estilosDelSitio]);
   const meta = `<meta http-equiv="Content-Security-Policy" content="${politica({ scripts, estilos, conectar })}"/>`;
   return { html: limpio.replace(CHARSET, CHARSET + meta), scripts: scripts.length, estilos: estilos.length };
 }
@@ -82,11 +96,12 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   let s = 0;
   let e = 0;
   const lista = paginas(SALIDA);
+  const estilosDelSitio = unicas(lista.flatMap((ruta) => estilosEnLinea(readFileSync(ruta, "utf8"))));
   for (const ruta of lista) {
-    const r = conCSP(readFileSync(ruta, "utf8"), { conectar, archivo: relative(RAIZ, ruta) });
+    const r = conCSP(readFileSync(ruta, "utf8"), { conectar, archivo: relative(RAIZ, ruta), estilosDelSitio });
     writeFileSync(ruta, r.html);
     s += r.scripts;
     e += r.estilos;
   }
-  console.log(`csp: ${lista.length} páginas · ${s} huellas de script · ${e} de estilo${conectar.length ? ` · connect-src ${conectar.join(" ")}` : ""}`);
+  console.log(`csp: ${lista.length} páginas · ${s} huellas de script · ${e} de estilo (${estilosDelSitio.length} en el sitio)${conectar.length ? ` · connect-src ${conectar.join(" ")}` : ""}`);
 }

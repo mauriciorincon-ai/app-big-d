@@ -3,7 +3,7 @@
 // línea. Estas pruebas miran la función pura; el e2e `csp.spec.ts` mira las páginas reales en cuatro motores.
 import { createHash } from "node:crypto";
 import { describe, expect, it } from "vitest";
-import { conCSP, origenSentry, politica } from "../../scripts/csp/inyectar.mjs";
+import { conCSP, estilosEnLinea, origenSentry, politica } from "../../scripts/csp/inyectar.mjs";
 
 const h = (s: string) => `'sha256-${createHash("sha256").update(s, "utf8").digest("base64")}'`;
 const TEMA = "document.documentElement.dataset.tema='oscuro'";
@@ -35,6 +35,13 @@ describe("CSP del export estático", () => {
     expect(() => conCSP(PAGINA.replace("<svg>", '<svg style="display:block">'), { archivo: "out/es.html" })).toThrow(/out\/es\.html: trae el atributo en línea «style=»/);
     expect(() => conCSP(PAGINA.replace("<svg>", '<svg onload="x()">'))).toThrow(/«onload=»/);
     expect(() => conCSP("<html><head></head></html>")).toThrow(/no trae <meta charSet/);
+  });
+  it("suma los estilos de las demás páginas (se llega a ellas sin recargar), sin repetir", () => {
+    const otra = PAGINA.replace(".x{fill:red}", "#rec[data-paso=\"1\"] .p{opacity:1}");
+    const delSitio = [...estilosEnLinea(PAGINA), ...estilosEnLinea(otra)];
+    const c = meta(conCSP(PAGINA, { estilosDelSitio: delSitio }).html);
+    expect(c).toContain(`style-src 'self' ${[h(".x{fill:red}"), h('#rec[data-paso="1"] .p{opacity:1}')].sort().join(" ")};`);
+    expect(c.match(new RegExp(h(".x{fill:red}").replace(/[+/]/g, "\\$&"), "g"))).toHaveLength(1);
   });
   it("con la DSN de Sentry suma su origen a connect-src; sin DSN, nada", () => {
     expect(origenSentry(undefined)).toEqual([]);
