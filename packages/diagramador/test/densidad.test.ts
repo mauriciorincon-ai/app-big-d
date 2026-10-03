@@ -6,6 +6,7 @@
 // etiquetas encimadas, una referencia fuera del lienzo) y la app no lo habría publicado. Ahora: ninguno.
 import { describe, expect, it } from "vitest";
 import { crossings, layout, validate, type Caja, type Geometria, type Mapa } from "../src/index";
+import { puntas } from "../src/layout/d11";
 import { offsetsPista } from "../src/layout/rutas";
 import { CASOS, disponer, FECHA, VISTAS } from "./lib/casos";
 import { COBERTURA, EJEMPLOS, GRAMATICAS, leerJson } from "./lib/contrato";
@@ -153,3 +154,19 @@ describe("pistas de un canal (§ 5.3 con la enmienda del piloto)", () => {
     expect(Math.max(...o.map(Math.abs))).toBeLessThanOrEqual(190);
   });
 });
+
+describe("P13 — la punta de una flecha de llegada no queda sobre la pista de otro flujo", () => {
+  // La punta mide 9 u y la pista más externa de un canal corre a 6 u de la tarjeta: si ahí va un tramo ajeno que
+  // pasa a la altura de una llegada, la punta lo tapa. Medido antes de la regla: P1 tenía dos en el nivel 2 y dos
+  // en el recorrido; los mapas del contrato, ninguna. El ruteo cambia de lugar solo esos tramos.
+  const casos: [string, () => Geometria][] = [
+    ...CASOS.map((c) => [c.nombre, () => disponer(c.mapa, c.vista)] as [string, () => Geometria]),
+    ...VISTAS.map((v) => [`P1 · ${v}`, () => disponer(P1, v)] as [string, () => Geometria]),
+  ];
+  it.each(casos)("%s", (_n, geo) => {
+    const g = geo();
+    expect(puntas(g)).toEqual([]);
+    expect(g.avisos.filter((a) => a.mensaje.includes("bajo la punta"))).toEqual([]);
+  });
+});
+

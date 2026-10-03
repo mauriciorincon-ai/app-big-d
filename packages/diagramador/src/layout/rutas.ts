@@ -5,6 +5,7 @@
 //   · nivel 2: k puertos en y + alto·i/(k+1); el salto sube por el canal anterior al destino y entra por el lado.
 import { mitad, type Decimas } from "../util/numeros";
 import { CANAL, COL, PISTA_EXPRES_1, PISTA_EXPRES_PASO, avisar, colX, type Contexto } from "./contexto";
+import { PUNTA } from "./d11";
 import { etiquetaModos, marcadores, trazo } from "./piezas";
 import type { Caja, Elemento, Punto, Trazado } from "./tipos";
 
@@ -178,14 +179,87 @@ export function rutear(ctx: Contexto, piezas: ReadonlyMap<string, Pieza>, conexi
       if (!entraPorAbajo(c)) pedir(ida ? b.col - 1 : b.col);
     }
   }
+  // ── Pistas de los canales ──
+  // Cada tramo vertical por un canal es un pedido, en el orden de siempre (vecinos, dentro de una columna, saltos
+  // del más cercano al más lejano; de un salto, primero la salida). Se asignan las posiciones de `offsetsPista` en
+  // ese orden y después se repara P13 (abajo). Cada pedido sabe qué abarca en vertical y, si es una llegada, por
+  // qué lado del canal entra a su tarjeta y a qué altura.
+  interface Pedido {
+    clave: string;
+    canal: number;
+    /** Tramo vertical, de arriba abajo. */
+    y1: Decimas;
+    y2: Decimas;
+    /** Posición relativa al centro del canal. */
+    o: Decimas;
+  }
+  /** Una punta de llegada pegada a un lado del canal: «izq» entra a la columna de la izquierda, «der» a la de la derecha. */
+  interface Llegada {
+    flujo: string;
+    canal: number;
+    lado: Lado;
+    y: Decimas;
+  }
+  const pedidos: Pedido[] = [];
+  const llegadas: Llegada[] = [];
   const usoCanal = new Map<number, number>();
-  const pista = (canal: number): Decimas => {
+  const pedir1 = (clave: string, canal: number, ya: Decimas, yb: Decimas) => {
     const n = usoCanal.get(canal) ?? 0;
     usoCanal.set(canal, n + 1);
     const offsets = offsetsPista(pedidas.get(canal) ?? n + 1);
     if (n >= offsets.length) avisar(ctx, "canal", `canal-${canal}`, `más de ${offsets.length} pistas en el canal ${canal}`);
-    const centro = op.centroCanal ? op.centroCanal(canal) : colX(canal) + COL + mitad(CANAL);
-    return centro + offsets[Math.min(n, offsets.length - 1)]!;
+    pedidos.push({ clave, canal, y1: Math.min(ya, yb), y2: Math.max(ya, yb), o: offsets[Math.min(n, offsets.length - 1)]! });
+  };
+  for (const c of conexiones.filter((x) => clase(x) === "vecino")) {
+    const a = P(c.o);
+    const b = P(c.d);
+    const ida = adelante(c);
+    const y1 = puertoY(c.o, ida ? "der" : "izq", c);
+    const y2 = puertoY(c.d, ida ? "izq" : "der", c);
+    llegadas.push({ flujo: c.id, canal: Math.min(a.col, b.col), lado: ida ? "der" : "izq", y: y2 });
+    if (y1 !== y2) pedir1(`${c.id}:llegada`, Math.min(a.col, b.col), y1, y2);
+  }
+  for (const c of conexiones.filter((x) => clase(x) === "intra")) {
+    if (directo(c)) continue;
+    const y2 = puertoY(c.d, "der", c);
+    llegadas.push({ flujo: c.id, canal: P(c.o).col, lado: "izq", y: y2 });
+    pedir1(`${c.id}:llegada`, P(c.o).col, puertoY(c.o, "der", c), y2);
+  }
+  for (const c of [...saltos].reverse()) {
+    const a = P(c.o);
+    const b = P(c.d);
+    const ida = adelante(c);
+    const yt = pistaDe.get(c.id)!;
+    if (!a.baja) pedir1(`${c.id}:salida`, ida ? a.col : a.col - 1, puertoY(c.o, ida ? "der" : "izq", c), yt);
+    if (!entraPorAbajo(c)) {
+      const yd = puertoY(c.d, ida ? "izq" : "der", c);
+      llegadas.push({ flujo: c.id, canal: ida ? b.col - 1 : b.col, lado: ida ? "der" : "izq", y: yd });
+      pedir1(`${c.id}:llegada`, ida ? b.col - 1 : b.col, yt, yd);
+    }
+  }
+  // P13 (abierta en 0.4.0): la punta de una flecha de llegada mide 9 u y la pista más externa corre a 6 u de la
+  // tarjeta, así que una pista ajena ahí queda bajo la punta de quien entra a esa tarjeta a su altura. Una posición
+  // a menos de 9 u de una tarjeta solo la usa un tramo que no tape ninguna punta de ese lado; si la tapa, cambia de
+  // lugar con el tramo más cercano del canal que no esté junto a una tarjeta y que ahí no tape ninguna. Solo se
+  // mueve lo que choca: las demás pistas quedan donde estaban (no se corre el dibujo aprobado).
+  const CERCA = mitad(CANAL) - PUNTA;
+  const ladoCerca = (o: Decimas): Lado | undefined => (o > CERCA ? "der" : o < -CERCA ? "izq" : undefined);
+  const flujoDe = (clave: string) => clave.slice(0, clave.lastIndexOf(":"));
+  const tapa = (q: Pedido, lado: Lado) =>
+    llegadas.some((l) => l.canal === q.canal && l.lado === lado && l.flujo !== flujoDe(q.clave) && q.y1 < l.y + 45 && q.y2 > l.y - 45);
+  for (const f of pedidos) {
+    const lado = ladoCerca(f.o);
+    if (!lado || !tapa(f, lado)) continue;
+    const otro = pedidos
+      .filter((g) => g !== f && g.canal === f.canal && !ladoCerca(g.o) && !tapa(g, lado))
+      .sort((g, h) => Math.abs(g.o - f.o) - Math.abs(h.o - f.o))[0];
+    if (otro) [f.o, otro.o] = [otro.o, f.o];
+  }
+  const posicion = new Map(pedidos.map((q) => [q.clave, q]));
+  const pista = (c: Conexion, tramo: "salida" | "llegada"): Decimas => {
+    const q = posicion.get(`${c.id}:${tramo}`)!;
+    const centro = op.centroCanal ? op.centroCanal(q.canal) : colX(q.canal) + COL + mitad(CANAL);
+    return centro + q.o;
   };
 
   const anchoEtiqueta = (c: Conexion): Decimas => {
@@ -232,7 +306,7 @@ export function rutear(ctx: Contexto, piezas: ReadonlyMap<string, Pieza>, conexi
     const y2 = puertoY(c.d, ida ? "izq" : "der", c);
     if (y1 === y2) dibujar(c, [[x1, y1], [x2, y1]], mitad(x1 + x2) + (ida ? -40 : 40), y1);
     else {
-      const xc = pista(Math.min(a.col, b.col));
+      const xc = pista(c, "llegada");
       // En el tramo corto entre la tarjeta y la pista, la etiqueta se despega 2 u del borde (§ 5.3: no
       // dibuja encima de nada); la maqueta la dejaba rozando la caja.
       const media = mitad(anchoEtiqueta(c)) + 20;
@@ -254,7 +328,7 @@ export function rutear(ctx: Contexto, piezas: ReadonlyMap<string, Pieza>, conexi
       dibujar(c, [[x, y1], [x, y2]], x + 240, mitad(y1 + y2));
     } else {
       const xa = a.caja.x + a.caja.w;
-      const xc = pista(a.col);
+      const xc = pista(c, "llegada");
       const y1 = puertoY(c.o, "der", c);
       const y2 = puertoY(c.d, "der", c);
       // Como en los vecinos: la etiqueta se despega 2 u de la tarjeta (antes rozaba 1 u su borde; lo cazó la
@@ -277,7 +351,7 @@ export function rutear(ctx: Contexto, piezas: ReadonlyMap<string, Pieza>, conexi
       pts.push([xSalida, a.caja.y + a.caja.h], [xSalida, yt]);
     } else {
       const xs = ida ? a.caja.x + a.caja.w : a.caja.x;
-      xSalida = pista(ida ? a.col : a.col - 1);
+      xSalida = pista(c, "salida");
       const ys = puertoY(c.o, ida ? "der" : "izq", c);
       pts.push([xs, ys], [xSalida, ys], [xSalida, yt]);
     }
@@ -286,7 +360,7 @@ export function rutear(ctx: Contexto, piezas: ReadonlyMap<string, Pieza>, conexi
       xLlegada = entradaAbajo(c);
       pts.push([xLlegada, yt], [xLlegada, b.caja.y + b.caja.h]);
     } else {
-      xLlegada = pista(ida ? b.col - 1 : b.col);
+      xLlegada = pista(c, "llegada");
       const yd = puertoY(c.d, ida ? "izq" : "der", c);
       pts.push([xLlegada, yt], [xLlegada, yd], [ida ? b.caja.x : b.caja.x + b.caja.w, yd]);
     }

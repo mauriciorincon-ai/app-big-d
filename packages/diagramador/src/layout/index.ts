@@ -4,7 +4,7 @@ import type { Gramatica, Mapa } from "../tipos";
 import { bloque } from "./bloque";
 import { carriles } from "./carriles";
 import { avisar, contexto, type Contexto } from "./contexto";
-import { crossings, lejanas, pegados } from "./d11";
+import { crossings, lejanas, pegados, puntas } from "./d11";
 import { nivel1 } from "./nivel1";
 import { nivel2 } from "./nivel2";
 import type { Geometria, OpcionesLayout, Vista } from "./tipos";
@@ -19,6 +19,8 @@ export function layout(map: Mapa, grammar: Gramatica, view: Vista, options: Opci
   for (const c of geo.cruces) avisar(ctx, "D11", c.flujo, `${c.flujo} atraviesa la caja de ${c.caja}`);
   // El aire de las pistas (pasada de capturas del S1): un tramo vertical a menos de 5 u de una tarjeta a su lado.
   for (const p of pegados(geo)) avisar(ctx, "pistas", p.flujo, `${p.flujo} corre a ${fmt(p.distancia)} u del borde de ${p.caja}`);
+  // P13: ninguna pista ajena bajo la punta de una flecha de llegada (el ruteo lo repara; si no puede, se dice).
+  for (const p of puntas(geo)) avisar(ctx, "pistas", p.pista, `${p.pista} corre bajo la punta de ${p.flujo}`);
   for (const e of lejanas(geo)) avisar(ctx, "etiqueta", e.flujo, `${e.flujo} a ${fmt(e.distancia)} u de su trazo`);
   geo.avisos = ctx.avisos;
   return geo;

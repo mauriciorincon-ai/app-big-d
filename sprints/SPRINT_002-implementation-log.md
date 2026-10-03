@@ -229,6 +229,28 @@ Decisiones D-S2-01 a D-S2-11 y los siete hechos que cambiaron el trabajo: en el 
 - **Corridas:** `pnpm test` 1057/1057 (98,75 % de líneas); e2e 412/412 en 58,3 s; CI de `0743576` (boceto M1) en
   `success` en los cinco checks y Vercel, cero comentarios del bot.
 
+### P13 — la punta de una flecha de llegada no queda sobre la pista de otro flujo
+
+- **Medida antes de la regla:** el detector `puntas` (los últimos 9 u del último tramo de cada llegada, 4,5 u a cada
+  lado, contra los tramos verticales de los demás flujos) da **2 en el nivel 2 y 2 en el recorrido de P1, 2 en el
+  nivel 2 de Fabric** (`f-lakehouse-agente` bajo `f-dataflow-warehouse`, `f-replica-spark` bajo `f-onelake-spark`) y
+  **0 en los 19 dibujos de los mapas del contrato**. Solo la pista más externa de un canal (a 6 u de la tarjeta) cae
+  dentro de una punta de 9 u; con más de 6 pistas repartidas, también solo la más externa.
+- **Regla (decisión menor, registrada; va a «Enmiendas» como respuesta a P13):** asignar SIEMPRE junto a la columna
+  las pistas de los flujos que entran a ella, como proponía el contrato, corre casi toda línea del dibujo aprobado
+  hacia su destino (un canal con un solo flujo dejaría de ir por el centro). Se toma la forma mínima: las pistas se
+  asignan como siempre y una posición a menos de 9 u de una tarjeta solo la usa un tramo que no tape ninguna punta
+  de ese lado; si la tapa, cambia de lugar con el tramo más cercano del canal que no esté junto a una tarjeta y que
+  ahí no tape ninguna. Si no hay con quién, `layout` lo dice: `pistas: <flujo> corre bajo la punta de <flujo>`.
+- **Después:** 0 en P1, en Fabric y en los mapas del contrato; **los 30 golden, idénticos** (no tenían el caso).
+  Capturas de Fabric nivel 2 antes y después, leídas como imagen: solo se mueven los dos tramos; las dos puntas
+  quedan limpias.
+- **Gate:** `densidad.test` (P13 en los 19 dibujos del contrato y las 3 vistas de P1) y el aviso en `layout`, que
+  las pruebas del atlas (Fabric a cuatro edades) ya exigen en cero. ¿Puede fallar? Sí: sin la reparación hay 4
+  puntas. **Rojo:** reparación apagada → `P1 · nivel2` y `P1 · recorrido` en rojo en `densidad.test`, y en la app
+  `mapas-aprobados` nombra `data/mapas/fabric.mapa.yaml · V16 · nivel2 · pistas: f-lakehouse-agente corre bajo la
+  punta de f-dataflow-warehouse`. **Verde** al restaurarla: `pnpm test` 1081/1081.
+
 ## Desviación del plan
 
 Lo que el plan aprobado ya declaró frente a la orden y a `SPRINT_002.md`:

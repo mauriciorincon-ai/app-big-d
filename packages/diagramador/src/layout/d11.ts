@@ -93,3 +93,43 @@ export function lejanas(geo: Geometria): Lejana[] {
   }
   return out;
 }
+
+/** Largo de la punta de flecha (`conFlecha`: triángulo de 9 u con la base 9 u antes del extremo). */
+export const PUNTA = 90;
+
+export interface Punta {
+  /** Flujo cuya punta de llegada queda sobre una pista ajena. */
+  flujo: string;
+  /** Flujo dueño de la pista que corre bajo esa punta. */
+  pista: string;
+}
+
+/**
+ * P13: la punta de una flecha de llegada (los últimos 9 u de su último tramo, 4,5 u a cada lado) no puede quedar
+ * sobre el tramo vertical de otro flujo. Pasa cuando una pista ajena corre entre la de la llegada y la tarjeta.
+ */
+export function puntas(geo: Geometria): Punta[] {
+  const out: Punta[] = [];
+  for (const t of geo.trazados) {
+    const n = t.puntos.length;
+    if (n < 2) continue;
+    const [xa, ya] = t.puntos[n - 2]!;
+    const [xz, yz] = t.puntos[n - 1]!;
+    if (ya !== yz || xa === xz) continue;
+    const x1 = Math.min(xz, xz - Math.sign(xz - xa) * PUNTA);
+    const x2 = Math.max(xz, xz - Math.sign(xz - xa) * PUNTA);
+    for (const s of geo.trazados) {
+      if (s === t) continue;
+      for (let i = 1; i < s.puntos.length; i++) {
+        const [px, py] = s.puntos[i - 1]!;
+        const [qx, qy] = s.puntos[i]!;
+        if (px !== qx || py === qy) continue;
+        if (px > x1 && px < x2 && Math.min(py, qy) < yz + 45 && Math.max(py, qy) > yz - 45) {
+          out.push({ flujo: t.id, pista: s.id });
+          break;
+        }
+      }
+    }
+  }
+  return out;
+}
