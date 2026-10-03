@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "diagramador/mapa.schema.json",
-  "title": "Mapa del diagramador (contrato 0.3.0)",
+  "title": "Mapa del diagramador (contrato 0.4.0)",
   "description": "Contenido de un sujeto bajo una gramática. Todo texto que se dibuja o se lee es un MAPA DE IDIOMA {es, en, …} con los idiomas que declara la gramática (V14). El esquema valida forma; las referencias contra la gramática y dentro del mapa (bandas, tipos, modos, madurez, flujos, condiciones, recorridos, bloques, densidad, ids únicos, idiomas, cobertura de la fuente) se validan en código: ver CONTRATO § 6.",
   "type": "object",
   "additionalProperties": false,

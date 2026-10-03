@@ -1,8 +1,8 @@
-import { coberturaDeRangos, validate, type Gramatica, type Mapa } from "diagramador";
+import { coberturaDeRangos, validate, type Entrada, type Gramatica, type Mapa } from "diagramador";
+import { textosMotor } from "../atlas";
 import { vocabularioVetado } from "../datos/vocabulario";
 import { IDIOMAS } from "../i18n";
 import { sinAfirmacion } from "./decisiones";
-import { avisosDeDibujo } from "./dibujo";
 import { esquemaPropuesta, type Propuesta } from "./esquema";
 import { argumentosDeRetiro } from "./retiros";
 
@@ -23,12 +23,16 @@ export interface Resultado {
   propuesta?: Propuesta;
 }
 
+/** Los avisos de V16 como fallas de dibujo: un mapa que no se dibuja no se puede proponer ni aprobar. */
+export const dibujo = (entradas: readonly Entrada[]): string[] => entradas.filter((e) => e.regla === "V16" && !e.mensaje.startsWith("V16 no corrió")).map((e) => `dibujo · ${e.mensaje}`);
+
 export function validarPropuesta(dato: unknown, gramatica: Gramatica, rangos: readonly (readonly [number, number])[], anterior?: Mapa): Resultado {
   const forma = esquemaPropuesta.safeParse(dato);
   if (!forma.success) return { ok: false, fallas: forma.error.issues.map((i) => `${i.path.join(".") || "/"} · ${i.message}`) };
   const p = forma.data;
   const fallas: string[] = [];
-  const inf = validate(p.mapa, gramatica, { mode: "privado", coverage: coberturaDeRangos(rangos) });
+  // V16 (0.4.0): en modo privado, lo que no se dibuja en alguna de las cuatro edades llega como aviso.
+  const inf = validate(p.mapa, gramatica, { mode: "privado", coverage: coberturaDeRangos(rangos), texts: textosMotor(), queryDate: p.fecha });
   for (const e of [...inf.errores, ...inf.alertas]) fallas.push(`mapa${e.ruta} · ${e.regla} · ${e.id} · ${e.mensaje}`);
   if (!inf.ok) return { ok: false, fallas, propuesta: p };
   const mapa = p.mapa as unknown as Mapa;
@@ -52,6 +56,6 @@ export function validarPropuesta(dato: unknown, gramatica: Gramatica, rangos: re
   for (const x of sinAfirmacion(mapa, p.afirmaciones)) fallas.push(`afirmaciones · ${x} no tiene ninguna afirmación que lo respalde`);
   for (const v of vocabularioVetado(p.mapa)) fallas.push(`vocabulario · mapa${v.ruta} · ${v.que}`);
   fallas.push(...argumentosDeRetiro(anterior, mapa, p.retiros).fallas);
-  fallas.push(...avisosDeDibujo(mapa, gramatica, p.fecha));
+  fallas.push(...dibujo(inf.avisos));
   return { ok: fallas.length === 0, fallas, propuesta: p };
 }

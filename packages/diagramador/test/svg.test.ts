@@ -81,7 +81,7 @@ describe("serializador", () => {
     const geo = disponer(c.mapa, c.vista);
     const es = ids(toSVG(geo, { language: "es" }));
     const en = ids(toSVG(geo, { language: "en" }));
-    const otro = ids(toSVG(disponer(c.mapa, "nivel-2"), { language: "es" }));
+    const otro = ids(toSVG(disponer(c.mapa, "nivel2"), { language: "es" }));
     expect(es.filter((i) => en.includes(i) || otro.includes(i))).toEqual([]);
   });
   it("con la pista A-29, todo activable la declara en aria-describedby (D-S1-07)", () => {

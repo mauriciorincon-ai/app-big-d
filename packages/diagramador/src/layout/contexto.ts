@@ -5,7 +5,7 @@ import { METRICAS_PILOTO, medidor, type Medidor } from "../texto/metricas";
 import { diasEntre } from "../util/fechas";
 import { estadoVigencia } from "../util/vigencia";
 import { ordenarPor } from "../util/orden";
-import type { Geometria, OpcionesLayout, TextosMotor, Vigencia } from "./tipos";
+import type { Aviso, Geometria, OpcionesLayout, Plural, TextosMotor, TipoAviso, Vigencia, VistaGeometria } from "./tipos";
 
 // Constantes de § 5.3, en décimas.
 export const M = 80;
@@ -32,16 +32,17 @@ export interface Contexto {
   mono: Medidor;
   textos: Record<string, TextosMotor>;
   fechaConsulta: string;
-  avisos: string[];
+  vista: VistaGeometria;
+  avisos: Aviso[];
 }
 
-export function contexto(mapa: Mapa, gramatica: Gramatica, opciones: OpcionesLayout): Contexto {
+export function contexto(mapa: Mapa, gramatica: Gramatica, opciones: OpcionesLayout, vista: VistaGeometria): Contexto {
   const tabla = opciones.metricas ?? METRICAS_PILOTO;
   const sans = tabla.fuentes[opciones.fuente ?? "space-grotesk"];
   const mono = tabla.fuentes[opciones.fuenteMono ?? "jetbrains-mono"];
   if (!sans || !mono) throw new Error("layout: la tabla de métricas no tiene las fuentes pedidas");
   for (const idioma of gramatica.idiomas)
-    if (!opciones.textos[idioma]) throw new Error(`layout: faltan las cadenas de interfaz en «${idioma}» (options.textos)`);
+    if (!opciones.texts[idioma]) throw new Error(`layout: faltan las cadenas de interfaz en «${idioma}» (options.texts)`);
   const porClase = (c: Banda["clase"]) => ordenarPor(gramatica.bandas.filter((b) => b.clase === c), (b) => b.orden, (b) => b.id);
   return {
     mapa,
@@ -57,10 +58,17 @@ export function contexto(mapa: Mapa, gramatica: Gramatica, opciones: OpcionesLay
     nodo: new Map(mapa.nodos.map((n) => [n.id, n])),
     sans: medidor(sans),
     mono: medidor(mono),
-    textos: opciones.textos,
-    fechaConsulta: opciones.fechaConsulta,
+    textos: opciones.texts,
+    fechaConsulta: opciones.queryDate,
+    vista,
     avisos: [],
   };
+}
+
+/** Anota un aviso de geometría (§ 5.6) de la vista en curso: «<tipo>: <detalle>», una vez por mensaje. */
+export function avisar(ctx: Contexto, tipo: TipoAviso, id: string, detalle: string): void {
+  const mensaje = `${tipo}: ${detalle}`;
+  if (!ctx.avisos.some((a) => a.mensaje === mensaje)) ctx.avisos.push({ vista: ctx.vista, tipo, id, mensaje });
 }
 
 /** Nodos de una banda en orden estable (D3): `orden`, luego `id`; sin `orden`, al final por id. */
@@ -96,13 +104,16 @@ export function peorMadurez(ctx: Contexto, nodos: readonly Nodo[]): NivelMadurez
   )[0];
 }
 
+/** Lo que se dibuja de una madurez en bloques y nodos: su `etiqueta_corta` si la gramática la trae; si no, el nombre (0.4.0). */
+export const rotuloMadurez = (m: NivelMadurez, idioma: string): string => m.etiqueta_corta?.[idioma] ?? m.nombre[idioma]!;
+
 /** Cadena por idioma a partir de una función. */
 export function porIdioma(ctx: Contexto, f: (idioma: string, t: TextosMotor) => string): Record<string, string> {
   return Object.fromEntries(ctx.idiomas.map((l) => [l, f(l, ctx.textos[l]!)]));
 }
 
-/** Plural de interfaz: [uno, varios]. */
-export const plural = (formas: readonly [string, string], n: number): string => (n === 1 ? formas[0] : formas[1]).replace("{n}", String(n));
+/** Plural de interfaz (§ 8): `one` para n = 1, `other` para lo demás (español e inglés). */
+export const plural = (formas: Plural, n: number): string => (n === 1 ? formas.one : formas.other).replace("{n}", String(n));
 
 export const colX = (i: number): number => M + i * (COL + CANAL);
 export const anchoLienzo = (n: number): number => 2 * M + n * COL + (n - 1) * CANAL;

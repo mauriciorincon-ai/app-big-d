@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { opcionesPlataforma, plantilla, rutasAtlas, type Nivel, type Pildora } from "@/lib/atlas";
+import { opcionesPlataforma, plantilla, rutaLado, rutasAtlas, type Nivel, type Pildora } from "@/lib/atlas";
 import { datos, type Atlas } from "@/lib/datos";
 import { textos, type Idioma } from "@/lib/i18n";
 import { CampoPlataforma } from "./CampoPlataforma";
@@ -52,7 +52,7 @@ export function CabeceraAtlas({
         </div>
         <CampoPlataforma opciones={opcionesPlataforma(datos(), idioma, nivel)} actual={atlas.plataforma.id} etiqueta={t.plataforma.etiqueta} pronto={t.plataforma.pronto} nota={t.plataforma.nota} />
       </div>
-      <Niveles t={t.niveles} actual={nivel} rutas={rutasAtlas(atlas, idioma)} />
+      <Niveles t={t.niveles} actual={nivel} rutas={{ ...rutasAtlas(atlas, idioma), lado: rutaLado(idioma) }} />
       <p className="guia">
         <b>{guia.entrada}</b> {guia.resto}
       </p>

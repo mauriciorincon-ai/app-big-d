@@ -32,6 +32,14 @@ const ocultos = (page: Page) =>
   page.evaluate(() =>
     [...document.querySelectorAll("main h1, .lienzo svg.dg-svg, .lienzo .dg-elem, .lienzo .dg-flujo")].flatMap((e) => {
       if (e.closest('svg[data-vista="recorrido"]') && e.matches(".dg-elem, .dg-flujo") && !e.hasAttribute("data-paso")) return [];
+      // Lado a lado: en teléfono el dibujo cede su lugar a la lista por banda; en ancho, la variante desplegada espera
+      // al botón y las filas de las otras páginas, a la paginación. Las tres cosas, por diseño y sin movimiento.
+      if (e.closest(".lado-ancho")) {
+        if (innerWidth < 900) return [];
+        if (e.closest('[data-variante="n2"]') && !e.closest(".lienzo[data-todo]")) return [];
+        const fila = e.closest<HTMLElement>(".lado-fila");
+        if (fila && !(document.documentElement.getAttribute("data-lado") ?? "").split(" ").includes(fila.dataset.fila!)) return [];
+      }
       let o = 1;
       for (let n: Element | null = e; n; n = n.parentElement) {
         const cs = getComputedStyle(n);
@@ -56,6 +64,7 @@ for (const ruta of RUTAS)
     expect(hidratacion).toEqual([]);
     await expect(page.locator("main h1")).toBeVisible();
     if (ruta.includes("/atlas/")) await expect(page.locator(".lienzo svg.dg-svg")).toBeVisible();
+    if (ruta.endsWith("/comparar")) await expect(page.locator(page.viewportSize()!.width < 900 ? ".lado-angosto .lado-pl" : ".lado-ancho .lado-cabecera svg").first()).toBeVisible();
     expect(await ocultos(page)).toEqual([]);
     // Lo que se toca también se abre: la ventana de un bloque, la ficha de un componente o su paso.
     const activable = page.locator(".lienzo .dg-elem").first();

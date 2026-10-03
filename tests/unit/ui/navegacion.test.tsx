@@ -13,8 +13,8 @@ let ruta = "/es";
 vi.mock("next/navigation", () => ({ usePathname: () => ruta }));
 
 const SECCIONES = [
-  { ruta: "/es/atlas/fabric", texto: "Atlas", prefijo: "/es/atlas" },
-  { ruta: "/es/investigador/databricks", texto: "Conocimiento", prefijo: "/es/investigador" },
+  { ruta: "/es/atlas/fabric", texto: "Atlas", prefijos: ["/es/atlas", "/es/comparar"] },
+  { ruta: "/es/investigador/databricks", texto: "Conocimiento", prefijos: ["/es/investigador"] },
 ];
 
 describe("NavSecciones", () => {
@@ -23,6 +23,7 @@ describe("NavSecciones", () => {
     ["/es/atlas/fabric", "page", undefined],
     ["/es/atlas/fabric/componentes", "true", undefined],
     ["/es/atlas/plataforma-ejemplo", "true", undefined],
+    ["/es/comparar", "true", undefined],
     ["/es/investigador/fabric", undefined, "true"],
     ["/es/investigador/databricks", undefined, "page"],
   ])("en %s: Atlas=%s, Conocimiento=%s", (r, atlas, conocimiento) => {
@@ -42,16 +43,34 @@ describe("ConmutadorIdioma", () => {
     expect(en.getAttribute("hreflang")).toBe("en");
     expect(screen.getByRole("link", { name: "Español" }).getAttribute("aria-current")).toBe("true");
   });
+  it("al tocarlo lleva también la consulta (en el lado a lado: qué plataformas y qué página)", () => {
+    ruta = "/es/comparar";
+    window.history.replaceState(null, "", "/es/comparar?plataformas=fabric&pagina=1");
+    render(<ConmutadorIdioma actual="es" etiqueta="Idioma" />);
+    const en = screen.getByRole("link", { name: "English" });
+    expect(en.getAttribute("href")).toBe("/en/comparar");
+    en.addEventListener("click", (e) => e.preventDefault());
+    en.click();
+    expect(en.getAttribute("href")).toBe("/en/comparar?plataformas=fabric&pagina=1");
+    window.history.replaceState(null, "", "/");
+  });
 });
 
 describe("Niveles", () => {
-  it("los niveles con ruta son enlaces (el actual, «page»); «lado a lado» queda pendiente, sin enlace", () => {
+  it("los niveles con ruta son enlaces (el actual, «page»); uno sin ruta queda pendiente, sin enlace", () => {
     const t = textos("es").atlas.niveles;
     const { container } = render(<Niveles t={t} actual="componentes" rutas={{ general: "/es/atlas/fabric", componentes: "/es/atlas/fabric/componentes" }} />);
     expect(screen.getByRole("link", { name: `02${t.componentes}` }).getAttribute("aria-current")).toBe("page");
     expect(screen.getByRole("link", { name: `01${t.general}` }).hasAttribute("aria-current")).toBe(false);
     expect(container.querySelectorAll(".pend")).toHaveLength(2);
     expect(screen.queryByRole("link", { name: new RegExp(t.lado) })).toBeNull();
+  });
+  it("«lado a lado» es un enlace a /comparar, y en esa página la pestaña actual", () => {
+    const t = textos("es").atlas.niveles;
+    render(<Niveles t={t} actual="lado" rutas={{ general: "/es/atlas/fabric", componentes: "/es/atlas/fabric/componentes", recorrido: "/es/atlas/fabric/recorrido", lado: "/es/comparar" }} />);
+    const lado = screen.getByRole("link", { name: `04${t.lado}` });
+    expect(lado.getAttribute("href")).toBe("/es/comparar");
+    expect(lado.getAttribute("aria-current")).toBe("page");
   });
 });
 

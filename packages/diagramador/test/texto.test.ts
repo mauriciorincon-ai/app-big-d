@@ -14,9 +14,9 @@ describe("G10 — el texto equivale al dibujo", () => {
     for (const idioma of GRAMATICAS[mapa.gramatica_id]!.idiomas)
       it(`${mapa.sujeto_id} (${idioma}): mismos nodos, flujos y pasos`, () => {
         const g = GRAMATICAS[mapa.gramatica_id]!;
-        const texto = toText(mapa, g, { language: idioma, textos: TEXTOS, id: "lectura" });
-        const n2 = toSVG(disponer(mapa, "nivel-2"), { language: idioma });
-        const n1 = toSVG(disponer(mapa, "nivel-1"), { language: idioma });
+        const texto = toText(mapa, g, { language: idioma, texts: TEXTOS, id: "lectura" });
+        const n2 = toSVG(disponer(mapa, "nivel2"), { language: idioma });
+        const n1 = toSVG(disponer(mapa, "nivel1"), { language: idioma });
         const todos = new Set(mapa.nodos.map((n) => n.id));
         const flujos = new Set(mapa.flujos.filter((f) => f.origen !== f.destino).map((f) => f.id));
         expect(conjunto(n2, /data-nodo="([^"]+)"/g)).toEqual(todos);
@@ -31,7 +31,7 @@ describe("G10 — el texto equivale al dibujo", () => {
 
   it("las ramas del recorrido se leen anidadas: 5 → (6a → 7a | 6b)", () => {
     const mapa = EJEMPLOS.find((m) => m.sujeto_id === "plataforma-ejemplo")!;
-    const t = toText(mapa, GRAMATICAS["plataformas-datos"]!, { language: "es", textos: TEXTOS });
+    const t = toText(mapa, GRAMATICAS["plataformas-datos"]!, { language: "es", texts: TEXTOS });
     expect(t).toMatch(/<b>5\. [^<]+<\/b>[^<]*Se divide en ramas que ocurren a la vez:<ul><li><ol><li data-paso="p6"[^>]*><b>6a\. .*<li data-paso="p7"[^>]*><b>7a\. .*<\/ol><\/li><li><ol><li data-paso="p8"[^>]*><b>6b\. /);
   });
 });
@@ -40,7 +40,7 @@ describe("leyenda generada de la gramática (§ 4.9)", () => {
   for (const [id, g] of Object.entries(GRAMATICAS))
     for (const idioma of g.idiomas)
       it(`${id} (${idioma}): todo tipo, modo y madurez, la regla de vigencia y la nota de marcas`, () => {
-        const h = toLegend(g, { language: idioma, textos: TEXTOS });
+        const h = toLegend(g, { language: idioma, texts: TEXTOS });
         for (const t of g.tipos_de_nodo) {
           expect(h).toContain(t.nombre[idioma]!);
           expect(h).toContain(`dg-c-${t.token_color}`);
@@ -104,10 +104,10 @@ describe("B-39 — un idioma que la gramática no declara da un error claro en c
   // Las cadenas de interfaz sí están en «fr»: lo que falta es el idioma en la gramática (y en los textos del mapa).
   const textos = { ...TEXTOS, fr: TEXTOS.es! };
   it.each([
-    ["toText", () => toText(m, G, { language: "fr", textos })],
-    ["toCard", () => toCard(m, G, m.nodos[0]!.id, { language: "fr", textos })],
-    ["toBlockCards", () => toBlockCards(m, G, "consumo-bi", { language: "fr", textos })],
-    ["toLegend", () => toLegend(G, { language: "fr", textos })],
+    ["toText", () => toText(m, G, { language: "fr", texts: textos })],
+    ["toCard", () => toCard(m, G, m.nodos[0]!.id, { language: "fr", texts: textos })],
+    ["toBlockCards", () => toBlockCards(m, G, "consumo-bi", { language: "fr", texts: textos })],
+    ["toLegend", () => toLegend(G, { language: "fr", texts: textos })],
   ] as const)("%s", (quien, f) => {
     expect(f).toThrow(new RegExp(`${quien}: la gramática no declara el idioma «fr»`));
   });

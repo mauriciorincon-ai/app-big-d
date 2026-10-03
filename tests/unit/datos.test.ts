@@ -2,7 +2,7 @@
 // El cargador del build (G14 y la regla «el conocimiento es dato»): los datos reales pasan, y cada forma de
 // dato roto rompe la carga con su archivo, su regla y su id — jamás se completa por inferencia. Cada caso
 // trabaja sobre una copia de data/ en un directorio temporal; el data/ del repo no se toca.
-import { cpSync, mkdtempSync, readFileSync, rmSync, unlinkSync, writeFileSync } from "node:fs";
+import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, unlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
@@ -53,13 +53,13 @@ describe("los datos del repo", () => {
     const d = cargarDatos();
     const primera = d.plataformas.find((p) => p.estado === "publicada")!.id;
     expect(rutaAtlas(d, "en")).toBe(`/en/atlas/${primera}`);
-    expect(rutaAtlas({ plataformas: d.plataformas.map((p) => ({ ...p, estado: "proximamente" as const })), atlas: new Map() }, "es")).toBe("/es");
+    expect(rutaAtlas({ plataformas: d.plataformas.map((p) => ({ ...p, estado: "proximamente" as const })), atlas: new Map(), versiones: new Map() }, "es")).toBe("/es");
   });
 
   it("B-5: el investigador por defecto es la primera plataforma por id; sin plataformas, la portada", () => {
     const d = cargarDatos();
     expect(rutaInvestigador(d, "es")).toBe(`/es/investigador/${d.plataformas[0]!.id}`);
-    expect(rutaInvestigador({ plataformas: [], atlas: new Map() }, "en")).toBe("/en");
+    expect(rutaInvestigador({ plataformas: [], atlas: new Map(), versiones: new Map() }, "en")).toBe("/en");
   });
 });
 
@@ -142,6 +142,36 @@ describe("un dato roto rompe la carga con archivo, regla e id", () => {
     expect(fallas(falta)).toEqual(["data/gramaticas/plataformas-datos.gramatica.yaml · no existe"]);
     const rota = copia((d) => editarYaml(join(d, "gramaticas/plataformas-datos.gramatica.yaml"), (x) => (x.idiomas = ["es"])));
     expect(fallas(rota).join("\n")).toContain("data/gramaticas/plataformas-datos.gramatica.yaml · G");
+  });
+});
+
+// D-S2-09: las versiones anteriores de un mapa publicado viven en data/mapas/versiones/, con sus bytes aprobados. Se
+// cargan como un mapa publicado (se dibujan en la página de diferencias) y cada forma rota nombra su archivo.
+describe("versiones archivadas", () => {
+  const archivar = (version: string, nombre = `fabric-${version}.mapa.yaml`, cambio?: (m: Record<string, unknown>) => void) => (d: string) => {
+    mkdirSync(join(d, "mapas/versiones"), { recursive: true });
+    const m = parse(readFileSync(join(d, "mapas/fabric.mapa.yaml"), "utf8"));
+    m.version = version;
+    cambio?.(m);
+    writeFileSync(join(d, "mapas/versiones", nombre), stringify(m));
+  };
+  const dos = (...fs: ((d: string) => void)[]) => (d: string) => fs.forEach((f) => f(d));
+  it("se cargan por plataforma, de la más vieja a la más nueva (0.0.10 va después de 0.0.9)", () => {
+    const d = cargarDatos(copia(dos(archivar("0.0.10"), archivar("0.0.9"))), RAIZ);
+    expect(d.versiones.get("fabric")!.map((v) => [v.version, v.archivo])).toEqual([
+      ["0.0.9", "data/mapas/versiones/fabric-0.0.9.mapa.yaml"],
+      ["0.0.10", "data/mapas/versiones/fabric-0.0.10.mapa.yaml"],
+    ]);
+    expect(cargarDatos().versiones.size).toBe(0);
+  });
+  it("cada forma rota nombra su archivo: nombre, plataforma sin mapa, versión que no coincide o no es anterior, contenido inválido", () => {
+    expect(fallas(copia(archivar("0.0.1", "fabric.v0.0.1.mapa.yaml")))).toEqual([expect.stringMatching(/^data\/mapas\/versiones\/fabric\.v0\.0\.1\.mapa\.yaml · nombre · /)]);
+    expect(fallas(copia(archivar("0.0.1", "snowflake-0.0.1.mapa.yaml")))).toEqual(["data/mapas/versiones/snowflake-0.0.1.mapa.yaml · versión archivada de «snowflake», que no tiene un mapa publicado"]);
+    expect(fallas(copia(archivar("0.0.2", "fabric-0.0.1.mapa.yaml")))).toEqual(["data/mapas/versiones/fabric-0.0.1.mapa.yaml · /version · dice 0.0.2 y el nombre 0.0.1"]);
+    expect(fallas(copia(archivar("0.1.0")))).toEqual(["data/mapas/versiones/fabric-0.1.0.mapa.yaml · /version · 0.1.0 no es anterior a la vigente (0.1.0)"]);
+    const sinFuentes = fallas(copia(archivar("0.0.1", undefined, (m) => ((m.nodos as { fuentes: unknown[] }[])[0]!.fuentes = []))));
+    expect(sinFuentes.length).toBeGreaterThan(0);
+    for (const f of sinFuentes) expect(f).toMatch(/^data\/mapas\/versiones\/fabric-0\.0\.1\.mapa\.yaml · V\d+ · /);
   });
 });
 

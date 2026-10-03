@@ -3,7 +3,7 @@ import type { Nivel } from "@/lib/atlas";
 import type { Textos } from "@/lib/i18n";
 import { ActivaALaVista } from "./ActivaALaVista";
 
-/** Los niveles del atlas y «lado a lado», que todavía no tiene ruta (B-5: el tipo sale de la vista, no se repite). */
+/** Los niveles del atlas y «lado a lado» (B-5: el tipo sale de la vista, no se repite). */
 type Pestana = Nivel | "lado";
 const ORDEN: Pestana[] = ["general", "componentes", "recorrido", "lado"];
 

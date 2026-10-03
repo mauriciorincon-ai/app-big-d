@@ -4,6 +4,52 @@ Versionado semántico del **contrato** (no de la implementación): MAJOR invalid
 existentes · MINOR agrega un campo opcional, una vista o una regla que no rechaza nada válido ·
 PATCH aclara. Editar el contrato pasa por G-Metodo.
 
+## [0.4.0] — 2026-10-01 · cierre del S1 del piloto: la primera implementación y el primer mapa real (estado `piloto`; G-Metodo aprobado)
+
+**MINOR de datos.** Ningún mapa o gramática 0.3.0 válido deja de serlo, salvo los que tuvieran un paso que se
+sigue a sí mismo o a uno posterior, o un flujo de un nodo hacia sí mismo (siempre fueron defectos). Campo
+opcional nuevo: `escala_madurez[].etiqueta_corta`. Todos los artefactos regenerados y validados con el script de
+la planeadora (`convertir-0.3.0.mjs`, VERSION 0.4.0).
+
+- **Fuente:** `app-big-d/sprints/SPRINT_001-summary.md` § «Enmiendas al contrato del diagramador» (44) y
+  § «Registro de fallas» (13 → F-013…F-025), auditoría C-1/A-5/A-6/M-1/M-23…M-26/B-38/B-39; retro en
+  `portafolio/big-d/sprints/SPRINT_001.md`.
+- **Geometría del carril y los canales (§ 5.3):** más de 2 saltos sin aviso (F-014) · pistas fijas a 6 u de las
+  tarjetas, nunca sobre un borde; con más de 6, reparto parejo con piso de 4 u, máximo 10 (F-015, F-021) ·
+  etiqueta de modos con > 2 marcadores en dos filas, segundo lugar en el tramo de llegada, etiqueta de salto a
+  la mitad de su tramo, etiqueta en columna a 2 u, invariante ≤ 30 u (F-016) · fila de referencias llena a 4 u
+  con corrimiento y «…» · vecinas directas solo con hueco (F-019) · carriles con cabecera de 200 u y ranuras
+  152/50 · no partir dentro de un paréntesis corto.
+- **Envejecimiento (§ 4.8, § 5.6, G11):** insignia montada ≤ mitad de la tarjeta + 4 u; la vista «bloque»
+  reserva su lugar; la geometría expone la vigencia; `toText` recibe la fecha de consulta; **matriz de
+  envejecimiento** (todo mapa a 4 edades, 0 avisos, 0 cruces) como gate (F-017, el crítico de la auditoría).
+- **§ 5.6 nueva — avisos de geometría** con forma fija (`D11:`, `pistas:`, `fuera-del-lienzo:`, `encima:`,
+  `etiqueta:`, `bloque-vacio:`, `canal:`, `carriles:`); `layout` reporta D11 (F-020).
+- **Validación (§ 7):** informe en **tres listas** (errores · alertas · avisos) y `validateGrammar` · tabla de
+  traducción de errores de esquema a regla e id · V3 alerta por bloque sin componentes (F-022) · **V4** flujo
+  hacia sí mismo (F-024) · **V5** `sigue_de` solo hacia atrás, nunca a sí mismo (F-018) · **V16** «el mapa se
+  dibuja» en modo publicación · `diff` sobre JSON canónico (F-023) · idioma no declarado con error claro (F-025).
+- **API (§ 8):** vista `bloque` + `toBlockCards` (§ 4.10, pedido del usuario) · `toCard` (§ 4.5) · `toLegend` ·
+  cadenas de interfaz en `options.texts` como mapas de idioma, plurales `{ one, other }` · `queryDate` · nombres
+  de la API en inglés · campos de la geometría declarados · `geometricPrecision` obligatorio en el consumidor.
+- **Marcas (§ 5.4):** «por revisar» = triángulo de precaución con «!» (pedido del usuario); paths de
+  envía/recibe documentados como → y ← (D-S1-19); leyenda con las tres marcas en caja de 16 u y la **regla del
+  haz** (§ 4.9).
+- **Garantías:** G1 «Linux pendiente» cerrado por medición (30 golden files idénticos en 2 sistemas × 4
+  motores) · G6 (c) incluye los flujos que comparten extremo, canal o fila (D-S1-25) · G15/P12 respondida:
+  tabla sin kerning + 3 % es cota superior con `geometricPrecision` (F-013) · D12 admite el `data-dueno` del
+  grupo (D-S1-20).
+- **Modelo:** `escala_madurez[].etiqueta_corta` opcional (D-S1-17).
+- **Carnadas: 34 casos** = 31 + **P1** mapa denso (se copia del paquete piloto; debe dibujarse sin avisos) +
+  **P2/P3** (V5) · `esperado.json` gana `secundarios` legítimos en C03 (V3), C06 (V5) y C07 (V12) (D-S1-03).
+- **§ 12 nuevo — contrato de la propuesta** (afirmación = entidad + id + cita literal; rechazo en cascada;
+  retiro con motivo y cita verificada; «sin novedades» no esquiva nada; validar y dibujar antes de aprobar).
+- **Preguntas:** P12 respondida; **P13** (orden de pistas por destino) abierta para el S2.
+- **Estado del reusable: `semilla` → `piloto`.** La v1.0.0 se sella con `compare` (S2).
+- **Constitución del piloto:** `portafolio/big-d/ordenes/CLAUDE-md-para-app.md` regenerada (traía V1–V12,
+  franjas arriba, angosta 380 y «v0.2.0 hoy»).
+- **Fallas:** F-013 a F-025 cerradas por regla (ya pagadas en el piloto).
+
 ## [0.3.0] — 2026-09-27 · G-Diseño del piloto + bilingüe integral + pedido de planlang (estado `semilla`; G-Metodo aprobado)
 
 **MAJOR de datos:** invalida los mapas y gramáticas 0.2.0. Todos los artefactos del contrato se entregan

@@ -84,7 +84,7 @@ var require_ucs2length = __commonJS({
 
 // esquemas.js
 var validarGramaticaEsquema = validate52;
-var schema19 = { "$schema": "https://json-schema.org/draft/2020-12/schema", "$id": "diagramador/gramatica.schema.json", "title": "Gram\xE1tica del diagramador (contrato 0.3.0)", "description": "Reglas de un dominio: idiomas, bandas, tipos de nodo, modos de flujo, escala de madurez, vigencia y l\xEDmites. Todo texto que se dibuja es un MAPA DE IDIOMA {es, en, \u2026}; la gram\xE1tica declara qu\xE9 idiomas y cu\xE1l es el base. Las referencias cruzadas (ids \xFAnicos, \xF3rdenes \xFAnicos, niveles \xFAnicos, bandas de recorrido existentes, umbrales crecientes, idiomas completos) se validan en c\xF3digo: ver CONTRATO \xA7 6.", "type": "object", "additionalProperties": false, "required": ["contrato_version", "id", "version", "nombre", "idiomas", "idioma_base", "bandas", "tipos_de_nodo", "modos_de_flujo", "escala_madurez", "vigencia", "limites"], "properties": { "contrato_version": { "$ref": "#/$defs/semver" }, "id": { "$ref": "#/$defs/id" }, "version": { "$ref": "#/$defs/semver" }, "nombre": { "$ref": "#/$defs/texto_idioma" }, "descripcion": { "type": "string", "description": "Nota para quien mantiene la gram\xE1tica; no se dibuja, por eso no es mapa de idioma" }, "idiomas": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/idioma" }, "description": "Idiomas que todo texto de la gram\xE1tica y de sus mapas debe traer (G7, V14)" }, "idioma_base": { "$ref": "#/$defs/idioma", "description": "Idioma en que se redacta primero; debe estar en `idiomas` (G7)" }, "bandas": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/banda" } }, "tipos_de_nodo": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/tipo_de_nodo" } }, "modos_de_flujo": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/modo_de_flujo" } }, "escala_madurez": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/nivel_madurez" } }, "vigencia": { "type": "object", "additionalProperties": false, "required": ["umbral_revisar_dias", "umbral_vencido_dias"], "properties": { "umbral_revisar_dias": { "type": "integer", "minimum": 1 }, "umbral_vencido_dias": { "type": "integer", "minimum": 2 } } }, "recorrido_referencia": { "type": "object", "additionalProperties": false, "required": ["desde_bandas", "hasta_bandas", "llegadas"], "properties": { "desde_bandas": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/id" } }, "hasta_bandas": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/id" } }, "llegadas": { "enum": ["todas", "alguna"], "description": "todas: el recorrido debe terminar en CADA banda de hasta_bandas (p. ej., tablero Y agente); alguna: basta una" } } }, "limites": { "type": "object", "additionalProperties": false, "required": ["bloques_min", "bloques_max", "frases_lider_max", "nodos_por_banda_max"], "properties": { "bloques_min": { "type": "integer", "minimum": 0 }, "bloques_max": { "type": "integer", "minimum": 1 }, "frases_lider_max": { "type": "integer", "minimum": 1 }, "nodos_por_banda_max": { "type": "integer", "minimum": 1, "description": "Densidad m\xE1xima por banda en el nivel 2 (P10; V11). 6 en el piloto" } } }, "terminos_a_explicar": { "type": "object", "description": "Por idioma, los t\xE9rminos que un texto de l\xEDder no puede usar sin explicar (V9)", "propertyNames": { "$ref": "#/$defs/idioma" }, "additionalProperties": { "type": "array", "items": { "type": "string", "minLength": 1 } } } }, "$defs": { "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" }, "semver": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" }, "idioma": { "type": "string", "pattern": "^[a-z]{2}$" }, "texto_idioma": { "type": "object", "description": "Mapa de idioma: una cadena no vac\xEDa por idioma declarado. El esquema exige al menos uno; que est\xE9n TODOS los de `idiomas` lo verifica el c\xF3digo (G7 en la gram\xE1tica, V14 en el mapa)", "minProperties": 1, "propertyNames": { "$ref": "#/$defs/idioma" }, "additionalProperties": { "type": "string", "minLength": 1 } }, "etiqueta_idioma": { "type": "object", "minProperties": 1, "propertyNames": { "$ref": "#/$defs/idioma" }, "additionalProperties": { "type": "string", "minLength": 1, "maxLength": 4 } }, "banda": { "type": "object", "additionalProperties": false, "required": ["id", "nombre", "clase", "orden", "pregunta_lider"], "properties": { "id": { "$ref": "#/$defs/id" }, "nombre": { "$ref": "#/$defs/texto_idioma" }, "clase": { "enum": ["capa", "carril", "transversal"] }, "orden": { "type": "integer", "minimum": 1, "description": "\xDAnico dentro de cada clase" }, "pregunta_lider": { "$ref": "#/$defs/texto_idioma" } } }, "tipo_de_nodo": { "type": "object", "additionalProperties": false, "required": ["id", "nombre", "token_color", "glifo", "etiqueta_corta"], "properties": { "id": { "$ref": "#/$defs/id" }, "nombre": { "$ref": "#/$defs/texto_idioma" }, "token_color": { "$ref": "#/$defs/id", "description": "Nombre del token; el valor por tema lo fija el design system del consumidor bajo el umbral de paleta del CONTRATO \xA7 5.2" }, "glifo": { "enum": ["circulo", "cuadrado", "rombo", "triangulo", "escudo", "estrella", "anillo", "barras"], "description": "Paths de caja 16 u en el CONTRATO \xA7 5.4 (0.3.0: salen hexagono y pentagono, entran escudo y barras)" }, "etiqueta_corta": { "$ref": "#/$defs/etiqueta_idioma" } } }, "modo_de_flujo": { "type": "object", "additionalProperties": false, "required": ["id", "nombre", "estilo_linea", "marcador", "descripcion"], "properties": { "id": { "$ref": "#/$defs/id" }, "nombre": { "$ref": "#/$defs/texto_idioma" }, "estilo_linea": { "enum": ["continua", "discontinua", "punteada", "doble"] }, "marcador": { "enum": ["cuadros", "onda", "ida-y-vuelta", "enlace", "ninguno"], "description": "Paths de caja 12 u en el CONTRATO \xA7 5.4 (0.3.0: sale reloj, entra ida-y-vuelta)" }, "descripcion": { "$ref": "#/$defs/texto_idioma" }, "exige_condicion": { "type": "boolean", "description": "Si es true, todo flujo de este modo debe traer `condicion` (V13). Ausente = false" } } }, "nivel_madurez": { "type": "object", "additionalProperties": false, "required": ["id", "nombre", "nivel", "disponible"], "properties": { "id": { "$ref": "#/$defs/id" }, "nombre": { "$ref": "#/$defs/texto_idioma" }, "nivel": { "type": "integer", "minimum": -1, "maximum": 4, "description": "Se dibuja como medidor (D13): \u22121 vac\xEDo y tachado (retirado) \xB7 0 vac\xEDo discontinuo \xB7 1 un cuarto \xB7 2 la mitad \xB7 3 tres cuartos \xB7 4 lleno. \xDAnico dentro de la escala (G2)" }, "disponible": { "type": "boolean" } } } } };
+var schema19 = { "$schema": "https://json-schema.org/draft/2020-12/schema", "$id": "diagramador/gramatica.schema.json", "title": "Gram\xE1tica del diagramador (contrato 0.4.0)", "description": "Reglas de un dominio: idiomas, bandas, tipos de nodo, modos de flujo, escala de madurez, vigencia y l\xEDmites. Todo texto que se dibuja es un MAPA DE IDIOMA {es, en, \u2026}; la gram\xE1tica declara qu\xE9 idiomas y cu\xE1l es el base. Las referencias cruzadas (ids \xFAnicos, \xF3rdenes \xFAnicos, niveles \xFAnicos, bandas de recorrido existentes, umbrales crecientes, idiomas completos) se validan en c\xF3digo: ver CONTRATO \xA7 6.", "type": "object", "additionalProperties": false, "required": ["contrato_version", "id", "version", "nombre", "idiomas", "idioma_base", "bandas", "tipos_de_nodo", "modos_de_flujo", "escala_madurez", "vigencia", "limites"], "properties": { "contrato_version": { "$ref": "#/$defs/semver" }, "id": { "$ref": "#/$defs/id" }, "version": { "$ref": "#/$defs/semver" }, "nombre": { "$ref": "#/$defs/texto_idioma" }, "descripcion": { "type": "string", "description": "Nota para quien mantiene la gram\xE1tica; no se dibuja, por eso no es mapa de idioma" }, "idiomas": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/idioma" }, "description": "Idiomas que todo texto de la gram\xE1tica y de sus mapas debe traer (G7, V14)" }, "idioma_base": { "$ref": "#/$defs/idioma", "description": "Idioma en que se redacta primero; debe estar en `idiomas` (G7)" }, "bandas": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/banda" } }, "tipos_de_nodo": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/tipo_de_nodo" } }, "modos_de_flujo": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/modo_de_flujo" } }, "escala_madurez": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/nivel_madurez" } }, "vigencia": { "type": "object", "additionalProperties": false, "required": ["umbral_revisar_dias", "umbral_vencido_dias"], "properties": { "umbral_revisar_dias": { "type": "integer", "minimum": 1 }, "umbral_vencido_dias": { "type": "integer", "minimum": 2 } } }, "recorrido_referencia": { "type": "object", "additionalProperties": false, "required": ["desde_bandas", "hasta_bandas", "llegadas"], "properties": { "desde_bandas": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/id" } }, "hasta_bandas": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/id" } }, "llegadas": { "enum": ["todas", "alguna"], "description": "todas: el recorrido debe terminar en CADA banda de hasta_bandas (p. ej., tablero Y agente); alguna: basta una" } } }, "limites": { "type": "object", "additionalProperties": false, "required": ["bloques_min", "bloques_max", "frases_lider_max", "nodos_por_banda_max"], "properties": { "bloques_min": { "type": "integer", "minimum": 0 }, "bloques_max": { "type": "integer", "minimum": 1 }, "frases_lider_max": { "type": "integer", "minimum": 1 }, "nodos_por_banda_max": { "type": "integer", "minimum": 1, "description": "Densidad m\xE1xima por banda en el nivel 2 (P10; V11). 6 en el piloto" } } }, "terminos_a_explicar": { "type": "object", "description": "Por idioma, los t\xE9rminos que un texto de l\xEDder no puede usar sin explicar (V9)", "propertyNames": { "$ref": "#/$defs/idioma" }, "additionalProperties": { "type": "array", "items": { "type": "string", "minLength": 1 } } } }, "$defs": { "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" }, "semver": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" }, "idioma": { "type": "string", "pattern": "^[a-z]{2}$" }, "texto_idioma": { "type": "object", "description": "Mapa de idioma: una cadena no vac\xEDa por idioma declarado. El esquema exige al menos uno; que est\xE9n TODOS los de `idiomas` lo verifica el c\xF3digo (G7 en la gram\xE1tica, V14 en el mapa)", "minProperties": 1, "propertyNames": { "$ref": "#/$defs/idioma" }, "additionalProperties": { "type": "string", "minLength": 1 } }, "etiqueta_idioma": { "type": "object", "minProperties": 1, "propertyNames": { "$ref": "#/$defs/idioma" }, "additionalProperties": { "type": "string", "minLength": 1, "maxLength": 4 } }, "banda": { "type": "object", "additionalProperties": false, "required": ["id", "nombre", "clase", "orden", "pregunta_lider"], "properties": { "id": { "$ref": "#/$defs/id" }, "nombre": { "$ref": "#/$defs/texto_idioma" }, "clase": { "enum": ["capa", "carril", "transversal"] }, "orden": { "type": "integer", "minimum": 1, "description": "\xDAnico dentro de cada clase" }, "pregunta_lider": { "$ref": "#/$defs/texto_idioma" } } }, "tipo_de_nodo": { "type": "object", "additionalProperties": false, "required": ["id", "nombre", "token_color", "glifo", "etiqueta_corta"], "properties": { "id": { "$ref": "#/$defs/id" }, "nombre": { "$ref": "#/$defs/texto_idioma" }, "token_color": { "$ref": "#/$defs/id", "description": "Nombre del token; el valor por tema lo fija el design system del consumidor bajo el umbral de paleta del CONTRATO \xA7 5.2" }, "glifo": { "enum": ["circulo", "cuadrado", "rombo", "triangulo", "escudo", "estrella", "anillo", "barras"], "description": "Paths de caja 16 u en el CONTRATO \xA7 5.4 (0.3.0: salen hexagono y pentagono, entran escudo y barras)" }, "etiqueta_corta": { "$ref": "#/$defs/etiqueta_idioma" } } }, "modo_de_flujo": { "type": "object", "additionalProperties": false, "required": ["id", "nombre", "estilo_linea", "marcador", "descripcion"], "properties": { "id": { "$ref": "#/$defs/id" }, "nombre": { "$ref": "#/$defs/texto_idioma" }, "estilo_linea": { "enum": ["continua", "discontinua", "punteada", "doble"] }, "marcador": { "enum": ["cuadros", "onda", "ida-y-vuelta", "enlace", "ninguno"], "description": "Paths de caja 12 u en el CONTRATO \xA7 5.4 (0.3.0: sale reloj, entra ida-y-vuelta)" }, "descripcion": { "$ref": "#/$defs/texto_idioma" }, "exige_condicion": { "type": "boolean", "description": "Si es true, todo flujo de este modo debe traer `condicion` (V13). Ausente = false" } } }, "nivel_madurez": { "type": "object", "additionalProperties": false, "required": ["id", "nombre", "nivel", "disponible"], "properties": { "id": { "$ref": "#/$defs/id" }, "nombre": { "$ref": "#/$defs/texto_idioma" }, "nivel": { "type": "integer", "minimum": -1, "maximum": 4, "description": "Se dibuja como medidor (D13): \u22121 vac\xEDo y tachado (retirado) \xB7 0 vac\xEDo discontinuo \xB7 1 un cuarto \xB7 2 la mitad \xB7 3 tres cuartos \xB7 4 lleno. \xDAnico dentro de la escala (G2)" }, "etiqueta_corta": { "$ref": "#/$defs/etiqueta_idioma", "description": "Opcional (0.4.0, D-S1-17): el nombre largo no cabe en bloques ni nodos; si falta, el motor usa el nombre" }, "disponible": { "type": "boolean" } } } } };
 var func1 = Object.prototype.hasOwnProperty;
 var func0 = require_equal().default;
 var func2 = require_ucs2length().default;
@@ -776,7 +776,7 @@ function validate82(data, { instancePath = "", parentData, parentDataProperty, r
       errors++;
     }
     for (const key0 in data) {
-      if (!(key0 === "id" || key0 === "nombre" || key0 === "nivel" || key0 === "disponible")) {
+      if (!(key0 === "id" || key0 === "nombre" || key0 === "nivel" || key0 === "etiqueta_corta" || key0 === "disponible")) {
         const err4 = { instancePath, schemaPath: "#/additionalProperties", keyword: "additionalProperties", params: { additionalProperty: key0 }, message: "must NOT have additional properties" };
         if (vErrors === null) {
           vErrors = [err4];
@@ -828,6 +828,12 @@ function validate82(data, { instancePath = "", parentData, parentDataProperty, r
           }
           errors++;
         }
+      }
+    }
+    if (data.etiqueta_corta !== void 0) {
+      if (!validate73(data.etiqueta_corta, { instancePath: instancePath + "/etiqueta_corta", parentData: data, parentDataProperty: "etiqueta_corta", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate73.errors : vErrors.concat(validate73.errors);
+        errors = vErrors.length;
       }
     }
     if (data.disponible !== void 0) {
@@ -1629,12 +1635,12 @@ function validate52(data, { instancePath = "", parentData, parentDataProperty, r
   return errors === 0;
 }
 validate52.evaluated = { "props": true, "dynamicProps": false, "dynamicItems": false };
-var validarMapaEsquema = validate89;
-var schema29 = { "$schema": "https://json-schema.org/draft/2020-12/schema", "$id": "diagramador/mapa.schema.json", "title": "Mapa del diagramador (contrato 0.3.0)", "description": "Contenido de un sujeto bajo una gram\xE1tica. Todo texto que se dibuja o se lee es un MAPA DE IDIOMA {es, en, \u2026} con los idiomas que declara la gram\xE1tica (V14). El esquema valida forma; las referencias contra la gram\xE1tica y dentro del mapa (bandas, tipos, modos, madurez, flujos, condiciones, recorridos, bloques, densidad, ids \xFAnicos, idiomas, cobertura de la fuente) se validan en c\xF3digo: ver CONTRATO \xA7 6.", "type": "object", "additionalProperties": false, "required": ["contrato_version", "gramatica_id", "gramatica_version", "sujeto_id", "sujeto_nombre", "version", "fecha_actualizacion", "estado", "bloques", "nodos", "flujos", "recorridos"], "properties": { "contrato_version": { "$ref": "#/$defs/semver" }, "gramatica_id": { "$ref": "#/$defs/id" }, "gramatica_version": { "$ref": "#/$defs/semver" }, "sujeto_id": { "$ref": "#/$defs/id" }, "sujeto_nombre": { "$ref": "#/$defs/texto_idioma" }, "version": { "$ref": "#/$defs/semver" }, "fecha_actualizacion": { "$ref": "#/$defs/fecha" }, "estado": { "enum": ["propuesta", "aprobada", "rechazada"] }, "bloques": { "type": "array", "items": { "$ref": "#/$defs/bloque" } }, "nodos": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/nodo" } }, "flujos": { "type": "array", "items": { "$ref": "#/$defs/flujo" } }, "recorridos": { "type": "array", "items": { "$ref": "#/$defs/recorrido" } }, "glosario": { "$ref": "#/$defs/diccionario_idioma", "description": "Por idioma, t\xE9rminos explicados para TODO el mapa (nodos, bloques, flujos y pasos). Un nodo puede adem\xE1s explicar los suyos en `terminos`. El renderizador muestra la explicaci\xF3n donde el t\xE9rmino aparece (F-001)." }, "refs_externas": { "$ref": "#/$defs/refs" } }, "$defs": { "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" }, "semver": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" }, "fecha": { "type": "string", "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$" }, "idioma": { "type": "string", "pattern": "^[a-z]{2}$" }, "texto_idioma": { "type": "object", "description": "Mapa de idioma: una cadena no vac\xEDa por idioma. Que est\xE9n TODOS los idiomas de la gram\xE1tica lo verifica V14", "minProperties": 1, "propertyNames": { "$ref": "#/$defs/idioma" }, "additionalProperties": { "type": "string", "minLength": 1 } }, "diccionario_idioma": { "type": "object", "description": "Por idioma, un diccionario t\xE9rmino \u2192 explicaci\xF3n", "propertyNames": { "$ref": "#/$defs/idioma" }, "additionalProperties": { "type": "object", "additionalProperties": { "type": "string", "minLength": 1 } } }, "refs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "description": "Opacas para el motor" }, "fuente": { "type": "object", "additionalProperties": false, "required": ["url", "titulo", "fecha", "tipo"], "properties": { "url": { "type": "string", "pattern": "^https://" }, "titulo": { "$ref": "#/$defs/texto_idioma" }, "fecha": { "$ref": "#/$defs/fecha" }, "tipo": { "enum": ["oficial", "tercero"] } } }, "bloque": { "type": "object", "additionalProperties": false, "required": ["id", "nombre", "banda_id", "lider"], "properties": { "id": { "$ref": "#/$defs/id" }, "nombre": { "$ref": "#/$defs/texto_idioma" }, "banda_id": { "$ref": "#/$defs/id", "description": "Banda donde se ancla el bloque en la visi\xF3n general" }, "lider": { "$ref": "#/$defs/texto_idioma" } } }, "nodo": { "type": "object", "additionalProperties": false, "required": ["id", "banda_id", "tipo_id", "nombre", "lider", "experto", "por_que_importa", "madurez", "fuentes", "fecha_verificacion"], "properties": { "id": { "$ref": "#/$defs/id" }, "banda_id": { "$ref": "#/$defs/id" }, "tipo_id": { "$ref": "#/$defs/id" }, "bloque_id": { "$ref": "#/$defs/id", "description": "Opcional: un nodo sin bloque no aparece en la visi\xF3n general; su banda muestra cu\xE1ntos nodos tiene" }, "nombre": { "$ref": "#/$defs/texto_idioma" }, "nombres_anteriores": { "type": "array", "items": { "$ref": "#/$defs/texto_idioma" } }, "orden": { "type": "integer", "minimum": 1, "description": "Posici\xF3n dentro de la banda (capa) o sobre el eje del flujo (carril y transversal); si falta, se ordena por id" }, "lider": { "$ref": "#/$defs/texto_idioma" }, "experto": { "$ref": "#/$defs/texto_idioma" }, "por_que_importa": { "$ref": "#/$defs/texto_idioma" }, "terminos": { "$ref": "#/$defs/diccionario_idioma" }, "madurez": { "$ref": "#/$defs/id" }, "fuentes": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/fuente" } }, "fecha_verificacion": { "$ref": "#/$defs/fecha" }, "refs_externas": { "$ref": "#/$defs/refs" } } }, "condicion": { "type": "object", "additionalProperties": false, "required": ["senal", "operador", "valor"], "description": "Condici\xF3n de un flujo condicional (0.3.0, pedido de planlang): la se\xF1al registrada, el operador y el valor del plan. Obligatoria si el modo declara `exige_condicion` (V13)", "properties": { "senal": { "$ref": "#/$defs/id" }, "operador": { "enum": ["<", "<=", "=", "!=", ">=", ">"] }, "valor": { "anyOf": [{ "type": "number" }, { "type": "string", "minLength": 1 }, { "type": "boolean" }] } } }, "flujo": { "type": "object", "additionalProperties": false, "required": ["id", "origen", "destino", "modo_id", "que_viaja", "lider"], "properties": { "id": { "$ref": "#/$defs/id" }, "origen": { "$ref": "#/$defs/id" }, "destino": { "$ref": "#/$defs/id" }, "modo_id": { "$ref": "#/$defs/id" }, "que_viaja": { "$ref": "#/$defs/texto_idioma" }, "lider": { "$ref": "#/$defs/texto_idioma" }, "condicion": { "$ref": "#/$defs/condicion" } } }, "paso": { "type": "object", "additionalProperties": false, "required": ["id", "nodo_id", "que_pasa", "lider", "experto"], "properties": { "id": { "$ref": "#/$defs/id" }, "nodo_id": { "$ref": "#/$defs/id" }, "sigue_de": { "$ref": "#/$defs/id", "description": "Paso anterior; si falta, es el paso previo de la lista. Dos pasos con el mismo sigue_de forman una rama" }, "bifurca": { "enum": ["paralela", "alternativa"], "description": "Obligatorio si de este paso salen dos o m\xE1s pasos: paralela = el recorrido sigue por TODAS las ramas (tablero Y agente); alternativa = por UNA (V12)" }, "que_pasa": { "$ref": "#/$defs/texto_idioma" }, "lider": { "$ref": "#/$defs/texto_idioma" }, "experto": { "$ref": "#/$defs/texto_idioma" } } }, "recorrido": { "type": "object", "additionalProperties": false, "required": ["id", "titulo", "pasos"], "properties": { "id": { "$ref": "#/$defs/id" }, "titulo": { "$ref": "#/$defs/texto_idioma" }, "pasos": { "type": "array", "minItems": 2, "items": { "$ref": "#/$defs/paso" } } } } } };
-function validate90(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
+var validarMapaEsquema = validate90;
+var schema29 = { "$schema": "https://json-schema.org/draft/2020-12/schema", "$id": "diagramador/mapa.schema.json", "title": "Mapa del diagramador (contrato 0.4.0)", "description": "Contenido de un sujeto bajo una gram\xE1tica. Todo texto que se dibuja o se lee es un MAPA DE IDIOMA {es, en, \u2026} con los idiomas que declara la gram\xE1tica (V14). El esquema valida forma; las referencias contra la gram\xE1tica y dentro del mapa (bandas, tipos, modos, madurez, flujos, condiciones, recorridos, bloques, densidad, ids \xFAnicos, idiomas, cobertura de la fuente) se validan en c\xF3digo: ver CONTRATO \xA7 6.", "type": "object", "additionalProperties": false, "required": ["contrato_version", "gramatica_id", "gramatica_version", "sujeto_id", "sujeto_nombre", "version", "fecha_actualizacion", "estado", "bloques", "nodos", "flujos", "recorridos"], "properties": { "contrato_version": { "$ref": "#/$defs/semver" }, "gramatica_id": { "$ref": "#/$defs/id" }, "gramatica_version": { "$ref": "#/$defs/semver" }, "sujeto_id": { "$ref": "#/$defs/id" }, "sujeto_nombre": { "$ref": "#/$defs/texto_idioma" }, "version": { "$ref": "#/$defs/semver" }, "fecha_actualizacion": { "$ref": "#/$defs/fecha" }, "estado": { "enum": ["propuesta", "aprobada", "rechazada"] }, "bloques": { "type": "array", "items": { "$ref": "#/$defs/bloque" } }, "nodos": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/nodo" } }, "flujos": { "type": "array", "items": { "$ref": "#/$defs/flujo" } }, "recorridos": { "type": "array", "items": { "$ref": "#/$defs/recorrido" } }, "glosario": { "$ref": "#/$defs/diccionario_idioma", "description": "Por idioma, t\xE9rminos explicados para TODO el mapa (nodos, bloques, flujos y pasos). Un nodo puede adem\xE1s explicar los suyos en `terminos`. El renderizador muestra la explicaci\xF3n donde el t\xE9rmino aparece (F-001)." }, "refs_externas": { "$ref": "#/$defs/refs" } }, "$defs": { "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" }, "semver": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" }, "fecha": { "type": "string", "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$" }, "idioma": { "type": "string", "pattern": "^[a-z]{2}$" }, "texto_idioma": { "type": "object", "description": "Mapa de idioma: una cadena no vac\xEDa por idioma. Que est\xE9n TODOS los idiomas de la gram\xE1tica lo verifica V14", "minProperties": 1, "propertyNames": { "$ref": "#/$defs/idioma" }, "additionalProperties": { "type": "string", "minLength": 1 } }, "diccionario_idioma": { "type": "object", "description": "Por idioma, un diccionario t\xE9rmino \u2192 explicaci\xF3n", "propertyNames": { "$ref": "#/$defs/idioma" }, "additionalProperties": { "type": "object", "additionalProperties": { "type": "string", "minLength": 1 } } }, "refs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "description": "Opacas para el motor" }, "fuente": { "type": "object", "additionalProperties": false, "required": ["url", "titulo", "fecha", "tipo"], "properties": { "url": { "type": "string", "pattern": "^https://" }, "titulo": { "$ref": "#/$defs/texto_idioma" }, "fecha": { "$ref": "#/$defs/fecha" }, "tipo": { "enum": ["oficial", "tercero"] } } }, "bloque": { "type": "object", "additionalProperties": false, "required": ["id", "nombre", "banda_id", "lider"], "properties": { "id": { "$ref": "#/$defs/id" }, "nombre": { "$ref": "#/$defs/texto_idioma" }, "banda_id": { "$ref": "#/$defs/id", "description": "Banda donde se ancla el bloque en la visi\xF3n general" }, "lider": { "$ref": "#/$defs/texto_idioma" } } }, "nodo": { "type": "object", "additionalProperties": false, "required": ["id", "banda_id", "tipo_id", "nombre", "lider", "experto", "por_que_importa", "madurez", "fuentes", "fecha_verificacion"], "properties": { "id": { "$ref": "#/$defs/id" }, "banda_id": { "$ref": "#/$defs/id" }, "tipo_id": { "$ref": "#/$defs/id" }, "bloque_id": { "$ref": "#/$defs/id", "description": "Opcional: un nodo sin bloque no aparece en la visi\xF3n general; su banda muestra cu\xE1ntos nodos tiene" }, "nombre": { "$ref": "#/$defs/texto_idioma" }, "nombres_anteriores": { "type": "array", "items": { "$ref": "#/$defs/texto_idioma" } }, "orden": { "type": "integer", "minimum": 1, "description": "Posici\xF3n dentro de la banda (capa) o sobre el eje del flujo (carril y transversal); si falta, se ordena por id" }, "lider": { "$ref": "#/$defs/texto_idioma" }, "experto": { "$ref": "#/$defs/texto_idioma" }, "por_que_importa": { "$ref": "#/$defs/texto_idioma" }, "terminos": { "$ref": "#/$defs/diccionario_idioma" }, "madurez": { "$ref": "#/$defs/id" }, "fuentes": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/fuente" } }, "fecha_verificacion": { "$ref": "#/$defs/fecha" }, "refs_externas": { "$ref": "#/$defs/refs" } } }, "condicion": { "type": "object", "additionalProperties": false, "required": ["senal", "operador", "valor"], "description": "Condici\xF3n de un flujo condicional (0.3.0, pedido de planlang): la se\xF1al registrada, el operador y el valor del plan. Obligatoria si el modo declara `exige_condicion` (V13)", "properties": { "senal": { "$ref": "#/$defs/id" }, "operador": { "enum": ["<", "<=", "=", "!=", ">=", ">"] }, "valor": { "anyOf": [{ "type": "number" }, { "type": "string", "minLength": 1 }, { "type": "boolean" }] } } }, "flujo": { "type": "object", "additionalProperties": false, "required": ["id", "origen", "destino", "modo_id", "que_viaja", "lider"], "properties": { "id": { "$ref": "#/$defs/id" }, "origen": { "$ref": "#/$defs/id" }, "destino": { "$ref": "#/$defs/id" }, "modo_id": { "$ref": "#/$defs/id" }, "que_viaja": { "$ref": "#/$defs/texto_idioma" }, "lider": { "$ref": "#/$defs/texto_idioma" }, "condicion": { "$ref": "#/$defs/condicion" } } }, "paso": { "type": "object", "additionalProperties": false, "required": ["id", "nodo_id", "que_pasa", "lider", "experto"], "properties": { "id": { "$ref": "#/$defs/id" }, "nodo_id": { "$ref": "#/$defs/id" }, "sigue_de": { "$ref": "#/$defs/id", "description": "Paso anterior; si falta, es el paso previo de la lista. Dos pasos con el mismo sigue_de forman una rama" }, "bifurca": { "enum": ["paralela", "alternativa"], "description": "Obligatorio si de este paso salen dos o m\xE1s pasos: paralela = el recorrido sigue por TODAS las ramas (tablero Y agente); alternativa = por UNA (V12)" }, "que_pasa": { "$ref": "#/$defs/texto_idioma" }, "lider": { "$ref": "#/$defs/texto_idioma" }, "experto": { "$ref": "#/$defs/texto_idioma" } } }, "recorrido": { "type": "object", "additionalProperties": false, "required": ["id", "titulo", "pasos"], "properties": { "id": { "$ref": "#/$defs/id" }, "titulo": { "$ref": "#/$defs/texto_idioma" }, "pasos": { "type": "array", "minItems": 2, "items": { "$ref": "#/$defs/paso" } } } } } };
+function validate91(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
   let vErrors = null;
   let errors = 0;
-  const evaluated0 = validate90.evaluated;
+  const evaluated0 = validate91.evaluated;
   if (evaluated0.dynamicProps) {
     evaluated0.props = void 0;
   }
@@ -1660,14 +1666,14 @@ function validate90(data, { instancePath = "", parentData, parentDataProperty, r
     }
     errors++;
   }
-  validate90.errors = vErrors;
+  validate91.errors = vErrors;
   return errors === 0;
 }
-validate90.evaluated = { "dynamicProps": false, "dynamicItems": false };
-function validate92(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
+validate91.evaluated = { "dynamicProps": false, "dynamicItems": false };
+function validate93(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
   let vErrors = null;
   let errors = 0;
-  const evaluated0 = validate92.evaluated;
+  const evaluated0 = validate93.evaluated;
   if (evaluated0.dynamicProps) {
     evaluated0.props = void 0;
   }
@@ -1693,14 +1699,14 @@ function validate92(data, { instancePath = "", parentData, parentDataProperty, r
     }
     errors++;
   }
-  validate92.errors = vErrors;
+  validate93.errors = vErrors;
   return errors === 0;
 }
-validate92.evaluated = { "dynamicProps": false, "dynamicItems": false };
-function validate97(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
+validate93.evaluated = { "dynamicProps": false, "dynamicItems": false };
+function validate98(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
   let vErrors = null;
   let errors = 0;
-  const evaluated0 = validate97.evaluated;
+  const evaluated0 = validate98.evaluated;
   if (evaluated0.dynamicProps) {
     evaluated0.props = void 0;
   }
@@ -1726,14 +1732,14 @@ function validate97(data, { instancePath = "", parentData, parentDataProperty, r
     }
     errors++;
   }
-  validate97.errors = vErrors;
+  validate98.errors = vErrors;
   return errors === 0;
 }
-validate97.evaluated = { "dynamicProps": false, "dynamicItems": false };
-function validate96(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
+validate98.evaluated = { "dynamicProps": false, "dynamicItems": false };
+function validate97(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
   let vErrors = null;
   let errors = 0;
-  const evaluated0 = validate96.evaluated;
+  const evaluated0 = validate97.evaluated;
   if (evaluated0.dynamicProps) {
     evaluated0.props = void 0;
   }
@@ -1752,8 +1758,8 @@ function validate96(data, { instancePath = "", parentData, parentDataProperty, r
     }
     for (const key0 in data) {
       const _errs1 = errors;
-      if (!validate97(key0, { instancePath, parentData: data, parentDataProperty, rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate97.errors : vErrors.concat(validate97.errors);
+      if (!validate98(key0, { instancePath, parentData: data, parentDataProperty, rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate98.errors : vErrors.concat(validate98.errors);
         errors = vErrors.length;
       }
       var valid0 = _errs1 === errors;
@@ -1798,15 +1804,15 @@ function validate96(data, { instancePath = "", parentData, parentDataProperty, r
     }
     errors++;
   }
-  validate96.errors = vErrors;
+  validate97.errors = vErrors;
   return errors === 0;
 }
-validate96.evaluated = { "props": true, "dynamicProps": false, "dynamicItems": false };
+validate97.evaluated = { "props": true, "dynamicProps": false, "dynamicItems": false };
 var pattern9 = new RegExp("^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$", "u");
-function validate101(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
+function validate102(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
   let vErrors = null;
   let errors = 0;
-  const evaluated0 = validate101.evaluated;
+  const evaluated0 = validate102.evaluated;
   if (evaluated0.dynamicProps) {
     evaluated0.props = void 0;
   }
@@ -1832,14 +1838,14 @@ function validate101(data, { instancePath = "", parentData, parentDataProperty, 
     }
     errors++;
   }
-  validate101.errors = vErrors;
+  validate102.errors = vErrors;
   return errors === 0;
 }
-validate101.evaluated = { "dynamicProps": false, "dynamicItems": false };
-function validate103(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
+validate102.evaluated = { "dynamicProps": false, "dynamicItems": false };
+function validate104(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
   let vErrors = null;
   let errors = 0;
-  const evaluated0 = validate103.evaluated;
+  const evaluated0 = validate104.evaluated;
   if (evaluated0.dynamicProps) {
     evaluated0.props = void 0;
   }
@@ -1895,26 +1901,26 @@ function validate103(data, { instancePath = "", parentData, parentDataProperty, 
       }
     }
     if (data.id !== void 0) {
-      if (!validate92(data.id, { instancePath: instancePath + "/id", parentData: data, parentDataProperty: "id", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate92.errors : vErrors.concat(validate92.errors);
+      if (!validate93(data.id, { instancePath: instancePath + "/id", parentData: data, parentDataProperty: "id", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate93.errors : vErrors.concat(validate93.errors);
         errors = vErrors.length;
       }
     }
     if (data.nombre !== void 0) {
-      if (!validate96(data.nombre, { instancePath: instancePath + "/nombre", parentData: data, parentDataProperty: "nombre", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate96.errors : vErrors.concat(validate96.errors);
+      if (!validate97(data.nombre, { instancePath: instancePath + "/nombre", parentData: data, parentDataProperty: "nombre", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate97.errors : vErrors.concat(validate97.errors);
         errors = vErrors.length;
       }
     }
     if (data.banda_id !== void 0) {
-      if (!validate92(data.banda_id, { instancePath: instancePath + "/banda_id", parentData: data, parentDataProperty: "banda_id", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate92.errors : vErrors.concat(validate92.errors);
+      if (!validate93(data.banda_id, { instancePath: instancePath + "/banda_id", parentData: data, parentDataProperty: "banda_id", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate93.errors : vErrors.concat(validate93.errors);
         errors = vErrors.length;
       }
     }
     if (data.lider !== void 0) {
-      if (!validate96(data.lider, { instancePath: instancePath + "/lider", parentData: data, parentDataProperty: "lider", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate96.errors : vErrors.concat(validate96.errors);
+      if (!validate97(data.lider, { instancePath: instancePath + "/lider", parentData: data, parentDataProperty: "lider", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate97.errors : vErrors.concat(validate97.errors);
         errors = vErrors.length;
       }
     }
@@ -1927,15 +1933,15 @@ function validate103(data, { instancePath = "", parentData, parentDataProperty, 
     }
     errors++;
   }
-  validate103.errors = vErrors;
+  validate104.errors = vErrors;
   return errors === 0;
 }
-validate103.evaluated = { "props": true, "dynamicProps": false, "dynamicItems": false };
+validate104.evaluated = { "props": true, "dynamicProps": false, "dynamicItems": false };
 var schema36 = { "type": "object", "additionalProperties": false, "required": ["id", "banda_id", "tipo_id", "nombre", "lider", "experto", "por_que_importa", "madurez", "fuentes", "fecha_verificacion"], "properties": { "id": { "$ref": "#/$defs/id" }, "banda_id": { "$ref": "#/$defs/id" }, "tipo_id": { "$ref": "#/$defs/id" }, "bloque_id": { "$ref": "#/$defs/id", "description": "Opcional: un nodo sin bloque no aparece en la visi\xF3n general; su banda muestra cu\xE1ntos nodos tiene" }, "nombre": { "$ref": "#/$defs/texto_idioma" }, "nombres_anteriores": { "type": "array", "items": { "$ref": "#/$defs/texto_idioma" } }, "orden": { "type": "integer", "minimum": 1, "description": "Posici\xF3n dentro de la banda (capa) o sobre el eje del flujo (carril y transversal); si falta, se ordena por id" }, "lider": { "$ref": "#/$defs/texto_idioma" }, "experto": { "$ref": "#/$defs/texto_idioma" }, "por_que_importa": { "$ref": "#/$defs/texto_idioma" }, "terminos": { "$ref": "#/$defs/diccionario_idioma" }, "madurez": { "$ref": "#/$defs/id" }, "fuentes": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/fuente" } }, "fecha_verificacion": { "$ref": "#/$defs/fecha" }, "refs_externas": { "$ref": "#/$defs/refs" } } };
-function validate119(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
+function validate120(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
   let vErrors = null;
   let errors = 0;
-  const evaluated0 = validate119.evaluated;
+  const evaluated0 = validate120.evaluated;
   if (evaluated0.dynamicProps) {
     evaluated0.props = void 0;
   }
@@ -1945,8 +1951,8 @@ function validate119(data, { instancePath = "", parentData, parentDataProperty, 
   if (data && typeof data == "object" && !Array.isArray(data)) {
     for (const key0 in data) {
       const _errs1 = errors;
-      if (!validate97(key0, { instancePath, parentData: data, parentDataProperty, rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate97.errors : vErrors.concat(validate97.errors);
+      if (!validate98(key0, { instancePath, parentData: data, parentDataProperty, rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate98.errors : vErrors.concat(validate98.errors);
         errors = vErrors.length;
       }
       var valid0 = _errs1 === errors;
@@ -2004,16 +2010,16 @@ function validate119(data, { instancePath = "", parentData, parentDataProperty, 
     }
     errors++;
   }
-  validate119.errors = vErrors;
+  validate120.errors = vErrors;
   return errors === 0;
 }
-validate119.evaluated = { "props": true, "dynamicProps": false, "dynamicItems": false };
+validate120.evaluated = { "props": true, "dynamicProps": false, "dynamicItems": false };
 var schema38 = { "type": "object", "additionalProperties": false, "required": ["url", "titulo", "fecha", "tipo"], "properties": { "url": { "type": "string", "pattern": "^https://" }, "titulo": { "$ref": "#/$defs/texto_idioma" }, "fecha": { "$ref": "#/$defs/fecha" }, "tipo": { "enum": ["oficial", "tercero"] } } };
 var pattern10 = new RegExp("^https://", "u");
-function validate123(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
+function validate124(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
   let vErrors = null;
   let errors = 0;
-  const evaluated0 = validate123.evaluated;
+  const evaluated0 = validate124.evaluated;
   if (evaluated0.dynamicProps) {
     evaluated0.props = void 0;
   }
@@ -2091,14 +2097,14 @@ function validate123(data, { instancePath = "", parentData, parentDataProperty, 
       }
     }
     if (data.titulo !== void 0) {
-      if (!validate96(data.titulo, { instancePath: instancePath + "/titulo", parentData: data, parentDataProperty: "titulo", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate96.errors : vErrors.concat(validate96.errors);
+      if (!validate97(data.titulo, { instancePath: instancePath + "/titulo", parentData: data, parentDataProperty: "titulo", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate97.errors : vErrors.concat(validate97.errors);
         errors = vErrors.length;
       }
     }
     if (data.fecha !== void 0) {
-      if (!validate101(data.fecha, { instancePath: instancePath + "/fecha", parentData: data, parentDataProperty: "fecha", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate101.errors : vErrors.concat(validate101.errors);
+      if (!validate102(data.fecha, { instancePath: instancePath + "/fecha", parentData: data, parentDataProperty: "fecha", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate102.errors : vErrors.concat(validate102.errors);
         errors = vErrors.length;
       }
     }
@@ -2123,14 +2129,14 @@ function validate123(data, { instancePath = "", parentData, parentDataProperty, 
     }
     errors++;
   }
-  validate123.errors = vErrors;
+  validate124.errors = vErrors;
   return errors === 0;
 }
-validate123.evaluated = { "props": true, "dynamicProps": false, "dynamicItems": false };
-function validate128(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
+validate124.evaluated = { "props": true, "dynamicProps": false, "dynamicItems": false };
+function validate129(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
   let vErrors = null;
   let errors = 0;
-  const evaluated0 = validate128.evaluated;
+  const evaluated0 = validate129.evaluated;
   if (evaluated0.dynamicProps) {
     evaluated0.props = void 0;
   }
@@ -2170,14 +2176,14 @@ function validate128(data, { instancePath = "", parentData, parentDataProperty, 
     }
     errors++;
   }
-  validate128.errors = vErrors;
+  validate129.errors = vErrors;
   return errors === 0;
 }
-validate128.evaluated = { "items": true, "dynamicProps": false, "dynamicItems": false };
-function validate109(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
+validate129.evaluated = { "items": true, "dynamicProps": false, "dynamicItems": false };
+function validate110(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
   let vErrors = null;
   let errors = 0;
-  const evaluated0 = validate109.evaluated;
+  const evaluated0 = validate110.evaluated;
   if (evaluated0.dynamicProps) {
     evaluated0.props = void 0;
   }
@@ -2287,32 +2293,32 @@ function validate109(data, { instancePath = "", parentData, parentDataProperty, 
       }
     }
     if (data.id !== void 0) {
-      if (!validate92(data.id, { instancePath: instancePath + "/id", parentData: data, parentDataProperty: "id", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate92.errors : vErrors.concat(validate92.errors);
+      if (!validate93(data.id, { instancePath: instancePath + "/id", parentData: data, parentDataProperty: "id", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate93.errors : vErrors.concat(validate93.errors);
         errors = vErrors.length;
       }
     }
     if (data.banda_id !== void 0) {
-      if (!validate92(data.banda_id, { instancePath: instancePath + "/banda_id", parentData: data, parentDataProperty: "banda_id", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate92.errors : vErrors.concat(validate92.errors);
+      if (!validate93(data.banda_id, { instancePath: instancePath + "/banda_id", parentData: data, parentDataProperty: "banda_id", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate93.errors : vErrors.concat(validate93.errors);
         errors = vErrors.length;
       }
     }
     if (data.tipo_id !== void 0) {
-      if (!validate92(data.tipo_id, { instancePath: instancePath + "/tipo_id", parentData: data, parentDataProperty: "tipo_id", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate92.errors : vErrors.concat(validate92.errors);
+      if (!validate93(data.tipo_id, { instancePath: instancePath + "/tipo_id", parentData: data, parentDataProperty: "tipo_id", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate93.errors : vErrors.concat(validate93.errors);
         errors = vErrors.length;
       }
     }
     if (data.bloque_id !== void 0) {
-      if (!validate92(data.bloque_id, { instancePath: instancePath + "/bloque_id", parentData: data, parentDataProperty: "bloque_id", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate92.errors : vErrors.concat(validate92.errors);
+      if (!validate93(data.bloque_id, { instancePath: instancePath + "/bloque_id", parentData: data, parentDataProperty: "bloque_id", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate93.errors : vErrors.concat(validate93.errors);
         errors = vErrors.length;
       }
     }
     if (data.nombre !== void 0) {
-      if (!validate96(data.nombre, { instancePath: instancePath + "/nombre", parentData: data, parentDataProperty: "nombre", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate96.errors : vErrors.concat(validate96.errors);
+      if (!validate97(data.nombre, { instancePath: instancePath + "/nombre", parentData: data, parentDataProperty: "nombre", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate97.errors : vErrors.concat(validate97.errors);
         errors = vErrors.length;
       }
     }
@@ -2321,8 +2327,8 @@ function validate109(data, { instancePath = "", parentData, parentDataProperty, 
       if (Array.isArray(data5)) {
         const len0 = data5.length;
         for (let i0 = 0; i0 < len0; i0++) {
-          if (!validate96(data5[i0], { instancePath: instancePath + "/nombres_anteriores/" + i0, parentData: data5, parentDataProperty: i0, rootData, dynamicAnchors })) {
-            vErrors = vErrors === null ? validate96.errors : vErrors.concat(validate96.errors);
+          if (!validate97(data5[i0], { instancePath: instancePath + "/nombres_anteriores/" + i0, parentData: data5, parentDataProperty: i0, rootData, dynamicAnchors })) {
+            vErrors = vErrors === null ? validate97.errors : vErrors.concat(validate97.errors);
             errors = vErrors.length;
           }
         }
@@ -2360,32 +2366,32 @@ function validate109(data, { instancePath = "", parentData, parentDataProperty, 
       }
     }
     if (data.lider !== void 0) {
-      if (!validate96(data.lider, { instancePath: instancePath + "/lider", parentData: data, parentDataProperty: "lider", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate96.errors : vErrors.concat(validate96.errors);
+      if (!validate97(data.lider, { instancePath: instancePath + "/lider", parentData: data, parentDataProperty: "lider", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate97.errors : vErrors.concat(validate97.errors);
         errors = vErrors.length;
       }
     }
     if (data.experto !== void 0) {
-      if (!validate96(data.experto, { instancePath: instancePath + "/experto", parentData: data, parentDataProperty: "experto", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate96.errors : vErrors.concat(validate96.errors);
+      if (!validate97(data.experto, { instancePath: instancePath + "/experto", parentData: data, parentDataProperty: "experto", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate97.errors : vErrors.concat(validate97.errors);
         errors = vErrors.length;
       }
     }
     if (data.por_que_importa !== void 0) {
-      if (!validate96(data.por_que_importa, { instancePath: instancePath + "/por_que_importa", parentData: data, parentDataProperty: "por_que_importa", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate96.errors : vErrors.concat(validate96.errors);
+      if (!validate97(data.por_que_importa, { instancePath: instancePath + "/por_que_importa", parentData: data, parentDataProperty: "por_que_importa", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate97.errors : vErrors.concat(validate97.errors);
         errors = vErrors.length;
       }
     }
     if (data.terminos !== void 0) {
-      if (!validate119(data.terminos, { instancePath: instancePath + "/terminos", parentData: data, parentDataProperty: "terminos", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate119.errors : vErrors.concat(validate119.errors);
+      if (!validate120(data.terminos, { instancePath: instancePath + "/terminos", parentData: data, parentDataProperty: "terminos", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate120.errors : vErrors.concat(validate120.errors);
         errors = vErrors.length;
       }
     }
     if (data.madurez !== void 0) {
-      if (!validate92(data.madurez, { instancePath: instancePath + "/madurez", parentData: data, parentDataProperty: "madurez", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate92.errors : vErrors.concat(validate92.errors);
+      if (!validate93(data.madurez, { instancePath: instancePath + "/madurez", parentData: data, parentDataProperty: "madurez", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate93.errors : vErrors.concat(validate93.errors);
         errors = vErrors.length;
       }
     }
@@ -2403,8 +2409,8 @@ function validate109(data, { instancePath = "", parentData, parentDataProperty, 
         }
         const len1 = data13.length;
         for (let i1 = 0; i1 < len1; i1++) {
-          if (!validate123(data13[i1], { instancePath: instancePath + "/fuentes/" + i1, parentData: data13, parentDataProperty: i1, rootData, dynamicAnchors })) {
-            vErrors = vErrors === null ? validate123.errors : vErrors.concat(validate123.errors);
+          if (!validate124(data13[i1], { instancePath: instancePath + "/fuentes/" + i1, parentData: data13, parentDataProperty: i1, rootData, dynamicAnchors })) {
+            vErrors = vErrors === null ? validate124.errors : vErrors.concat(validate124.errors);
             errors = vErrors.length;
           }
         }
@@ -2419,14 +2425,14 @@ function validate109(data, { instancePath = "", parentData, parentDataProperty, 
       }
     }
     if (data.fecha_verificacion !== void 0) {
-      if (!validate101(data.fecha_verificacion, { instancePath: instancePath + "/fecha_verificacion", parentData: data, parentDataProperty: "fecha_verificacion", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate101.errors : vErrors.concat(validate101.errors);
+      if (!validate102(data.fecha_verificacion, { instancePath: instancePath + "/fecha_verificacion", parentData: data, parentDataProperty: "fecha_verificacion", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate102.errors : vErrors.concat(validate102.errors);
         errors = vErrors.length;
       }
     }
     if (data.refs_externas !== void 0) {
-      if (!validate128(data.refs_externas, { instancePath: instancePath + "/refs_externas", parentData: data, parentDataProperty: "refs_externas", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate128.errors : vErrors.concat(validate128.errors);
+      if (!validate129(data.refs_externas, { instancePath: instancePath + "/refs_externas", parentData: data, parentDataProperty: "refs_externas", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate129.errors : vErrors.concat(validate129.errors);
         errors = vErrors.length;
       }
     }
@@ -2439,15 +2445,15 @@ function validate109(data, { instancePath = "", parentData, parentDataProperty, 
     }
     errors++;
   }
-  validate109.errors = vErrors;
+  validate110.errors = vErrors;
   return errors === 0;
 }
-validate109.evaluated = { "props": true, "dynamicProps": false, "dynamicItems": false };
+validate110.evaluated = { "props": true, "dynamicProps": false, "dynamicItems": false };
 var schema41 = { "type": "object", "additionalProperties": false, "required": ["senal", "operador", "valor"], "description": "Condici\xF3n de un flujo condicional (0.3.0, pedido de planlang): la se\xF1al registrada, el operador y el valor del plan. Obligatoria si el modo declara `exige_condicion` (V13)", "properties": { "senal": { "$ref": "#/$defs/id" }, "operador": { "enum": ["<", "<=", "=", "!=", ">=", ">"] }, "valor": { "anyOf": [{ "type": "number" }, { "type": "string", "minLength": 1 }, { "type": "boolean" }] } } };
-function validate138(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
+function validate139(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
   let vErrors = null;
   let errors = 0;
-  const evaluated0 = validate138.evaluated;
+  const evaluated0 = validate139.evaluated;
   if (evaluated0.dynamicProps) {
     evaluated0.props = void 0;
   }
@@ -2494,8 +2500,8 @@ function validate138(data, { instancePath = "", parentData, parentDataProperty, 
       }
     }
     if (data.senal !== void 0) {
-      if (!validate92(data.senal, { instancePath: instancePath + "/senal", parentData: data, parentDataProperty: "senal", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate92.errors : vErrors.concat(validate92.errors);
+      if (!validate93(data.senal, { instancePath: instancePath + "/senal", parentData: data, parentDataProperty: "senal", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate93.errors : vErrors.concat(validate93.errors);
         errors = vErrors.length;
       }
     }
@@ -2589,14 +2595,14 @@ function validate138(data, { instancePath = "", parentData, parentDataProperty, 
     }
     errors++;
   }
-  validate138.errors = vErrors;
+  validate139.errors = vErrors;
   return errors === 0;
 }
-validate138.evaluated = { "props": true, "dynamicProps": false, "dynamicItems": false };
-function validate131(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
+validate139.evaluated = { "props": true, "dynamicProps": false, "dynamicItems": false };
+function validate132(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
   let vErrors = null;
   let errors = 0;
-  const evaluated0 = validate131.evaluated;
+  const evaluated0 = validate132.evaluated;
   if (evaluated0.dynamicProps) {
     evaluated0.props = void 0;
   }
@@ -2670,44 +2676,44 @@ function validate131(data, { instancePath = "", parentData, parentDataProperty, 
       }
     }
     if (data.id !== void 0) {
-      if (!validate92(data.id, { instancePath: instancePath + "/id", parentData: data, parentDataProperty: "id", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate92.errors : vErrors.concat(validate92.errors);
+      if (!validate93(data.id, { instancePath: instancePath + "/id", parentData: data, parentDataProperty: "id", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate93.errors : vErrors.concat(validate93.errors);
         errors = vErrors.length;
       }
     }
     if (data.origen !== void 0) {
-      if (!validate92(data.origen, { instancePath: instancePath + "/origen", parentData: data, parentDataProperty: "origen", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate92.errors : vErrors.concat(validate92.errors);
+      if (!validate93(data.origen, { instancePath: instancePath + "/origen", parentData: data, parentDataProperty: "origen", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate93.errors : vErrors.concat(validate93.errors);
         errors = vErrors.length;
       }
     }
     if (data.destino !== void 0) {
-      if (!validate92(data.destino, { instancePath: instancePath + "/destino", parentData: data, parentDataProperty: "destino", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate92.errors : vErrors.concat(validate92.errors);
+      if (!validate93(data.destino, { instancePath: instancePath + "/destino", parentData: data, parentDataProperty: "destino", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate93.errors : vErrors.concat(validate93.errors);
         errors = vErrors.length;
       }
     }
     if (data.modo_id !== void 0) {
-      if (!validate92(data.modo_id, { instancePath: instancePath + "/modo_id", parentData: data, parentDataProperty: "modo_id", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate92.errors : vErrors.concat(validate92.errors);
+      if (!validate93(data.modo_id, { instancePath: instancePath + "/modo_id", parentData: data, parentDataProperty: "modo_id", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate93.errors : vErrors.concat(validate93.errors);
         errors = vErrors.length;
       }
     }
     if (data.que_viaja !== void 0) {
-      if (!validate96(data.que_viaja, { instancePath: instancePath + "/que_viaja", parentData: data, parentDataProperty: "que_viaja", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate96.errors : vErrors.concat(validate96.errors);
+      if (!validate97(data.que_viaja, { instancePath: instancePath + "/que_viaja", parentData: data, parentDataProperty: "que_viaja", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate97.errors : vErrors.concat(validate97.errors);
         errors = vErrors.length;
       }
     }
     if (data.lider !== void 0) {
-      if (!validate96(data.lider, { instancePath: instancePath + "/lider", parentData: data, parentDataProperty: "lider", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate96.errors : vErrors.concat(validate96.errors);
+      if (!validate97(data.lider, { instancePath: instancePath + "/lider", parentData: data, parentDataProperty: "lider", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate97.errors : vErrors.concat(validate97.errors);
         errors = vErrors.length;
       }
     }
     if (data.condicion !== void 0) {
-      if (!validate138(data.condicion, { instancePath: instancePath + "/condicion", parentData: data, parentDataProperty: "condicion", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate138.errors : vErrors.concat(validate138.errors);
+      if (!validate139(data.condicion, { instancePath: instancePath + "/condicion", parentData: data, parentDataProperty: "condicion", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate139.errors : vErrors.concat(validate139.errors);
         errors = vErrors.length;
       }
     }
@@ -2720,15 +2726,15 @@ function validate131(data, { instancePath = "", parentData, parentDataProperty, 
     }
     errors++;
   }
-  validate131.errors = vErrors;
+  validate132.errors = vErrors;
   return errors === 0;
 }
-validate131.evaluated = { "props": true, "dynamicProps": false, "dynamicItems": false };
+validate132.evaluated = { "props": true, "dynamicProps": false, "dynamicItems": false };
 var schema43 = { "type": "object", "additionalProperties": false, "required": ["id", "nodo_id", "que_pasa", "lider", "experto"], "properties": { "id": { "$ref": "#/$defs/id" }, "nodo_id": { "$ref": "#/$defs/id" }, "sigue_de": { "$ref": "#/$defs/id", "description": "Paso anterior; si falta, es el paso previo de la lista. Dos pasos con el mismo sigue_de forman una rama" }, "bifurca": { "enum": ["paralela", "alternativa"], "description": "Obligatorio si de este paso salen dos o m\xE1s pasos: paralela = el recorrido sigue por TODAS las ramas (tablero Y agente); alternativa = por UNA (V12)" }, "que_pasa": { "$ref": "#/$defs/texto_idioma" }, "lider": { "$ref": "#/$defs/texto_idioma" }, "experto": { "$ref": "#/$defs/texto_idioma" } } };
-function validate145(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
+function validate146(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
   let vErrors = null;
   let errors = 0;
-  const evaluated0 = validate145.evaluated;
+  const evaluated0 = validate146.evaluated;
   if (evaluated0.dynamicProps) {
     evaluated0.props = void 0;
   }
@@ -2793,20 +2799,20 @@ function validate145(data, { instancePath = "", parentData, parentDataProperty, 
       }
     }
     if (data.id !== void 0) {
-      if (!validate92(data.id, { instancePath: instancePath + "/id", parentData: data, parentDataProperty: "id", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate92.errors : vErrors.concat(validate92.errors);
+      if (!validate93(data.id, { instancePath: instancePath + "/id", parentData: data, parentDataProperty: "id", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate93.errors : vErrors.concat(validate93.errors);
         errors = vErrors.length;
       }
     }
     if (data.nodo_id !== void 0) {
-      if (!validate92(data.nodo_id, { instancePath: instancePath + "/nodo_id", parentData: data, parentDataProperty: "nodo_id", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate92.errors : vErrors.concat(validate92.errors);
+      if (!validate93(data.nodo_id, { instancePath: instancePath + "/nodo_id", parentData: data, parentDataProperty: "nodo_id", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate93.errors : vErrors.concat(validate93.errors);
         errors = vErrors.length;
       }
     }
     if (data.sigue_de !== void 0) {
-      if (!validate92(data.sigue_de, { instancePath: instancePath + "/sigue_de", parentData: data, parentDataProperty: "sigue_de", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate92.errors : vErrors.concat(validate92.errors);
+      if (!validate93(data.sigue_de, { instancePath: instancePath + "/sigue_de", parentData: data, parentDataProperty: "sigue_de", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate93.errors : vErrors.concat(validate93.errors);
         errors = vErrors.length;
       }
     }
@@ -2823,20 +2829,20 @@ function validate145(data, { instancePath = "", parentData, parentDataProperty, 
       }
     }
     if (data.que_pasa !== void 0) {
-      if (!validate96(data.que_pasa, { instancePath: instancePath + "/que_pasa", parentData: data, parentDataProperty: "que_pasa", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate96.errors : vErrors.concat(validate96.errors);
+      if (!validate97(data.que_pasa, { instancePath: instancePath + "/que_pasa", parentData: data, parentDataProperty: "que_pasa", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate97.errors : vErrors.concat(validate97.errors);
         errors = vErrors.length;
       }
     }
     if (data.lider !== void 0) {
-      if (!validate96(data.lider, { instancePath: instancePath + "/lider", parentData: data, parentDataProperty: "lider", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate96.errors : vErrors.concat(validate96.errors);
+      if (!validate97(data.lider, { instancePath: instancePath + "/lider", parentData: data, parentDataProperty: "lider", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate97.errors : vErrors.concat(validate97.errors);
         errors = vErrors.length;
       }
     }
     if (data.experto !== void 0) {
-      if (!validate96(data.experto, { instancePath: instancePath + "/experto", parentData: data, parentDataProperty: "experto", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate96.errors : vErrors.concat(validate96.errors);
+      if (!validate97(data.experto, { instancePath: instancePath + "/experto", parentData: data, parentDataProperty: "experto", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate97.errors : vErrors.concat(validate97.errors);
         errors = vErrors.length;
       }
     }
@@ -2849,14 +2855,14 @@ function validate145(data, { instancePath = "", parentData, parentDataProperty, 
     }
     errors++;
   }
-  validate145.errors = vErrors;
+  validate146.errors = vErrors;
   return errors === 0;
 }
-validate145.evaluated = { "props": true, "dynamicProps": false, "dynamicItems": false };
-function validate142(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
+validate146.evaluated = { "props": true, "dynamicProps": false, "dynamicItems": false };
+function validate143(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
   let vErrors = null;
   let errors = 0;
-  const evaluated0 = validate142.evaluated;
+  const evaluated0 = validate143.evaluated;
   if (evaluated0.dynamicProps) {
     evaluated0.props = void 0;
   }
@@ -2903,14 +2909,14 @@ function validate142(data, { instancePath = "", parentData, parentDataProperty, 
       }
     }
     if (data.id !== void 0) {
-      if (!validate92(data.id, { instancePath: instancePath + "/id", parentData: data, parentDataProperty: "id", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate92.errors : vErrors.concat(validate92.errors);
+      if (!validate93(data.id, { instancePath: instancePath + "/id", parentData: data, parentDataProperty: "id", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate93.errors : vErrors.concat(validate93.errors);
         errors = vErrors.length;
       }
     }
     if (data.titulo !== void 0) {
-      if (!validate96(data.titulo, { instancePath: instancePath + "/titulo", parentData: data, parentDataProperty: "titulo", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate96.errors : vErrors.concat(validate96.errors);
+      if (!validate97(data.titulo, { instancePath: instancePath + "/titulo", parentData: data, parentDataProperty: "titulo", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate97.errors : vErrors.concat(validate97.errors);
         errors = vErrors.length;
       }
     }
@@ -2928,8 +2934,8 @@ function validate142(data, { instancePath = "", parentData, parentDataProperty, 
         }
         const len0 = data2.length;
         for (let i0 = 0; i0 < len0; i0++) {
-          if (!validate145(data2[i0], { instancePath: instancePath + "/pasos/" + i0, parentData: data2, parentDataProperty: i0, rootData, dynamicAnchors })) {
-            vErrors = vErrors === null ? validate145.errors : vErrors.concat(validate145.errors);
+          if (!validate146(data2[i0], { instancePath: instancePath + "/pasos/" + i0, parentData: data2, parentDataProperty: i0, rootData, dynamicAnchors })) {
+            vErrors = vErrors === null ? validate146.errors : vErrors.concat(validate146.errors);
             errors = vErrors.length;
           }
         }
@@ -2952,15 +2958,15 @@ function validate142(data, { instancePath = "", parentData, parentDataProperty, 
     }
     errors++;
   }
-  validate142.errors = vErrors;
+  validate143.errors = vErrors;
   return errors === 0;
 }
-validate142.evaluated = { "props": true, "dynamicProps": false, "dynamicItems": false };
-function validate89(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
+validate143.evaluated = { "props": true, "dynamicProps": false, "dynamicItems": false };
+function validate90(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
   ;
   let vErrors = null;
   let errors = 0;
-  const evaluated0 = validate89.evaluated;
+  const evaluated0 = validate90.evaluated;
   if (evaluated0.dynamicProps) {
     evaluated0.props = void 0;
   }
@@ -3088,44 +3094,44 @@ function validate89(data, { instancePath = "", parentData, parentDataProperty, r
       }
     }
     if (data.contrato_version !== void 0) {
-      if (!validate90(data.contrato_version, { instancePath: instancePath + "/contrato_version", parentData: data, parentDataProperty: "contrato_version", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate90.errors : vErrors.concat(validate90.errors);
+      if (!validate91(data.contrato_version, { instancePath: instancePath + "/contrato_version", parentData: data, parentDataProperty: "contrato_version", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate91.errors : vErrors.concat(validate91.errors);
         errors = vErrors.length;
       }
     }
     if (data.gramatica_id !== void 0) {
-      if (!validate92(data.gramatica_id, { instancePath: instancePath + "/gramatica_id", parentData: data, parentDataProperty: "gramatica_id", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate92.errors : vErrors.concat(validate92.errors);
+      if (!validate93(data.gramatica_id, { instancePath: instancePath + "/gramatica_id", parentData: data, parentDataProperty: "gramatica_id", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate93.errors : vErrors.concat(validate93.errors);
         errors = vErrors.length;
       }
     }
     if (data.gramatica_version !== void 0) {
-      if (!validate90(data.gramatica_version, { instancePath: instancePath + "/gramatica_version", parentData: data, parentDataProperty: "gramatica_version", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate90.errors : vErrors.concat(validate90.errors);
+      if (!validate91(data.gramatica_version, { instancePath: instancePath + "/gramatica_version", parentData: data, parentDataProperty: "gramatica_version", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate91.errors : vErrors.concat(validate91.errors);
         errors = vErrors.length;
       }
     }
     if (data.sujeto_id !== void 0) {
-      if (!validate92(data.sujeto_id, { instancePath: instancePath + "/sujeto_id", parentData: data, parentDataProperty: "sujeto_id", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate92.errors : vErrors.concat(validate92.errors);
+      if (!validate93(data.sujeto_id, { instancePath: instancePath + "/sujeto_id", parentData: data, parentDataProperty: "sujeto_id", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate93.errors : vErrors.concat(validate93.errors);
         errors = vErrors.length;
       }
     }
     if (data.sujeto_nombre !== void 0) {
-      if (!validate96(data.sujeto_nombre, { instancePath: instancePath + "/sujeto_nombre", parentData: data, parentDataProperty: "sujeto_nombre", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate96.errors : vErrors.concat(validate96.errors);
+      if (!validate97(data.sujeto_nombre, { instancePath: instancePath + "/sujeto_nombre", parentData: data, parentDataProperty: "sujeto_nombre", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate97.errors : vErrors.concat(validate97.errors);
         errors = vErrors.length;
       }
     }
     if (data.version !== void 0) {
-      if (!validate90(data.version, { instancePath: instancePath + "/version", parentData: data, parentDataProperty: "version", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate90.errors : vErrors.concat(validate90.errors);
+      if (!validate91(data.version, { instancePath: instancePath + "/version", parentData: data, parentDataProperty: "version", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate91.errors : vErrors.concat(validate91.errors);
         errors = vErrors.length;
       }
     }
     if (data.fecha_actualizacion !== void 0) {
-      if (!validate101(data.fecha_actualizacion, { instancePath: instancePath + "/fecha_actualizacion", parentData: data, parentDataProperty: "fecha_actualizacion", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate101.errors : vErrors.concat(validate101.errors);
+      if (!validate102(data.fecha_actualizacion, { instancePath: instancePath + "/fecha_actualizacion", parentData: data, parentDataProperty: "fecha_actualizacion", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate102.errors : vErrors.concat(validate102.errors);
         errors = vErrors.length;
       }
     }
@@ -3146,8 +3152,8 @@ function validate89(data, { instancePath = "", parentData, parentDataProperty, r
       if (Array.isArray(data8)) {
         const len0 = data8.length;
         for (let i0 = 0; i0 < len0; i0++) {
-          if (!validate103(data8[i0], { instancePath: instancePath + "/bloques/" + i0, parentData: data8, parentDataProperty: i0, rootData, dynamicAnchors })) {
-            vErrors = vErrors === null ? validate103.errors : vErrors.concat(validate103.errors);
+          if (!validate104(data8[i0], { instancePath: instancePath + "/bloques/" + i0, parentData: data8, parentDataProperty: i0, rootData, dynamicAnchors })) {
+            vErrors = vErrors === null ? validate104.errors : vErrors.concat(validate104.errors);
             errors = vErrors.length;
           }
         }
@@ -3175,8 +3181,8 @@ function validate89(data, { instancePath = "", parentData, parentDataProperty, r
         }
         const len1 = data10.length;
         for (let i1 = 0; i1 < len1; i1++) {
-          if (!validate109(data10[i1], { instancePath: instancePath + "/nodos/" + i1, parentData: data10, parentDataProperty: i1, rootData, dynamicAnchors })) {
-            vErrors = vErrors === null ? validate109.errors : vErrors.concat(validate109.errors);
+          if (!validate110(data10[i1], { instancePath: instancePath + "/nodos/" + i1, parentData: data10, parentDataProperty: i1, rootData, dynamicAnchors })) {
+            vErrors = vErrors === null ? validate110.errors : vErrors.concat(validate110.errors);
             errors = vErrors.length;
           }
         }
@@ -3195,8 +3201,8 @@ function validate89(data, { instancePath = "", parentData, parentDataProperty, r
       if (Array.isArray(data12)) {
         const len2 = data12.length;
         for (let i2 = 0; i2 < len2; i2++) {
-          if (!validate131(data12[i2], { instancePath: instancePath + "/flujos/" + i2, parentData: data12, parentDataProperty: i2, rootData, dynamicAnchors })) {
-            vErrors = vErrors === null ? validate131.errors : vErrors.concat(validate131.errors);
+          if (!validate132(data12[i2], { instancePath: instancePath + "/flujos/" + i2, parentData: data12, parentDataProperty: i2, rootData, dynamicAnchors })) {
+            vErrors = vErrors === null ? validate132.errors : vErrors.concat(validate132.errors);
             errors = vErrors.length;
           }
         }
@@ -3215,8 +3221,8 @@ function validate89(data, { instancePath = "", parentData, parentDataProperty, r
       if (Array.isArray(data14)) {
         const len3 = data14.length;
         for (let i3 = 0; i3 < len3; i3++) {
-          if (!validate142(data14[i3], { instancePath: instancePath + "/recorridos/" + i3, parentData: data14, parentDataProperty: i3, rootData, dynamicAnchors })) {
-            vErrors = vErrors === null ? validate142.errors : vErrors.concat(validate142.errors);
+          if (!validate143(data14[i3], { instancePath: instancePath + "/recorridos/" + i3, parentData: data14, parentDataProperty: i3, rootData, dynamicAnchors })) {
+            vErrors = vErrors === null ? validate143.errors : vErrors.concat(validate143.errors);
             errors = vErrors.length;
           }
         }
@@ -3231,14 +3237,14 @@ function validate89(data, { instancePath = "", parentData, parentDataProperty, r
       }
     }
     if (data.glosario !== void 0) {
-      if (!validate119(data.glosario, { instancePath: instancePath + "/glosario", parentData: data, parentDataProperty: "glosario", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate119.errors : vErrors.concat(validate119.errors);
+      if (!validate120(data.glosario, { instancePath: instancePath + "/glosario", parentData: data, parentDataProperty: "glosario", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate120.errors : vErrors.concat(validate120.errors);
         errors = vErrors.length;
       }
     }
     if (data.refs_externas !== void 0) {
-      if (!validate128(data.refs_externas, { instancePath: instancePath + "/refs_externas", parentData: data, parentDataProperty: "refs_externas", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate128.errors : vErrors.concat(validate128.errors);
+      if (!validate129(data.refs_externas, { instancePath: instancePath + "/refs_externas", parentData: data, parentDataProperty: "refs_externas", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate129.errors : vErrors.concat(validate129.errors);
         errors = vErrors.length;
       }
     }
@@ -3251,10 +3257,10 @@ function validate89(data, { instancePath = "", parentData, parentDataProperty, r
     }
     errors++;
   }
-  validate89.errors = vErrors;
+  validate90.errors = vErrors;
   return errors === 0;
 }
-validate89.evaluated = { "props": true, "dynamicProps": false, "dynamicItems": false };
+validate90.evaluated = { "props": true, "dynamicProps": false, "dynamicItems": false };
 export {
   validarGramaticaEsquema,
   validarMapaEsquema

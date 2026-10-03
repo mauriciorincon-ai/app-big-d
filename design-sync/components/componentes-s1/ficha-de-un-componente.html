@@ -119,6 +119,8 @@ a { color: inherit; text-underline-offset: 3px; }
 .alterna button, .alterna a { font: inherit; color: var(--tinta-2); background: none; border: 0; padding: 8px 4px; min-height: 36px; cursor: pointer; border-radius: 3px; text-decoration: none; display: inline-flex; align-items: center; }
 .alterna button[aria-pressed="true"], .alterna a[aria-current="true"] { color: var(--tinta-1); font-weight: 700; text-decoration: underline; text-underline-offset: 5px; text-decoration-thickness: 2px; }
 .alterna .sep { color: var(--tinta-2); }
+/* Cada par «separador + enlace» sin caja propia: sin `style=` en el HTML, la CSP no necesita `unsafe-hashes` (S2). */
+.alterna-par { display: contents; }
 @media (max-width: 719px) { .barra { flex-wrap: wrap; gap: 0 20px; padding: 0 16px; min-height: 0; } .marca { min-height: 56px; } .ajustes { margin-left: auto; min-height: 56px; align-items: center; } .nav { order: 3; width: 100%; border-top: 1px solid var(--linea); gap: 18px; } .nav > li > a, .nav > li > span { min-height: 44px; } }
 
 /* Página */
@@ -211,7 +213,23 @@ h1 { font-size: 32px; line-height: 1.1; font-weight: 700; letter-spacing: -0.025
   .dg-linea { stroke: CanvasText; } .dg-punta { fill: CanvasText; }
   .dg-insignia-vencido rect { fill: CanvasText; } .dg-insignia-vencido .dg-t-insignia { fill: Canvas; } .dg-insignia-vencido .dg-insignia-marca { color: Canvas; }
   .dg-doble-int { stroke: Canvas; }
+  .dg-dif rect { fill: Canvas; stroke: CanvasText; } .dg-dif-retirado rect { fill: CanvasText; }
+  .dg-dif-retirado .dg-t-dif { fill: Canvas; } .dg-dif-retirado .dg-dif-marca { color: Canvas; }
 }
+/* Lado a lado (compare, § 4.4): cabecera y rótulo de fila en 13, cabecera de bloque en 12/700, bloque compacto en
+   12/700 y 11 (lo que mide el motor); la versión y la vigencia de la fila, en mono 11 sin interletra. */
+.dg-t-banda-lado, .dg-t-fila-lado { font-size: 13px; }
+.dg-t-cab-bloque { font-size: 12px; font-weight: 700; }
+.dg-t-fila-meta { font: 400 11px var(--letra-mono); fill: var(--tinta-2); }
+.dg-lado-bloque .dg-t-nombre-nodo { font-size: 12px; }
+.dg-lado-bloque .dg-t-meta-compacta { font-size: 11px; }
+/* Marcas de diferencia (§ 4.7): glifo + palabra en una píldora; «retirado», llena. Color nunca solo. */
+.dg-dif rect { fill: var(--sup-2); stroke: var(--tinta-1); stroke-width: 1.5; }
+.dg-dif-marca { color: var(--tinta-1); }
+.dg-t-dif { font: 700 11px var(--letra-mono); fill: var(--tinta-1); }
+.dg-dif-retirado rect { fill: var(--tinta-1); }
+.dg-dif-retirado .dg-dif-marca { color: var(--sup-1); }
+.dg-dif-retirado .dg-t-dif { fill: var(--sup-1); }
 /* ── src/styles/atlas.css ── */
 /* Big-D — pantalla del ATLAS, portada de la maqueta aprobada (docs/diseno/assets/bigd.css: niveles, guía,
    lienzo deslizable, ficha breve, leyenda y lectura). La leyenda y la lectura en texto las GENERA el
@@ -256,15 +274,14 @@ h1 { font-size: 32px; line-height: 1.1; font-weight: 700; letter-spacing: -0.025
 .leyenda-motor, .leyenda .dg-leyenda { display: contents; }
 .leyenda .dg-leyenda > section:nth-of-type(1) { order: 1; }
 .leyenda .dg-leyenda > section:nth-of-type(2) { order: 2; }
-.leyenda > .lg-nota { order: 3; margin-top: -14px; }
 .leyenda .dg-leyenda > section:nth-of-type(3) { order: 4; }
 .leyenda .dg-leyenda > section:nth-of-type(4) { order: 5; }
 .leyenda .dg-leyenda-nota { order: 6; }
 @media (min-width: 900px) {
   .leyenda { grid-template-columns: 1.5fr 1fr; }
   .leyenda .dg-leyenda > section:nth-of-type(1) { grid-column: 1; grid-row: 1 / span 2; }
-  .leyenda .dg-leyenda > section:nth-of-type(2) { grid-column: 2; grid-row: 1; }
-  .leyenda > .lg-nota { grid-column: 2; grid-row: 2; }
+  /* La regla del haz viaja dentro de la sección de modos (la escribe el motor, § 4.9): ocupa las dos filas. */
+  .leyenda .dg-leyenda > section:nth-of-type(2) { grid-column: 2; grid-row: 1 / span 2; }
   .leyenda .dg-leyenda > section:nth-of-type(3) { grid-column: 1; grid-row: 3; }
   .leyenda .dg-leyenda > section:nth-of-type(4) { grid-column: 2; grid-row: 3; }
   .leyenda .dg-leyenda-nota { grid-column: 1 / -1; grid-row: 4; }
@@ -281,7 +298,7 @@ h1 { font-size: 32px; line-height: 1.1; font-weight: 700; letter-spacing: -0.025
 /* Modos: nombre y frase con el mismo peso, como la maqueta. */
 .leyenda .dg-leyenda-lista b { font-weight: inherit; }
 .dg-leyenda-cod { font: 600 11px/1 var(--letra-mono); letter-spacing: 0.06em; color: var(--tinta-2); }
-.lg-nota, .dg-leyenda section > p, .dg-leyenda-nota { font-size: 13px; color: var(--tinta-2); margin: 14px 0 0; max-width: 60ch; }
+.dg-leyenda section > p, .dg-leyenda-nota { font-size: 13px; color: var(--tinta-2); margin: 14px 0 0; max-width: 60ch; }
 .dg-leyenda-nota { max-width: 72ch; margin: 0; }
 
 /* Lectura en texto (G10, generada), plegada. */
@@ -387,6 +404,70 @@ h1 { font-size: 32px; line-height: 1.1; font-weight: 700; letter-spacing: -0.025
 .dg-conexiones .dg-svg { flex: none; margin-top: 4px; color: var(--tinta-1); }
 .ventana-mas { margin: 18px 0 0; font-size: 15px; }
 .ventana-mas a { color: var(--tinta-1); text-decoration: underline; }
+/* ── src/styles/lado.css ── */
+/* Lado a lado (maqueta: docs/diseno/lado-a-lado.html y assets/bigd.css; forma aprobada en la mirada M1 del S2: un
+   solo botón arriba a la derecha del recuadro despliega los componentes en el mismo diagrama). Qué filas se ven lo
+   deciden dos atributos del <html> (estado-lado.ts) y las reglas por plataforma que genera la página; aquí, lo fijo. */
+.fila-r2 { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; margin: 0 0 16px; }
+.selector { position: relative; }
+.selector summary { list-style: none; display: inline-flex; align-items: center; gap: 8px; min-height: 40px; font: 600 15px/1 var(--letra); cursor: pointer; border-bottom: 1.5px solid var(--tinta-1); }
+.selector summary::-webkit-details-marker { display: none; }
+.selector-lista { position: absolute; z-index: 5; top: 100%; left: 0; min-width: 320px; margin: 8px 0 0; padding: 6px 0; list-style: none; background: var(--sup-1); border: 1px solid var(--linea); border-radius: 6px; }
+.selector-lista li { display: flex; justify-content: space-between; gap: 16px; padding: 8px 14px; font-size: 15px; }
+.selector-lista .selector-orden { font-size: 13px; color: var(--tinta-2); border-bottom: 1px solid var(--linea); }
+.selector-lista label { display: inline-flex; gap: 8px; align-items: center; cursor: pointer; }
+.selector-lista input { accent-color: var(--tinta-1); width: 16px; height: 16px; }
+.selector-lista label:has(input:disabled) { cursor: not-allowed; }
+.selector-lista .meta { margin: 0; }
+.paginacion { display: inline-flex; align-items: center; gap: 12px; }
+.paginacion .boton { min-height: 36px; padding: 0 12px; font-size: 14px; }
+.lado-ancho, .paginacion { display: none; }
+@media (min-width: 900px) { .lado-ancho { display: block; } .paginacion { display: inline-flex; } .lado-angosto { display: none; } }
+
+/* El botón, en una franja propia arriba a la derecha del recuadro: no se desliza con el lienzo ni tapa las bandas. */
+.lienzo-cabeza { position: relative; z-index: 2; display: flex; justify-content: flex-end; padding: 12px 12px 0; }
+.lado-todo svg { flex: none; }
+.lienzo:has(.lado-filas) { padding-top: 12px; }
+
+/* Filas: una por plataforma; entre dos, lo que separa el motor (14 u con bloques, 22 u desplegadas, menos los 8 u
+   que cada fila trae debajo). La guía de las franjas sigue entre filas, como en la cabecera. */
+.lado-filas { position: relative; z-index: 0; display: flex; flex-direction: column; gap: 6px; }
+.lienzo[data-todo] .lado-filas { gap: 14px; }
+.lado-filas::before { content: ""; position: absolute; z-index: -1; top: 0; bottom: 8px; width: 1px; pointer-events: none; background-image: repeating-linear-gradient(to bottom, var(--linea) 0 2px, transparent 2px 7px); }
+.lado-fila { display: none; }
+:root:not([data-lado]) .lado-fila[data-inicio] { display: block; }
+.lado-fila [data-variante="n2"], .lienzo[data-todo] .lado-fila [data-variante="n1"] { display: none; }
+.lienzo[data-todo] .lado-fila [data-variante="n2"] { display: block; }
+
+/* Una plataforma sin mapa: su nombre y «próximamente», sin contenido inventado; se queda a la vista al deslizar. */
+.lado-pronto { margin: 0 8px; padding: 5px 0 8px; border-top: 1px solid var(--linea); }
+.lado-pronto-nombre { position: sticky; left: 8px; width: max-content; display: flex; align-items: baseline; gap: 10px; margin: 0 0 8px; font-size: 13px; }
+.lado-pronto-nombre .mono { font-size: 11px; color: var(--tinta-2); }
+.lado-pronto-texto { position: sticky; left: 8px; width: max-content; max-width: 560px; margin: 0; padding: 12px 14px; font-size: 14px; color: var(--tinta-2); border: 1px dashed var(--tinta-2); border-radius: 6px; }
+.lado-pronto-texto a { color: var(--tinta-1); text-decoration: underline; }
+
+/* Teléfono: una banda a la vez, todas las plataformas elegidas apiladas. */
+.lado-angosto-cabeza { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; margin: 0 0 4px; }
+.lado-angosto-cabeza .indice { display: flex; max-width: 100%; }
+.lado-banda[hidden] { display: none; }
+.lado-pregunta { font-size: 16px; font-weight: 700; margin: 12px 0 8px; }
+.lado-lista { margin: 0; padding: 0; list-style: none; }
+.lado-lista li { display: grid; gap: 4px; padding: 12px 0; border-top: 1px solid var(--linea); }
+.lado-lista .lado-pl { display: none; }
+:root:not([data-lado-elegidas]) .lado-lista .lado-pl { display: grid; }
+.lado-pl-nombre { font: 500 12px/1.4 var(--letra-mono); color: var(--tinta-2); }
+.lado-bloque { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: 15px; }
+.lado-bloque .mono { color: var(--tinta-2); }
+.lado-glifo { display: inline-flex; flex: none; }
+.lado-comp summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 36px; }
+.lado-comp summary::-webkit-details-marker { display: none; }
+.lado-comp summary > svg { flex: none; color: var(--tinta-2); transition: transform 0.15s; }
+.lado-comp[open] summary > svg { transform: rotate(180deg); }
+.lado-comp .dg-tarjetas { margin: 4px 0 6px; }
+.lado-vacio { font-size: 14px; color: var(--tinta-2); border: 1px dashed var(--tinta-2); border-radius: 6px; padding: 8px 12px; width: max-content; }
+@media (prefers-reduced-motion: reduce) { .lado-comp summary > svg { transition: none; } }
+
+.lado-lectura h2 { font-size: 17px; font-weight: 700; margin: 20px 0 4px; }
 .ds { padding: 24px 16px; display: grid; gap: 16px; max-width: 1280px; margin: 0 auto; }
 .ds-nota { font: 500 13px/1.5 var(--letra-mono); color: var(--tinta-2); margin: 0; max-width: 90ch; }
 .ds-temas { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }

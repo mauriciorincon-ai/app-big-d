@@ -26,7 +26,7 @@ function quieta(el: Elemento): Elemento {
 }
 
 export function bloque(ctx: Contexto, grupo: string | undefined): Geometria {
-  if (!grupo) throw new Error("layout: la vista «bloque» pide `grupo` (el id del bloque o «_<banda>»)");
+  if (!grupo) throw new Error("layout: la vista «bloque» pide `group` (el id del bloque o «_<banda>»)");
   const ns = nodosDelGrupo(ctx.mapa, ctx.gramatica, grupo);
   if (!ns.length) throw new Error(`layout: el grupo «${grupo}» no tiene nodos`);
   const franja = ctx.gramatica.bandas.find((b) => b.id === ns[0]!.banda_id)!.clase === "transversal";
@@ -75,6 +75,7 @@ export function bloque(ctx: Contexto, grupo: string | undefined): Geometria {
     titulo: porIdioma(ctx, (l, t) => plantilla(t.titulo.bloque, valores(l))),
     descripcion: porIdioma(ctx, (l, t) => plantilla(t.descripcion.bloque, valores(l))),
     vigencia: resumenVigencia(ctx, ns.map((n) => ({ id: n.id, nodos: [n] }))),
+    cruces: [],
     avisos: ctx.avisos,
   };
 }

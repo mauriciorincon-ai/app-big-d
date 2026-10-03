@@ -1,9 +1,11 @@
-// Diagramador — API pública (CONTRATO v0.3.0 § 8). Funciones puras: sin I/O, sin reloj, sin red.
+// Diagramador — API pública (CONTRATO v0.4.0 § 8). Funciones puras: sin I/O, sin reloj, sin red.
 export { CONTRATO_VERSION } from "./version";
 export { validate, validateGrammar } from "./validar";
-export type { Cobertura, Entrada, Informe, Modo } from "./validar";
+export type { Cobertura, Entrada, Informe, Modo, OpcionesValidar } from "./validar";
+export { agingDates } from "./validar/v16";
 export { layout } from "./layout";
-export type { Caja, CajaPropia, Geometria, OpcionesLayout, PasoGeo, Punto, TextosMotor, Trazado, Vigencia, Vista } from "./layout/tipos";
+export { compare, type OpcionesCompare } from "./layout/compare";
+export type { Aviso, Caja, CajaPropia, Cruce as CruceGeo, Geometria, OpcionesLayout, PasoGeo, Plural, Punto, TextosMotor, TipoAviso, Trazado, Vigencia, Vista, VistaGeometria } from "./layout/tipos";
 export { toSVG, type OpcionesSVG } from "./svg/toSVG";
 export { toJourneyCSS } from "./svg/recorridoCSS";
 export { toLegend } from "./svg/leyenda";
@@ -11,6 +13,7 @@ export { toText, type OpcionesTexto } from "./texto/toText";
 export { toCard, type OpcionesFicha } from "./texto/toCard";
 export { toBlockCards, type OpcionesTarjetas } from "./texto/toBlockCards";
 export { diff, type Diferencias } from "./diff";
+export { diffToText, type OpcionesDiferencias } from "./texto/diffToText";
 export { crossings, type Cruce } from "./layout/d11";
 export { coberturaDeRangos } from "./texto/cobertura";
 export { pasoPrevio } from "./util/recorrido";

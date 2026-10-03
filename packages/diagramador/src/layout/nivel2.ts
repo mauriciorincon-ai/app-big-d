@@ -7,7 +7,7 @@ import type { Nodo, Recorrido } from "../tipos";
 import { mitad, type Decimas } from "../util/numeros";
 import { ordenarPor } from "../util/orden";
 import { pasoPrevio } from "../util/recorrido";
-import { M, anchoLienzo, colX, diasDe, nodosDe, plural, porIdioma, resumenVigencia, vigenciaDe, type Contexto } from "./contexto";
+import { M, anchoLienzo, colX, diasDe, nodosDe, plural, porIdioma, resumenVigencia, rotuloMadurez, vigenciaDe, type Contexto } from "./contexto";
 import { g, plantilla, rect, texto, simbolo } from "./escena";
 import {
   X_FICHAS,
@@ -89,14 +89,17 @@ export function tarjetaNodo(
   compacto: boolean,
   pasos: { id: string; numero: string; bifurca: boolean; que: Record<string, string> }[],
   rotulos: Geometria["rotulos"],
+  lado = false,
 ): Elemento {
   const { x, y, w, h } = caja;
   const tp = ctx.tipo.get(n.tipo_id)!;
   const mad = ctx.madurez.get(n.madurez)!;
   const hijos: Elemento[] = [...tarjeta(caja, tp.token_color)];
-  const gx = x + 120 + 80;
-  const nx = x + 120 + 220;
-  const tw = w - (nx - x) - 80;
+  // En el lado a lado (nodo de 152 × 88 de la maqueta) el glifo va 3 u más cerca del filete y el nombre gana 7 u:
+  // «enmascaramiento» (116 u en 13/700) cabe en 117 (scripts/maqueta/pantallas/lado.mjs, `nodoComp`).
+  const gx = lado ? x + 170 : x + 120 + 80;
+  const nx = lado ? x + 290 : x + 120 + 220;
+  const tw = w - (nx - x) - (lado ? 60 : 80);
   if (compacto) {
     hijos.push(simbolo(`g-${tp.glifo}`, gx, y + mitad(h), `dg-c-${tp.token_color}`));
     const nombre = lineasPorIdioma(ctx, n.nombre, 13, 700, tw, 2, `ficha ${n.id}`);
@@ -114,7 +117,7 @@ export function tarjetaNodo(
     if (!mad.disponible) {
       hijos.push(medidor(mad.nivel, x + 160, yr + 80));
       const max = docX - 60 - 40 - (x + 240);
-      const nombre = Object.fromEntries(ctx.idiomas.map((l) => [l, [ctx.sans.abreviar(mad.nombre[l]!, 12, 400, max)]]));
+      const nombre = Object.fromEntries(ctx.idiomas.map((l) => [l, [ctx.sans.abreviar(rotuloMadurez(mad, l), 12, 400, max)]]));
       hijos.push(texto("dg-t-meta dg-t-meta-compacta", x + 240, ctx.sans.base(yr, 12, 16), 160, nombre));
     }
     hijos.push(simbolo("k-doc", docX, yr + 80, "dg-marca-suave"));
@@ -122,7 +125,8 @@ export function tarjetaNodo(
   }
   const dias = diasDe(ctx, [n]);
   const estado = vigenciaDe(ctx, dias);
-  if (estado !== "vigente") {
+  // En el lado a lado la vigencia va en palabras en el rótulo de cada fila (la maqueta no lleva insignias ahí).
+  if (estado !== "vigente" && !lado) {
     const ins = insigniaVigencia(ctx, caja, estado, dias, n.id, compacto);
     hijos.push(ins.elemento);
     rotulos.push({ id: `vigencia ${n.id}`, dueno: n.id, caja: ins.caja });
@@ -255,7 +259,7 @@ export function nivel2(ctx: Contexto, conRecorrido: string | true | undefined): 
     yF += alto + 100;
   }
   const alto: Decimas = franjas.length ? yF - 100 + 80 : finCarril + 80;
-  const vista = recorrido ? "recorrido" : "nivel-2";
+  const vista = recorrido ? "recorrido" : "nivel2";
   const valores = (l: string) => ({
     sujeto: ctx.mapa.sujeto_nombre[l]!,
     capas: capas.length,
@@ -283,6 +287,7 @@ export function nivel2(ctx: Contexto, conRecorrido: string | true | undefined): 
       ctx,
       [...capas, ...franjas].flatMap((b) => nodosDe(ctx, b.id)).map((n) => ({ id: n.id, nodos: [n] })),
     ),
+    cruces: [],
     avisos: ctx.avisos,
   };
 }

@@ -6,12 +6,13 @@
 // etiquetas encimadas, una referencia fuera del lienzo) y la app no lo habría publicado. Ahora: ninguno.
 import { describe, expect, it } from "vitest";
 import { crossings, layout, validate, type Caja, type Geometria, type Mapa } from "../src/index";
+import { puntas } from "../src/layout/d11";
 import { offsetsPista } from "../src/layout/rutas";
 import { CASOS, disponer, FECHA, VISTAS } from "./lib/casos";
 import { COBERTURA, EJEMPLOS, GRAMATICAS, leerJson } from "./lib/contrato";
 import { TEXTOS } from "./lib/textos";
 
-const P1 = leerJson<Mapa>("test/carnadas-piloto/P1-mapa-denso.mapa.json");
+const P1 = leerJson<Mapa>("carnadas/P1-mapa-denso.mapa.json");
 const G = GRAMATICAS[P1.gramatica_id]!;
 const cruza = (p: Caja, q: Caja) => p.x < q.x + q.w && p.x + p.w > q.x && p.y < q.y + q.h && p.y + p.h > q.y;
 
@@ -29,16 +30,16 @@ describe("P1 — mapa denso del piloto", () => {
       expect(encimas).toEqual([]);
     });
   it("el carril exprés crece: 3 pistas en el nivel 1 y 4 en el nivel 2, y las franjas bajan", () => {
-    const y = (vista: "nivel-1" | "nivel-2") => {
+    const y = (vista: "nivel1" | "nivel2") => {
       const geo = disponer(P1, vista);
       const saltos = geo.trazados.filter((t) => t.puntos.some(([, py], k) => k > 0 && py === t.puntos[k - 1]![1] && py > Math.max(...geo.cajas.filter((c) => c.clase !== "ficha").map((c) => c.caja.y + c.caja.h))));
       return new Set(saltos.map((t) => Math.max(...t.puntos.map(([, py]) => py)))).size;
     };
-    expect(y("nivel-1")).toBe(3);
-    expect(y("nivel-2")).toBe(4);
+    expect(y("nivel1")).toBe(3);
+    expect(y("nivel2")).toBe(4);
   });
   it("el canal con 7 pistas las reparte parejas, todas distintas y a 6 u o más de cada tarjeta", () => {
-    const geo = disponer(P1, "nivel-2");
+    const geo = disponer(P1, "nivel2");
     const verticales = new Set<number>();
     const izq = 80 + 2 * (1520 + 500) + 1520; // borde derecho de la columna 2
     for (const t of geo.trazados)
@@ -62,7 +63,7 @@ describe("aire de las pistas: ningún tramo vertical corre a menos de 5 u del bo
     ...VISTAS.map((v) => [`P1 · ${v}`, () => disponer(P1, v)] as [string, () => Geometria]),
   ];
   it.each(casos)("%s", (_n, geo) => {
-    expect(geo().avisos.filter((a) => a.startsWith("pistas:"))).toEqual([]);
+    expect(geo().avisos.filter((a) => a.tipo === "pistas")).toEqual([]);
   });
 });
 
@@ -94,7 +95,7 @@ describe("cada etiqueta de modos va sobre su propio trazo (todos los mapas del c
 
 describe("referencias de una fila de franja (enmienda del piloto)", () => {
   const fila = (m: Mapa) => {
-    const geo = disponer(m, "nivel-2");
+    const geo = disponer(m, "nivel2");
     const refs = geo.rotulos.filter((r) => r.id.startsWith("r-f-canalizaciones")).sort((a, b) => a.caja.x - b.caja.x);
     return { geo, refs, aire: refs.slice(1).map((r, i) => r.caja.x - refs[i]!.caja.x - refs[i]!.caja.w) };
   };
@@ -128,8 +129,8 @@ describe("pistas de un canal (§ 5.3 con la enmienda del piloto)", () => {
       m.nodos.push({ ...base, id: `extra-${i}`, orden: 10 + i, nombre: { es: `Extra ${i}`, en: `Extra ${i}` } });
       m.flujos.push({ ...m.flujos.find((f) => f.id === "f1")!, id: `fx${i}`, destino: `extra-${i}` });
     }
-    for (const vista of ["nivel-1", "nivel-2"] as const) {
-      const geo = layout(m, GRAMATICAS[m.gramatica_id]!, vista, { textos: TEXTOS, fechaConsulta: FECHA });
+    for (const vista of ["nivel1", "nivel2"] as const) {
+      const geo = layout(m, GRAMATICAS[m.gramatica_id]!, vista, { texts: TEXTOS, queryDate: FECHA });
       const sobreBorde = geo.trazados.flatMap((t) =>
         t.puntos.slice(1).flatMap((b, k) => {
           const a = t.puntos[k]!;
@@ -153,3 +154,19 @@ describe("pistas de un canal (§ 5.3 con la enmienda del piloto)", () => {
     expect(Math.max(...o.map(Math.abs))).toBeLessThanOrEqual(190);
   });
 });
+
+describe("P13 — la punta de una flecha de llegada no queda sobre la pista de otro flujo", () => {
+  // La punta mide 9 u y la pista más externa de un canal corre a 6 u de la tarjeta: si ahí va un tramo ajeno que
+  // pasa a la altura de una llegada, la punta lo tapa. Medido antes de la regla: P1 tenía dos en el nivel 2 y dos
+  // en el recorrido; los mapas del contrato, ninguna. El ruteo cambia de lugar solo esos tramos.
+  const casos: [string, () => Geometria][] = [
+    ...CASOS.map((c) => [c.nombre, () => disponer(c.mapa, c.vista)] as [string, () => Geometria]),
+    ...VISTAS.map((v) => [`P1 · ${v}`, () => disponer(P1, v)] as [string, () => Geometria]),
+  ];
+  it.each(casos)("%s", (_n, geo) => {
+    const g = geo();
+    expect(puntas(g)).toEqual([]);
+    expect(g.avisos.filter((a) => a.mensaje.includes("bajo la punta"))).toEqual([]);
+  });
+});
+

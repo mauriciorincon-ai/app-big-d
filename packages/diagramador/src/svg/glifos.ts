@@ -22,8 +22,8 @@ export const MARCADORES: Record<Exclude<Marcador, "ninguno">, { d: string; mixto
 };
 
 /**
- * Marcas de estado. `envia`/`recibe` son las flechas ↑/↓ de la maqueta aprobada: el contrato las nombra
- * «(referencia ↑)» y «(↓)», pero su path dibuja → y ← (enmienda propuesta en el summary del S1).
+ * Marcas de estado. `envia`/`recibe` son las flechas → y ← de § 5.4 (0.4.0 resolvió D-S1-19 a favor del path
+ * horizontal; la maqueta dibujaba ↑/↓ y el S1 la siguió).
  * `revisar` es un triángulo de precaución con «!» adentro (pedido de la persona al mirar el atlas envejecido,
  * 2026-09-30); el contrato dibuja el «!» solo. Sale de la caja de 12 u (14 × 13 u con el trazo) y cabe en la
  * insignia de 20 u de alto sin mover nada. Enmienda propuesta en el summary del S1 (D-S1-55).
@@ -32,8 +32,19 @@ export const MARCAS: Record<string, { d: string; trazo: string }> = {
   vigente: { d: "M-4.5,0.5 L-1.5,3.5 L4.5,-3.5", trazo: "1.8" },
   revisar: { d: "M0,-6.6 L6.8,5 H-6.8 Z M0,-2.3 V0.8 M0,3.05 V3.15", trazo: "1.6" },
   vencido: { d: "M-3.8,-3.8 L3.8,3.8 M3.8,-3.8 L-3.8,3.8", trazo: "1.8" },
-  envia: { d: "M0,5 V-4 M-3.5,-1 L0,-4.5 L3.5,-1", trazo: "1.8" },
-  recibe: { d: "M0,-5 V4 M-3.5,1 L0,4.5 L3.5,1", trazo: "1.8" },
+  envia: { d: "M-5,0 H4 M1,-3.5 L4.5,0 L1,3.5", trazo: "1.8" },
+  recibe: { d: "M5,0 H-4 M-1,-3.5 L-4.5,0 L-1,3.5", trazo: "1.8" },
   doc: { d: "M-4,-5.5 H2 L4.5,-3 V5.5 H-4 Z M-1.5,-1 H2 M-1.5,2 H2", trazo: "1.3" },
   rama: { d: "M-5,-3 H5 M-5,3 H5 M1.5,-6 L5,-3 L1.5,0 M1.5,0 L5,3 L1.5,6", trazo: "1.6" },
+};
+
+/**
+ * Marcas de diferencia (§ 4.7): + nuevo, − retirado, → renombrado, ▮ madurez, con los paths de la maqueta aprobada
+ * (§ 5.4 no los trae: va a «Enmiendas»). Solo las lleva el lado a lado, así el `<defs>` de las demás vistas no cambia.
+ */
+export const DIFERENCIAS: Record<string, { d: string; trazo: string }> = {
+  nuevo: { d: "M0,-4.5 V4.5 M-4.5,0 H4.5", trazo: "2" },
+  retirado: { d: "M-4.5,0 H4.5", trazo: "2" },
+  renombrado: { d: "M-5,0 H4 M1,-3.5 L4.5,0 L1,3.5", trazo: "1.8" },
+  madurez: { d: "M-3.5,4.5 V-1 M0,4.5 V-4.5 M3.5,4.5 V1.5", trazo: "2" },
 };

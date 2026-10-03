@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "node scripts/copiar-maqueta.mjs && next build",
+    "build": "node scripts/copiar-maqueta.mjs && next build && node scripts/csp/inyectar.mjs",
     "start": "serve out -l ${PORT:-3000} --config ../serve.json",
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit",

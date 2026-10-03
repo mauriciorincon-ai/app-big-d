@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { rutaLado } from "@/lib/atlas";
 import { datos, rutaAtlas, rutaInvestigador } from "@/lib/datos";
 import { textos, type Idioma } from "@/lib/i18n";
 import { ConmutadorIdioma } from "./ConmutadorIdioma";
@@ -18,8 +19,8 @@ export function Barra({ idioma }: { idioma: Idioma }) {
       <NavSecciones
         etiqueta={t.secciones}
         secciones={[
-          { ruta: rutaAtlas(datos(), idioma), texto: t.atlas, prefijo: `/${idioma}/atlas` },
-          { ruta: rutaInvestigador(datos(), idioma), texto: t.conocimiento, prefijo: `/${idioma}/investigador` },
+          { ruta: rutaAtlas(datos(), idioma), texto: t.atlas, prefijos: [`/${idioma}/atlas`, rutaLado(idioma)] },
+          { ruta: rutaInvestigador(datos(), idioma), texto: t.conocimiento, prefijos: [`/${idioma}/investigador`] },
         ]}
       />
       <div className="ajustes">

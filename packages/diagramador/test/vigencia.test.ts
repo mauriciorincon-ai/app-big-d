@@ -15,17 +15,17 @@ const FECHAS = { vigente: "2026-09-26", revisar: "2026-10-20", vencido: "2026-11
 describe("vigencia en la geometría", () => {
   it("el mapa de ejemplo: el nodo más viejo manda y cada elemento del nivel 1 lleva su estado", () => {
     for (const [estado, fecha] of Object.entries(FECHAS)) {
-      const geo = disponer(ejemplo, "nivel-1", fecha);
+      const geo = disponer(ejemplo, "nivel1", fecha);
       expect(geo.vigencia.estado).toBe(estado);
       expect(geo.vigencia.elementos.map((e) => e.id).sort()).toEqual(geo.cajas.map((c) => c.id).sort());
       for (const e of geo.vigencia.elementos) expect(e.estado).toBe(estado);
     }
-    expect(disponer(ejemplo, "nivel-1", FECHAS.vigente).vigencia.dias).toBe(6);
-    expect(disponer(ejemplo, "nivel-1", FECHAS.revisar).vigencia.dias).toBe(30);
+    expect(disponer(ejemplo, "nivel1", FECHAS.vigente).vigencia.dias).toBe(6);
+    expect(disponer(ejemplo, "nivel1", FECHAS.revisar).vigencia.dias).toBe(30);
   });
 
   it("en el nivel 2 y el recorrido hay un elemento por nodo", () => {
-    for (const vista of ["nivel-2", "recorrido"] as const) {
+    for (const vista of ["nivel2", "recorrido"] as const) {
       const geo = disponer(ejemplo, vista);
       expect(geo.vigencia.elementos.map((e) => e.id).sort()).toEqual(ejemplo.nodos.map((n) => n.id).sort());
     }
@@ -50,7 +50,7 @@ describe("vigencia en la geometría", () => {
 
 describe("vigencia en la lectura en texto", () => {
   const g = GRAMATICAS[ejemplo.gramatica_id]!;
-  const lectura = (fecha: string | undefined, language = "es") => toText(ejemplo, g, { language, textos: TEXTOS, ...(fecha ? { fechaConsulta: fecha } : {}) });
+  const lectura = (fecha: string | undefined, language = "es") => toText(ejemplo, g, { language, texts: TEXTOS, ...(fecha ? { queryDate: fecha } : {}) });
   const nodos = ejemplo.nodos.length;
 
   it("lo vigente no se marca, y sin fecha no se dice nada", () => {

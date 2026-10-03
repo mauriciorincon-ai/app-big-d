@@ -62,4 +62,20 @@
   .dg-linea { stroke: CanvasText; } .dg-punta { fill: CanvasText; }
   .dg-insignia-vencido rect { fill: CanvasText; } .dg-insignia-vencido .dg-t-insignia { fill: Canvas; } .dg-insignia-vencido .dg-insignia-marca { color: Canvas; }
   .dg-doble-int { stroke: Canvas; }
+  .dg-dif rect { fill: Canvas; stroke: CanvasText; } .dg-dif-retirado rect { fill: CanvasText; }
+  .dg-dif-retirado .dg-t-dif { fill: Canvas; } .dg-dif-retirado .dg-dif-marca { color: Canvas; }
 }
+/* Lado a lado (compare, § 4.4): cabecera y rótulo de fila en 13, cabecera de bloque en 12/700, bloque compacto en
+   12/700 y 11 (lo que mide el motor); la versión y la vigencia de la fila, en mono 11 sin interletra. */
+.dg-t-banda-lado, .dg-t-fila-lado { font-size: 13px; }
+.dg-t-cab-bloque { font-size: 12px; font-weight: 700; }
+.dg-t-fila-meta { font: 400 11px var(--letra-mono); fill: var(--tinta-2); }
+.dg-lado-bloque .dg-t-nombre-nodo { font-size: 12px; }
+.dg-lado-bloque .dg-t-meta-compacta { font-size: 11px; }
+/* Marcas de diferencia (§ 4.7): glifo + palabra en una píldora; «retirado», llena. Color nunca solo. */
+.dg-dif rect { fill: var(--sup-2); stroke: var(--tinta-1); stroke-width: 1.5; }
+.dg-dif-marca { color: var(--tinta-1); }
+.dg-t-dif { font: 700 11px var(--letra-mono); fill: var(--tinta-1); }
+.dg-dif-retirado rect { fill: var(--tinta-1); }
+.dg-dif-retirado .dg-dif-marca { color: var(--sup-1); }
+.dg-dif-retirado .dg-t-dif { fill: var(--sup-1); }

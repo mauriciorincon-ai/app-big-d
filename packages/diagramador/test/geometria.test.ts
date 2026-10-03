@@ -2,7 +2,8 @@
 // Geometría (CONTRATO § 5.3, § 6): D11 = 0 en todos los mapas del contrato y sus tres vistas, avisos de
 // geometría exactos, A3 dibujado a 380 px sin avisos, G5 (mapas comparables) y la independencia del idioma.
 import { describe, expect, it } from "vitest";
-import { crossings, toSVG } from "../src/index";
+import { crossings, toSVG, type Geometria } from "../src/index";
+import { lejanas } from "../src/layout/d11";
 import { EJEMPLOS } from "./lib/contrato";
 import { A3, CASOS, disponer } from "./lib/casos";
 
@@ -23,7 +24,7 @@ describe("avisos de geometría (§ 5.3)", () => {
 });
 
 describe("A3 — cuatro modos entre dos bloques (P4, D-S1-01)", () => {
-  const geo = disponer(A3, "nivel-1");
+  const geo = disponer(A3, "nivel1");
   const etiqueta = geo.rotulos.find((r) => r.id === "etiqueta origen.entrada")!;
   it("una sola línea con la etiqueta de los cuatro marcadores, en dos filas (38 × 32 u)", () => {
     expect(etiqueta.caja.w).toBe(380);
@@ -43,13 +44,13 @@ describe("A3 — cuatro modos entre dos bloques (P4, D-S1-01)", () => {
 describe("G5 — mapas de una misma gramática son comparables", () => {
   const mismos = [EJEMPLOS.find((m) => m.sujeto_id === "plataforma-ejemplo")!, A3];
   it("en el nivel 1, cada capa en la misma columna y cada franja en la misma fila", () => {
-    const geos = mismos.map((m) => disponer(m, "nivel-1"));
+    const geos = mismos.map((m) => disponer(m, "nivel1"));
     expect(geos[1]!.columnas).toEqual(geos[0]!.columnas);
     expect(geos[1]!.filas).toEqual(geos[0]!.filas);
     expect(geos[1]!.ancho).toBe(geos[0]!.ancho);
   });
   it("en el nivel 2 las columnas no se mueven", () => {
-    const geos = mismos.map((m) => disponer(m, "nivel-2"));
+    const geos = mismos.map((m) => disponer(m, "nivel2"));
     expect(geos[1]!.columnas).toEqual(geos[0]!.columnas);
   });
 });
@@ -75,14 +76,15 @@ describe("M-1 — D11 y las pistas de carriles también llegan como aviso", () =
   const caso = EJEMPLOS.find((m) => m.sujeto_id === "caso-ejemplo")!;
   const denso = structuredClone(caso);
   for (let i = 1; i <= 6; i++) denso.flujos.push({ ...caso.flujos[0]!, id: `fx${i}`, origen: "llega", destino: "valora" });
-  const geo = disponer(denso, "nivel-2");
+  const geo = disponer(denso, "nivel2");
   it("la pista que se sale del canal se avisa", () => {
-    expect(geo.avisos.filter((a) => a.startsWith("carriles:"))).not.toEqual([]);
+    expect(geo.avisos.filter((a) => a.tipo === "carriles")).not.toEqual([]);
   });
   it("cada cruce de `crossings` aparece como aviso «D11»", () => {
     const d11 = crossings(geo).map((c) => `D11: ${c.flujo} atraviesa la caja de ${c.caja}`);
     expect(d11).not.toEqual([]);
-    expect(geo.avisos).toEqual(expect.arrayContaining(d11));
+    expect(geo.avisos.map((a) => a.mensaje)).toEqual(expect.arrayContaining(d11));
+    expect(geo.cruces).toEqual(crossings(geo));
   });
 });
 
@@ -90,7 +92,7 @@ describe("A-6 — ida y vuelta entre dos componentes vecinos de una columna (niv
   const m = structuredClone(EJEMPLOS.find((x) => x.sujeto_id === "plataforma-ejemplo")!);
   const ida = m.flujos.find((f) => f.id === "f-semantico-tablero")!;
   m.flujos.push({ ...ida, id: "f-tablero-semantico", origen: ida.destino, destino: ida.origen });
-  it.each(["nivel-1", "nivel-2", "recorrido"] as const)("%s: sin avisos, sin cruces y sin trazados que compartan puntos", (vista) => {
+  it.each(["nivel1", "nivel2", "recorrido"] as const)("%s: sin avisos, sin cruces y sin trazados que compartan puntos", (vista) => {
     const geo = disponer(m, vista);
     expect(geo.avisos).toEqual([]);
     expect(crossings(geo)).toEqual([]);
@@ -109,8 +111,8 @@ describe("M-24 — una fila de fichas de franja que no cabe se avisa", () => {
     m.bloques.push({ ...m.bloques[0]!, id: "acceso-central", banda_id: "identidad", nombre: { es: "Acceso central", en: "Central access" } });
     const extra = structuredClone(m.nodos.find((n) => n.id === "directorio")!);
     m.nodos.push({ ...extra, id: "federacion", bloque_id: "acceso-central", nombre: { es: "Federación", en: "Federation" } });
-    const geo = disponer(m, "nivel-1");
-    expect(geo.avisos).toContain("ficha _identidad: se sale del lienzo");
+    const geo = disponer(m, "nivel1");
+    expect(geo.avisos).toContainEqual({ vista: "nivel1", tipo: "fuera-del-lienzo", id: "_identidad", mensaje: "fuera-del-lienzo: ficha _identidad" });
   });
 });
 
@@ -119,6 +121,23 @@ describe("M-25 — un bloque sin componentes se avisa", () => {
     const m = structuredClone(EJEMPLOS.find((x) => x.sujeto_id === "plataforma-ejemplo")!);
     const consumo = m.bloques.find((b) => b.id === "consumo-bi")!;
     m.bloques.push({ ...consumo, id: "vacio", nombre: { es: "Vacío", en: "Empty" } });
-    expect(disponer(m, "nivel-1").avisos).toContain("bloque vacio: no tiene componentes");
+    expect(disponer(m, "nivel1").avisos).toContainEqual({ vista: "nivel1", tipo: "bloque-vacio", id: "vacio", mensaje: "bloque-vacio: vacio" });
   });
 });
+
+describe("§ 5.6 — `etiqueta:` toda etiqueta de modos a ≤ 30 u de su trazo, como aviso", () => {
+  // Medido sobre la geometría: el centro de la etiqueta contra el tramo más cercano de su propio flujo.
+  const geo = (d: number): Geometria => ({
+    ...disponer(EJEMPLOS.find((m) => m.sujeto_id === "plataforma-ejemplo")!, "nivel1"),
+    trazados: [{ id: "f", origen: "a", destino: "b", puntos: [[0, 0], [1000, 0]] }],
+    rotulos: [{ id: "etiqueta f", dueno: "f", caja: { x: 400, y: d - 90, w: 200, h: 180 } }],
+  });
+  it("a 30 u no se reporta; a 30,1 u sí, con el flujo y la distancia", () => {
+    expect(lejanas(geo(300))).toEqual([]);
+    expect(lejanas(geo(301))).toEqual([{ flujo: "f", distancia: 301 }]);
+  });
+  it("los mapas del contrato no tienen ninguna", () => {
+    for (const c of CASOS) expect(disponer(c.mapa, c.vista).avisos.filter((a) => a.tipo === "etiqueta"), c.nombre).toEqual([]);
+  });
+});
+
