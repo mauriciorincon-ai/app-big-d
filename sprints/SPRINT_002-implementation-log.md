@@ -314,6 +314,24 @@ Decisiones D-S2-01 a D-S2-11 y los siete hechos que cambiaron el trabajo: en el 
 - El investigador ahora también dice `dibujo · lado a lado desplegado · texto: …` cuando un nombre no cabe ahí
   (`nucleo.test` al día).
 
+### Aviso de seguridad sin corrección (`braces`), aceptado con gate
+
+- **CI de `8c6f980`: `quality` en rojo por `pnpm audit --audit-level high`** (y por eso `e2e` y `lighthouse`
+  `skipped`, no ejecutaron); `diagramador` × 2 y Vercel en `success`. No lo causó el sprint: GHSA-vfj7-8cjw-p6xm
+  (`braces` ≤ 3.0.3, denegación de servicio por patrones anidados, alto) se actualizó hoy, 2026-10-02 22:36 UTC, y
+  **no tiene versión corregida** (`first_patched_version: null`; en npm la última es 3.0.3). `braces` solo llega por
+  `eslint-config-next` → `@next/eslint-plugin-next` → `fast-glob` 3.3.1 → `micromatch`; la versión más nueva de
+  `eslint-config-next` (16.3.8) fija el mismo `fast-glob`. `pnpm audit --prod`: sin avisos.
+- **Decisión (registrada; la persona puede vetarla):** excepción angosta en `pnpm-workspace.yaml`
+  (`auditConfig.ignoreGhsas`, solo ese aviso, con su porqué y cuándo se retira: cuando exista la 3.0.4 o
+  `eslint-config-next` deje de pedirlo). El audit pasa con «1 high (1 ignored)».
+- **Gate nuevo `tests/unit/avisos-ignorados.test.ts`:** cada aviso ignorado está documentado con su paquete, y ese
+  paquete no se alcanza desde ninguna dependencia de producción del lockfile (caminata por `snapshots`). ¿Puede
+  fallar? Sí. **Rojo 1:** un GHSA sin documentar en la lista → «cada aviso ignorado está documentado» nombra
+  `GHSA-xxxx-yyyy-zzzz`. **Rojo 2:** caminar también `devDependencies` como si fueran producción → «ningún paquete…»
+  nombra `braces`. Verde al restaurar.
+- **Deuda (al summary):** retirar la excepción en cuanto haya corrección; `/deploy-check` la revisa.
+
 ## Desviación del plan
 
 Lo que el plan aprobado ya declaró frente a la orden y a `SPRINT_002.md`:

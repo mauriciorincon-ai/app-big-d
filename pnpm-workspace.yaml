@@ -15,3 +15,12 @@ onlyBuiltDependencies:
   - '@tailwindcss/oxide'
 ignoredBuiltDependencies:
   - '@sentry/cli'
+# Avisos de seguridad aceptados, uno por uno y con su porqué (S2, 2026-10-02). Los vigila
+# tests/unit/avisos-ignorados.test.ts: cada uno documentado y su paquete jamás alcanzable desde producción.
+auditConfig:
+  ignoreGhsas:
+    # braces <= 3.0.3: denegación de servicio por patrones anidados (alto). Sin versión corregida publicada al
+    # 2026-10-02 (latest 3.0.3). Solo llega por eslint-config-next > @next/eslint-plugin-next > fast-glob 3.3.1 >
+    # micromatch: herramienta de lint, en desarrollo; el sitio exportado no lo lleva y ningún patrón viene de
+    # afuera. Se retira cuando exista la 3.0.4 (o eslint-config-next deje de pedirlo).
+    - GHSA-vfj7-8cjw-p6xm
