@@ -1,6 +1,7 @@
 // Boceto de FORMA del S2 (mirada M1, D-S2-06): el lado a lado con los componentes desplegados «en el mismo
 // diagrama». Primera vuelta: una banda a la vez. Segunda vuelta (la persona, 2026-10-02: «un solo botón
 // despliega todo y contrae todo»): un botón que abre todas las bandas en todas las plataformas y las cierra.
+// Aprobada con un ajuste («pon el botón en la parte superior derecha del recuadro del diagrama»).
 // No es producto ni maqueta: es la propuesta que se mira antes de construir el nivel por banda.
 // Toma los datos y las medidas de la maqueta (scripts/maqueta/, congelada tras G-Diseño) y copia, a
 // 152 u, el dibujo del bloque y del nodo de `pantallas/lado.mjs` (que no los exporta).
@@ -137,6 +138,7 @@ const boton = `<button type="button" class="boton boton-sec" data-todo aria-expa
 const cambiarRutas = (html) => html.replace(/(href|src)="(assets\/|index\.html|atlas-nivel-1\.html|atlas-nivel-2\.html|atlas-recorrido\.html|lado-a-lado\.html|investigador\.html|perfil\.html|instrumento\.html)/g, '$1="../diseno/$2');
 const html = cambiarRutas(`${head({ es: "Propuesta · Lado a lado en el mismo diagrama", en: "Proposal · Side by side in the same diagram" }, `<style>
   [data-todo-si]:not([hidden]) { display: inline-flex; align-items: center; gap: 8px; }
+  .lienzo-cabeza { position: relative; z-index: 2; display: flex; justify-content: flex-end; padding: 12px 12px 0; }
   .defs-comunes { position: absolute; width: 0; height: 0; overflow: hidden; }
   .prop-notas { max-width: 72ch; color: var(--tinta-2); margin: 18px 0 0; padding-left: 1.2em; }
   .prop-notas li { margin: 6px 0; }
@@ -146,16 +148,16 @@ const html = cambiarRutas(`${head({ es: "Propuesta · Lado a lado en el mismo di
 <body>
 <a class="saltar" href="#contenido">${ES("Saltar al contenido", "Skip to content")}</a>
 <div class="mq-bar" role="region" aria-label="Propuesta">
-  <span class="mq-t">${ES("Propuesta, segunda vuelta: toca «Desplegar todo», justo encima del diagrama. El mismo botón dice luego «Contraer todo».", "Proposal, second round: tap “Expand all”, just above the diagram. The same button then reads “Collapse all”.")}</span>
+  <span class="mq-t">${ES("Propuesta, segunda vuelta: toca «Desplegar todo», arriba a la derecha del recuadro del diagrama. El mismo botón dice luego «Contraer todo».", "Proposal, second round: tap “Expand all”, at the top right of the diagram's frame. The same button then reads “Collapse all”.")}</span>
 </div>
 ${barra("lado")}
 <main class="pagina" id="contenido">
   ${encabezado({ es: "Atlas · lado a lado · propuesta", en: "Atlas · side by side · proposal" }, { es: "Tres plataformas, el mismo mapa", en: "Three platforms, the same map" }, { es: "Un solo botón despliega los componentes de todas las bandas en todas las plataformas, dentro del mismo diagrama, y los vuelve a contraer.", en: "One button expands the components of every band on every platform, inside the same diagram, and collapses them again." }, `<p class="meta"><span>${ES("datos ficticios de la maqueta", "fictional data from the mockup")}</span><span class="punto">·</span><span>${ES("página 1 de 2", "page 1 of 2")}</span></p>`, false)}
   ${niveles("lado-a-lado.html")}
-  <div class="fila-r2">${boton}</div>
   <p class="guia">${ES("<b>Se lee por columnas.</b> «Desplegar todo» abre cada bloque en sus componentes, en todas las bandas y todas las plataformas a la vez. Las columnas no se mueven; cada fila crece hasta su celda más alta. «Contraer todo» vuelve a los bloques.", "<b>Read it by columns.</b> “Expand all” opens every block into its components, in every band and every platform at once. Columns do not move; each row grows to its tallest cell. “Collapse all” goes back to the blocks.")}</p>
   <section class="mapa" aria-label="Lado a lado">
     <div class="lienzo-marco">
+      <div class="lienzo-cabeza">${boton}</div>
       <div class="lienzo" id="lienzo-lado" tabindex="0" role="region" data-aria-es="Comparación; se desplaza de lado" data-aria-en="Comparison; scrolls sideways">
 ${defs()}
 ${estados}

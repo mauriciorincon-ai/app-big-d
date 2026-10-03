@@ -181,7 +181,12 @@ Decisiones D-S2-01 a D-S2-11 y los siete hechos que cambiaron el trabajo: en el 
 - **Lo que cambia en el plan si la segunda vuelta se aprueba:** el producto usa dos estados del nivel por banda
   (ninguna banda o todas); `compare` conserva `levelByBand` por banda como pide § 4.4, y la fila independiente
   trae los dos niveles completos. `toCompareCSS` alterna una sola clase por fila.
-- **Estado:** segunda vuelta enviada el 2026-10-02; el nivel por banda no se construye hasta el sí.
+- **M1 APROBADA (2026-10-02), con el boceto abierto:** «Excelente pero pon el boton en la parte superior derecha del
+  recuadro del diagrama». Ajuste aplicado en el boceto en el mismo acto (sin nueva parada, regla de segundas
+  vueltas): el botón vive en una franja propia arriba a la derecha, dentro del recuadro del diagrama, fuera de la
+  zona que se desliza; queda quieto al desplazar el lienzo y no tapa la cabecera de las bandas (capturas a 1600 y
+  1100 px, desplegado y con el lienzo desplazado). El producto lo pone en el mismo lugar; su veredicto final viaja
+  con M2 en el preview.
 
 ## Desviación del plan
 
