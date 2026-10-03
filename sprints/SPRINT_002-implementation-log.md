@@ -169,7 +169,19 @@ Decisiones D-S2-01 a D-S2-11 y los siete hechos que cambiaron el trabajo: en el 
   tras la cuenta medida; la maqueta lo fija a 52 u y a 118 u roza «comp.». `compare` lo colocará igual.
 - **Fuera del boceto, decidido y registrado:** en el producto, tocar un componente abre su ficha (`toCard`) y el
   nombre del bloque abierto, la ficha del bloque; en el teléfono no cambia nada respecto de la maqueta.
-- **Estado:** enviado a la persona el 2026-10-02; `levelByBand` no se construye hasta el sí.
+- **Primera vuelta (2026-10-02), una banda a la vez:** la persona, con el boceto abierto: «Mas o menos me gustaria que
+  fuera un solo boton despliga todo y contrae todo». No es un sí: la forma cambia.
+- **Segunda vuelta (2026-10-02), un solo botón:** «Desplegar todo» abre cada bloque en sus componentes, en todas las
+  bandas y todas las plataformas, dentro del mismo diagrama (mismas 9 columnas de 152 u; cada fila crece hasta su
+  celda más alta); el mismo botón dice entonces «Contraer todo» y vuelve a los bloques (`aria-expanded`, chevrón y
+  palabra: el color no interviene). Las cabeceras de banda dejan de ser control. En el producto, tocar un bloque
+  abre su ficha, como en la maqueta, y tocar un componente, la suya; en el teléfono, el mismo botón despliega o
+  contrae los componentes de la banda que se ve. Pasada de capturas e interacción: contraído → desplegado →
+  contraído con clic y desplegado con Enter, oscuro ES y claro EN, cero errores de consola.
+- **Lo que cambia en el plan si la segunda vuelta se aprueba:** el producto usa dos estados del nivel por banda
+  (ninguna banda o todas); `compare` conserva `levelByBand` por banda como pide § 4.4, y la fila independiente
+  trae los dos niveles completos. `toCompareCSS` alterna una sola clase por fila.
+- **Estado:** segunda vuelta enviada el 2026-10-02; el nivel por banda no se construye hasta el sí.
 
 ## Desviación del plan
 
