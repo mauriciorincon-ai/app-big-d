@@ -93,7 +93,10 @@ describe("validar una propuesta", () => {
     // Dibujo: un nombre de componente que no cabe en su ficha de franja (nivel 2 y recorrido: se dice una vez).
     const nombreLargo = mapaNorte();
     nombreLargo.nodos = nombreLargo.nodos.map((n) => (n.id === "catalogo-central" ? { ...n, nombre: { es: "Catálogo central de metadatos con linaje y clasificación", en: "Central catalog" } } : n));
-    expect(validarPropuesta(propuestaNorte(nombreLargo), G, RANGOS).fallas).toEqual(["dibujo · nivel2 · texto: ficha catalogo-central (es): 4 líneas; caben 2"]);
+    expect(validarPropuesta(propuestaNorte(nombreLargo), G, RANGOS).fallas).toEqual([
+      "dibujo · lado a lado desplegado · texto: nombre de catalogo-central (es): 4 líneas; caben 3",
+      "dibujo · nivel2 · texto: ficha catalogo-central (es): 4 líneas; caben 2",
+    ]);
 
     const corta = propuestaNorte();
     corta.afirmaciones[0]!.cita.texto = "corta";

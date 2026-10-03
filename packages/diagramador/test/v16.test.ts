@@ -74,8 +74,15 @@ describe("V16 · el mapa se dibuja", () => {
     expect(inf.errores.length).toBeGreaterThan(0);
     for (const e of inf.errores) {
       expect(e.regla).toBe("V16");
-      expect(e.mensaje).toMatch(/^(nivel1|nivel2|recorrido \S+|ventana \S+)( · el \d{4}-\d{2}-\d{2})? · /);
+      expect(e.mensaje).toMatch(/^(nivel1|nivel2|recorrido \S+|ventana \S+|lado a lado( desplegado)?)( · el \d{4}-\d{2}-\d{2})? · /);
     }
+  });
+  it("también dibuja su fila del lado a lado (§ 4.4): lo que solo ahí no cabe, también es V16", () => {
+    // El nombre del sujeto solo se dibuja en el rótulo de su fila del lado a lado (en las otras vistas va en <title>).
+    const largo = { ...ejemplo, estado: "aprobada" as const, sujeto_nombre: { es: `Plataforma ${"con un nombre larguísimo ".repeat(12)}`.trim(), en: `Platform ${"with a very long name ".repeat(12)}`.trim() } };
+    const inf = validate(largo, G, { mode: "publicacion", ...opc });
+    expect(inf.errores.length).toBeGreaterThan(0);
+    for (const e of inf.errores) expect(e.mensaje).toMatch(/^lado a lado( · el \d{4}-\d{2}-\d{2})? · texto: rótulo de plataforma-ejemplo: \d+ u más que la fila$/);
   });
   it("en privado, los mismos avisos se informan sin rechazar", () => {
     const inf = validate(conNombreLargo(), G, { mode: "privado", ...opc });

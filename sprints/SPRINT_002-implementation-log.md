@@ -302,6 +302,18 @@ Decisiones D-S2-01 a D-S2-11 y los siete hechos que cambiaron el trabajo: en el 
 - **Corridas:** `pnpm test` 1220/1220 (`compare.ts` 95 % de líneas, `diffToText.ts` 100 %); determinismo 6/6 en tres
   motores; CI de `28676d2` y `8a647b9` en `success` en los cinco checks y Vercel, cero comentarios del bot.
 
+### V16 también dibuja el lado a lado
+
+- `avisosV16` suma la fila del mapa en el lado a lado, contraída y desplegada (`compare([mapa], …, { part: "rows" })`),
+  a cada edad. Un mapa que no cabe en el lado a lado ya no se puede proponer, aprobar ni publicar; el build de la app
+  (loader en modo publicación) lo exige sobre Fabric a cuatro edades: pasa.
+- **Gate:** ¿puede fallar? Sí: el nombre del sujeto solo se dibuja en el rótulo de su fila. **Rojo:** con un nombre
+  de 12 repeticiones, sin el lado a lado en V16 → «también dibuja su fila del lado a lado» en rojo (0 errores). La
+  primera versión de la prueba usaba 6 repeticiones y **caía en rojo también con el lado a lado puesto**: el nombre
+  cabía; la prueba no medía lo que decía. Se alargó, se vio verde, rojo sin el lado a lado y verde al restaurar.
+- El investigador ahora también dice `dibujo · lado a lado desplegado · texto: …` cuando un nombre no cabe ahí
+  (`nucleo.test` al día).
+
 ## Desviación del plan
 
 Lo que el plan aprobado ya declaró frente a la orden y a `SPRINT_002.md`:
