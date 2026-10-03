@@ -52,7 +52,6 @@ export default async function AtlasNivel1({ params }: PageProps<"/[idioma]/atlas
       <PanelFicha fichas={v.ventanas} titulo={t.ventana.titulo} cerrar={t.ficha.cerrar} objetivo=".lienzo .dg-elem" clave="data-dueno" />
       <section className="leyenda">
         <div className="leyenda-motor" dangerouslySetInnerHTML={{ __html: v.leyenda }} />
-        <p className="lg-nota">{t.notaModos}</p>
       </section>
       <Lectura idioma={idioma} html={v.lectura} />
     </>

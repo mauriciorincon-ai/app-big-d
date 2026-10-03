@@ -1,6 +1,6 @@
 // `toLegend(grammar, { language, texts })` (§ 4.9): la leyenda generada de la gramática, con los MISMOS
-// paths del diagrama: tipos (glifo + etiqueta + nombre), modos (trazo + marcador + nombre + descripción),
-// madurez (medidor + nombre) y vigencia (marca + regla de días), más la nota de marcas (D7). HTML con
+// paths del diagrama: tipos (glifo + etiqueta + nombre), modos (trazo + marcador + nombre + descripción) y la
+// regla del haz, madurez (medidor + nombre) y vigencia (marca + regla de días), más la nota de marcas (D7). HTML con
 // SVG en línea; los colores entran por las mismas clases del diagrama (G13).
 import type { Gramatica } from "../tipos";
 import { plantilla } from "../layout/escena";
@@ -38,7 +38,8 @@ export function toLegend(grammar: Gramatica, opciones: { language: string; texts
   return (
     `<div class="dg-leyenda" lang="${e(l)}">` +
     `<section><h2>${e(t.leyenda.tipos)}</h2><ul class="dg-leyenda-lista">${tipos}</ul></section>` +
-    `<section><h2>${e(t.leyenda.modos)}</h2><ul class="dg-leyenda-lista">${modos}</ul></section>` +
+    // La regla del haz va con los modos (§ 4.9, 0.4.0): es gramática, no copy de la app; su texto llega en `texts`.
+    `<section><h2>${e(t.leyenda.modos)}</h2><ul class="dg-leyenda-lista">${modos}</ul><p class="dg-leyenda-haz">${e(t.leyenda.haz)}</p></section>` +
     `<section><h2>${e(t.leyenda.madurez)}</h2><ul class="dg-leyenda-lista">${madurez}</ul></section>` +
     `<section><h2>${e(t.leyenda.vigencia)}</h2><ul class="dg-leyenda-lista">${vigencia}</ul><p>${e(regla)}</p></section>` +
     `<p class="dg-leyenda-nota">${e(t.leyenda.notaMarcas)}</p>` +

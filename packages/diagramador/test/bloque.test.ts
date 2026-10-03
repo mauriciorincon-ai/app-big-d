@@ -13,7 +13,7 @@ import { TEXTOS } from "./lib/textos";
 const P1 = leerJson<Mapa>("carnadas/P1-mapa-denso.mapa.json");
 const MAPAS = [...EJEMPLOS, P1];
 const bloque = (m: Mapa, grupo: string, fecha = FECHA) => layout(m, GRAMATICAS[m.gramatica_id]!, "bloque", { texts: TEXTOS, queryDate: fecha, group: grupo });
-const grupos = (m: Mapa) => disponer(m, "nivel-1").vigencia.elementos.map((e) => e.id);
+const grupos = (m: Mapa) => disponer(m, "nivel1").vigencia.elementos.map((e) => e.id);
 
 describe("vista «bloque»: cada elemento activable del nivel 1, en todos los mapas", () => {
   for (const m of MAPAS)

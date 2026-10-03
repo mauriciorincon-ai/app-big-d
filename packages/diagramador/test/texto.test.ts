@@ -15,8 +15,8 @@ describe("G10 — el texto equivale al dibujo", () => {
       it(`${mapa.sujeto_id} (${idioma}): mismos nodos, flujos y pasos`, () => {
         const g = GRAMATICAS[mapa.gramatica_id]!;
         const texto = toText(mapa, g, { language: idioma, texts: TEXTOS, id: "lectura" });
-        const n2 = toSVG(disponer(mapa, "nivel-2"), { language: idioma });
-        const n1 = toSVG(disponer(mapa, "nivel-1"), { language: idioma });
+        const n2 = toSVG(disponer(mapa, "nivel2"), { language: idioma });
+        const n1 = toSVG(disponer(mapa, "nivel1"), { language: idioma });
         const todos = new Set(mapa.nodos.map((n) => n.id));
         const flujos = new Set(mapa.flujos.filter((f) => f.origen !== f.destino).map((f) => f.id));
         expect(conjunto(n2, /data-nodo="([^"]+)"/g)).toEqual(todos);

@@ -4,7 +4,7 @@
 //   · nivel 1: puertos laterales a 22 u alrededor del centro; el salto entra por el borde inferior (maqueta);
 //   · nivel 2: k puertos en y + alto·i/(k+1); el salto sube por el canal anterior al destino y entra por el lado.
 import { mitad, type Decimas } from "../util/numeros";
-import { CANAL, COL, PISTA_EXPRES_1, PISTA_EXPRES_PASO, colX, type Contexto } from "./contexto";
+import { CANAL, COL, PISTA_EXPRES_1, PISTA_EXPRES_PASO, avisar, colX, type Contexto } from "./contexto";
 import { etiquetaModos, marcadores, trazo } from "./piezas";
 import type { Caja, Elemento, Punto, Trazado } from "./tipos";
 
@@ -183,7 +183,7 @@ export function rutear(ctx: Contexto, piezas: ReadonlyMap<string, Pieza>, conexi
     const n = usoCanal.get(canal) ?? 0;
     usoCanal.set(canal, n + 1);
     const offsets = offsetsPista(pedidas.get(canal) ?? n + 1);
-    if (n >= offsets.length) ctx.avisos.push(`canal ${canal}: más de ${offsets.length} pistas`);
+    if (n >= offsets.length) avisar(ctx, "canal", `canal-${canal}`, `más de ${offsets.length} pistas en el canal ${canal}`);
     const centro = op.centroCanal ? op.centroCanal(canal) : colX(canal) + COL + mitad(CANAL);
     return centro + offsets[Math.min(n, offsets.length - 1)]!;
   };
@@ -300,8 +300,8 @@ export function rutear(ctx: Contexto, piezas: ReadonlyMap<string, Pieza>, conexi
 
   // ── Avisos: ninguna etiqueta encima de una caja ni de otra etiqueta (§ 5.3) ──
   for (const r of rotulos) {
-    for (const p of piezas.values()) if (cruza(r.caja, p.caja)) ctx.avisos.push(`${r.id}: queda encima de la caja de ${p.id}`);
-    for (const s of rotulos) if (s !== r && r.id < s.id && cruza(r.caja, s.caja)) ctx.avisos.push(`${r.id}: queda encima de ${s.id}`);
+    for (const p of piezas.values()) if (cruza(r.caja, p.caja)) avisar(ctx, "encima", r.id, `${r.id} sobre la caja de ${p.id}`);
+    for (const s of rotulos) if (s !== r && r.id < s.id && cruza(r.caja, s.caja)) avisar(ctx, "encima", r.id, `${r.id} sobre ${s.id}`);
   }
   return { lineas, etiquetas, trazados, rotulos, pistas };
 }

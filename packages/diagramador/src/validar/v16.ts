@@ -26,21 +26,21 @@ export function agingDates(map: Mapa, grammar: Gramatica, queryDate?: string): s
 export function avisosV16(map: Mapa, grammar: Gramatica, options: { texts: Record<string, TextosMotor>; queryDate?: string }): string[] {
   type Pedido = { vista: Vista; nombre: string; recorrido?: string; group?: string };
   const vistas: Pedido[] = [
-    { vista: "nivel-1", nombre: "nivel-1" },
-    { vista: "nivel-2", nombre: "nivel-2" },
+    { vista: "nivel1", nombre: "nivel1" },
+    { vista: "nivel2", nombre: "nivel2" },
     ...map.recorridos.map((r) => ({ vista: "recorrido" as const, nombre: `recorrido ${r.id}`, recorrido: r.id })),
   ];
   const vistos = new Set<string>();
   const out: string[] = [];
   for (const [k, fecha] of agingDates(map, grammar, options.queryDate).entries()) {
-    const nivel1 = layout(map, grammar, "nivel-1", { texts: options.texts, queryDate: fecha });
+    const nivel1 = layout(map, grammar, "nivel1", { texts: options.texts, queryDate: fecha });
     const ventanas: Pedido[] = nivel1.vigencia.elementos.map((e) => ({ vista: "bloque", nombre: `ventana ${e.id}`, group: e.id }));
     for (const { vista, nombre, recorrido, group } of [...vistas, ...ventanas]) {
-      const geo = vista === "nivel-1" ? nivel1 : layout(map, grammar, vista, { texts: options.texts, queryDate: fecha, recorrido, group });
-      for (const a of geo.avisos) {
-        if (vistos.has(a)) continue;
-        vistos.add(a);
-        out.push(`${nombre}${k === 0 ? "" : ` · el ${fecha}`} · ${a}`);
+      const geo = vista === "nivel1" ? nivel1 : layout(map, grammar, vista, { texts: options.texts, queryDate: fecha, recorrido, group });
+      for (const { mensaje } of geo.avisos) {
+        if (vistos.has(mensaje)) continue;
+        vistos.add(mensaje);
+        out.push(`${nombre}${k === 0 ? "" : ` · el ${fecha}`} · ${mensaje}`);
       }
     }
   }

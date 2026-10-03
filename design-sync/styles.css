@@ -250,15 +250,14 @@ h1 { font-size: 32px; line-height: 1.1; font-weight: 700; letter-spacing: -0.025
 .leyenda-motor, .leyenda .dg-leyenda { display: contents; }
 .leyenda .dg-leyenda > section:nth-of-type(1) { order: 1; }
 .leyenda .dg-leyenda > section:nth-of-type(2) { order: 2; }
-.leyenda > .lg-nota { order: 3; margin-top: -14px; }
 .leyenda .dg-leyenda > section:nth-of-type(3) { order: 4; }
 .leyenda .dg-leyenda > section:nth-of-type(4) { order: 5; }
 .leyenda .dg-leyenda-nota { order: 6; }
 @media (min-width: 900px) {
   .leyenda { grid-template-columns: 1.5fr 1fr; }
   .leyenda .dg-leyenda > section:nth-of-type(1) { grid-column: 1; grid-row: 1 / span 2; }
-  .leyenda .dg-leyenda > section:nth-of-type(2) { grid-column: 2; grid-row: 1; }
-  .leyenda > .lg-nota { grid-column: 2; grid-row: 2; }
+  /* La regla del haz viaja dentro de la sección de modos (la escribe el motor, § 4.9): ocupa las dos filas. */
+  .leyenda .dg-leyenda > section:nth-of-type(2) { grid-column: 2; grid-row: 1 / span 2; }
   .leyenda .dg-leyenda > section:nth-of-type(3) { grid-column: 1; grid-row: 3; }
   .leyenda .dg-leyenda > section:nth-of-type(4) { grid-column: 2; grid-row: 3; }
   .leyenda .dg-leyenda-nota { grid-column: 1 / -1; grid-row: 4; }
@@ -275,7 +274,7 @@ h1 { font-size: 32px; line-height: 1.1; font-weight: 700; letter-spacing: -0.025
 /* Modos: nombre y frase con el mismo peso, como la maqueta. */
 .leyenda .dg-leyenda-lista b { font-weight: inherit; }
 .dg-leyenda-cod { font: 600 11px/1 var(--letra-mono); letter-spacing: 0.06em; color: var(--tinta-2); }
-.lg-nota, .dg-leyenda section > p, .dg-leyenda-nota { font-size: 13px; color: var(--tinta-2); margin: 14px 0 0; max-width: 60ch; }
+.dg-leyenda section > p, .dg-leyenda-nota { font-size: 13px; color: var(--tinta-2); margin: 14px 0 0; max-width: 60ch; }
 .dg-leyenda-nota { max-width: 72ch; margin: 0; }
 
 /* Lectura en texto (G10, generada), plegada. */

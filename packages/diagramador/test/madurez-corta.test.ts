@@ -15,7 +15,7 @@ const conCorta: Gramatica = {
   ...G,
   escala_madurez: G.escala_madurez.map((m) => (m.id === "vista-previa-publica" ? { ...m, etiqueta_corta: CORTA } : m)),
 };
-const dibujo = (g: Gramatica, vista: "nivel-1" | "nivel-2", language: string) => toSVG(layout(ejemplo, g, vista, { texts: TEXTOS, queryDate: FECHA }), { language });
+const dibujo = (g: Gramatica, vista: "nivel1" | "nivel2", language: string) => toSVG(layout(ejemplo, g, vista, { texts: TEXTOS, queryDate: FECHA }), { language });
 
 describe("etiqueta corta de la madurez", () => {
   it("la gramática con etiqueta corta valida (el esquema v0.4.0 la admite), y una de más de 4 caracteres no (G2)", () => {
@@ -23,7 +23,7 @@ describe("etiqueta corta de la madurez", () => {
     const larga = { ...G, escala_madurez: G.escala_madurez.map((m) => (m.id === "beta" ? { ...m, etiqueta_corta: { es: "Betas", en: "Beta" } } : m)) };
     expect(validateGrammar(larga).errores.map((e) => `${e.regla} · ${e.ruta}`)).toEqual(["G2 · /escala_madurez/3/etiqueta_corta/es"]);
   });
-  for (const vista of ["nivel-1", "nivel-2"] as const)
+  for (const vista of ["nivel1", "nivel2"] as const)
     for (const idioma of ["es", "en"] as const)
       it(`${vista} · ${idioma}: dibuja la etiqueta corta y no el nombre largo`, () => {
         const largo = G.escala_madurez.find((m) => m.id === "vista-previa-publica")!.nombre[idioma]!;

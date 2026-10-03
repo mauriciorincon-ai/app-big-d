@@ -37,11 +37,11 @@ const svg = (m: Mapa, vista: Parameters<typeof disponer>[1]) => toSVG(disponer(m
 describe("invariancia al orden de los datos (D3)", () => {
   for (const base of [EJEMPLO, AGENTE])
     it(`${base.sujeto_id}: barajar nodos, flujos y bloques no cambia ni un byte en ninguna vista`, () => {
-      const antes = (["nivel-1", "nivel-2", "recorrido"] as const).map((v) => svg(base, v));
+      const antes = (["nivel1", "nivel2", "recorrido"] as const).map((v) => svg(base, v));
       fc.assert(
         fc.property(fc.shuffledSubarray(base.nodos, { minLength: base.nodos.length }), fc.shuffledSubarray(base.flujos, { minLength: base.flujos.length }), fc.shuffledSubarray(base.bloques, { minLength: base.bloques.length }), (nodos, flujos, bloques) => {
           const m = { ...clonar(base), nodos, flujos, bloques };
-          expect((["nivel-1", "nivel-2", "recorrido"] as const).map((v) => svg(m, v))).toEqual(antes);
+          expect((["nivel1", "nivel2", "recorrido"] as const).map((v) => svg(m, v))).toEqual(antes);
         }),
         OPC,
       );
@@ -56,9 +56,9 @@ describe("invariancia al orden en todas las salidas (B-42 de la auditoría del S
   const salidas = (m: Mapa): string[] => {
     const G = GRAMATICAS[m.gramatica_id]!;
     const opc = { language: "es", texts: TEXTOS, queryDate: FECHA };
-    const grupos = disponer(m, "nivel-1").vigencia.elementos.map((e) => e.id).sort();
+    const grupos = disponer(m, "nivel1").vigencia.elementos.map((e) => e.id).sort();
     return [
-      ...(["nivel-1", "nivel-2", "recorrido"] as const).map((v) => svg(m, v)),
+      ...(["nivel1", "nivel2", "recorrido"] as const).map((v) => svg(m, v)),
       ...grupos.map((g) => toSVG(layout(m, G, "bloque", { texts: TEXTOS, queryDate: FECHA, group: g }), { language: "es" })),
       ...grupos.map((g) => toBlockCards(m, G, g, opc)),
       toText(m, G, opc),
@@ -87,7 +87,7 @@ describe("D11 con flujos al azar entre nodos de capa", () => {
       fc.property(fc.array(flujo, { maxLength: 6 }), (nuevos) => {
         const m = clonar(EJEMPLO);
         nuevos.forEach((x, i) => m.flujos.push({ id: `zz-${i}`, origen: x.o, destino: x.d, modo_id: x.modo, que_viaja: { es: "x", en: "x" }, lider: { es: "x", en: "x" } }));
-        for (const v of ["nivel-1", "nivel-2"] as const) expect(crossings(disponer(m, v))).toEqual([]);
+        for (const v of ["nivel1", "nivel2"] as const) expect(crossings(disponer(m, v))).toEqual([]);
       }),
       OPC,
     );
@@ -95,11 +95,11 @@ describe("D11 con flujos al azar entre nodos de capa", () => {
 });
 
 describe("G5 — quitar flujos no mueve columnas ni franjas en el nivel 1", () => {
-  const base = disponer(EJEMPLO, "nivel-1");
+  const base = disponer(EJEMPLO, "nivel1");
   it("columnas, filas y ancho idénticos", () => {
     fc.assert(
       fc.property(fc.subarray(EJEMPLO.flujos), (flujos) => {
-        const g: Geometria = disponer({ ...clonar(EJEMPLO), flujos }, "nivel-1");
+        const g: Geometria = disponer({ ...clonar(EJEMPLO), flujos }, "nivel1");
         expect([g.columnas, g.filas, g.ancho, g.alto]).toEqual([base.columnas, base.filas, base.ancho, base.alto]);
       }),
       OPC,
@@ -112,33 +112,33 @@ describe("G6 — localidad del cambio (nivel 2)", () => {
   const nombre = fc.array(palabra, { minLength: 1, maxLength: 2 }).map((ws) => ws.join(" "));
 
   it("(a) cambiar el nombre de un nodo cambia solo ese nodo y las referencias que lo nombran", () => {
-    const antes = svg(EJEMPLO, "nivel-2");
+    const antes = svg(EJEMPLO, "nivel2");
     fc.assert(
       fc.property(fc.constantFrom(...EJEMPLO.nodos.map((n) => n.id)), nombre, (id, nuevo) => {
         const m = clonar(EJEMPLO);
         m.nodos.find((n) => n.id === id)!.nombre = { es: nuevo, en: nuevo };
         const permitidos = new Set([id, ...m.flujos.filter((f) => f.origen === id || f.destino === id).map((f) => f.id)]);
-        for (const c of cambiados(antes, svg(m, "nivel-2"))) expect(permitidos, `cambió ${c}`).toContain(c);
+        for (const c of cambiados(antes, svg(m, "nivel2"))) expect(permitidos, `cambió ${c}`).toContain(c);
       }),
       OPC,
     );
   });
 
   it("(b) agregar un nodo al final de una banda que no es la más densa cambia solo ese nodo (y la descripción)", () => {
-    const antes = svg(EJEMPLO, "nivel-2");
+    const antes = svg(EJEMPLO, "nivel2");
     fc.assert(
       fc.property(fc.constantFrom("fuentes", "ia"), nombre, (banda, nuevo) => {
         const m = clonar(EJEMPLO);
         m.nodos.push({ ...structuredClone(m.nodos[0]!), id: "zz-nuevo", banda_id: banda, orden: 999, nombre: { es: nuevo, en: nuevo }, bloque_id: undefined });
         delete m.nodos[m.nodos.length - 1]!.bloque_id;
-        for (const c of cambiados(antes, svg(m, "nivel-2"))) expect(["zz-nuevo", ""], `cambió ${c}`).toContain(c);
+        for (const c of cambiados(antes, svg(m, "nivel2"))) expect(["zz-nuevo", ""], `cambió ${c}`).toContain(c);
       }),
       OPC,
     );
   });
 
   it("(c) quitar un flujo cambia ese flujo y solo los que comparten con él un extremo, un canal o la fila de referencias", () => {
-    const geo = disponer(EJEMPLO, "nivel-2");
+    const geo = disponer(EJEMPLO, "nivel2");
     const antes = toSVG(geo, { language: "es" });
     const canales = (id: string) => {
       const t = geo.trazados.find((x) => x.id === id);
@@ -161,7 +161,7 @@ describe("G6 — localidad del cambio (nivel 2)", () => {
             (filaRef(id) !== undefined && filaRef(g.id) === filaRef(id)),
         );
         const permitidos = new Set(vecinos.map((g) => g.id));
-        for (const c of cambiados(antes, toSVG(disponer(m, "nivel-2"), { language: "es" }))) expect(permitidos, `quitar ${id} cambió ${c}`).toContain(c);
+        for (const c of cambiados(antes, toSVG(disponer(m, "nivel2"), { language: "es" }))) expect(permitidos, `quitar ${id} cambió ${c}`).toContain(c);
       }),
       { ...OPC, numRuns: EJEMPLO.flujos.length * 3 },
     );

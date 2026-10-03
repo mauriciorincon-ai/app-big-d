@@ -255,7 +255,7 @@ export function nivel2(ctx: Contexto, conRecorrido: string | true | undefined): 
     yF += alto + 100;
   }
   const alto: Decimas = franjas.length ? yF - 100 + 80 : finCarril + 80;
-  const vista = recorrido ? "recorrido" : "nivel-2";
+  const vista = recorrido ? "recorrido" : "nivel2";
   const valores = (l: string) => ({
     sujeto: ctx.mapa.sujeto_nombre[l]!,
     capas: capas.length,
@@ -283,6 +283,7 @@ export function nivel2(ctx: Contexto, conRecorrido: string | true | undefined): 
       ctx,
       [...capas, ...franjas].flatMap((b) => nodosDe(ctx, b.id)).map((n) => ({ id: n.id, nodos: [n] })),
     ),
+    cruces: [],
     avisos: ctx.avisos,
   };
 }

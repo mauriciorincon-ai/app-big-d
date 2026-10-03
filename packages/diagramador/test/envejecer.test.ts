@@ -3,10 +3,12 @@
 // aparecen las insignias de vigencia, que ocupan lugar: la lateral de una ficha de franja empuja la fila de
 // referencias, la de la vista «bloque» quedaba fuera del lienzo y la montada, con tres cifras, cruzaba la
 // mitad de la tarjeta y la pisaba la línea que llega desde arriba. Aquí cada mapa del contrato, P1 y A3 se
-// dibujan en todas sus vistas (y la vista «bloque» de cada grupo) en cuatro edades, y en ninguna puede haber
-// avisos, cruces, rótulos fuera del lienzo ni una línea encima de una insignia.
+// dibujan en todas sus vistas (y la vista «bloque» de cada grupo) en las cuatro edades de la matriz de
+// envejecimiento (§ 5.6, `agingDates`: hoy, el día del primer umbral, el del segundo y +100 días), y en ninguna
+// puede haber avisos, cruces, rótulos fuera del lienzo ni una línea encima de una insignia.
 import { describe, expect, it } from "vitest";
 import {
+  agingDates,
   crossings,
   layout,
   type Caja,
@@ -30,22 +32,10 @@ const MAPAS: [string, Mapa][] = [
   ["flujo en una franja", conFlujoEnFranja],
 ];
 
-/** Suma días a una fecha civil (solo en pruebas: el motor no usa `Date`). */
-const sumar = (fecha: string, dias: number) =>
-  new Date(Date.parse(`${fecha}T00:00:00Z`) + dias * 86_400_000)
-    .toISOString()
-    .slice(0, 10);
-
+/** Las cuatro edades del contrato; «hoy» es la verificación más reciente del mapa. */
 function edades(m: Mapa): [string, string][] {
-  const g = GRAMATICAS[m.gramatica_id]!;
-  const vieja = m.nodos.map((n) => n.fecha_verificacion).sort()[0]!;
-  return [
-    ["vigente", vieja],
-    ["por revisar", sumar(vieja, g.vigencia.umbral_revisar_dias)],
-    ["vencido", sumar(vieja, g.vigencia.umbral_vencido_dias)],
-    // Tres cifras: la insignia más ancha que un mapa real alcanza antes de reverificarse.
-    ["2027-01-15", "2027-01-15"],
-  ];
+  const fechas = agingDates(m, GRAMATICAS[m.gramatica_id]!);
+  return fechas.map((f, i) => [`edad ${i + 1} de ${fechas.length}`, f]);
 }
 
 const dentro = (c: Caja, geo: Geometria) =>
@@ -58,7 +48,7 @@ const corta = (a: Punto, b: Punto, c: Caja) =>
 
 /** Todo lo que la vista puede fallar al envejecer, en una lista (vacía = bien). */
 function problemas(geo: Geometria): string[] {
-  const out = [...geo.avisos];
+  const out = geo.avisos.map((a) => a.mensaje);
   for (const c of crossings(geo))
     out.push(`D11: ${c.flujo} atraviesa ${c.caja}`);
   for (const r of geo.rotulos)
@@ -85,11 +75,11 @@ describe("C-1 — los mapas del contrato envejecen sin romper el dibujo", () => 
       });
     for (const [edad, fecha] of edades(m))
       it(`${nombre} · ${edad} (${fecha})`, () => {
-        const grupos = disponer("nivel-1", fecha).vigencia.elementos.map(
+        const grupos = disponer("nivel1", fecha).vigencia.elementos.map(
           (e) => e.id,
         );
         const vistas: [string, Geometria][] = [
-          ...(["nivel-1", "nivel-2", "recorrido"] as const).map(
+          ...(["nivel1", "nivel2", "recorrido"] as const).map(
             (v) => [v, disponer(v, fecha)] as [string, Geometria],
           ),
           ...grupos.map(

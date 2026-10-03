@@ -5,7 +5,7 @@ import { TEXTOS } from "./textos";
 
 /** Fecha de consulta fija de las pruebas: el mapa de ejemplo se verificó el 2026-09-20 (6 días: vigente). */
 export const FECHA = "2026-09-26";
-export const VISTAS: Vista[] = ["nivel-1", "nivel-2", "recorrido"];
+export const VISTAS: Vista[] = ["nivel1", "nivel2", "recorrido"];
 export const A3 = leerJson<Mapa>("carnadas/A3-cuatro-modos-en-un-par.mapa.json");
 
 export interface Caso {
@@ -17,7 +17,7 @@ export interface Caso {
 }
 export const CASOS: Caso[] = [
   ...EJEMPLOS.flatMap((m) => VISTAS.map((vista) => ({ clave: m.sujeto_id, nombre: `${m.sujeto_id} · ${vista}`, mapa: m, vista }))),
-  { clave: "carnada-a3", nombre: "A3 · nivel-1", mapa: A3, vista: "nivel-1" },
+  { clave: "carnada-a3", nombre: "A3 · nivel1", mapa: A3, vista: "nivel1" },
 ];
 
 export const disponer = (mapa: Mapa, vista: Vista, fecha = FECHA): Geometria =>

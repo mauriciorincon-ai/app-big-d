@@ -29,7 +29,16 @@ const { casos } = leerJson<{ casos: Caso[] }>("carnadas/esperado.json");
  * V16 lo rechaza. Se fija EXACTO: si la planeadora corrige A1, esta lista deja de coincidir y la prueba lo dice.
  */
 const DIBUJO_CONOCIDO: Record<string, string[]> = {
-  "A1-cinco-bloques.mapa.json": ["nivel-1 · nombre de _ia (en): 3 líneas; caben 2", "nivel-1 · nombre de _ia (es): 3 líneas; caben 2"],
+  "A1-cinco-bloques.mapa.json": ["nivel1 · texto: nombre de _ia (en): 3 líneas; caben 2", "nivel1 · texto: nombre de _ia (es): 3 líneas; caben 2"],
+};
+
+/**
+ * Segunda inconsistencia conocida del contrato v0.4.0 (va a «Enmiendas»): C10 agrega cuatro bloques sin
+ * componentes para llegar a 11, y la alerta V3 que la misma 0.4.0 introdujo (F-022) los señala; su `esperado.json`
+ * no los declara en `secundarios`. Se fija EXACTO, como A1.
+ */
+const ALERTAS_CONOCIDAS: Record<string, string[]> = {
+  "C10-once-bloques.mapa.json": ["V3 · extra-1", "V3 · extra-2", "V3 · extra-3", "V3 · extra-4"],
 };
 
 function informeDe(c: Caso): Informe {
@@ -54,7 +63,7 @@ function detecta(c: Caso, inf: Informe): boolean {
 
 /** Lo que el informe trae además de lo esperado y de los secundarios declarados (debe ser nada). */
 function sobrantes(c: Caso, inf: Informe): string[] {
-  const permitidas = [`${c.regla} · ${c.id}`, ...(c.secundarios ?? []).map((s) => `${s.regla} · ${s.id}`)];
+  const permitidas = [`${c.regla} · ${c.id}`, ...(c.secundarios ?? []).map((s) => `${s.regla} · ${s.id}`), ...(ALERTAS_CONOCIDAS[c.archivo] ?? [])];
   return [...inf.errores, ...inf.alertas].map((e) => `${e.regla} · ${e.id}`).filter((x) => !permitidas.includes(x));
 }
 
@@ -78,6 +87,11 @@ describe(`carnadas del contrato v${CONTRATO_VERSION}`, () => {
   it("A1 no se dibuja en el nivel 1: exactamente la inconsistencia conocida del contrato, y nada más", () => {
     const inf = informeDe(casos.find((c) => c.archivo === "A1-cinco-bloques.mapa.json")!);
     expect(inf.errores.map((e) => `${e.regla} · ${e.mensaje}`)).toEqual(DIBUJO_CONOCIDO["A1-cinco-bloques.mapa.json"]!.map((m) => `V16 · ${m}`));
+  });
+
+  it("C10 alerta V3 por sus cuatro bloques vacíos: exactamente la inconsistencia conocida del contrato, y nada más", () => {
+    const inf = informeDe(casos.find((c) => c.archivo === "C10-once-bloques.mapa.json")!);
+    expect(inf.alertas.map((a) => `${a.regla} · ${a.id}`).sort()).toEqual(ALERTAS_CONOCIDAS["C10-once-bloques.mapa.json"]);
   });
 
   it("detectó 34 de 34", () => {

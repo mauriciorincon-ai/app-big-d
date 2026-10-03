@@ -63,7 +63,7 @@ test("ningún texto dibujado es más ancho que lo que midió la tabla (G15, en l
   const { medidas, cargadas } = await page.evaluate(async () => {
     const salidas = (globalThis as unknown as { diagramadorGolden: () => { archivo: string; svg: string }[] }).diagramadorGolden();
     const out: { texto: string; tam: number; peso: number; mono: boolean; ancho: number }[] = [];
-    for (const s of salidas.filter((x) => /^(plataforma|agente)-ejemplo\.(nivel-1|nivel-2)\./.test(x.archivo))) {
+    for (const s of salidas.filter((x) => /^(plataforma|agente)-ejemplo\.(nivel1|nivel2)\./.test(x.archivo))) {
       document.body.innerHTML = s.svg;
       await document.fonts.load('700 16px "Space Grotesk"');
       await document.fonts.load('700 12px "JetBrains Mono"');

@@ -18,14 +18,14 @@ import mPProcesos from "../../packages/diagramador/ejemplos/prueba-procesos.mapa
 import mA3 from "../../packages/diagramador/carnadas/A3-cuatro-modos-en-un-par.mapa.json";
 
 const FECHA = "2026-09-26";
-const VISTAS: Vista[] = ["nivel-1", "nivel-2", "recorrido"];
+const VISTAS: Vista[] = ["nivel1", "nivel2", "recorrido"];
 const GRAMATICAS = Object.fromEntries([gAgentes, gPlataformas, gPAgentes, gPApp, gPNubes, gPProcesos].map((g) => [g.id, g as unknown as Gramatica]));
 const EJEMPLOS = [mAgente, mPlataforma, mPAgentes, mPApp, mPNubes, mPProcesos] as unknown as Mapa[];
 
 function casos(): { clave: string; mapa: Mapa; vista: Vista }[] {
   return [
     ...EJEMPLOS.flatMap((m) => VISTAS.map((vista) => ({ clave: m.sujeto_id, mapa: m, vista }))),
-    { clave: "carnada-a3", mapa: mA3 as unknown as Mapa, vista: "nivel-1" as Vista },
+    { clave: "carnada-a3", mapa: mA3 as unknown as Mapa, vista: "nivel1" as Vista },
   ];
 }
 

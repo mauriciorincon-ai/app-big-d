@@ -118,6 +118,11 @@ export function reglasMapa(m: Mapa, g: Gramatica, opciones: { mode: Modo; covera
     }
   });
 
+  // V3 (alerta, 0.4.0, F-022): un bloque sin componentes valida, pero en el dibujo es un activable que no abre nada.
+  m.bloques.forEach((b, i) => {
+    if (!m.nodos.some((n) => n.bloque_id === b.id)) alertas.push(e("V3", ruta("bloques", i), b.id, "el bloque no tiene componentes"));
+  });
+
   // V4, V2 (modo) y V13
   const nodos = new Map(m.nodos.map((n) => [n.id, n.banda_id]));
   m.flujos.forEach((f, i) => {

@@ -75,6 +75,7 @@ export function bloque(ctx: Contexto, grupo: string | undefined): Geometria {
     titulo: porIdioma(ctx, (l, t) => plantilla(t.titulo.bloque, valores(l))),
     descripcion: porIdioma(ctx, (l, t) => plantilla(t.descripcion.bloque, valores(l))),
     vigencia: resumenVigencia(ctx, ns.map((n) => ({ id: n.id, nodos: [n] }))),
+    cruces: [],
     avisos: ctx.avisos,
   };
 }

@@ -66,7 +66,7 @@ function disponer(atlas: Atlas, idioma: Idioma, fechaConsulta: string, vista: Vi
       columnas: geo.columnas.map((c) => ({ banda: c.banda, x: c.x / 10, numero: c.numero, nombre: c.nombre[idioma]! })),
       capas: geo.columnas.length,
       franjas: geo.filas.length,
-      pildora: pildora(geo.vigencia, textos(idioma).atlas.vigencia, vista === "nivel-1" ? "bloques" : "componentes"),
+      pildora: pildora(geo.vigencia, textos(idioma).atlas.vigencia, vista === "nivel1" ? "bloques" : "componentes"),
     },
   };
 }
@@ -116,7 +116,7 @@ function ventanas(atlas: Atlas, idioma: Idioma, fechaConsulta: string, elementos
 }
 
 export function vistaNivel1(atlas: Atlas, idioma: Idioma, fechaConsulta: string): VistaNivel1 {
-  const { geo, comun } = disponer(atlas, idioma, fechaConsulta, "nivel-1");
+  const { geo, comun } = disponer(atlas, idioma, fechaConsulta, "nivel1");
   return {
     ...comun,
     leyenda: toLegend(atlas.gramatica, { language: idioma, texts: textosMotor() }),
@@ -129,7 +129,7 @@ export interface VistaNivel2 extends VistaAtlas {
 }
 
 export function vistaNivel2(atlas: Atlas, idioma: Idioma, fechaConsulta: string): VistaNivel2 {
-  return { ...disponer(atlas, idioma, fechaConsulta, "nivel-2").comun, fichas: fichas(atlas, idioma, fechaConsulta) };
+  return { ...disponer(atlas, idioma, fechaConsulta, "nivel2").comun, fichas: fichas(atlas, idioma, fechaConsulta) };
 }
 
 export interface PasoPanel {

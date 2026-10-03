@@ -167,7 +167,7 @@ export function bundle(): Record<string, string> {
       "Diagrama",
       "Visión general (nivel 1)",
       `<div class="lienzo-marco"><div class="lienzo">${v1.svg}</div></div>`,
-      fuente("layout + toSVG, vista nivel-1."),
+      fuente("layout + toSVG, vista nivel1."),
     ],
     [
       "componentes-s1/ventana-de-un-bloque.html",

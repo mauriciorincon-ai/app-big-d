@@ -188,6 +188,47 @@ Decisiones D-S2-01 a D-S2-11 y los siete hechos que cambiaron el trabajo: en el 
   1100 px, desplegado y con el lienzo desplazado). El producto lo pone en el mismo lugar; su veredicto final viaja
   con M2 en el preview.
 
+### Conformidad v0.4.0, primer bloque (avisos, vistas, marcas, V8, V3, haz, paréntesis)
+
+- **Avisos con forma fija (§ 5.6):** `layout` devuelve `avisos: { vista, tipo, id, mensaje }[]`, uno por mensaje, con
+  `mensaje` que empieza por «<tipo>: ». Tipos: `D11`, `pistas`, `fuera-del-lienzo`, `encima`, `etiqueta`,
+  `bloque-vacio`, `canal`, `carriles` y **`texto`**, extensión del piloto (un texto con más líneas que su caja, una
+  palabra que no cabe sola, una cabecera de franja más alta que su fila): el contrato no nombra el aviso más común
+  y V16 vive de él. Va a «Enmiendas».
+- **`etiqueta:`** nuevo en el motor: el invariante «toda etiqueta a ≤ 30 u de su trazo» lo medía solo una prueba;
+  ahora `layout` lo reporta (`lejanas`, en coordenadas dobladas para que el centro sea entero, G1).
+- **`cruces`** en la geometría (§ 8): los mismos cruces de `crossings`, siempre vacíos en un dibujo publicable.
+- **Vistas `nivel1`/`nivel2`** (§ 8, D-S2-02): renombradas en el motor, la app, las pruebas y los 30 golden
+  (`git mv`). Los textos de la app (`titulo`/`descripcion`) cambian de clave.
+- **Envía/recibe horizontales (§ 5.4):** `→` y `←`, los paths del contrato. La maqueta dibuja ↑/↓ y el S1 la
+  siguió; 0.4.0 resolvió D-S1-19 por el path horizontal. **Desvío de fidelidad declarado**, para la mirada M2: en
+  la referencia de franja la «→» queda junto a marcadores horizontales como «⇄» de «a demanda».
+- **Golden:** los 30 regenerados; un script los comparó con los de `HEAD` y **los 30 difieren solo en el nombre de
+  la vista (`dg-nivel1`, `data-vista`) y en los dos paths de `<defs>`**. Ninguna coordenada se movió.
+- **V8 para el `enum` de `estado`** (§ 7; antes V1). Un `estado` ausente sigue siendo V1 (es `required`).
+- **V3 (alerta, F-022): bloque sin componentes.** Destapa la **segunda inconsistencia del contrato**: C10 agrega
+  cuatro bloques vacíos para llegar a 11 y su `esperado.json` no declara las cuatro alertas. Se fijan exactas, como A1
+  (`ALERTAS_CONOCIDAS`), con su prueba. Va a «Enmiendas».
+- **Regla del haz (§ 4.9) en la leyenda del motor:** `texts.leyenda.haz`, como párrafo bajo los modos (la maqueta la
+  escribe así, sin dibujo). La app deja de escribir su `notaModos`: el mismo texto pasa a las cadenas del motor y la
+  rejilla de la leyenda se ajusta (la sección de modos ocupa las dos filas). Capturas: igual que antes.
+- **Paréntesis corto (§ 5.3):** el corte voraz trata como una pieza el paréntesis que cabe entero en una línea. Ningún
+  golden cambió. **G3 lo vio:** el comentario citaba el ejemplo del contrato con un nombre de plataforma; se cambió
+  por uno neutro («Compute capacity (F SKU)»).
+- **Matriz de envejecimiento:** `envejecer.test` toma las edades de `agingDates` (hoy, umbral 1, umbral 2, +100 días)
+  en lugar de su lista propia de tres fechas más una fija.
+
+| Gate | ¿Puede fallar? | Rojo | A quién nombró | Verde |
+|---|---|---|---|---|
+| Paréntesis corto (`unidades.test`) | sí: el corte voraz partía cualquier espacio | el motor anterior (`git stash` del cambio) | `["Compute capacity (F", "SKU)"]` | con el cambio |
+| V8 por `enum` de `estado` | sí: la tabla lo mandaba a V1 | antes del cambio | `estado fuera del enum → V8` | con el cambio |
+| V3 alerta por bloque vacío | sí: nada lo decía | antes del cambio | `vacio · el bloque no tiene componentes` | con el cambio |
+| `etiqueta:` (`lejanas`) | sí: límite exacto 30 u | umbral corrido 0,2 u | «a 30,1 u sí, con el flujo y la distancia» | restaurado |
+| `cruces` en la geometría | sí: los constructores lo dejan vacío | `geo.cruces = []` | «cada cruce de `crossings` aparece como aviso D11» | restaurado |
+
+- **Corridas:** `pnpm test` 1057/1057 (98,75 % de líneas); e2e 412/412 en 58,3 s; CI de `0743576` (boceto M1) en
+  `success` en los cinco checks y Vercel, cero comentarios del bot.
+
 ## Desviación del plan
 
 Lo que el plan aprobado ya declaró frente a la orden y a `SPRINT_002.md`:

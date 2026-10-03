@@ -5,7 +5,7 @@ import { METRICAS_PILOTO, medidor, type Medidor } from "../texto/metricas";
 import { diasEntre } from "../util/fechas";
 import { estadoVigencia } from "../util/vigencia";
 import { ordenarPor } from "../util/orden";
-import type { Geometria, OpcionesLayout, Plural, TextosMotor, Vigencia } from "./tipos";
+import type { Aviso, Geometria, OpcionesLayout, Plural, TextosMotor, TipoAviso, Vigencia, Vista } from "./tipos";
 
 // Constantes de § 5.3, en décimas.
 export const M = 80;
@@ -32,10 +32,11 @@ export interface Contexto {
   mono: Medidor;
   textos: Record<string, TextosMotor>;
   fechaConsulta: string;
-  avisos: string[];
+  vista: Vista;
+  avisos: Aviso[];
 }
 
-export function contexto(mapa: Mapa, gramatica: Gramatica, opciones: OpcionesLayout): Contexto {
+export function contexto(mapa: Mapa, gramatica: Gramatica, opciones: OpcionesLayout, vista: Vista): Contexto {
   const tabla = opciones.metricas ?? METRICAS_PILOTO;
   const sans = tabla.fuentes[opciones.fuente ?? "space-grotesk"];
   const mono = tabla.fuentes[opciones.fuenteMono ?? "jetbrains-mono"];
@@ -59,8 +60,15 @@ export function contexto(mapa: Mapa, gramatica: Gramatica, opciones: OpcionesLay
     mono: medidor(mono),
     textos: opciones.texts,
     fechaConsulta: opciones.queryDate,
+    vista,
     avisos: [],
   };
+}
+
+/** Anota un aviso de geometría (§ 5.6) de la vista en curso: «<tipo>: <detalle>», una vez por mensaje. */
+export function avisar(ctx: Contexto, tipo: TipoAviso, id: string, detalle: string): void {
+  const mensaje = `${tipo}: ${detalle}`;
+  if (!ctx.avisos.some((a) => a.mensaje === mensaje)) ctx.avisos.push({ vista: ctx.vista, tipo, id, mensaje });
 }
 
 /** Nodos de una banda en orden estable (D3): `orden`, luego `id`; sin `orden`, al final por id. */

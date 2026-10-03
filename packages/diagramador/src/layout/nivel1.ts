@@ -4,7 +4,7 @@
 import type { Banda, Bloque, Nodo } from "../tipos";
 import { mitad, type Decimas } from "../util/numeros";
 import { ordenarPor } from "../util/orden";
-import { M, anchoLienzo, colX, diasDe, nodosDe, peorMadurez, plural, porIdioma, resumenVigencia, rotuloMadurez, vigenciaDe, type Contexto } from "./contexto";
+import { M, anchoLienzo, avisar, colX, diasDe, nodosDe, peorMadurez, plural, porIdioma, resumenVigencia, rotuloMadurez, vigenciaDe, type Contexto } from "./contexto";
 import { g, plantilla, texto, simbolo } from "./escena";
 import {
   X_FICHAS,
@@ -44,7 +44,7 @@ function elementosDe(ctx: Contexto, b: Banda): Elem[] {
   const out: Elem[] = bloques.map((bl) => ({ id: bl.id, banda: b, fantasma: false, bloque: bl, nodos: nodos.filter((n) => n.bloque_id === bl.id) }));
   // M-25 de la auditoría del S1: un bloque vacío valida, pero se dibuja como un activable sin glifo (G7) y su
   // ventana no tiene qué mostrar. Hasta que V3 lo rechace (enmienda propuesta), el dibujo lo avisa.
-  for (const e of out) if (!e.nodos.length) ctx.avisos.push(`bloque ${e.id}: no tiene componentes`);
+  for (const e of out) if (!e.nodos.length) avisar(ctx, "bloque-vacio", e.id, e.id);
   const sueltos = nodos.filter((n) => !bloques.some((bl) => bl.id === n.bloque_id));
   if (sueltos.length) out.push({ id: `_${b.id}`, banda: b, fantasma: true, nodos: sueltos });
   return out;
@@ -238,7 +238,7 @@ export function nivel1(ctx: Contexto): Geometria {
       escena.push(f.elemento);
       fin = f.fin;
       // M-24 de la auditoría del S1: la fila de fichas no se parte; si no cabe, se dice (y el build se detiene).
-      if (fin > W - M) ctx.avisos.push(`ficha ${e.id}: se sale del lienzo`);
+      if (fin > W - M) avisar(ctx, "fuera-del-lienzo", e.id, `ficha ${e.id}`);
     }
     const refs: Referencia[] = [];
     for (const e of es)
@@ -265,7 +265,7 @@ export function nivel1(ctx: Contexto): Geometria {
   const alto: Decimas = franjas.length ? franjasY + franjas.length * FRANJA_H + (franjas.length - 1) * 100 + 80 : finCarril + 80;
   const valores = (l: string) => ({ sujeto: ctx.mapa.sujeto_nombre[l]!, capas: capas.length, franjas: franjas.length, nodos: ctx.mapa.nodos.length });
   return {
-    vista: "nivel-1",
+    vista: "nivel1",
     sujeto: ctx.mapa.sujeto_id,
     gramatica: ctx.gramatica.id,
     idiomas: ctx.idiomas,
@@ -277,9 +277,10 @@ export function nivel1(ctx: Contexto): Geometria {
     trazados: ruteo.trazados,
     rotulos,
     escena,
-    titulo: porIdioma(ctx, (l, t) => plantilla(t.titulo["nivel-1"], valores(l))),
-    descripcion: porIdioma(ctx, (l, t) => plantilla(t.descripcion["nivel-1"], valores(l))),
+    titulo: porIdioma(ctx, (l, t) => plantilla(t.titulo.nivel1, valores(l))),
+    descripcion: porIdioma(ctx, (l, t) => plantilla(t.descripcion.nivel1, valores(l))),
     vigencia: resumenVigencia(ctx, orden),
+    cruces: [],
     avisos: ctx.avisos,
   };
 }

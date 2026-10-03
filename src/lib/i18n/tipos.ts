@@ -43,7 +43,6 @@ export interface Textos {
     lienzo: string;
     /** Descripción de cada bloque activable (A-29): qué hace Enter. */
     pistaActivar: string;
-    notaModos: string;
     lectura: string;
     nivel2: { titulo: string; ojo: string; sub: string; guia: { entrada: string; resto: string } };
     /** Pista de los componentes activables (niveles 2 y 3): qué hace Enter. */

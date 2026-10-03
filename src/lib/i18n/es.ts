@@ -26,10 +26,10 @@ export const es: Textos = {
     dias: "{n} d",
     porRevisar: "Por revisar: verificado hace {n} días.",
     vencido: "Vencido: verificado hace {n} días.",
-    titulo: { "nivel-1": "{sujeto} · visión general", "nivel-2": "{sujeto} · componentes", recorrido: "{sujeto} · {recorrido}", bloque: "{sujeto} · {bloque}" },
+    titulo: { "nivel1": "{sujeto} · visión general", "nivel2": "{sujeto} · componentes", recorrido: "{sujeto} · {recorrido}", bloque: "{sujeto} · {bloque}" },
     descripcion: {
-      "nivel-1": "Mapa de {sujeto}: {capas} capas de izquierda a derecha y {franjas} franjas transversales abajo.",
-      "nivel-2": "Componentes de {sujeto}: {nodos} componentes en {capas} capas y {franjas} franjas.",
+      "nivel1": "Mapa de {sujeto}: {capas} capas de izquierda a derecha y {franjas} franjas transversales abajo.",
+      "nivel2": "Componentes de {sujeto}: {nodos} componentes en {capas} capas y {franjas} franjas.",
       recorrido: "Recorrido «{recorrido}» sobre los componentes de {sujeto}.",
       bloque: "{bloque} de {sujeto}: sus componentes, uno bajo otro; una línea entre dos es un flujo entre ellos.",
     },
@@ -58,6 +58,7 @@ export const es: Textos = {
       vigente: "Vigente",
       porRevisar: "Por revisar",
       vencido: "Vencido",
+      haz: "Varios modos en una conexión: línea gruesa y una etiqueta que dice cuáles, en orden. El color acompaña a la forma; nunca va solo.",
       notaMarcas:
         "Los nombres comerciales que aparecen en Big-D son marcas de sus titulares y se usan solo para identificar sus productos; nombrarlos no implica respaldo. Big-D no usa logos ni colores de marca: el color de este mapa dice qué capacidad es, nunca de quién.",
     },
@@ -88,7 +89,6 @@ export const es: Textos = {
     saltarDiagrama: "Saltar el diagrama",
     lienzo: "Diagrama; se desplaza de lado",
     pistaActivar: "Enter o Espacio abre sus componentes.",
-    notaModos: "Varios modos en una conexión: línea gruesa y una etiqueta que dice cuáles, en orden. El color acompaña a la forma; nunca va solo.",
     lectura: "Lectura en texto: lo mismo que dice el mapa, en una lista",
     nivel2: {
       titulo: "Componentes",

@@ -93,7 +93,7 @@ describe("validar una propuesta", () => {
     // Dibujo: un nombre de componente que no cabe en su ficha de franja (nivel 2 y recorrido: se dice una vez).
     const nombreLargo = mapaNorte();
     nombreLargo.nodos = nombreLargo.nodos.map((n) => (n.id === "catalogo-central" ? { ...n, nombre: { es: "Catálogo central de metadatos con linaje y clasificación", en: "Central catalog" } } : n));
-    expect(validarPropuesta(propuestaNorte(nombreLargo), G, RANGOS).fallas).toEqual(["dibujo · nivel-2 · ficha catalogo-central (es): 4 líneas; caben 2"]);
+    expect(validarPropuesta(propuestaNorte(nombreLargo), G, RANGOS).fallas).toEqual(["dibujo · nivel2 · texto: ficha catalogo-central (es): 4 líneas; caben 2"]);
 
     const corta = propuestaNorte();
     corta.afirmaciones[0]!.cita.texto = "corta";
@@ -248,7 +248,7 @@ describe("aprobar", () => {
     const b = JSON.stringify(q);
     const v = { ...verificacion(), propuesta_sha256: sha256(b) };
     expect(fallas(() => aprobar(entrada({ propuesta: q, propuestaSha256: sha256(b), verificacion: v })))).toEqual([
-      "dibujo · nivel-1 · nombre de almacen (es): la palabra «Almacenamiento» no cabe en 104 u",
+      "dibujo · nivel1 · texto: nombre de almacen (es): la palabra «Almacenamiento» no cabe en 104 u",
     ]);
   });
 

@@ -4,7 +4,25 @@
 import type { TextoIdioma } from "../tipos";
 import type { Decimas } from "../util/numeros";
 
-export type Vista = "nivel-1" | "nivel-2" | "recorrido" | "bloque";
+export type Vista = "nivel1" | "nivel2" | "recorrido" | "bloque";
+/**
+ * Clase de un aviso de geometría (§ 5.6). `texto` es extensión del piloto (va a «Enmiendas»): un texto con más
+ * líneas que su caja, una palabra que no cabe sola o una cabecera de franja más alta que su fila.
+ */
+export type TipoAviso = "D11" | "pistas" | "fuera-del-lienzo" | "encima" | "etiqueta" | "bloque-vacio" | "canal" | "carriles" | "texto";
+/** Aviso de geometría con forma fija (§ 5.6): `id` es el elemento que lo causa; `mensaje` empieza por «<tipo>: ». */
+export interface Aviso {
+  vista: Vista;
+  tipo: TipoAviso;
+  id: string;
+  mensaje: string;
+}
+/** Un tramo de flujo que atraviesa la caja de un nodo ajeno (D11). */
+export interface Cruce {
+  flujo: string;
+  caja: string;
+  tramo: [Punto, Punto];
+}
 /** Semáforo de vigencia (§ 4.8): se cuenta desde `fecha_verificacion` hasta la fecha de consulta. */
 export type Vigencia = "vigente" | "revisar" | "vencido";
 export type Punto = readonly [Decimas, Decimas];
@@ -76,8 +94,10 @@ export interface Geometria {
    * las insignias: la app lo usa para la píldora del mapa sin repetir la regla.
    */
   vigencia: { dias: number; estado: Vigencia; elementos: { id: string; dias: number; estado: Vigencia }[] };
-  /** Avisos de geometría (§ 5.3): etiquetas que no caben, textos de más líneas que su caja, pistas agotadas. */
-  avisos: string[];
+  /** Cruces D11 (§ 8): tramos que atraviesan una caja ajena. Siempre vacío en un dibujo publicable. */
+  cruces: Cruce[];
+  /** Avisos de geometría (§ 5.6), uno por causa; un consumidor que publica aborta ante cualquiera. */
+  avisos: Aviso[];
 }
 
 /** Un plural de interfaz como dato por idioma (§ 8 v0.4.0): `one` para n = 1, `other` para lo demás; «{n}» es el número. */
@@ -131,8 +151,8 @@ export interface TextosMotor {
     consultado: string;
     tipoFuente: { oficial: string; tercero: string };
   };
-  /** Leyenda (§ 4.9): títulos, regla de vigencia («{revisar}», «{vencido}») y nota de marcas (D7). */
-  leyenda: { tipos: string; modos: string; madurez: string; vigencia: string; reglaVigencia: string; vigente: string; porRevisar: string; vencido: string; notaMarcas: string };
+  /** Leyenda (§ 4.9): títulos, regla de vigencia («{revisar}», «{vencido}»), regla del haz y nota de marcas (D7). */
+  leyenda: { tipos: string; modos: string; madurez: string; vigencia: string; reglaVigencia: string; vigente: string; porRevisar: string; vencido: string; haz: string; notaMarcas: string };
 }
 
 export interface OpcionesLayout {

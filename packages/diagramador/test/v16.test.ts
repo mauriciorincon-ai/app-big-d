@@ -74,7 +74,7 @@ describe("V16 · el mapa se dibuja", () => {
     expect(inf.errores.length).toBeGreaterThan(0);
     for (const e of inf.errores) {
       expect(e.regla).toBe("V16");
-      expect(e.mensaje).toMatch(/^(nivel-1|nivel-2|recorrido \S+|ventana \S+)( · el \d{4}-\d{2}-\d{2})? · /);
+      expect(e.mensaje).toMatch(/^(nivel1|nivel2|recorrido \S+|ventana \S+)( · el \d{4}-\d{2}-\d{2})? · /);
     }
   });
   it("en privado, los mismos avisos se informan sin rechazar", () => {
