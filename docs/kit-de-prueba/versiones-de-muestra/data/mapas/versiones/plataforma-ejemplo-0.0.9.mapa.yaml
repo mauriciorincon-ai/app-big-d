@@ -435,14 +435,14 @@ nodos:
       es: Cuadernos interactivos
       en: Interactive notebooks
     lider:
-      es: Describe qué pasos debe seguir un dato, y la plataforma se encarga de ejecutarlos.
-      en: Describes which steps a piece of data must follow, and the platform runs them.
+      es: Hojas donde un equipo escribe y prueba código sobre los datos, paso a paso.
+      en: Pages where a team writes and tries code on the data, step by step.
     experto:
-      es: Definición declarativa de dependencias y reglas de calidad; el motor resuelve el orden y detiene la carga si una regla falla.
-      en: Declarative definition of dependencies and quality rules; the engine resolves the order and stops the load when a rule fails.
+      es: Celdas de código y texto que se ejecutan una a una sobre el cómputo de la plataforma; sirven para explorar y probar antes de automatizar.
+      en: Cells of code and text that run one at a time on the platform's compute; they are for exploring and testing before automating.
     por_que_importa:
-      es: Sin reglas de calidad explícitas, un dato malo llega al tablero sin que nadie lo note.
-      en: Without explicit quality rules, bad data reaches the dashboard and nobody notices.
+      es: Explorar en un cuaderno es rápido, pero lo que se queda ahí no corre solo ni se revisa como el resto.
+      en: Exploring in a notebook is quick, but what stays there does not run on its own or get reviewed like the rest.
     madurez: disponible-general
     fuentes:
       - url: https://example.org/ficticia/canalizaciones

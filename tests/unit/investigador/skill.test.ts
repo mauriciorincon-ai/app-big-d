@@ -19,3 +19,14 @@ describe("la skill /investigar nombra la versión vigente del contrato", () => {
     expect(menciones.filter((m) => m.version !== lock)).toEqual([]);
   });
 });
+
+describe("la skill /investigar dice las reglas que el código aplica", () => {
+  const skill = readFileSync(".claude/skills/investigar/SKILL.md", "utf8");
+  it("S2-AUD-06: la madurez sale de una cita; no se hereda del mapa aprobado", () => {
+    expect(skill).toContain("no la heredes");
+  });
+  it("S2-AUD-35: V16 dibuja en cuatro edades, también la fila del lado a lado", () => {
+    expect(skill).toContain("cuatro edades");
+    expect(skill).toContain("lado a lado");
+  });
+});

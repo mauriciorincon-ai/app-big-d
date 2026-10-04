@@ -119,6 +119,8 @@ export interface Textos {
       ventanaDe: string;
       dice: { titulo: string; cambiaron: readonly [string, string]; ninguno: string; fuentes: readonly [string, string]; sinFuentes: string; nota: string };
       vacio: { titulo: string; texto: string };
+      /** Un par con una versión histórica (las reglas de hoy ya no la validan): «{version}». */
+      historica: string;
     };
   };
   investigador: {

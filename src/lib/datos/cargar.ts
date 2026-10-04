@@ -27,6 +27,19 @@ export interface VersionArchivada {
   archivo: string;
 }
 
+/**
+ * Una versión archivada que las reglas de HOY ya no validan (un contrato o una gramática posteriores): no se edita
+ * (son bytes aprobados), no se reinvestiga (es historia) y no se borra (la aprobación exige que esté). Se lista, su
+ * huella se sigue comprobando y no se dibuja (ADR `map-versioning`, decisión 6).
+ */
+export interface VersionHistorica {
+  version: string;
+  /** `data/mapas/versiones/<id>-<versión>.mapa.yaml`. */
+  archivo: string;
+  /** Por qué ya no valida: las líneas del validador. */
+  motivos: string[];
+}
+
 export interface Datos {
   /** Todas las plataformas, publicadas o no, ordenadas por id (el mismo orden en todos los idiomas). */
   plataformas: Plataforma[];
@@ -34,6 +47,8 @@ export interface Datos {
   atlas: Map<string, Atlas>;
   /** Las versiones anteriores de cada mapa publicado, de la más vieja a la más nueva (sin la vigente). */
   versiones: Map<string, VersionArchivada[]>;
+  /** Las versiones archivadas que las reglas de hoy ya no validan, de la más vieja a la más nueva. Hoy, ninguna. */
+  historicas: Map<string, VersionHistorica[]>;
 }
 
 export class ErrorDeDatos extends Error {
@@ -64,6 +79,15 @@ export function esDominioDeEjemplo(url: string): boolean {
   } catch {
     return false;
   }
+}
+
+/** Regla 12 (cero datos reales): una plataforma ficticia solo cita dominios reservados para ejemplos (B-46). */
+function fuentesDeFicticia(mapa: Mapa, archivo: string, fallas: string[]): void {
+  mapa.nodos.forEach((n, i) =>
+    n.fuentes.forEach((f, k) => {
+      if (!esDominioDeEjemplo(f.url)) fallas.push(`${archivo} · /nodos/${i}/fuentes/${k}/url · ${n.id} · una plataforma ficticia solo cita dominios reservados (example.org, *.invalid…)`);
+    }),
+  );
 }
 
 /** Un YAML que no se puede leer: la falla ya quedó anotada con su archivo (M-10 de la auditoría del S1). */
@@ -167,13 +191,7 @@ export function cargarDatos(dir = join(process.cwd(), "data"), raiz = process.cw
     if (mapa.sujeto_id !== p.id) fallas.push(`${archivo} · /sujeto_id · «${mapa.sujeto_id}» no es el id de su plataforma («${p.id}»)`);
     for (const i of IDIOMAS)
       if (mapa.sujeto_nombre[i] !== p.nombre[i]) fallas.push(`${archivo} · /sujeto_nombre/${i} · no coincide con el nombre de la plataforma («${p.nombre[i]}»)`);
-    // Regla 12 (cero datos reales): una plataforma ficticia solo cita dominios reservados para ejemplos (B-46).
-    if (p.ficticia)
-      mapa.nodos.forEach((n, i) =>
-        n.fuentes.forEach((f, k) => {
-          if (!esDominioDeEjemplo(f.url)) fallas.push(`${archivo} · /nodos/${i}/fuentes/${k}/url · ${n.id} · una plataforma ficticia solo cita dominios reservados (example.org, *.invalid…)`);
-        }),
-      );
+    if (p.ficticia) fuentesDeFicticia(mapa, archivo, fallas);
     // La vista «recorrido» dibuja un recorrido por mapa (B-17 c): uno de más no se publicaría en silencio.
     if (mapa.recorridos.length > 1) fallas.push(`${archivo} · /recorridos · ${mapa.sujeto_id} · el atlas dibuja un recorrido por mapa y este trae ${mapa.recorridos.length}`);
     atlas.set(p.id, { plataforma: p, mapa, gramatica: g });
@@ -182,14 +200,18 @@ export function cargarDatos(dir = join(process.cwd(), "data"), raiz = process.cw
   // Versiones archivadas (D-S2-09): cada una es de una plataforma publicada, anterior a su mapa vigente, de la
   // misma gramática, y se valida y dibuja como un mapa publicado (la página de diferencias la dibuja). Que sea
   // EXACTAMENTE la que aprobó una persona lo comprueba `mapasSinAprobacion`, con las huellas de data/revisiones/.
+  // Una de una plataforma real que las reglas de hoy ya no validan pasa a HISTÓRICA (decisión 6 del ADR): se lista
+  // y no se dibuja. Una de una ficticia no tiene aprobación que la ancle: si no valida, rompe la carga.
   const versiones = new Map<string, VersionArchivada[]>();
+  const historicas = new Map<string, VersionHistorica[]>();
   const dirVersiones = join(dir, "mapas", "versiones");
-  const archivadas = existsSync(dirVersiones) ? readdirSync(dirVersiones).filter((x) => x.endsWith(".mapa.yaml")).sort() : [];
+  // Todo lo que hay en la carpeta, salvo lo oculto (.DS_Store…): un archivo con otro nombre es una falla, no silencio.
+  const archivadas = existsSync(dirVersiones) ? readdirSync(dirVersiones).filter((x) => !x.startsWith(".")).sort() : [];
   for (const f of archivadas) {
     const archivo = `data/mapas/versiones/${f}`;
     const m = VERSIONADO.exec(f);
     if (!m) {
-      fallas.push(`${archivo} · nombre · se llama <plataforma>-<versión>.mapa.yaml (p. ej. fabric-0.1.0.mapa.yaml)`);
+      fallas.push(`${archivo} · nombre · se llama <plataforma>-<versión>.mapa.yaml (p. ej. plataforma-ejemplo-0.1.0.mapa.yaml)`);
       continue;
     }
     const [, id, version] = m as unknown as [string, string, string];
@@ -203,17 +225,23 @@ export function cargarDatos(dir = join(process.cwd(), "data"), raiz = process.cw
     if (leido === ROTO) continue;
     const dato = migrarContrato(leido) as Record<string, unknown> | null;
     const inf = validate(dato, vigente.gramatica, { mode: "publicacion", coverage: cob, texts: motor, queryDate: fecha });
-    for (const e of [...inf.errores, ...inf.alertas]) fallas.push(linea(archivo, e));
-    if (!inf.ok || inf.alertas.length) continue;
+    const motivos = [...inf.errores, ...inf.alertas].map((e) => linea(archivo, e));
+    if (motivos.length && !vigente.plataforma.ficticia) {
+      historicas.set(id, [...(historicas.get(id) ?? []), { version, archivo, motivos }].sort((a, b) => compararVersion(a.version, b.version)));
+      continue;
+    }
+    fallas.push(...motivos);
+    if (motivos.length) continue;
     const mapa = dato as unknown as Mapa;
     if (mapa.sujeto_id !== id) fallas.push(`${archivo} · /sujeto_id · «${mapa.sujeto_id}» no es la plataforma del nombre («${id}»)`);
     if (mapa.version !== version) fallas.push(`${archivo} · /version · dice ${mapa.version} y el nombre ${version}`);
     if (compararVersion(version, vigente.mapa.version) >= 0) fallas.push(`${archivo} · /version · ${version} no es anterior a la vigente (${vigente.mapa.version})`);
+    if (vigente.plataforma.ficticia) fuentesDeFicticia(mapa, archivo, fallas);
     versiones.set(id, [...(versiones.get(id) ?? []), { version, mapa, archivo }].sort((a, b) => compararVersion(a.version, b.version)));
   }
 
   if (fallas.length) throw new ErrorDeDatos(fallas);
-  return { plataformas, atlas, versiones };
+  return { plataformas, atlas, versiones, historicas };
 }
 
 let memoria: Datos | undefined;

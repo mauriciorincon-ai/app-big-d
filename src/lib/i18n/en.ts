@@ -202,6 +202,7 @@ export const en: Textos = {
         nota: "The drawing only marks what changes the map: new, removed or renamed components, or a different maturity.",
       },
       vacio: { titulo: "The {plataforma} map has a single version.", texto: "When a person approves another one, you will see here what changed between them." },
+      historica: "v{version}: approved and archived; today's rules no longer draw it.",
     },
   },
   investigador: {

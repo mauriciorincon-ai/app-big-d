@@ -83,12 +83,16 @@ En `propuestas/<AAAA-MM-DD>-<plataforma>[-<capa>]/propuesta.json` (fecha de hoy)
   cualquier otra. Un flujo que sale porque sale uno de sus extremos no lo necesita: ese argumento lo da el
   código. **Si no encuentras la prueba, no lo retires**: déjalo en el mapa y, si dudas de que siga, ponlo
   como pregunta guía. Sin mapa aprobado (la primera propuesta), `retiros` va vacío.
+- La madurez de un componente sale de una cita que la diga. Si no la encuentras, no la heredes del mapa aprobado:
+  propón la madurez que la cita prueba y deja la duda como pregunta guía.
 
 ## 4. Valida y verifica (código, no opinión)
 1. `node scripts/investigar/validar.mjs propuestas/<carpeta>` — corrige lo que diga; hasta 2 reintentos
-   (anótalos en `ejecucion.reintentos`; la pantalla muestra los que contó el hook de fin). Además del
-   esquema y de las reglas del contrato, el validador **dibuja** el nivel 1, el nivel 2, cada recorrido y la
-   ventana de cada bloque, hoy y en los días en que el mapa pasará a «por revisar» y a «vencido»: una falla
+   (anótalos en `ejecucion.reintentos`; la pantalla los muestra y, aparte, los bloqueos que contó el hook de
+   fin). Además del
+   esquema y de las reglas del contrato, el validador **dibuja** (V16) el nivel 1, el nivel 2, cada recorrido,
+   la ventana de cada bloque y la fila del lado a lado (contraída y desplegada), en cuatro edades: hoy, el día en
+   que pasa a «por revisar», el día en que vence y +100 días. Una falla
    `dibujo · …` es un texto que no cabe (una palabra más ancha que el bloque, un nombre de más líneas de
    las que tiene la ficha). Se corrige con un nombre más corto que diga lo mismo, en los dos idiomas; jamás
    quitando el componente.

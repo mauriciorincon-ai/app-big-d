@@ -48,4 +48,38 @@ describe("los mapas publicados son los aprobados", () => {
       rmSync(otra, { recursive: true, force: true });
     }
   });
+  // S2-AUD-09: la prueba anterior falla por la versión (0.0.1 no está en ninguna revisión); esta, solo por la huella.
+  it("una palabra cambiada a mano en una versión archivada lo rompe (la huella, no la versión)", () => {
+    const otra = mkdtempSync(join(tmpdir(), "bigd-archivada-"));
+    try {
+      cpSync("data", otra, { recursive: true });
+      const v = [...cargarDatos().versiones.values()].flat()[0]!;
+      const ruta = join(otra, "mapas/versiones", v.archivo.split("/").at(-1)!);
+      const texto = readFileSync(ruta, "utf8");
+      const i = texto.indexOf("lider:");
+      writeFileSync(ruta, texto.slice(0, i) + texto.slice(i).replace(/(es: )(\S)/, "$1Casi $2"));
+      expect(mapasSinAprobacion(cargarDatos(otra), otra)).toEqual([expect.stringContaining(`${v.archivo} · no es la versión ${v.version} que aprobó una persona`)]);
+    } finally {
+      rmSync(otra, { recursive: true, force: true });
+    }
+  });
+  // S2-AUD-10: una archivada que las reglas de hoy no validan pasa a histórica; su huella se sigue comprobando.
+  it("una versión histórica carga, se lista con su motivo y su huella sigue contando", () => {
+    const otra = mkdtempSync(join(tmpdir(), "bigd-historica-"));
+    try {
+      cpSync("data", otra, { recursive: true });
+      const v = [...cargarDatos().versiones.values()].flat()[0]!;
+      const ruta = join(otra, "mapas/versiones", v.archivo.split("/").at(-1)!);
+      const texto = readFileSync(ruta, "utf8");
+      const antes = (parse(texto) as { contrato_version: string }).contrato_version;
+      writeFileSync(ruta, texto.replace(`contrato_version: ${antes}`, "contrato_version: 0.2.0"));
+      const d = cargarDatos(otra);
+      const id = v.archivo.split("/").at(-1)!.replace(`-${v.version}.mapa.yaml`, "");
+      expect(d.historicas.get(id)!.map((h) => [h.version, h.motivos.some((m) => / · V1 · /.test(m))])).toEqual([[v.version, true]]);
+      // Al cambiar sus bytes ya no es la versión aprobada: la integridad cubre también a las históricas.
+      expect(mapasSinAprobacion(d, otra)).toEqual([expect.stringContaining(`${v.archivo} · no es la versión ${v.version} que aprobó una persona`)]);
+    } finally {
+      rmSync(otra, { recursive: true, force: true });
+    }
+  });
 });

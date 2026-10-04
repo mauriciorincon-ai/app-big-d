@@ -425,7 +425,7 @@ Decisiones D-S2-01 a D-S2-11 y los siete hechos que cambiaron el trabajo: en el 
 | Archiva con los mismos bytes (`scripts.test`, de punta a punta en una raíz temporal) | sí | sin el paso de archivo | «…y archiva la versión anterior» | restaurado |
 | Una versión no anterior a la vigente | sí | `>` en lugar de `>=` | «cada forma rota nombra su archivo» | restaurado |
 | Orden de versiones | sí | sin ordenar | «de la más vieja a la más nueva» | restaurado |
-| Archivada = aprobada, y ninguna falta | sí | huella sin comparar | «una versión archivada que no aprobó nadie…» | restaurado |
+| Archivada = aprobada, y ninguna falta | sí | huella sin comparar | **Corregido en la Fase 2 de la auditoría (S2-AUD-09):** ese rojo no pudo ocurrir. La prueba citada falla por la versión (0.0.1 no está en ninguna revisión) con o sin la huella. La mutación la nombra «una palabra cambiada a mano en una versión archivada lo rompe (la huella, no la versión)», escrita el 2026-10-04 | restaurado |
 
 ### Capturas, Lighthouse y paquete de diseño
 
@@ -888,6 +888,88 @@ final, de a una.
     - Las 9 saltadas son las de siempre: las que piden una plataforma sin mapa, más el ancho en el teléfono.
   - **P4 (S2-AUD-32).** No pude leer el log del build del preview: no hay CLI de Vercel ni sesión, y el preview tiene
     Vercel Authentication. La pregunta va a la persona.
+- **Lote 2: CI del push `6607e50`:** los 6 checks en `success` propio (Lighthouse ya con las dos URL de Snowflake), 0
+  comentarios del bot.
+- **Lote 3 (datos, cargador, investigador y kit): inicio.**
+- **Lote 3: hecho.** Hallazgos S2-AUD-06 (regla), -07 (gate y deuda), -09, -10, -33, -34, -35, -37, -38, -39 y -40,
+  más los textos de `data/plataformas/fabric.yaml` de S2-AUD-08. Ningún mapa aprobado se tocó; ninguna prueba corre el
+  script de aprobación fuera de su raíz temporal.
+  - **Migración encadenada (10).** `migrar()` sube por la cadena de saltos declarados (0.3 → 0.4 → 0.5…), con un
+    límite contra ciclos. `migradoDesde` y `migrarContrato` la usan.
+  - **Versiones históricas (10, decisión 6 del ADR).** Una archivada de una plataforma real que las reglas de hoy ya no
+    validan no rompe la carga. Va a `Datos.historicas` con sus motivos; `mapasSinAprobacion` sigue comprobando su
+    huella; `/versiones` muestra «v{versión}: aprobada y archivada; las reglas de hoy ya no la dibujan». Una prueba
+    exige que hoy no haya ninguna: si alguna pasa a histórica, se registra y se cambia la prueba en el mismo commit.
+    - **Desviación declarada:** una archivada de una plataforma **ficticia** que no valida sigue rompiendo la carga.
+      No tiene aprobación que ancle sus bytes, y como histórica no la vigilaría nada.
+    - Mirada de TEXTO, «maquetado, no visto»: la línea histórica de `/versiones`.
+  - **Cargador (33, 40).**
+    - La regla 12 (una ficticia solo cita dominios reservados) se aplica también a sus versiones archivadas.
+    - La carpeta de versiones lista todo menos lo oculto: un `.mapa.yml` es una falla de nombre, no silencio.
+    - El ejemplo del mensaje es `plataforma-ejemplo-0.1.0.mapa.yaml`: `grep -n fabric src/lib/datos/cargar.ts` da 0.
+  - **Huellas (09).** Una prueba cambia una palabra de una versión archivada que sí está aprobada: falla solo por la
+    huella. Otra escribe un archivo ajeno donde la aprobación archivaría: la aprobación sale con 1, dice «ya existe
+    con otro contenido» y no toca el mapa.
+  - **Propuestas aprobadas (34).** `tests/unit/propuestas-aprobadas.test.ts`, por cada revisión de una plataforma real,
+    comprueba cuatro cosas:
+    - la carpeta existe;
+    - la verificación es de esos bytes;
+    - cada id decidido es una afirmación;
+    - sin rechazos, el mapa de esa versión es el de la propuesta, salvo estado, versión y fechas.
+
+    Hoy las cuatro revisiones (Databricks, Snowflake y las dos de Fabric) coinciden.
+  - **Neutralidad (07).** `VETADAS` rechaza la autoevaluación comercial del fabricante: «mejor precio», «best price»,
+    «price-performance», «líder del mercado», «industry-leading». La validación de toda propuesta nueva ya la
+    rechaza.
+    - Encontró exactamente las dos rutas que dijo la auditoría (`databricks.mapa.yaml /nodos/11/experto/es` y `/en`).
+      Quedan en `CONOCIDAS` como deuda declarada hasta la respuesta de la persona a la P3.
+    - No toca la maqueta ni otro mapa.
+  - **La skill (06, 35).**
+    - Regla nueva: «La madurez de un componente sale de una cita que la diga. Si no la encuentras, no la heredes del
+      mapa aprobado…».
+    - V16 descrito como es: cuatro edades y la fila del lado a lado.
+    - La frase de los reintentos dice que la pantalla muestra los dos números.
+  - **Verificador de citas (39).** Si curl corta la conexión (92 o 56), reintenta con HTTP/1.1 y luego sin el agente
+    propio. En un reintento, un tiempo agotado (28) también pasa al siguiente. El resultado registra `reintento`
+    (campo opcional nuevo de `esquemaVerificacion`).
+    - **Desviaciones declaradas:**
+      - la prueba usa un `curl` de mentira primero en el PATH, no un servidor local: el script exige `https`, y un
+        servidor con certificado propio obligaría a abrirle esa puerta;
+      - el 28 se agregó al ver el servidor real. GlobeNewswire corta HTTP/2 (92); con HTTP/1.1 y el agente se cuelga
+        (28); sin agente responde 200.
+    - **Comprobado:** sobre una copia de `propuestas/2026-10-04-snowflake` en el scratchpad (con `BIGD_RAIZ`, sin tocar
+      la propuesta), 143/143 verificadas, y A-43 y A-74 bajan con `reintento: "sin-agente"`.
+  - **Kit (37).** «Cuadernos interactivos» de la versión de muestra trae sus propios textos (líder: «Hojas donde un
+    equipo escribe y prueba código sobre los datos, paso a paso.») y no hereda `terminos`. Se regeneró la muestra.
+  - **Plataformas (38, 08).** La primera línea de `databricks.yaml` y `snowflake.yaml` ya no dice «próximamente», y
+    la de `fabric.yaml` ya no dice «afirmación por afirmación».
+  - **Demos en rojo (regla 15)** — ¿puede fallar? sí · rojo · a quién nombró · verde al restaurar:
+
+    | Arreglo deshecho | Qué cayó |
+    | --- | --- |
+    | Migración de un solo salto (10) | «sube por la cadena de saltos declarados…» |
+    | Históricas fuera de la aprobación (10) | «una versión histórica carga, se lista con su motivo y su huella sigue contando» |
+    | «Hoy ninguna», apuntada a una copia con la archivada en contrato 0.2.0 (10) | «hoy no hay ninguna histórica» |
+    | `&& r.huella === h` quitado (09) | la prueba de la palabra cambiada en la archivada, y la de la histórica |
+    | `.equals(bytes)` quitado del script de aprobación, en el archivo y sin ejecutarlo fuera de la prueba (09) | «si la versión anterior ya está archivada con otros bytes…» |
+    | Regla 12 sin la llamada en las archivadas (33) | «en una ficticia: … y una que cita un dominio real también» |
+    | El filtro `.mapa.yaml` de vuelta (40) | «cada forma rota nombra su archivo…» (el `.mapa.yml` se ignoraba) |
+    | Mapas comparados sin quitar `fecha_verificacion` (34) | las dos pruebas de `propuestas-aprobadas` |
+    | Una cita cambiada en una copia (34) | la segunda prueba, que nombra `fabric.jsonl · propuestas/2026-10-04-fabric` |
+    | El veto comercial quitado (07) | el caso de `nucleo.test.ts` |
+    | La skill con el texto viejo (06, 35) | sus dos pruebas |
+    | Sin reintento, y luego sin seguir tras el 28 (39) | «si la conexión se corta, reintenta…» |
+
+    Al agregar el veto (07), la prueba de vocabulario cayó con las dos rutas de Databricks.
+  - **Límite de tiempo de las pruebas.** `vitest.config.ts` pasa a `testTimeout: 20_000`. Cargar `data/` valida y
+    dibuja cada mapa a cuatro edades, también las versiones archivadas. Con otras sesiones de la máquina corriendo
+    suites (carga de 15 a 35), una sola carga pasaba de los 5 s y 10 pruebas de datos caían por tiempo. Una prueba
+    colgada sigue fallando, a los 20 s. **Desviación declarada** (no estaba en el plan).
+  - **Corridas:**
+    - `pnpm test`: 1394/1394, con carga 26;
+    - `typecheck` y `lint` en verde;
+    - build con `csp: 46 páginas`;
+    - e2e de `versiones`, `atlas` e `investigador`: 50 pasaron y 2 se saltaron (las de «sin mapa»).
 
 ## Desviación del plan
 

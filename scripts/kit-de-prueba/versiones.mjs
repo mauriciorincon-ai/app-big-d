@@ -26,7 +26,24 @@ v.nodos = v.nodos.map((n) => {
   return n;
 });
 const base = m.nodos.find((n) => n.id === "canalizacion-declarativa");
-v.nodos.push({ ...structuredClone(base), id: "cuadernos", orden: 3, nombre: { es: "Cuadernos interactivos", en: "Interactive notebooks" } });
+// Con sus propios textos (S2-AUD-37): un clon con los de las canalizaciones diría algo que no es.
+const sinTerminos = structuredClone(base);
+delete sinTerminos.terminos;
+v.nodos.push({
+  ...sinTerminos,
+  id: "cuadernos",
+  orden: 3,
+  nombre: { es: "Cuadernos interactivos", en: "Interactive notebooks" },
+  lider: { es: "Hojas donde un equipo escribe y prueba código sobre los datos, paso a paso.", en: "Pages where a team writes and tries code on the data, step by step." },
+  experto: {
+    es: "Celdas de código y texto que se ejecutan una a una sobre el cómputo de la plataforma; sirven para explorar y probar antes de automatizar.",
+    en: "Cells of code and text that run one at a time on the platform's compute; they are for exploring and testing before automating.",
+  },
+  por_que_importa: {
+    es: "Explorar en un cuaderno es rápido, pero lo que se queda ahí no corre solo ni se revisa como el resto.",
+    en: "Exploring in a notebook is quick, but what stays there does not run on its own or get reviewed like the rest.",
+  },
+});
 v.nodos = v.nodos.filter((n) => n.id !== "filtros-filas");
 v.flujos = v.flujos.filter((f) => f.origen !== "filtros-filas" && f.destino !== "filtros-filas");
 

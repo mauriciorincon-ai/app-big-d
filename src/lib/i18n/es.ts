@@ -202,6 +202,7 @@ export const es: Textos = {
         nota: "El dibujo solo marca lo que cambia el mapa: componentes nuevos, retirados, renombrados o con otra madurez.",
       },
       vacio: { titulo: "El mapa de {plataforma} tiene una sola versión.", texto: "Cuando una persona apruebe otra, aquí verás qué cambió entre las dos." },
+      historica: "v{version}: aprobada y archivada; las reglas de hoy ya no la dibujan.",
     },
   },
   investigador: {

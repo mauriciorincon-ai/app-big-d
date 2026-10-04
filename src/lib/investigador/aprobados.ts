@@ -9,8 +9,9 @@ import { huella } from "./huella";
  * ¿Cada mapa publicado de una plataforma real es el que aprobó una persona? Su huella y su versión deben
  * coincidir con la última línea de data/revisiones/<id>.jsonl (M-16 de la auditoría del S1: una edición a
  * mano del YAML pasaba el build). Y sus versiones anteriores (D-S2-09): cada archivada es, huella y versión, una
- * que aprobó una persona, y ninguna versión aprobada falta del archivo. Las ficticias no pasan por el
- * investigador. Devuelve las fallas.
+ * que aprobó una persona, y ninguna versión aprobada falta del archivo. Las históricas (las que las reglas de hoy
+ * ya no validan) cuentan igual: no se dibujan, pero sus bytes siguen siendo los aprobados. Las ficticias no pasan
+ * por el investigador. Devuelve las fallas.
  */
 export function mapasSinAprobacion(d: Datos, dir: string): string[] {
   const fallas: string[] = [];
@@ -27,7 +28,7 @@ export function mapasSinAprobacion(d: Datos, dir: string): string[] {
     if (huella(mapa) !== ultima.huella) fallas.push(`data/mapas/${id}.mapa.yaml · su huella no es la que aprobó una persona el ${ultima.fecha}: no se edita a mano, se vuelve a investigar`);
     if (mapa.version !== ultima.mapa_version) fallas.push(`data/mapas/${id}.mapa.yaml · versión ${mapa.version}; la aprobada es ${ultima.mapa_version}`);
     const revisiones = lineas.map((l) => esquemaRevision.parse(JSON.parse(l)));
-    const archivadas = d.versiones.get(id) ?? [];
+    const archivadas = [...(d.versiones.get(id) ?? []), ...(d.historicas.get(id) ?? [])];
     for (const v of archivadas) {
       const h = huella(parse(readFileSync(join(dir, "mapas", "versiones", v.archivo.split("/").at(-1)!), "utf8")));
       if (!revisiones.some((r) => r.mapa_version === v.version && r.huella === h))

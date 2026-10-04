@@ -105,69 +105,82 @@ export default async function Versiones({
                 ]}
               />
             )}
-            <p className="guia">
-              <b>{tv.guia.entrada}</b> {tv.guia.resto}
-            </p>
-            <p className="pista">
-              <svg
-                viewBox="-8 -8 16 16"
-                width="14"
-                height="14"
-                aria-hidden="true"
-                focusable="false"
-              >
-                <path
-                  d="M-6,0 H5 M1.5,-3.8 L5.5,0 L1.5,3.8"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+            {p.historica ? (
+              <p className="version-historica">
+                {plantilla(tv.historica, { version: p.historica })}
+              </p>
+            ) : (
+              <>
+                <p className="guia">
+                  <b>{tv.guia.entrada}</b> {tv.guia.resto}
+                </p>
+                <p className="pista">
+                  <svg
+                    viewBox="-8 -8 16 16"
+                    width="14"
+                    height="14"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path
+                      d="M-6,0 H5 M1.5,-3.8 L5.5,0 L1.5,3.8"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  {plantilla(tv.pista, { n: bandas })}
+                </p>
+                <div className="lienzo-marco">
+                  {/* El SVG lo generó el diagramador en el build (serializador propio, sin datos del visitante). */}
+                  <div
+                    className="lienzo version-lienzo"
+                    tabIndex={0}
+                    role="region"
+                    aria-label={plantilla(tv.lienzo, {
+                      antes: p.antes,
+                      despues: p.despues,
+                    })}
+                    dangerouslySetInnerHTML={{ __html: p.svg }}
+                  />
+                </div>
+                <div
+                  className="version-dif"
+                  dangerouslySetInnerHTML={{ __html: p.diferencias }}
                 />
-              </svg>
-              {plantilla(tv.pista, { n: bandas })}
-            </p>
-            <div className="lienzo-marco">
-              {/* El SVG lo generó el diagramador en el build (serializador propio, sin datos del visitante). */}
-              <div
-                className="lienzo version-lienzo"
-                tabIndex={0}
-                role="region"
-                aria-label={plantilla(tv.lienzo, {
-                  antes: p.antes,
-                  despues: p.despues,
-                })}
-                dangerouslySetInnerHTML={{ __html: p.svg }}
-              />
-            </div>
-            <div
-              className="version-dif"
-              dangerouslySetInnerHTML={{ __html: p.diferencias }}
-            />
-            <div className="version-dice">
-              <h3>{tv.dice.titulo}</h3>
-              <p>
-                {p.textos.length
-                  ? plantilla(
-                      tv.dice.cambiaron[p.textos.length === 1 ? 0 : 1],
-                      { n: p.textos.length, lista: p.textos.join(", ") },
-                    )
-                  : tv.dice.ninguno}
-              </p>
-              <p>
-                {p.fuentes
-                  ? plural(tv.dice.fuentes, p.fuentes)
-                  : tv.dice.sinFuentes}
-              </p>
-              <p className="kit-nota">{tv.dice.nota}</p>
-            </div>
+                <div className="version-dice">
+                  <h3>{tv.dice.titulo}</h3>
+                  <p>
+                    {p.textos.length
+                      ? plantilla(
+                          tv.dice.cambiaron[p.textos.length === 1 ? 0 : 1],
+                          { n: p.textos.length, lista: p.textos.join(", ") },
+                        )
+                      : tv.dice.ninguno}
+                  </p>
+                  <p>
+                    {p.fuentes
+                      ? plural(tv.dice.fuentes, p.fuentes)
+                      : tv.dice.sinFuentes}
+                  </p>
+                  <p className="kit-nota">{tv.dice.nota}</p>
+                </div>
+              </>
+            )}
           </section>
         ))
       )}
       {/* Cada lienzo avisa cuando no cabe: la pista y las sombras de los bordes (como en las vistas del atlas). */}
-      {v.pares.map((p, i) => (
-        <ControlLienzo key={`${p.antes}-${p.despues}`} mapa={`version-${i}`} />
-      ))}
+      {v.pares.map((p, i) =>
+        p.historica ? null : (
+          <ControlLienzo
+            key={`${p.antes}-${p.despues}`}
+            mapa={`version-${i}`}
+          />
+        ),
+      )}
       <p className="solo-lector" id={ID_PISTA}>
         {tv.pistaActivar}
       </p>

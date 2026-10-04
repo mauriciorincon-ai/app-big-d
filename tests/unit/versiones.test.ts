@@ -101,6 +101,20 @@ describe("versiones de un mapa", () => {
     expect(p!.fuentes).toBe(9);
   });
 
+  it("un par con una versión histórica no se dibuja: solo dice cuál es (ADR map-versioning, decisión 6)", () => {
+    const [v1, v2, v3] = cadena();
+    const datos = conCadena(d, EJEMPLO, [v2!, v3!]);
+    const conHistorica = {
+      ...datos,
+      historicas: new Map([[EJEMPLO, [{ version: v1!.version, archivo: "sintetica", motivos: ["V1"] }]]]),
+    };
+    const v = vistaVersiones(conHistorica, EJEMPLO, "es", FECHA);
+    expect(v.pares.map((p) => [`${p.antes}→${p.despues}`, p.historica ?? null, p.svg === ""])).toEqual([
+      ["0.2.0→0.3.0", null, false],
+      ["0.1.0→0.2.0", "0.1.0", true],
+    ]);
+  });
+
   it("una fuente que solo cambió su fecha de consulta no es una fuente renovada", () => {
     const v1 = structuredClone(d.atlas.get(EJEMPLO)!.mapa);
     v1.version = "0.1.0";

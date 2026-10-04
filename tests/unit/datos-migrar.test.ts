@@ -8,7 +8,7 @@ import { CONTRATO_VERSION } from "diagramador";
 import { afterEach, describe, expect, it } from "vitest";
 import { parse, stringify } from "yaml";
 import { cargarDatos, ErrorDeDatos } from "@/lib/datos";
-import { migradoDesde, migrarContrato } from "@/lib/datos/migrar";
+import { migradoDesde, migrar, migrarContrato } from "@/lib/datos/migrar";
 
 const temporales: string[] = [];
 afterEach(() => temporales.splice(0).forEach((d) => rmSync(d, { recursive: true, force: true })));
@@ -46,6 +46,15 @@ describe("migración del dato entre versiones del contrato", () => {
     expect(migrarContrato(muyViejo)).toBe(muyViejo);
     expect(migradoDesde(muyViejo)).toBeUndefined();
     expect(migrarContrato(null)).toBeNull();
+  });
+  it("sube por la cadena de saltos declarados (0.3 → 0.4 → 0.5); si un eslabón falta o ya está, lo deja igual", () => {
+    const viejo = { contrato_version: "0.3.0" };
+    expect(migrar(viejo, { "0.3": "0.4", "0.4": "0.5" }, "0.5.0").contrato_version).toBe("0.5.0");
+    expect(migrar(viejo, { "0.3": "0.4" }, "0.5.0")).toBe(viejo);
+    const actual = { contrato_version: "0.5.0" };
+    expect(migrar(actual, { "0.3": "0.4", "0.4": "0.5" }, "0.5.0")).toBe(actual);
+    // Una cadena con un ciclo no da vueltas para siempre.
+    expect(migrar(viejo, { "0.3": "0.4", "0.4": "0.3" }, "0.5.0")).toBe(viejo);
   });
   // Fabric v0.1.0 se aprobó con el contrato 0.3.0; desde el 2026-10-04 vive archivada con sus bytes aprobados.
   it("la versión archivada de Fabric (v0.1.0) sigue en 0.3.0 en el disco y carga en la versión del motor", () => {

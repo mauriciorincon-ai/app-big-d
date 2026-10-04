@@ -143,6 +143,11 @@ describe("vocabulario vetado en lo que la propuesta publicaría", () => {
     q.afirmaciones[0] = { ...q.afirmaciones[0]!, cita: { ...q.afirmaciones[0]!.cita, texto: "Esta página literal habla de un lago de datos y no la escribió Big-D." } };
     expect(validarPropuesta(q, G, RANGOS).fallas).toEqual([]);
   });
+  it("una autoevaluación comercial del fabricante en un texto del mapa falla, aunque vaya atribuida (S2-AUD-07)", () => {
+    const m = mapaNorte();
+    m.nodos[0] = { ...m.nodos[0]!, experto: { es: m.nodos[0]!.experto.es, en: "The vendor describes it as its best price-performance option." } };
+    expect(validarPropuesta(propuestaNorte(m), G, RANGOS).fallas).toEqual(["vocabulario · mapa/nodos/0/experto/en · autoevaluación comercial del fabricante: el atlas no la repite"]);
+  });
 });
 
 describe("retiros: todo lo que sale del mapa aprobado trae su argumento (pedido de la persona, 2026-09-30)", () => {

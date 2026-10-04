@@ -32,6 +32,11 @@ export interface ParVersiones {
   textos: string[];
   /** Cuántos componentes renovaron sus fuentes. */
   fuentes: number;
+  /**
+   * La versión del par que las reglas de hoy ya no validan (histórica, ADR `map-versioning` decisión 6): el par no se
+   * dibuja ni se compara, solo se lista; `svg` y `diferencias` van vacíos.
+   */
+  historica?: string;
 }
 
 export interface VistaVersiones {
@@ -58,6 +63,13 @@ function sinAvisos(geo: Geometria, que: string): Geometria {
  * `aprobaciones`: versión → fecha (UTC) de su aprobación, leída de data/revisiones/ por la página (esta vista no lee
  * el disco). `n` de los textos: los componentes en el orden del mapa nuevo.
  */
+/** Orden de versiones X.Y.Z por sus números (aquí y no del cargador: esta vista no arrastra `node:fs`). */
+const compararVersion = (a: string, b: string) => {
+  const x = a.split(".").map(Number);
+  const y = b.split(".").map(Number);
+  return x[0]! - y[0]! || x[1]! - y[1]! || x[2]! - y[2]!;
+};
+
 /** Las fuentes sin su fecha de consulta: lo que dice cada una, no cuándo se leyó. */
 const sinFecha = (fuentes: Mapa["nodos"][number]["fuentes"]) =>
   fuentes.map((f) => ({ ...f, fecha: "" }));
@@ -74,18 +86,34 @@ export function vistaVersiones(
   const tm = textosMotor();
   const t = textos(idioma).atlas.versiones;
   const g = atlas.gramatica;
-  // De la más vieja a la vigente; cada par es (anterior, siguiente).
-  const cadena: Mapa[] = [
-    ...(d.versiones.get(id) ?? []).map((v) => v.mapa),
-    atlas.mapa,
-  ];
+  // De la más vieja a la vigente; cada par es (anterior, siguiente). Una histórica entra sin mapa: no se dibuja.
+  const cadena: { version: string; mapa?: Mapa }[] = [
+    ...(d.versiones.get(id) ?? []),
+    ...(d.historicas.get(id) ?? []).map((h) => ({ version: h.version })),
+  ].sort((a, b) => compararVersion(a.version, b.version));
+  cadena.push({ version: atlas.mapa.version, mapa: atlas.mapa });
   const fichas: Record<string, string> = {};
   const titulos: Record<string, string> = {};
   const pares: ParVersiones[] = [];
 
   for (let k = cadena.length - 1; k > 0; k--) {
-    const antes = cadena[k - 1]!;
-    const despues = cadena[k]!;
+    const a = cadena[k - 1]!;
+    const b = cadena[k]!;
+    if (!a.mapa || !b.mapa) {
+      pares.push({
+        antes: a.version,
+        despues: b.version,
+        ...(aprobaciones[b.version] ? { aprobada: aprobaciones[b.version] } : {}),
+        svg: "",
+        diferencias: "",
+        textos: [],
+        fuentes: 0,
+        historica: a.mapa ? b.version : a.version,
+      });
+      continue;
+    }
+    const antes = a.mapa;
+    const despues = b.mapa;
     const nombre = `${antes.version}-${despues.version}`.replace(/\./g, "-");
     const idTexto = `dif-${id}-${nombre}`;
     const geo = sinAvisos(
