@@ -31,7 +31,17 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm lint
       - run: pnpm test            # vitest run --coverage (umbrales en vitest.config: 70 global · 80 motores y lib · 50 componentes)
-      - run: pnpm build
+      # S2-AUD-32: en Vercel, Next 16 compila con el adapter de Vercel y se publica .next/output, no out/. El build de
+      # CI es el de Vercel (sin conexion ni sesion: el proyecto se declara aqui) y el gate mira la CSP en lo que se
+      # publicaria: cada pagina con su meta e identica a la de out/ (que prueban las e2e).
+      - name: Build como en Vercel (adapter de Next) y CSP en lo que se publica
+        env:
+          NEXT_ENABLE_ADAPTER: "1"
+        run: |
+          mkdir -p .vercel
+          printf '%s' '{"projectId":"prj_ci","orgId":"team_ci","settings":{"framework":"nextjs","installCommand":"true"}}' > .vercel/project.json
+          pnpm dlx vercel@60.1.3 build --yes
+          node scripts/csp/verificar-salida.mjs .vercel/output/static out
       - run: pnpm audit --audit-level high
 
   e2e:

@@ -1115,6 +1115,39 @@ final, de a una.
       que cambia de nombre no se marca); README del kit y su script; ADR `map-versioning`; cabecera de
       `data/plataformas/databricks.yaml`. Comprobado en el build: «mapa aprobado v0.2.0 · … · 2 revisiones en el
       historial», «131 aprobadas · 0 rechazadas», y `/es/atlas/snowflake/versiones` con su estado vacío.
+  - **P4 (S2-AUD-32), 2026-10-04.** Pregunta, con el preview del PR #5 abierto en `/es/atlas/fabric`: «¿Aparece
+    "Content-Security-Policy" en el código de la página?». **Respuesta: «No».** Por la regla de la Fase 1, el
+    hallazgo **pasa a Alto** y se investiga antes del merge.
+    - **Comprobación:** Safari solo muestra el código con su menú de desarrollo, así que la persona guardó la página
+      (Cmd+S). El archivo es el HTML que sirvió el preview: trae Fabric v0.3.0 (es el despliegue vigente) y **no
+      trae la meta**; después de `<meta charSet>` viene `viewport`. En `out/` local la meta está.
+    - **Causa:** Next 16 compila en Vercel con el adapter de Vercel (`NEXT_ENABLE_ADAPTER=1` en su entorno de
+      build; `@vercel/next` lo activa desde Next 16.2). Dentro de `next build`, su `onBuildComplete` copia cada
+      página a `.next/output/static/`; al terminar el comando de build, Vercel publica `.next/output`, no `out/`.
+      `inyectar.mjs` corría después y solo sobre `out/`. El `vercel build` sin conexión de la fase 0 no tenía el
+      adapter, así que no lo vio. Leído en el código de `@vercel/next` 15.0.1 (`dist/index.js` y
+      `dist/adapter/index.js`).
+    - **Reproducción local:** `NEXT_ENABLE_ADAPTER=1 vercel build` (CLI 60.1.3, sin conexión, en la copia del
+      scratchpad): «Running onBuildComplete from Vercel»; `out/es/atlas/fabric.html` con 1 meta y
+      `.vercel/output/static/es/atlas/fabric.html` con 0. Es el síntoma del preview.
+    - **Arreglo:** `carpetasDeSalida(raiz)` da `out/` y, si existe `.next/output/config.json`, también
+      `.next/output/static/`; `inyectar(carpeta)` trabaja cada una con sus propias huellas. Con el adapter: «csp:
+      out/ · 46 páginas» y «csp: .next/output/static/ · 46 páginas»; las 46 de `.vercel/output/static` llevan su
+      meta y son idénticas byte a byte a las de `out/`. ADR `csp-static-export`, decisión 5.
+    - **Gate nuevo: el job `quality` hace el build como Vercel** (`vercel build` sin conexión, CLI fijado, el
+      proyecto declarado en el job, `NEXT_ENABLE_ADAPTER=1`) y corre `scripts/csp/verificar-salida.mjs`: cada página
+      publicada con una meta justo después de `<meta charSet>`, idéntica a la de `out/`, y ninguna de `out/` sin
+      publicar; sin páginas también falla. Reemplaza al `pnpm build` del job.
+      - ¿Puede fallar? Sí: lo publicado sin meta, distinto de `out/` o incompleto.
+      - **Rojo:** inyector anterior (y su prueba) en la copia y build con el adapter → 92 fallas, cada página
+        nombrada dos veces («0 metas de CSP», «distinta de la de out»).
+      - **A quién nombró:** las 46 páginas, `404.html` la primera.
+      - **Verde** con el arreglo: «46 páginas en .vercel/output/static, cada una con su meta e idéntica a out».
+    - **Gate unitario** (`csp.test.ts`, 3 pruebas nuevas): las carpetas con y sin adapter, la inyección en las dos
+      sin tocar la maqueta, y el verificador. ¿Puede fallar? Sí. **Rojo:** `carpetasDeSalida` devolviendo solo
+      `out/` → caen las dos pruebas de carpetas. **Verde** al restaurar.
+    - **Falta la prueba real:** que el preview del commit nuevo sirva la meta. Se le pregunta a la persona igual que
+      antes, guardando la página.
 
 ## Desviación del plan
 

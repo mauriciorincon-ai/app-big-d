@@ -10,10 +10,14 @@
 // (un `<Link>` de Next), React inserta el `<style>` de la página nueva bajo la política de la primera (S2, fase 2:
 // las reglas de los pasos del recorrido quedaban bloqueadas al llegar desde el nivel 1). Los scripts no: React no
 // ejecuta un `<script>` en línea que inserta en el cliente.
+// En Vercel, Next 16 compila con el adapter de Vercel (`NEXT_ENABLE_ADAPTER=1`): dentro de `next build` copia cada
+// página a `.next/output/static/`, y Vercel publica ESA copia, no `out/` (S2-AUD-32: el preview del PR #5 servía las
+// páginas sin su meta). Por eso se inyecta en cada carpeta que se publica: `out/` y, si el adapter corrió (deja
+// `.next/output/config.json`), también `.next/output/static/`. Cada una con sus propias huellas.
 //
-// Uso: node scripts/csp/inyectar.mjs [carpeta]   (por defecto, out/)
+// Uso: node scripts/csp/inyectar.mjs [carpeta]   (por defecto, las de `carpetasDeSalida`)
 import { createHash } from "node:crypto";
-import { readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -82,26 +86,51 @@ export function origenSentry(dsn = process.env.NEXT_PUBLIC_SENTRY_DSN) {
   return [new URL(dsn).origin];
 }
 
-function paginas(dir) {
+/**
+ * Las carpetas que se publican desde la raíz `raiz`: `out/` y, si el adapter de Vercel corrió, su copia.
+ * @param {string} raiz
+ * @returns {string[]}
+ */
+export function carpetasDeSalida(raiz) {
+  const adapter = join(raiz, ".next/output");
+  return [join(raiz, "out"), ...(existsSync(join(adapter, "config.json")) ? [join(adapter, "static")] : [])];
+}
+
+/** Las páginas de una carpeta publicada, sin la maqueta (`diseno/` en su raíz), que lleva CSP de cabecera. */
+function paginas(carpeta, dir = carpeta) {
   return readdirSync(dir).flatMap((f) => {
     const ruta = join(dir, f);
-    if (statSync(ruta).isDirectory()) return f === "diseno" && dir === SALIDA ? [] : paginas(ruta);
+    if (statSync(ruta).isDirectory()) return f === "diseno" && dir === carpeta ? [] : paginas(carpeta, ruta);
     return f.endsWith(".html") ? [ruta] : [];
   });
 }
 
-const SALIDA = resolve(process.argv[2] ?? join(RAIZ, "out"));
+/**
+ * Inyecta la CSP en cada página de una carpeta publicada.
+ * @param {string} carpeta
+ * @param {{ conectar?: string[], raiz?: string }} [opciones]
+ * @returns {{ paginas: number, scripts: number, estilos: number, sitio: number }}
+ */
+export function inyectar(carpeta, { conectar = [], raiz = RAIZ } = {}) {
+  const lista = paginas(carpeta);
+  const estilosDelSitio = unicas(lista.flatMap((ruta) => estilosEnLinea(readFileSync(ruta, "utf8"))));
+  let scripts = 0;
+  let estilos = 0;
+  for (const ruta of lista) {
+    const r = conCSP(readFileSync(ruta, "utf8"), { conectar, archivo: relative(raiz, ruta), estilosDelSitio });
+    writeFileSync(ruta, r.html);
+    scripts += r.scripts;
+    estilos += r.estilos;
+  }
+  return { paginas: lista.length, scripts, estilos, sitio: estilosDelSitio.length };
+}
+
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const conectar = origenSentry();
-  let s = 0;
-  let e = 0;
-  const lista = paginas(SALIDA);
-  const estilosDelSitio = unicas(lista.flatMap((ruta) => estilosEnLinea(readFileSync(ruta, "utf8"))));
-  for (const ruta of lista) {
-    const r = conCSP(readFileSync(ruta, "utf8"), { conectar, archivo: relative(RAIZ, ruta), estilosDelSitio });
-    writeFileSync(ruta, r.html);
-    s += r.scripts;
-    e += r.estilos;
+  for (const carpeta of process.argv[2] ? [resolve(process.argv[2])] : carpetasDeSalida(RAIZ)) {
+    const r = inyectar(carpeta, { conectar });
+    console.log(
+      `csp: ${relative(RAIZ, carpeta)}/ · ${r.paginas} páginas · ${r.scripts} huellas de script · ${r.estilos} de estilo (${r.sitio} en el sitio)${conectar.length ? ` · connect-src ${conectar.join(" ")}` : ""}`,
+    );
   }
-  console.log(`csp: ${lista.length} páginas · ${s} huellas de script · ${e} de estilo (${estilosDelSitio.length} en el sitio)${conectar.length ? ` · connect-src ${conectar.join(" ")}` : ""}`);
 }

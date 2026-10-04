@@ -37,6 +37,13 @@ list in `vercel.json` cannot work either: Vercel reads it before the build, and 
    the H1 cycle close (A-25).
 4. **`frame-ancestors` stays with `X-Frame-Options: DENY`**, because a meta CSP cannot carry it. Reporting
    directives are left out for the same reason.
+5. **Every folder that is published gets the meta (S2-AUD-32, 2026-10-04).** On Vercel, Next 16 builds with the
+   Vercel adapter (`NEXT_ENABLE_ADAPTER=1` in Vercel's build environment). Inside `next build`, the adapter's
+   `onBuildComplete` copies every page to `.next/output/static/`. After the build command, Vercel publishes
+   `.next/output`, not `out/`. The step ran on `out/` only, so the preview of PR #5 served every page without its
+   meta. The person caught it by saving the preview page. The step now injects into `out/` and, when the adapter
+   ran (it leaves `.next/output/config.json`), into `.next/output/static/` too, each with its own hashes. The two
+   copies come out byte-identical.
 
 ## Gates
 
@@ -52,8 +59,16 @@ list in `vercel.json` cannot work either: Vercel reads it before the build, and 
     `style-src-elem · inline` (implementation log, phase 2, «La CSP bloqueaba los estilos al cambiar de nivel sin
     recargar»).
 - `tests/unit/servidor-config.test.ts` checks that the mockup's header CSP is the same in both servers.
-- An offline `vercel build` confirmed the step runs on Vercel and the meta survives in
-  `.vercel/output/static`.
+- The `quality` job builds the way Vercel does: an offline `vercel build` (pinned CLI, project settings
+  declared in the job, no token) with `NEXT_ENABLE_ADAPTER=1`. Then `scripts/csp/verificar-salida.mjs` checks
+  `.vercel/output/static`: every product page has exactly one CSP meta right after `<meta charSet>` and is
+  byte-identical to `out/`, the folder the e2e suite tests. No pages at all also fails.
+  - It was seen red: with the previous injector, the adapter build gave 92 failures, each page named twice (0 metas,
+    and different from `out/`). It turned green with the fix: 46 pages.
+  - `tests/unit/csp.test.ts` covers the folder list (with and without the adapter) and the verifier. It was seen
+    red when the folder list returned `out/` only: the two folder tests failed.
+- Before S2-AUD-32, an offline `vercel build` without the adapter showed the meta in `.vercel/output/static`. It
+  did not reproduce Vercel's environment, and the preview was the real check.
 
 ## Consequences
 
