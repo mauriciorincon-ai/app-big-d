@@ -16,10 +16,10 @@
 
 ### Qué es Big-D
 
-Big-D explica las plataformas de datos (hoy Microsoft Fabric, más la Plataforma Ejemplo, ficticia, que viene del
-contrato del diagramador y muestra el mapa completo; Databricks y Snowflake llegan después) **con un mismo mapa**: las mismas capas, los mismos colores y los mismos símbolos para
-todas. Así puedes entender una plataforma de punta a punta y, más adelante, compararlas sin aprender un dibujo
-nuevo cada vez. Todo lo que dice el mapa viene de documentación pública del fabricante, con fecha, y lo aprobó una
+Big-D explica las plataformas de datos (hoy Databricks, Microsoft Fabric y Snowflake, más la Plataforma Ejemplo,
+ficticia, que viene del contrato del diagramador y muestra el mapa completo) **con un mismo mapa**: las mismas capas,
+los mismos colores y los mismos símbolos para todas. Así puedes entender una plataforma de punta a punta y
+compararlas lado a lado sin aprender un dibujo nuevo cada vez. Todo lo que dice el mapa viene de documentación pública del fabricante, con fecha, y lo aprobó una
 persona afirmación por afirmación. Big-D **planea, gestiona y controla; jamás opera una plataforma**: no se conecta
 a ninguna ni pide cuentas.
 
@@ -27,7 +27,7 @@ a ninguna ni pide cuentas.
 
 1. Abre la app. La portada está en español; **ES / EN**, arriba a la derecha, la cambia al inglés (y te deja en la
    misma página).
-2. En el campo **«Plataforma»** elige una. Las que todavía no tienen mapa dicen «pronto» y no se pueden elegir.
+2. En el campo **«Plataforma»** elige una. Si alguna todavía no tiene mapa, dice «pronto» y no se puede elegir.
 3. Llegas a la **visión general** de esa plataforma. Desde ahí, las pestañas «Nivel de lectura» llevan a los demás
    niveles.
 4. **Oscuro / Claro**, arriba a la derecha, cambia el tema. La app recuerda tu elección; si nunca elegiste, usa el
@@ -96,12 +96,10 @@ a ninguna ni pide cuentas.
 
 #### 5. Varias plataformas con el mismo mapa · desde el Sprint 1
 
-- **Qué hace:** Big-D está hecho para cualquier número de plataformas. Hoy tienen mapa **Microsoft Fabric** y la
-  **Plataforma Ejemplo**, que es ficticia y sirve para ver el mapa sin depender de ningún fabricante. Las demás
-  dicen «pronto».
+- **Qué hace:** Big-D está hecho para cualquier número de plataformas. Hoy tienen mapa **Databricks**, **Microsoft
+  Fabric** y **Snowflake** (desde el Sprint 2), y la **Plataforma Ejemplo**, que es ficticia y sirve para ver el
+  mapa sin depender de ningún fabricante. Una plataforma que todavía no tenga mapa dice «pronto».
 - **Cómo se usa:** cambia de plataforma en el campo «Plataforma»: te quedas en el mismo nivel de lectura.
-- **Limitaciones:** «Lado a lado» (varias plataformas con el mismo mapa, juntas) aparece como pestaña pendiente y
-  llega en un próximo sprint.
 
 #### 6. El investigador: cómo entra el conocimiento · desde el Sprint 1
 
@@ -132,12 +130,58 @@ a ninguna ni pide cuentas.
 
   4. Cuando no falte ninguna, copia el comando de **«Aprobar lo marcado»** y córrelo en una terminal abierta en la
      carpeta del proyecto. Solo una persona puede correrlo: la inteligencia artificial tiene un candado que se lo
-     impide. El mapa aprobado se publica en el siguiente build, y la aprobación queda en el historial.
+     impide. El mapa aprobado se publica en el siguiente build, y la aprobación queda en el historial. Si la
+     plataforma ya tenía mapa, la versión anterior se guarda tal como se aprobó y aparece en **«Versiones del mapa»**
+     (función 8).
 - **Limitaciones:**
+  - Abre la terminal tú mismo. Una terminal que abrió la inteligencia artificial lleva su marca, y el candado la
+    rechaza con «solo una persona aprueba».
+  - Algunos sitios cortan la conexión cuando el código intenta comprobar la cita; esa afirmación llega a «Necesitan
+    tu decisión» y la decides tú, abriendo la fuente.
   - Las preguntas guía sin fuente quedan abiertas: no se inventan respuestas.
   - Una base con un dato incompleto (por ejemplo, un componente sin fecha de verificación) **no se publica**: el
     build se detiene y dice qué falta y dónde.
   - La pestaña «Base de conocimiento» llega en un próximo sprint.
+
+#### 7. Lado a lado · desde el Sprint 2
+
+- **Qué hace:** pone todas las plataformas en el mismo mapa, una por fila, con cada banda en la misma columna para
+  todas. Se lee por columnas: una banda, todas las plataformas. Un bloque punteado dice que esa plataforma no tiene
+  componentes en esa banda.
+- **Cómo se usa:**
+  1. Entra a **Atlas** y toca la pestaña **«04 Lado a lado»**.
+  2. **«Plataformas: N de N»** abre la lista para elegir cuáles comparar; al menos una queda elegida. Van en orden
+     alfabético por su identificador, sin trato especial para ninguna.
+  3. En pantalla ancha se ven tres a la vez. Con más, **«Anterior»** y **«Siguiente»** pasan de página.
+  4. **«Desplegar todo»**, arriba a la derecha del recuadro del mapa, abre los componentes de todas las bandas en
+     el mismo dibujo, sin mover las columnas. **«Contraer todo»** vuelve a los bloques.
+  5. Toca un bloque para abrir su ventana; con todo desplegado, toca un componente para leer su ficha.
+  6. En un teléfono el mapa va de una banda a la vez: elige la banda en las pestañas de arriba. Cada plataforma
+     muestra sus bloques, y cada bloque se abre en sus componentes.
+  7. La dirección de la página guarda qué plataformas elegiste y en qué página estás, y **ES / EN** las conserva.
+- **Limitaciones:**
+  - El lado a lado compara qué hay en cada banda; las conexiones entre componentes se ven en el mapa de cada
+    plataforma.
+  - Cada fila dice qué tan al día está su plataforma; las fechas pueden ser distintas entre filas.
+
+#### 8. Versiones del mapa · desde el Sprint 2
+
+- **Qué hace:** muestra qué cambió entre una versión aprobada del mapa de una plataforma y la siguiente. Cada versión
+  la aprobó una persona y se guarda tal como se aprobó.
+- **Cómo se usa:**
+  1. En cualquier vista del atlas de una plataforma, toca **«ver versiones»**, junto a la versión del mapa, en el
+     encabezado.
+  2. Cada par de versiones muestra dos filas del lado a lado: arriba la anterior y abajo la nueva. Cada cambio lleva
+     una marca con símbolo y palabra: **«+ nuevo»**, **«− retirado»** (en la fila de la versión anterior),
+     **«→ renombrado»** y **«madurez»**. Debajo, una lista explica cada cambio.
+  3. **«Lo que dicen los componentes»** cuenta lo que cambió sin cambiar el dibujo: qué componentes cambiaron su
+     texto y cuántos renovaron sus fuentes.
+  4. Toca un bloque de cualquiera de las dos filas para ver sus componentes en esa versión.
+- **Limitaciones:**
+  - Si el mapa tiene una sola versión, la página lo dice y no muestra un dibujo.
+  - El dibujo solo marca lo que cambia el mapa: componentes nuevos, retirados, renombrados o con otra madurez. Por
+    eso entre las dos versiones de Fabric dice «Sin cambios en el dibujo», y lo que cambió (seis textos y las
+    fuentes de todos) aparece en «Lo que dicen los componentes».
 
 ### Preguntas frecuentes
 
@@ -154,6 +198,7 @@ a ninguna ni pide cuentas.
 | Sprint          | Funciones añadidas a este manual                                                                                                                                                   |
 | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | S1 (2026-09-29) | 1 Visión general, con la ventana de un bloque · 2 Componentes · 3 Recorrido de un dato · 4 Lectura en texto y teclado · 5 Varias plataformas con el mismo mapa · 6 El investigador |
+| S2 (2026-10-04) | 5 al día: Databricks, Fabric y Snowflake con mapa · 6 la versión anterior se guarda al aprobar · 7 Lado a lado · 8 Versiones del mapa |
 
 ---
 
@@ -161,9 +206,10 @@ a ninguna ni pide cuentas.
 
 ### What Big-D is
 
-Big-D explains data platforms (today Microsoft Fabric, plus the Example Platform, a fictional one that comes from the
-diagramador's contract and shows the full map; Databricks and Snowflake come later) **with one shared map**: the same layers, colours and symbols for all of them. You can understand a
-platform end to end and, later, compare platforms without learning a new drawing each time. Everything on the map
+Big-D explains data platforms (today Databricks, Microsoft Fabric and Snowflake, plus the Example Platform, a
+fictional one that comes from the diagramador's contract and shows the full map) **with one shared map**: the same
+layers, colours and symbols for all of them. You can understand a platform end to end and compare platforms side by
+side without learning a new drawing each time. Everything on the map
 comes from the vendor's public documentation, dated, and a person approved it claim by claim. Big-D **plans,
 manages and controls; it never operates a platform**: it connects to none and asks for no accounts.
 
@@ -171,7 +217,7 @@ manages and controls; it never operates a platform**: it connects to none and as
 
 1. Open the app. The home page is in Spanish; **ES / EN**, top right, switches to English and keeps you on the
    same page.
-2. Pick a platform in the **“Platform”** field. Platforms without a map yet say “coming soon” and cannot be picked.
+2. Pick a platform in the **“Platform”** field. A platform without a map yet says “coming soon” and cannot be picked.
 3. You land on that platform's **overview**. From there, the “Reading level” tabs take you to the other levels.
 4. **Dark / Light**, top right, changes the theme. The app remembers your choice; until you choose, it follows your
    system.
@@ -237,12 +283,10 @@ manages and controls; it never operates a platform**: it connects to none and as
 
 #### 5. Many platforms, one map · since Sprint 1
 
-- **What it does:** Big-D is built for any number of platforms. Today **Microsoft Fabric** and the **Example
-  Platform** have maps. The Example Platform is fictional, so you can see the map without any vendor. The rest say
-  “coming soon”.
+- **What it does:** Big-D is built for any number of platforms. Today **Databricks**, **Microsoft Fabric** and
+  **Snowflake** have maps (since Sprint 2), and so does the **Example Platform**. The Example Platform is fictional,
+  so you can see the map without any vendor. A platform with no map yet says “coming soon”.
 - **How to use it:** switch platforms in the “Platform” field; you stay on the same reading level.
-- **Limitations:** “Side by side” (several platforms on one map, together) shows as a pending tab and arrives in a
-  coming sprint.
 
 #### 6. The researcher: how knowledge gets in · since Sprint 1
 
@@ -273,12 +317,55 @@ manages and controls; it never operates a platform**: it connects to none and as
 
   4. When nothing is left to decide, copy the **“Approve what is marked”** command and run it in a terminal opened
      in the project folder. Only a person can run it: a lock stops the AI. The approved map goes live on the next
-     build, and the approval stays in the history.
+     build, and the approval stays in the history. If the platform already had a map, the previous version is kept
+     exactly as approved and shows up in **“Map versions”** (feature 8).
 - **Limitations:**
+  - Open the terminal yourself. A terminal the AI opened carries its mark, and the lock turns it down with “only a
+    person approves”.
+  - Some sites cut the connection when the code tries to check a quote; that claim lands in “Need your decision”,
+    and you decide by opening the source.
   - Guiding questions without a source stay open; no answer is made up.
   - A base with an incomplete record (say, a component with no verification date) **is not published**: the build
     stops and says what is missing and where.
   - The “Knowledge base” tab arrives in a coming sprint.
+
+#### 7. Side by side · since Sprint 2
+
+- **What it does:** puts every platform on the same map, one per row, with each band in the same column for all of
+  them. You read it by columns: one band, every platform. A dotted block means that platform has no components in
+  that band.
+- **How to use it:**
+  1. Go to **Atlas** and tap the **“04 Side by side”** tab.
+  2. **“Platforms: N of N”** opens the list to choose which to compare; at least one stays chosen. They go in
+     alphabetical order of their identifier, with no special treatment for any.
+  3. On a wide screen you see three at a time. With more, **“Previous”** and **“Next”** turn the page.
+  4. **“Expand all”**, at the top right of the map's frame, opens the components of every band in the same drawing,
+     without moving the columns. **“Collapse all”** goes back to the blocks.
+  5. Tap a block to open its window; with everything expanded, tap a component to read its card.
+  6. On a phone the map shows one band at a time: pick the band in the tabs at the top. Each platform shows its
+     blocks, and each block opens into its components.
+  7. The page's address keeps which platforms you chose and which page you are on, and **ES / EN** keeps them too.
+- **Limitations:**
+  - Side by side compares what each band holds; the connections between components are on each platform's map.
+  - Each row says how current its platform is; the dates can differ between rows.
+
+#### 8. Map versions · since Sprint 2
+
+- **What it does:** shows what changed from one approved version of a platform's map to the next. A person approved
+  each version, and it is kept exactly as approved.
+- **How to use it:**
+  1. On any atlas view of a platform, tap **“see versions”**, next to the map's version in the header.
+  2. Each pair of versions shows two side-by-side rows: the previous one above and the new one below. Every change
+     carries a mark with a symbol and a word: **“+ new”**, **“− removed”** (on the previous version's row),
+     **“→ renamed”** and **“maturity”**. Below, a list explains each change.
+  3. **“What the components say”** counts what changed without changing the drawing: which components changed their
+     text and how many renewed their sources.
+  4. Tap a block on either row to see its components in that version.
+- **Limitations:**
+  - If the map has a single version, the page says so and shows no drawing.
+  - The drawing only marks what changes the map: new, removed or renamed components, or a different maturity. That
+    is why, between Fabric's two versions, it says “No changes in the drawing”, and what did change (six texts and
+    everyone's sources) appears under “What the components say”.
 
 ### Frequently asked questions
 
@@ -294,3 +381,4 @@ manages and controls; it never operates a platform**: it connects to none and as
 | Sprint          | Features added to this manual                                                                                                                              |
 | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | S1 (2026-09-29) | 1 Overview, with the block window · 2 Components · 3 A datum's journey · 4 Reading in text and the keyboard · 5 Many platforms, one map · 6 The researcher |
+| S2 (2026-10-04) | 5 updated: Databricks, Fabric and Snowflake have maps · 6 the previous version is kept on approval · 7 Side by side · 8 Map versions |
