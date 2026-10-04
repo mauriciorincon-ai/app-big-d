@@ -132,9 +132,10 @@ Corre cada verificación en orden y reporta estado:
 - [ ] Si hay decisión arquitectónica: ADR en `decisions/` de este repo.
 - [ ] **Matriz de envejecimiento (kit v1.33.0 — regla 23):** si la app tiene datos con fecha de cambio de
       estado, el gate que construye la página en cada una de esas fechas está en verde (y nació en rojo).
-      Big-D: `packages/diagramador/test/envejecer.test.ts` (cada mapa a cuatro edades, todas las vistas y
-      `compare`) y `tests/unit/atlas-vigencias.test.ts` (cada página en cada fecha), con la perilla
-      `BIGD_FECHA_CONSULTA`.
+      Big-D: `packages/diagramador/test/envejecer.test.ts` (cada mapa del contrato a cuatro edades, en todas sus
+      vistas), `packages/diagramador/test/compare.test.ts` («compare — matriz de envejecimiento») y
+      `tests/unit/atlas-vigencias.test.ts` (cada página, también `/comparar` y `/versiones`, en cada fecha, con
+      los umbrales de su gramática), con la perilla `BIGD_FECHA_CONSULTA`.
 
 ### 10. Cierre del sprint (las dos casas)
 - [ ] Bitácora `sprints/SPRINT_NNN-implementation-log.md` al día en este repo.

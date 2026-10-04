@@ -8,7 +8,8 @@
 put it in the product at `/[lang]/comparar`.
 
 - **The requirements.** N platforms, one row each, with every band in the same column for all of them (G5). Three
-  at a time on a wide screen and one on a phone, as a declared constant of the view. The components shown "in the
+  at a time on a wide screen, a declared constant of the view that paginates beyond; on a phone, one band at a time
+  with every chosen platform stacked. The components shown "in the
   same diagram".
 - **The settled shape.** Look M1 (2026-10-02) settled what "in the same diagram" means: a single button at the top
   right of the diagram frame expands every band's components and collapses them again, without moving the
@@ -65,7 +66,8 @@ put it in the product at `/[lang]/comparar`.
   - `tests/e2e/lado.spec.ts` (wide and phone), G11 on the wide comparison in three engines, reduced motion with
     the same tree, axe in both themes, CSP across soft navigation.
   - The capture pass with interaction.
-- **Measured** (Lighthouse 13.4.1, median of 3, local): `/es/comparar` LCP 2765 ms, CLS 0, TBT 4 ms, 401 KB.
+- **Measured** (Lighthouse 13.4.1, median of 3, local, 2026-10-04, four platforms): `/es/comparar` LCP 2783 ms, CLS 0,
+  TBT 11 ms, 469 KB (phase 2, two published platforms: 2765 ms, 401 KB).
 
 ## Consequences
 

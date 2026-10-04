@@ -113,12 +113,11 @@
       dato), el lado a lado, las versiones de un mapa, el investigador y la base. Cada prueba dice su origen: «Nuevo ·
       S2», «Mejorado en S2» (hay que volver a mirarla) o «S1» (heredada sin cambios: es la regresión). Las casillas se
       guardan solas en este navegador.</p>
-    <p class="chica"><strong>Gate corto ⭐⭐: 4 paradas · ~20 min — es el que el cierre del ciclo exige.</strong> Solo
-      lo que únicamente una persona puede juzgar. Deja fuera 3 pruebas ⭐, y siguen enteras en el filtro ⭐:
-      VoiceOver (b8), porque la lectura en texto la verifica el código por otro camino (equivale al mapa nodo a nodo
-      y pasa axe en los dos temas); una persona que compara una banda en el lado a lado (h6), porque su forma ya pasó
-      tu mirada sobre el preview del PR #5; y el lado a lado en tu teléfono (h7), porque las e2e lo prueban a 380 px
-      en tres motores y su forma también pasó esa mirada.</p>
+    <p class="chica"><strong>Gate corto ⭐⭐: 6 paradas · ~20 min — es el que el cierre del ciclo exige.</strong> Solo
+      lo que únicamente una persona puede juzgar. Deja fuera 1 prueba ⭐, y sigue entera en el filtro ⭐: VoiceOver
+      (b8), porque la lectura en texto la verifica el código por otro camino (equivale al mapa nodo a nodo y pasa axe
+      en los dos temas). Para caber en ~20 min, h6 se hace con la misma persona de b1, y h7 con el mismo teléfono de
+      b11, en la misma sentada.</p>
     <p class="chica"><strong>Gate mínimo ⭐: 7 pruebas · ~50 min — DIFERIDO al gate acumulado del S4</strong> (cierre del
       ciclo H1): las 4 del S1 y 3 del S2. Es lo que ninguna automatización puede verificar: una persona que explica
       las capas o compara una banda, tu paleta en tu pantalla, tu teléfono de verdad, VoiceOver y si se entienden las
@@ -127,8 +126,8 @@
       <ul>
         <li>La forma de «en el mismo diagrama»: un solo botón, arriba a la derecha (mirada M1, 2026-10-02).</li>
         <li>El lado a lado en el preview del PR #5 (mirada M2, 2026-10-03).</li>
-        <li>Los mapas de Databricks (106 afirmaciones), Snowflake (143) y Fabric v0.2.0 (84), afirmación por afirmación
-          (2026-10-04, UTC).</li>
+        <li>Los mapas de Databricks (106 afirmaciones), Snowflake (143) y Fabric v0.2.0 (84), aprobados por una persona,
+          con la decisión sobre cada afirmación registrada (2026-10-04, UTC).</li>
       </ul>
       <strong>Ya aprobado en el S1:</strong>
       <ul>
@@ -186,7 +185,7 @@
       <li data-origen="heredada" data-minimo data-corto><input type="checkbox" id="b1"><label for="b1">Muéstrale el nivel 1 a <strong>una persona sin formación técnica</strong>, sin explicarle nada, y pídele que te cuente qué hace cada capa de Fabric. Esperado: la cuenta <strong>de izquierda a derecha, como el camino de un dato</strong>, apoyada en la pregunta de cada capa. Anota toda palabra en la que se trabe.
         <span class="origen origen-heredada">S1</span>
         <span class="minimo">⭐ mínimo</span>
-        <span class="minimo">⭐⭐ Parada 1 de 4</span></label></li>
+        <span class="minimo">⭐⭐ Parada 1 de 6</span></label></li>
       <li data-origen="heredada"><input type="checkbox" id="b2"><label for="b2">Mira el mapa. Esperado: se lee de izquierda a derecha; cada capa lleva su número, su nombre y <strong>su pregunta</strong>; las franjas transversales van abajo y abarcan todas las capas.
         <span class="origen origen-heredada">S1</span></label></li>
       <li data-origen="mejorado"><input type="checkbox" id="b3"><label for="b3">Mira el encabezado del mapa y un bloque. Esperado: el encabezado dice la vigencia con <strong>símbolo y texto</strong> («vigente · verificado hace N días»), la versión del mapa y el enlace «ver versiones»; el bloque dice cuántos componentes tiene y <strong>no lleva insignia mientras está vigente</strong>. Para ver un mapa envejecido sin esperar un mes, en una terminal en la carpeta del proyecto: <code>BIGD_FECHA_CONSULTA=2026-11-03 pnpm build &amp;&amp; pnpm start</code> (los mapas de las tres plataformas reales se verificaron el 2026-10-04). Esperado: cada bloque y cada componente lleva su insignia (símbolo y «30 d»), <strong>nada se sale del mapa</strong> y, en «Componentes», los nombres de una fila de referencias llena se abrevian con «…» (el nombre entero sigue en la ficha).
@@ -205,13 +204,13 @@
       <li data-origen="heredada" data-minimo data-corto><input type="checkbox" id="b9"><label for="b9">Mira el mapa <strong>en tu pantalla, en Oscuro y en Claro</strong>. Esperado: cada tipo de componente se distingue por su color, <strong>su glifo y su etiqueta</strong>; ningún color te cuesta; el claro está tan cuidado como el oscuro.
         <span class="origen origen-heredada">S1</span>
         <span class="minimo">⭐ mínimo</span>
-        <span class="minimo">⭐⭐ Parada 2 de 4</span></label></li>
+        <span class="minimo">⭐⭐ Parada 2 de 6</span></label></li>
       <li data-origen="heredada"><input type="checkbox" id="b10"><label for="b10">Baja a la leyenda. Esperado: tipos de componente (color, glifo y etiqueta), cómo viaja el dato (trazo), madurez y vigencia; y la <strong>nota de marcas</strong>: los nombres comerciales solo identifican productos; sin logos ni colores de marca.
         <span class="origen origen-heredada">S1</span></label></li>
       <li data-origen="heredada" data-minimo data-corto><input type="checkbox" id="b11"><label for="b11">En <strong>tu teléfono</strong> (en el preview, con tu sesión) abre el nivel 1. Esperado: la página no se mueve de lado; <strong>el mapa sí, con el dedo</strong>; «Ir a una capa» lleva a cada capa; las sombras de los bordes avisan que hay más; la pista dice cuántas capas hay. Toca un bloque: la ventana sube desde abajo y <strong>cabe sin deslizar de lado</strong>.
         <span class="origen origen-heredada">S1</span>
         <span class="minimo">⭐ mínimo</span>
-        <span class="minimo">⭐⭐ Parada 3 de 4</span></label></li>
+        <span class="minimo">⭐⭐ Parada 3 de 6</span></label></li>
     </ul>
     <div class="tabla-scroll"><table>
       <tr><th>Qué mirar</th><th>Valor / comportamiento correcto</th></tr>
@@ -307,22 +306,24 @@
     <div class="bloque-cabeza"><span class="letra">H</span><h2>Lado a lado</h2></div>
     <p class="meta-bloque chica suave"><strong>Empieza en:</strong> <code>/es/comparar</code> · ~12 min, más las dos ⭐ de este bloque · todas las plataformas con el mismo mapa, una por fila</p>
     <ul class="pasos">
-      <li data-origen="nuevo"><input type="checkbox" id="h1"><label for="h1">Entra desde <strong>Atlas → 04 Lado a lado</strong>. Esperado: el título <strong>«Cuatro plataformas, el mismo mapa»</strong>; en la página 1, las filas de Databricks, Microsoft Fabric y la Plataforma Ejemplo (ficticia), cada una con su versión y su vigencia; con <strong>«Siguiente»</strong>, Snowflake en la página 2. Cada banda cae en la misma columna para todas.
+      <li data-origen="nuevo"><input type="checkbox" id="h1"><label for="h1">Entra desde <strong>Atlas → 04 Lado a lado</strong>. Esperado: el título <strong>«Cuatro plataformas, el mismo mapa»</strong>; en la página 1, las filas de Databricks, Microsoft Fabric y la Plataforma Ejemplo (ficticia), cada una con su versión y su vigencia; con <strong>«Siguiente»</strong>, Snowflake en la página 2. Cada banda cae en la misma columna para todas. Abajo, en la leyenda, la <strong>nota de marcas</strong> nombra a Databricks, Microsoft Fabric y Snowflake, y no a la ficticia.
         <span class="origen origen-nuevo">Nuevo · S2</span></label></li>
       <li data-origen="nuevo"><input type="checkbox" id="h2"><label for="h2">Abre <strong>«Plataformas: 4 de 4»</strong> y desmarca dos. Esperado: quedan solo las elegidas, sin recargar; la dirección cambia (<code>?plataformas=…</code>) y al recargar sigue igual. La última elegida no se puede desmarcar.
         <span class="origen origen-nuevo">Nuevo · S2</span></label></li>
       <li data-origen="nuevo"><input type="checkbox" id="h3"><label for="h3">Toca <strong>«Desplegar todo»</strong>, arriba a la derecha del recuadro del mapa. Esperado: los componentes de todas las bandas aparecen <strong>en el mismo dibujo</strong> y las columnas no se mueven; el botón pasa a <strong>«Contraer todo»</strong> y vuelve a los bloques.
         <span class="origen origen-nuevo">Nuevo · S2</span></label></li>
-      <li data-origen="nuevo"><input type="checkbox" id="h4"><label for="h4">Toca un bloque. Esperado: su ventana, con la banda y la plataforma arriba (por ejemplo «Ingesta · Snowflake»). Con todo desplegado, toca un componente: su ficha. Esc cierra y el foco vuelve a lo que tocaste.
+      <li data-origen="nuevo"><input type="checkbox" id="h4"><label for="h4">Toca un bloque. Esperado: su ventana, con la banda y la plataforma arriba (por ejemplo «Ingesta · Databricks»; Snowflake está en la página 2). Con todo desplegado, toca un componente: su ficha. Esc cierra y el foco vuelve a lo que tocaste.
         <span class="origen origen-nuevo">Nuevo · S2</span></label></li>
       <li data-origen="nuevo"><input type="checkbox" id="h5"><label for="h5">Con dos plataformas elegidas, toca <strong>ES / EN</strong>. Esperado: la misma página en inglés, con <strong>la misma selección</strong> y la misma página.
         <span class="origen origen-nuevo">Nuevo · S2</span></label></li>
-      <li data-origen="nuevo" data-minimo><input type="checkbox" id="h6"><label for="h6">Pídele a <strong>una persona</strong> que compare una banda entre las cuatro, por ejemplo Ingesta, sin explicarle nada. Esperado: lo lee <strong>por columnas</strong> (una banda, todas las plataformas) y nombra qué trae cada una. Anota dónde se traba.
+      <li data-origen="nuevo" data-minimo data-corto><input type="checkbox" id="h6"><label for="h6">Pídele a <strong>una persona sin formación técnica</strong> que compare dos plataformas en el lado a lado, sin explicarle nada, y que te diga <strong>en qué capa difieren</strong>. Esperado: lo lee <strong>por columnas</strong> (una banda, todas las plataformas) y nombra al menos una banda donde difieren y qué trae cada una ahí. Anota dónde se traba.
         <span class="origen origen-nuevo">Nuevo · S2</span>
-        <span class="minimo">⭐ mínimo</span></label></li>
-      <li data-origen="nuevo" data-minimo><input type="checkbox" id="h7"><label for="h7">En <strong>tu teléfono</strong> (en el preview, con tu sesión) abre <code>/es/comparar</code>. Esperado: una banda a la vez, elegida en las pestañas de arriba; cada plataforma con sus bloques, y cada bloque se abre en sus componentes; «Desplegar todo» los abre todos; la página no se desliza de lado.
+        <span class="minimo">⭐ mínimo</span>
+        <span class="minimo">⭐⭐ Parada 4 de 6</span></label></li>
+      <li data-origen="nuevo" data-minimo data-corto><input type="checkbox" id="h7"><label for="h7">En <strong>tu teléfono</strong> (en el preview, con tu sesión) abre <code>/es/comparar</code>. Esperado: una banda a la vez, elegida en las pestañas de arriba; cada plataforma con sus bloques, y cada bloque se abre en sus componentes; «Desplegar todo» los abre todos; la página no se desliza de lado.
         <span class="origen origen-nuevo">Nuevo · S2</span>
-        <span class="minimo">⭐ mínimo</span></label></li>
+        <span class="minimo">⭐ mínimo</span>
+        <span class="minimo">⭐⭐ Parada 5 de 6</span></label></li>
     </ul>
     <div class="reportame"><p><strong>Repórtame sí o sí:</strong> una columna que se mueve al desplegar, una fila que aparece y desaparece al cargar, o una selección que se pierde al recargar o al cambiar de idioma.</p></div>
   </section>
@@ -342,7 +343,7 @@
     <div class="bloque-cabeza"><span class="letra">J</span><h2>Versiones del mapa</h2></div>
     <p class="meta-bloque chica suave"><strong>Empieza en:</strong> <code>/es/atlas/fabric</code> · ~10 min, más la ⭐ de este bloque · qué cambió entre una versión aprobada y la siguiente (con el kit para ver las cuatro marcas)</p>
     <ul class="pasos">
-      <li data-origen="nuevo"><input type="checkbox" id="j1"><label for="j1">En el encabezado de Fabric toca <strong>«ver versiones»</strong>. Esperado: «Microsoft Fabric: versiones del mapa», «De v0.1.0 a v0.2.0», dos filas (arriba la anterior) y <strong>«Sin cambios en el dibujo: los mismos componentes…»</strong>; debajo, en «Lo que dicen los componentes», que cambió el texto de 6 componentes (los nombra) y se renovaron las fuentes de 19.
+      <li data-origen="nuevo"><input type="checkbox" id="j1"><label for="j1">En el encabezado de Fabric toca <strong>«ver versiones»</strong>. Esperado: «Microsoft Fabric: versiones del mapa», «De v0.1.0 a v0.2.0», dos filas (arriba la anterior) y <strong>«Sin cambios en el dibujo: los mismos componentes…»</strong>; debajo, en «Lo que dicen los componentes», que cambió el texto de 6 componentes (los nombra) y se renovaron las fuentes de 9.
         <span class="origen origen-nuevo">Nuevo · S2</span></label></li>
       <li data-origen="nuevo"><input type="checkbox" id="j2"><label for="j2">Toca un bloque de la <strong>fila de arriba</strong>. Esperado: su ventana dice «… · versión 0.1.0» y muestra los componentes de entonces, <strong>sin</strong> el paso a «Componentes». Ciérrala y toca uno de la fila de abajo: dice «versión 0.2.0» y sí trae el paso.
         <span class="origen origen-nuevo">Nuevo · S2</span></label></li>
@@ -353,7 +354,7 @@
       <li data-origen="nuevo" data-minimo data-corto><input type="checkbox" id="j5"><label for="j5">Lee las dos páginas de versiones, la de Fabric y la de la muestra (j4), <strong>sin explicación</strong>. Esperado: entiendes qué cambió y qué no; «Sin cambios en el dibujo» y «Lo que dicen los componentes» no se contradicen; cada marca se entiende sin mirar el color. Es la mirada de texto que quedó «maquetado, no visto» en el S2.
         <span class="origen origen-nuevo">Nuevo · S2</span>
         <span class="minimo">⭐ mínimo</span>
-        <span class="minimo">⭐⭐ Parada 4 de 4</span></label></li>
+        <span class="minimo">⭐⭐ Parada 6 de 6</span></label></li>
     </ul>
     <div class="kit"><p><strong>Kit de prueba:</strong> la <strong>versión anterior de muestra</strong> (j4) está en <code>docs/kit-de-prueba/README.md</code>, sección 4, con su comando y el de limpieza. Es inventada: la Plataforma Ejemplo es ficticia.</p></div>
     <div class="reportame"><p><strong>Repórtame sí o sí:</strong> una marca que solo se distingue por el color, una diferencia del dibujo que la lista no explica, o una ventana de la versión vieja que lleva a «Componentes».</p></div>
@@ -384,6 +385,11 @@
           con el kit). 14 nuevas: lado a lado (H), los mapas de Databricks y Snowflake (I) y versiones del mapa (J),
           con la versión anterior de muestra en el kit. Se quita el aviso «Diferido» del bloque C: el lado a lado
           llegó. ⭐ 7 (diferidas al S4) · ⭐⭐ 4. Ninguna eliminada.</li>
+        <li><strong>S2 · 2026-10-04, ajustes de la auditoría:</strong> las mismas 52 pruebas. El ⭐⭐ pasa a 6 paradas
+          (entran h6 y h7: su veredicto solo es humano y el CI no lo cubre por otro camino). h6 pide una persona sin
+          formación técnica y en qué capa difieren, como la orden; el ejemplo de h4 es de la página 1; j1 cuenta 9
+          fuentes renovadas (sin la fecha de consulta); h1 mira también la nota de marcas, que ahora nombra las
+          plataformas reales. Ninguna eliminada.</li>
       </ul>
     </details>
   </footer>

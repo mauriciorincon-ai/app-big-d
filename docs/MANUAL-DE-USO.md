@@ -20,7 +20,7 @@ Big-D explica las plataformas de datos (hoy Databricks, Microsoft Fabric y Snowf
 ficticia, que viene del contrato del diagramador y muestra el mapa completo) **con un mismo mapa**: las mismas capas,
 los mismos colores y los mismos símbolos para todas. Así puedes entender una plataforma de punta a punta y
 compararlas lado a lado sin aprender un dibujo nuevo cada vez. Todo lo que dice el mapa viene de documentación pública del fabricante, con fecha, y lo aprobó una
-persona afirmación por afirmación. Big-D **planea, gestiona y controla; jamás opera una plataforma**: no se conecta
+persona; cada afirmación lleva su cita y su decisión registrada. Big-D **planea, gestiona y controla; jamás opera una plataforma**: no se conecta
 a ninguna ni pide cuentas.
 
 ### Primeros pasos
@@ -159,6 +159,8 @@ a ninguna ni pide cuentas.
   6. En un teléfono el mapa va de una banda a la vez: elige la banda en las pestañas de arriba. Cada plataforma
      muestra sus bloques, y cada bloque se abre en sus componentes.
   7. La dirección de la página guarda qué plataformas elegiste y en qué página estás, y **ES / EN** las conserva.
+  8. Debajo del mapa, la leyenda explica colores, trazos, madurez y vigencia; su nota de marcas nombra las
+     plataformas reales que aparecen.
 - **Limitaciones:**
   - El lado a lado compara qué hay en cada banda; las conexiones entre componentes se ven en el mapa de cada
     plataforma.
@@ -175,22 +177,25 @@ a ninguna ni pide cuentas.
      una marca con símbolo y palabra: **«+ nuevo»**, **«− retirado»** (en la fila de la versión anterior),
      **«→ renombrado»** y **«madurez»**. Debajo, una lista explica cada cambio.
   3. **«Lo que dicen los componentes»** cuenta lo que cambió sin cambiar el dibujo: qué componentes cambiaron su
-     texto y cuántos renovaron sus fuentes.
+     texto y cuántos renovaron sus fuentes (otra fuente; la misma consultada otro día no cuenta).
   4. Toca un bloque de cualquiera de las dos filas para ver sus componentes en esa versión.
 - **Limitaciones:**
   - Si el mapa tiene una sola versión, la página lo dice y no muestra un dibujo.
+  - Si las reglas de hoy ya no pueden dibujar una versión vieja, la página la nombra («aprobada y archivada; las
+    reglas de hoy ya no la dibujan») y no la compara.
   - El dibujo solo marca lo que cambia el mapa: componentes nuevos, retirados, renombrados o con otra madurez. Por
-    eso entre las dos versiones de Fabric dice «Sin cambios en el dibujo», y lo que cambió (seis textos y las
-    fuentes de todos) aparece en «Lo que dicen los componentes».
+    eso entre las dos versiones de Fabric dice «Sin cambios en el dibujo», y lo que cambió (el texto de seis
+    componentes y las fuentes de nueve) aparece en «Lo que dicen los componentes».
 
 ### Preguntas frecuentes
 
-- **¿Big-D recomienda una plataforma?** Todavía no. Este primer ciclo construye el mapa común. La comparación con
-  evidencia, pesos y riesgos llega en los próximos sprints.
+- **¿Big-D recomienda una plataforma?** Todavía no. Hasta ahora Big-D construyó el mapa común: el atlas de cada
+  plataforma, el lado a lado y las versiones de cada mapa. La comparación con evidencia, pesos y riesgos llega en los
+  próximos sprints de este ciclo.
 - **¿Por qué no hay logos?** Para no favorecer a ningún fabricante. El color del mapa dice qué capacidad es, nunca
   de quién. Los nombres comerciales se usan solo para identificar productos.
 - **¿Quién escribió lo que dice el mapa?** Lo propuso el investigador, con citas comprobadas por código, y una
-  persona lo aprobó afirmación por afirmación. El autor declara que conoce Fabric más a fondo que las demás
+  persona lo aprobó; la decisión sobre cada afirmación queda registrada. El autor declara que conoce Fabric más a fondo que las demás
   plataformas.
 
 ### Historial
@@ -210,7 +215,8 @@ Big-D explains data platforms (today Databricks, Microsoft Fabric and Snowflake,
 fictional one that comes from the diagramador's contract and shows the full map) **with one shared map**: the same
 layers, colours and symbols for all of them. You can understand a platform end to end and compare platforms side by
 side without learning a new drawing each time. Everything on the map
-comes from the vendor's public documentation, dated, and a person approved it claim by claim. Big-D **plans,
+comes from the vendor's public documentation, dated, and a person approved it; every claim carries its quote and its
+recorded decision. Big-D **plans,
 manages and controls; it never operates a platform**: it connects to none and asks for no accounts.
 
 ### Getting started
@@ -345,6 +351,8 @@ manages and controls; it never operates a platform**: it connects to none and as
   6. On a phone the map shows one band at a time: pick the band in the tabs at the top. Each platform shows its
      blocks, and each block opens into its components.
   7. The page's address keeps which platforms you chose and which page you are on, and **ES / EN** keeps them too.
+  8. Below the map, the legend explains colours, strokes, maturity and validity; its trademark note names the real
+     platforms that appear.
 - **Limitations:**
   - Side by side compares what each band holds; the connections between components are on each platform's map.
   - Each row says how current its platform is; the dates can differ between rows.
@@ -359,22 +367,26 @@ manages and controls; it never operates a platform**: it connects to none and as
      carries a mark with a symbol and a word: **“+ new”**, **“− removed”** (on the previous version's row),
      **“→ renamed”** and **“maturity”**. Below, a list explains each change.
   3. **“What the components say”** counts what changed without changing the drawing: which components changed their
-     text and how many renewed their sources.
+     text and how many renewed their sources (a different source; the same one consulted on another day does not
+     count).
   4. Tap a block on either row to see its components in that version.
 - **Limitations:**
   - If the map has a single version, the page says so and shows no drawing.
+  - If today's rules can no longer draw an old version, the page names it (“approved and archived; today's rules no
+    longer draw it”) and does not compare it.
   - The drawing only marks what changes the map: new, removed or renamed components, or a different maturity. That
-    is why, between Fabric's two versions, it says “No changes in the drawing”, and what did change (six texts and
-    everyone's sources) appears under “What the components say”.
+    is why, between Fabric's two versions, it says “No changes in the drawing”, and what did change (the text of six
+    components and the sources of nine) appears under “What the components say”.
 
 ### Frequently asked questions
 
-- **Does Big-D recommend a platform?** Not yet. This first cycle builds the shared map. The comparison with
-  evidence, weights and risks comes in the next sprints.
+- **Does Big-D recommend a platform?** Not yet. So far Big-D has built the shared map: each platform's atlas, side by
+  side and the versions of each map. The comparison with evidence, weights and risks comes in the next sprints of this
+  cycle.
 - **Why are there no logos?** So no vendor is favoured. On the map, colour says which capability something is,
   never whose it is. Trade names are used only to identify products.
 - **Who wrote what the map says?** The researcher proposed it, with quotes the code checked, and a person approved
-  it claim by claim. The author declares a deeper knowledge of Fabric than of the other platforms.
+  it; the decision on each claim is on record. The author declares a deeper knowledge of Fabric than of the other platforms.
 
 ### History
 

@@ -35,8 +35,10 @@ subset as a payable debt.
 3. **The deeper reduction is proposed, not done:** a feature-and-axis subset of the two fonts goes to the
    summary's contract amendments and to the design system, because it changes the mockup's fonts, the
    package's fingerprinted copy and possibly the advances in `metricas.json` (golden files would follow).
-4. LCP is measured again at the end of S2 with the new routes (`/comparar`, `/versiones`) and the numbers go
-   to the summary.
+4. Measured again at the end of S2 (2026-10-04, local, median of 3): `/es/comparar` 2783 ms,
+   `/es/atlas/fabric/versiones` 2613 ms, `/es/atlas/fabric` 2478 ms, `/es/atlas/databricks` 2465 ms, and Snowflake,
+   the densest map, `/es/atlas/snowflake` 2536 ms and `/en/atlas/snowflake/componentes` 2543 ms. All are under the
+   2900 ms budget and the 3.0 s ceiling.
 
 ## Consequences
 

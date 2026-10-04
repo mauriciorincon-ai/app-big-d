@@ -33,24 +33,43 @@ Before S2 nothing kept an old map.
      history.
    - It also checks that every approved non-current version is archived.
 4. **Old contracts migrate in memory.**
-   - `migrar()` raises `contrato_version` only when the document validates the same (D-S2-01). The CHANGELOG
-     declares 0.4.0 a MINOR change.
+   - `migrar()` raises `contrato_version` along the chain of jumps the CHANGELOG declares compatible (0.3 → 0.4 →
+     0.5…); the validation of the new version decides the rest (D-S2-01). The CHANGELOG declares 0.4.0 a MINOR
+     change.
    - The YAML on disk keeps its approved bytes, so its fingerprint still matches.
 5. **The page draws what the contract can mark.**
    - Each pair is shown with `compare([previous, next], { marks: diff })` and `diffToText`.
    - What changes without changing the drawing (component texts, sources) is counted in the app with canonical
      JSON, so "no changes in the drawing" does not read as "nothing changed".
    - Each block opens the window of its own version. Only the current version links to the components level.
+   - What changes only the consultation date of a source is not a renewed source: that date changes on every run of
+     the researcher, and the approval does not count it either (M-22).
+6. **Archived versions that today's contract cannot validate become _historic_.** A later contract, grammar or rule
+   can reject old text. Such a version cannot be edited (its bytes are approved), re-researched (it is history) or
+   deleted (rule 3 demands it).
+   - The loader lists it in `Datos.historicas` with the validator's lines as its reasons; it is not drawn.
+   - `mapasSinAprobacion` checks its fingerprint like any archived version: the build fails only if its bytes
+     changed.
+   - The versions page names it in one line ("approved and archived; today's rules no longer draw it").
+   - Only for real platforms: an invalid archive of a fictional platform has no approval anchoring its bytes, so
+     it still fails the load.
+   - Today there are none, and a test says so: turning a version historic is a decision recorded in the
+     implementation log, with that test changed in the same commit.
 
 ## Gates
 
-- `tests/unit/datos.test.ts`: every broken archive shape names its file.
+- `tests/unit/datos.test.ts`: every broken archive shape names its file (a file with another extension too); a real
+  platform's archive that does not validate becomes historic; a fictional one's breaks, and so does one citing a
+  real domain (rule 12); none is historic today.
+- `tests/unit/datos-migrar.test.ts`: the chain of jumps, a missing link, a cycle.
 - `tests/unit/mapas-aprobados.test.ts`: an archived version nobody approved, or an approved one missing from the
-  archive, breaks.
+  archive, breaks; so does one word changed in an approved archive (the fingerprint, not the version), and a
+  historic version's fingerprint still counts.
+- `tests/unit/propuestas-aprobadas.test.ts`: every revision is backed by the proposal it approved (bytes, ids, map).
 - `tests/unit/investigador/scripts.test.ts`: the approval archives the previous version byte for byte, and the
-  loader reads it.
-- `tests/unit/versiones.test.ts`: pairs newest first, marks and list, texts and sources, windows per version, key
-  order is not a change.
+  loader reads it; it refuses to overwrite an archive with other bytes.
+- `tests/unit/versiones.test.ts`: pairs newest first, marks and list, texts and sources (a new consultation date is
+  not a new source), windows per version, key order is not a change, a historic pair is listed and not drawn.
 - `atlas-vigencias`: the page draws at every state-change date of every version.
 - `tests/e2e/versiones.spec.ts`.
 

@@ -22,8 +22,10 @@ list in `vercel.json` cannot work either: Vercel reads it before the build, and 
    `pnpm build`, which Vercel runs too. It hashes (SHA-256) each inline `<script>` and `<style>` of every
    product page in `out/` and injects `<meta http-equiv="Content-Security-Policy">` right after
    `<meta charSet>`, before any script.
-   - The policy: `default-src 'self'`; `script-src` and `style-src` with `'self'` plus that page's hashes;
-     `img-src 'self' data:`; `font-src 'self'`; `connect-src 'self'`, plus the Sentry ingest origin only
+   - The policy: `default-src 'self'`; `script-src` with `'self'` plus that page's hashes; `style-src` with
+     `'self'` plus the hashes of the inline `<style>` of **every page of the site**: a client-side navigation
+     inserts the next page's `<style>` under the first page's policy (S2, phase 2). Scripts stay per page: React
+     does not execute an inline `<script>` it inserts on the client. `img-src 'self' data:`; `font-src 'self'`; `connect-src 'self'`, plus the Sentry ingest origin only
      when the build has a DSN; `object-src 'none'`; `base-uri 'self'`; `form-action 'self'`.
    - No `'unsafe-inline'` and no `'unsafe-eval'`.
 2. **No inline attributes in product pages.** The step refuses to publish a page with a `style="…"` or an
@@ -45,6 +47,10 @@ list in `vercel.json` cannot work either: Vercel reads it before the build, and 
   events and zero page errors.
   - It was seen red: removing one hash from a built page produced `script-src-elem · inline` on that
     page and nothing on the untouched one.
+  - It also walks the level tabs of every published platform in both languages without reloading and demands zero
+    violations. It was seen red with the injector without the site's style hashes: four routes named
+    `style-src-elem · inline` (implementation log, phase 2, «La CSP bloqueaba los estilos al cambiar de nivel sin
+    recargar»).
 - `tests/unit/servidor-config.test.ts` checks that the mockup's header CSP is the same in both servers.
 - An offline `vercel build` confirmed the step runs on Vercel and the meta survives in
   `.vercel/output/static`.
@@ -54,3 +60,5 @@ list in `vercel.json` cannot work either: Vercel reads it before the build, and 
 Inline script execution is limited to the exact bytes each build produced, in every browser, without a
 server. A future inline script or attribute fails the build or the e2e, not the user. If the app ever
 needs a header-only directive, it has to come with a server or an edge function, by a new ADR.
+
+The style allowance is site-wide; the script allowance is per page.

@@ -16,7 +16,7 @@ Cinco fases con parada al final de cada una (espera «continúa»):
 | Fase | Qué | Parada humana |
 | ---- | --- | ------------- |
 | 0 | Setup, constitución, contrato v0.4.0 (lock 57/57, API en inglés, V16, 34 casos), migración en memoria, deuda del S1 (CSP, LCP, homepage), kit v1.32.1/v1.33.0 | «continúa» |
-| 1 | Resto de la conformidad v0.4.0, `compare` (nivel por banda, filas independientes, `toCompareCSS`), diferencias dibujables, P13 | **M1**: mirada de FORMA del boceto «en el mismo diagrama», antes de construir el nivel por banda |
+| 1 | Resto de la conformidad v0.4.0, `compare` (nivel por banda, filas independientes, `toCompareCSS`, que no se construyó: desviación 9), diferencias dibujables, P13 | **M1**: mirada de FORMA del boceto «en el mismo diagrama», antes de construir el nivel por banda |
 | 2 | `/[idioma]/comparar` en producto + versionado de mapas | **M2**: gate de FORMA del lado a lado sobre el preview (indiferible) |
 | 3 | `/investigar databricks`, `snowflake` y `fabric` | tres paradas de contenido, afirmación por afirmación |
 | 4 | `/[idioma]/atlas/[plataforma]/versiones`, e2e, guía v2, manual, ADRs, `design-sync/`, `/audita-sprint`, `/deploy-check`, summary | aprobación de la fase 2 de la auditoría |
@@ -142,6 +142,9 @@ Decisiones D-S2-01 a D-S2-11 y los siete hechos que cambiaron el trabajo: en el 
 - **CI de `4c94f5a`:** `quality`, `e2e`, `lighthouse`, `diagramador (ubuntu-latest)` y `diagramador (macos-latest)` en
   `success` propio, más Vercel. **Cero comentarios de `vercel[bot]`** en el PR #5 (y desaparece el check «Vercel Preview
   Comments»): el interruptor que apagó la persona funciona.
+- **`beforeSend` del kit v1.33.0 confirmado** (registrado en la Fase 2 de la auditoría, S2-AUD-47):
+  `instrumentation-client.ts:26` → `eventoSinContenido` (`src/lib/observability.ts:21`), con su prueba
+  `tests/unit/observability.test.ts`.
 
 ## Fase 1 — Conformidad v0.4.0, `compare`, diferencias y P13 («continúa» 2026-10-02)
 
@@ -180,7 +183,7 @@ Decisiones D-S2-01 a D-S2-11 y los siete hechos que cambiaron el trabajo: en el 
   contraído con clic y desplegado con Enter, oscuro ES y claro EN, cero errores de consola.
 - **Lo que cambia en el plan si la segunda vuelta se aprueba:** el producto usa dos estados del nivel por banda
   (ninguna banda o todas); `compare` conserva `levelByBand` por banda como pide § 4.4, y la fila independiente
-  trae los dos niveles completos. `toCompareCSS` alterna una sola clase por fila.
+  trae los dos niveles completos. `toCompareCSS` alterna una sola clase por fila (al final no se construyó: una regla CSS alterna las dos variantes; desviación 9).
 - **M1 APROBADA (2026-10-02), con el boceto abierto:** «Excelente pero pon el boton en la parte superior derecha del
   recuadro del diagrama». Ajuste aplicado en el boceto en el mismo acto (sin nueva parada, regla de segundas
   vueltas): el botón vive en una franja propia arriba a la derecha, dentro del recuadro del diagrama, fuera de la
@@ -322,6 +325,8 @@ Decisiones D-S2-01 a D-S2-11 y los siete hechos que cambiaron el trabajo: en el 
   **no tiene versión corregida** (`first_patched_version: null`; en npm la última es 3.0.3). `braces` solo llega por
   `eslint-config-next` → `@next/eslint-plugin-next` → `fast-glob` 3.3.1 → `micromatch`; la versión más nueva de
   `eslint-config-next` (16.3.8) fija el mismo `fast-glob`. `pnpm audit --prod`: sin avisos.
+- **CI de `6d375de`** (registrado en la Fase 2 de la auditoría, S2-AUD-47): el mismo rojo que `8c6f980` (`braces`),
+  un push antes; el mismo arreglo. `gh pr checks` no se leyó tras ese push.
 - **Decisión (registrada; la persona puede vetarla):** excepción angosta en `pnpm-workspace.yaml`
   (`auditConfig.ignoreGhsas`, solo ese aviso, con su porqué y cuándo se retira: cuando exista la 3.0.4 o
   `eslint-config-next` deje de pedirlo). El audit pasa con «1 high (1 ignored)».
@@ -744,6 +749,25 @@ afirmaciones; sin retiros, sin componentes ni flujos nuevos. **Cero «lago de da
   469 KB (dos SVG por fila). Todo dentro del presupuesto; la CI corre el mismo Lighthouse sobre
   `lighthouse-urls.json`, que ya incluye las dos rutas de versiones.
 
+### § 12 del contrato contra el piloto (registrado en la Fase 2 de la auditoría, S2-AUD-13)
+
+La orden pedía verificar que § 12 (`packages/diagramador/CONTRATO.md:563-580`, el contrato de la propuesta, nuevo en
+0.4.0) coincide con el investigador. No se hizo durante el sprint; se contrasta aquí, viñeta por viñeta:
+
+| Viñeta de § 12 | El piloto | Dónde |
+| --- | --- | --- |
+| Cita literal verificada por código | ✓ | `scripts/verificar-citas.mjs`; `src/lib/investigador/texto.ts` |
+| Aprobar o rechazar por afirmación, con cascada | ✓ | `src/lib/investigador/decisiones.ts:9-25` |
+| Retiro con motivo y cita oficial verificada; el flujo que sale por arrastre no la necesita | ✓ | `src/lib/investigador/aprobar.ts:120-140`; `retiros.ts` |
+| «Sin novedades» no esquiva la cita ni el rechazo | ✓ | `aprobar.ts:143-146` (solo sin rechazos y con el mismo contenido) |
+| «Sin novedades» renueva la fecha de verificación solo de las afirmaciones que vuelven a verificarse | ✗ parcial: renueva la de todos los nodos con la fecha de la verificación, también la de un nodo cuyas afirmaciones quedaron «no verificables» y aprobó una persona | `aprobar.ts:161-164` |
+| Validación en publicación (V1–V16, con cobertura) y dibujo a cuatro edades antes de aprobar | ✓ | `aprobar.ts:166-178` |
+| La aprobación la ejecuta una persona en su terminal y deja registro | ✓ | el candado del script de aprobación (M-15); `data/revisiones/<id>.jsonl` |
+| Entidades de una afirmación: nodo, flujo, bloque, paso | ✗ solo `nodo` y `flujo`: los bloques (`nombre`, `lider`) y los pasos del recorrido entran al mapa aprobado sin cita propia | `src/lib/investigador/esquema.ts:27`, `:41` |
+
+Las dos ✗ van a «Enmiendas al contrato del diagramador» en el summary. No se toca código: es una decisión de la
+planeadora (o de la persona, si pide citar bloques y pasos desde el S3).
+
 ### Auditoría final — Fase 1 (`/audita-sprint`, 2026-10-04)
 
 - **Quién auditó:** cuatro auditores independientes en paralelo, uno por porción, ninguno construyó el sprint:
@@ -970,6 +994,46 @@ final, de a una.
     - `typecheck` y `lint` en verde;
     - build con `csp: 46 páginas`;
     - e2e de `versiones`, `atlas` e `investigador`: 50 pasaron y 2 se saltaron (las de «sin mapa»).
+- **Lote 4 (documentos y registros): inicio.**
+- **Lote 4: hecho, salvo el summary.** El summary se escribe tras las respuestas de la persona a P1–P3, porque
+  cambian su deuda y su desviación. Hallazgos S2-AUD-08 (textos), -11, -12, -13, -14, -15, -36 (textos), -41, -42,
+  -43, -44, -45, -46 y -47.
+  - **Guía de prueba.**
+    - El ⭐⭐ pasa a 6 paradas (b1, b9, b11, h6, h7 y j5) y deja fuera solo b8.
+    - h6 pide una persona sin formación técnica y «en qué capa difieren», como la orden.
+    - h4 pone un ejemplo de la página 1; j1 cuenta 9 fuentes.
+    - «Ya aprobado en el S2» dice «aprobados por una persona, con la decisión sobre cada afirmación registrada».
+    - h1 mira también la nota de marcas.
+    - El historial lo registra; las pruebas siguen siendo 52.
+  - **Manual ES/EN.**
+    - Las aprobaciones, con la decisión registrada.
+    - «el texto de seis componentes y las fuentes de nueve».
+    - La pregunta frecuente sin «Este primer ciclo».
+    - La limitación de una versión histórica.
+    - Qué cuenta como fuente renovada.
+    - La leyenda del lado a lado con la nota de marcas.
+  - **ADRs.**
+    - `csp-static-export`: el `style-src` del sitio, el gate de navegación y su rojo.
+    - `compare-in-the-engine`: el teléfono y la cifra de cuatro plataformas.
+    - `lcp-budget-by-profile`: las cifras del cierre, también Snowflake.
+    - `map-versioning`: la cadena de saltos, la decisión 6 y sus gates.
+    - Nuevo `decisions/design-system-s2-extensions.md`, con 9 extensiones y su estado de mirada.
+  - **READMEs y comandos.**
+    - `design-sync/README.md` lista las tres tarjetas del S2 y cita el ADR del S2.
+    - El README del kit nombra los bloques F y J y dice dónde viven los mapas reales.
+    - `/deploy-check` atribuye cada matriz a la prueba que la tiene.
+  - **Bitácora.**
+    - El `beforeSend` (fase 0) y la CI de `6d375de` (fase 1).
+    - El contraste de § 12 con el piloto (fase 4).
+    - El ítem 9 de «Desviación del plan» reescrito, con los ítems 10 a 20.
+    - `toCompareCSS` anotado donde se nombraba.
+  - **Segunda pasada de «¿qué frases caducaron?»** sobre las líneas que agregó la Fase 2, por vocabulario de promesa
+    aplazada.
+    - Cayeron «Hoy no hay ninguna así» (manual ES y EN) y «Hoy, ninguna» (JSDoc de `Datos.historicas`). Se quitaron
+      para que no caduquen solas: lo que hoy no hay lo vigila la prueba «hoy no hay ninguna histórica».
+    - Quedan, y son ciertas hoy: «Todavía no» de la pregunta frecuente (el núcleo comparativo no existe) y «Today
+      there are none, and a test says so» del ADR (la prueba lo exige).
+    - El summary entra en la pasada final, cuando exista.
 
 ## Desviación del plan
 
@@ -994,5 +1058,37 @@ Lo que el plan aprobado ya declaró frente a la orden y a `SPRINT_002.md`:
    no se copia; se suman la regla 23 y la regla 17 de v1.32.1.
 8. **Mirada M1 agregada** (D-S2-10): la forma de «en el mismo diagrama» se aprueba en un boceto antes de
    construir el nivel por banda.
-9. **Extensiones del contrato** que van a «Enmiendas»: filas independientes y `toCompareCSS` (D-S2-07),
-   `marks` y `diffToText` (D-S2-08), el estado del lado a lado en la URL.
+9. **Extensiones del contrato** que van a «Enmiendas»: filas independientes (`part: "header" | "rows"`) y dos
+   variantes prerenderizadas por fila (`Geometria.variante`). `toCompareCSS` no se construyó: tras M1, una regla CSS
+   alterna las dos variantes (ADR `compare-in-the-engine`). Además, `marks` y `diffToText` (D-S2-08), y el estado
+   del lado a lado en la URL.
+
+Lo que se desvió después del plan (agregado en la Fase 2 de la auditoría, S2-AUD-12, con su estado de hoy):
+
+10. **M1 cambió la forma de D-S2-06.** De «una banda a la vez» a «un solo botón despliega y contrae todo», arriba a
+    la derecha. Lo pidió la persona con el boceto abierto (`:187`); ADR `compare-in-the-engine` y
+    `decisions/design-system-s2-extensions.md`, fila 1.
+11. **El lado a lado no lleva insignias de vigencia.** El estado va en palabras en el rótulo de la fila («v0.1.0 · por
+    revisar · 34 días»), sin la marca dibujada que piden § 4.8 y G7 (`:275`). La forma la vio la persona en M2; va a
+    «Enmiendas» y es la fila 3 del ADR de extensiones del S2.
+12. **A 1280 px el lado a lado se desliza** (rejilla de 1496 u, para que desplegar no mueva columnas; `:442`). Visto
+    en M2; fila 2 del ADR de extensiones.
+13. **Nota de marcas sin los nombres reales:** pagada en la auditoría (S2-AUD-05). Hoy la nota sale del dato.
+14. **El kit trae una v0.0.9 sintética de la Plataforma Ejemplo** en lugar de «los tres mapas y Fabric v0.1.0»
+    (`:718`). Esos viven en `data/` y el bloque J de la guía los usa; el README del kit ya lo dice (S2-AUD-43).
+15. **Aprobación sin evidencia de revisión por afirmación** (`:632-636`). Databricks: las verificadas venían
+    aprobadas de entrada en la pantalla. Snowflake y Fabric: el comando lo armé yo y se lo dejé copiado. La
+    aprobación fue humana: la persona corrió cada comando en su terminal, y el candado lo garantiza. Los
+    documentos ya no dicen «afirmación por afirmación» (S2-AUD-08). La respuesta de la persona a la P1 se registra
+    aquí con su fecha.
+16. **⭐⭐ con 4 paradas frente a las ~6 de la orden:** pagada en la auditoría (S2-AUD-15). Hoy son 6 (b1, b9, b11,
+    h6, h7 y j5).
+17. **Archivos de la orden que no existen:** `packages/diagramador/src/svg/compare.ts` (el SVG del lado a lado lo
+    serializa `toSVG`) y `src/components/lado-a-lado/*` (el componente es `src/components/atlas/Lado.tsx`). Orden
+    `:91`; `SPRINT_002.md:183`, `:186`.
+18. **Excepción del aviso de `braces` en el audit** (`:320`; `pnpm-workspace.yaml:18-26`;
+    `tests/unit/avisos-ignorados.test.ts`). Deuda hasta que exista una versión corregida.
+19. **§ 12 no se verificó durante el sprint:** contrastado en la Fase 2 de la auditoría (`:752`, S2-AUD-13). Dos
+    diferencias van a «Enmiendas».
+20. **Límite de tiempo de las pruebas** (`vitest.config.ts`, `testTimeout: 20_000`): no estaba en el plan; se agregó
+    en la Fase 2 de la auditoría porque cargar `data/` pasaba de los 5 s con la máquina cargada.

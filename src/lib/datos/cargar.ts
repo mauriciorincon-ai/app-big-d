@@ -47,7 +47,7 @@ export interface Datos {
   atlas: Map<string, Atlas>;
   /** Las versiones anteriores de cada mapa publicado, de la más vieja a la más nueva (sin la vigente). */
   versiones: Map<string, VersionArchivada[]>;
-  /** Las versiones archivadas que las reglas de hoy ya no validan, de la más vieja a la más nueva. Hoy, ninguna. */
+  /** Las versiones archivadas que las reglas de hoy ya no validan, de la más vieja a la más nueva (una prueba exige que hoy no haya ninguna). */
   historicas: Map<string, VersionHistorica[]>;
 }
 

@@ -1,12 +1,12 @@
 # Kit de prueba · Test kit — Big-D
 
 Archivos para probar lo que la app no muestra sola. Los usa la guía de prueba (`docs/GUIA-DE-PRUEBA.html`,
-bloques F e I) y los vigila `tests/unit/kit-de-prueba.test.ts`: si el esquema, el contrato o el dibujo cambian, la prueba
+bloques F y J) y los vigila `tests/unit/kit-de-prueba.test.ts`: si el esquema, el contrato o el dibujo cambian, la prueba
 avisa antes de que el kit te falle. Todo es ficticio: la «Plataforma Norte» no existe y sus fuentes están en un
 dominio reservado que nunca resuelve (`ejemplo.invalid` en la propuesta de muestra, `example.org` en la base
 incompleta).
 
-*Files to test what the app does not show on its own. The test guide (block F) uses them and
+*Files to test what the app does not show on its own. The test guide (blocks F and J) uses them and
 `tests/unit/kit-de-prueba.test.ts` keeps them valid. Everything is fictional: “North Platform” does not exist and
 its sources live on reserved domains that never resolve (`ejemplo.invalid` in the sample proposal, `example.org`
 in the incomplete base).*
@@ -70,6 +70,9 @@ Una versión anterior **inventada** de la Plataforma Ejemplo (v0.0.9), para ver 
 diferencia de la página «Versiones del mapa». Los datos reales no las traen: entre las dos versiones de Fabric no
 cambió el dibujo. Respecto de la versión publicada, la v0.0.9 llama «Conector JDBC» al conector de bases
 relacionales, tiene «Cuadernos interactivos», no tiene los filtros por fila y tiene el agente de datos en beta.
+
+Los tres mapas reales y Fabric v0.1.0 viven en `data/` (`data/mapas/`, `data/mapas/versiones/`); el bloque J de la guía
+los usa. Esta muestra sintética existe para ver las cuatro marcas, que el par real de Fabric no tiene.
 
 ```sh
 cp -R docs/kit-de-prueba/versiones-de-muestra/. .
