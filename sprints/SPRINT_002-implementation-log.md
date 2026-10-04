@@ -744,6 +744,28 @@ afirmaciones; sin retiros, sin componentes ni flujos nuevos. **Cero «lago de da
   469 KB (dos SVG por fila). Todo dentro del presupuesto; la CI corre el mismo Lighthouse sobre
   `lighthouse-urls.json`, que ya incluye las dos rutas de versiones.
 
+### Auditoría final — Fase 1 (`/audita-sprint`, 2026-10-04)
+
+- **Quién auditó:** cuatro auditores independientes en paralelo, uno por porción, ninguno construyó el sprint:
+  - A, el paquete;
+  - B, la app;
+  - C, datos, investigador y versionado;
+  - D, alcance, frases caducadas, guía heredada, documentos y CI.
+
+  Un quinto auditor, también independiente, consolidó los cuatro reportes: verificó cada Medio, reprodujo con
+  sondas los cuatro del paquete y de la app, fundió los duplicados, descartó lo falso con evidencia y agregó un
+  hallazgo propio.
+- **Reporte:** `sprints/SPRINT_002-auditoria.md`. **Recomendación: requiere ajustes.** 0 Críticos · 0 Altos ·
+  15 Medios · 34 Bajos (49 en total; los cuatro reportes sumaban 52 antes de deduplicar). Cada hallazgo lleva
+  `archivo:línea`, ajuste ejecutable y criterio observable; el § 9 trae el plan de la Fase 2 en cuatro lotes
+  (paquete → app → datos → documentos).
+- **Lo que decide la persona** (se pregunta de a una, en la Fase 2):
+  - P1 (S2-AUD-08): si leyó afirmación por afirmación antes de cada aprobación;
+  - P2 (S2-AUD-06): si corre `/investigar fabric gobierno` por la madurez de «Seguridad de OneLake»;
+  - P3 (S2-AUD-07): si corre `/investigar databricks consumo` por el «mejor precio y rendimiento»;
+  - P4 (S2-AUD-32): solo si no puedo leer el log del build del preview, que mire la CSP en el preview.
+- Ningún hallazgo es imposible de pagar en el sprint. Espera la aprobación de la persona antes de la Fase 2.
+
 ## Desviación del plan
 
 Lo que el plan aprobado ya declaró frente a la orden y a `SPRINT_002.md`:
