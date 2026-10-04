@@ -184,8 +184,9 @@ a ninguna ni pide cuentas.
   - Si las reglas de hoy ya no pueden dibujar una versión vieja, la página la nombra («aprobada y archivada; las
     reglas de hoy ya no la dibujan») y no la compara.
   - El dibujo solo marca lo que cambia el mapa: componentes nuevos, retirados, renombrados o con otra madurez. Por
-    eso entre las dos versiones de Fabric dice «Sin cambios en el dibujo», y lo que cambió (el texto de seis
-    componentes y las fuentes de nueve) aparece en «Lo que dicen los componentes».
+    eso, de la v0.1.0 a la v0.2.0 de Fabric dice «Sin cambios en el dibujo», y lo que cambió (el texto de seis
+    componentes y las fuentes de nueve) aparece en «Lo que dicen los componentes». De la v0.2.0 a la v0.3.0 sí
+    cambió el dibujo: dos componentes nuevos en «Gobierno y seguridad».
 
 ### Preguntas frecuentes
 
@@ -375,8 +376,9 @@ manages and controls; it never operates a platform**: it connects to none and as
   - If today's rules can no longer draw an old version, the page names it (“approved and archived; today's rules no
     longer draw it”) and does not compare it.
   - The drawing only marks what changes the map: new, removed or renamed components, or a different maturity. That
-    is why, between Fabric's two versions, it says “No changes in the drawing”, and what did change (the text of six
-    components and the sources of nine) appears under “What the components say”.
+    is why, from Fabric's v0.1.0 to its v0.2.0, it says “No changes in the drawing”, and what did change (the text of
+    six components and the sources of nine) appears under “What the components say”. From v0.2.0 to v0.3.0 the
+    drawing did change: two new components in “Governance and security”.
 
 ### Frequently asked questions
 

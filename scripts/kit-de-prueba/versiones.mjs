@@ -1,7 +1,7 @@
 // Genera la VERSIÓN ANTERIOR DE MUESTRA del kit de prueba (docs/kit-de-prueba/versiones-de-muestra/): una v0.0.9
 // SINTÉTICA de la Plataforma Ejemplo (ficticia), para ver en el producto las cuatro marcas de diferencia de
-// `/[idioma]/atlas/plataforma-ejemplo/versiones` (D-S2-08). Los datos reales no las traen: entre las dos versiones de
-// Fabric no cambió el dibujo. Respecto del mapa de ejemplo publicado, la v0.0.9:
+// `/[idioma]/atlas/plataforma-ejemplo/versiones` (D-S2-08). Los datos reales solo traen «+ nuevo» (Fabric, de v0.2.0 a
+// v0.3.0); entre su v0.1.0 y su v0.2.0 no cambió el dibujo. Respecto del mapa de ejemplo publicado, la v0.0.9:
 //   - llama «Conector JDBC» al conector de bases relacionales (→ renombrado);
 //   - tiene «Cuadernos interactivos», que la versión vigente ya no trae (− retirado);
 //   - no tiene los filtros por fila ni su flujo (+ nuevo en la vigente);

@@ -79,6 +79,9 @@ Before S2 nothing kept an old map.
 loader defect: when a current map failed to load, its archive also reported a false "no published map". It was
 fixed the same day.
 
+**Second use.** Fabric v0.3.0 (the governance layer, 102 claims) was approved on 2026-10-04 and archived v0.2.0. It
+is the first real pair with a drawn mark: two new components in the governance band, one «new» pill on its block.
+
 **What the archive keeps.** One file per approved version stays in the repository. Archived versions keep whatever
 they said, including vocabulary the current gate rejects ("lago de datos" in Fabric v0.1.0). The vocabulary gate
 reads current maps only, and the differences page does not show those texts.

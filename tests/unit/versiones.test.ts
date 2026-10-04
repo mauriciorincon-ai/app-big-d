@@ -2,7 +2,7 @@
 // Las versiones de un mapa (D-S2-08): un par por cada versión y la siguiente, de la más nueva a la más vieja; las
 // marcas y la lista de diferencias salen del diagramador; lo que cambia sin cambiar el dibujo (el texto, las fuentes)
 // se cuenta aparte; cada bloque de las dos filas abre la ventana de SU versión, y solo la vigente lleva el paso al
-// nivel 2. Sobre los datos reales (Fabric tiene su v0.1.0 archivada) y sobre una cadena sintética de la plataforma
+// nivel 2. Sobre los datos reales (Fabric tiene archivadas su v0.1.0 y su v0.2.0) y sobre una cadena sintética de la plataforma
 // ficticia, con cada clase de cambio.
 import type { Mapa } from "diagramador";
 import { describe, expect, it } from "vitest";
@@ -85,20 +85,28 @@ function cadena(): Mapa[] {
 }
 
 describe("versiones de un mapa", () => {
-  it("Fabric: un par, de v0.1.0 a v0.2.0; cambió lo que dicen seis componentes y no el dibujo", () => {
+  it("Fabric: dos pares; de v0.2.0 a v0.3.0, dos componentes nuevos en Gobierno; de v0.1.0 a v0.2.0, nada en el dibujo", () => {
     const v = vistaVersiones(d, "fabric", "es", FECHA, {
       "0.2.0": "2026-10-04",
+      "0.3.0": "2026-10-04",
     });
-    expect(v.vigente).toBe("0.2.0");
+    expect(v.vigente).toBe("0.3.0");
     expect(v.pares.map((p) => [p.antes, p.despues, p.aprobada])).toEqual([
+      ["0.2.0", "0.3.0", "2026-10-04"],
       ["0.1.0", "0.2.0", "2026-10-04"],
     ]);
-    const [p] = v.pares;
-    expect(p!.diferencias).toContain("Sin cambios en el dibujo");
-    expect(p!.svg).not.toContain('class="dg-dif ');
-    expect(p!.textos).toHaveLength(6);
+    const [gobierno, lago] = v.pares;
+    // Los dos nuevos viven en el mismo bloque: una sola pastilla «nuevo» en el bloque (una por clase presente).
+    expect(gobierno!.svg.match(/class="dg-dif [^"]*"/g)).toEqual(['class="dg-dif dg-dif-nuevo"']);
+    expect(gobierno!.diferencias.match(/data-nodo="[^"]+"/g)).toEqual(['data-nodo="auditoria"', 'data-nodo="catalogo-onelake"']);
+    expect(gobierno!.diferencias).toContain("Además, 4 cambios en flujos o pasos.");
+    expect(gobierno!.textos).toEqual(["Seguridad de OneLake", "Etiquetas de confidencialidad"]);
+    expect(gobierno!.fuentes).toBe(2);
+    expect(lago!.diferencias).toContain("Sin cambios en el dibujo");
+    expect(lago!.svg).not.toContain('class="dg-dif ');
+    expect(lago!.textos).toHaveLength(6);
     // Nueve con otra fuente; en los otros diez solo cambió la fecha de consulta, que no cuenta (S2-AUD-36).
-    expect(p!.fuentes).toBe(9);
+    expect(lago!.fuentes).toBe(9);
   });
 
   it("un par con una versión histórica no se dibuja: solo dice cuál es (ADR map-versioning, decisión 6)", () => {

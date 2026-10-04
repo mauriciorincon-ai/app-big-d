@@ -1034,6 +1034,52 @@ final, de a una.
     - Quedan, y son ciertas hoy: «Todavía no» de la pregunta frecuente (el núcleo comparativo no existe) y «Today
       there are none, and a test says so» del ADR (la prueba lo exige).
     - El summary entra en la pasada final, cuando exista.
+- **Lote 4: CI de `6bd413a` (lote 3) y `15247a3` (lote 4):** los 5 checks de GitHub en `success` propio en los dos
+  commits, Vercel en `pass`, 0 comentarios del bot.
+- **Lote 5 (lo que decide la persona), una pregunta por mensaje:**
+  - **P1 (S2-AUD-08), 2026-10-04.** Pregunta: «¿Las leíste una por una antes de pegar el comando de aprobación en la
+    Terminal?», con el ejemplo de A-1 de Databricks. **Respuesta: «Si»**. Se cierra la desviación 15; los textos
+    neutros del lote 4 se quedan, porque son ciertos igual.
+  - **P2 (S2-AUD-06), 2026-10-04.** Pregunta: «¿Quieres correr `/investigar fabric gobierno` en este sprint, para que
+    esa madurez salga de una cita?». **Respuesta: la persona corrió `/investigar fabric gobierno`.**
+    - **Propuesta `propuestas/2026-10-04-fabric-gobierno`:** 21 componentes, 23 flujos, 102 afirmaciones y 0 retiros.
+      Necesitó 2 reintentos del validador. La madurez de «Seguridad de OneLake» sale ahora de A-85 (Learn: «GA» en
+      lakehouse, Spark, Direct Lake y el punto de conexión SQL), con A-86 (Eventhouse en vista previa). Entran el
+      Catálogo de OneLake y la Auditoría en Microsoft Purview.
+    - **Comprobado de mi lado:**
+      - `validar.mjs`: válida, 102 afirmaciones;
+      - `verificacion.json`: es de estos bytes, 102/102 verificadas;
+      - ensayo de la aprobación sobre una copia del repo en el scratchpad: v0.3.0, carga y `mapasSinAprobacion`
+        vacío, con v0.2.0 archivada;
+      - build de la copia: pasa (V16 a cuatro edades); `/es/atlas/fabric/versiones` muestra «De v0.2.0 a v0.3.0» y
+        «De v0.1.0 a v0.2.0».
+    - **Parada:** la pantalla de revisión, servida desde el build del repo en :3148, se le abrió a la persona en
+      `/es/investigador/fabric`.
+    - **Aprobada por la persona (2026-10-04 UTC).** Leyó las 102 afirmaciones en la pantalla («Listo todo aprobado»)
+      y corrió el comando en su Terminal: lo armó la pantalla y yo lo puse en su portapapeles con el `cd` delante; la
+      Terminal la abrió ella. La lista salta de A-46 a A-48 porque la propuesta no trae A-47; las 102 coinciden con
+      las de la propuesta. Resultado:
+      - **102 aprobadas · 0 rechazadas · 0 retiros · mapa v0.3.0**, revisión 3 de `data/revisiones/fabric.jsonl`
+        (huella `d58fac3f…`);
+      - v0.2.0 archivada byte a byte en `data/mapas/versiones/fabric-0.2.0.mapa.yaml`;
+      - de 19 a 21 componentes (Auditoría en Microsoft Purview y Catálogo de OneLake, en Gobierno, los dos
+        disponibles de forma general) y de 19 a 23 flujos (4 nuevos, ninguno retirado ni cambiado); el recorrido
+        no cambia.
+    - **Lo que cambió con el dato:**
+      - `/es/atlas/fabric/versiones` tiene dos pares. «De v0.2.0 a v0.3.0» es el primer par real con marca dibujada:
+        una pastilla «+ nuevo» en el bloque de Gobierno, la lista con los dos componentes y «Además, 4 cambios en
+        flujos o pasos.». En «Lo que dicen los componentes», el texto de 2 (Seguridad de OneLake y Etiquetas de
+        confidencialidad) y las fuentes de 2;
+      - `versiones.test.ts` cuenta los dos pares; era la única prueba que fijaba v0.2.0;
+      - guía f1 (v0.3.0, 102, «3 revisiones»), j1 (los dos pares), j2 (el bloque de Gobierno en cada versión),
+        «Ya aprobado» y su historial;
+      - manual ES/EN («de la v0.1.0 a la v0.2.0… De la v0.2.0 a la v0.3.0 sí cambió»), README del kit y su script
+        (los pares reales solo traen «+ nuevo»), ADR `map-versioning` («Second use») y la cabecera de
+        `data/plataformas/fabric.yaml`;
+      - comprobado en el build: el investigador dice «mapa aprobado v0.3.0 · 3 revisiones en el historial» y «102
+        aprobadas · 0 rechazadas»; la ventana de Gobierno de la v0.2.0 no trae los dos nuevos ni el paso a
+        «Componentes», y la de la v0.3.0 trae los dos y el paso.
+    - Se cierra S2-AUD-06: la madurez de «Seguridad de OneLake» sale de una cita aprobada.
 
 ## Desviación del plan
 
@@ -1079,8 +1125,10 @@ Lo que se desvió después del plan (agregado en la Fase 2 de la auditoría, S2-
 15. **Aprobación sin evidencia de revisión por afirmación** (`:632-636`). Databricks: las verificadas venían
     aprobadas de entrada en la pantalla. Snowflake y Fabric: el comando lo armé yo y se lo dejé copiado. La
     aprobación fue humana: la persona corrió cada comando en su terminal, y el candado lo garantiza. Los
-    documentos ya no dicen «afirmación por afirmación» (S2-AUD-08). La respuesta de la persona a la P1 se registra
-    aquí con su fecha.
+    documentos ya no dicen «afirmación por afirmación» (S2-AUD-08). **Respuesta de la persona a la P1
+    (2026-10-04):** sí, leyó una por una las afirmaciones de Databricks, Snowflake y Fabric en la pantalla de revisión
+    antes de pegar cada comando de aprobación. Queda registrada y la desviación se cierra. Sigue como sugerencia al
+    método que el comando salga solo de la pantalla de revisión, sin que el constructor lo arme ni lo copie.
 16. **⭐⭐ con 4 paradas frente a las ~6 de la orden:** pagada en la auditoría (S2-AUD-15). Hoy son 6 (b1, b9, b11,
     h6, h7 y j5).
 17. **Archivos de la orden que no existen:** `packages/diagramador/src/svg/compare.ts` (el SVG del lado a lado lo

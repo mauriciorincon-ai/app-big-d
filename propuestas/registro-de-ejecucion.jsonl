@@ -336,3 +336,44 @@
 {"fecha_hora":"2026-10-04T06:30:33.865Z","herramienta":"WebFetch","url":"https://www.microsoft.com/en-us/microsoft-fabric/blog/2025/03/31/fabcon-2025-fueling-tomorrows-ai-with-new-agentic-capabilities-and-security-innovations-in-fabric/","llamada":"e9278bf337daa901"}
 {"fecha_hora":"2026-10-04T06:30:41.064Z","herramienta":"WebFetch","url":"https://azure.microsoft.com/en-us/blog/fabcon-and-sqlcon-2026-unifying-databases-and-fabric-on-a-single-data-platform/","llamada":"22189ebd2767926d"}
 {"fecha_hora":"2026-10-04T06:30:48.698Z","herramienta":"WebFetch","url":"https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/","llamada":"08e041f74b24870c"}
+{"fecha_hora":"2026-10-04T17:37:40.241Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/onelake/security/get-started-security","llamada":"59294e45f46e356e"}
+{"fecha_hora":"2026-10-04T17:37:45.527Z","herramienta":"WebSearch","consulta":"OneLake security generally available Microsoft Fabric 2026","llamada":"626c4690f0fe7c37"}
+{"fecha_hora":"2026-10-04T17:38:18.556Z","herramienta":"WebFetch","url":"https://community.fabric.microsoft.com/t5/Fabric-Updates-Blogs/OneLake-security-Generally-Available/ba-p/5176756","llamada":"e6ffaa1eb62386cb"}
+{"fecha_hora":"2026-10-04T17:38:18.612Z","herramienta":"WebFetch","url":"https://blog.fabric.microsoft.com/en-us/blog/whats-new-in-onelake-and-the-fabric-platform-more-sources-security-and-capacity-tooling/","llamada":"5f17cabc9408a983"}
+{"fecha_hora":"2026-10-04T17:38:23.855Z","herramienta":"WebFetch","url":"https://community.fabric.microsoft.com/blog/fbc_fabricupdatesblogs/fabcon-and-sqlcon-barcelona-2026-what%E2%80%99s-new-in-microsoft-onelake-and-its-rapidly/5369146","llamada":"c184eae815481dd8"}
+{"fecha_hora":"2026-10-04T17:38:27.955Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/fundamentals/whats-new","llamada":"8a2127cb8cf74886"}
+{"fecha_hora":"2026-10-04T17:38:45.654Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/fundamentals/whats-new","llamada":"671c08a6c6e662d8"}
+{"fecha_hora":"2026-10-04T17:38:54.403Z","herramienta":"WebSearch","consulta":"\"OneLake security\" \"generally available\" site:microsoft.com","llamada":"fab3f2babbe3bf0a"}
+{"fecha_hora":"2026-10-04T17:39:01.998Z","herramienta":"WebSearch","consulta":"\"OneLake security\" generally available learn.microsoft.com fabric onelake security","llamada":"7623c8ba1f69fa0f"}
+{"fecha_hora":"2026-10-04T17:39:08.117Z","herramienta":"WebFetch","url":"https://community.fabric.microsoft.com/t5/Fabric-Updates-Blog/OneLake-security-Generally-Available/ba-p/5176756","llamada":"194d357410ced867"}
+{"fecha_hora":"2026-10-04T17:39:08.427Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/governance/governance-compliance-overview","llamada":"4c7fe485dfe64d84"}
+{"fecha_hora":"2026-10-04T17:39:20.852Z","herramienta":"WebFetch","url":"https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/","llamada":"dc74d0a7dceab889"}
+{"fecha_hora":"2026-10-04T17:39:31.408Z","herramienta":"WebFetch","url":"https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/","llamada":"0e3349611e36ab3b"}
+{"fecha_hora":"2026-10-04T17:39:47.933Z","herramienta":"WebSearch","consulta":"\"OneLake catalog\" generally available Govern tab Microsoft Fabric","llamada":"c3171ac27d6f1879"}
+{"fecha_hora":"2026-10-04T17:39:48.090Z","herramienta":"WebSearch","consulta":"Microsoft Build 2026 Fabric announcements OneLake security now generally available blog","llamada":"e2cd093e945ac15d"}
+{"fecha_hora":"2026-10-04T17:39:52.810Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/governance/onelake-catalog-overview","llamada":"bc324a1dfa2ea9ab"}
+{"fecha_hora":"2026-10-04T17:39:58.066Z","herramienta":"WebSearch","consulta":"\"OneLake security is now generally available\"","llamada":"e9e52fb8cd117014"}
+{"fecha_hora":"2026-10-04T17:40:03.310Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/governance/onelake-catalog-govern","llamada":"1533fdb5a2d90e15"}
+{"fecha_hora":"2026-10-04T17:40:08.743Z","herramienta":"WebSearch","consulta":"FabCon Europe 2025 Vienna announcements \"OneLake catalog\" govern generally available azure.microsoft.com blog","llamada":"79d4377a51868af0"}
+{"fecha_hora":"2026-10-04T17:40:18.339Z","herramienta":"WebFetch","url":"https://www.microsoft.com/en-us/microsoft-fabric/blog/2025/09/16/fabcon-vienna-build-data-rich-agents-on-an-enterprise-ready-foundation/","llamada":"8fc5de7e0b6f882e"}
+{"fecha_hora":"2026-10-04T17:40:24.132Z","herramienta":"WebFetch","url":"https://www.microsoft.com/en-us/microsoft-fabric/blog/2025/09/16/fabcon-vienna-build-data-rich-agents-on-an-enterprise-ready-foundation/","llamada":"64f22b822f7e1dd4"}
+{"fecha_hora":"2026-10-04T17:40:33.400Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/onelake/security/table-column-row-security","llamada":"f986c734e4a4a0a9"}
+{"fecha_hora":"2026-10-04T17:40:39.472Z","herramienta":"WebSearch","consulta":"learn.microsoft.com fabric onelake security \"data-access-control-model\" OR \"table-column-row-security\" OneLake security roles row-level column-level","llamada":"a32985a995559aea"}
+{"fecha_hora":"2026-10-04T17:40:47.908Z","herramienta":"WebSearch","consulta":"microsoft.com/en-us/microsoft-fabric/blog 2026 OneLake security \"generally available\"","llamada":"27d29cdf08a763e7"}
+{"fecha_hora":"2026-10-04T17:40:50.390Z","herramienta":"WebSearch","consulta":"azure.microsoft.com blog Microsoft Fabric May 2026 Build OneLake security generally available","llamada":"f41d4901fb8d7aa1"}
+{"fecha_hora":"2026-10-04T17:41:10.201Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/onelake/security/data-access-control-model","llamada":"1580d82d6715359e"}
+{"fecha_hora":"2026-10-04T17:41:17.038Z","herramienta":"WebSearch","consulta":"github MicrosoftDocs fabric-docs whats-new \"OneLake security (Generally Available)\"","llamada":"22651c1e1af6127a"}
+{"fecha_hora":"2026-10-04T17:41:20.473Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/release-plan/onelake","llamada":"ddf47fa8931a0e26"}
+{"fecha_hora":"2026-10-04T17:41:27.801Z","herramienta":"WebFetch","url":"https://roadmap.fabric.microsoft.com/?product=onelake","llamada":"d165196f9127dc7a"}
+{"fecha_hora":"2026-10-04T17:41:43.739Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/fundamentals/whats-new","llamada":"70a030f8e27126f3"}
+{"fecha_hora":"2026-10-04T17:41:55.938Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/onelake/security/read-secured-data","llamada":"031a64deace8ae6b"}
+{"fecha_hora":"2026-10-04T17:42:00.327Z","herramienta":"WebSearch","consulta":"site:learn.microsoft.com \"OneLake security\" \"generally available\"","llamada":"378ced171a551383"}
+{"fecha_hora":"2026-10-04T17:42:42.511Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/admin/track-user-activities","llamada":"8853c468eefd8add"}
+{"fecha_hora":"2026-10-04T17:42:43.384Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/governance/lineage","llamada":"1a4a43ec1c918560"}
+{"fecha_hora":"2026-10-04T17:42:44.360Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/governance/domains","llamada":"956bb9d63acae743"}
+{"fecha_hora":"2026-10-04T17:43:15.101Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/onelake/onelake-diagnostics-overview","llamada":"632a7b6157398898"}
+{"fecha_hora":"2026-10-04T17:43:16.428Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/governance/information-protection","llamada":"c27efb2868cbac0d"}
+{"fecha_hora":"2026-10-04T17:43:29.219Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/purview/dlp-powerbi-get-started","llamada":"9368b5880b33436b"}
+{"fecha_hora":"2026-10-04T17:43:42.293Z","herramienta":"WebFetch","url":"https://azure.microsoft.com/en-us/blog/fabcon-and-sqlcon-2026-unifying-databases-and-fabric-on-a-single-data-platform/","llamada":"cddd8660f6ff5392"}
+{"fecha_hora":"2026-10-04T17:43:43.651Z","herramienta":"WebFetch","url":"https://www.microsoft.com/en-us/microsoft-fabric/blog/2025/03/31/fabcon-2025-fueling-tomorrows-ai-with-new-agentic-capabilities-and-security-innovations-in-fabric/","llamada":"c4de626a4b615485"}
+{"fecha_hora":"2026-10-04T17:56:33.394Z","herramienta":"WebFetch","url":"https://www.microsoft.com/en-us/microsoft-fabric/blog/2025/09/16/fabcon-vienna-build-data-rich-agents-on-an-enterprise-ready-foundation/","llamada":"bebb38698488d2db"}

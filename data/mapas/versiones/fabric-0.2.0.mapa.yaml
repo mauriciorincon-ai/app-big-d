@@ -1,4 +1,4 @@
-# APROBADO por una persona el 2026-10-04 (UTC) desde propuestas/2026-10-04-fabric-gobierno (scripts/aprobar.mjs).
+# APROBADO por una persona el 2026-10-04 (UTC) desde propuestas/2026-10-04-fabric (scripts/aprobar.mjs).
 # Solo contiene afirmaciones aprobadas. No se edita a mano: se vuelve a investigar.
 contrato_version: 0.4.0
 gramatica_id: plataformas-datos
@@ -7,7 +7,7 @@ sujeto_id: fabric
 sujeto_nombre:
   es: Microsoft Fabric
   en: Microsoft Fabric
-version: 0.3.0
+version: 0.2.0
 fecha_actualizacion: 2026-10-04
 estado: aprobada
 bloques:
@@ -65,8 +65,8 @@ bloques:
       en: Governance
     banda_id: gobierno
     lider:
-      es: Decide quién ve qué datos, marca los sensibles y deja rastro de lo que cada persona hace.
-      en: Decides who sees which data, marks what is sensitive and keeps a trail of what each person does.
+      es: Decide quién ve qué datos y marca los que son sensibles.
+      en: Decides who sees which data and marks what is sensitive.
 nodos:
   - id: bases-operacionales
     banda_id: fuentes
@@ -523,19 +523,14 @@ nodos:
       es: Seguridad de OneLake
       en: OneLake security
     lider:
-      es: Define quién ve qué datos, hasta el nivel de fila y columna, y lo hace cumplir en las herramientas de la plataforma.
-      en: Defines who sees which data, down to row and column, and enforces it across the platform's tools.
+      es: Define quién ve qué datos, hasta el nivel de fila y columna, y lo hace cumplir en todas las herramientas.
+      en: Defines who sees which data, down to row and column, and enforces it in every tool.
     experto:
-      es: Roles definidos sobre un elemento que conceden acceso a carpetas, tablas, esquemas, filas y columnas; el filtrado por filas y columnas está en disponibilidad general en el lakehouse, Spark, el punto de conexión SQL en modo de identidad del usuario y los modelos en Direct Lake sobre OneLake, y en vista previa en Eventhouse.
-      en: Roles defined on an item that grant access to folders, tables, schemas, rows and columns; row and column filtering is generally available in the lakehouse, Spark, the SQL analytics endpoint in user's identity mode and Direct Lake on OneLake models, and in preview in Eventhouse.
+      es: Roles definidos sobre un elemento que conceden acceso a carpetas, tablas, esquemas, filas y columnas, y que todos los motores de Fabric aplican por igual.
+      en: Roles defined on an item that grant access to folders, tables, schemas, rows and columns, enforced alike by every Fabric engine.
     por_que_importa:
-      es: "Los roles solo limitan a quienes leen: administradores, miembros y colaboradores del espacio de trabajo ven todos los datos, y cada lakehouse trae un rol que deja leer a quien tenga el permiso ReadAll."
-      en: "Roles only restrict readers: workspace admins, members and contributors see all the data, and every lakehouse comes with a role that lets anyone holding ReadAll read it."
-    terminos:
-      es:
-        ReadAll: Permiso sobre un elemento que, mediante el rol que trae cada lakehouse, deja leer sus datos en OneLake.
-      en:
-        ReadAll: An item permission that, through the role every lakehouse comes with, lets a user read its data in OneLake.
+      es: "Los roles solo limitan a quienes leen: administradores, miembros y colaboradores del espacio de trabajo ven todos los datos."
+      en: "Roles only restrict readers: workspace admins, members and contributors see all the data."
     madurez: disponible-general
     fuentes:
       - url: https://learn.microsoft.com/en-us/fabric/onelake/security/get-started-security
@@ -544,10 +539,10 @@ nodos:
           en: Data security overview - Microsoft Fabric | Microsoft Learn
         fecha: 2026-10-04
         tipo: oficial
-      - url: https://learn.microsoft.com/en-us/fabric/onelake/security/read-secured-data
+      - url: https://azure.microsoft.com/en-us/blog/fabcon-and-sqlcon-2026-unifying-databases-and-fabric-on-a-single-data-platform/
         titulo:
-          es: Lectura de datos protegidos con la seguridad de OneLake (Microsoft Learn)
-          en: Read data secured with OneLake security - Microsoft Fabric | Microsoft Learn
+          es: Anuncios de FabCon y SQLCon 2026 (blog de Microsoft Azure, 18 de marzo de 2026)
+          en: "FabCon and SQLCon 2026: Unifying databases and Fabric on a single data platform | Microsoft Azure Blog"
         fecha: 2026-10-04
         tipo: oficial
     fecha_verificacion: 2026-10-04
@@ -563,104 +558,17 @@ nodos:
       es: Marca qué datos son sensibles; en algunas exportaciones, como a Excel, la marca y su protección viajan con ellos.
       en: Marks which data is sensitive; in some exports, such as to Excel, the mark and its protection travel with the data.
     experto:
-      es: Etiquetas y políticas de Microsoft Purview Information Protection sobre los elementos de Fabric; por defecto, la etiqueta pasa a los elementos que dependen del etiquetado y, con una política de publicación, sigue a los datos al exportarlos a Excel, PDF o PowerPoint.
-      en: Microsoft Purview Information Protection labels and policies on Fabric items; by default the label passes on to the items that depend on the labelled one and, with a publishing policy, follows the data when it is exported to Excel, PDF or PowerPoint.
+      es: Etiquetas y políticas de Microsoft Purview Information Protection sobre los elementos de Fabric; con una política de publicación, la etiqueta y su control de acceso siguen a los datos al exportarlos a Excel, PDF o PowerPoint.
+      en: Microsoft Purview Information Protection labels and policies on Fabric items; with a publishing policy, the label and its access control follow the data when it is exported to Excel, PDF or PowerPoint.
     por_que_importa:
-      es: "Requiere licencias adicionales de Microsoft Purview, y en un lakehouse la etiqueta obligatoria no se hace cumplir: puede guardarse sin etiqueta."
-      en: "It needs additional Microsoft Purview licences, and mandatory labelling is not enforced on a lakehouse: it can be saved without a label."
+      es: "Una etiqueta que no se aplica no protege nada: hay que decidir quién etiqueta y cómo se vigila la cobertura."
+      en: "A label nobody applies protects nothing: someone has to decide who labels and how coverage is monitored."
     madurez: disponible-general
     fuentes:
       - url: https://learn.microsoft.com/en-us/fabric/governance/information-protection
         titulo:
           es: Protección de la información en Fabric (Microsoft Learn)
           en: Information protection in Fabric - Microsoft Fabric | Microsoft Learn
-        fecha: 2026-10-04
-        tipo: oficial
-      - url: https://learn.microsoft.com/en-us/fabric/governance/governance-compliance-overview
-        titulo:
-          es: Gobierno y cumplimiento en Microsoft Fabric (Microsoft Learn)
-          en: Governance and compliance in Microsoft Fabric - Microsoft Fabric | Microsoft Learn
-        fecha: 2026-10-04
-        tipo: oficial
-      - url: https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/
-        titulo:
-          es: Anuncio de disponibilidad general de Microsoft Fabric (blog de Microsoft Fabric, 15 de noviembre de 2023)
-          en: Prepare your data for AI innovation with Microsoft Fabric, now generally available | Microsoft Fabric Blog
-        fecha: 2026-10-04
-        tipo: oficial
-    fecha_verificacion: 2026-10-04
-  - id: catalogo-onelake
-    banda_id: gobierno
-    tipo_id: cap-gobierno
-    bloque_id: gobierno
-    orden: 3
-    nombre:
-      es: Catálogo de OneLake
-      en: OneLake catalog
-    lider:
-      es: Muestra en un solo lugar qué tan bien gobernados están los datos y propone qué hacer para mejorarlo.
-      en: Shows in one place how well the data is governed and suggests what to do to improve it.
-    experto:
-      es: Experiencia central de Fabric para descubrir datos, conocer su estado de gobierno y administrar la seguridad; su sección Gobernar reúne indicadores, acciones recomendadas, dominios, respaldos y la configuración del inquilino.
-      en: Fabric's central experience for discovering data, understanding its governance status and managing security; its Govern section brings together insights, recommended actions, domains, endorsements and tenant settings.
-    por_que_importa:
-      es: No está disponible si se activa Private Link, y sus indicadores del conjunto tardan un día en reflejar los cambios.
-      en: It is not available when Private Link is turned on, and its estate-wide insights take a day to reflect changes.
-    terminos:
-      es:
-        Private Link: Conexión privada a Fabric que evita que el tráfico pase por internet público.
-      en:
-        Private Link: A private connection to Fabric that keeps traffic off the public internet.
-    madurez: disponible-general
-    fuentes:
-      - url: https://learn.microsoft.com/en-us/fabric/governance/onelake-catalog-overview
-        titulo:
-          es: Introducción al catálogo de OneLake (Microsoft Learn)
-          en: OneLake catalog overview - Microsoft Fabric | Microsoft Learn
-        fecha: 2026-10-04
-        tipo: oficial
-      - url: https://learn.microsoft.com/en-us/fabric/governance/onelake-catalog-govern
-        titulo:
-          es: Gobernar los datos de Fabric con el catálogo de OneLake (Microsoft Learn)
-          en: Govern and manage your Fabric data with the OneLake catalog - Microsoft Fabric | Microsoft Learn
-        fecha: 2026-10-04
-        tipo: oficial
-      - url: https://www.microsoft.com/en-us/microsoft-fabric/blog/2025/09/16/fabcon-vienna-build-data-rich-agents-on-an-enterprise-ready-foundation/
-        titulo:
-          es: Anuncios de FabCon Viena (blog de Microsoft Fabric, 16 de septiembre de 2025)
-          en: "FabCon Vienna: Build data-rich agents on an enterprise-ready foundation | Microsoft Fabric Blog"
-        fecha: 2026-10-04
-        tipo: oficial
-    fecha_verificacion: 2026-10-04
-  - id: auditoria
-    banda_id: gobierno
-    tipo_id: cap-gobierno
-    bloque_id: gobierno
-    orden: 4
-    nombre:
-      es: Auditoría en Microsoft Purview
-      en: Microsoft Purview Audit
-    lider:
-      es: Deja registro de quién hizo qué y sobre qué datos, para responder a una revisión o a una investigación.
-      en: Keeps a record of who did what to which data, to answer a review or an investigation.
-    experto:
-      es: "Integración de Fabric con Microsoft Purview Audit: captura de forma automática las operaciones de usuarios y del sistema, como el acceso a un lakehouse o a Power BI, la actividad de Spark y de Data Factory y los inicios de sesión."
-      en: "Fabric's integration with Microsoft Purview Audit: it automatically captures user and system operations, such as lakehouse or Power BI access, Spark and Data Factory activity, and sign-ins."
-    por_que_importa:
-      es: "Consultar el registro exige el rol Audit Logs de Exchange Online: hay que asignarlo a quien audita."
-      en: "Searching the log requires the Audit Logs role in Exchange Online: it has to be assigned to whoever audits."
-    madurez: disponible-general
-    fuentes:
-      - url: https://learn.microsoft.com/en-us/fabric/admin/track-user-activities
-        titulo:
-          es: Seguimiento de las actividades de los usuarios en Microsoft Fabric (Microsoft Learn)
-          en: Track user activities in Microsoft Fabric - Microsoft Fabric | Microsoft Learn
-        fecha: 2026-10-04
-        tipo: oficial
-      - url: https://learn.microsoft.com/en-us/fabric/governance/governance-compliance-overview
-        titulo:
-          es: Gobierno y cumplimiento en Microsoft Fabric (Microsoft Learn)
-          en: Governance and compliance in Microsoft Fabric - Microsoft Fabric | Microsoft Learn
         fecha: 2026-10-04
         tipo: oficial
       - url: https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/
@@ -996,46 +904,6 @@ flujos:
     lider:
       es: Lo que gasta cada ejecución aparece en la app de métricas minutos después.
       en: What each run uses shows up in the metrics app a few minutes later.
-  - id: f-seguridad-modelo
-    origen: seguridad-onelake
-    destino: modelo-semantico
-    modo_id: a-demanda
-    que_viaja:
-      es: Filas y columnas permitidas
-      en: Allowed rows and columns
-    lider:
-      es: Si el modelo lee de OneLake, cada persona ve en los informes solo las filas y columnas que le tocan.
-      en: If the model reads from OneLake, each person sees only their allowed rows and columns in reports.
-  - id: f-etiquetas-lakehouse
-    origen: etiquetas-confidencialidad
-    destino: lakehouse
-    modo_id: a-demanda
-    que_viaja:
-      es: Etiqueta de confidencialidad
-      en: Sensitivity label
-    lider:
-      es: La marca puesta al lakehouse pasa sola a todo lo que depende de él.
-      en: The mark set on the lakehouse passes on by itself to everything that depends on it.
-  - id: f-etiquetas-catalogo
-    origen: etiquetas-confidencialidad
-    destino: catalogo-onelake
-    modo_id: por-lotes
-    que_viaja:
-      es: Cobertura de etiquetas
-      en: Label coverage
-    lider:
-      es: Gobernar muestra qué datos tienen marca y cuáles no, para cerrar los huecos.
-      en: Govern shows which data is marked and which is not, so gaps can be closed.
-  - id: f-lakehouse-auditoria
-    origen: lakehouse
-    destino: auditoria
-    modo_id: continuo
-    que_viaja:
-      es: Accesos y actividades
-      en: Access and activity events
-    lider:
-      es: Los accesos al lakehouse quedan anotados en el registro de auditoría.
-      en: Access to the lakehouse is written down in the audit log.
 recorridos:
   - id: registro-admision
     titulo:
@@ -1140,10 +1008,8 @@ glosario:
     data lake: Almacenamiento que guarda grandes volúmenes de datos de cualquier tipo, en su formato original y a bajo costo.
     lakehouse: Almacén que une la escala de un data lake con las consultas de un almacén de datos.
     réplica: Copia de una base de datos que se mantiene sincronizada con el original.
-    Microsoft Purview: La familia de herramientas de Microsoft para clasificar, proteger y auditar datos.
   en:
     OneLake: The single data lake Microsoft Fabric includes for the whole organisation.
     data lake: Storage that keeps large volumes of data of any kind, in its original format and at low cost.
     lakehouse: A store that joins a data lake's scale with a data warehouse's querying.
     replica: A copy of a database that is kept in sync with the original.
-    Microsoft Purview: Microsoft's family of tools for classifying, protecting and auditing data.
