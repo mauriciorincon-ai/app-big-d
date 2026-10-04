@@ -464,6 +464,42 @@ Decisiones D-S2-01 a D-S2-11 y los siete hechos que cambiaron el trabajo: en el 
 - Orden de la persona: `/investigar databricks`, `/investigar snowflake` y `/investigar fabric`, una a la vez; cada
   mapa se aprueba afirmación por afirmación en la pantalla de revisión y el comando de aprobación lo corre la persona.
 
+### Databricks — propuesta 2026-10-03 (verificada; espera la aprobación de la persona)
+
+`/investigar databricks` lo invocó la persona el 2026-10-03; la propuesta quedó en `propuestas/2026-10-03-databricks/`:
+19 componentes, 22 flujos, 7 bloques, un recorrido de 8 pasos (se bifurca en la vista materializada) y 106
+afirmaciones; primera propuesta de la plataforma, sin retiros.
+
+Mi verificación, independiente de la de la skill:
+
+- `node scripts/verificar-citas.mjs propuestas/2026-10-03-databricks` → 106 verificadas · 0 no verificables · 0 no
+  encontradas · 30 páginas. `node scripts/investigar/validar.mjs` → válida.
+- **Ensayo de la aprobación en una copia del repo** (scratchpad; `data/` del repo intacto): el núcleo de la aprobación
+  con todas las afirmaciones aprobadas da el mapa v0.1.0; el cargador del build lo valida en modo publicación (V1–V16,
+  cobertura, cuatro edades) sin fallas, y la huella coincide con su revisión (`mapasSinAprobacion` = []).
+- El sitio de la copia compila (33 páginas; CSP: 124 huellas de script, 128 de estilo). Capturas leídas como imagen:
+  nivel 1, nivel 2 y recorrido (ES oscuro, EN claro) y `/comparar` con tres plataformas desplegadas. Cero cruces de
+  flujos sobre nodos; el texto cabe en todas las cajas; Operación y Orquestación quedan «sin bloque», como Fabric.
+- `propuestas/registro-de-ejecucion.jsonl`: 98 líneas nuevas con `fecha_hora · herramienta · url · llamada ·
+  consulta`; ningún identificador de sesión ni de la persona.
+
+**La skill nombraba el contrato 0.3.0 (defecto de la fase 0).** Al subir el paquete a 0.4.0 no actualicé
+`.claude/skills/investigar/SKILL.md:48`; el validador rechazó el primer borrador y la investigación gastó sus dos
+reintentos en eso. Corregido (la línea dice 0.4.0 y de dónde sale) con un gate nuevo,
+`tests/unit/investigador/skill.test.ts`: toda «contrato X.Y.Z» de la skill y de su agente es la versión de
+`CONTRATO.lock`.
+
+| Gate | ¿Puede fallar? | Rojo | A quién nombró | Verde |
+|---|---|---|---|---|
+| `skill.test.ts` (versión del contrato en la skill) | Sí: ninguna otra prueba lee la skill | Con la línea sin corregir | `.claude/skills/investigar/SKILL.md:48 · 0.3.0` | Tras la corrección |
+
+- La pantalla de revisión dice «validador: 0 reintentos» y la propuesta declara `ejecucion.reintentos: 2`. No es un
+  defecto: la pantalla cuenta los bloqueos del hook de fin (`.reintentos`), y el hook no bloqueó porque la propuesta ya
+  validaba al terminar; los dos reintentos son corridas de `validar.mjs` dentro de la skill. El rótulo se presta a
+  confusión: lo aclaro en la fase 4 (texto, sin parada) para que muestre los dos números.
+- Servida para la revisión: `pnpm build` del repo real y `PORT=3148 pnpm start`; abierta en el navegador de la persona
+  en `/es/investigador/databricks`.
+
 ## Desviación del plan
 
 Lo que el plan aprobado ya declaró frente a la orden y a `SPRINT_002.md`:
