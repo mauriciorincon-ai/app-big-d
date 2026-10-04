@@ -68,6 +68,8 @@ const MAQUETA = [
   [/^\/(es|en)\/atlas\/[^/]+\/componentes$/, "atlas-nivel-2"],
   [/^\/(es|en)\/atlas\/[^/]+\/recorrido$/, "atlas-recorrido"],
   [/^\/(es|en)\/comparar$/, "lado-a-lado"],
+  // Las versiones de un mapa: el estado «diferencias entre versiones» de la misma maqueta (D-S2-08).
+  [/^\/(es|en)\/atlas\/[^/]+\/versiones$/, "lado-a-lado"],
 ];
 
 // Puerto libre y servidor propio: jamás se reusa un servidor que ya estuviera escuchando.

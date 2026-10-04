@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import { abrir, listo } from "./lib/abrir";
-import { IDIOMAS, PUBLICADAS, RUTAS } from "./lib/rutas";
+import { conDibujo, IDIOMAS, PUBLICADAS, RUTAS, VERSIONADAS } from "./lib/rutas";
 
 // G11 del diagramador (CONTRATO § 2) en el producto, a 380 px y en los tres motores: esta spec corre en
 // mobile-chromium y en los proyectos g11-firefox y g11-webkit de playwright.config. En cada ruta del export la
@@ -60,13 +60,14 @@ for (const ruta of RUTAS)
   test(`${ruta}: la página no se desliza de lado y el texto del dibujo cabe`, async ({ page }) => {
     await page.goto(ruta);
     expect(await desborde(page)).toBeLessThanOrEqual(0);
-    if (ruta.includes("/atlas/")) expect(await problemas(page, ".lienzo")).toEqual([]);
+    if (conDibujo(ruta)) expect(await problemas(page, ".lienzo")).toEqual([]);
   });
 
-for (const idioma of IDIOMAS)
-  for (const p of PUBLICADAS)
-    test(`/${idioma}/atlas/${p}: la ventana de cada bloque cabe, y su dibujo también`, async ({ page }) => {
-      await page.goto(`/${idioma}/atlas/${p}`);
+// Las ventanas de los bloques del nivel 1 y, en las versiones de un mapa, las de cada versión (S2, D-S2-08).
+const CON_VENTANAS = IDIOMAS.flatMap((i) => [...PUBLICADAS.map((p) => `/${i}/atlas/${p}`), ...VERSIONADAS.map((p) => `/${i}/atlas/${p}/versiones`)]);
+for (const ruta of CON_VENTANAS)
+    test(`${ruta}: la ventana de cada bloque cabe, y su dibujo también`, async ({ page }) => {
+      await page.goto(ruta);
       const bloques = page.locator(".lienzo .dg-elem");
       const n = await bloques.count();
       expect(n).toBeGreaterThan(0);

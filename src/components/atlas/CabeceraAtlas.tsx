@@ -1,5 +1,6 @@
+import Link from "next/link";
 import type { ReactNode } from "react";
-import { opcionesPlataforma, plantilla, rutaLado, rutasAtlas, type Nivel, type Pildora } from "@/lib/atlas";
+import { opcionesPlataforma, plantilla, rutaLado, rutasAtlas, rutaVersiones, type Nivel, type Pildora } from "@/lib/atlas";
 import { datos, type Atlas } from "@/lib/datos";
 import { textos, type Idioma } from "@/lib/i18n";
 import { CampoPlataforma } from "./CampoPlataforma";
@@ -47,6 +48,9 @@ export function CabeceraAtlas({
               pildora.detalle,
               plantilla(t.consultado, { fecha }),
               plantilla(t.version, { version: atlas.mapa.version }),
+              <Link key="versiones" href={rutaVersiones(idioma, atlas.plataforma.id)}>
+                {t.versiones.enlace}
+              </Link>,
             ]}
           />
         </div>

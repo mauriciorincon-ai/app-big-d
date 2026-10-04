@@ -90,7 +90,8 @@ export const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;")
  * componentes dibujados por el motor (vista «bloque»: la tarjeta del nivel 2 y los flujos entre ellos), sus
  * tarjetas de texto (`toBlockCards`) y el paso al nivel 2. Un aviso de geometría rompe el build, como en las
  * demás vistas. `ojo`: una línea sobre el nombre (en el lado a lado, la banda y la plataforma); `nombre`: el título,
- * si no es el del bloque o la banda (en el lado a lado, el de la tarjeta que se tocó).
+ * si no es el del bloque o la banda (en el lado a lado, el de la tarjeta que se tocó); `enlace`: el paso al nivel 2,
+ * que dibuja el mapa vigente (sin él, la ventana de una versión archivada).
  */
 export function ventanas(
   atlas: Atlas,
@@ -99,6 +100,7 @@ export function ventanas(
   elementos: readonly string[],
   ojo?: (id: string) => string,
   nombrar?: (id: string) => string | undefined,
+  enlace = true,
 ): Record<string, string> {
   const tm = textosMotor();
   const t = textos(idioma).atlas.ventana;
@@ -117,7 +119,7 @@ export function ventanas(
       const tarjetas = toBlockCards(atlas.mapa, atlas.gramatica, id, { language: idioma, texts: tm, queryDate: fechaConsulta, id: `${prefijo}-texto` });
       return [
         id,
-        `${ojo ? ojo(id) : ""}<h2>${esc(nombre)}</h2><p class="ventana-lider">${esc(frase)}</p><div class="ventana-lienzo">${svg}</div>${tarjetas}<p class="ventana-mas"><a href="${esc(componentes)}">${esc(t.verComponentes)}</a></p>`,
+        `${ojo ? ojo(id) : ""}<h2>${esc(nombre)}</h2><p class="ventana-lider">${esc(frase)}</p><div class="ventana-lienzo">${svg}</div>${tarjetas}${enlace ? `<p class="ventana-mas"><a href="${esc(componentes)}">${esc(t.verComponentes)}</a></p>` : ""}`,
       ];
     }),
   );

@@ -6,7 +6,7 @@
 // la persona con `/design-sync` al cierre del ciclo (S4), y `project.json` no lo toca este generador.
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { opcionesPlataforma, vistaLado, vistaNivel1, vistaNivel2 } from "@/lib/atlas";
+import { opcionesPlataforma, plantilla, plural, vistaLado, vistaNivel1, vistaNivel2, vistaVersiones } from "@/lib/atlas";
 import { cargarDatos } from "@/lib/datos";
 import { textos } from "@/lib/i18n";
 
@@ -19,6 +19,7 @@ const HOJAS = [
   "src/styles/diagrama.css",
   "src/styles/atlas.css",
   "src/styles/lado.css",
+  "src/styles/versiones.css",
 ];
 const FAMILIAS = `:root { --letra: "Space Grotesk", system-ui, sans-serif; --letra-mono: "JetBrains Mono", ui-monospace, monospace; }`;
 const PROPIAS = `.ds { padding: 24px 16px; display: grid; gap: 16px; max-width: 1280px; margin: 0 auto; }
@@ -94,6 +95,24 @@ export function bundle(): Record<string, string> {
   const fila = vl.filas[0]!;
   const lado = (desplegado: boolean) =>
     `<div class="lienzo-marco"><div class="lienzo-cabeza"><button type="button" class="boton boton-sec lado-todo" aria-expanded="${desplegado}">${esc(desplegado ? t.atlas.lado.contraer : t.atlas.lado.desplegar)}</button></div><div class="lienzo"${desplegado ? " data-todo" : ""}><div class="lado-cabecera">${vl.cabecera}</div><div class="lado-filas"><div class="lado-fila" data-fila="${fila.id}" data-inicio><div data-variante="n1">${fila.n1}</div><div data-variante="n2">${fila.n2}</div></div></div></div></div>`;
+  // Las versiones de un mapa (D-S2-08) en la vitrina: dos versiones SINTÉTICAS del mapa ficticio, con una
+  // diferencia de cada clase (las del ejemplo de la maqueta y de las pruebas del paquete). Nunca un mapa real.
+  const nodo = (id: string) => structuredClone(atlas.mapa.nodos.find((n) => n.id === id)!);
+  const antes = { ...structuredClone(atlas.mapa), version: "0.1.0" };
+  antes.nodos = antes.nodos.map((n) => (n.id === "conector-relacional" ? { ...n, nombre: { es: "Conector JDBC", en: "JDBC connector" } } : n));
+  antes.nodos.push({ ...nodo("motor-transformacion"), id: "cuadernos", orden: 3, nombre: { es: "Cuadernos interactivos", en: "Interactive notebooks" } });
+  const despues = { ...structuredClone(atlas.mapa), version: "0.2.0" };
+  despues.nodos = despues.nodos.map((n) => (n.id === "agente-datos" ? { ...n, madurez: "disponible-general" } : n));
+  despues.nodos.push({ ...nodo("agente-datos"), id: "busqueda-vectorial", orden: 2, nombre: { es: "Búsqueda vectorial", en: "Vector search" } });
+  const vv = vistaVersiones(
+    { ...d, atlas: new Map([[PLATAFORMA, { ...atlas, mapa: despues }]]), versiones: new Map([[PLATAFORMA, [{ version: "0.1.0", mapa: antes, archivo: "sintetica" }]]]) },
+    PLATAFORMA,
+    "es",
+    FECHA,
+  );
+  const tv = t.atlas.versiones;
+  const par = vv.pares[0]!;
+  const versiones = `<section class="version-par"><h2>${esc(plantilla(tv.par, { antes: par.antes, despues: par.despues }))}</h2><p class="guia"><b>${esc(tv.guia.entrada)}</b> ${esc(tv.guia.resto)}</p><div class="lienzo-marco"><div class="lienzo version-lienzo">${par.svg}</div></div><div class="version-dif">${par.diferencias}</div><div class="version-dice"><h3>${esc(tv.dice.titulo)}</h3><p>${esc(par.textos.length ? plantilla(tv.dice.cambiaron[par.textos.length === 1 ? 0 : 1], { n: par.textos.length, lista: par.textos.join(", ") }) : tv.dice.ninguno)}</p><p>${esc(par.fuentes ? plural(tv.dice.fuentes, par.fuentes) : tv.dice.sinFuentes)}</p><p class="kit-nota">${esc(tv.dice.nota)}</p></div></section>`;
   const tokens = JSON.parse(leer("docs/diseno/assets/tokens.json")) as {
     temas: Record<string, Record<string, string>>;
     tipos: { token: string; id: string }[];
@@ -203,6 +222,15 @@ export function bundle(): Record<string, string> {
       `${lado(false)}${lado(true)}`,
       fuente(
         "compare, parte «header» y «rows» con levelByBand: la fila con sus bloques y con todos sus componentes; un solo botón arriba a la derecha del recuadro alterna entre las dos, sin mover las columnas (mirada M1 del S2, 2026-10-02).",
+      ),
+    ],
+    [
+      "componentes-s2/diferencias-entre-versiones.html",
+      "Componentes · S2",
+      "Diferencias entre versiones",
+      versiones,
+      fuente(
+        "compare con marks (diff) y diffToText (§ 4.7): arriba la versión anterior, abajo la nueva con una píldora glifo + palabra por clase de cambio, y la lista que las explica; aparte, lo que cambia sin cambiar el dibujo (D-S2-08). Versiones sintéticas del mapa ficticio.",
       ),
     ],
     [

@@ -1,0 +1,22 @@
+/* Versiones del mapa (D-S2-08). La lista que explica cada diferencia (`diffToText`) es la `.diff-lista` de la maqueta
+   (docs/diseno/lado-a-lado.html, estado «diferencias entre versiones»): palabra con su glifo en una píldora, y el
+   componente con su banda y qué cambió. Estilos solo de esta pantalla. */
+.volver { margin: 0 0 8px; font-size: 15px; }
+.volver a { color: var(--tinta-1); text-decoration: underline; text-underline-offset: 3px; }
+.version-par { margin: 32px 0 0; padding-top: 24px; border-top: 1px solid var(--linea); }
+.version-par > h2 { font-size: 22px; font-weight: 700; line-height: 1.2; margin: 0 0 4px; }
+.version-par > .meta { margin-bottom: 16px; }
+.dg-dif-lista { margin: 18px 0 0; padding: 0; list-style: none; }
+.dg-dif-item { display: grid; grid-template-columns: 170px 1fr; gap: 12px; padding: 12px 0; border-top: 1px solid var(--linea); font-size: 15px; }
+.dg-dif-palabra { display: inline-flex; align-items: center; gap: 8px; font: 600 12px/1 var(--letra-mono); letter-spacing: 0.04em; color: var(--tinta-1); align-self: start; padding: 6px 10px; border: 1.5px solid var(--tinta-1); border-radius: 999px; width: max-content; }
+.dg-dif-palabra .dg-svg { display: inline; }
+.dg-dif-retirado .dg-dif-palabra { background: var(--tinta-1); color: var(--fondo); }
+.dg-dif-banda { font: 400 13px var(--letra-mono); color: var(--tinta-2); }
+.dg-dif-ninguna, .dg-dif-otros { margin: 18px 0 0; padding-top: 12px; border-top: 1px solid var(--linea); font-size: 15px; }
+.version-dice { margin: 24px 0 0; max-width: 72ch; }
+.version-dice h3 { font-size: 16px; font-weight: 700; margin: 0 0 8px; }
+.version-dice p { margin: 0 0 8px; font-size: 15px; }
+.version-vacio { border: 1px solid var(--linea); border-radius: 6px; padding: 18px; background: var(--sup-1); display: grid; gap: 8px; font-size: 15px; margin-top: 24px; }
+.version-vacio h2 { font-size: 18px; font-weight: 700; margin: 0; }
+.version-vacio p { margin: 0; color: var(--tinta-2); }
+@media (max-width: 719px) { .dg-dif-item { grid-template-columns: 1fr; } }

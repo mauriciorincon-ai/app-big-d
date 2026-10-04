@@ -616,6 +616,75 @@ afirmaciones; sin retiros, sin componentes ni flujos nuevos. **Cero «lago de da
 - Corridas: `typecheck` · `lint` sin fallas; `pnpm test` **1313 pasan** (63 archivos, 97,34 % de líneas); `pnpm build`
   (38 páginas); e2e completo **659 pasan · 9 saltadas** (las mismas de Snowflake).
 
+### Cierre de la fase 3
+
+- CI de cada push con `gh pr checks`, todas con los cinco checks y Vercel en `success` y 0 comentarios del bot:
+  `543b017` (Databricks), `357003d` (Snowflake), `33a5f0d` (Fabric). `93d4fd2` (la skill) viajó en el push de `543b017`.
+- **Criterio de la fase:** las tres propuestas se verificaron por código y en un ensayo de la aprobación (modo
+  publicación, cuatro edades), se dibujaron y se leyeron como imagen, las aprobó la persona con su comando y quedaron
+  registradas con fecha y commit. Ninguna banda pidió más de 6 nodos (máximo 4: Fuentes de Snowflake), así que P10 no
+  necesitó enmienda. Selector con N = 4; «próximamente» ya no aparece.
+- **Cómo aprobó la persona:** Databricks, con el comando de la pantalla (las 106 verificadas venían aprobadas de
+  entrada). Snowflake, marcando en la pantalla A-43 y A-74 (las dos no verificables) y con el comando que le dejé
+  copiado, igual al de la pantalla. Fabric, con el comando de las 84 que le dejé copiado, después de señalarle A-47;
+  la pantalla estaba abierta, pero no hay registro de que la recorriera afirmación por afirmación. Lo declaro como
+  desviación de «apruebo cada mapa afirmación por afirmación».
+- Pendientes que pasan a la fase 4: los textos de la v0.1.0 de Fabric en `/versiones` (dicen «lago de datos»); el
+  rótulo «validador: N reintentos» de la pantalla de revisión; y para el summary, las preguntas guía sin fuente de las
+  tres investigaciones (Delta Lake como componente, la disponibilidad general de la seguridad de OneLake, la madurez
+  por conector, las diferencias por nube) y la sugerencia de que el verificador reintente sin su agente cuando un
+  sitio corta la conexión (GlobeNewswire).
+
+## Fase 4 — Diferencias en producto y cierre («continúa» 2026-10-04)
+
+### `/[idioma]/atlas/[plataforma]/versiones` (D-S2-08)
+
+- **Forma**, la del estado «diferencias entre versiones» de `docs/diseno/lado-a-lado.html`. Por cada versión y la
+  siguiente, de la más nueva a la más vieja:
+  - las dos filas del lado a lado: `compare([anterior, nueva], { marks: diff(…) })`, arriba la anterior;
+  - la lista que explica cada diferencia (`diffToText`, enlazada como la versión en texto del SVG, G10).
+
+  Sin versión anterior, el estado vacío del kit. Se llega desde la cabecera de cada vista del atlas («mapa vX ·
+  ver versiones»). Es mirada de TEXTO según D-S2-10: maquetado, no visto; viaja al gate del ciclo.
+- **Lo que el contrato no marca.** Entre Fabric v0.1.0 y v0.2.0, `diff` no encuentra nada: ningún componente
+  nuevo, retirado, renombrado ni con otra madurez. Cambiaron el texto de 6 componentes y las fuentes de los 19. Para
+  que «sin diferencias» no se lea como «nada cambió»:
+  - el texto del motor pasa a «Sin cambios en el dibujo: los mismos componentes, con los mismos nombres y la misma
+    madurez»;
+  - la vista cuenta aparte, en «Lo que dicen los componentes», los textos (líder, experto, por qué importa,
+    términos) y las fuentes que cambiaron. Compara con JSON canónico (lección M-26: un YAML reescrito no cuenta
+    como cambio).
+  - Va a «Enmiendas»: que `diff` reporte también los cambios de texto y de fuentes.
+- **Bloques.** Los de las dos filas abren la ventana de su versión («Fuentes · versión 0.1.0»). Solo la vigente
+  lleva el paso a «Componentes», porque el nivel 2 dibuja la vigente: `ventanas()` gana el parámetro `enlace`.
+- **«Lago de datos».** La v0.1.0 lo decía en textos que esta página no muestra (títulos de fuente, experto,
+  términos, glosario). Verificado en el HTML exportado: 0 apariciones en ES y en EN.
+- **Pruebas nuevas, cada una vista en rojo:**
+
+| Gate | ¿Puede fallar? | Rojo | A quién nombró | Verde |
+|---|---|---|---|---|
+| `tests/unit/versiones.test.ts` (6) | Sí | (1) enlace en las ventanas de todas las versiones; (2) fuentes comparadas con `JSON.stringify`; (3) pares de la más vieja a la más nueva | (1) «solo la vigente lleva el paso al nivel 2»; (2) «reescribir el YAML con las claves en otro orden…»; (3) «una cadena de tres versiones da dos pares, de la más nueva…» | Restaurado |
+| `atlas-vigencias`: versiones a cada fecha de cambio de estado, contando las de las versiones archivadas (regla 23) | Sí, pero lo que depende de la edad del dibujo lo frena antes el cargador (V16 dibuja cada mapa y cada versión archivada a cuatro edades): un rótulo «por revisar» que no cabe rompió la carga, no la matriz | Mutación que rompe la página solo desde 2026-10-29, cuando la v0.1.0 cumple 30 días | `fabric · 2026-11-02`, `… 2026-11-03`, … `2027-11-08` (8 casos); la fecha de hoy pasaba | Restaurado |
+| `tests/e2e/versiones.spec.ts` (3 × 2 proyectos) | Sí | Sin el enlace de la cabecera del atlas (build aparte) | «desde el atlas se llega a las versiones…», en desktop y mobile: esperando `link «ver versiones»` | Restaurado y reconstruido |
+
+- G11, movimiento reducido, axe y CSP recorren las rutas nuevas: `RUTAS` suma `/atlas/<p>/versiones` de cada
+  publicada; `conDibujo(ruta)` dice cuáles tienen lienzo (las de un mapa con versión archivada, `VERSIONADAS`); G11
+  abre también cada ventana de la página de versiones.
+
+- **Defecto atrapado por la CSP (4 motores, 64 casos en rojo):** la vista importaba `canonico` de
+  `investigador/huella.ts`, que trae `node:crypto`. Al exportarse desde el índice de `@/lib/atlas`, los componentes
+  de cliente del recorrido (y la navegación entre pestañas del atlas) cargaron el polyfill de `crypto`/`util`. Uno de
+  sus paquetes, `is-generator-function`, llama a `Function("return function*() {}")` al cargarse, y la CSP lo
+  bloqueó como `script-src · eval`. Visto en `_next/static/chunks/…js`, columna 46643. Corregido: `canonico` vive en
+  `investigador/canonico.ts`, sin `crypto`, y `huella.ts` lo reexporta. Tras el build, ningún chunk trae el
+  polyfill. Es el gate `csp.spec` (fase 0) cumpliendo su función: nadie más lo habría visto.
+- Corridas: `typecheck` · `lint` sin fallas; `pnpm test` 1350 pasan (64 archivos); `pnpm build` (46 páginas, CSP
+  184/230 huellas); e2e completo **775 pasan · 9 saltadas** (las mismas de la fase 3).
+- `lighthouse-urls.json` suma `/es/atlas/fabric/versiones` y `/en/atlas/fabric/versiones`; la pasada de capturas asocia
+  `/atlas/<p>/versiones` a la maqueta `lado-a-lado` (estado «diferencias»); `design-sync/` suma `versiones.css` y
+  la tarjeta `componentes-s2/diferencias-entre-versiones.html` (versiones sintéticas del mapa ficticio, las cuatro
+  clases de cambio: «retirado» en la fila anterior y una píldora por clase en el mismo bloque).
+
 ## Desviación del plan
 
 Lo que el plan aprobado ya declaró frente a la orden y a `SPRINT_002.md`:

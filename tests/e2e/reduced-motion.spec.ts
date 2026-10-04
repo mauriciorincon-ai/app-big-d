@@ -1,7 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
 import { abrir, listo } from "./lib/abrir";
-import { RUTAS } from "./lib/rutas";
+import { conDibujo, RUTAS } from "./lib/rutas";
 
 // Movimiento reducido en el sitio entero (regla 5 del CLAUDE.md y contrapeso del ⭐ diferido): en cada ruta
 // del export (1) la forma del árbol no depende de la preferencia: el mismo `main` con y sin ella; (2) con la
@@ -63,7 +63,7 @@ for (const ruta of RUTAS)
     expect(await arbol(page)).toBe(sin);
     expect(hidratacion).toEqual([]);
     await expect(page.locator("main h1")).toBeVisible();
-    if (ruta.includes("/atlas/")) await expect(page.locator(".lienzo svg.dg-svg")).toBeVisible();
+    if (conDibujo(ruta)) await expect(page.locator(".lienzo svg.dg-svg").first()).toBeVisible();
     if (ruta.endsWith("/comparar")) await expect(page.locator(page.viewportSize()!.width < 900 ? ".lado-angosto .lado-pl" : ".lado-ancho .lado-cabecera svg").first()).toBeVisible();
     expect(await ocultos(page)).toEqual([]);
     // Lo que se toca también se abre: la ventana de un bloque, la ficha de un componente o su paso.

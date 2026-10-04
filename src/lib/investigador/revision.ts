@@ -103,7 +103,8 @@ export function vigenciaPorBanda(atlas: Atlas, idioma: Idioma, fecha: string): B
   });
 }
 
-function revisiones(raiz: string, id: string): Revision[] {
+/** El historial de revisiones de una plataforma (data/revisiones/<id>.jsonl), de la más vieja a la más nueva. */
+export function revisiones(raiz: string, id: string): Revision[] {
   const archivo = join(raiz, "data/revisiones", `${id}.jsonl`);
   if (!existsSync(archivo)) return [];
   return readFileSync(archivo, "utf8")

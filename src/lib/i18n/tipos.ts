@@ -95,6 +95,27 @@ export interface Textos {
       ventanaDe: string;
       numeros: readonly string[];
     };
+    /** Versiones de un mapa (`/[idioma]/atlas/[plataforma]/versiones`, D-S2-08). Plurales [uno, varios]. */
+    versiones: {
+      titulo: string;
+      ojo: string;
+      h1: string;
+      sub: string;
+      /** Enlace desde la cabecera del atlas. */
+      enlace: string;
+      vigente: string;
+      anteriores: readonly [string, string];
+      volver: string;
+      par: string;
+      aprobada: string;
+      guia: { entrada: string; resto: string };
+      lienzo: string;
+      pista: string;
+      pistaActivar: string;
+      ventanaDe: string;
+      dice: { titulo: string; cambiaron: readonly [string, string]; ninguno: string; fuentes: readonly [string, string]; sinFuentes: string; nota: string };
+      vacio: { titulo: string; texto: string };
+    };
   };
   investigador: {
     titulo: string;

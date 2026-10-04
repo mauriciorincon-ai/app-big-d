@@ -2,7 +2,7 @@
 // vistas del atlas de cada plataforma publicada y el investigador de todas. Si una plataforma se publica,
 // sus rutas entran solas a las pruebas que recorren el sitio entero (g11, reduced-motion). El recorrido solo
 // si su mapa trae uno (B-17 d de la auditoría del S1: se suponía en toda plataforma publicada). El lado a lado
-// (S2), una por idioma.
+// (S2), una por idioma; las versiones de cada mapa publicado (S2, D-S2-08).
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { parse } from "yaml";
@@ -26,10 +26,17 @@ export function vistasDe(id: string): string[] {
   const recorridos = existsSync(mapa) ? ((parse(readFileSync(mapa, "utf8")) as { recorridos?: unknown[] }).recorridos ?? []) : [];
   return VISTAS_ATLAS.filter((v) => v !== "/recorrido" || recorridos.length > 0);
 }
+/** Las publicadas con al menos una versión archivada (D-S2-09): su página de versiones dibuja; las demás, estado vacío. */
+const DIR_VERSIONES = join(DATOS, "mapas", "versiones");
+export const VERSIONADAS = PUBLICADAS.filter((p) => existsSync(DIR_VERSIONES) && readdirSync(DIR_VERSIONES).some((f) => f.startsWith(`${p}-`)));
 export { IDIOMAS };
 export const RUTAS = IDIOMAS.flatMap((i) => [
   `/${i}`,
   `/${i}/comparar`,
   ...PUBLICADAS.flatMap((p) => vistasDe(p).map((v) => `/${i}/atlas/${p}${v}`)),
+  ...PUBLICADAS.map((p) => `/${i}/atlas/${p}/versiones`),
   ...plataformas.map((p) => `/${i}/investigador/${p.id}`),
 ]);
+/** ¿La ruta dibuja un lienzo? Toda vista del atlas, salvo las versiones de un mapa que tiene una sola. */
+export const conDibujo = (ruta: string): boolean =>
+  ruta.includes("/atlas/") && (!ruta.endsWith("/versiones") || VERSIONADAS.some((p) => ruta.includes(`/atlas/${p}/`)));

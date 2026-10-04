@@ -22,3 +22,4 @@ export {
 export { plantilla, plural } from "./plantilla";
 export { POR_PAGINA, rutaLado, tituloLado, vistaLado, type BandaAngosta, type CeldaAngosta, type ElementoAngosto, type FilaLado, type VistaLado } from "./lado";
 export { ATRIBUTO_ELEGIDAS, ATRIBUTO_VISIBLES, completar, consultaDe, estadoDeConsulta, scriptLado, type EstadoCompleto, type EstadoLado } from "./estado-lado";
+export { rutaVersiones, vistaVersiones, type ParVersiones, type VistaVersiones } from "./versiones";
