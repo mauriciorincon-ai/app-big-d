@@ -131,3 +131,142 @@
 {"fecha_hora":"2026-10-04T04:27:29.846Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/metric-views/","llamada":"29350b38268c5a91"}
 {"fecha_hora":"2026-10-04T04:27:33.555Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/admin/system-tables/billing","llamada":"a6ff76e24ef6c010"}
 {"fecha_hora":"2026-10-04T04:27:37.848Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/delta/","llamada":"c2df86e293806733"}
+{"fecha_hora":"2026-10-04T04:59:16.013Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/data-load-snowpipe-intro","llamada":"30101a849894d4cf"}
+{"fecha_hora":"2026-10-04T04:59:24.159Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/snowpipe-streaming/data-load-snowpipe-streaming-overview","llamada":"3b82e43ae3b71a2d"}
+{"fecha_hora":"2026-10-04T04:59:40.147Z","herramienta":"WebSearch","consulta":"Snowpipe Streaming high-performance architecture generally available release note site:docs.snowflake.com","llamada":"85d702f8adc01e93"}
+{"fecha_hora":"2026-10-04T04:59:46.743Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2025/other/2025-09-23-snowpipe-streaming-high-performance-architecture","llamada":"b3fa71fa5c0132f0"}
+{"fecha_hora":"2026-10-04T04:59:57.423Z","herramienta":"WebSearch","consulta":"Snowpipe \"generally available\" release notes docs.snowflake.com auto-ingest","llamada":"ca89922d1eb0bf55"}
+{"fecha_hora":"2026-10-04T05:00:07.816Z","herramienta":"WebSearch","consulta":"Snowflake blog Snowpipe \"generally available\" announcement continuous data ingestion","llamada":"13ad66a161d25940"}
+{"fecha_hora":"2026-10-04T05:00:39.026Z","herramienta":"WebFetch","url":"https://www.snowflake.com/en/blog/snowpipe-serverless-loading-for-streaming-data-2/","llamada":"83cbc36c7779c00a"}
+{"fecha_hora":"2026-10-04T05:00:51.090Z","herramienta":"WebSearch","consulta":"\"Snowpipe\" auto-ingest Google Cloud Storage Azure \"generally available\" 2020 release notes","llamada":"5862344da37efe66"}
+{"fecha_hora":"2026-10-04T05:01:05.972Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/intro-editions","llamada":"a6fe5a301ba8202a"}
+{"fecha_hora":"2026-10-04T05:01:49.360Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/data-integration/openflow/about","llamada":"a1847afbf674f58b"}
+{"fecha_hora":"2026-10-04T05:01:55.748Z","herramienta":"WebSearch","consulta":"Openflow Snowflake Deployments \"General availability\" release note","llamada":"5a4058f88a330a8b"}
+{"fecha_hora":"2026-10-04T05:02:02.037Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2025/other/2025-11-04-openflow","llamada":"d74807e5063474a0"}
+{"fecha_hora":"2026-10-04T05:02:03.672Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2026/other/2026-08-05-openflow-sql-server-cdc-ga","llamada":"0bedd5c87a8d7015"}
+{"fecha_hora":"2026-10-04T05:02:11.735Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/data-integration/openflow/connectors/about-openflow-connectors","llamada":"965aef4d2c9a283f"}
+{"fecha_hora":"2026-10-04T05:02:24.666Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/data-integration/openflow/connectors/about-openflow-connectors","llamada":"b68f600eba20338d"}
+{"fecha_hora":"2026-10-04T05:02:33.331Z","herramienta":"WebSearch","consulta":"\"Openflow Connector for PostgreSQL\" OR \"Openflow Connector for MySQL\" general availability release note 2025","llamada":"39e3a8aef7ff061a"}
+{"fecha_hora":"2026-10-04T05:02:41.868Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/data-integration/openflow/connectors/mysql/about","llamada":"873e0fd904daf583"}
+{"fecha_hora":"2026-10-04T05:02:48.441Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2025/other/2025-05-30-openflow","llamada":"1659811e2d9c4378"}
+{"fecha_hora":"2026-10-04T05:02:58.871Z","herramienta":"WebSearch","consulta":"\"Snowpipe\" \"is now generally available\" Snowflake","llamada":"581db4629bba309c"}
+{"fecha_hora":"2026-10-04T05:03:02.617Z","herramienta":"WebFetch","url":"https://www.snowflake.com/blog/auto-ingest-snowpipe-is-now-generally-available/","llamada":"195ad9120135f13d"}
+{"fecha_hora":"2026-10-04T05:03:05.474Z","herramienta":"WebFetch","url":"https://www.snowflake.com/en/blog/auto-ingest-snowpipe-is-now-generally-available/","llamada":"45c09d2fd851fe34"}
+{"fecha_hora":"2026-10-04T05:03:15.527Z","herramienta":"WebSearch","consulta":"Snowpipe release note 2025 OR 2026 \"General availability\" Snowpipe file ingestion docs.snowflake.com release-notes","llamada":"438decceea5a393e"}
+{"fecha_hora":"2026-10-04T05:03:28.305Z","herramienta":"WebSearch","consulta":"Snowflake release notes Snowpipe auto-ingest \"Google Cloud Storage\" \"generally available\" 2020 OR 2021","llamada":"70e7d1ad1e7c776d"}
+{"fecha_hora":"2026-10-04T05:03:34.604Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2023/7_33","llamada":"a5ca08bef75ec63a"}
+{"fecha_hora":"2026-10-04T05:03:42.679Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/snowpipe-streaming/snowpipe-streaming-classic-deprecation","llamada":"50571eebe9cf9b1e"}
+{"fecha_hora":"2026-10-04T05:03:50.813Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/intro-key-concepts","llamada":"d307ca844270465a"}
+{"fecha_hora":"2026-10-04T05:04:03.641Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/intro-key-concepts","llamada":"87ee889391fd76f6"}
+{"fecha_hora":"2026-10-04T05:04:12.807Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/tables-iceberg","llamada":"28ec36ebf571daa6"}
+{"fecha_hora":"2026-10-04T05:04:20.216Z","herramienta":"WebSearch","consulta":"Apache Iceberg tables \"General availability\" Snowflake release note June 2024","llamada":"7c2c562e7985ccb5"}
+{"fecha_hora":"2026-10-04T05:04:25.632Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2024/other/2024-06-10-iceberg-tables","llamada":"bab74ffb31580c1d"}
+{"fecha_hora":"2026-10-04T05:04:35.950Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/tables-iceberg","llamada":"6a7fb5bf422d1dd1"}
+{"fecha_hora":"2026-10-04T05:04:45.053Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/dynamic-tables/overview","llamada":"e832f49c9f51aed4"}
+{"fecha_hora":"2026-10-04T05:04:56.059Z","herramienta":"WebSearch","consulta":"dynamic tables \"General availability\" Snowflake release note April 2024","llamada":"88a1b9a6b5eedd4b"}
+{"fecha_hora":"2026-10-04T05:05:00.706Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2024/other/2024-04-29-dynamic-tables","llamada":"ab225c14a1e6e30a"}
+{"fecha_hora":"2026-10-04T05:05:07.665Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/developer-guide/snowpark/index","llamada":"439573a98b2a4f39"}
+{"fecha_hora":"2026-10-04T05:05:13.885Z","herramienta":"WebSearch","consulta":"Snowpark for Python \"general availability\" release notes November 2022 docs.snowflake.com","llamada":"55912345418d985e"}
+{"fecha_hora":"2026-10-04T05:05:23.095Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/clients-drivers/snowpark-python-2022","llamada":"95a1028d5485a688"}
+{"fecha_hora":"2026-10-04T05:05:30.626Z","herramienta":"WebSearch","consulta":"\"Snowpark for Python\" \"generally available\" Snowflake blog","llamada":"bf344293d49de0a5"}
+{"fecha_hora":"2026-10-04T05:05:36.322Z","herramienta":"WebFetch","url":"https://www.snowflake.com/en/blog/snowpark-python-innovation-available-all-snowflake-customers/","llamada":"286d257272dba0bc"}
+{"fecha_hora":"2026-10-04T05:05:45.362Z","herramienta":"WebFetch","url":"https://www.snowflake.com/en/news/press-releases/snowflake-disrupts-application-development-with-general-availability-of-snowpark-for-python-native-streamlit-support-and-more-2/","llamada":"ef4a0058b211fdb8"}
+{"fecha_hora":"2026-10-04T05:05:54.010Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/warehouses-overview","llamada":"10bd89af2575471c"}
+{"fecha_hora":"2026-10-04T05:06:32.750Z","herramienta":"WebSearch","consulta":"Snowflake press release 2015 \"general availability\" Snowflake Elastic Data Warehouse","llamada":"ef446fe404f3810b"}
+{"fecha_hora":"2026-10-04T05:07:03.697Z","herramienta":"WebSearch","consulta":"snowflake.com news \"Elastic Data Warehouse\" \"general availability\" 2015","llamada":"bcda7ef65fe2ec23"}
+{"fecha_hora":"2026-10-04T05:07:09.020Z","herramienta":"WebFetch","url":"https://www.globenewswire.com/news-release/2015/12/16/1186880/0/en/Snowflake-Computing-Concludes-Historic-Year-With-Recognition-for-Its-Elastic-Data-Warehouse-in-the-Cloud.html","llamada":"aa471bd689627789"}
+{"fecha_hora":"2026-10-04T05:07:21.913Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/views-semantic/overview","llamada":"5c25aedcf44c81ca"}
+{"fecha_hora":"2026-10-04T05:07:29.826Z","herramienta":"WebSearch","consulta":"semantic views \"General availability\" Snowflake release note 2025","llamada":"7f458109dea2bc7f"}
+{"fecha_hora":"2026-10-04T05:07:35.685Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2025/9_25","llamada":"a343776d7ccaf6f9"}
+{"fecha_hora":"2026-10-04T05:07:43.128Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/developer-guide/streamlit/about-streamlit","llamada":"de9299b9f12b64b6"}
+{"fecha_hora":"2026-10-04T05:07:49.167Z","herramienta":"WebSearch","consulta":"\"Streamlit in Snowflake\" \"General Availability\" release note December 2023","llamada":"703cf25739717f0a"}
+{"fecha_hora":"2026-10-04T05:07:54.100Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2023/other/2023-12-01","llamada":"7997d02ffbe1d62c"}
+{"fecha_hora":"2026-10-04T05:07:55.017Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2024/other/2024-01-25","llamada":"b7f5fe9058e6bd24"}
+{"fecha_hora":"2026-10-04T05:08:04.277Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-analyst","llamada":"631265ea46d74c10"}
+{"fecha_hora":"2026-10-04T05:08:12.631Z","herramienta":"WebSearch","consulta":"\"Cortex Analyst\" \"General availability\" release note","llamada":"1bd53521cd1b2bd2"}
+{"fecha_hora":"2026-10-04T05:08:19.085Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2026/other/2026-08-28-cortex-analyst-transition-cortex-agents","llamada":"7cfc9d976b23648f"}
+{"fecha_hora":"2026-10-04T05:08:26.593Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2026/other/2026-08-28-cortex-analyst-transition-cortex-agents","llamada":"133996c44e504d66"}
+{"fecha_hora":"2026-10-04T05:08:36.439Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-agents","llamada":"a78b6a015557b86e"}
+{"fecha_hora":"2026-10-04T05:08:45.561Z","herramienta":"WebSearch","consulta":"\"Cortex Agents\" \"General availability\" release note 2025 docs.snowflake.com","llamada":"0f0b39ee8c623db9"}
+{"fecha_hora":"2026-10-04T05:08:50.598Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2025/other/2025-11-04-cortex-agents","llamada":"0a1776148808ac6d"}
+{"fecha_hora":"2026-10-04T05:09:01.567Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/snowflake-cortex/snowflake-intelligence","llamada":"7c7bca22da1eda63"}
+{"fecha_hora":"2026-10-04T05:09:10.501Z","herramienta":"WebSearch","consulta":"\"Snowflake CoWork\" \"Snowflake Intelligence\" renamed release note","llamada":"3d1b875f4a1ea486"}
+{"fecha_hora":"2026-10-04T05:09:18.531Z","herramienta":"WebSearch","consulta":"Snowflake CoWork release note docs.snowflake.com \"formerly Snowflake Intelligence\"","llamada":"043cfb9d883f2995"}
+{"fecha_hora":"2026-10-04T05:09:24.865Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2025/other/2025-11-04-snowflake-intelligence","llamada":"80936f0ca5c44254"}
+{"fecha_hora":"2026-10-04T05:10:01.934Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/snowflake-cortex/snowflake-cowork","llamada":"5331c692341cdee6"}
+{"fecha_hora":"2026-10-04T05:10:09.727Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/snowflake-horizon","llamada":"39e0ddb0cf2a3fbd"}
+{"fecha_hora":"2026-10-04T05:10:21.038Z","herramienta":"WebSearch","consulta":"Snowflake \"lineage\" Snowsight \"General availability\" release note","llamada":"064d3cc3b7212f2a"}
+{"fecha_hora":"2026-10-04T05:10:30.328Z","herramienta":"WebSearch","consulta":"Snowflake \"row access policies\" \"generally available\" OR \"general availability\" release notes","llamada":"1e339b3104e3f985"}
+{"fecha_hora":"2026-10-04T05:10:37.388Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2023/7_32","llamada":"22b94a0c4d647cbb"}
+{"fecha_hora":"2026-10-04T05:10:47.198Z","herramienta":"WebSearch","consulta":"Snowflake blog \"Row Access Policies\" \"generally available\" OR \"Dynamic Data Masking\" \"generally available\"","llamada":"69de9619d04dbb36"}
+{"fecha_hora":"2026-10-04T05:10:53.865Z","herramienta":"WebFetch","url":"https://www.snowflake.com/en/blog/protect-sensitive-data-tag-based-masking/","llamada":"61a27a7ee2d6112a"}
+{"fecha_hora":"2026-10-04T05:11:04.540Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/all-release-notes","llamada":"2f5c738e2e224f2a"}
+{"fecha_hora":"2026-10-04T05:11:18.958Z","herramienta":"WebSearch","consulta":"docs.snowflake.com release-notes 2021 \"Row Access Policies\" \"General Availability\"","llamada":"e81635ff69570118"}
+{"fecha_hora":"2026-10-04T05:11:27.640Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/security-row-intro","llamada":"5f416efa2d34953d"}
+{"fecha_hora":"2026-10-04T05:11:34.515Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/security-column-ddm-intro","llamada":"c733309f053f8245"}
+{"fecha_hora":"2026-10-04T05:11:43.042Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/access-history","llamada":"32fbf34fcd1c1d94"}
+{"fecha_hora":"2026-10-04T05:11:51.557Z","herramienta":"WebSearch","consulta":"Snowflake \"Access History\" \"General Availability\" release note docs.snowflake.com","llamada":"1ea9b39f4c72c830"}
+{"fecha_hora":"2026-10-04T05:11:57.183Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2023-07","llamada":"50132ca6cfbb2d76"}
+{"fecha_hora":"2026-10-04T05:12:10.400Z","herramienta":"WebSearch","consulta":"\"row access policies\" Snowflake 2021 \"now generally available\" row-level security announcement","llamada":"f82d279f4e557f7a"}
+{"fecha_hora":"2026-10-04T05:12:19.851Z","herramienta":"WebSearch","consulta":"\"Horizon Catalog\" Snowflake \"General availability\" release note 2025 OR 2026","llamada":"f60d4d69b304faaf"}
+{"fecha_hora":"2026-10-04T05:12:26.966Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2026/other/2026-05-26-tables-iceberg-query-using-external-query-engine-snowflake-horizon-writes-ga","llamada":"47c1573e6c5862ae"}
+{"fecha_hora":"2026-10-04T05:12:33.037Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2026/other/2026-05-26-tables-iceberg-query-using-external-query-engine-snowflake-horizon-writes-ga","llamada":"cf2d05ba9215fff7"}
+{"fecha_hora":"2026-10-04T05:12:44.447Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/tables-iceberg-access-using-external-query-engine-snowflake-horizon","llamada":"39c903de5a97743a"}
+{"fecha_hora":"2026-10-04T05:12:53.161Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/resource-monitors","llamada":"19fab28aa546c3a5"}
+{"fecha_hora":"2026-10-04T05:13:03.423Z","herramienta":"WebSearch","consulta":"Snowflake budgets \"General Availability\" release note cost management","llamada":"a63e3f468585eca0"}
+{"fecha_hora":"2026-10-04T05:13:12.387Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2024/other/2024-04-12-cost","llamada":"a4ea0536dfa46171"}
+{"fecha_hora":"2026-10-04T05:13:13.821Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/budgets","llamada":"5c343876d84b61e7"}
+{"fecha_hora":"2026-10-04T05:13:20.654Z","herramienta":"WebSearch","consulta":"\"April 11, 2024\" Budgets Release Notes \"General Availability\" Snowflake","llamada":"fc4dd1f2e836b682"}
+{"fecha_hora":"2026-10-04T05:13:25.053Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2024/other/2024-04-11-budgets","llamada":"9f367e6f6b799721"}
+{"fecha_hora":"2026-10-04T05:13:39.314Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/intro-editions","llamada":"ba821ce8b260b46f"}
+{"fecha_hora":"2026-10-04T05:13:49.854Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/tasks-intro","llamada":"45d35bc766d066c9"}
+{"fecha_hora":"2026-10-04T05:14:02.918Z","herramienta":"WebSearch","consulta":"Snowflake tasks \"General availability\" release note serverless tasks OR triggered tasks OR task graphs","llamada":"38cd0b3c170c8e01"}
+{"fecha_hora":"2026-10-04T05:14:07.950Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2024/8_27","llamada":"7d5d9fa188a77a10"}
+{"fecha_hora":"2026-10-04T05:14:48.016Z","herramienta":"WebSearch","consulta":"Snowsight dashboards deprecation OR \"Snowsight dashboards\" 2026 Snowflake documentation","llamada":"1e1398bbcd70accd"}
+{"fecha_hora":"2026-10-04T05:14:55.906Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/bcr-bundles/un-bundled/bcr-2260","llamada":"105601c0f2abe53e"}
+{"fecha_hora":"2026-10-04T05:15:01.171Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/developer-guide/streamlit/about-streamlit","llamada":"32511784fed2ad56"}
+{"fecha_hora":"2026-10-04T05:15:10.538Z","herramienta":"WebSearch","consulta":"Streamlit in Snowflake \"query warehouse\" runtime environments app queries warehouse docs","llamada":"de042af04d0dcec7"}
+{"fecha_hora":"2026-10-04T05:15:16.746Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/developer-guide/streamlit/app-development/runtime-environments","llamada":"10a2ee51e96e3bff"}
+{"fecha_hora":"2026-10-04T05:15:25.229Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/data-integration/openflow/about","llamada":"2675eadd2808d4f3"}
+{"fecha_hora":"2026-10-04T05:15:34.316Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/data-integration/openflow/connectors/salesforce-bulk-api/about","llamada":"bad114a51803d8a9"}
+{"fecha_hora":"2026-10-04T05:15:43.850Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/data-integration/openflow/connectors/mysql/about","llamada":"9af3fb5507f21926"}
+{"fecha_hora":"2026-10-04T05:15:50.229Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2026/other/2026-09-15-snowpipe-streaming-elastic-channels-ga","llamada":"c327850817fcbebd"}
+{"fecha_hora":"2026-10-04T05:16:02.267Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/views-semantic/overview","llamada":"5cf608c849d41582"}
+{"fecha_hora":"2026-10-04T05:16:35.794Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/views-semantic/sql","llamada":"956d5ddac84994b5"}
+{"fecha_hora":"2026-10-04T05:16:47.872Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-agents","llamada":"c531801c25f53170"}
+{"fecha_hora":"2026-10-04T05:16:59.991Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/data-load-snowpipe-intro","llamada":"f6d75a6d4436b859"}
+{"fecha_hora":"2026-10-04T05:17:12.317Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/tables-iceberg","llamada":"a269efa6f03b022c"}
+{"fecha_hora":"2026-10-04T05:17:23.594Z","herramienta":"WebSearch","consulta":"Snowflake Horizon press release built-in governance \"Snowflake Horizon\" generally available features 2024","llamada":"6da612cd6178265e"}
+{"fecha_hora":"2026-10-04T05:17:33.213Z","herramienta":"WebSearch","consulta":"\"data lineage\" Snowflake \"General availability\" release note 2024 Snowsight lineage graph","llamada":"e9e304237bb56fc9"}
+{"fecha_hora":"2026-10-04T05:17:40.212Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/ui-snowsight-lineage","llamada":"f6cbd74eee37cb13"}
+{"fecha_hora":"2026-10-04T05:17:45.402Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2025/other/2025-10-03-process-lineage","llamada":"d8a3316c23e89dc7"}
+{"fecha_hora":"2026-10-04T05:17:54.368Z","herramienta":"WebSearch","consulta":"Snowflake \"Data lineage\" \"(General availability)\" 2025 release note docs.snowflake.com/en/release-notes/2025","llamada":"598f42e74ad81f4d"}
+{"fecha_hora":"2026-10-04T05:18:01.598Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2025/9_03","llamada":"f6b5a41838605e78"}
+{"fecha_hora":"2026-10-04T05:18:17.855Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-analyst","llamada":"34da57526e1394c9"}
+{"fecha_hora":"2026-10-04T05:19:19.555Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/resource-monitors","llamada":"f688be2e15c4ae95"}
+{"fecha_hora":"2026-10-04T05:19:31.045Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2024/other/2024-11-12-dynamic-iceberg-tables","llamada":"e365b43c4ca367f0"}
+{"fecha_hora":"2026-10-04T05:21:50.495Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/access-history","llamada":"5192c707cfa6145d"}
+{"fecha_hora":"2026-10-04T05:21:51.776Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/warehouses-multicluster","llamada":"ab801e318ac3f4f1"}
+{"fecha_hora":"2026-10-04T05:21:53.524Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/dynamic-tables/overview","llamada":"c1a563b122b552a3"}
+{"fecha_hora":"2026-10-04T05:22:00.601Z","herramienta":"WebFetch","url":"https://www.snowflake.com/en/news/press-releases/snowflake-cowork-powers-the-agentic-enterprise-as-the-personal-agent-for-knowledge-workers-to-work-smarter/","llamada":"536f6b93abf98244"}
+{"fecha_hora":"2026-10-04T05:22:10.156Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2025/other/2025-11-10-snowpipe-streaming-gcp-ga","llamada":"57837d0427e3f062"}
+{"fecha_hora":"2026-10-04T05:22:10.438Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2025/other/2025-11-05-snowpipe-streaming-azure-ga","llamada":"231f7faab893306d"}
+{"fecha_hora":"2026-10-04T05:22:19.679Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/snowflake-horizon","llamada":"a82068c07a3c89e8"}
+{"fecha_hora":"2026-10-04T05:22:21.288Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/warehouses-overview","llamada":"877d48be1ee586ff"}
+{"fecha_hora":"2026-10-04T05:24:10.672Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/data-time-travel","llamada":"1a9d15212e3fd233"}
+{"fecha_hora":"2026-10-04T05:36:34.559Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/tasks-intro","llamada":"8a5ac07a6b22ab5a"}
+{"fecha_hora":"2026-10-04T05:37:06.340Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/warehouses-overview","llamada":"9ea21ad5464b49e0"}
+{"fecha_hora":"2026-10-04T05:37:09.405Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/data-integration/openflow/about","llamada":"a40aa7643b59f27a"}
+{"fecha_hora":"2026-10-04T05:37:18.189Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/warehouses-multicluster","llamada":"cff5e667f98acbb3"}
+{"fecha_hora":"2026-10-04T05:37:36.758Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/developer-guide/snowpark/index.md","llamada":"fbcbfce43f3a5c2a"}
+{"fecha_hora":"2026-10-04T05:37:37.041Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/snowflake-cortex/snowflake-cowork.md","llamada":"b2c9cb38087d23f4"}
+{"fecha_hora":"2026-10-04T05:37:37.329Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-analyst.md","llamada":"c838ba6583281384"}
+{"fecha_hora":"2026-10-04T05:37:38.550Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-agents.md","llamada":"77d637c0b83ad4d4"}
+{"fecha_hora":"2026-10-04T05:37:48.615Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2025/9_25.md","llamada":"f264879a6778f297"}
+{"fecha_hora":"2026-10-04T05:37:49.191Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/dynamic-tables/overview.md","llamada":"0abd0d708851c156"}
+{"fecha_hora":"2026-10-04T05:37:52.048Z","herramienta":"WebFetch","url":"https://www.snowflake.com/en/news/press-releases/snowflake-disrupts-application-development-with-general-availability-of-snowpark-for-python-native-streamlit-support-and-more-2/","llamada":"9f07a0db191a9105"}
+{"fecha_hora":"2026-10-04T05:38:09.322Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2025/9_25.md","llamada":"2cc3e0c885c50259"}
+{"fecha_hora":"2026-10-04T05:38:10.924Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/dynamic-tables/overview.md","llamada":"34f95d8fce4a7943"}
+{"fecha_hora":"2026-10-04T05:38:20.782Z","herramienta":"WebSearch","consulta":"snowflake.com press release June 2015 \"Snowflake Elastic Data Warehouse\" general availability Series C Altimeter","llamada":"e243a0f8702b6feb"}
+{"fecha_hora":"2026-10-04T05:38:29.467Z","herramienta":"WebFetch","url":"https://www.snowflake.com/resource/sigmod-2016-paper-snowflake-elastic-data-warehouse/","llamada":"af4cb80f5bc8cca9"}
+{"fecha_hora":"2026-10-04T05:38:50.597Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/tasks-intro.md","llamada":"131039ac14026187"}

@@ -529,6 +529,46 @@ reintentos en eso. Corregido (la línea dice 0.4.0 y de dónde sale) con un gate
   cobertura 97,37 % de líneas); `pnpm build` (32 páginas; CSP 124/128 huellas); e2e completo: 564 pasan · 6 saltadas
   por diseño · 2 fallas (el `aria-current` de arriba), corregidas y re-corridas (`investigador` + `atlas`: 42 pasan).
 
+### Snowflake — propuesta 2026-10-04 (verificada; espera la aprobación de la persona)
+
+`/investigar snowflake` lo invocó la persona el 2026-10-04: `propuestas/2026-10-04-snowflake/`, 21 componentes, 21
+flujos, 7 bloques, un recorrido de 9 pasos (se divide tras las tablas dinámicas) y 143 afirmaciones; sin retiros. El
+validador la aceptó al primer intento (la skill ya pedía el contrato 0.4.0).
+
+- `verificar-citas` → 141 verificadas · **2 no verificables** (A-43 y A-74) · 0 no encontradas · 53 páginas.
+  `validar.mjs` → válida.
+- **A-43 y A-74** citan el comunicado de 2015 en que Snowflake anunció la disponibilidad general de su servicio (en
+  GlobeNewswire); respaldan la madurez de «Tablas de Snowflake» y «Virtual warehouses». El sitio corta la conexión
+  HTTP/2 cuando la petición lleva el agente del verificador (`curl: (92) … INTERNAL_ERROR`); con el agente por omisión
+  de curl responde 200 y la frase está en la página, partida por un enlace: «Announced general availability of the
+  <a>Snowflake Elastic Data Warehouse</a>». Lo comprobé a mano y no toqué el verificador: la decisión es de la persona.
+  Si las rechaza, la aprobación saca los dos componentes con sus flujos y el recorrido (ensayo: 19 componentes,
+  11 flujos, sin recorrido; también carga).
+- Ensayo con todo aprobado en la copia: carga en modo publicación (V1–V16, cuatro edades) sin fallas;
+  `mapasSinAprobacion` = []. El sitio de la copia compila (38 páginas). Capturas leídas: nivel 1, nivel 2 (ES oscuro),
+  recorrido (EN claro), `/comparar?pagina=2` y `?plataformas=snowflake,databricks` desplegado. Con N = 4 el título
+  dice «Cuatro plataformas, el mismo mapa» y la página 2 muestra «4 de 4». Cero cruces sobre nodos; el texto cabe.
+- Servida para la revisión en `:3148` y abierta en el navegador de la persona.
+
+### Snowflake — aprobada por la persona (2026-10-04 UTC)
+
+- La persona aprobó A-43 y A-74 en la pantalla (las dos «no verificables» del comunicado de 2015) y corrió la aprobación:
+  **143 aprobadas · 0 rechazadas · 0 retiros** → `data/mapas/snowflake.mapa.yaml` v0.1.0 (huella `46eebea6c2ed…`),
+  `data/revisiones/snowflake.jsonl` (1 línea), `data/plataformas/snowflake.yaml` → `publicada`. El mapa es byte a byte
+  el del ensayo.
+- **Tropiezo mío, y el candado funcionó.** Para ahorrarle pasos, abrí yo la app Terminal (`open -a Terminal`) y puse el
+  comando en el portapapeles. La Terminal arrancó desde mi proceso y heredó la marca de la sesión de Claude Code; la
+  aprobación se negó con «solo una persona aprueba: corre dentro de una sesión de Claude Code» (lo leí en la ventana
+  de la persona). Se resolvió con una terminal abierta por la persona. Desde ahora no le abro la terminal: solo le
+  dejo el comando copiado. Fueron varios mensajes de ida y vuelta; las instrucciones largas confundieron.
+- Con N = 4 no queda ninguna plataforma «próximamente»: el e2e del estado vacío del investigador y el de la fila
+  «próximamente» del lado a lado se saltan diciendo por qué (3 saltos nuevos: 6 → 9). Los cubren
+  `tests/unit/ui/sin-mapa.test.tsx` y los casos sintéticos de `tests/unit/ui/lado.test.tsx` y `tests/unit/lado.test.ts`.
+  La paginación del lado a lado ya se prueba con datos reales (Snowflake en la página 2).
+- `design-sync/` regenerado (el selector ya no dice «Snowflake — pronto»).
+- Corridas: `typecheck` · `lint` · `peers check` sin fallas; `pnpm test` **1319 pasan** (63 archivos, 97,34 % de
+  líneas); `pnpm build` (38 páginas; CSP 154/190 huellas); e2e completo **659 pasan · 9 saltadas**.
+
 ## Desviación del plan
 
 Lo que el plan aprobado ya declaró frente a la orden y a `SPRINT_002.md`:
