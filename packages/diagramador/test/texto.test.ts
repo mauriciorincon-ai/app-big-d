@@ -49,6 +49,7 @@ describe("leyenda generada de la gramática (§ 4.9)", () => {
         for (const m of g.escala_madurez) expect(h).toContain(m.nombre[idioma]!);
         expect(h).toContain(String(g.vigencia.umbral_vencido_dias));
         expect(h).toContain(TEXTOS[idioma]!.leyenda.notaMarcas);
+        expect(h).toContain(`<p class="dg-leyenda-haz">${TEXTOS[idioma]!.leyenda.haz}</p>`);
       });
 });
 

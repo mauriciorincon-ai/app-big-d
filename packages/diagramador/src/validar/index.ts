@@ -40,7 +40,9 @@ export function validate(map: unknown, grammar: unknown, options: OpcionesValida
   if (!errores.length) {
     const m = map as Mapa;
     const v16 = (mensaje: string): Entrada => ({ doc: "mapa", fase: 2, regla: "V16", ruta: "", id: m.sujeto_id, mensaje });
-    if (!options.texts) avisos.push(v16("V16 no corrió: no se entregaron las cadenas de interfaz para dibujar (texts)"));
+    // Sin las cadenas de interfaz no se puede dibujar: en publicación eso rechaza (§ 7: el validador dibuja); en
+    // privado se informa.
+    if (!options.texts) (options.mode === "publicacion" ? errores : avisos).push(v16("V16 no corrió: no se entregaron las cadenas de interfaz para dibujar (texts)"));
     else {
       const dibujo = avisosV16(m, grammar as Gramatica, { texts: options.texts, queryDate: options.queryDate });
       (options.mode === "publicacion" ? errores : avisos).push(...dibujo.map(v16));

@@ -5,7 +5,7 @@ export type { Cobertura, Entrada, Informe, Modo, OpcionesValidar } from "./valid
 export { agingDates } from "./validar/v16";
 export { layout } from "./layout";
 export { compare, type OpcionesCompare } from "./layout/compare";
-export type { Aviso, Caja, CajaPropia, Cruce as CruceGeo, Geometria, OpcionesLayout, PasoGeo, Plural, Punto, TextosMotor, TipoAviso, Trazado, Vigencia, Vista, VistaGeometria } from "./layout/tipos";
+export type { Aviso, Caja, CajaPropia, Geometria, OpcionesLayout, PasoGeo, Plural, Punto, TextosMotor, TipoAviso, Trazado, Vigencia, Vista, VistaGeometria } from "./layout/tipos";
 export { toSVG, type OpcionesSVG } from "./svg/toSVG";
 export { toJourneyCSS } from "./svg/recorridoCSS";
 export { toLegend } from "./svg/leyenda";

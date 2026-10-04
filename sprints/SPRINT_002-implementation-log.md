@@ -766,6 +766,59 @@ afirmaciones; sin retiros, sin componentes ni flujos nuevos. **Cero «lago de da
   - P4 (S2-AUD-32): solo si no puedo leer el log del build del preview, que mire la CSP en el preview.
 - Ningún hallazgo es imposible de pagar en el sprint. Espera la aprobación de la persona antes de la Fase 2.
 
+### Auditoría final — Fase 2 (aprobada por la persona el 2026-10-04: «Si apruebo el plan de ajustes ajusta todo»)
+
+Se paga el plan del § 9 de `sprints/SPRINT_002-auditoria.md` al pie, lote por lote. Las preguntas P1–P3 van al
+final, de a una.
+
+- **Lote 1 (paquete): inicio.**
+- **Lote 1 (paquete): hecho.** Hallazgos S2-AUD-01, -02, -03, -16, -17, -18, -19, -20, -21, -22 y -23.
+  - **`compare`** (`src/layout/compare.ts`):
+    - nuevas precondiciones en `filasDe`: ningún mapa; un mapa repetido; `page` sin `n`; marcas con `n` o `page`;
+      marcas de dos sujetos distintos; marcas que no son `diff(maps[0], maps[1])`;
+    - nivel por banda solo 1 o 2;
+    - orden por `sujeto_id` y versión, así dos versiones sin marcas no dependen del orden de entrada;
+    - un contexto por fila, y cada aviso con el prefijo de su fila;
+    - la banda vacía sin «sin bloque» en el nivel 2, y su texto medido.
+  - **Un defecto que destapó medir.** En la rejilla de bloques (118 u), «sin componentes» no cabe en una línea y antes
+    se salía de la tarjeta sin aviso. Ahora va en dos líneas centradas. La app no lo veía: usa la rejilla de 152 u.
+  - **Validación:**
+    - G7 revisa los idiomas de `etiqueta_corta`;
+    - V16 sin `texts` en modo publicación es error;
+    - `diffToText` ordena las bandas con un comparador total (capa, carril, franja; luego `orden` e id).
+  - **Pruebas y documentación:**
+    - JSDoc de `Aviso.id`, `filas` y `vigencia` en `compare`;
+    - se quitó el alias `CruceGeo`, que nadie leía;
+    - pruebas nuevas de la regla del haz, del detector P13, de § 5.6 (`encima` y `fuera-del-lienzo`) y de la banda
+      vacía en tres niveles.
+  - **Demos en rojo (regla 15)** — ¿puede fallar? sí · rojo · a quién nombró · verde al restaurar. Cada arreglo se
+    deshizo y su prueba cayó:
+
+    | Arreglo deshecho | Prueba que cayó |
+    | --- | --- |
+    | G7 de `etiqueta_corta` (01) | «una etiqueta corta con un idioma de menos o de más no valida» |
+    | Marcas con `n`/`page` (02) | «levelByBand con una banda que no existe, y marcas sin dos mapas, se dicen» |
+    | Aviso `encima` y aviso `fuera-del-lienzo` (03), cada uno aparte | «§ 5.6 sobre lo dibujado…» |
+    | Mapa repetido, `page` sin `n`, nivel 1 o 2, ningún mapa (17), cada uno aparte | «precondiciones…» |
+    | Desempate por versión (17) | «dos versiones del mismo sujeto sin marcas: el orden de entrada no cambia los bytes» |
+    | «no es diff» y «mismo sujeto» (18) | la de las marcas |
+    | «sin bloque» de vuelta en el nivel 2 (16) | «desplegado: tarjeta punteada…» |
+    | Medida a una línea (16) | «bloques: tarjeta punteada…» (2 avisos `texto`: el defecto de arriba) |
+    | V16 sin `texts` (19) | la de V16 sin cadenas de interfaz |
+    | Contexto compartido sin prefijo (20) | «los avisos de cada fila llevan su prefijo…» |
+    | `<p class="dg-leyenda-haz">` (22) | 8 pruebas de la leyenda, una por gramática e idioma |
+    | `puntas` vacío (22) | «el detector ve una pista ajena bajo una punta» |
+    | El comparador anterior (23) | «con carriles y franjas, las bandas se ordenan capa, carril, franja» |
+
+    Las 19 volvieron a verde al restaurar.
+  - **Corridas:** paquete 805/805; `compare.ts` 99,7 % de líneas; 44 golden sin cambios; `typecheck` y `lint` en
+    verde; las pruebas de la app que llaman a `compare` (lado, versiones, investigador) quedan en 132/132.
+  - **Hecho nuevo: la planeadora publicó el contrato v0.5.0.** Fue hoy, en `143facf`, después de que este sprint fijara
+    el 0.4.0. Por eso `scripts/contrato/verificar.mjs` da «DERIVA» en 6 archivos contra la planeadora de hoy. Contra
+    la planeadora anterior a `143facf` (`git archive 143facf^`, con `DIAGRAMADOR_ORIGEN`) da **57/57 idénticos**: el
+    lock del S2 es el 0.4.0 que pide la orden. El 0.5.0 (`papel`, condiciones, `fuente codigo`, hexágono, métricas de
+    Inter) no entra en este sprint: va al summary para la orden del S3.
+
 ## Desviación del plan
 
 Lo que el plan aprobado ya declaró frente a la orden y a `SPRINT_002.md`:

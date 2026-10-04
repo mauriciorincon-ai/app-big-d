@@ -228,11 +228,103 @@ describe("compare — N del consumidor, prefijos y errores", () => {
     expect(() =>
       compare(LADO, G, { ...base, marks: diff(ANTES, DESPUES) }),
     ).toThrow(/exactamente dos mapas/);
+    // Paginadas, la fila nueva quedaría sola como «antes» y perdería sus marcas (S2-AUD-02).
+    expect(() =>
+      compare([ANTES, DESPUES], G, {
+        ...base,
+        marks: diff(ANTES, DESPUES),
+        n: 1,
+        page: 2,
+      }),
+    ).toThrow(/sin «n» ni «page»/);
+    // Marcas que no son las de estos dos mapas, en este orden, dibujarían cambios falsos (S2-AUD-18).
+    expect(() =>
+      compare([DESPUES, ANTES], G, { ...base, marks: diff(ANTES, DESPUES) }),
+    ).toThrow(/no es diff/);
+    expect(() =>
+      compare([LADO[1]!, DESPUES], G, { ...base, marks: diff(ANTES, DESPUES) }),
+    ).toThrow(/mismo sujeto/);
+  });
+  it("precondiciones: un mapa repetido, «page» sin «n», un nivel que no es 1 ni 2 y ningún mapa se dicen", () => {
+    expect(() => compare([LADO[0]!, LADO[0]!], G, base)).toThrow(
+      /llega dos veces/,
+    );
+    expect(() => compare(LADO, G, { ...base, page: 2 })).toThrow(/pide «n»/);
+    expect(() =>
+      compare(LADO, G, {
+        ...base,
+        levelByBand: { ia: 3 } as unknown as Record<string, 1 | 2>,
+      }),
+    ).toThrow(/es 1 o 2/);
+    expect(() => compare([], G, base)).toThrow(/ningún mapa/);
+    const procesos = EJEMPLOS.find((m) => m.gramatica_id === "prueba-procesos")!;
+    expect(() =>
+      compare([procesos], GRAMATICAS["prueba-procesos"]!, base),
+    ).toThrow(/carriles no tiene lado a lado/);
+  });
+  it("dos versiones del mismo sujeto sin marcas: el orden de entrada no cambia los bytes (regla 5)", () => {
+    const otra = { ...structuredClone(ANTES), version: "0.3.0" };
+    expect(toSVG(compare([otra, ANTES], G, base), { language: "es" })).toBe(
+      toSVG(compare([ANTES, otra], G, base), { language: "es" }),
+    );
+  });
+  it("la vigencia de compare: una entrada por fila (su prefijo, en orden de sujeto_id) y la peor de todas", () => {
+    const geo = compare(LADO, G, base);
+    expect(geo.vigencia.elementos.map((e) => e.id)).toEqual(
+      [...LADO].map((m) => m.sujeto_id).sort(),
+    );
+    expect(geo.vigencia.dias).toBe(
+      Math.max(...geo.vigencia.elementos.map((e) => e.dias)),
+    );
+  });
+  it("los avisos de cada fila llevan su prefijo y no se funden con los de otra (D12)", () => {
+    const largo = (m: Mapa, id: string): Mapa => {
+      const c = structuredClone(m);
+      c.sujeto_id = id;
+      const b = c.bloques[0]!;
+      const palabras = "Nombre larguísimo de un bloque que no cabe ".repeat(4);
+      b.nombre = { es: palabras, en: palabras };
+      return c;
+    };
+    const geo = compare(
+      [largo(LADO[0]!, "uno"), largo(LADO[0]!, "dos")],
+      G,
+      base,
+    );
+    const texto = geo.avisos.filter((a) => a.tipo === "texto");
+    expect(texto.length).toBe(4);
+    expect(texto.filter((a) => a.id.startsWith("uno/")).length).toBe(2);
+    expect(texto.filter((a) => a.id.startsWith("dos/")).length).toBe(2);
   });
   it("la geometría es la misma en los dos idiomas: mismas cajas, rectángulos y trazos; cambian solo los textos", () => {
     const geo = compare(LADO, G, { ...base, levelByBand: TODAS_EN_2 });
     const forma = (s: string) => [...s.matchAll(/<(rect|path|use)( [^>]*)\/>/g)].map((x) => x[0].replace(/ (id|href)="[^"]*"/g, ""));
     expect(forma(toSVG(geo, { language: "en" }))).toEqual(forma(toSVG(geo, { language: "es" })));
+  });
+});
+
+describe("compare — una plataforma que no cubre una banda", () => {
+  // El ejemplo sin la banda «ia»: sin sus nodos, sus bloques, sus flujos ni sus pasos de recorrido.
+  const sinIa = (() => {
+    const m = structuredClone(LADO[0]!);
+    const fuera = new Set(m.nodos.filter((n) => n.banda_id === "ia").map((n) => n.id));
+    m.nodos = m.nodos.filter((n) => !fuera.has(n.id));
+    m.bloques = m.bloques.filter((b) => b.banda_id !== "ia");
+    m.flujos = m.flujos.filter((f) => !fuera.has(f.origen) && !fuera.has(f.destino));
+    m.recorridos = m.recorridos.map((r) => ({ ...r, pasos: r.pasos.filter((p) => !fuera.has(p.nodo_id)) }));
+    return m;
+  })();
+  it.each([
+    ["bloques", undefined],
+    ["contraído", {}],
+    ["desplegado", { ia: 2 as const }],
+  ])("%s: tarjeta punteada «sin componentes», medida y sin «sin bloque»", (_n, lv) => {
+    const geo = compare([sinIa], G, { ...base, ...(lv ? { levelByBand: lv } : {}) });
+    expect(geo.avisos).toEqual([]);
+    const svg = toSVG(geo, { language: "es" });
+    expect(svg).toContain("vacia-ia");
+    expect(svg).toContain('aria-label="Inteligencia artificial: sin componentes"');
+    expect(svg).not.toContain(">sin bloque<");
   });
 });
 
@@ -285,6 +377,31 @@ describe("compare — marcas de diferencia (§ 4.7)", () => {
       language: "es",
     });
     expect(svg).toMatch(/aria-label="Agentes: [^"]*nuevo, madurez\."/);
+  });
+  it("§ 5.6 sobre lo dibujado: una píldora que pisa otra tarjeta o sale del lienzo se avisa", () => {
+    const largo = (l: string) => ({
+      ...TEXTOS[l]!,
+      lado: {
+        ...TEXTOS[l]!.lado,
+        marcas: {
+          ...TEXTOS[l]!.lado.marcas,
+          renombrado: "renombradorenombradorenombrado",
+        },
+      },
+    });
+    const texts = { es: largo("es"), en: largo("en") };
+    const d = structuredClone(DESPUES);
+    const n = d.nodos.find((x) => x.banda_id === "fuentes")!;
+    n.nombre = { es: `${n.nombre.es} X`, en: `${n.nombre.en} X` };
+    const geo = compare([ANTES, d], G, {
+      texts,
+      queryDate: FECHA_LADO,
+      marks: diff(ANTES, d),
+    });
+    expect(geo.avisos.map((a) => `${a.tipo} ${a.id}`)).toEqual([
+      "encima plataforma-ejemplo-v0-2-0/marca renombrado entrada",
+      "fuera-del-lienzo plataforma-ejemplo-v0-2-0/marca renombrado origen",
+    ]);
   });
 });
 
@@ -364,6 +481,20 @@ describe("diffToText — la lista explicativa de las diferencias (§ 4.7)", () =
   });
   it("un idioma que la gramática no declara da un error claro (F-025)", () => {
     expect(() => diffToText(ANTES, DESPUES, G, { language: "fr", texts: TEXTOS })).toThrow(/diffToText: la gramática no declara el idioma «fr»/);
+  });
+  it("con carriles y franjas, las bandas se ordenan capa, carril, franja, sea cual sea su orden en la gramática (G1)", () => {
+    // `prueba-procesos` solo tiene carriles: se le suma una franja, PRIMERA en la lista, con un componente propio.
+    const gp = GRAMATICAS["prueba-procesos"]!;
+    const carril = gp.bandas[0]!;
+    const franja = { ...structuredClone(carril), id: "auditoria", clase: "transversal" as const, orden: 1 };
+    const g2 = { ...gp, bandas: [franja, ...gp.bandas] };
+    const antes = structuredClone(EJEMPLOS.find((m) => m.gramatica_id === "prueba-procesos")!);
+    const ultimo = antes.nodos[antes.nodos.length - 1]!;
+    antes.nodos.push({ ...structuredClone(ultimo), id: "audita", banda_id: "auditoria", nombre: { es: "Audita", en: "Audits" } });
+    const despues = structuredClone(antes);
+    despues.nodos = despues.nodos.filter((n) => n.id !== "audita" && n.id !== ultimo.id);
+    const lineas = texto(diffToText(antes, despues, g2, { language: "es", texts: TEXTOS }));
+    expect(lineas.map((l) => (l.includes("Audita") ? "franja" : "carril"))).toEqual(["carril", "franja"]);
   });
 });
 

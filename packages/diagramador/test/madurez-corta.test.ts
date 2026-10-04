@@ -23,6 +23,11 @@ describe("etiqueta corta de la madurez", () => {
     const larga = { ...G, escala_madurez: G.escala_madurez.map((m) => (m.id === "beta" ? { ...m, etiqueta_corta: { es: "Betas", en: "Beta" } } : m)) };
     expect(validateGrammar(larga).errores.map((e) => `${e.regla} · ${e.ruta}`)).toEqual(["G2 · /escala_madurez/3/etiqueta_corta/es"]);
   });
+  it("una etiqueta corta con un idioma de menos o de más no valida (G7: exactamente los idiomas declarados)", () => {
+    const con = (corta: Record<string, string>): Gramatica => ({ ...G, escala_madurez: G.escala_madurez.map((m) => (m.id === "beta" ? { ...m, etiqueta_corta: corta } : m)) });
+    expect(validateGrammar(con({ es: "Beta" })).errores.map((e) => e.regla)).toContain("G7");
+    expect(validateGrammar(con({ es: "Beta", en: "Beta", fr: "Bêta" })).errores.map((e) => e.regla)).toContain("G7");
+  });
   for (const vista of ["nivel1", "nivel2"] as const)
     for (const idioma of ["es", "en"] as const)
       it(`${vista} · ${idioma}: dibuja la etiqueta corta y no el nombre largo`, () => {

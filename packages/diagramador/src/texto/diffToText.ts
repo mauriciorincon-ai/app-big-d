@@ -28,7 +28,9 @@ export function diffToText(before: Mapa, after: Mapa, grammar: Gramatica, opcion
   const e = escapar;
   const d = diff(before, after);
   const banda = new Map(grammar.bandas.map((b) => [b.id, b]));
-  const ordenBanda = new Map([...grammar.bandas].sort((a, b) => (a.clase === b.clase ? a.orden - b.orden : a.clase === "capa" ? -1 : 1)).map((b, i) => [b.id, i]));
+  // Capas, carriles y franjas, en ese orden; dentro de cada clase, por `orden` y por id (un comparador total, G1).
+  const CLASE = { capa: 0, carril: 1, transversal: 2 } as const;
+  const ordenBanda = new Map([...grammar.bandas].sort((a, b) => CLASE[a.clase] - CLASE[b.clase] || a.orden - b.orden || compararCodigo(a.id, b.id)).map((b, i) => [b.id, i]));
   const madurez = (id: string) => grammar.escala_madurez.find((m) => m.id === id)!.nombre[l]!.toLowerCase();
   const antes = new Map(before.nodos.map((n) => [n.id, n]));
   const despues = new Map(after.nodos.map((n) => [n.id, n]));

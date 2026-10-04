@@ -7,7 +7,7 @@
 // tarjeta lleva una píldora glifo + palabra por clase de cambio (G7).
 // Referencia de fidelidad: docs/diseno/lado-a-lado.html (scripts/maqueta/pantallas/lado.mjs) y el boceto aprobado en
 // la mirada M1 del S2 (docs/propuestas-de-diseno/lado-mismo-diagrama.html).
-import type { Diferencias } from "../diff";
+import { diff, type Diferencias } from "../diff";
 import type { Banda, Gramatica, Mapa, Nodo } from "../tipos";
 import { compararCodigo } from "../util/orden";
 import { fmt, mitad, type Decimas } from "../util/numeros";
@@ -93,24 +93,62 @@ const rejilla = (n: number, componentes: boolean): Rejilla => {
   };
 };
 
-/** Las filas de esta página: por `sujeto_id` (el mismo orden en todos los idiomas); con `marks`, antes y después. */
+/** Orden de dos versiones semánticas `x.y.z`, por número. */
+const compararVersion = (a: string, b: string): number => {
+  const x = a.split(".").map(Number),
+    y = b.split(".").map(Number);
+  return x[0]! - y[0]! || x[1]! - y[1]! || x[2]! - y[2]!;
+};
+
+/**
+ * Las filas de esta página: por `sujeto_id` y versión (el mismo orden en todos los idiomas y con cualquier orden de
+ * entrada); con `marks`, antes y después.
+ */
 function filasDe(
   maps: readonly Mapa[],
   grammar: Gramatica,
   o: OpcionesCompare,
 ): Mapa[] {
+  if (!maps.length)
+    throw new Error("compare: no hay ningún mapa que comparar");
   for (const m of maps)
     if (m.gramatica_id !== grammar.id)
       throw new Error(
         `compare: «${m.sujeto_id}» es de la gramática «${m.gramatica_id}» y se compara con «${grammar.id}» (§ 4.4)`,
       );
-  if (o.marks && maps.length !== 2)
-    throw new Error(
-      "compare: las marcas de diferencia comparan exactamente dos mapas, el anterior y el nuevo",
-    );
+  const vistos = new Set<string>();
+  for (const m of maps) {
+    const k = `${m.sujeto_id}@${m.version}`;
+    if (vistos.has(k))
+      throw new Error(`compare: «${m.sujeto_id}» v${m.version} llega dos veces`);
+    vistos.add(k);
+  }
+  if (o.page !== undefined && o.n === undefined)
+    throw new Error("compare: «page» pide «n»");
+  if (o.marks) {
+    if (maps.length !== 2)
+      throw new Error(
+        "compare: las marcas de diferencia comparan exactamente dos mapas, el anterior y el nuevo",
+      );
+    if (o.n !== undefined || o.page !== undefined)
+      throw new Error(
+        "compare: las marcas de diferencia dibujan las dos versiones en una sola página (sin «n» ni «page»)",
+      );
+    const [a, b] = maps as [Mapa, Mapa];
+    if (a.sujeto_id !== b.sujeto_id)
+      throw new Error(
+        `compare: las marcas comparan dos versiones del mismo sujeto («${a.sujeto_id}» y «${b.sujeto_id}»)`,
+      );
+    if (JSON.stringify(diff(a, b)) !== JSON.stringify(o.marks))
+      throw new Error("compare: «marks» no es diff(maps[0], maps[1])");
+  }
   const ordenados = o.marks
     ? [...maps]
-    : [...maps].sort((a, b) => compararCodigo(a.sujeto_id, b.sujeto_id));
+    : [...maps].sort(
+        (a, b) =>
+          compararCodigo(a.sujeto_id, b.sujeto_id) ||
+          compararVersion(a.version, b.version),
+      );
   if (o.n === undefined) return ordenados;
   if (!Number.isInteger(o.n) || o.n < 1)
     throw new Error(`compare: «n» es un entero mayor que 0 (llegó ${o.n})`);
@@ -316,8 +354,23 @@ function bloqueCompacto(
   );
 }
 
-/** Una banda sin componentes en esta fila: tarjeta punteada que no se activa (no abre nada). */
+/**
+ * Una banda sin componentes en esta fila: tarjeta punteada que no se activa (no abre nada). Su texto se mide: en la
+ * rejilla de bloques (118 u) «sin componentes» ocupa dos líneas, centradas en la tarjeta.
+ */
 function vacia(ctx: Contexto, b: Banda, caja: Caja): Elemento {
+  const lineas = lineasPorIdioma(
+    ctx,
+    Object.fromEntries(
+      ctx.idiomas.map((l) => [l, ctx.textos[l]!.lado.sinComponentes]),
+    ),
+    12,
+    400,
+    caja.w - 240,
+    2,
+    `vacia ${b.id}`,
+  );
+  const n = Math.max(...ctx.idiomas.map((l) => lineas[l]!.length));
   return g(
     {
       id: `vacia-${b.id}`,
@@ -334,9 +387,9 @@ function vacia(ctx: Contexto, b: Banda, caja: Caja): Elemento {
       texto(
         "dg-t-meta dg-t-meta-compacta",
         caja.x + 120,
-        ctx.sans.base(caja.y + mitad(caja.h - 160), 12, 16),
+        ctx.sans.base(caja.y + mitad(caja.h - n * 160), 12, 16),
         160,
-        unaLinea(ctx, (l) => ctx.textos[l]!.lado.sinComponentes),
+        lineas,
       ),
     ],
   );
@@ -385,7 +438,7 @@ function celda(ctx: Contexto, b: Banda, nivel: 1 | 2, col: Decimas, k: number, m
     const ac = altoCabeza(cab);
     return {
       alto: ac + NODO_H,
-      dibujar: (x, y) => [texto("dg-t-meta dg-t-cab-bloque", x, ctx.sans.base(y, 12, 16), 160, cab), vacia(ctx, b, { x, y: y + ac, w: col, h: NODO_H })],
+      dibujar: (x, y) => [vacia(ctx, b, { x, y: y + ac, w: col, h: NODO_H })],
     };
   }
   const partes = es.map((e) => {
@@ -421,21 +474,7 @@ export function compare(
 ): Geometria {
   const filas = filasDe(maps, grammar, options);
   const parte = options.part ?? "all";
-  const vacio: Mapa = {
-    contrato_version: grammar.contrato_version,
-    gramatica_id: grammar.id,
-    gramatica_version: grammar.version,
-    sujeto_id: "",
-    sujeto_nombre: {},
-    version: "",
-    fecha_actualizacion: "",
-    estado: "aprobada",
-    bloques: [],
-    nodos: [],
-    flujos: [],
-    recorridos: [],
-  };
-  const base = contexto(filas[0] ?? vacio, grammar, options, "compare");
+  const base = contexto(filas[0]!, grammar, options, "compare");
   if (base.carriles.length)
     throw new Error(
       "compare: una gramática de carriles no tiene lado a lado todavía",
@@ -445,6 +484,11 @@ export function compare(
     if (!bandas.some((b) => b.id === id))
       throw new Error(
         `compare: «${id}» no es una banda de la gramática «${grammar.id}» (levelByBand)`,
+      );
+  for (const [id, v] of Object.entries(options.levelByBand ?? {}))
+    if (v !== 1 && v !== 2)
+      throw new Error(
+        `compare: el nivel de «${id}» es 1 o 2 (llegó ${String(v)})`,
       );
   const nivel = (b: Banda): 1 | 2 => options.levelByBand?.[b.id] ?? 1;
   const desplegada = bandas.some((b) => nivel(b) === 2);
@@ -505,9 +549,8 @@ export function compare(
   }
 
   // ── Filas: rótulo (nombre + versión y vigencia) y una celda por banda ──
-  const ctxs = filas.map((m) =>
-    m === filas[0] ? base : contexto(m, grammar, options, "compare"),
-  );
+  // Un contexto por fila, aparte del de la cabecera y § 5.6: así cada aviso sabe de qué fila es (D12).
+  const ctxs = filas.map((m) => contexto(m, grammar, options, "compare"));
   const pres = prefijos(filas);
   const entre = desplegada ? ENTRE_FILAS.componentes : ENTRE_FILAS.bloques;
   const geoFilas: Geometria["filas"] = [];
@@ -640,9 +683,16 @@ export function compare(
     )
       avisar(base, "fuera-del-lienzo", c.id, c.id);
 
-  const avisos: Aviso[] = [];
-  for (const a of (ctxs.length ? ctxs : [base]).flatMap((c) => c.avisos))
-    if (!avisos.some((x) => x.mensaje === a.mensaje)) avisos.push(a);
+  const avisos: Aviso[] = [...base.avisos];
+  ctxs.forEach((c, k) => {
+    const p = pres[k]!;
+    for (const a of c.avisos) {
+      const id =
+        a.id === p || a.id.startsWith(`${p}/`) ? a.id : `${p}/${a.id}`;
+      if (!avisos.some((x) => x.id === id && x.mensaje === a.mensaje))
+        avisos.push({ ...a, id });
+    }
+  });
   const peor = vigencias.reduce((a, v) => Math.max(a, v.dias), 0);
   const lista = (l: string) => {
     const ns = filas.map((m) => m.sujeto_nombre[l]!);

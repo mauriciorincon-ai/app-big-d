@@ -28,7 +28,10 @@ export function textosDeGramatica(g: Gramatica): { textos: TextoUbicado[]; dicci
     textos.push({ ruta: ruta("modos_de_flujo", i, "nombre"), id: m.id, valor: m.nombre });
     textos.push({ ruta: ruta("modos_de_flujo", i, "descripcion"), id: m.id, valor: m.descripcion });
   });
-  g.escala_madurez.forEach((m, i) => textos.push({ ruta: ruta("escala_madurez", i, "nombre"), id: m.id, valor: m.nombre }));
+  g.escala_madurez.forEach((m, i) => {
+    textos.push({ ruta: ruta("escala_madurez", i, "nombre"), id: m.id, valor: m.nombre });
+    if (m.etiqueta_corta) textos.push({ ruta: ruta("escala_madurez", i, "etiqueta_corta"), id: m.id, valor: m.etiqueta_corta });
+  });
   const diccionarios: DiccionarioUbicado[] = g.terminos_a_explicar
     ? [{ ruta: ruta("terminos_a_explicar"), id: g.id, valor: g.terminos_a_explicar }]
     : [];

@@ -18,7 +18,7 @@ const cruza = (p: Caja, q: Caja) => p.x < q.x + q.w && p.x + p.w > q.x && p.y < 
 
 describe("P1 — mapa denso del piloto", () => {
   it("es un mapa válido para publicar (la carnada no es un mapa roto)", () => {
-    const inf = validate(P1, G, { mode: "publicacion", coverage: COBERTURA });
+    const inf = validate(P1, G, { mode: "publicacion", coverage: COBERTURA, texts: TEXTOS });
     expect([...inf.errores, ...inf.alertas]).toEqual([]);
   });
   for (const vista of VISTAS)
@@ -167,6 +167,16 @@ describe("P13 — la punta de una flecha de llegada no queda sobre la pista de o
     const g = geo();
     expect(puntas(g)).toEqual([]);
     expect(g.avisos.filter((a) => a.mensaje.includes("bajo la punta"))).toEqual([]);
+  });
+  it("el detector ve una pista ajena bajo una punta", () => {
+    // La punta de «llega» va de x 41 a 50 u a la altura 100 u; la pista vertical de «ajena» corre en x 46 u y la cruza.
+    const g = {
+      trazados: [
+        { id: "llega", origen: "a", destino: "b", puntos: [[0, 1000], [500, 1000]] },
+        { id: "ajena", origen: "c", destino: "d", puntos: [[460, 800], [460, 1200]] },
+      ],
+    } as unknown as Geometria;
+    expect(puntas(g)).toEqual([{ flujo: "llega", pista: "ajena" }]);
   });
 });
 

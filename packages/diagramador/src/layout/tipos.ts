@@ -12,7 +12,10 @@ export type VistaGeometria = Vista | "compare";
  * líneas que su caja, una palabra que no cabe sola o una cabecera de franja más alta que su fila.
  */
 export type TipoAviso = "D11" | "pistas" | "fuera-del-lienzo" | "encima" | "etiqueta" | "bloque-vacio" | "canal" | "carriles" | "texto";
-/** Aviso de geometría con forma fija (§ 5.6): `id` es el elemento que lo causa; `mensaje` empieza por «<tipo>: ». */
+/**
+ * Aviso de geometría con forma fija (§ 5.6): `id` es el elemento que lo causa, o la descripción del texto (`texto`) o
+ * del canal (`canal`); en `compare` lleva delante el prefijo de su fila (D12). `mensaje` empieza por «<tipo>: ».
+ */
 export interface Aviso {
   vista: VistaGeometria;
   tipo: TipoAviso;
@@ -85,7 +88,10 @@ export interface Geometria {
   alto: Decimas;
   /** Columnas de capa, para el índice de bandas del lienzo deslizable (G11). */
   columnas: { banda: string; x: Decimas; numero: string; nombre: TextoIdioma }[];
-  /** Filas de franja (o de carril): dónde empieza cada una y cuánto mide (G5). */
+  /**
+   * Filas de franja (o de carril): dónde empieza cada una y cuánto mide (G5). En `compare`, una fila por mapa: `banda`
+   * es el prefijo del mapa (D12).
+   */
   filas: { banda: string; y: Decimas; alto: Decimas }[];
   cajas: CajaPropia[];
   trazados: Trazado[];
@@ -98,7 +104,8 @@ export interface Geometria {
   /**
    * Semáforo de vigencia (§ 4.8) del mapa (su nodo más viejo) y de cada elemento activable de la vista
    * (bloque, caja sin bloque o ficha en el nivel 1; nodo en el nivel 2). Es el MISMO cálculo que dibuja
-   * las insignias: la app lo usa para la píldora del mapa sin repetir la regla.
+   * las insignias: la app lo usa para la píldora del mapa sin repetir la regla. En `compare`, `elementos` es una
+   * entrada por fila (su prefijo) y `dias` el peor de todas.
    */
   vigencia: { dias: number; estado: Vigencia; elementos: { id: string; dias: number; estado: Vigencia }[] };
   /** Cruces D11 (§ 8): tramos que atraviesan una caja ajena. Siempre vacío en un dibujo publicable. */

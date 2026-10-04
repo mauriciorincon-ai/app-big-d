@@ -89,10 +89,13 @@ describe("V16 · el mapa se dibuja", () => {
     expect(inf.errores).toEqual([]);
     expect(inf.avisos.some((a) => a.regla === "V16")).toBe(true);
   });
-  it("sin las cadenas de interfaz, V16 no corre y el informe lo declara", () => {
-    const inf = validate({ ...conNombreLargo(), estado: "aprobada" }, G, { mode: "publicacion", coverage: COBERTURA });
-    expect(inf.errores).toEqual([]);
-    expect(inf.avisos.map((a) => a.mensaje)).toContain("V16 no corrió: no se entregaron las cadenas de interfaz para dibujar (texts)");
+  it("sin las cadenas de interfaz, V16 no corre: en publicación rechaza (§ 7), en privado lo informa", () => {
+    const sinTexts = "V16 no corrió: no se entregaron las cadenas de interfaz para dibujar (texts)";
+    const pub = validate({ ...conNombreLargo(), estado: "aprobada" }, G, { mode: "publicacion", coverage: COBERTURA });
+    expect(pub.errores.map((e) => e.mensaje)).toEqual([sinTexts]);
+    const priv = validate(conNombreLargo(), G, { mode: "privado" });
+    expect(priv.errores).toEqual([]);
+    expect(priv.avisos.map((a) => a.mensaje)).toContain(sinTexts);
   });
   it("sobre un mapa con errores no dibuja (dibujar uno roto no dice nada nuevo)", () => {
     const roto = { ...conNombreLargo(), estado: "aprobada", nodos: [...ejemplo.nodos, { ...ejemplo.nodos[0]! }] };
