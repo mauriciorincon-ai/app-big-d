@@ -445,6 +445,25 @@ Decisiones D-S2-01 a D-S2-11 y los siete hechos que cambiaron el trabajo: en el 
 - **Corridas:** `pnpm test` 1265 + 5; e2e 470 en verde (6 saltadas a propósito: las de ancho en el proyecto de
   teléfono), en 55,8 s.
 
+### M2 — mirada de FORMA del lado a lado en el preview del PR #5
+
+| Archivo | Botón / estado | Qué mirar | Respuesta esperada |
+|---|---|---|---|
+| preview del PR #5, `/es/comparar` | «Desplegar todo», arriba a la derecha del recuadro | que los componentes se ven dentro del mismo diagrama, como lo pensaba | sí / no |
+
+- **CI de `a525c0c`:** los cinco checks y Vercel en `success`, cero comentarios del bot.
+- **Primera respuesta (2026-10-03):** «continua», sin comentar la página. La palabra de fase no aprueba lo visual
+  (regla 10): repregunta, sin construir encima.
+- **M2 APROBADA (2026-10-03), con el preview abierto:** «Si lo abri y lo apruebo, continua». La misma respuesta pasa
+  el gate de la fase 2. Las diferencias con la maqueta registradas arriba (el lado a lado se desliza a 1280 px,
+  tarjetas más ricas en el teléfono, leyenda y lectura) viajan como decisiones al gate del ciclo; las flechas → ← del
+  atlas (fase 1) no están en esta página y viajan igual.
+
+## Fase 3 — Tres investigaciones («continúa» 2026-10-03)
+
+- Orden de la persona: `/investigar databricks`, `/investigar snowflake` y `/investigar fabric`, una a la vez; cada
+  mapa se aprueba afirmación por afirmación en la pantalla de revisión y el comando de aprobación lo corre la persona.
+
 ## Desviación del plan
 
 Lo que el plan aprobado ya declaró frente a la orden y a `SPRINT_002.md`:
