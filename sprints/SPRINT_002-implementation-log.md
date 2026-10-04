@@ -500,6 +500,35 @@ reintentos en eso. Corregido (la línea dice 0.4.0 y de dónde sale) con un gate
 - Servida para la revisión: `pnpm build` del repo real y `PORT=3148 pnpm start`; abierta en el navegador de la persona
   en `/es/investigador/databricks`.
 
+### Databricks — aprobada por la persona (2026-10-04 UTC; 2026-10-03 en su reloj)
+
+- La persona revisó la propuesta en `/es/investigador/databricks` y corrió el comando de aprobación en su terminal:
+  **106 aprobadas · 0 rechazadas · 0 retiros** → `data/mapas/databricks.mapa.yaml` v0.1.0 (huella `4acb52f7bec6…`),
+  `data/revisiones/databricks.jsonl` (1 línea) y `data/plataformas/databricks.yaml` → `publicada`. Primero pegó el
+  comando en el chat; le dije que solo una persona lo corre, en su terminal, y lo hizo.
+- El mapa aprobado es byte a byte el del ensayo, salvo `fecha_actualizacion` (2026-10-04, la fecha UTC de la aprobación).
+- **Pruebas que suponían a Databricks «próximamente» (6, ahora leen el dato):**
+  - `datos.test.ts` (4 casos): usan una plataforma «próximamente» propia de la prueba (`nueva`) en lugar de una real;
+    las versiones archivadas comparan contra los archivos de `data/mapas/versiones/` y contra la versión vigente de
+    Fabric, no contra literales (Snowflake y Fabric v0.2.0 los habrían roto otra vez).
+  - `atlas.spec.ts`: el enlace «Atlas» lleva a la primera publicada por id (`PUBLICADAS[0]`), hoy Databricks.
+  - `investigador.spec.ts` «sin mapa»: toma la primera «próximamente» del dato (`PROXIMAS`, hoy Snowflake); el
+    `aria-current` de «Conocimiento» es `page` solo en la página a la que lleva la sección (la primera plataforma por
+    id) y `true` en las demás. Cuando no quede ninguna «próximamente», se salta diciendo por qué, como `lado.spec.ts`.
+  - Para que el estado vacío siga cubierto sin una plataforma real que lo muestre, salió a un componente
+    (`src/components/investigador/SinMapa.tsx`) con su prueba (`tests/unit/ui/sin-mapa.test.tsx`, ES y EN).
+  - `scripts.test.ts` «con su retiro…»: 1,3 s sola, pero pasó de los 5 s con la suite en paralelo (la aprobación carga
+    la base entera, que creció); tope de 20 s con el porqué en un comentario.
+  - `design-sync/` regenerado: la tarjeta del selector ya no dice «Databricks — pronto».
+
+| Gate | ¿Puede fallar? | Rojo | A quién nombró | Verde |
+|---|---|---|---|---|
+| `sin-mapa.test.tsx` (estado vacío sin plataforma real) | Sí: ninguna otra prueba unitaria pinta el estado vacío | Sin el botón; y con la solicitud de otra plataforma | Los dos casos (es, en): falta el enlace «Solicitar investigación» / «Request research»; el cuerpo no trae `/investigar nueva` | Restaurado |
+
+- Corridas: `pnpm typecheck` · `pnpm lint` · `pnpm peers check` sin fallas; `pnpm test` **1299 pasan** (63 archivos,
+  cobertura 97,37 % de líneas); `pnpm build` (32 páginas; CSP 124/128 huellas); e2e completo: 564 pasan · 6 saltadas
+  por diseño · 2 fallas (el `aria-current` de arriba), corregidas y re-corridas (`investigador` + `atlas`: 42 pasan).
+
 ## Desviación del plan
 
 Lo que el plan aprobado ya declaró frente a la orden y a `SPRINT_002.md`:

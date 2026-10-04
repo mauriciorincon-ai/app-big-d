@@ -12,9 +12,11 @@ const DATOS = join(__dirname, "../../../data");
 const plataformas = readdirSync(join(DATOS, "plataformas"))
   .filter((f) => f.endsWith(".yaml"))
   .sort()
-  .map((f) => parse(readFileSync(join(DATOS, "plataformas", f), "utf8")) as { id: string; estado: string });
+  .map((f) => parse(readFileSync(join(DATOS, "plataformas", f), "utf8")) as { id: string; estado: string; nombre: { es: string; en: string } });
 
 export const PUBLICADAS = plataformas.filter((p) => p.estado === "publicada").map((p) => p.id);
+/** Las que todavía no tienen mapa (estado vacío del investigador), con su nombre. */
+export const PROXIMAS = plataformas.filter((p) => p.estado === "proximamente");
 /** Todas las plataformas, en orden de id (el del lado a lado). */
 export const PLATAFORMAS = plataformas.map((p) => p.id);
 export const VISTAS_ATLAS = ["", "/componentes", "/recorrido"] as const;

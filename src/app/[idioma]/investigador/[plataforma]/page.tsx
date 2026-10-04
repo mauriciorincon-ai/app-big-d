@@ -5,6 +5,7 @@ import { CampoPlataforma } from "@/components/atlas/CampoPlataforma";
 import { Meta } from "@/components/Meta";
 import { MarcaVigencia } from "@/components/atlas/MarcaVigencia";
 import { RevisionPropuesta } from "@/components/investigador/RevisionPropuesta";
+import { SinMapa } from "@/components/investigador/SinMapa";
 import { Solicitar } from "@/components/investigador/Solicitar";
 import { plantilla, plural } from "@/lib/atlas";
 import { datos, fechaDeConsulta } from "@/lib/datos";
@@ -105,13 +106,7 @@ export default async function Investigador({ params }: PageProps<"/[idioma]/inve
           {v.bandas.some((b) => b.estado !== "vigente") && <p className="kit-nota">{t.solicitud.nota}</p>}
         </section>
       ) : (
-        <section className="seccion" aria-labelledby="vacio-t">
-          <div className="estado">
-            <h2 id="vacio-t">{plantilla(t.vacio.titulo, { plataforma: nombre })}</h2>
-            <p>{t.vacio.texto}</p>
-            <Solicitar href={urlSolicitud(t.solicitud, { id: plataforma, nombre })} texto={t.solicitud.boton} nota={t.solicitud.nota} />
-          </div>
-        </section>
+        <SinMapa idioma={idioma} plataforma={{ id: plataforma, nombre }} />
       )}
 
       {ultima && (

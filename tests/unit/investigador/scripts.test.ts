@@ -116,6 +116,8 @@ describe("una segunda propuesta que retira un componente", () => {
     expect(r.status).toBe(1);
     expect(r.stderr).toContain("retiros · el componente «monitor-capacidad» sale del mapa sin argumento");
   });
+  // Tres procesos (validar, verificar, aprobar) y una carga de la base entera, que crece con cada plataforma publicada:
+  // solo tarda 1,3 s, pero con la suite completa en paralelo pasó de los 5 s por omisión al publicarse Databricks.
   it("con su retiro: valida, su cita se verifica y la aprobación lo saca del mapa con sus flujos (y archiva la versión anterior)", async () => {
     const { q, flujos } = preparar(true);
     const v = correr("scripts/investigar/validar.mjs", [carpeta2]);
@@ -136,7 +138,7 @@ describe("una segunda propuesta que retira un componente", () => {
     const mapa = parse(readFileSync(join(raiz, "data/mapas", `${PLATAFORMA}.mapa.yaml`), "utf8"));
     expect(mapa.nodos.some((n: { id: string }) => n.id === "monitor-capacidad")).toBe(false);
     expect(mapa.version).toBe("0.2.0");
-  });
+  }, 20_000);
 });
 
 describe("M-15: la guarda de la aprobación (la frontera está dentro del script)", () => {
