@@ -204,6 +204,15 @@ el bundle regenerado no cambia (`node scripts/design-sync/generar.mjs`, 11 archi
   acepta a sabiendas, porque los 2900 ms ya son la alarma 100 ms bajo el techo del ADR. El presupuesto no se sube.
   El aviso sigue encendido, y la única palanca es el subconjunto de las fuentes, que va a «Enmiendas». La fase 4
   vuelve a medir con las 4 rutas nuevas.
+- **Push de `d327a78`** (el ADR del margen y esta sección), corrida 37242950293: los cinco checks con conclusión
+  propia `success`, Vercel `pass`, cero comentarios. `lighthouse-margen` avisó 5 veces, todas de LCP:
+  - `/es/atlas/plataforma-ejemplo/recorrido`: 2712 ms;
+  - `/en/atlas/plataforma-ejemplo/recorrido`: 2711 ms;
+  - `/es/atlas/fabric/recorrido`: 2713 ms;
+  - `/es/comparar`: 2727 ms;
+  - `/en/comparar`: 2731 ms (nuevo en la lista).
+
+  Margen del 5,8 al 6,5 %. La decisión del ADR lo cubre.
 
 ## Desviación del plan
 
