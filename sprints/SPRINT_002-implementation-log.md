@@ -569,6 +569,53 @@ validador la aceptó al primer intento (la skill ya pedía el contrato 0.4.0).
 - Corridas: `typecheck` · `lint` · `peers check` sin fallas; `pnpm test` **1319 pasan** (63 archivos, 97,34 % de
   líneas); `pnpm build` (38 páginas; CSP 154/190 huellas); e2e completo **659 pasan · 9 saltadas**.
 
+### Fabric — propuesta 2026-10-04, reinvestigación (verificada; espera la aprobación de la persona)
+
+`/investigar fabric` lo invocó la persona el 2026-10-04: `propuestas/2026-10-04-fabric/`, parte del mapa aprobado
+(v0.1.0, contrato 0.3.0) y lo pasa a 0.4.0. 19 componentes, 19 flujos, 7 bloques y el mismo recorrido; 84
+afirmaciones; sin retiros, sin componentes ni flujos nuevos. **Cero «lago de datos»** (pedido de la orden): pasa a
+«data lake», y «data lake» y «lakehouse» entran al glosario.
+
+- `verificar-citas` → 84 verificadas · 0 no verificables · 0 no encontradas · 20 páginas. `validar.mjs` → válida.
+- Cambian textos o fuentes de 6 componentes (trabajo-copia, onelake, lakehouse, agente-datos, app-metricas, airflow);
+  ninguna madurez cambia. La página de novedades antiguas que respaldaba siete madureces ya no existe; el
+  investigador la reemplazó por anuncios oficiales legibles.
+- **A-47 (Seguridad de OneLake) es la afirmación débil:** su cita (marzo de 2026) dice que pasaría a disponibilidad
+  general «en las próximas semanas», y la madurez «disponible de forma general» viene del mapa aprobado. El enunciado
+  lo dice. Rechazarla saca el componente. Se lo señalo a la persona, que domina Fabric.
+- Ensayo en la copia con todo aprobado: **v0.2.0**; la v0.1.0 queda en `data/mapas/versiones/fabric-0.1.0.mapa.yaml`,
+  byte a byte la aprobada; el cargador valida las dos en modo publicación y cada una coincide con su línea de revisión
+  (`mapasSinAprobacion` = []). El sitio de la copia compila; nivel 2 leído como imagen: sin cruces sobre nodos.
+- Para la persona: revisión servida en `:3148` y abierta; el comando con las 84 aprobadas, en su portapapeles (sin
+  abrirle la terminal).
+
+### Fabric — v0.2.0 aprobada por la persona (2026-10-04 UTC)
+
+- La persona corrió la aprobación (comando con las 84 en su portapapeles; terminal abierta por ella): **84 aprobadas ·
+  0 rechazadas · 0 retiros**, A-47 incluida → `data/mapas/fabric.mapa.yaml` **v0.2.0** (contrato 0.4.0, huella
+  `00258c6cab5e…`), segunda línea en `data/revisiones/fabric.jsonl`. **D-S2-09 en vivo por primera vez:** la v0.1.0
+  quedó en `data/mapas/versiones/fabric-0.1.0.mapa.yaml`, idéntica byte a byte a la que estaba en `main`; el cargador
+  la valida en modo publicación y `mapasSinAprobacion` la encuentra en la primera línea de la revisión. El mapa nuevo
+  es byte a byte el del ensayo. **Cero «lago de datos» en el mapa publicado.**
+- **Deuda del S1 pagada:** la lista de vocabulario conocido (`datos-vocabulario.test.ts`, 5 rutas de «lago de datos»)
+  queda vacía, como pedía su propia prueba. Las versiones archivadas no pasan por ese gate (bytes aprobados, no
+  cambian). Para la fase 4: `/versiones` dibuja la v0.1.0, que todavía dice «lago de datos» en el título de una
+  fuente, en un texto experto, en un término y en el glosario. Se decide al construir la página si esos textos se
+  muestran.
+- **Defecto del cargador (fase 2), destapado por la primera versión archivada real:** si el mapa vigente de una
+  plataforma existe pero no carga, el cargador además acusaba a su versión archivada de «no tener un mapa publicado»;
+  era falso y tapaba la falla real con ruido. Lo vieron en rojo tres pruebas que ya existían (V1 sin salto
+  declarado, M-10 YAML mal formado, gramática que falta), que esperaban exactamente una falla. Corregido: si el
+  archivo del mapa vigente existe, su propia falla basta. Verdes las tres.
+- **Pruebas que suponían el estado anterior de Fabric:** `g3-neutralidad` leía cada entrada de `data/mapas/` como
+  YAML (ahora filtra `*.mapa.yaml` y lee también las versiones archivadas); `datos-migrar` mira la versión archivada,
+  que es la que sigue en 0.3.0 en el disco; `mapas-aprobados` lee la versión vigente del dato y crea
+  `mapas/versiones` aunque ya exista.
+- El total unitario baja de 1319 a 1313. No se perdió ninguna prueba: la matriz de envejecimiento genera un caso por
+  fecha de verificación distinta, y la fecha de Fabric v0.1.0 se fue (6 casos menos en la unión del lado a lado).
+- Corridas: `typecheck` · `lint` sin fallas; `pnpm test` **1313 pasan** (63 archivos, 97,34 % de líneas); `pnpm build`
+  (38 páginas); e2e completo **659 pasan · 9 saltadas** (las mismas de Snowflake).
+
 ## Desviación del plan
 
 Lo que el plan aprobado ya declaró frente a la orden y a `SPRINT_002.md`:

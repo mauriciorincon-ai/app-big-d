@@ -1,0 +1,595 @@
+{
+  "version": 1,
+  "fecha": "2026-10-04",
+  "propuesta_sha256": "17535cce765da5f05ca39c3ea5c483017b36c7a9c8e33aa16a6f1d9c8f614bcd",
+  "resultados": [
+    {
+      "afirmacion": "A-1",
+      "url": "https://learn.microsoft.com/en-us/fabric/mirroring/overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "979d552ed2a66bd5fdb4b340f7185404343748a7d6c99eccfc290b3ff14be09a"
+    },
+    {
+      "afirmacion": "A-2",
+      "url": "https://azure.microsoft.com/en-us/blog/microsoft-databases-and-microsoft-fabric-your-unified-and-ai-powered-data-estate/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "f457910ab591660fbc99a1073e6599d522fcdbd45aa8e8b248a62a330e6e2ca7"
+    },
+    {
+      "afirmacion": "A-3",
+      "url": "https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "b1e59551607bb2e3e6926fb7af6f227c27c512bf0065d35c442875efade4193b"
+    },
+    {
+      "afirmacion": "A-4",
+      "url": "https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "b1e59551607bb2e3e6926fb7af6f227c27c512bf0065d35c442875efade4193b"
+    },
+    {
+      "afirmacion": "A-5",
+      "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "faf5dea504ea6640688902ac09f7513f15885082823a3a68308766a1433254ab"
+    },
+    {
+      "afirmacion": "A-6",
+      "url": "https://learn.microsoft.com/en-us/fabric/mirroring/overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "979d552ed2a66bd5fdb4b340f7185404343748a7d6c99eccfc290b3ff14be09a"
+    },
+    {
+      "afirmacion": "A-7",
+      "url": "https://learn.microsoft.com/en-us/fabric/mirroring/overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "979d552ed2a66bd5fdb4b340f7185404343748a7d6c99eccfc290b3ff14be09a"
+    },
+    {
+      "afirmacion": "A-8",
+      "url": "https://learn.microsoft.com/en-us/fabric/mirroring/overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "979d552ed2a66bd5fdb4b340f7185404343748a7d6c99eccfc290b3ff14be09a"
+    },
+    {
+      "afirmacion": "A-9",
+      "url": "https://azure.microsoft.com/en-us/blog/microsoft-databases-and-microsoft-fabric-your-unified-and-ai-powered-data-estate/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "f457910ab591660fbc99a1073e6599d522fcdbd45aa8e8b248a62a330e6e2ca7"
+    },
+    {
+      "afirmacion": "A-10",
+      "url": "https://learn.microsoft.com/en-us/fabric/data-factory/what-is-copy-job",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "cb21556b24a132fbbfc032cde00cca8e7f14104790a5163aeb5f0b4a17b2ac7e"
+    },
+    {
+      "afirmacion": "A-11",
+      "url": "https://learn.microsoft.com/en-us/fabric/data-factory/what-is-copy-job",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "cb21556b24a132fbbfc032cde00cca8e7f14104790a5163aeb5f0b4a17b2ac7e"
+    },
+    {
+      "afirmacion": "A-12",
+      "url": "https://learn.microsoft.com/en-us/fabric/data-factory/what-is-copy-job",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "cb21556b24a132fbbfc032cde00cca8e7f14104790a5163aeb5f0b4a17b2ac7e"
+    },
+    {
+      "afirmacion": "A-13",
+      "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2025/03/31/fabcon-2025-fueling-tomorrows-ai-with-new-agentic-capabilities-and-security-innovations-in-fabric/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "f3d6ea6a29159f0ae95a8064891732c2b2c024e93c0d4042b266ebbc6cd9e42a"
+    },
+    {
+      "afirmacion": "A-14",
+      "url": "https://learn.microsoft.com/en-us/fabric/data-factory/what-is-copy-job",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "cb21556b24a132fbbfc032cde00cca8e7f14104790a5163aeb5f0b4a17b2ac7e"
+    },
+    {
+      "afirmacion": "A-15",
+      "url": "https://learn.microsoft.com/en-us/fabric/mirroring/overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "979d552ed2a66bd5fdb4b340f7185404343748a7d6c99eccfc290b3ff14be09a"
+    },
+    {
+      "afirmacion": "A-16",
+      "url": "https://learn.microsoft.com/en-us/fabric/mirroring/overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "979d552ed2a66bd5fdb4b340f7185404343748a7d6c99eccfc290b3ff14be09a"
+    },
+    {
+      "afirmacion": "A-17",
+      "url": "https://learn.microsoft.com/en-us/fabric/mirroring/overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "979d552ed2a66bd5fdb4b340f7185404343748a7d6c99eccfc290b3ff14be09a"
+    },
+    {
+      "afirmacion": "A-18",
+      "url": "https://azure.microsoft.com/en-us/blog/microsoft-databases-and-microsoft-fabric-your-unified-and-ai-powered-data-estate/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "f457910ab591660fbc99a1073e6599d522fcdbd45aa8e8b248a62a330e6e2ca7"
+    },
+    {
+      "afirmacion": "A-19",
+      "url": "https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "b1e59551607bb2e3e6926fb7af6f227c27c512bf0065d35c442875efade4193b"
+    },
+    {
+      "afirmacion": "A-20",
+      "url": "https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "b1e59551607bb2e3e6926fb7af6f227c27c512bf0065d35c442875efade4193b"
+    },
+    {
+      "afirmacion": "A-21",
+      "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "faf5dea504ea6640688902ac09f7513f15885082823a3a68308766a1433254ab"
+    },
+    {
+      "afirmacion": "A-22",
+      "url": "https://learn.microsoft.com/en-us/fabric/data-engineering/lakehouse-overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "0686c0375bf875e18e6f7af781e303d0ec608c5174d935745179b64590ab45ed"
+    },
+    {
+      "afirmacion": "A-23",
+      "url": "https://learn.microsoft.com/en-us/fabric/data-engineering/lakehouse-overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "0686c0375bf875e18e6f7af781e303d0ec608c5174d935745179b64590ab45ed"
+    },
+    {
+      "afirmacion": "A-24",
+      "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "faf5dea504ea6640688902ac09f7513f15885082823a3a68308766a1433254ab"
+    },
+    {
+      "afirmacion": "A-25",
+      "url": "https://learn.microsoft.com/en-us/fabric/data-warehouse/data-warehousing",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "05bc004910903654953434a38c24dd0ea37459900a5d842465c55e296219a4b9"
+    },
+    {
+      "afirmacion": "A-26",
+      "url": "https://learn.microsoft.com/en-us/fabric/data-warehouse/data-warehousing",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "05bc004910903654953434a38c24dd0ea37459900a5d842465c55e296219a4b9"
+    },
+    {
+      "afirmacion": "A-27",
+      "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "faf5dea504ea6640688902ac09f7513f15885082823a3a68308766a1433254ab"
+    },
+    {
+      "afirmacion": "A-28",
+      "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/microsoft-fabric-overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "175017c1002e7e1cf253099659d1afc8af5c6dd862cb1b78e5f05775f0f3919c"
+    },
+    {
+      "afirmacion": "A-29",
+      "url": "https://learn.microsoft.com/en-us/fabric/data-engineering/data-engineering-overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "0df725f57302da0a5ed3fc587c28b8f23d710632ef1f39d42fd825707c10aa5a"
+    },
+    {
+      "afirmacion": "A-30",
+      "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "faf5dea504ea6640688902ac09f7513f15885082823a3a68308766a1433254ab"
+    },
+    {
+      "afirmacion": "A-31",
+      "url": "https://learn.microsoft.com/en-us/fabric/data-factory/dataflows-gen2-overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "170c6510265e03232fb0991df4736dc42911b72d0b77908a9d8e42bfb9a0470c"
+    },
+    {
+      "afirmacion": "A-32",
+      "url": "https://learn.microsoft.com/en-us/fabric/data-factory/dataflows-gen2-overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "170c6510265e03232fb0991df4736dc42911b72d0b77908a9d8e42bfb9a0470c"
+    },
+    {
+      "afirmacion": "A-33",
+      "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "faf5dea504ea6640688902ac09f7513f15885082823a3a68308766a1433254ab"
+    },
+    {
+      "afirmacion": "A-34",
+      "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/direct-lake-overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "bb56e9b630afb9136df82bbdd616f374e4a748deb280a002ac90d5ecba7361d4"
+    },
+    {
+      "afirmacion": "A-35",
+      "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/direct-lake-overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "bb56e9b630afb9136df82bbdd616f374e4a748deb280a002ac90d5ecba7361d4"
+    },
+    {
+      "afirmacion": "A-36",
+      "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/direct-lake-overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "bb56e9b630afb9136df82bbdd616f374e4a748deb280a002ac90d5ecba7361d4"
+    },
+    {
+      "afirmacion": "A-37",
+      "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "faf5dea504ea6640688902ac09f7513f15885082823a3a68308766a1433254ab"
+    },
+    {
+      "afirmacion": "A-38",
+      "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/microsoft-fabric-overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "175017c1002e7e1cf253099659d1afc8af5c6dd862cb1b78e5f05775f0f3919c"
+    },
+    {
+      "afirmacion": "A-39",
+      "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "faf5dea504ea6640688902ac09f7513f15885082823a3a68308766a1433254ab"
+    },
+    {
+      "afirmacion": "A-40",
+      "url": "https://learn.microsoft.com/en-us/fabric/data-science/concept-data-agent",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "2fe6014b3c9a996caabbbc8e0d16c8e88fadb253b1c7c0f590935a6ef2e4e3a5"
+    },
+    {
+      "afirmacion": "A-41",
+      "url": "https://learn.microsoft.com/en-us/fabric/data-science/concept-data-agent",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "2fe6014b3c9a996caabbbc8e0d16c8e88fadb253b1c7c0f590935a6ef2e4e3a5"
+    },
+    {
+      "afirmacion": "A-42",
+      "url": "https://learn.microsoft.com/en-us/fabric/data-science/concept-data-agent",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "2fe6014b3c9a996caabbbc8e0d16c8e88fadb253b1c7c0f590935a6ef2e4e3a5"
+    },
+    {
+      "afirmacion": "A-43",
+      "url": "https://learn.microsoft.com/en-us/fabric/data-science/concept-data-agent",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "2fe6014b3c9a996caabbbc8e0d16c8e88fadb253b1c7c0f590935a6ef2e4e3a5"
+    },
+    {
+      "afirmacion": "A-44",
+      "url": "https://learn.microsoft.com/en-us/fabric/data-science/concept-data-agent",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "2fe6014b3c9a996caabbbc8e0d16c8e88fadb253b1c7c0f590935a6ef2e4e3a5"
+    },
+    {
+      "afirmacion": "A-45",
+      "url": "https://learn.microsoft.com/en-us/fabric/onelake/security/get-started-security",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "ff0dbbeddc826f1b76cabc84d5c1f4e7d2e613853df7a5906c3e3e7b3d36e262"
+    },
+    {
+      "afirmacion": "A-46",
+      "url": "https://learn.microsoft.com/en-us/fabric/onelake/security/get-started-security",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "ff0dbbeddc826f1b76cabc84d5c1f4e7d2e613853df7a5906c3e3e7b3d36e262"
+    },
+    {
+      "afirmacion": "A-47",
+      "url": "https://azure.microsoft.com/en-us/blog/fabcon-and-sqlcon-2026-unifying-databases-and-fabric-on-a-single-data-platform/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "05ef222f8a3a79f7d958af2108a83ed00c4b47b13886fce6ea2eb0cf13fa6034"
+    },
+    {
+      "afirmacion": "A-48",
+      "url": "https://learn.microsoft.com/en-us/fabric/governance/information-protection",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "c5b111786106b5787aefb48e124bc2823626ef8ab2a202f9deeea15259105ad8"
+    },
+    {
+      "afirmacion": "A-49",
+      "url": "https://learn.microsoft.com/en-us/fabric/governance/information-protection",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "c5b111786106b5787aefb48e124bc2823626ef8ab2a202f9deeea15259105ad8"
+    },
+    {
+      "afirmacion": "A-50",
+      "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "faf5dea504ea6640688902ac09f7513f15885082823a3a68308766a1433254ab"
+    },
+    {
+      "afirmacion": "A-51",
+      "url": "https://learn.microsoft.com/en-us/fabric/enterprise/licenses",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "3ed9f2658c099dabcf7ac0cdad6d915e6b73f3565eb832e25a6471bb4968f4b3"
+    },
+    {
+      "afirmacion": "A-52",
+      "url": "https://learn.microsoft.com/en-us/fabric/enterprise/licenses",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "3ed9f2658c099dabcf7ac0cdad6d915e6b73f3565eb832e25a6471bb4968f4b3"
+    },
+    {
+      "afirmacion": "A-53",
+      "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "faf5dea504ea6640688902ac09f7513f15885082823a3a68308766a1433254ab"
+    },
+    {
+      "afirmacion": "A-54",
+      "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "faf5dea504ea6640688902ac09f7513f15885082823a3a68308766a1433254ab"
+    },
+    {
+      "afirmacion": "A-55",
+      "url": "https://learn.microsoft.com/en-us/fabric/enterprise/metrics-app",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "675ef4d440c7f140885d8c8c2d7651905d6d4f17543eb6af76f1f419319430ba"
+    },
+    {
+      "afirmacion": "A-56",
+      "url": "https://learn.microsoft.com/en-us/fabric/enterprise/metrics-app",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "675ef4d440c7f140885d8c8c2d7651905d6d4f17543eb6af76f1f419319430ba"
+    },
+    {
+      "afirmacion": "A-57",
+      "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "faf5dea504ea6640688902ac09f7513f15885082823a3a68308766a1433254ab"
+    },
+    {
+      "afirmacion": "A-58",
+      "url": "https://learn.microsoft.com/en-us/fabric/data-factory/pipeline-overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "ac8c5f50210598bd1dc1e5793a1deaad5accba6551cdc44695c210b96c5c264a"
+    },
+    {
+      "afirmacion": "A-59",
+      "url": "https://learn.microsoft.com/en-us/fabric/data-factory/pipeline-overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "ac8c5f50210598bd1dc1e5793a1deaad5accba6551cdc44695c210b96c5c264a"
+    },
+    {
+      "afirmacion": "A-60",
+      "url": "https://learn.microsoft.com/en-us/fabric/data-factory/pipeline-overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "ac8c5f50210598bd1dc1e5793a1deaad5accba6551cdc44695c210b96c5c264a"
+    },
+    {
+      "afirmacion": "A-61",
+      "url": "https://learn.microsoft.com/en-us/fabric/data-factory/pipeline-overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "ac8c5f50210598bd1dc1e5793a1deaad5accba6551cdc44695c210b96c5c264a"
+    },
+    {
+      "afirmacion": "A-62",
+      "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "faf5dea504ea6640688902ac09f7513f15885082823a3a68308766a1433254ab"
+    },
+    {
+      "afirmacion": "A-63",
+      "url": "https://learn.microsoft.com/en-us/fabric/data-factory/apache-airflow-jobs-concepts",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "c16fb8d5a93df3f6220c2203abce72aa35df2b50aa63066fbb6a64fe6eaa8623"
+    },
+    {
+      "afirmacion": "A-64",
+      "url": "https://www.microsoft.com/en-us/microsoft-fabric/blog/2025/03/31/fabcon-2025-fueling-tomorrows-ai-with-new-agentic-capabilities-and-security-innovations-in-fabric/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "f3d6ea6a29159f0ae95a8064891732c2b2c024e93c0d4042b266ebbc6cd9e42a"
+    },
+    {
+      "afirmacion": "A-65",
+      "url": "https://learn.microsoft.com/en-us/fabric/data-factory/apache-airflow-jobs-concepts",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "c16fb8d5a93df3f6220c2203abce72aa35df2b50aa63066fbb6a64fe6eaa8623"
+    },
+    {
+      "afirmacion": "A-66",
+      "url": "https://learn.microsoft.com/en-us/fabric/mirroring/overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "979d552ed2a66bd5fdb4b340f7185404343748a7d6c99eccfc290b3ff14be09a"
+    },
+    {
+      "afirmacion": "A-67",
+      "url": "https://learn.microsoft.com/en-us/fabric/mirroring/overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "979d552ed2a66bd5fdb4b340f7185404343748a7d6c99eccfc290b3ff14be09a"
+    },
+    {
+      "afirmacion": "A-68",
+      "url": "https://learn.microsoft.com/en-us/fabric/data-factory/what-is-copy-job",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "cb21556b24a132fbbfc032cde00cca8e7f14104790a5163aeb5f0b4a17b2ac7e"
+    },
+    {
+      "afirmacion": "A-69",
+      "url": "https://learn.microsoft.com/en-us/fabric/data-factory/what-is-copy-job",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "cb21556b24a132fbbfc032cde00cca8e7f14104790a5163aeb5f0b4a17b2ac7e"
+    },
+    {
+      "afirmacion": "A-70",
+      "url": "https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "b1e59551607bb2e3e6926fb7af6f227c27c512bf0065d35c442875efade4193b"
+    },
+    {
+      "afirmacion": "A-71",
+      "url": "https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "b1e59551607bb2e3e6926fb7af6f227c27c512bf0065d35c442875efade4193b"
+    },
+    {
+      "afirmacion": "A-72",
+      "url": "https://learn.microsoft.com/en-us/fabric/mirroring/overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "979d552ed2a66bd5fdb4b340f7185404343748a7d6c99eccfc290b3ff14be09a"
+    },
+    {
+      "afirmacion": "A-73",
+      "url": "https://learn.microsoft.com/en-us/fabric/data-engineering/lakehouse-overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "0686c0375bf875e18e6f7af781e303d0ec608c5174d935745179b64590ab45ed"
+    },
+    {
+      "afirmacion": "A-74",
+      "url": "https://learn.microsoft.com/en-us/fabric/data-factory/dataflows-gen2-overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "170c6510265e03232fb0991df4736dc42911b72d0b77908a9d8e42bfb9a0470c"
+    },
+    {
+      "afirmacion": "A-75",
+      "url": "https://learn.microsoft.com/en-us/fabric/data-warehouse/data-warehousing",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "05bc004910903654953434a38c24dd0ea37459900a5d842465c55e296219a4b9"
+    },
+    {
+      "afirmacion": "A-76",
+      "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/direct-lake-overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "bb56e9b630afb9136df82bbdd616f374e4a748deb280a002ac90d5ecba7361d4"
+    },
+    {
+      "afirmacion": "A-77",
+      "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/direct-lake-overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "bb56e9b630afb9136df82bbdd616f374e4a748deb280a002ac90d5ecba7361d4"
+    },
+    {
+      "afirmacion": "A-78",
+      "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/direct-lake-overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "bb56e9b630afb9136df82bbdd616f374e4a748deb280a002ac90d5ecba7361d4"
+    },
+    {
+      "afirmacion": "A-79",
+      "url": "https://learn.microsoft.com/en-us/fabric/data-science/concept-data-agent",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "2fe6014b3c9a996caabbbc8e0d16c8e88fadb253b1c7c0f590935a6ef2e4e3a5"
+    },
+    {
+      "afirmacion": "A-80",
+      "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/microsoft-fabric-overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "175017c1002e7e1cf253099659d1afc8af5c6dd862cb1b78e5f05775f0f3919c"
+    },
+    {
+      "afirmacion": "A-81",
+      "url": "https://learn.microsoft.com/en-us/fabric/data-factory/dataflows-gen2-overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "170c6510265e03232fb0991df4736dc42911b72d0b77908a9d8e42bfb9a0470c"
+    },
+    {
+      "afirmacion": "A-82",
+      "url": "https://learn.microsoft.com/en-us/fabric/data-factory/what-is-copy-job",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "cb21556b24a132fbbfc032cde00cca8e7f14104790a5163aeb5f0b4a17b2ac7e"
+    },
+    {
+      "afirmacion": "A-83",
+      "url": "https://learn.microsoft.com/en-us/fabric/onelake/security/get-started-security",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "ff0dbbeddc826f1b76cabc84d5c1f4e7d2e613853df7a5906c3e3e7b3d36e262"
+    },
+    {
+      "afirmacion": "A-84",
+      "url": "https://learn.microsoft.com/en-us/fabric/enterprise/metrics-app",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "675ef4d440c7f140885d8c8c2d7651905d6d4f17543eb6af76f1f419319430ba"
+    }
+  ]
+}

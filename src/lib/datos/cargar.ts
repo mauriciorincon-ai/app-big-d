@@ -195,7 +195,8 @@ export function cargarDatos(dir = join(process.cwd(), "data"), raiz = process.cw
     const [, id, version] = m as unknown as [string, string, string];
     const vigente = atlas.get(id);
     if (!vigente) {
-      fallas.push(`${archivo} · versión archivada de «${id}», que no tiene un mapa publicado`);
+      // Si su mapa vigente existe y no cargó, esa falla ya está en la lista: decir que no hay mapa sería falso.
+      if (!existsSync(join(dir, "mapas", `${id}.mapa.yaml`))) fallas.push(`${archivo} · versión archivada de «${id}», que no tiene un mapa publicado`);
       continue;
     }
     const leido = leerYaml(join(dirVersiones, f), archivo);

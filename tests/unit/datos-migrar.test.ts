@@ -47,9 +47,10 @@ describe("migración del dato entre versiones del contrato", () => {
     expect(migradoDesde(muyViejo)).toBeUndefined();
     expect(migrarContrato(null)).toBeNull();
   });
-  it("el mapa aprobado de Fabric sigue en 0.3.0 en el disco y carga en la versión del motor", () => {
-    expect(parse(readFileSync("data/mapas/fabric.mapa.yaml", "utf8")).contrato_version).toBe("0.3.0");
-    expect(cargarDatos().atlas.get("fabric")?.mapa.contrato_version).toBe(CONTRATO_VERSION);
+  // Fabric v0.1.0 se aprobó con el contrato 0.3.0; desde el 2026-10-04 vive archivada con sus bytes aprobados.
+  it("la versión archivada de Fabric (v0.1.0) sigue en 0.3.0 en el disco y carga en la versión del motor", () => {
+    expect(parse(readFileSync("data/mapas/versiones/fabric-0.1.0.mapa.yaml", "utf8")).contrato_version).toBe("0.3.0");
+    expect(cargarDatos().versiones.get("fabric")?.find((v) => v.version === "0.1.0")?.mapa.contrato_version).toBe(CONTRATO_VERSION);
   });
   it("una versión sin salto declarado sigue fallando en V1", () => {
     expect(fallasCon((m) => (m.contrato_version = "0.2.0"))).toEqual([expect.stringMatching(/^data\/mapas\/fabric\.mapa\.yaml · V1 · \/contrato_version/)]);

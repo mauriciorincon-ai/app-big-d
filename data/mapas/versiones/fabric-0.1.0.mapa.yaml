@@ -1,14 +1,14 @@
-# APROBADO por una persona el 2026-10-04 (UTC) desde propuestas/2026-10-04-fabric (scripts/aprobar.mjs).
+# APROBADO por una persona el 2026-09-29 desde propuestas/2026-09-27-fabric (scripts/aprobar.mjs).
 # Solo contiene afirmaciones aprobadas. No se edita a mano: se vuelve a investigar.
-contrato_version: 0.4.0
+contrato_version: 0.3.0
 gramatica_id: plataformas-datos
 gramatica_version: 0.2.0
 sujeto_id: fabric
 sujeto_nombre:
   es: Microsoft Fabric
   en: Microsoft Fabric
-version: 0.2.0
-fecha_actualizacion: 2026-10-04
+version: 0.1.0
+fecha_actualizacion: 2026-09-29
 estado: aprobada
 bloques:
   - id: origen
@@ -33,8 +33,8 @@ bloques:
       en: Storage in OneLake
     banda_id: almacenamiento
     lider:
-      es: Un solo almacenamiento para toda la organización; cada herramienta lee la misma copia.
-      en: One store for the whole organisation; every tool reads the same copy.
+      es: Un solo lago para toda la organización; cada herramienta lee la misma copia.
+      en: One lake for the whole organisation; every tool reads the same copy.
   - id: preparacion
     nombre:
       es: Preparación
@@ -91,15 +91,15 @@ nodos:
         titulo:
           es: Espejado en Microsoft Fabric (Microsoft Learn)
           en: Mirroring - Microsoft Fabric | Microsoft Learn
-        fecha: 2026-10-04
+        fecha: 2026-09-27
         tipo: oficial
-      - url: https://azure.microsoft.com/en-us/blog/microsoft-databases-and-microsoft-fabric-your-unified-and-ai-powered-data-estate/
+      - url: https://learn.microsoft.com/en-us/fabric/fundamentals/whats-new-archive
         titulo:
-          es: Bases de datos de Microsoft y Microsoft Fabric (blog de Microsoft Azure, 18 de noviembre de 2025)
-          en: "Microsoft Databases and Microsoft Fabric: Your unified and AI-powered data estate | Microsoft Azure Blog"
-        fecha: 2026-10-04
+          es: Archivo de novedades de Microsoft Fabric (Microsoft Learn)
+          en: What's new? archive - Microsoft Fabric | Microsoft Learn
+        fecha: 2026-09-27
         tipo: oficial
-    fecha_verificacion: 2026-10-04
+    fecha_verificacion: 2026-09-27
   - id: almacenamiento-externo
     banda_id: fuentes
     tipo_id: tipo-externo
@@ -126,17 +126,17 @@ nodos:
     fuentes:
       - url: https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview
         titulo:
-          es: OneLake, el data lake unificado (Microsoft Learn)
+          es: OneLake, el lago de datos unificado (Microsoft Learn)
           en: OneLake, the unified data lake - Microsoft Fabric | Microsoft Learn
-        fecha: 2026-10-04
+        fecha: 2026-09-27
         tipo: oficial
       - url: https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/
         titulo:
           es: Anuncio de disponibilidad general de Microsoft Fabric (blog de Microsoft Fabric, 15 de noviembre de 2023)
           en: Prepare your data for AI innovation with Microsoft Fabric, now generally available | Microsoft Fabric Blog
-        fecha: 2026-10-04
+        fecha: 2026-09-27
         tipo: oficial
-    fecha_verificacion: 2026-10-04
+    fecha_verificacion: 2026-09-27
   - id: espejo
     banda_id: ingesta
     tipo_id: cap-ingesta
@@ -165,15 +165,15 @@ nodos:
         titulo:
           es: Espejado en Microsoft Fabric (Microsoft Learn)
           en: Mirroring - Microsoft Fabric | Microsoft Learn
-        fecha: 2026-10-04
+        fecha: 2026-09-27
         tipo: oficial
-      - url: https://azure.microsoft.com/en-us/blog/microsoft-databases-and-microsoft-fabric-your-unified-and-ai-powered-data-estate/
+      - url: https://learn.microsoft.com/en-us/fabric/fundamentals/whats-new-archive
         titulo:
-          es: Bases de datos de Microsoft y Microsoft Fabric (blog de Microsoft Azure, 18 de noviembre de 2025)
-          en: "Microsoft Databases and Microsoft Fabric: Your unified and AI-powered data estate | Microsoft Azure Blog"
-        fecha: 2026-10-04
+          es: Archivo de novedades de Microsoft Fabric (Microsoft Learn)
+          en: What's new? archive - Microsoft Fabric | Microsoft Learn
+        fecha: 2026-09-27
         tipo: oficial
-    fecha_verificacion: 2026-10-04
+    fecha_verificacion: 2026-09-27
   - id: trabajo-copia
     banda_id: ingesta
     tipo_id: cap-ingesta
@@ -186,8 +186,8 @@ nodos:
       es: Copia datos de muchos orígenes a muchos destinos, completos o solo lo nuevo, en el horario que se fije.
       en: Copies data from many sources to many destinations, in full or only what is new, on the schedule you set.
     experto:
-      es: "Movimiento de datos sin canalizaciones: copia masiva, copia incremental o replicación por captura de cambios (CDC), con uno o varios horarios por trabajo; la documentación marca la replicación por CDC en vista previa."
-      en: "Data movement without pipelines: bulk copy, incremental copy or change data capture (CDC) replication, with one or several schedules per job; the documentation marks CDC replication as in preview."
+      es: "Movimiento de datos sin canalizaciones: copia masiva, copia incremental o replicación por captura de cambios (CDC), con uno o varios horarios por trabajo."
+      en: "Data movement without pipelines: bulk copy, incremental copy or change data capture (CDC) replication, with one or several schedules per job."
     por_que_importa:
       es: Una copia incremental no trae todo cada vez y, si falla, retoma desde la última ejecución exitosa.
       en: An incremental copy does not bring everything each time and, if it fails, resumes from the last successful run.
@@ -197,15 +197,15 @@ nodos:
         titulo:
           es: Qué es el trabajo de copia en Data Factory (Microsoft Learn)
           en: What is Copy job in Data Factory - Microsoft Fabric | Microsoft Learn
-        fecha: 2026-10-04
+        fecha: 2026-09-27
         tipo: oficial
-      - url: https://www.microsoft.com/en-us/microsoft-fabric/blog/2025/03/31/fabcon-2025-fueling-tomorrows-ai-with-new-agentic-capabilities-and-security-innovations-in-fabric/
+      - url: https://learn.microsoft.com/en-us/fabric/fundamentals/whats-new-archive
         titulo:
-          es: Anuncios de FabCon 2025 (blog de Microsoft Fabric, 31 de marzo de 2025)
-          en: "FabCon 2025: Fueling tomorrow's AI with new agentic capabilities and security innovations in Fabric | Microsoft Fabric Blog"
-        fecha: 2026-10-04
+          es: Archivo de novedades de Microsoft Fabric (Microsoft Learn)
+          en: What's new? archive - Microsoft Fabric | Microsoft Learn
+        fecha: 2026-09-27
         tipo: oficial
-    fecha_verificacion: 2026-10-04
+    fecha_verificacion: 2026-09-27
   - id: base-espejada
     banda_id: almacenamiento
     tipo_id: cap-almacenamiento
@@ -229,15 +229,15 @@ nodos:
         titulo:
           es: Espejado en Microsoft Fabric (Microsoft Learn)
           en: Mirroring - Microsoft Fabric | Microsoft Learn
-        fecha: 2026-10-04
+        fecha: 2026-09-27
         tipo: oficial
-      - url: https://azure.microsoft.com/en-us/blog/microsoft-databases-and-microsoft-fabric-your-unified-and-ai-powered-data-estate/
+      - url: https://learn.microsoft.com/en-us/fabric/fundamentals/whats-new-archive
         titulo:
-          es: Bases de datos de Microsoft y Microsoft Fabric (blog de Microsoft Azure, 18 de noviembre de 2025)
-          en: "Microsoft Databases and Microsoft Fabric: Your unified and AI-powered data estate | Microsoft Azure Blog"
-        fecha: 2026-10-04
+          es: Archivo de novedades de Microsoft Fabric (Microsoft Learn)
+          en: What's new? archive - Microsoft Fabric | Microsoft Learn
+        fecha: 2026-09-27
         tipo: oficial
-    fecha_verificacion: 2026-10-04
+    fecha_verificacion: 2026-09-27
   - id: onelake
     banda_id: almacenamiento
     tipo_id: cap-almacenamiento
@@ -247,8 +247,8 @@ nodos:
       es: OneLake
       en: OneLake
     lider:
-      es: "El almacenamiento único de la organización: todas las herramientas guardan y leen ahí, en formatos abiertos."
-      en: "The organisation's single store: every tool stores and reads there, in open formats."
+      es: "El único lago de la organización: todas las herramientas guardan y leen ahí, en formatos abiertos."
+      en: "The organisation's single lake: every tool stores and reads there, in open formats."
     experto:
       es: Almacenamiento lógico único por inquilino, construido sobre Azure Data Lake Storage; guarda las tablas en Delta Parquet o Iceberg y no requiere infraestructura propia.
       en: One logical store per tenant, built on Azure Data Lake Storage; it keeps tables in Delta Parquet or Iceberg and needs no infrastructure of its own.
@@ -264,17 +264,17 @@ nodos:
     fuentes:
       - url: https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview
         titulo:
-          es: OneLake, el data lake unificado (Microsoft Learn)
+          es: OneLake, el lago de datos unificado (Microsoft Learn)
           en: OneLake, the unified data lake - Microsoft Fabric | Microsoft Learn
-        fecha: 2026-10-04
+        fecha: 2026-09-27
         tipo: oficial
       - url: https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/
         titulo:
           es: Anuncio de disponibilidad general de Microsoft Fabric (blog de Microsoft Fabric, 15 de noviembre de 2023)
           en: Prepare your data for AI innovation with Microsoft Fabric, now generally available | Microsoft Fabric Blog
-        fecha: 2026-10-04
+        fecha: 2026-09-27
         tipo: oficial
-    fecha_verificacion: 2026-10-04
+    fecha_verificacion: 2026-09-27
   - id: lakehouse
     banda_id: almacenamiento
     tipo_id: cap-almacenamiento
@@ -287,14 +287,14 @@ nodos:
       es: Guarda en un mismo lugar tablas y archivos de cualquier tipo, listos para prepararse y consultarse.
       en: Keeps tables and files of any kind in one place, ready to be prepared and queried.
     experto:
-      es: "Une la escala de un data lake con las consultas de un almacén de datos: guarda datos estructurados y no estructurados en tablas Delta que se analizan con Apache Spark y con SQL."
-      en: "Joins a data lake's scale with a data warehouse's querying: it keeps structured and unstructured data in Delta tables that are analysed with Apache Spark and with SQL."
+      es: "Une la escala de un lago de datos con las consultas de un almacén: guarda datos estructurados y no estructurados en tablas Delta que se analizan con Apache Spark y con SQL."
+      en: "Joins a data lake's scale with a warehouse's querying: it keeps structured and unstructured data in Delta tables that are analysed with Apache Spark and with SQL."
     por_que_importa:
       es: Elegir entre lakehouse y almacén de datos depende de las herramientas del equipo, los tipos de datos y el patrón de uso.
       en: Choosing between a lakehouse and a data warehouse depends on the team's tools, the data types and the workload pattern.
     terminos:
       es:
-        lakehouse: Almacén que une la escala de un data lake con las consultas de un almacén de datos.
+        lakehouse: Almacén que une la escala de un lago de datos con las consultas de un almacén de datos.
       en:
         lakehouse: A store that joins a data lake's scale with a data warehouse's querying.
     madurez: disponible-general
@@ -303,15 +303,15 @@ nodos:
         titulo:
           es: Qué es un lakehouse (Microsoft Learn)
           en: What is a lakehouse? - Microsoft Fabric | Microsoft Learn
-        fecha: 2026-10-04
+        fecha: 2026-09-27
         tipo: oficial
       - url: https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/
         titulo:
           es: Anuncio de disponibilidad general de Microsoft Fabric (blog de Microsoft Fabric, 15 de noviembre de 2023)
           en: Prepare your data for AI innovation with Microsoft Fabric, now generally available | Microsoft Fabric Blog
-        fecha: 2026-10-04
+        fecha: 2026-09-27
         tipo: oficial
-    fecha_verificacion: 2026-10-04
+    fecha_verificacion: 2026-09-27
   - id: warehouse
     banda_id: almacenamiento
     tipo_id: cap-almacenamiento
@@ -340,15 +340,15 @@ nodos:
         titulo:
           es: Qué es Fabric Data Warehouse (Microsoft Learn)
           en: What Is Fabric Data Warehouse? - Microsoft Fabric | Microsoft Learn
-        fecha: 2026-10-04
+        fecha: 2026-09-27
         tipo: oficial
       - url: https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/
         titulo:
           es: Anuncio de disponibilidad general de Microsoft Fabric (blog de Microsoft Fabric, 15 de noviembre de 2023)
           en: Prepare your data for AI innovation with Microsoft Fabric, now generally available | Microsoft Fabric Blog
-        fecha: 2026-10-04
+        fecha: 2026-09-27
         tipo: oficial
-    fecha_verificacion: 2026-10-04
+    fecha_verificacion: 2026-09-27
   - id: notebooks-spark
     banda_id: procesamiento
     tipo_id: cap-transformacion
@@ -372,21 +372,21 @@ nodos:
         titulo:
           es: Qué es Microsoft Fabric (Microsoft Learn)
           en: What is Microsoft Fabric - Microsoft Fabric | Microsoft Learn
-        fecha: 2026-10-04
+        fecha: 2026-09-27
         tipo: oficial
       - url: https://learn.microsoft.com/en-us/fabric/data-engineering/data-engineering-overview
         titulo:
           es: Qué es Fabric Data Engineering (Microsoft Learn)
           en: What is Fabric Data Engineering? - Microsoft Fabric | Microsoft Learn
-        fecha: 2026-10-04
+        fecha: 2026-09-27
         tipo: oficial
       - url: https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/
         titulo:
           es: Anuncio de disponibilidad general de Microsoft Fabric (blog de Microsoft Fabric, 15 de noviembre de 2023)
           en: Prepare your data for AI innovation with Microsoft Fabric, now generally available | Microsoft Fabric Blog
-        fecha: 2026-10-04
+        fecha: 2026-09-27
         tipo: oficial
-    fecha_verificacion: 2026-10-04
+    fecha_verificacion: 2026-09-27
   - id: dataflow-gen2
     banda_id: procesamiento
     tipo_id: cap-transformacion
@@ -410,15 +410,15 @@ nodos:
         titulo:
           es: Diferencias entre Dataflow Gen1 y Dataflow Gen2 (Microsoft Learn)
           en: Differences between Dataflow Gen1 and Dataflow Gen2 - Microsoft Fabric | Microsoft Learn
-        fecha: 2026-10-04
+        fecha: 2026-09-27
         tipo: oficial
       - url: https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/
         titulo:
           es: Anuncio de disponibilidad general de Microsoft Fabric (blog de Microsoft Fabric, 15 de noviembre de 2023)
           en: Prepare your data for AI innovation with Microsoft Fabric, now generally available | Microsoft Fabric Blog
-        fecha: 2026-10-04
+        fecha: 2026-09-27
         tipo: oficial
-    fecha_verificacion: 2026-10-04
+    fecha_verificacion: 2026-09-27
   - id: modelo-semantico
     banda_id: consumo
     tipo_id: cap-consumo
@@ -442,15 +442,15 @@ nodos:
         titulo:
           es: Introducción a Direct Lake (Microsoft Learn)
           en: Direct Lake overview - Microsoft Fabric | Microsoft Learn
-        fecha: 2026-10-04
+        fecha: 2026-09-27
         tipo: oficial
       - url: https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/
         titulo:
           es: Anuncio de disponibilidad general de Microsoft Fabric (blog de Microsoft Fabric, 15 de noviembre de 2023)
           en: Prepare your data for AI innovation with Microsoft Fabric, now generally available | Microsoft Fabric Blog
-        fecha: 2026-10-04
+        fecha: 2026-09-27
         tipo: oficial
-    fecha_verificacion: 2026-10-04
+    fecha_verificacion: 2026-09-27
   - id: informe-power-bi
     banda_id: consumo
     tipo_id: cap-consumo
@@ -479,15 +479,15 @@ nodos:
         titulo:
           es: Qué es Microsoft Fabric (Microsoft Learn)
           en: What is Microsoft Fabric - Microsoft Fabric | Microsoft Learn
-        fecha: 2026-10-04
+        fecha: 2026-09-27
         tipo: oficial
       - url: https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/
         titulo:
           es: Anuncio de disponibilidad general de Microsoft Fabric (blog de Microsoft Fabric, 15 de noviembre de 2023)
           en: Prepare your data for AI innovation with Microsoft Fabric, now generally available | Microsoft Fabric Blog
-        fecha: 2026-10-04
+        fecha: 2026-09-27
         tipo: oficial
-    fecha_verificacion: 2026-10-04
+    fecha_verificacion: 2026-09-27
   - id: agente-datos
     banda_id: ia
     tipo_id: cap-ia
@@ -500,8 +500,8 @@ nodos:
       es: Responde preguntas en lenguaje natural sobre los datos, con los mismos permisos de quien pregunta.
       en: Answers plain-language questions about the data, with the same permissions as the person asking.
     experto:
-      es: Agente que convierte preguntas en consultas de solo lectura sobre las fuentes elegidas, por ejemplo tablas de un lakehouse, con las credenciales de quien pregunta; cada respuesta trae como máximo 25 filas y 25 columnas.
-      en: Agent that turns questions into read-only queries over the chosen sources, lakehouse tables for example, using the asker's credentials; each answer returns at most 25 rows and 25 columns.
+      es: Agente que convierte preguntas en consultas de solo lectura sobre las fuentes elegidas, por ejemplo tablas de un lakehouse, con las credenciales de quien pregunta.
+      en: Agent that turns questions into read-only queries over the chosen sources, lakehouse tables for example, using the asker's credentials.
     por_que_importa:
       es: "Por ahora solo admite inglés: un equipo que pregunta en español debe probarlo antes de contar con él."
       en: "For now it only supports English: a team that asks in Spanish should test it before relying on it."
@@ -511,9 +511,9 @@ nodos:
         titulo:
           es: Creación del agente de datos de Fabric (Microsoft Learn)
           en: Fabric data agent creation - Microsoft Fabric | Microsoft Learn
-        fecha: 2026-10-04
+        fecha: 2026-09-27
         tipo: oficial
-    fecha_verificacion: 2026-10-04
+    fecha_verificacion: 2026-09-27
   - id: seguridad-onelake
     banda_id: gobierno
     tipo_id: cap-gobierno
@@ -537,15 +537,15 @@ nodos:
         titulo:
           es: Introducción a la seguridad de los datos en OneLake (Microsoft Learn)
           en: Data security overview - Microsoft Fabric | Microsoft Learn
-        fecha: 2026-10-04
+        fecha: 2026-09-27
         tipo: oficial
-      - url: https://azure.microsoft.com/en-us/blog/fabcon-and-sqlcon-2026-unifying-databases-and-fabric-on-a-single-data-platform/
+      - url: https://learn.microsoft.com/en-us/fabric/fundamentals/whats-new-archive
         titulo:
-          es: Anuncios de FabCon y SQLCon 2026 (blog de Microsoft Azure, 18 de marzo de 2026)
-          en: "FabCon and SQLCon 2026: Unifying databases and Fabric on a single data platform | Microsoft Azure Blog"
-        fecha: 2026-10-04
+          es: Archivo de novedades de Microsoft Fabric (Microsoft Learn)
+          en: What's new? archive - Microsoft Fabric | Microsoft Learn
+        fecha: 2026-09-27
         tipo: oficial
-    fecha_verificacion: 2026-10-04
+    fecha_verificacion: 2026-09-27
   - id: etiquetas-confidencialidad
     banda_id: gobierno
     tipo_id: cap-gobierno
@@ -569,15 +569,15 @@ nodos:
         titulo:
           es: Protección de la información en Fabric (Microsoft Learn)
           en: Information protection in Fabric - Microsoft Fabric | Microsoft Learn
-        fecha: 2026-10-04
+        fecha: 2026-09-27
         tipo: oficial
       - url: https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/
         titulo:
           es: Anuncio de disponibilidad general de Microsoft Fabric (blog de Microsoft Fabric, 15 de noviembre de 2023)
           en: Prepare your data for AI innovation with Microsoft Fabric, now generally available | Microsoft Fabric Blog
-        fecha: 2026-10-04
+        fecha: 2026-09-27
         tipo: oficial
-    fecha_verificacion: 2026-10-04
+    fecha_verificacion: 2026-09-27
   - id: capacidad
     banda_id: operacion
     tipo_id: tipo-operacion
@@ -600,15 +600,15 @@ nodos:
         titulo:
           es: Licencias y capacidad de Microsoft Fabric (Microsoft Learn)
           en: Understand Microsoft Fabric licenses and capacity - Microsoft Fabric | Microsoft Learn
-        fecha: 2026-10-04
+        fecha: 2026-09-27
         tipo: oficial
       - url: https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/
         titulo:
           es: Anuncio de disponibilidad general de Microsoft Fabric (blog de Microsoft Fabric, 15 de noviembre de 2023)
           en: Prepare your data for AI innovation with Microsoft Fabric, now generally available | Microsoft Fabric Blog
-        fecha: 2026-10-04
+        fecha: 2026-09-27
         tipo: oficial
-    fecha_verificacion: 2026-10-04
+    fecha_verificacion: 2026-09-27
   - id: app-metricas
     banda_id: operacion
     tipo_id: tipo-operacion
@@ -623,23 +623,23 @@ nodos:
       es: App para vigilar el consumo de las capacidades de Fabric; los datos de uso llegan de 10 a 15 minutos después de cada actividad.
       en: App for monitoring the consumption of Fabric capacities; usage data arrives 10 to 15 minutes after each activity.
     por_que_importa:
-      es: "No envía alertas: para avisos sobre la salud de la capacidad hay que usar los eventos de capacidad de Fabric."
-      en: "It sends no alerts: notices about capacity health need Fabric's capacity events instead."
+      es: "No envía alertas: para avisos sobre la salud de la capacidad hace falta otro mecanismo."
+      en: "It sends no alerts: notices about capacity health need a separate mechanism."
     madurez: disponible-general
     fuentes:
       - url: https://learn.microsoft.com/en-us/fabric/enterprise/metrics-app
         titulo:
           es: Qué es la app de métricas de capacidad de Microsoft Fabric (Microsoft Learn)
           en: What is the Microsoft Fabric Capacity Metrics app? - Microsoft Fabric | Microsoft Learn
-        fecha: 2026-10-04
+        fecha: 2026-09-27
         tipo: oficial
-      - url: https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/
+      - url: https://learn.microsoft.com/en-us/fabric/fundamentals/whats-new-archive
         titulo:
-          es: Anuncio de disponibilidad general de Microsoft Fabric (blog de Microsoft Fabric, 15 de noviembre de 2023)
-          en: Prepare your data for AI innovation with Microsoft Fabric, now generally available | Microsoft Fabric Blog
-        fecha: 2026-10-04
+          es: Archivo de novedades de Microsoft Fabric (Microsoft Learn)
+          en: What's new? archive - Microsoft Fabric | Microsoft Learn
+        fecha: 2026-09-27
         tipo: oficial
-    fecha_verificacion: 2026-10-04
+    fecha_verificacion: 2026-09-27
   - id: canalizaciones
     banda_id: orquestacion
     tipo_id: cap-transformacion
@@ -662,21 +662,21 @@ nodos:
         titulo:
           es: Introducción a las canalizaciones (Microsoft Learn)
           en: Pipeline Overview - Microsoft Fabric | Microsoft Learn
-        fecha: 2026-10-04
+        fecha: 2026-09-27
         tipo: oficial
       - url: https://learn.microsoft.com/en-us/fabric/fundamentals/microsoft-fabric-overview
         titulo:
           es: Qué es Microsoft Fabric (Microsoft Learn)
           en: What is Microsoft Fabric - Microsoft Fabric | Microsoft Learn
-        fecha: 2026-10-04
+        fecha: 2026-09-27
         tipo: oficial
       - url: https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/
         titulo:
           es: Anuncio de disponibilidad general de Microsoft Fabric (blog de Microsoft Fabric, 15 de noviembre de 2023)
           en: Prepare your data for AI innovation with Microsoft Fabric, now generally available | Microsoft Fabric Blog
-        fecha: 2026-10-04
+        fecha: 2026-09-27
         tipo: oficial
-    fecha_verificacion: 2026-10-04
+    fecha_verificacion: 2026-09-27
   - id: airflow
     banda_id: orquestacion
     tipo_id: cap-transformacion
@@ -685,11 +685,11 @@ nodos:
       es: Trabajos de Apache Airflow
       en: Apache Airflow jobs
     lider:
-      es: Organiza y ejecuta procesos escritos en Python como una secuencia de pasos con dependencias.
-      en: Organises and runs processes written in Python as a sequence of steps with dependencies.
+      es: Programa y vigila procesos escritos en Python como una secuencia de pasos con dependencias.
+      en: Schedules and monitors processes written in Python as a sequence of steps with dependencies.
     experto:
-      es: Servicio gestionado de Apache Airflow en Data Factory para construir y ejecutar procesos en Python definidos como grafos acíclicos dirigidos (DAG); por ahora no admite redes privadas ni redes virtuales.
-      en: Managed Apache Airflow service in Data Factory to build and run Python processes defined as directed acyclic graphs (DAGs); private and virtual networks are not supported yet.
+      es: Experiencia de Apache Airflow en Data Factory para crear, programar y vigilar procesos en Python definidos como grafos acíclicos dirigidos (DAG).
+      en: Apache Airflow experience in Data Factory to author, schedule and monitor Python processes defined as directed acyclic graphs (DAGs).
     por_que_importa:
       es: "Convive con las canalizaciones: hay que decidir cuál de las dos orquesta cada proceso para no duplicar horarios."
       en: "It coexists with pipelines: someone has to decide which one orchestrates each process so schedules are not duplicated."
@@ -700,19 +700,13 @@ nodos:
         DAG: "Directed acyclic graph: steps with dependencies that never loop back on themselves."
     madurez: disponible-general
     fuentes:
-      - url: https://learn.microsoft.com/en-us/fabric/data-factory/apache-airflow-jobs-concepts
+      - url: https://learn.microsoft.com/en-us/fabric/fundamentals/whats-new-archive
         titulo:
-          es: Qué es un trabajo de Apache Airflow (Microsoft Learn)
-          en: What is an Apache Airflow job? - Microsoft Fabric | Microsoft Learn
-        fecha: 2026-10-04
+          es: Archivo de novedades de Microsoft Fabric (Microsoft Learn)
+          en: What's new? archive - Microsoft Fabric | Microsoft Learn
+        fecha: 2026-09-27
         tipo: oficial
-      - url: https://www.microsoft.com/en-us/microsoft-fabric/blog/2025/03/31/fabcon-2025-fueling-tomorrows-ai-with-new-agentic-capabilities-and-security-innovations-in-fabric/
-        titulo:
-          es: Anuncios de FabCon 2025 (blog de Microsoft Fabric, 31 de marzo de 2025)
-          en: "FabCon 2025: Fueling tomorrow's AI with new agentic capabilities and security innovations in Fabric | Microsoft Fabric Blog"
-        fecha: 2026-10-04
-        tipo: oficial
-    fecha_verificacion: 2026-10-04
+    fecha_verificacion: 2026-09-27
 flujos:
   - id: f-origen-espejo
     origen: bases-operacionales
@@ -1004,12 +998,8 @@ recorridos:
           en: The agent generates a read-only query over the chosen table with the asker's credentials; English only for now.
 glosario:
   es:
-    OneLake: El data lake único que Microsoft Fabric incluye para toda la organización.
-    data lake: Almacenamiento que guarda grandes volúmenes de datos de cualquier tipo, en su formato original y a bajo costo.
-    lakehouse: Almacén que une la escala de un data lake con las consultas de un almacén de datos.
+    OneLake: El lago de datos único que Microsoft Fabric incluye para toda la organización.
     réplica: Copia de una base de datos que se mantiene sincronizada con el original.
   en:
     OneLake: The single data lake Microsoft Fabric includes for the whole organisation.
-    data lake: Storage that keeps large volumes of data of any kind, in its original format and at low cost.
-    lakehouse: A store that joins a data lake's scale with a data warehouse's querying.
     replica: A copy of a database that is kept in sync with the original.

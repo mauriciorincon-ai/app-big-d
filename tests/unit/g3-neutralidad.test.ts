@@ -24,7 +24,11 @@ function registrados(): string[] {
   const nombres = [
     ...dir("packages/diagramador/gramaticas").flatMap((f) => nombresDe(json(`packages/diagramador/gramaticas/${f}`), "id", "nombre")),
     ...dir("packages/diagramador/ejemplos").flatMap((f) => nombresDe(json(`packages/diagramador/ejemplos/${f}`), "sujeto_id", "sujeto_nombre")),
-    ...dir("data/mapas").flatMap((f) => nombresDe(parse(readFileSync(`data/mapas/${f}`, "utf8")), "sujeto_id", "sujeto_nombre")),
+    ...dir("data/mapas")
+      .filter((f) => f.endsWith(".mapa.yaml"))
+      .flatMap((f) => nombresDe(parse(readFileSync(`data/mapas/${f}`, "utf8")), "sujeto_id", "sujeto_nombre")),
+    // Las versiones archivadas (D-S2-09) también: un nombre que una plataforma dejó de usar sigue siendo suyo.
+    ...dir("data/mapas/versiones").flatMap((f) => nombresDe(parse(readFileSync(`data/mapas/versiones/${f}`, "utf8")), "sujeto_id", "sujeto_nombre")),
     ...dir("data/plataformas").flatMap((f) => nombresDe(parse(readFileSync(`data/plataformas/${f}`, "utf8")), "id", "nombre")),
     ...PLATAFORMAS,
   ];
