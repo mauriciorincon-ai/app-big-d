@@ -2,7 +2,7 @@
 // Los scripts del investigador de punta a punta, sobre una raíz temporal (BIGD_RAIZ) con una plataforma
 // ficticia y páginas de fuente servidas desde disco (espejo file://): validar la propuesta, verificar sus
 // citas con curl y aprobar con la decisión de una persona. data/ y propuestas/ del repo no se tocan.
-import { spawnSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { afterAll, describe, expect, it } from "vitest";
@@ -43,6 +43,31 @@ describe("verificar-citas", () => {
     expect(v.fecha).toBe("2026-09-27");
     expect(r.stdout).toMatch(/ · \d+ verificadas · \d+ no verificables · 1 no encontradas · 14 páginas$/m);
   });
+  // S2-AUD-39: un servidor que corta la conexión ante el agente del verificador. Un curl de prueba va primero en el
+  // PATH y hace lo que hizo GlobeNewswire el 2026-10-04: corta HTTP/2 (92) y, con HTTP/1.1 y el agente propio, agota
+  // el tiempo (28); sin el agente responde.
+  it("si la conexión se corta, reintenta con HTTP/1.1 y luego sin el agente, y lo dice en el resultado", () => {
+    const otra = raizDePrueba(p);
+    const bin = join(otra.raiz, "bin");
+    mkdirSync(bin);
+    const curl = execFileSync("sh", ["-c", "command -v curl"], { encoding: "utf8" }).trim();
+    writeFileSync(
+      join(bin, "curl"),
+      `#!/bin/sh\ncase " $* " in *" --http1.1 "*) ;; *) echo "curl: (92) HTTP/2 stream 1 was not closed cleanly" >&2; exit 92;; esac\ncase "$*" in *Big-D-verificador*) echo "curl: (28) Operation timed out after 25002 milliseconds with 0 bytes received" >&2; exit 28;; esac\nexec "${curl}" "$@"\n`,
+      { mode: 0o755 },
+    );
+    try {
+      const r = spawnSync("node", ["scripts/verificar-citas.mjs", otra.carpeta], {
+        encoding: "utf8",
+        env: { ...process.env, PATH: `${bin}:${process.env.PATH}`, BIGD_RAIZ: otra.raiz, BIGD_VERIFICAR_ESPEJO: otra.espejo, BIGD_FECHA_CONSULTA: "2026-09-27" },
+      });
+      expect(r.status, r.stderr).toBe(0);
+      const v = JSON.parse(readFileSync(join(otra.raiz, otra.carpeta, "verificacion.json"), "utf8")) as { resultados: { resultado: string; reintento?: string }[] };
+      expect(v.resultados.every((x) => x.resultado === "verificada" && x.reintento === "sin-agente")).toBe(true);
+    } finally {
+      rmSync(otra.raiz, { recursive: true, force: true });
+    }
+  }, 20_000);
 });
 
 describe("aprobar", () => {
@@ -116,7 +141,28 @@ describe("una segunda propuesta que retira un componente", () => {
     expect(r.status).toBe(1);
     expect(r.stderr).toContain("retiros · el componente «monitor-capacidad» sale del mapa sin argumento");
   });
-  it("con su retiro: valida, su cita se verifica y la aprobación lo saca del mapa con sus flujos", () => {
+  // S2-AUD-09: si el archivo de la versión anterior ya existe con OTROS bytes, la aprobación no sobrescribe nada.
+  it("si la versión anterior ya está archivada con otros bytes, no aprueba ni toca el mapa", () => {
+    const { q, flujos } = preparar(true);
+    expect(correr("scripts/investigar/validar.mjs", [carpeta2]).status).toBe(0);
+    expect(correr("scripts/verificar-citas.mjs", [carpeta2]).status).toBe(0);
+    const ruta = join(raiz, "data/mapas", `${PLATAFORMA}.mapa.yaml`);
+    const antes = readFileSync(ruta);
+    const ajeno = join(raiz, "data/mapas/versiones", `${PLATAFORMA}-0.1.0.mapa.yaml`);
+    mkdirSync(join(raiz, "data/mapas/versiones"), { recursive: true });
+    writeFileSync(ajeno, "# otros bytes\n");
+    try {
+      const r = correr(APROBAR, [carpeta2, "--aprobar", q.afirmaciones.map((a) => a.id).join(","), "--rechazar", "-", "--retirar", ["monitor-capacidad", ...flujos].join(",")]);
+      expect(r.status).toBe(1);
+      expect(r.stderr).toContain("ya existe con otro contenido");
+      expect(readFileSync(ruta).equals(antes)).toBe(true);
+    } finally {
+      rmSync(ajeno);
+    }
+  }, 20_000);
+  // Tres procesos (validar, verificar, aprobar) y una carga de la base entera, que crece con cada plataforma publicada:
+  // solo tarda 1,3 s, pero con la suite completa en paralelo pasó de los 5 s por omisión al publicarse Databricks.
+  it("con su retiro: valida, su cita se verifica y la aprobación lo saca del mapa con sus flujos (y archiva la versión anterior)", async () => {
     const { q, flujos } = preparar(true);
     const v = correr("scripts/investigar/validar.mjs", [carpeta2]);
     expect(v.status, v.stderr).toBe(0);
@@ -126,12 +172,17 @@ describe("una segunda propuesta que retira un componente", () => {
     const verif = JSON.parse(readFileSync(join(raiz, carpeta2, "verificacion.json"), "utf8"));
     expect(verif.resultados.find((x: { afirmacion: string }) => x.afirmacion === "R-1")).toMatchObject({ resultado: "verificada", url: `${BASE}novedades` });
     const ids = q.afirmaciones.map((a) => a.id).join(",");
+    const primera = readFileSync(join(raiz, "data/mapas", `${PLATAFORMA}.mapa.yaml`));
     const r = correr(APROBAR, [carpeta2, "--aprobar", ids, "--rechazar", "-", "--retirar", ["monitor-capacidad", ...flujos].join(",")]);
     expect(r.status, r.stderr).toBe(0);
+    // D-S2-09: la versión anterior queda archivada con sus mismos bytes, y el cargador la lee.
+    expect(readFileSync(join(raiz, "data/mapas/versiones", `${PLATAFORMA}-0.1.0.mapa.yaml`)).equals(primera)).toBe(true);
+    const { cargarDatos } = await import("@/lib/datos");
+    expect(cargarDatos(join(raiz, "data"), process.cwd()).versiones.get(PLATAFORMA)!.map((v) => v.version)).toEqual(["0.1.0"]);
     const mapa = parse(readFileSync(join(raiz, "data/mapas", `${PLATAFORMA}.mapa.yaml`), "utf8"));
     expect(mapa.nodos.some((n: { id: string }) => n.id === "monitor-capacidad")).toBe(false);
     expect(mapa.version).toBe("0.2.0");
-  });
+  }, 20_000);
 });
 
 describe("M-15: la guarda de la aprobación (la frontera está dentro del script)", () => {

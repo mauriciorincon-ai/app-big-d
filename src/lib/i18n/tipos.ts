@@ -43,7 +43,6 @@ export interface Textos {
     lienzo: string;
     /** Descripción de cada bloque activable (A-29): qué hace Enter. */
     pistaActivar: string;
-    notaModos: string;
     lectura: string;
     nivel2: { titulo: string; ojo: string; sub: string; guia: { entrada: string; resto: string } };
     /** Pista de los componentes activables (niveles 2 y 3): qué hace Enter. */
@@ -67,6 +66,62 @@ export interface Textos {
       pasos: string;
     };
     plataforma: { etiqueta: string; pronto: string; elegir: string; notaInicio: string; nota: string; notaInvestigador: string };
+    /** Lado a lado (`/[idioma]/comparar`). Plurales [uno, varios]; `numeros` escribe en palabras los que caben. */
+    lado: {
+      titulo: string;
+      ojo: string;
+      h1: readonly [string, string];
+      sub: string;
+      vigenciaPorFila: string;
+      guia: { entrada: string; resto: string };
+      selector: string;
+      orden: string;
+      paginacion: string;
+      anterior: string;
+      siguiente: string;
+      rango: string;
+      rangoUno: string;
+      desplegar: string;
+      contraer: string;
+      mapa: string;
+      lienzo: string;
+      pista: string;
+      pistaActivar: string;
+      pronto: string;
+      prontoFila: string;
+      prontoEnlace: string;
+      bandas: string;
+      sinComponentes: string;
+      ventanaDe: string;
+      numeros: readonly string[];
+      /** Nota de marcas con los nombres reales, del dato: [una marca, varias]; «{marcas}» es la lista. */
+      notaMarcas: readonly [string, string];
+      /** Conjunción para listar las marcas: « y ». */
+      y: string;
+    };
+    /** Versiones de un mapa (`/[idioma]/atlas/[plataforma]/versiones`, D-S2-08). Plurales [uno, varios]. */
+    versiones: {
+      titulo: string;
+      ojo: string;
+      h1: string;
+      sub: string;
+      /** Enlace desde la cabecera del atlas. */
+      enlace: string;
+      vigente: string;
+      anteriores: readonly [string, string];
+      volver: string;
+      par: string;
+      aprobada: string;
+      guia: { entrada: string; resto: string };
+      lienzo: string;
+      pista: string;
+      pistaActivar: string;
+      ventanaDe: string;
+      dice: { titulo: string; cambiaron: readonly [string, string]; ninguno: string; fuentes: readonly [string, string]; sinFuentes: string; nota: string };
+      vacio: { titulo: string; texto: string };
+      /** Un par con una versión histórica (las reglas de hoy ya no la validan): «{version}». */
+      historica: string;
+    };
   };
   investigador: {
     titulo: string;
@@ -98,7 +153,10 @@ export interface Textos {
       nota: string;
       corrida: string;
       modelo: string;
+      /** Bloqueos que contó el hook de fin (`.reintentos`). */
       reintentos: readonly [string, string];
+      /** Reintentos que declara la propia corrida (`ejecucion.reintentos`). */
+      reintentosDeclarados: readonly [string, string];
       fuentes: readonly [string, string];
       verificadaEl: string;
       invalida: string;

@@ -1,0 +1,1015 @@
+# APROBADO por una persona el 2026-10-04 (UTC) desde propuestas/2026-10-04-fabric (scripts/aprobar.mjs).
+# Solo contiene afirmaciones aprobadas. No se edita a mano: se vuelve a investigar.
+contrato_version: 0.4.0
+gramatica_id: plataformas-datos
+gramatica_version: 0.2.0
+sujeto_id: fabric
+sujeto_nombre:
+  es: Microsoft Fabric
+  en: Microsoft Fabric
+version: 0.2.0
+fecha_actualizacion: 2026-10-04
+estado: aprobada
+bloques:
+  - id: origen
+    nombre:
+      es: Sistemas de origen
+      en: Source systems
+    banda_id: fuentes
+    lider:
+      es: Los sistemas donde nacen los datos, dentro o fuera de la organización.
+      en: The systems where data is born, inside or outside the organisation.
+  - id: entrada
+    nombre:
+      es: Entrada de datos
+      en: Data intake
+    banda_id: ingesta
+    lider:
+      es: "Trae los datos a la plataforma: una réplica que se mantiene al día o copias programadas."
+      en: "Brings data into the platform: a replica that keeps itself current, or scheduled copies."
+  - id: almacen
+    nombre:
+      es: Guardado en OneLake
+      en: Storage in OneLake
+    banda_id: almacenamiento
+    lider:
+      es: Un solo almacenamiento para toda la organización; cada herramienta lee la misma copia.
+      en: One store for the whole organisation; every tool reads the same copy.
+  - id: preparacion
+    nombre:
+      es: Preparación
+      en: Preparation
+    banda_id: procesamiento
+    lider:
+      es: Limpia, combina y da forma a los datos, con código o sin él.
+      en: Cleans, combines and shapes the data, with code or without it.
+  - id: consumo-bi
+    nombre:
+      es: Informes
+      en: Reports
+    banda_id: consumo
+    lider:
+      es: Convierte los datos en indicadores e informes que la gente consulta.
+      en: Turns the data into the indicators and reports people check.
+  - id: agentes
+    nombre:
+      es: Agentes
+      en: Agents
+    banda_id: ia
+    lider:
+      es: Responde preguntas en lenguaje natural usando los datos como contexto.
+      en: Answers plain-language questions using the data as context.
+  - id: gobierno
+    nombre:
+      es: Gobierno
+      en: Governance
+    banda_id: gobierno
+    lider:
+      es: Decide quién ve qué datos y marca los que son sensibles.
+      en: Decides who sees which data and marks what is sensitive.
+nodos:
+  - id: bases-operacionales
+    banda_id: fuentes
+    tipo_id: tipo-externo
+    bloque_id: origen
+    orden: 1
+    nombre:
+      es: Bases de datos operacionales
+      en: Operational databases
+    lider:
+      es: Los sistemas del día a día, como el de admisiones, donde se registra cada operación.
+      en: The day-to-day systems, such as admissions, where every transaction is recorded.
+    experto:
+      es: Bases relacionales y otros sistemas transaccionales, por ejemplo SQL Server, que Fabric puede replicar de forma continua en OneLake con el espejado o copiar con un trabajo de copia.
+      en: Relational databases and other transactional systems, SQL Server for example, which Fabric can replicate continuously into OneLake through mirroring or copy with a Copy job.
+    por_que_importa:
+      es: La forma de traerlas decide qué tan al día están los datos de análisis.
+      en: How they are brought in decides how current the analytics data is.
+    madurez: disponible-general
+    fuentes:
+      - url: https://learn.microsoft.com/en-us/fabric/mirroring/overview
+        titulo:
+          es: Espejado en Microsoft Fabric (Microsoft Learn)
+          en: Mirroring - Microsoft Fabric | Microsoft Learn
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://azure.microsoft.com/en-us/blog/microsoft-databases-and-microsoft-fabric-your-unified-and-ai-powered-data-estate/
+        titulo:
+          es: Bases de datos de Microsoft y Microsoft Fabric (blog de Microsoft Azure, 18 de noviembre de 2025)
+          en: "Microsoft Databases and Microsoft Fabric: Your unified and AI-powered data estate | Microsoft Azure Blog"
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: almacenamiento-externo
+    banda_id: fuentes
+    tipo_id: tipo-externo
+    bloque_id: origen
+    orden: 2
+    nombre:
+      es: Almacenamiento en otras nubes
+      en: Storage in other clouds
+    lider:
+      es: Archivos que ya viven en otras nubes o en servidores propios y que se pueden usar sin moverlos.
+      en: Files that already live in other clouds or on your own servers and can be used without moving them.
+    experto:
+      es: Azure Data Lake Storage, Azure Blob Storage, Amazon S3 y compatibles, fuentes compatibles con Iceberg, Microsoft Dataverse y fuentes locales, a las que OneLake apunta con accesos directos (shortcuts).
+      en: Azure Data Lake Storage, Azure Blob Storage, Amazon S3 and compatible sources, Iceberg-compatible sources, Microsoft Dataverse and on-premises sources, which OneLake points to through shortcuts.
+    por_que_importa:
+      es: "Sin copias no hay dos versiones del mismo dato: lo que cambia en el origen se ve de inmediato."
+      en: "Without copies there are no two versions of the same data: what changes at the source shows up immediately."
+    terminos:
+      es:
+        acceso directo: Una referencia que hace ver datos guardados en otro lugar como si estuvieran en OneLake, sin copiarlos.
+      en:
+        shortcut: A reference that makes data stored elsewhere look as if it were in OneLake, without copying it.
+    madurez: disponible-general
+    fuentes:
+      - url: https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview
+        titulo:
+          es: OneLake, el data lake unificado (Microsoft Learn)
+          en: OneLake, the unified data lake - Microsoft Fabric | Microsoft Learn
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/
+        titulo:
+          es: Anuncio de disponibilidad general de Microsoft Fabric (blog de Microsoft Fabric, 15 de noviembre de 2023)
+          en: Prepare your data for AI innovation with Microsoft Fabric, now generally available | Microsoft Fabric Blog
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: espejo
+    banda_id: ingesta
+    tipo_id: cap-ingesta
+    bloque_id: entrada
+    orden: 1
+    nombre:
+      es: Espejado (Mirroring)
+      en: Mirroring
+    lider:
+      es: Mantiene en la plataforma una copia de las bases del día a día que se actualiza sola, casi al instante.
+      en: Keeps a copy of the day-to-day databases in the platform that updates itself almost instantly.
+    experto:
+      es: Replicación continua de bases operacionales hacia OneLake en tablas Delta; los cambios pueden publicarse cada 15 segundos.
+      en: Continuous replication of operational databases into OneLake as Delta tables; changes can be published as often as every 15 seconds.
+    por_que_importa:
+      es: "Necesita una capacidad encendida: si se pausa, la réplica se detiene y los informes quedan con datos viejos."
+      en: "It needs a running capacity: if the capacity is paused, replication stops and reports are left with stale data."
+    terminos:
+      es:
+        tablas Delta: Tablas guardadas en un formato abierto que lleva un registro de cada cambio.
+      en:
+        Delta tables: Tables stored in an open format that keeps a log of every change.
+    madurez: disponible-general
+    fuentes:
+      - url: https://learn.microsoft.com/en-us/fabric/mirroring/overview
+        titulo:
+          es: Espejado en Microsoft Fabric (Microsoft Learn)
+          en: Mirroring - Microsoft Fabric | Microsoft Learn
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://azure.microsoft.com/en-us/blog/microsoft-databases-and-microsoft-fabric-your-unified-and-ai-powered-data-estate/
+        titulo:
+          es: Bases de datos de Microsoft y Microsoft Fabric (blog de Microsoft Azure, 18 de noviembre de 2025)
+          en: "Microsoft Databases and Microsoft Fabric: Your unified and AI-powered data estate | Microsoft Azure Blog"
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: trabajo-copia
+    banda_id: ingesta
+    tipo_id: cap-ingesta
+    bloque_id: entrada
+    orden: 2
+    nombre:
+      es: Trabajo de copia (Copy job)
+      en: Copy job
+    lider:
+      es: Copia datos de muchos orígenes a muchos destinos, completos o solo lo nuevo, en el horario que se fije.
+      en: Copies data from many sources to many destinations, in full or only what is new, on the schedule you set.
+    experto:
+      es: "Movimiento de datos sin canalizaciones: copia masiva, copia incremental o replicación por captura de cambios (CDC), con uno o varios horarios por trabajo; la documentación marca la replicación por CDC en vista previa."
+      en: "Data movement without pipelines: bulk copy, incremental copy or change data capture (CDC) replication, with one or several schedules per job; the documentation marks CDC replication as in preview."
+    por_que_importa:
+      es: Una copia incremental no trae todo cada vez y, si falla, retoma desde la última ejecución exitosa.
+      en: An incremental copy does not bring everything each time and, if it fails, resumes from the last successful run.
+    madurez: disponible-general
+    fuentes:
+      - url: https://learn.microsoft.com/en-us/fabric/data-factory/what-is-copy-job
+        titulo:
+          es: Qué es el trabajo de copia en Data Factory (Microsoft Learn)
+          en: What is Copy job in Data Factory - Microsoft Fabric | Microsoft Learn
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://www.microsoft.com/en-us/microsoft-fabric/blog/2025/03/31/fabcon-2025-fueling-tomorrows-ai-with-new-agentic-capabilities-and-security-innovations-in-fabric/
+        titulo:
+          es: Anuncios de FabCon 2025 (blog de Microsoft Fabric, 31 de marzo de 2025)
+          en: "FabCon 2025: Fueling tomorrow's AI with new agentic capabilities and security innovations in Fabric | Microsoft Fabric Blog"
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: base-espejada
+    banda_id: almacenamiento
+    tipo_id: cap-almacenamiento
+    bloque_id: almacen
+    orden: 1
+    nombre:
+      es: Base de datos espejada
+      en: Mirrored database
+    lider:
+      es: La réplica de la base de origen, lista para consultarse.
+      en: The replica of the source database, ready to be queried.
+    experto:
+      es: Réplica en OneLake en tablas Delta, con su propio punto de conexión de análisis SQL; cada unidad de capacidad comprada incluye un terabyte gratis de almacenamiento para réplicas.
+      en: Replica in OneLake as Delta tables, with its own SQL analytics endpoint; each capacity unit purchased includes one free terabyte of mirroring storage.
+    por_que_importa:
+      es: Superado el terabyte gratis por unidad de capacidad, o con la capacidad en pausa, el almacenamiento de la réplica se paga.
+      en: Beyond the free terabyte per capacity unit, or while the capacity is paused, the replica's storage is paid for.
+    madurez: disponible-general
+    fuentes:
+      - url: https://learn.microsoft.com/en-us/fabric/mirroring/overview
+        titulo:
+          es: Espejado en Microsoft Fabric (Microsoft Learn)
+          en: Mirroring - Microsoft Fabric | Microsoft Learn
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://azure.microsoft.com/en-us/blog/microsoft-databases-and-microsoft-fabric-your-unified-and-ai-powered-data-estate/
+        titulo:
+          es: Bases de datos de Microsoft y Microsoft Fabric (blog de Microsoft Azure, 18 de noviembre de 2025)
+          en: "Microsoft Databases and Microsoft Fabric: Your unified and AI-powered data estate | Microsoft Azure Blog"
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: onelake
+    banda_id: almacenamiento
+    tipo_id: cap-almacenamiento
+    bloque_id: almacen
+    orden: 2
+    nombre:
+      es: OneLake
+      en: OneLake
+    lider:
+      es: "El almacenamiento único de la organización: todas las herramientas guardan y leen ahí, en formatos abiertos."
+      en: "The organisation's single store: every tool stores and reads there, in open formats."
+    experto:
+      es: Almacenamiento lógico único por inquilino, construido sobre Azure Data Lake Storage; guarda las tablas en Delta Parquet o Iceberg y no requiere infraestructura propia.
+      en: One logical store per tenant, built on Azure Data Lake Storage; it keeps tables in Delta Parquet or Iceberg and needs no infrastructure of its own.
+    por_que_importa:
+      es: Al guardar en formatos abiertos, los datos no quedan atados a un formato propietario.
+      en: Because it stores open formats, the data is not locked into a proprietary format.
+    terminos:
+      es:
+        inquilino: La cuenta de la organización en la nube de Microsoft, que agrupa a todos sus usuarios y recursos.
+      en:
+        tenant: The organisation's account in Microsoft's cloud, grouping all its users and resources.
+    madurez: disponible-general
+    fuentes:
+      - url: https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview
+        titulo:
+          es: OneLake, el data lake unificado (Microsoft Learn)
+          en: OneLake, the unified data lake - Microsoft Fabric | Microsoft Learn
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/
+        titulo:
+          es: Anuncio de disponibilidad general de Microsoft Fabric (blog de Microsoft Fabric, 15 de noviembre de 2023)
+          en: Prepare your data for AI innovation with Microsoft Fabric, now generally available | Microsoft Fabric Blog
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: lakehouse
+    banda_id: almacenamiento
+    tipo_id: cap-almacenamiento
+    bloque_id: almacen
+    orden: 3
+    nombre:
+      es: Lakehouse
+      en: Lakehouse
+    lider:
+      es: Guarda en un mismo lugar tablas y archivos de cualquier tipo, listos para prepararse y consultarse.
+      en: Keeps tables and files of any kind in one place, ready to be prepared and queried.
+    experto:
+      es: "Une la escala de un data lake con las consultas de un almacén de datos: guarda datos estructurados y no estructurados en tablas Delta que se analizan con Apache Spark y con SQL."
+      en: "Joins a data lake's scale with a data warehouse's querying: it keeps structured and unstructured data in Delta tables that are analysed with Apache Spark and with SQL."
+    por_que_importa:
+      es: Elegir entre lakehouse y almacén de datos depende de las herramientas del equipo, los tipos de datos y el patrón de uso.
+      en: Choosing between a lakehouse and a data warehouse depends on the team's tools, the data types and the workload pattern.
+    terminos:
+      es:
+        lakehouse: Almacén que une la escala de un data lake con las consultas de un almacén de datos.
+      en:
+        lakehouse: A store that joins a data lake's scale with a data warehouse's querying.
+    madurez: disponible-general
+    fuentes:
+      - url: https://learn.microsoft.com/en-us/fabric/data-engineering/lakehouse-overview
+        titulo:
+          es: Qué es un lakehouse (Microsoft Learn)
+          en: What is a lakehouse? - Microsoft Fabric | Microsoft Learn
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/
+        titulo:
+          es: Anuncio de disponibilidad general de Microsoft Fabric (blog de Microsoft Fabric, 15 de noviembre de 2023)
+          en: Prepare your data for AI innovation with Microsoft Fabric, now generally available | Microsoft Fabric Blog
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: warehouse
+    banda_id: almacenamiento
+    tipo_id: cap-almacenamiento
+    bloque_id: almacen
+    orden: 4
+    nombre:
+      es: Almacén de datos (Warehouse)
+      en: Data warehouse
+    lider:
+      es: Una base para análisis donde los cambios que tocan varias tablas se aplican completos o no se aplican.
+      en: An analytics database where changes touching several tables are applied in full or not at all.
+    experto:
+      es: Almacén relacional a escala empresarial sobre el lago, con transacciones ACID completas que abarcan varias tablas.
+      en: Enterprise-scale relational warehouse on the lake, with full ACID transactions spanning several tables.
+    por_que_importa:
+      es: Una carga que toca varias tablas queda completa o no queda, sin dejar datos a medias.
+      en: A load that touches several tables either completes or does not happen, never leaving data half-written.
+    terminos:
+      es:
+        ACID: Garantías de que una transacción se aplica completa o no se aplica, sin dejar datos a medias.
+      en:
+        ACID: Guarantees that a transaction is applied in full or not at all, never half-done.
+    madurez: disponible-general
+    fuentes:
+      - url: https://learn.microsoft.com/en-us/fabric/data-warehouse/data-warehousing
+        titulo:
+          es: Qué es Fabric Data Warehouse (Microsoft Learn)
+          en: What Is Fabric Data Warehouse? - Microsoft Fabric | Microsoft Learn
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/
+        titulo:
+          es: Anuncio de disponibilidad general de Microsoft Fabric (blog de Microsoft Fabric, 15 de noviembre de 2023)
+          en: Prepare your data for AI innovation with Microsoft Fabric, now generally available | Microsoft Fabric Blog
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: notebooks-spark
+    banda_id: procesamiento
+    tipo_id: cap-transformacion
+    bloque_id: preparacion
+    orden: 1
+    nombre:
+      es: Cuadernos y Apache Spark
+      en: Notebooks and Apache Spark
+    lider:
+      es: Donde los ingenieros escriben el código que limpia y transforma grandes volúmenes de datos.
+      en: Where engineers write the code that cleans and transforms large volumes of data.
+    experto:
+      es: Motor Apache Spark con cuadernos en Python, R o Scala para ingerir, preparar y transformar grandes volúmenes, y herramientas para programar esos trabajos.
+      en: Apache Spark engine with notebooks in Python, R or Scala to ingest, prepare and transform large datasets, plus tools to schedule those jobs.
+    por_que_importa:
+      es: "Aquí se decide cómo se corrigen los datos: un error en este paso llega a todo lo que se construye encima."
+      en: "This is where data corrections are decided: an error at this step reaches everything built on top of it."
+    madurez: disponible-general
+    fuentes:
+      - url: https://learn.microsoft.com/en-us/fabric/fundamentals/microsoft-fabric-overview
+        titulo:
+          es: Qué es Microsoft Fabric (Microsoft Learn)
+          en: What is Microsoft Fabric - Microsoft Fabric | Microsoft Learn
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://learn.microsoft.com/en-us/fabric/data-engineering/data-engineering-overview
+        titulo:
+          es: Qué es Fabric Data Engineering (Microsoft Learn)
+          en: What is Fabric Data Engineering? - Microsoft Fabric | Microsoft Learn
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/
+        titulo:
+          es: Anuncio de disponibilidad general de Microsoft Fabric (blog de Microsoft Fabric, 15 de noviembre de 2023)
+          en: Prepare your data for AI innovation with Microsoft Fabric, now generally available | Microsoft Fabric Blog
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: dataflow-gen2
+    banda_id: procesamiento
+    tipo_id: cap-transformacion
+    bloque_id: preparacion
+    orden: 2
+    nombre:
+      es: Flujos de datos (Dataflow Gen2)
+      en: Dataflow Gen2
+    lider:
+      es: Prepara y transforma datos con una interfaz visual, sin escribir código.
+      en: Prepares and transforms data through a visual interface, without writing code.
+    experto:
+      es: "Herramienta de bajo código construida sobre Power Query: se conecta a cientos de orígenes, aplica más de 300 transformaciones y carga el resultado en varios destinos."
+      en: "Low-code tool built on Power Query: it connects to hundreds of sources, applies more than 300 transformations and loads the result into several destinations."
+    por_que_importa:
+      es: Permite preparar datos a quien no programa; conviene decidir qué lógica vive aquí y cuál en código, para no duplicarla.
+      en: It lets people who do not code prepare data; it pays to decide which logic lives here and which in code, so it is not duplicated.
+    madurez: disponible-general
+    fuentes:
+      - url: https://learn.microsoft.com/en-us/fabric/data-factory/dataflows-gen2-overview
+        titulo:
+          es: Diferencias entre Dataflow Gen1 y Dataflow Gen2 (Microsoft Learn)
+          en: Differences between Dataflow Gen1 and Dataflow Gen2 - Microsoft Fabric | Microsoft Learn
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/
+        titulo:
+          es: Anuncio de disponibilidad general de Microsoft Fabric (blog de Microsoft Fabric, 15 de noviembre de 2023)
+          en: Prepare your data for AI innovation with Microsoft Fabric, now generally available | Microsoft Fabric Blog
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: modelo-semantico
+    banda_id: consumo
+    tipo_id: cap-consumo
+    bloque_id: consumo-bi
+    orden: 1
+    nombre:
+      es: Modelo semántico en Direct Lake
+      en: Direct Lake semantic model
+    lider:
+      es: Carga en memoria los datos del lago para los informes, sin mantener una copia aparte.
+      en: Loads data from the lake into memory for reports, without keeping a separate copy.
+    experto:
+      es: Modo de almacenamiento de los modelos semánticos de Power BI que carga en memoria tablas Delta de OneLake; a diferencia del modo de importación, su actualización copia solo metadatos.
+      en: Power BI semantic model storage mode that loads Delta tables from OneLake into memory; unlike Import mode, its refresh copies only metadata.
+    por_que_importa:
+      es: Evita recargas completas de datos, pero tiene límites que dependen del tamaño de la capacidad.
+      en: It avoids full data reloads, but it has limits that depend on the size of the capacity.
+    madurez: disponible-general
+    fuentes:
+      - url: https://learn.microsoft.com/en-us/fabric/fundamentals/direct-lake-overview
+        titulo:
+          es: Introducción a Direct Lake (Microsoft Learn)
+          en: Direct Lake overview - Microsoft Fabric | Microsoft Learn
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/
+        titulo:
+          es: Anuncio de disponibilidad general de Microsoft Fabric (blog de Microsoft Fabric, 15 de noviembre de 2023)
+          en: Prepare your data for AI innovation with Microsoft Fabric, now generally available | Microsoft Fabric Blog
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: informe-power-bi
+    banda_id: consumo
+    tipo_id: cap-consumo
+    bloque_id: consumo-bi
+    orden: 2
+    nombre:
+      es: Informes de Power BI
+      en: Power BI reports
+    lider:
+      es: Los tableros e informes interactivos donde la dirección consulta los indicadores.
+      en: The interactive dashboards and reports where management checks the indicators.
+    experto:
+      es: Informes y tableros interactivos que se comparten en la organización; sus visuales consultan el modelo semántico con DAX cuando alguien los usa.
+      en: Interactive reports and dashboards shared across the organisation; their visuals query the semantic model with DAX when someone uses them.
+    por_que_importa:
+      es: Es donde se toman decisiones; si el dato llega tarde o mal, se decide con información equivocada.
+      en: This is where decisions are made; if the data arrives late or wrong, decisions rest on the wrong information.
+    terminos:
+      es:
+        DAX: El lenguaje de fórmulas y consultas de los modelos semánticos de Power BI.
+      en:
+        DAX: The formula and query language of Power BI semantic models.
+    madurez: disponible-general
+    fuentes:
+      - url: https://learn.microsoft.com/en-us/fabric/fundamentals/microsoft-fabric-overview
+        titulo:
+          es: Qué es Microsoft Fabric (Microsoft Learn)
+          en: What is Microsoft Fabric - Microsoft Fabric | Microsoft Learn
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/
+        titulo:
+          es: Anuncio de disponibilidad general de Microsoft Fabric (blog de Microsoft Fabric, 15 de noviembre de 2023)
+          en: Prepare your data for AI innovation with Microsoft Fabric, now generally available | Microsoft Fabric Blog
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: agente-datos
+    banda_id: ia
+    tipo_id: cap-ia
+    bloque_id: agentes
+    orden: 1
+    nombre:
+      es: Agente de datos de Fabric
+      en: Fabric data agent
+    lider:
+      es: Responde preguntas en lenguaje natural sobre los datos, con los mismos permisos de quien pregunta.
+      en: Answers plain-language questions about the data, with the same permissions as the person asking.
+    experto:
+      es: Agente que convierte preguntas en consultas de solo lectura sobre las fuentes elegidas, por ejemplo tablas de un lakehouse, con las credenciales de quien pregunta; cada respuesta trae como máximo 25 filas y 25 columnas.
+      en: Agent that turns questions into read-only queries over the chosen sources, lakehouse tables for example, using the asker's credentials; each answer returns at most 25 rows and 25 columns.
+    por_que_importa:
+      es: "Por ahora solo admite inglés: un equipo que pregunta en español debe probarlo antes de contar con él."
+      en: "For now it only supports English: a team that asks in Spanish should test it before relying on it."
+    madurez: disponible-general
+    fuentes:
+      - url: https://learn.microsoft.com/en-us/fabric/data-science/concept-data-agent
+        titulo:
+          es: Creación del agente de datos de Fabric (Microsoft Learn)
+          en: Fabric data agent creation - Microsoft Fabric | Microsoft Learn
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: seguridad-onelake
+    banda_id: gobierno
+    tipo_id: cap-gobierno
+    bloque_id: gobierno
+    orden: 1
+    nombre:
+      es: Seguridad de OneLake
+      en: OneLake security
+    lider:
+      es: Define quién ve qué datos, hasta el nivel de fila y columna, y lo hace cumplir en todas las herramientas.
+      en: Defines who sees which data, down to row and column, and enforces it in every tool.
+    experto:
+      es: Roles definidos sobre un elemento que conceden acceso a carpetas, tablas, esquemas, filas y columnas, y que todos los motores de Fabric aplican por igual.
+      en: Roles defined on an item that grant access to folders, tables, schemas, rows and columns, enforced alike by every Fabric engine.
+    por_que_importa:
+      es: "Los roles solo limitan a quienes leen: administradores, miembros y colaboradores del espacio de trabajo ven todos los datos."
+      en: "Roles only restrict readers: workspace admins, members and contributors see all the data."
+    madurez: disponible-general
+    fuentes:
+      - url: https://learn.microsoft.com/en-us/fabric/onelake/security/get-started-security
+        titulo:
+          es: Introducción a la seguridad de los datos en OneLake (Microsoft Learn)
+          en: Data security overview - Microsoft Fabric | Microsoft Learn
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://azure.microsoft.com/en-us/blog/fabcon-and-sqlcon-2026-unifying-databases-and-fabric-on-a-single-data-platform/
+        titulo:
+          es: Anuncios de FabCon y SQLCon 2026 (blog de Microsoft Azure, 18 de marzo de 2026)
+          en: "FabCon and SQLCon 2026: Unifying databases and Fabric on a single data platform | Microsoft Azure Blog"
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: etiquetas-confidencialidad
+    banda_id: gobierno
+    tipo_id: cap-gobierno
+    bloque_id: gobierno
+    orden: 2
+    nombre:
+      es: Etiquetas de confidencialidad
+      en: Sensitivity labels
+    lider:
+      es: Marca qué datos son sensibles; en algunas exportaciones, como a Excel, la marca y su protección viajan con ellos.
+      en: Marks which data is sensitive; in some exports, such as to Excel, the mark and its protection travel with the data.
+    experto:
+      es: Etiquetas y políticas de Microsoft Purview Information Protection sobre los elementos de Fabric; con una política de publicación, la etiqueta y su control de acceso siguen a los datos al exportarlos a Excel, PDF o PowerPoint.
+      en: Microsoft Purview Information Protection labels and policies on Fabric items; with a publishing policy, the label and its access control follow the data when it is exported to Excel, PDF or PowerPoint.
+    por_que_importa:
+      es: "Una etiqueta que no se aplica no protege nada: hay que decidir quién etiqueta y cómo se vigila la cobertura."
+      en: "A label nobody applies protects nothing: someone has to decide who labels and how coverage is monitored."
+    madurez: disponible-general
+    fuentes:
+      - url: https://learn.microsoft.com/en-us/fabric/governance/information-protection
+        titulo:
+          es: Protección de la información en Fabric (Microsoft Learn)
+          en: Information protection in Fabric - Microsoft Fabric | Microsoft Learn
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/
+        titulo:
+          es: Anuncio de disponibilidad general de Microsoft Fabric (blog de Microsoft Fabric, 15 de noviembre de 2023)
+          en: Prepare your data for AI innovation with Microsoft Fabric, now generally available | Microsoft Fabric Blog
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: capacidad
+    banda_id: operacion
+    tipo_id: tipo-operacion
+    orden: 1
+    nombre:
+      es: Capacidad de Fabric (SKU F)
+      en: Fabric capacity (F SKU)
+    lider:
+      es: El conjunto de recursos que pagan y comparten todas las herramientas de la plataforma.
+      en: The pool of resources that every tool on the platform pays for and shares.
+    experto:
+      es: Grupo de recursos cuyo tamaño fija la potencia de cómputo; las capacidades F se compran en Azure con cobro por segundo sin compromiso, o con reserva anual para ahorrar.
+      en: Resource pool whose size sets the compute power; F capacities are bought through Azure, billed per second with no commitment, or with a yearly reservation to save costs.
+    por_que_importa:
+      es: "Todas las cargas de trabajo comparten el mismo grupo: su tamaño fija el costo y el techo de lo que puede ejecutarse a la vez."
+      en: "Every workload shares the same pool: its size sets the cost and the ceiling on what can run at once."
+    madurez: disponible-general
+    fuentes:
+      - url: https://learn.microsoft.com/en-us/fabric/enterprise/licenses
+        titulo:
+          es: Licencias y capacidad de Microsoft Fabric (Microsoft Learn)
+          en: Understand Microsoft Fabric licenses and capacity - Microsoft Fabric | Microsoft Learn
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/
+        titulo:
+          es: Anuncio de disponibilidad general de Microsoft Fabric (blog de Microsoft Fabric, 15 de noviembre de 2023)
+          en: Prepare your data for AI innovation with Microsoft Fabric, now generally available | Microsoft Fabric Blog
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: app-metricas
+    banda_id: operacion
+    tipo_id: tipo-operacion
+    orden: 2
+    nombre:
+      es: App de métricas de capacidad
+      en: Capacity Metrics app
+    lider:
+      es: Muestra cuánto de la capacidad se está usando, para decidir cómo aprovecharla.
+      en: Shows how much of the capacity is in use, to decide how to make the most of it.
+    experto:
+      es: App para vigilar el consumo de las capacidades de Fabric; los datos de uso llegan de 10 a 15 minutos después de cada actividad.
+      en: App for monitoring the consumption of Fabric capacities; usage data arrives 10 to 15 minutes after each activity.
+    por_que_importa:
+      es: "No envía alertas: para avisos sobre la salud de la capacidad hay que usar los eventos de capacidad de Fabric."
+      en: "It sends no alerts: notices about capacity health need Fabric's capacity events instead."
+    madurez: disponible-general
+    fuentes:
+      - url: https://learn.microsoft.com/en-us/fabric/enterprise/metrics-app
+        titulo:
+          es: Qué es la app de métricas de capacidad de Microsoft Fabric (Microsoft Learn)
+          en: What is the Microsoft Fabric Capacity Metrics app? - Microsoft Fabric | Microsoft Learn
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/
+        titulo:
+          es: Anuncio de disponibilidad general de Microsoft Fabric (blog de Microsoft Fabric, 15 de noviembre de 2023)
+          en: Prepare your data for AI innovation with Microsoft Fabric, now generally available | Microsoft Fabric Blog
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: canalizaciones
+    banda_id: orquestacion
+    tipo_id: cap-transformacion
+    orden: 1
+    nombre:
+      es: Canalizaciones de Data Factory
+      en: Data Factory pipelines
+    lider:
+      es: "Deciden qué pasos se ejecutan, en qué orden y cuándo: por horario o ante un evento."
+      en: "Decide which steps run, in what order and when: on a schedule or when an event occurs."
+    experto:
+      es: Encadenan actividades, de modo que cada una puede disparar la siguiente según termine bien o mal, y se ejecutan por horario o por disparadores de eventos.
+      en: They chain activities, so each one can trigger the next depending on whether it succeeds or fails, and they run on a schedule or through event triggers.
+    por_que_importa:
+      es: Si nadie coordina el orden, un paso puede leer datos que otro todavía no terminó de preparar.
+      en: If nobody coordinates the order, one step can read data another has not finished preparing.
+    madurez: disponible-general
+    fuentes:
+      - url: https://learn.microsoft.com/en-us/fabric/data-factory/pipeline-overview
+        titulo:
+          es: Introducción a las canalizaciones (Microsoft Learn)
+          en: Pipeline Overview - Microsoft Fabric | Microsoft Learn
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://learn.microsoft.com/en-us/fabric/fundamentals/microsoft-fabric-overview
+        titulo:
+          es: Qué es Microsoft Fabric (Microsoft Learn)
+          en: What is Microsoft Fabric - Microsoft Fabric | Microsoft Learn
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/
+        titulo:
+          es: Anuncio de disponibilidad general de Microsoft Fabric (blog de Microsoft Fabric, 15 de noviembre de 2023)
+          en: Prepare your data for AI innovation with Microsoft Fabric, now generally available | Microsoft Fabric Blog
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: airflow
+    banda_id: orquestacion
+    tipo_id: cap-transformacion
+    orden: 2
+    nombre:
+      es: Trabajos de Apache Airflow
+      en: Apache Airflow jobs
+    lider:
+      es: Organiza y ejecuta procesos escritos en Python como una secuencia de pasos con dependencias.
+      en: Organises and runs processes written in Python as a sequence of steps with dependencies.
+    experto:
+      es: Servicio gestionado de Apache Airflow en Data Factory para construir y ejecutar procesos en Python definidos como grafos acíclicos dirigidos (DAG); por ahora no admite redes privadas ni redes virtuales.
+      en: Managed Apache Airflow service in Data Factory to build and run Python processes defined as directed acyclic graphs (DAGs); private and virtual networks are not supported yet.
+    por_que_importa:
+      es: "Convive con las canalizaciones: hay que decidir cuál de las dos orquesta cada proceso para no duplicar horarios."
+      en: "It coexists with pipelines: someone has to decide which one orchestrates each process so schedules are not duplicated."
+    terminos:
+      es:
+        DAG: "Grafo acíclico dirigido: pasos con dependencias que nunca vuelven sobre sí mismos."
+      en:
+        DAG: "Directed acyclic graph: steps with dependencies that never loop back on themselves."
+    madurez: disponible-general
+    fuentes:
+      - url: https://learn.microsoft.com/en-us/fabric/data-factory/apache-airflow-jobs-concepts
+        titulo:
+          es: Qué es un trabajo de Apache Airflow (Microsoft Learn)
+          en: What is an Apache Airflow job? - Microsoft Fabric | Microsoft Learn
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://www.microsoft.com/en-us/microsoft-fabric/blog/2025/03/31/fabcon-2025-fueling-tomorrows-ai-with-new-agentic-capabilities-and-security-innovations-in-fabric/
+        titulo:
+          es: Anuncios de FabCon 2025 (blog de Microsoft Fabric, 31 de marzo de 2025)
+          en: "FabCon 2025: Fueling tomorrow's AI with new agentic capabilities and security innovations in Fabric | Microsoft Fabric Blog"
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+flujos:
+  - id: f-origen-espejo
+    origen: bases-operacionales
+    destino: espejo
+    modo_id: continuo
+    que_viaja:
+      es: Cambios de las tablas
+      en: Table changes
+    lider:
+      es: Cada cambio en la base de origen viaja a la plataforma casi al instante.
+      en: Every change in the source database travels to the platform almost instantly.
+  - id: f-espejo-replica
+    origen: espejo
+    destino: base-espejada
+    modo_id: continuo
+    que_viaja:
+      es: Datos replicados en tablas Delta
+      en: Replicated data as Delta tables
+    lider:
+      es: La réplica se mantiene al día sin intervención.
+      en: The replica keeps itself up to date with no manual work.
+  - id: f-origen-copia
+    origen: bases-operacionales
+    destino: trabajo-copia
+    modo_id: por-lotes
+    que_viaja:
+      es: Tablas completas, o solo filas nuevas y cambiadas
+      en: Whole tables, or only new and changed rows
+    lider:
+      es: Una copia programada trae todo la primera vez y después solo lo nuevo.
+      en: A scheduled copy brings everything the first time and then only what is new.
+  - id: f-copia-lakehouse
+    origen: trabajo-copia
+    destino: lakehouse
+    modo_id: por-lotes
+    que_viaja:
+      es: Tablas copiadas
+      en: Copied tables
+    lider:
+      es: Lo copiado queda guardado en tablas listas para prepararse.
+      en: What is copied is stored in tables ready to be prepared.
+  - id: f-externo-onelake
+    origen: almacenamiento-externo
+    destino: onelake
+    modo_id: sin-copia
+    que_viaja:
+      es: Referencias a archivos externos
+      en: References to external files
+    lider:
+      es: OneLake apunta a los archivos donde están, sin copiarlos.
+      en: OneLake points to the files where they are, without copying them.
+  - id: f-onelake-spark
+    origen: onelake
+    destino: notebooks-spark
+    modo_id: sin-copia
+    que_viaja:
+      es: Tablas leídas en su lugar
+      en: Tables read in place
+    lider:
+      es: El código de los ingenieros lee las tablas directamente, sin exportarlas.
+      en: The engineers' code reads the tables directly, without exporting them.
+  - id: f-replica-spark
+    origen: base-espejada
+    destino: notebooks-spark
+    modo_id: por-lotes
+    que_viaja:
+      es: Datos replicados
+      en: Replicated data
+    lider:
+      es: La réplica es el punto de partida para limpiar y combinar los datos.
+      en: The replica is the starting point for cleaning and combining the data.
+  - id: f-spark-lakehouse
+    origen: notebooks-spark
+    destino: lakehouse
+    modo_id: por-lotes
+    que_viaja:
+      es: Tablas limpias
+      en: Clean tables
+    lider:
+      es: Lo limpio se guarda en tablas listas para usarse.
+      en: What is clean is stored in tables ready to use.
+  - id: f-lakehouse-dataflow
+    origen: lakehouse
+    destino: dataflow-gen2
+    modo_id: por-lotes
+    que_viaja:
+      es: Tablas preparadas
+      en: Prepared tables
+    lider:
+      es: Los flujos de datos toman tablas ya guardadas para darles otra forma.
+      en: Dataflows take stored tables to reshape them.
+  - id: f-dataflow-warehouse
+    origen: dataflow-gen2
+    destino: warehouse
+    modo_id: por-lotes
+    que_viaja:
+      es: Datos depurados
+      en: Curated data
+    lider:
+      es: El resultado se carga en la base para análisis.
+      en: The result is loaded into the analytics database.
+  - id: f-lakehouse-modelo
+    origen: lakehouse
+    destino: modelo-semantico
+    modo_id: sin-copia
+    que_viaja:
+      es: Tablas del lakehouse
+      en: Lakehouse tables
+    lider:
+      es: El modelo lee las tablas en su lugar, sin copiarlas.
+      en: The model reads the tables in place, without copying them.
+  - id: f-warehouse-modelo
+    origen: warehouse
+    destino: modelo-semantico
+    modo_id: sin-copia
+    que_viaja:
+      es: Tablas del almacén de datos
+      en: Data warehouse tables
+    lider:
+      es: El modelo también puede leer las tablas de la base para análisis sin copiarlas.
+      en: The model can also read the analytics database's tables without copying them.
+  - id: f-modelo-informe
+    origen: modelo-semantico
+    destino: informe-power-bi
+    modo_id: a-demanda
+    que_viaja:
+      es: Consultas de indicadores
+      en: Indicator queries
+    lider:
+      es: El informe pide los indicadores cuando alguien lo usa.
+      en: The report asks for the indicators when someone uses it.
+  - id: f-lakehouse-agente
+    origen: lakehouse
+    destino: agente-datos
+    modo_id: a-demanda
+    que_viaja:
+      es: Contexto para responder
+      en: Context to answer
+    lider:
+      es: El agente consulta las tablas elegidas para responder.
+      en: The agent queries the chosen tables to answer.
+  - id: f-canalizacion-spark
+    origen: canalizaciones
+    destino: notebooks-spark
+    modo_id: a-demanda
+    que_viaja:
+      es: Orden de ejecución
+      en: Run order
+    lider:
+      es: Da la orden de ejecutar el código de los ingenieros.
+      en: It gives the order to run the engineers' code.
+  - id: f-canalizacion-dataflow
+    origen: canalizaciones
+    destino: dataflow-gen2
+    modo_id: a-demanda
+    que_viaja:
+      es: Orden de ejecución
+      en: Run order
+    lider:
+      es: Da la orden de ejecutar un flujo de datos.
+      en: It gives the order to run a dataflow.
+  - id: f-canalizacion-copia
+    origen: canalizaciones
+    destino: trabajo-copia
+    modo_id: a-demanda
+    que_viaja:
+      es: Orden de ejecución
+      en: Run order
+    lider:
+      es: Puede lanzar un trabajo de copia como uno de sus pasos.
+      en: It can launch a copy job as one of its steps.
+  - id: f-seguridad-lakehouse
+    origen: seguridad-onelake
+    destino: lakehouse
+    modo_id: a-demanda
+    que_viaja:
+      es: Permisos por carpeta, tabla, fila y columna
+      en: Permissions by folder, table, row and column
+    lider:
+      es: Las reglas de acceso se aplican a cada tabla, fila y columna.
+      en: Access rules apply to each table, row and column.
+  - id: f-spark-metricas
+    origen: notebooks-spark
+    destino: app-metricas
+    modo_id: por-lotes
+    que_viaja:
+      es: Consumo de capacidad
+      en: Capacity usage
+    lider:
+      es: Lo que gasta cada ejecución aparece en la app de métricas minutos después.
+      en: What each run uses shows up in the metrics app a few minutes later.
+recorridos:
+  - id: registro-admision
+    titulo:
+      es: Un registro de admisión, de punta a punta
+      en: One admission record, end to end
+    pasos:
+      - id: p1
+        nodo_id: bases-operacionales
+        que_pasa:
+          es: Nace el registro
+          en: The record is born
+        lider:
+          es: Un paciente ficticio ingresa y queda registrado en el sistema de admisiones.
+          en: A fictional patient is admitted and recorded in the admissions system.
+        experto:
+          es: Inserción en una tabla de la base operacional de origen.
+          en: Insert into a table in the source operational database.
+      - id: p2
+        nodo_id: espejo
+        que_pasa:
+          es: Se replica
+          en: It is replicated
+        lider:
+          es: El espejado detecta el cambio y lo lleva a la plataforma.
+          en: Mirroring picks up the change and carries it to the platform.
+        experto:
+          es: La replicación continua lleva el cambio a la réplica en OneLake, en tablas Delta.
+          en: Continuous replication carries the change to the replica in OneLake, as Delta tables.
+      - id: p3
+        nodo_id: base-espejada
+        que_pasa:
+          es: Queda en la réplica
+          en: Lands in the replica
+        lider:
+          es: El registro ya se puede consultar en la plataforma.
+          en: The record can now be queried in the platform.
+        experto:
+          es: Fila en una tabla Delta de la base espejada, visible también desde su punto de conexión de análisis SQL.
+          en: Row in a Delta table of the mirrored database, also visible through its SQL analytics endpoint.
+      - id: p4
+        nodo_id: notebooks-spark
+        que_pasa:
+          es: Se limpia y combina
+          en: Cleaned and combined
+        lider:
+          es: Se corrigen formatos y se une con otros datos del paciente.
+          en: Formats are corrected and it is joined with the patient's other data.
+        experto:
+          es: Un cuaderno de Spark lee la réplica, aplica las transformaciones y escribe el resultado.
+          en: A Spark notebook reads the replica, applies the transformations and writes the result.
+      - id: p5
+        nodo_id: lakehouse
+        bifurca: paralela
+        que_pasa:
+          es: Queda listo para usarse
+          en: Ready to be used
+        lider:
+          es: El registro limpio queda disponible para informes y agentes.
+          en: The clean record is available to reports and agents.
+        experto:
+          es: Escritura en una tabla Delta del lakehouse, que se puede consultar con Spark y con SQL.
+          en: Write to a Delta table in the lakehouse, which can be queried with Spark and with SQL.
+      - id: p6
+        nodo_id: modelo-semantico
+        sigue_de: p5
+        que_pasa:
+          es: Se vuelve indicador
+          en: Becomes an indicator
+        lider:
+          es: Cuenta dentro del indicador de admisiones del día.
+          en: It counts inside the day's admissions indicator.
+        experto:
+          es: Direct Lake carga la tabla en memoria sin copiarla; la actualización solo copia metadatos.
+          en: Direct Lake loads the table into memory without copying it; the refresh only copies metadata.
+      - id: p7
+        nodo_id: informe-power-bi
+        sigue_de: p6
+        que_pasa:
+          es: Aparece en el informe
+          en: Shows in the report
+        lider:
+          es: La dirección ve la ocupación actualizada.
+          en: Management sees the updated occupancy.
+        experto:
+          es: Los visuales del informe envían consultas DAX al modelo semántico.
+          en: The report's visuals send DAX queries to the semantic model.
+      - id: p8
+        nodo_id: agente-datos
+        sigue_de: p5
+        que_pasa:
+          es: Sirve de contexto a un agente
+          en: Serves as context for an agent
+        lider:
+          es: Un agente puede responder cuántos ingresos hubo hoy, a quien tenga permiso de verlo.
+          en: An agent can answer how many admissions there were today, to anyone allowed to see it.
+        experto:
+          es: El agente genera una consulta de solo lectura sobre la tabla elegida, con las credenciales de quien pregunta; por ahora solo en inglés.
+          en: The agent generates a read-only query over the chosen table with the asker's credentials; English only for now.
+glosario:
+  es:
+    OneLake: El data lake único que Microsoft Fabric incluye para toda la organización.
+    data lake: Almacenamiento que guarda grandes volúmenes de datos de cualquier tipo, en su formato original y a bajo costo.
+    lakehouse: Almacén que une la escala de un data lake con las consultas de un almacén de datos.
+    réplica: Copia de una base de datos que se mantiene sincronizada con el original.
+  en:
+    OneLake: The single data lake Microsoft Fabric includes for the whole organisation.
+    data lake: Storage that keeps large volumes of data of any kind, in its original format and at low cost.
+    lakehouse: A store that joins a data lake's scale with a data warehouse's querying.
+    replica: A copy of a database that is kept in sync with the original.

@@ -1,4 +1,4 @@
-// `toBlockCards(map, grammar, group, { language, textos, fechaConsulta? })` (enmienda del piloto, D-S1-53): las
+// `toBlockCards(map, grammar, group, { language, texts, queryDate? })` (enmienda del piloto, D-S1-53): las
 // tarjetas de texto de los componentes de un grupo del nivel 1 (un bloque o «_<banda>»), en HTML, sobre un mapa
 // YA VALIDADO. Una tarjeta por componente: su tipo (glifo + código + nombre), su nombre, su madurez (medidor +
 // nombre, D6), su frase de líder, su vigencia si no está vigente (§ 4.8) y TODAS sus conexiones —las que salen
@@ -16,16 +16,16 @@ import { ordenarPor } from "../util/orden";
 
 export interface OpcionesTarjetas {
   language: string;
-  textos: Record<string, TextosMotor>;
+  texts: Record<string, TextosMotor>;
   /** Fecha de consulta (AAAA-MM-DD): con ella, cada tarjeta por revisar o vencida dice sus días. */
-  fechaConsulta?: string;
+  queryDate?: string;
   /** Id del contenedor: el SVG de la vista «bloque» lo enlaza como su versión en texto (G10, `textId`). */
   id?: string;
 }
 
 export function toBlockCards(map: Mapa, grammar: Gramatica, group: string, opciones: OpcionesTarjetas): string {
   const l = opciones.language;
-  const t = idiomaPedido("toBlockCards", grammar, l, opciones.textos);
+  const t = idiomaPedido("toBlockCards", grammar, l, opciones.texts);
   const e = escapar;
   const nodo = new Map(map.nodos.map((n) => [n.id, n]));
   const modo = new Map(grammar.modos_de_flujo.map((m) => [m.id, m]));
@@ -41,7 +41,7 @@ export function toBlockCards(map: Mapa, grammar: Gramatica, group: string, opcio
       ...flujos.filter((f) => f.origen === n.id).map((f) => conexion(f.id, t.hacia, f.destino, f.modo_id, f.que_viaja[l]!)),
       ...flujos.filter((f) => f.destino === n.id).map((f) => conexion(f.id, t.desde, f.origen, f.modo_id, f.que_viaja[l]!)),
     ];
-    const frase = fraseVigencia(grammar, t, n.fecha_verificacion, opciones.fechaConsulta);
+    const frase = fraseVigencia(grammar, t, n.fecha_verificacion, opciones.queryDate);
     const vigencia = frase ? `<p class="dg-tarjeta-vigencia"><b>${e(frase)}</b></p>` : "";
     return (
       `<article class="dg-tarjeta" data-nodo="${e(n.id)}">` +

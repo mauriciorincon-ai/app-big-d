@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { CONTRATO_VERSION } from "diagramador";
 import { describe, expect, it } from "vitest";
 import { FUENTES_MAQUETA, PAQUETE, huellasDeLaCopia, leerLock, sha256, versionDelContrato } from "../../scripts/contrato/huellas.mjs";
 
@@ -11,9 +12,9 @@ describe("CONTRATO.lock", () => {
   const { version, huellas } = leerLock() as { version: string; huellas: Map<string, string> };
   const copia = huellasDeLaCopia() as [string, string][];
 
-  it("declara la versión del CONTRATO.md copiado", () => {
+  it("declara la versión del CONTRATO.md copiado, que es la que implementa el paquete", () => {
     expect(version).toBe(versionDelContrato());
-    expect(version).toBe("0.3.0");
+    expect(version).toBe(CONTRATO_VERSION);
   });
 
   it("cubre exactamente los archivos de la copia", () => {

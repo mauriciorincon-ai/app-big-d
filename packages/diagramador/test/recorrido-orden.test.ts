@@ -2,13 +2,13 @@
 // A-5 de la auditoría del S1: un paso del recorrido que se sigue a sí mismo, o que sigue a uno que está
 // DESPUÉS en la lista, validaba bien. Con el primero, `layout(…, "recorrido")` y `toText` se quedaban sin
 // memoria sin decir regla ni id (G14); con el segundo, la numeración salía con dos «1» y un 6b sin 6a.
-// Carnadas del piloto P2 y P3 (test/carnadas-piloto/): cada una da exactamente un V5, en su paso.
+// Carnadas del piloto P2 y P3 (carnadas/, contrato v0.4.0): cada una da exactamente un V5, en su paso.
 import { describe, expect, it } from "vitest";
 import { validate, type Mapa, type Recorrido } from "../src/index";
 import { numerarPasos } from "../src/layout/nivel2";
 import { COBERTURA, GRAMATICAS, leerJson } from "./lib/contrato";
 
-const carnada = (archivo: string) => leerJson<Mapa>(`test/carnadas-piloto/${archivo}`);
+const carnada = (archivo: string) => leerJson<Mapa>(`carnadas/${archivo}`);
 const CASOS = [
   ["P2-paso-que-se-sigue.mapa.json", "admision-paciente/px"],
   ["P3-paso-que-sigue-a-uno-posterior.mapa.json", "admision-paciente/p7"],

@@ -93,7 +93,10 @@ describe("validar una propuesta", () => {
     // Dibujo: un nombre de componente que no cabe en su ficha de franja (nivel 2 y recorrido: se dice una vez).
     const nombreLargo = mapaNorte();
     nombreLargo.nodos = nombreLargo.nodos.map((n) => (n.id === "catalogo-central" ? { ...n, nombre: { es: "Catálogo central de metadatos con linaje y clasificación", en: "Central catalog" } } : n));
-    expect(validarPropuesta(propuestaNorte(nombreLargo), G, RANGOS).fallas).toEqual(["dibujo · nivel-2 · ficha catalogo-central (es): 4 líneas; caben 2"]);
+    expect(validarPropuesta(propuestaNorte(nombreLargo), G, RANGOS).fallas).toEqual([
+      "dibujo · lado a lado desplegado · texto: nombre de catalogo-central (es): 4 líneas; caben 3",
+      "dibujo · nivel2 · texto: ficha catalogo-central (es): 4 líneas; caben 2",
+    ]);
 
     const corta = propuestaNorte();
     corta.afirmaciones[0]!.cita.texto = "corta";
@@ -139,6 +142,11 @@ describe("vocabulario vetado en lo que la propuesta publicaría", () => {
     const q = propuestaNorte();
     q.afirmaciones[0] = { ...q.afirmaciones[0]!, cita: { ...q.afirmaciones[0]!.cita, texto: "Esta página literal habla de un lago de datos y no la escribió Big-D." } };
     expect(validarPropuesta(q, G, RANGOS).fallas).toEqual([]);
+  });
+  it("una autoevaluación comercial del fabricante en un texto del mapa falla, aunque vaya atribuida (S2-AUD-07)", () => {
+    const m = mapaNorte();
+    m.nodos[0] = { ...m.nodos[0]!, experto: { es: m.nodos[0]!.experto.es, en: "The vendor describes it as its best price-performance option." } };
+    expect(validarPropuesta(propuestaNorte(m), G, RANGOS).fallas).toEqual(["vocabulario · mapa/nodos/0/experto/en · autoevaluación comercial del fabricante: el atlas no la repite"]);
   });
 });
 
@@ -248,7 +256,7 @@ describe("aprobar", () => {
     const b = JSON.stringify(q);
     const v = { ...verificacion(), propuesta_sha256: sha256(b) };
     expect(fallas(() => aprobar(entrada({ propuesta: q, propuestaSha256: sha256(b), verificacion: v })))).toEqual([
-      "dibujo · nivel-1 · nombre de almacen (es): la palabra «Almacenamiento» no cabe en 104 u",
+      "dibujo · nivel1 · texto: nombre de almacen (es): la palabra «Almacenamiento» no cabe en 104 u",
     ]);
   });
 

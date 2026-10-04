@@ -1,12 +1,12 @@
 # Kit de prueba · Test kit — Big-D
 
 Archivos para probar lo que la app no muestra sola. Los usa la guía de prueba (`docs/GUIA-DE-PRUEBA.html`,
-bloque F) y los vigila `tests/unit/kit-de-prueba.test.ts`: si el esquema, el contrato o el dibujo cambian, la prueba
+bloques F y J) y los vigila `tests/unit/kit-de-prueba.test.ts`: si el esquema, el contrato o el dibujo cambian, la prueba
 avisa antes de que el kit te falle. Todo es ficticio: la «Plataforma Norte» no existe y sus fuentes están en un
 dominio reservado que nunca resuelve (`ejemplo.invalid` en la propuesta de muestra, `example.org` en la base
 incompleta).
 
-*Files to test what the app does not show on its own. The test guide (block F) uses them and
+*Files to test what the app does not show on its own. The test guide (blocks F and J) uses them and
 `tests/unit/kit-de-prueba.test.ts` keeps them valid. Everything is fictional: “North Platform” does not exist and
 its sources live on reserved domains that never resolve (`ejemplo.invalid` in the sample proposal, `example.org`
 in the incomplete base).*
@@ -25,7 +25,7 @@ pnpm build && pnpm start
 ```
 
 Abre `http://localhost:3000/es/investigador/plataforma-norte`. Al terminar, **deja el proyecto como estaba** con
-el comando de la sección 4.
+el comando de la sección 5.
 
 No corras el comando de aprobación con esta muestra: escribiría un mapa aprobado de una plataforma que no existe.
 Si lo corres por error, borra también `data/mapas/plataforma-norte.mapa.yaml` y
@@ -33,7 +33,7 @@ Si lo corres por error, borra también `data/mapas/plataforma-norte.mapa.yaml` y
 
 *An already-checked researcher proposal, as `/investigar` would leave it, without running the AI: 28 claims,
 26 verified, 1 the code could not check and 1 rejected by the code. Copy it with the first command, build, open
-`/en/investigador/plataforma-norte`, and clean up with the command in section 4 when you are done. Do not run the
+`/en/investigador/plataforma-norte`, and clean up with the command in section 5 when you are done. Do not run the
 approval command with this sample.*
 
 ## 2. Base incompleta · Incomplete base (`base-incompleta/`)
@@ -49,33 +49,58 @@ pnpm build
 
 Resultado esperado: el build se detiene con
 `data/mapas/plataforma-norte.mapa.yaml · V3 · /nodos/9/fecha_verificacion · tablero · falta el campo «fecha_verificacion»`.
-Después, el comando de la sección 4.
+Después, el comando de la sección 5.
 
 *An approved map of the same fictional platform with one component missing its verification date. The build must
-stop and name the file, the rule, the field and the id. Clean up with the command in section 4.*
+stop and name the file, the rule, the field and the id. Clean up with the command in section 5.*
 
 ## 3. El mapa de ejemplo y las carnadas · The example map and the bait maps
 
 - `data/mapas/plataforma-ejemplo.mapa.yaml`: la Plataforma Ejemplo publicada en el atlas (generada del ejemplo del
   contrato; no se edita a mano). *The Example Platform shown in the atlas.*
 - `packages/diagramador/carnadas/`: 26 mapas y gramáticas con un defecto a propósito que el diagramador debe atrapar
-  (C01–C21 y GC1–GC5), cada uno con la regla que lo nombra, y 3 de aceptación (A1–A3) que deben pasar
-  (`esperado.json`: 31 casos, con los dos mapas reales); y `packages/diagramador/test/carnadas-piloto/`, las que
-  nacieron en este piloto (P1–P3). Corren solas en `pnpm test`. *26 deliberately broken maps and grammars the
-  diagramador must catch, with the rule that names each, plus 3 that must be accepted; they run in `pnpm test`.*
+  (C01–C21 y GC1–GC5), cada uno con la regla que lo nombra; 3 de aceptación (A1–A3) que deben pasar; y las 3 que
+  nacieron en este piloto (P1–P3). `esperado.json` declara los 34 casos, con los dos mapas del contrato. Corren solas
+  en `pnpm test`. *26 deliberately broken maps and grammars the diagramador must catch, with the rule that names each,
+  3 that must be accepted and the 3 born in this pilot; `esperado.json` lists the 34 cases, which run in `pnpm test`.*
 
-## 4. Al terminar · When you are done
+## 4. Versión anterior de muestra · Sample previous version (`versiones-de-muestra/`)
 
-Un solo comando deja el proyecto como estaba, uses la muestra, la base incompleta o las dos (sin error si alguna
-no estaba):
+Una versión anterior **inventada** de la Plataforma Ejemplo (v0.0.9), para ver en el producto las cuatro marcas de
+diferencia de la página «Versiones del mapa». Los datos reales solo traen «+ nuevo» (Fabric, de v0.2.0 a v0.3.0, y
+Databricks, de v0.1.0 a v0.2.0); entre la v0.1.0 y la v0.2.0 de Fabric no cambió el dibujo. Respecto de la versión publicada, la v0.0.9 llama «Conector JDBC» al conector de bases
+relacionales, tiene «Cuadernos interactivos», no tiene los filtros por fila y tiene el agente de datos en beta.
+
+Los tres mapas reales y sus versiones anteriores (Fabric v0.1.0 y v0.2.0, Databricks v0.1.0) viven en `data/`
+(`data/mapas/`, `data/mapas/versiones/`); el bloque J de la guía los usa. Esta muestra sintética existe para ver las
+cuatro marcas: los pares reales solo traen «+ nuevo».
 
 ```sh
-rm -rf data/plataformas/plataforma-norte.yaml data/mapas/plataforma-norte.mapa.yaml data/revisiones/plataforma-norte.jsonl propuestas/2026-09-27-plataforma-norte
+cp -R docs/kit-de-prueba/versiones-de-muestra/. .
+pnpm build && pnpm start
+```
+
+Abre `http://localhost:3000/es/atlas/plataforma-ejemplo/versiones`. Esperado: «De v0.0.9 a v0.1.0», con **«+ nuevo»**
+(Filtros por fila y enmascaramiento), **«− retirado»** (Cuadernos interactivos, en la fila de arriba), **«→
+renombrado»** (Conector de bases relacionales, antes «Conector JDBC») y **«madurez»** (Agente de preguntas sobre
+datos, de beta a vista previa pública), y la lista que explica las cuatro. Después, el comando de la sección 5.
+
+*An invented previous version of the Example Platform, to see the four difference marks on the “Map versions” page;
+the real data does not have them. Copy it, build, open `/en/atlas/plataforma-ejemplo/versiones`, and clean up with
+the command in section 5.*
+
+## 5. Al terminar · When you are done
+
+Un solo comando deja el proyecto como estaba, uses la muestra, la base incompleta, la versión anterior o varias (sin
+error si alguna no estaba):
+
+```sh
+rm -rf data/plataformas/plataforma-norte.yaml data/mapas/plataforma-norte.mapa.yaml data/revisiones/plataforma-norte.jsonl propuestas/2026-09-27-plataforma-norte data/mapas/versiones/plataforma-ejemplo-0.0.9.mapa.yaml
 ```
 
 *One command puts the project back as it was, whichever part you used.*
 
-## 5. Cómo se regenera la muestra · How the sample is rebuilt
+## 6. Cómo se regeneran las muestras · How the samples are rebuilt
 
 La propuesta de muestra no se edita a mano: sale de la misma muestra que usan las pruebas del investigador, con la
 verificación de citas hecha por el código real (páginas en disco, sin red, fecha fija). Si cambia el esquema o el
@@ -83,9 +108,11 @@ mapa de ejemplo:
 
 ```sh
 node scripts/kit-de-prueba/generar.mjs
+node scripts/kit-de-prueba/versiones.mjs
 ```
 
-`tests/unit/kit-de-prueba.test.ts` regenera en una carpeta temporal y compara byte a byte con lo que está aquí.
+El segundo regenera la versión anterior de muestra desde el mapa de ejemplo. `tests/unit/kit-de-prueba.test.ts`
+regenera las dos en una carpeta temporal y compara byte a byte con lo que está aquí.
 
 *The sample is generated, never hand-edited: `node scripts/kit-de-prueba/generar.mjs` rebuilds it, and the kit
 test checks that regenerating gives the same bytes.*

@@ -10,7 +10,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { layout, toSVG } from "../src/index";
 import { EJEMPLOS, GRAMATICAS } from "./lib/contrato";
-import { CASOS, FECHA, disponer } from "./lib/casos";
+import { CASOS, FECHA, SALIDAS_LADO, disponer } from "./lib/casos";
 import { TEXTOS } from "./lib/textos";
 
 const DIR = new URL("./golden/", import.meta.url);
@@ -38,9 +38,11 @@ export const SALIDAS: { archivo: string; svg: () => string }[] = [
     const g = GRAMATICAS[m.gramatica_id]!;
     return g.idiomas.map((idioma) => ({
       archivo: `${sujeto}.bloque-${grupo}.${idioma}.svg`,
-      svg: () => toSVG(layout(m, g, "bloque", { textos: TEXTOS, fechaConsulta: FECHA, grupo }), { language: idioma }),
+      svg: () => toSVG(layout(m, g, "bloque", { texts: TEXTOS, queryDate: FECHA, group: grupo }), { language: idioma }),
     }));
   }),
+  // El lado a lado (§ 4.4) y las diferencias dibujables (§ 4.7): `test/lib/lado.ts`.
+  ...SALIDAS_LADO.flatMap((s) => GRAMATICAS["plataformas-datos"]!.idiomas.map((idioma) => ({ archivo: `${s.archivo}.${idioma}.svg`, svg: () => s.svg(idioma) }))),
 ];
 const generar = (s: (typeof SALIDAS)[number]) => s.svg();
 
@@ -56,7 +58,7 @@ if (ACTUALIZAR) {
 
 describe("golden files del diagramador (G1)", () => {
   const sumas = existsSync(new URL("SHA256SUMS", DIR)) ? readFileSync(new URL("SHA256SUMS", DIR), "utf8") : "";
-  it(`son ${SALIDAS.length}: los 6 mapas del contrato × 3 vistas × sus idiomas, más A3 en el nivel 1 y dos bloques`, () => {
+  it(`son ${SALIDAS.length}: los 6 mapas del contrato × 3 vistas × sus idiomas, más A3 en el nivel 1, dos bloques y 7 lados a lado × 2 idiomas`, () => {
     expect(sumas.trim().split("\n")).toHaveLength(SALIDAS.length);
   });
   for (const s of SALIDAS)

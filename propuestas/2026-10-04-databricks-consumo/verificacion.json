@@ -1,0 +1,924 @@
+{
+  "version": 1,
+  "fecha": "2026-10-04",
+  "propuesta_sha256": "d156449675d48d7100dd5ea16921c27ee1a557f1e73d3381e00d12af62dc3ac6",
+  "resultados": [
+    {
+      "afirmacion": "A-1",
+      "url": "https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "13794ebf8b76751b2f08a267fad5da05faa91868334aa5baea4d21841dc8fe64"
+    },
+    {
+      "afirmacion": "A-2",
+      "url": "https://docs.databricks.com/aws/en/release-notes/product/2025/august",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "5c3a3e8772425d9b8f8b90f61fddf363d161a0aacaa5099d15df81e34035fcc6"
+    },
+    {
+      "afirmacion": "A-3",
+      "url": "https://docs.databricks.com/aws/en/query-federation/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "135afdb5ea4d1a578c6db728bb61f1ef4fb6390a0fe28e0cfdfef5f4bb881e47"
+    },
+    {
+      "afirmacion": "A-4",
+      "url": "https://docs.databricks.com/aws/en/query-federation/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "135afdb5ea4d1a578c6db728bb61f1ef4fb6390a0fe28e0cfdfef5f4bb881e47"
+    },
+    {
+      "afirmacion": "A-5",
+      "url": "https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "13794ebf8b76751b2f08a267fad5da05faa91868334aa5baea4d21841dc8fe64"
+    },
+    {
+      "afirmacion": "A-6",
+      "url": "https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "13794ebf8b76751b2f08a267fad5da05faa91868334aa5baea4d21841dc8fe64"
+    },
+    {
+      "afirmacion": "A-7",
+      "url": "https://docs.databricks.com/aws/en/release-notes/product/2025/august",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "5c3a3e8772425d9b8f8b90f61fddf363d161a0aacaa5099d15df81e34035fcc6"
+    },
+    {
+      "afirmacion": "A-8",
+      "url": "https://docs.databricks.com/aws/en/ingestion/cloud-object-storage/auto-loader/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "eda78724c04b3b6729fe15775fbb707da3f370892a43a0f8f8a05b861ea5a0bc"
+    },
+    {
+      "afirmacion": "A-9",
+      "url": "https://docs.databricks.com/aws/en/ingestion/cloud-object-storage/auto-loader/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "eda78724c04b3b6729fe15775fbb707da3f370892a43a0f8f8a05b861ea5a0bc"
+    },
+    {
+      "afirmacion": "A-10",
+      "url": "https://docs.databricks.com/aws/en/ingestion/cloud-object-storage/auto-loader/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "eda78724c04b3b6729fe15775fbb707da3f370892a43a0f8f8a05b861ea5a0bc"
+    },
+    {
+      "afirmacion": "A-11",
+      "url": "https://docs.databricks.com/aws/en/release-notes/product/2020/august",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "ca8f5264782b85368f4776d7771b652335718a26fa1f0cd172a9e0a7d359061e"
+    },
+    {
+      "afirmacion": "A-12",
+      "url": "https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "13794ebf8b76751b2f08a267fad5da05faa91868334aa5baea4d21841dc8fe64"
+    },
+    {
+      "afirmacion": "A-13",
+      "url": "https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "13794ebf8b76751b2f08a267fad5da05faa91868334aa5baea4d21841dc8fe64"
+    },
+    {
+      "afirmacion": "A-14",
+      "url": "https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "13794ebf8b76751b2f08a267fad5da05faa91868334aa5baea4d21841dc8fe64"
+    },
+    {
+      "afirmacion": "A-15",
+      "url": "https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "13794ebf8b76751b2f08a267fad5da05faa91868334aa5baea4d21841dc8fe64"
+    },
+    {
+      "afirmacion": "A-16",
+      "url": "https://www.databricks.com/blog/announcing-general-availability-databricks-lakeflow",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "57ffc242d03e1f5efe7af96d78810be70c92177caa4e41b631083265e9522f71"
+    },
+    {
+      "afirmacion": "A-17",
+      "url": "https://docs.databricks.com/aws/en/ingestion/cloud-object-storage/auto-loader/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "eda78724c04b3b6729fe15775fbb707da3f370892a43a0f8f8a05b861ea5a0bc"
+    },
+    {
+      "afirmacion": "A-18",
+      "url": "https://docs.databricks.com/aws/en/ingestion/cloud-object-storage/auto-loader/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "eda78724c04b3b6729fe15775fbb707da3f370892a43a0f8f8a05b861ea5a0bc"
+    },
+    {
+      "afirmacion": "A-19",
+      "url": "https://docs.databricks.com/aws/en/ingestion/cloud-object-storage/auto-loader/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "eda78724c04b3b6729fe15775fbb707da3f370892a43a0f8f8a05b861ea5a0bc"
+    },
+    {
+      "afirmacion": "A-20",
+      "url": "https://docs.databricks.com/aws/en/release-notes/product/2020/august",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "ca8f5264782b85368f4776d7771b652335718a26fa1f0cd172a9e0a7d359061e"
+    },
+    {
+      "afirmacion": "A-21",
+      "url": "https://docs.databricks.com/aws/en/query-federation/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "135afdb5ea4d1a578c6db728bb61f1ef4fb6390a0fe28e0cfdfef5f4bb881e47"
+    },
+    {
+      "afirmacion": "A-22",
+      "url": "https://docs.databricks.com/aws/en/query-federation/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "135afdb5ea4d1a578c6db728bb61f1ef4fb6390a0fe28e0cfdfef5f4bb881e47"
+    },
+    {
+      "afirmacion": "A-23",
+      "url": "https://docs.databricks.com/aws/en/release-notes/product/2024/august",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "5e96ecf0deb77d27a42cf4ff39dc9c6e7c5b9adb84b7b8f8c101777b5ee4746f"
+    },
+    {
+      "afirmacion": "A-24",
+      "url": "https://docs.databricks.com/aws/en/ldp/concepts/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "cd678a53ca1f44ee9a8edebed97cfc1203dc6a2257864596fc07b50130e4e59e"
+    },
+    {
+      "afirmacion": "A-25",
+      "url": "https://docs.databricks.com/aws/en/ldp/concepts/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "cd678a53ca1f44ee9a8edebed97cfc1203dc6a2257864596fc07b50130e4e59e"
+    },
+    {
+      "afirmacion": "A-26",
+      "url": "https://docs.databricks.com/aws/en/delta/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "57b17fa2925c0ab65269afa1c176f5f42edbf0e432501d7bf9e1301853381109"
+    },
+    {
+      "afirmacion": "A-27",
+      "url": "https://docs.databricks.com/aws/en/delta/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "57b17fa2925c0ab65269afa1c176f5f42edbf0e432501d7bf9e1301853381109"
+    },
+    {
+      "afirmacion": "A-28",
+      "url": "https://www.databricks.com/blog/announcing-general-availability-materialized-views-and-streaming-tables-databricks-sql",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "36f7cd7789835b394aaaef738ac168f2cfba08108334988c2eeffc355a19efb3"
+    },
+    {
+      "afirmacion": "A-29",
+      "url": "https://docs.databricks.com/aws/en/ldp/concepts/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "cd678a53ca1f44ee9a8edebed97cfc1203dc6a2257864596fc07b50130e4e59e"
+    },
+    {
+      "afirmacion": "A-30",
+      "url": "https://docs.databricks.com/aws/en/ldp/concepts/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "cd678a53ca1f44ee9a8edebed97cfc1203dc6a2257864596fc07b50130e4e59e"
+    },
+    {
+      "afirmacion": "A-31",
+      "url": "https://docs.databricks.com/aws/en/ldp/concepts/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "cd678a53ca1f44ee9a8edebed97cfc1203dc6a2257864596fc07b50130e4e59e"
+    },
+    {
+      "afirmacion": "A-32",
+      "url": "https://www.databricks.com/blog/announcing-general-availability-materialized-views-and-streaming-tables-databricks-sql",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "36f7cd7789835b394aaaef738ac168f2cfba08108334988c2eeffc355a19efb3"
+    },
+    {
+      "afirmacion": "A-33",
+      "url": "https://docs.databricks.com/aws/en/ldp/concepts/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "cd678a53ca1f44ee9a8edebed97cfc1203dc6a2257864596fc07b50130e4e59e"
+    },
+    {
+      "afirmacion": "A-34",
+      "url": "https://docs.databricks.com/aws/en/ldp/concepts/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "cd678a53ca1f44ee9a8edebed97cfc1203dc6a2257864596fc07b50130e4e59e"
+    },
+    {
+      "afirmacion": "A-35",
+      "url": "https://docs.databricks.com/aws/en/ldp/concepts/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "cd678a53ca1f44ee9a8edebed97cfc1203dc6a2257864596fc07b50130e4e59e"
+    },
+    {
+      "afirmacion": "A-36",
+      "url": "https://docs.databricks.com/aws/en/ldp/concepts/pipeline-mode",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "963a7c74ae79cc421c22f57481d7117745d0739e87e251478140a0e5532b14ae"
+    },
+    {
+      "afirmacion": "A-37",
+      "url": "https://www.databricks.com/blog/announcing-general-availability-databricks-lakeflow",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "57ffc242d03e1f5efe7af96d78810be70c92177caa4e41b631083265e9522f71"
+    },
+    {
+      "afirmacion": "A-38",
+      "url": "https://docs.databricks.com/aws/en/compute/serverless/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "4719875bd4436523939c04db304de86d9d404bf5e8f64db6a8bde3c5e2afc245"
+    },
+    {
+      "afirmacion": "A-39",
+      "url": "https://docs.databricks.com/aws/en/compute/serverless/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "4719875bd4436523939c04db304de86d9d404bf5e8f64db6a8bde3c5e2afc245"
+    },
+    {
+      "afirmacion": "A-40",
+      "url": "https://docs.databricks.com/aws/en/release-notes/product/2024/july",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "e0011c35bd34bfaf9d2bc2bf230ae73368564c6915713ba78e851c95ef5fdfeb"
+    },
+    {
+      "afirmacion": "A-41",
+      "url": "https://docs.databricks.com/aws/en/metric-views/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "360c50dafe45959fc3be2212fe74fcd4bf77d9138d433246485d84039789a748"
+    },
+    {
+      "afirmacion": "A-42",
+      "url": "https://www.databricks.com/blog/redefining-semantics-data-layer-future-bi-and-ai",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "66ad9ff770a47e661aa2f78c578f5e20544024f7f2748d0429c834d614bb8557"
+    },
+    {
+      "afirmacion": "A-43",
+      "url": "https://docs.databricks.com/aws/en/uc-semantics/metric-views/yaml-reference",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "ab0781607d000062a979e6b9a6f8bf5cd4b0ba718b77a1c4cb6d0334f57b6e79"
+    },
+    {
+      "afirmacion": "A-44",
+      "url": "https://www.databricks.com/blog/redefining-semantics-data-layer-future-bi-and-ai",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "66ad9ff770a47e661aa2f78c578f5e20544024f7f2748d0429c834d614bb8557"
+    },
+    {
+      "afirmacion": "A-107",
+      "url": "https://docs.databricks.com/aws/en/metric-views/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "360c50dafe45959fc3be2212fe74fcd4bf77d9138d433246485d84039789a748"
+    },
+    {
+      "afirmacion": "A-45",
+      "url": "https://docs.databricks.com/aws/en/compute/sql-warehouse/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "0bccf25a5725ffd6611174564a2e256709269d80d41e8bff211bb3b314ce047d"
+    },
+    {
+      "afirmacion": "A-46",
+      "url": "https://docs.databricks.com/aws/en/compute/sql-warehouse/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "0bccf25a5725ffd6611174564a2e256709269d80d41e8bff211bb3b314ce047d"
+    },
+    {
+      "afirmacion": "A-48",
+      "url": "https://docs.databricks.com/aws/en/compute/sql-warehouse/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "0bccf25a5725ffd6611174564a2e256709269d80d41e8bff211bb3b314ce047d"
+    },
+    {
+      "afirmacion": "A-49",
+      "url": "https://docs.databricks.com/aws/en/release-notes/product/2023/march",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "460751cbacbfdc6a73a7b9d3a0e25eda6df1775a77b4302b8c0b496f45da11ae"
+    },
+    {
+      "afirmacion": "A-50",
+      "url": "https://docs.databricks.com/aws/en/release-notes/product/2023/march",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "460751cbacbfdc6a73a7b9d3a0e25eda6df1775a77b4302b8c0b496f45da11ae"
+    },
+    {
+      "afirmacion": "A-108",
+      "url": "https://docs.databricks.com/aws/en/compute/sql-warehouse/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "0bccf25a5725ffd6611174564a2e256709269d80d41e8bff211bb3b314ce047d"
+    },
+    {
+      "afirmacion": "A-51",
+      "url": "https://docs.databricks.com/aws/en/dashboards/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "a978115c6f236937bd3421a6052beab6a805ba27d2b537113ef54fce3bb722eb"
+    },
+    {
+      "afirmacion": "A-52",
+      "url": "https://docs.databricks.com/aws/en/dashboards/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "a978115c6f236937bd3421a6052beab6a805ba27d2b537113ef54fce3bb722eb"
+    },
+    {
+      "afirmacion": "A-53",
+      "url": "https://docs.databricks.com/aws/en/dashboards/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "a978115c6f236937bd3421a6052beab6a805ba27d2b537113ef54fce3bb722eb"
+    },
+    {
+      "afirmacion": "A-54",
+      "url": "https://docs.databricks.com/aws/en/dashboards/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "a978115c6f236937bd3421a6052beab6a805ba27d2b537113ef54fce3bb722eb"
+    },
+    {
+      "afirmacion": "A-55",
+      "url": "https://www.databricks.com/blog/aibi-genie-now-generally-available",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "2925651c39690e73ed60fd89d144b023b11aca370b4662e0c5cfd06958f67ed2"
+    },
+    {
+      "afirmacion": "A-109",
+      "url": "https://docs.databricks.com/aws/en/sql/release-notes/2024",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "9ccdcf83a5c10009ed23c84daa6e69f91998b242714e957be1ecb917d0ac0f42"
+    },
+    {
+      "afirmacion": "A-110",
+      "url": "https://docs.databricks.com/aws/en/sql/release-notes/2024",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "9ccdcf83a5c10009ed23c84daa6e69f91998b242714e957be1ecb917d0ac0f42"
+    },
+    {
+      "afirmacion": "A-111",
+      "url": "https://docs.databricks.com/aws/en/dashboards/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "a978115c6f236937bd3421a6052beab6a805ba27d2b537113ef54fce3bb722eb"
+    },
+    {
+      "afirmacion": "A-112",
+      "url": "https://docs.databricks.com/aws/en/ai-bi/release-notes/2024",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "fe4988da45050f0f4443389f3a00827ee34ab78c19dadd421f1dacd6b7ab3c78"
+    },
+    {
+      "afirmacion": "A-113",
+      "url": "https://docs.databricks.com/aws/en/dashboards/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "a978115c6f236937bd3421a6052beab6a805ba27d2b537113ef54fce3bb722eb"
+    },
+    {
+      "afirmacion": "A-114",
+      "url": "https://docs.databricks.com/aws/en/ai-bi/release-notes/2026",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "dc49add61e11f14d3d94b03783370954728b11b0e0ad4b2479e795410f4b6669"
+    },
+    {
+      "afirmacion": "A-116",
+      "url": "https://docs.databricks.com/aws/en/metric-views/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "360c50dafe45959fc3be2212fe74fcd4bf77d9138d433246485d84039789a748"
+    },
+    {
+      "afirmacion": "A-117",
+      "url": "https://docs.databricks.com/aws/en/partners/bi/power-bi/service",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "7001b03ba09edb2903d83ec03b3d06793b40a991695b7f3355bd3a0c3fa5107b"
+    },
+    {
+      "afirmacion": "A-118",
+      "url": "https://docs.databricks.com/aws/en/partners/bi/power-bi/service",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "7001b03ba09edb2903d83ec03b3d06793b40a991695b7f3355bd3a0c3fa5107b"
+    },
+    {
+      "afirmacion": "A-119",
+      "url": "https://docs.databricks.com/aws/en/partners/bi/power-bi/service",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "7001b03ba09edb2903d83ec03b3d06793b40a991695b7f3355bd3a0c3fa5107b"
+    },
+    {
+      "afirmacion": "A-120",
+      "url": "https://docs.databricks.com/aws/en/partners/bi/power-bi/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "64ad60084ee2e4ff6a8de2dd6c0174c6bdcdc26959f531a4bf58fb5010603d11"
+    },
+    {
+      "afirmacion": "A-121",
+      "url": "https://docs.databricks.com/aws/en/release-notes/product/2024/september",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "afea751ad908ed47ba90b574aaaae323bf0a58fa1130ebce9ec8288fbd91b488"
+    },
+    {
+      "afirmacion": "A-122",
+      "url": "https://docs.databricks.com/aws/en/dev-tools/databricks-apps/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "c7b2f2a3e9ef57566cb7c7befc785c3710f869323ff308b5c8845a8eee35d760"
+    },
+    {
+      "afirmacion": "A-123",
+      "url": "https://docs.databricks.com/aws/en/dev-tools/databricks-apps/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "c7b2f2a3e9ef57566cb7c7befc785c3710f869323ff308b5c8845a8eee35d760"
+    },
+    {
+      "afirmacion": "A-124",
+      "url": "https://docs.databricks.com/aws/en/dev-tools/databricks-apps/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "c7b2f2a3e9ef57566cb7c7befc785c3710f869323ff308b5c8845a8eee35d760"
+    },
+    {
+      "afirmacion": "A-125",
+      "url": "https://docs.databricks.com/aws/en/dev-tools/databricks-apps/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "c7b2f2a3e9ef57566cb7c7befc785c3710f869323ff308b5c8845a8eee35d760"
+    },
+    {
+      "afirmacion": "A-126",
+      "url": "https://docs.databricks.com/aws/en/dev-tools/databricks-apps/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "c7b2f2a3e9ef57566cb7c7befc785c3710f869323ff308b5c8845a8eee35d760"
+    },
+    {
+      "afirmacion": "A-127",
+      "url": "https://docs.databricks.com/aws/en/dev-tools/databricks-apps/auth",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "3a0bab58c7f5044d9c94cd731f6b881bd43d254eb3dc657fa2e1cbaa2f5892eb"
+    },
+    {
+      "afirmacion": "A-128",
+      "url": "https://docs.databricks.com/aws/en/dev-tools/databricks-apps/auth",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "3a0bab58c7f5044d9c94cd731f6b881bd43d254eb3dc657fa2e1cbaa2f5892eb"
+    },
+    {
+      "afirmacion": "A-129",
+      "url": "https://docs.databricks.com/aws/en/dev-tools/databricks-apps/auth",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "3a0bab58c7f5044d9c94cd731f6b881bd43d254eb3dc657fa2e1cbaa2f5892eb"
+    },
+    {
+      "afirmacion": "A-130",
+      "url": "https://docs.databricks.com/aws/en/release-notes/product/2025/may",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "bdb91021e6d8cf48ab3ec51e9f7139b7180d42b0d7e8eb53a759526426da04b6"
+    },
+    {
+      "afirmacion": "A-56",
+      "url": "https://docs.databricks.com/aws/en/genie-agents/concepts",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "c29e604866cb205e5564dcda4fedca7931e765e912d605ab26790531e4c16a0a"
+    },
+    {
+      "afirmacion": "A-57",
+      "url": "https://docs.databricks.com/aws/en/genie-agents/concepts",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "c29e604866cb205e5564dcda4fedca7931e765e912d605ab26790531e4c16a0a"
+    },
+    {
+      "afirmacion": "A-58",
+      "url": "https://docs.databricks.com/aws/en/genie-agents/concepts",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "c29e604866cb205e5564dcda4fedca7931e765e912d605ab26790531e4c16a0a"
+    },
+    {
+      "afirmacion": "A-59",
+      "url": "https://docs.databricks.com/aws/en/genie-agents/concepts",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "c29e604866cb205e5564dcda4fedca7931e765e912d605ab26790531e4c16a0a"
+    },
+    {
+      "afirmacion": "A-60",
+      "url": "https://docs.databricks.com/aws/en/ai-bi/release-notes/2024",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "fe4988da45050f0f4443389f3a00827ee34ab78c19dadd421f1dacd6b7ab3c78"
+    },
+    {
+      "afirmacion": "A-61",
+      "url": "https://docs.databricks.com/aws/en/data-governance/unity-catalog/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "2d6c0efe92bba617a0786dfab7813e2e072731ec14d08add05aa83c7e1543a24"
+    },
+    {
+      "afirmacion": "A-62",
+      "url": "https://docs.databricks.com/aws/en/data-governance/unity-catalog/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "2d6c0efe92bba617a0786dfab7813e2e072731ec14d08add05aa83c7e1543a24"
+    },
+    {
+      "afirmacion": "A-63",
+      "url": "https://docs.databricks.com/aws/en/data-governance/unity-catalog/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "2d6c0efe92bba617a0786dfab7813e2e072731ec14d08add05aa83c7e1543a24"
+    },
+    {
+      "afirmacion": "A-64",
+      "url": "https://docs.databricks.com/aws/en/data-governance/unity-catalog/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "2d6c0efe92bba617a0786dfab7813e2e072731ec14d08add05aa83c7e1543a24"
+    },
+    {
+      "afirmacion": "A-65",
+      "url": "https://docs.databricks.com/aws/en/data-governance/unity-catalog/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "2d6c0efe92bba617a0786dfab7813e2e072731ec14d08add05aa83c7e1543a24"
+    },
+    {
+      "afirmacion": "A-66",
+      "url": "https://docs.databricks.com/aws/en/release-notes/product/2022/august",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "25d3d4a16cde6ce3202cbc689dc427284de1f5fa96f5eb9c58acade1014fd81d"
+    },
+    {
+      "afirmacion": "A-67",
+      "url": "https://docs.databricks.com/aws/en/tables/row-and-column-filters",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "2dc648a8fb78f23161ddcae0c8ad22d1bca5a635000f1ca9cc9344e75c034858"
+    },
+    {
+      "afirmacion": "A-68",
+      "url": "https://docs.databricks.com/aws/en/tables/row-and-column-filters",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "2dc648a8fb78f23161ddcae0c8ad22d1bca5a635000f1ca9cc9344e75c034858"
+    },
+    {
+      "afirmacion": "A-69",
+      "url": "https://docs.databricks.com/aws/en/tables/row-and-column-filters",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "2dc648a8fb78f23161ddcae0c8ad22d1bca5a635000f1ca9cc9344e75c034858"
+    },
+    {
+      "afirmacion": "A-70",
+      "url": "https://docs.databricks.com/aws/en/tables/row-and-column-filters",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "2dc648a8fb78f23161ddcae0c8ad22d1bca5a635000f1ca9cc9344e75c034858"
+    },
+    {
+      "afirmacion": "A-71",
+      "url": "https://docs.databricks.com/aws/en/release-notes/product/2024/august",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "5e96ecf0deb77d27a42cf4ff39dc9c6e7c5b9adb84b7b8f8c101777b5ee4746f"
+    },
+    {
+      "afirmacion": "A-72",
+      "url": "https://docs.databricks.com/aws/en/admin/system-tables/billing",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "a4699378046f2ea42bbe09a52dc51c182386fd169398755a4c3bdec0c3482149"
+    },
+    {
+      "afirmacion": "A-73",
+      "url": "https://docs.databricks.com/aws/en/admin/system-tables/billing",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "a4699378046f2ea42bbe09a52dc51c182386fd169398755a4c3bdec0c3482149"
+    },
+    {
+      "afirmacion": "A-74",
+      "url": "https://docs.databricks.com/aws/en/release-notes/product/2024/september",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "afea751ad908ed47ba90b574aaaae323bf0a58fa1130ebce9ec8288fbd91b488"
+    },
+    {
+      "afirmacion": "A-75",
+      "url": "https://docs.databricks.com/aws/en/admin/account-settings/budgets",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "81527b3ba9038a58da95e6ddc14c8ac23d30fda2b99886d0e3f6c9d34992e2c6"
+    },
+    {
+      "afirmacion": "A-76",
+      "url": "https://docs.databricks.com/aws/en/admin/account-settings/budgets",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "81527b3ba9038a58da95e6ddc14c8ac23d30fda2b99886d0e3f6c9d34992e2c6"
+    },
+    {
+      "afirmacion": "A-77",
+      "url": "https://docs.databricks.com/aws/en/admin/account-settings/budgets",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "81527b3ba9038a58da95e6ddc14c8ac23d30fda2b99886d0e3f6c9d34992e2c6"
+    },
+    {
+      "afirmacion": "A-78",
+      "url": "https://docs.databricks.com/aws/en/admin/account-settings/budgets",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "81527b3ba9038a58da95e6ddc14c8ac23d30fda2b99886d0e3f6c9d34992e2c6"
+    },
+    {
+      "afirmacion": "A-79",
+      "url": "https://docs.databricks.com/aws/en/admin/account-settings/budgets",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "81527b3ba9038a58da95e6ddc14c8ac23d30fda2b99886d0e3f6c9d34992e2c6"
+    },
+    {
+      "afirmacion": "A-80",
+      "url": "https://docs.databricks.com/aws/en/release-notes/product/2026/july",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "ffbfe7a0bb94d7883f48c329ca4f25d96531708e2a0b7abd313d8501070d8b02"
+    },
+    {
+      "afirmacion": "A-81",
+      "url": "https://docs.databricks.com/aws/en/jobs/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "c1cd27c965b364a420a5f90d3557bd5c4769ce6c06e38297c72001943ba08723"
+    },
+    {
+      "afirmacion": "A-82",
+      "url": "https://docs.databricks.com/aws/en/jobs/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "c1cd27c965b364a420a5f90d3557bd5c4769ce6c06e38297c72001943ba08723"
+    },
+    {
+      "afirmacion": "A-83",
+      "url": "https://docs.databricks.com/aws/en/jobs/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "c1cd27c965b364a420a5f90d3557bd5c4769ce6c06e38297c72001943ba08723"
+    },
+    {
+      "afirmacion": "A-84",
+      "url": "https://www.databricks.com/blog/announcing-general-availability-databricks-lakeflow",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "57ffc242d03e1f5efe7af96d78810be70c92177caa4e41b631083265e9522f71"
+    },
+    {
+      "afirmacion": "A-85",
+      "url": "https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "13794ebf8b76751b2f08a267fad5da05faa91868334aa5baea4d21841dc8fe64"
+    },
+    {
+      "afirmacion": "A-86",
+      "url": "https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "13794ebf8b76751b2f08a267fad5da05faa91868334aa5baea4d21841dc8fe64"
+    },
+    {
+      "afirmacion": "A-87",
+      "url": "https://docs.databricks.com/aws/en/ingestion/cloud-object-storage/auto-loader/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "eda78724c04b3b6729fe15775fbb707da3f370892a43a0f8f8a05b861ea5a0bc"
+    },
+    {
+      "afirmacion": "A-88",
+      "url": "https://docs.databricks.com/aws/en/query-federation/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "135afdb5ea4d1a578c6db728bb61f1ef4fb6390a0fe28e0cfdfef5f4bb881e47"
+    },
+    {
+      "afirmacion": "A-89",
+      "url": "https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "13794ebf8b76751b2f08a267fad5da05faa91868334aa5baea4d21841dc8fe64"
+    },
+    {
+      "afirmacion": "A-90",
+      "url": "https://docs.databricks.com/aws/en/ldp/concepts/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "cd678a53ca1f44ee9a8edebed97cfc1203dc6a2257864596fc07b50130e4e59e"
+    },
+    {
+      "afirmacion": "A-91",
+      "url": "https://docs.databricks.com/aws/en/ldp/concepts/pipeline-mode",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "963a7c74ae79cc421c22f57481d7117745d0739e87e251478140a0e5532b14ae"
+    },
+    {
+      "afirmacion": "A-92",
+      "url": "https://docs.databricks.com/aws/en/ldp/concepts/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "cd678a53ca1f44ee9a8edebed97cfc1203dc6a2257864596fc07b50130e4e59e"
+    },
+    {
+      "afirmacion": "A-93",
+      "url": "https://docs.databricks.com/aws/en/delta/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "57b17fa2925c0ab65269afa1c176f5f42edbf0e432501d7bf9e1301853381109"
+    },
+    {
+      "afirmacion": "A-94",
+      "url": "https://docs.databricks.com/aws/en/uc-semantics/metric-views/yaml-reference",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "ab0781607d000062a979e6b9a6f8bf5cd4b0ba718b77a1c4cb6d0334f57b6e79"
+    },
+    {
+      "afirmacion": "A-95",
+      "url": "https://docs.databricks.com/aws/en/metric-views/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "360c50dafe45959fc3be2212fe74fcd4bf77d9138d433246485d84039789a748"
+    },
+    {
+      "afirmacion": "A-131",
+      "url": "https://docs.databricks.com/aws/en/metric-views/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "360c50dafe45959fc3be2212fe74fcd4bf77d9138d433246485d84039789a748"
+    },
+    {
+      "afirmacion": "A-96",
+      "url": "https://docs.databricks.com/aws/en/genie-agents/concepts",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "c29e604866cb205e5564dcda4fedca7931e765e912d605ab26790531e4c16a0a"
+    },
+    {
+      "afirmacion": "A-97",
+      "url": "https://docs.databricks.com/aws/en/compute/sql-warehouse/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "0bccf25a5725ffd6611174564a2e256709269d80d41e8bff211bb3b314ce047d"
+    },
+    {
+      "afirmacion": "A-98",
+      "url": "https://docs.databricks.com/aws/en/release-notes/product/2024/august",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "5e96ecf0deb77d27a42cf4ff39dc9c6e7c5b9adb84b7b8f8c101777b5ee4746f"
+    },
+    {
+      "afirmacion": "A-99",
+      "url": "https://docs.databricks.com/aws/en/compute/sql-warehouse/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "0bccf25a5725ffd6611174564a2e256709269d80d41e8bff211bb3b314ce047d"
+    },
+    {
+      "afirmacion": "A-132",
+      "url": "https://docs.databricks.com/aws/en/partners/bi/power-bi/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "64ad60084ee2e4ff6a8de2dd6c0174c6bdcdc26959f531a4bf58fb5010603d11"
+    },
+    {
+      "afirmacion": "A-133",
+      "url": "https://docs.databricks.com/aws/en/dev-tools/databricks-apps/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "c7b2f2a3e9ef57566cb7c7befc785c3710f869323ff308b5c8845a8eee35d760"
+    },
+    {
+      "afirmacion": "A-100",
+      "url": "https://docs.databricks.com/aws/en/genie-agents/concepts",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "c29e604866cb205e5564dcda4fedca7931e765e912d605ab26790531e4c16a0a"
+    },
+    {
+      "afirmacion": "A-101",
+      "url": "https://docs.databricks.com/aws/en/data-governance/unity-catalog/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "2d6c0efe92bba617a0786dfab7813e2e072731ec14d08add05aa83c7e1543a24"
+    },
+    {
+      "afirmacion": "A-102",
+      "url": "https://docs.databricks.com/aws/en/tables/row-and-column-filters",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "2dc648a8fb78f23161ddcae0c8ad22d1bca5a635000f1ca9cc9344e75c034858"
+    },
+    {
+      "afirmacion": "A-103",
+      "url": "https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "13794ebf8b76751b2f08a267fad5da05faa91868334aa5baea4d21841dc8fe64"
+    },
+    {
+      "afirmacion": "A-104",
+      "url": "https://docs.databricks.com/aws/en/ldp/concepts/pipeline-mode",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "963a7c74ae79cc421c22f57481d7117745d0739e87e251478140a0e5532b14ae"
+    },
+    {
+      "afirmacion": "A-105",
+      "url": "https://docs.databricks.com/aws/en/jobs/",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "c1cd27c965b364a420a5f90d3557bd5c4769ce6c06e38297c72001943ba08723"
+    },
+    {
+      "afirmacion": "A-106",
+      "url": "https://docs.databricks.com/aws/en/admin/system-tables/billing",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "a4699378046f2ea42bbe09a52dc51c182386fd169398755a4c3bdec0c3482149"
+    }
+  ]
+}

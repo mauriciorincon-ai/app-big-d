@@ -83,6 +83,8 @@ export const esquemaVerificacion = z.strictObject({
       http: z.number().int().nullable(),
       sha256: z.string().regex(/^[0-9a-f]{64}$/).nullable(),
       motivo: z.string().optional(),
+      /** Si el servidor cortó la conexión: bajó con HTTP/1.1 («http1.1») o, además, sin el agente propio («sin-agente»). */
+      reintento: z.enum(["http1.1", "sin-agente"]).optional(),
     }),
   ),
 });

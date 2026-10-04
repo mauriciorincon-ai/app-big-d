@@ -33,3 +33,383 @@
 {"fecha_hora":"2026-09-27T22:08:37.348Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/cicd/cicd-overview","llamada":"7244c745a007e9f2"}
 {"fecha_hora":"2026-09-27T22:24:59.216Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/fundamentals/whats-new-archive","llamada":"800a05cd4bbe56e1"}
 {"fecha_hora":"2026-09-27T22:25:21.007Z","herramienta":"WebFetch","url":"https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/","llamada":"ccdd3b8389ff5c1e"}
+{"fecha_hora":"2026-10-04T03:55:45.504Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/","llamada":"0ec5dd9ac873bdac"}
+{"fecha_hora":"2026-10-04T03:55:57.886Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/ingestion/cloud-object-storage/auto-loader/","llamada":"8c5be672edab6467"}
+{"fecha_hora":"2026-10-04T03:56:29.496Z","herramienta":"WebSearch","consulta":"Databricks release notes \"SQL Server connector\" Lakeflow Connect \"generally available\"","llamada":"b5dbef163e0fb6bc"}
+{"fecha_hora":"2026-10-04T03:56:29.812Z","herramienta":"WebSearch","consulta":"Databricks AI/BI Genie \"generally available\" release notes","llamada":"cccd872722a6aab3"}
+{"fecha_hora":"2026-10-04T03:56:30.701Z","herramienta":"WebSearch","consulta":"Lakeflow Spark Declarative Pipelines overview Databricks documentation","llamada":"a469249bceb10630"}
+{"fecha_hora":"2026-10-04T03:56:44.054Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/ldp/concepts/","llamada":"fac5c14f56d67882"}
+{"fecha_hora":"2026-10-04T03:56:45.170Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/release-notes/product/2025/august","llamada":"6ce496d8fbbbfbbb"}
+{"fecha_hora":"2026-10-04T03:57:01.533Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/","llamada":"188297a88569494b"}
+{"fecha_hora":"2026-10-04T03:57:05.944Z","herramienta":"WebFetch","url":"https://www.databricks.com/blog/announcing-general-availability-databricks-lakeflow","llamada":"8a30e1a41d18e736"}
+{"fecha_hora":"2026-10-04T03:57:21.417Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/delta/","llamada":"f5e3cc994be6ce5c"}
+{"fecha_hora":"2026-10-04T03:57:21.672Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/jobs/","llamada":"31b7857808134f36"}
+{"fecha_hora":"2026-10-04T03:57:48.090Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/data-governance/unity-catalog/","llamada":"c7a1381170ef3f89"}
+{"fecha_hora":"2026-10-04T03:57:57.538Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/dashboards/","llamada":"94b24690a9966de9"}
+{"fecha_hora":"2026-10-04T03:57:58.455Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/compute/sql-warehouse/","llamada":"66097c8675931f83"}
+{"fecha_hora":"2026-10-04T03:57:58.732Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/genie/","llamada":"3422d63d3434772d"}
+{"fecha_hora":"2026-10-04T03:58:06.484Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/ai-bi/release-notes/2025","llamada":"e2c82d2920ee7c85"}
+{"fecha_hora":"2026-10-04T03:58:11.307Z","herramienta":"WebSearch","consulta":"Databricks \"Genie Agents\" formerly Genie spaces documentation natural language SQL Unity Catalog permissions","llamada":"fa146788b8718124"}
+{"fecha_hora":"2026-10-04T03:58:20.092Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/genie-agents/concepts","llamada":"75422c43bcb5e26b"}
+{"fecha_hora":"2026-10-04T03:58:23.192Z","herramienta":"WebSearch","consulta":"\"Genie is now generally available\" Databricks AI/BI","llamada":"f3c3c672da441be9"}
+{"fecha_hora":"2026-10-04T03:58:33.045Z","herramienta":"WebFetch","url":"https://www.databricks.com/blog/aibi-genie-now-generally-available","llamada":"9645c02e0b31f1ea"}
+{"fecha_hora":"2026-10-04T03:58:33.353Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/ai-bi/release-notes/2024","llamada":"ed99abf1df89eca2"}
+{"fecha_hora":"2026-10-04T03:58:47.401Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/ai-bi/release-notes/2026","llamada":"e95ff3715f86c5b4"}
+{"fecha_hora":"2026-10-04T03:58:48.193Z","herramienta":"WebSearch","consulta":"Databricks AI/BI Dashboards \"generally available\" Lakeview dashboards GA announcement","llamada":"51b2352800712b59"}
+{"fecha_hora":"2026-10-04T03:59:26.584Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/ai-bi/release-notes/2024","llamada":"f1dc823c5a8f535f"}
+{"fecha_hora":"2026-10-04T03:59:29.015Z","herramienta":"WebSearch","consulta":"\"AI/BI dashboards are now generally available\" Databricks","llamada":"0046b555b1e0c81c"}
+{"fecha_hora":"2026-10-04T04:00:03.382Z","herramienta":"WebSearch","consulta":"Databricks \"row filters and column masks\" \"generally available\" release notes","llamada":"91115568b3a3b52e"}
+{"fecha_hora":"2026-10-04T04:00:03.718Z","herramienta":"WebSearch","consulta":"Databricks release notes \"Unity Catalog is now generally available\" OR \"Unity Catalog is GA\"","llamada":"8dd96c7a48308224"}
+{"fecha_hora":"2026-10-04T04:00:04.906Z","herramienta":"WebSearch","consulta":"Databricks \"metric views\" \"generally available\" Unity Catalog release notes 2025 2026","llamada":"310c480d02cf0858"}
+{"fecha_hora":"2026-10-04T04:00:13.413Z","herramienta":"WebFetch","url":"https://docs.databricks.com/en/release-notes/product/2022/august.html","llamada":"0e843dd1ec353594"}
+{"fecha_hora":"2026-10-04T04:00:14.979Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/release-notes/product/2024/august","llamada":"df6bcea4c634b895"}
+{"fecha_hora":"2026-10-04T04:00:15.769Z","herramienta":"WebFetch","url":"https://www.databricks.com/blog/redefining-semantics-data-layer-future-bi-and-ai","llamada":"e08b7ed5621f22c2"}
+{"fecha_hora":"2026-10-04T04:00:29.359Z","herramienta":"WebSearch","consulta":"Databricks \"Auto Loader\" \"generally available\" announcement","llamada":"7de4b307a705e8bd"}
+{"fecha_hora":"2026-10-04T04:00:30.513Z","herramienta":"WebSearch","consulta":"Databricks \"billable usage\" system table \"generally available\" system.billing.usage","llamada":"358df076e52385b5"}
+{"fecha_hora":"2026-10-04T04:00:31.969Z","herramienta":"WebSearch","consulta":"Databricks \"serverless compute for notebooks\" \"generally available\" release notes","llamada":"4dd97d201d8651dc"}
+{"fecha_hora":"2026-10-04T04:00:42.023Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/admin/usage/","llamada":"fef600ed3eed6712"}
+{"fecha_hora":"2026-10-04T04:00:42.719Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/release-notes/product/2024/july","llamada":"0c6f0c01b1710877"}
+{"fecha_hora":"2026-10-04T04:00:43.774Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/admin/system-tables/billing","llamada":"3994701f20dc902d"}
+{"fecha_hora":"2026-10-04T04:00:53.490Z","herramienta":"WebSearch","consulta":"Databricks release notes \"system tables\" billing \"now generally available\"","llamada":"fd3f94371eb7ec91"}
+{"fecha_hora":"2026-10-04T04:00:53.521Z","herramienta":"WebSearch","consulta":"Databricks \"serverless SQL warehouses\" \"generally available\" release notes","llamada":"1383a3d7d4919d22"}
+{"fecha_hora":"2026-10-04T04:00:56.041Z","herramienta":"WebSearch","consulta":"Databricks \"budgets\" \"generally available\" OR \"Public Preview\" budget alerts release notes","llamada":"da860ed0d3037ebc"}
+{"fecha_hora":"2026-10-04T04:01:04.584Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/release-notes/product/2023/march","llamada":"311e250923c12a95"}
+{"fecha_hora":"2026-10-04T04:01:06.963Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/admin/account-settings/budgets","llamada":"78b789658387bd6a"}
+{"fecha_hora":"2026-10-04T04:01:07.944Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/release-notes/product/2024/september","llamada":"3d9955de3e16bae2"}
+{"fecha_hora":"2026-10-04T04:01:22.207Z","herramienta":"WebSearch","consulta":"Databricks Delta Lake \"generally available\" announcement \"Databricks Delta\"","llamada":"5d89816ddcfd31e9"}
+{"fecha_hora":"2026-10-04T04:01:22.227Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/release-notes/product/2026/july","llamada":"53912efbbe919562"}
+{"fecha_hora":"2026-10-04T04:01:38.352Z","herramienta":"WebSearch","consulta":"\"Delta Lake\" Databricks documentation \"release types\" OR \"generally available\" managed tables Unity Catalog GA","llamada":"ab7aa0da74c8be48"}
+{"fecha_hora":"2026-10-04T04:02:04.416Z","herramienta":"WebFetch","url":"https://www.databricks.com/company/newsroom/press-releases/databricks-open-sources-delta-lake-for-data-lake-reliability","llamada":"467ba1ec8cd46138"}
+{"fecha_hora":"2026-10-04T04:02:16.491Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/tables/managed","llamada":"07fa98caa32bd63d"}
+{"fecha_hora":"2026-10-04T04:02:17.597Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/release-notes/product/2026/april","llamada":"38d5aed6a412540a"}
+{"fecha_hora":"2026-10-04T04:02:28.876Z","herramienta":"WebSearch","consulta":"Databricks release types documentation \"generally available\" definition preview banner features without label","llamada":"931c321ad248a220"}
+{"fecha_hora":"2026-10-04T04:02:41.777Z","herramienta":"WebSearch","consulta":"\"Databricks Delta\" \"generally available\" 2018 runtime release notes","llamada":"d9d90ccb011c1e12"}
+{"fecha_hora":"2026-10-04T04:02:51.979Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/archive/unity-catalog/20220825","llamada":"8d8eeae0e6db562f"}
+{"fecha_hora":"2026-10-04T04:03:30.362Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/archive/unity-catalog/20220825","llamada":"7ae829e02076d3a9"}
+{"fecha_hora":"2026-10-04T04:03:43.000Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/release-notes/release-types","llamada":"61c7dbcdb6989e3a"}
+{"fecha_hora":"2026-10-04T04:03:44.232Z","herramienta":"WebSearch","consulta":"Databricks \"managed Apache Iceberg tables\" \"generally available\" release notes 2026","llamada":"a22e11b920963554"}
+{"fecha_hora":"2026-10-04T04:04:13.835Z","herramienta":"WebSearch","consulta":"Databricks SQL \"materialized views and streaming tables\" \"generally available\"","llamada":"92ace3b14587f313"}
+{"fecha_hora":"2026-10-04T04:04:14.551Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/release-notes/product/2026/may","llamada":"ec921cdf8c85d691"}
+{"fecha_hora":"2026-10-04T04:04:23.820Z","herramienta":"WebFetch","url":"https://www.databricks.com/blog/announcing-general-availability-materialized-views-and-streaming-tables-databricks-sql","llamada":"668f2dd54b0ea496"}
+{"fecha_hora":"2026-10-04T04:04:59.116Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/ldp/concepts/","llamada":"ed6dd62e54baa8e4"}
+{"fecha_hora":"2026-10-04T04:05:13.634Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/query-federation/","llamada":"90204b178a722f45"}
+{"fecha_hora":"2026-10-04T04:05:15.146Z","herramienta":"WebSearch","consulta":"\"Auto Loader\" Databricks 2020 \"GA\" OR \"generally available\" release notes cloudFiles","llamada":"5d5df9b86cd72aed"}
+{"fecha_hora":"2026-10-04T04:05:22.078Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/release-notes/product/2020/august","llamada":"ccf8a5b821bc0d4a"}
+{"fecha_hora":"2026-10-04T04:05:22.966Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/notebooks/","llamada":"0f04462811ff6a81"}
+{"fecha_hora":"2026-10-04T04:05:34.531Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/compute/serverless/","llamada":"7463cc6323292200"}
+{"fecha_hora":"2026-10-04T04:05:34.714Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/compute/","llamada":"2f399b1ecd9913e1"}
+{"fecha_hora":"2026-10-04T04:06:33.755Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/tables/row-and-column-filters","llamada":"84365198722a2a5b"}
+{"fecha_hora":"2026-10-04T04:06:34.201Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/metric-views/","llamada":"8252509ecf7eff2a"}
+{"fecha_hora":"2026-10-04T04:06:34.471Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/","llamada":"617d6456757c60b6"}
+{"fecha_hora":"2026-10-04T04:06:47.063Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/data-governance/unity-catalog/data-lineage","llamada":"9d1e8aedeaa6191f"}
+{"fecha_hora":"2026-10-04T04:06:50.647Z","herramienta":"WebSearch","consulta":"Databricks Lakeflow pipelines triggered vs continuous pipeline mode documentation","llamada":"a7b1c7020eb00f4d"}
+{"fecha_hora":"2026-10-04T04:07:08.346Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/metric-views/","llamada":"59f4a5c8ea03abbf"}
+{"fecha_hora":"2026-10-04T04:07:08.728Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/genie-agents/concepts","llamada":"147e4454c59ef746"}
+{"fecha_hora":"2026-10-04T04:07:25.390Z","herramienta":"WebSearch","consulta":"Databricks metric views YAML \"source\" table view SQL query create metric view documentation","llamada":"401e425cc3c35a37"}
+{"fecha_hora":"2026-10-04T04:07:34.007Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/metric-views/","llamada":"d70ea748e9866351"}
+{"fecha_hora":"2026-10-04T04:07:34.217Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/uc-semantics/metric-views/yaml-reference","llamada":"c1fc5858713a9a47"}
+{"fecha_hora":"2026-10-04T04:08:00.609Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/query-federation/","llamada":"2a01f69a8e255f6c"}
+{"fecha_hora":"2026-10-04T04:08:05.562Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/admin/account-settings/budgets","llamada":"ae74fde88077d004"}
+{"fecha_hora":"2026-10-04T04:10:23.759Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/dashboards/","llamada":"6cad0179341ed31d"}
+{"fecha_hora":"2026-10-04T04:10:25.091Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/jobs/","llamada":"020ee611b0ea6361"}
+{"fecha_hora":"2026-10-04T04:10:25.269Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/ldp/concepts/pipeline-mode","llamada":"5fd3e760cf11df19"}
+{"fecha_hora":"2026-10-04T04:10:54.000Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/release-notes/product/2022/august","llamada":"e65eb618c2d5d020"}
+{"fecha_hora":"2026-10-04T04:10:58.274Z","herramienta":"WebFetch","url":"https://www.databricks.com/blog/announcing-general-availability-databricks-lakeflow","llamada":"f112210ab3855f16"}
+{"fecha_hora":"2026-10-04T04:12:00.661Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/genie-agents/concepts","llamada":"db5a7d8335f677f3"}
+{"fecha_hora":"2026-10-04T04:12:01.180Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/ai-bi/release-notes/2024","llamada":"c2c370988e8876a2"}
+{"fecha_hora":"2026-10-04T04:12:02.367Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/ingestion/cloud-object-storage/auto-loader/","llamada":"f0063669876d703b"}
+{"fecha_hora":"2026-10-04T04:24:06.676Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/query-federation/","llamada":"1b9298e7e70d8a6c"}
+{"fecha_hora":"2026-10-04T04:24:06.921Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/ingestion/cloud-object-storage/auto-loader/","llamada":"51753f445b98ded0"}
+{"fecha_hora":"2026-10-04T04:24:07.297Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/release-notes/product/2020/august","llamada":"843604ebe52b72ee"}
+{"fecha_hora":"2026-10-04T04:24:51.107Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/compute/sql-warehouse/","llamada":"0fc8aadf88701b02"}
+{"fecha_hora":"2026-10-04T04:24:52.040Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/delta/","llamada":"ed1afba615f25eaf"}
+{"fecha_hora":"2026-10-04T04:24:52.442Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/data-governance/unity-catalog/","llamada":"1af8b09a5c03b1fc"}
+{"fecha_hora":"2026-10-04T04:25:28.335Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/archive/runtime-release-notes/7.2","llamada":"55a19c1855c858b7"}
+{"fecha_hora":"2026-10-04T04:25:33.985Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/release-notes/product/2020/august","llamada":"ff36846291c9fdc9"}
+{"fecha_hora":"2026-10-04T04:26:08.093Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/data-governance/unity-catalog/","llamada":"3844f65519663bee"}
+{"fecha_hora":"2026-10-04T04:26:24.258Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/jobs/","llamada":"986c434ab1a2a983"}
+{"fecha_hora":"2026-10-04T04:27:29.846Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/metric-views/","llamada":"29350b38268c5a91"}
+{"fecha_hora":"2026-10-04T04:27:33.555Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/admin/system-tables/billing","llamada":"a6ff76e24ef6c010"}
+{"fecha_hora":"2026-10-04T04:27:37.848Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/delta/","llamada":"c2df86e293806733"}
+{"fecha_hora":"2026-10-04T04:59:16.013Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/data-load-snowpipe-intro","llamada":"30101a849894d4cf"}
+{"fecha_hora":"2026-10-04T04:59:24.159Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/snowpipe-streaming/data-load-snowpipe-streaming-overview","llamada":"3b82e43ae3b71a2d"}
+{"fecha_hora":"2026-10-04T04:59:40.147Z","herramienta":"WebSearch","consulta":"Snowpipe Streaming high-performance architecture generally available release note site:docs.snowflake.com","llamada":"85d702f8adc01e93"}
+{"fecha_hora":"2026-10-04T04:59:46.743Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2025/other/2025-09-23-snowpipe-streaming-high-performance-architecture","llamada":"b3fa71fa5c0132f0"}
+{"fecha_hora":"2026-10-04T04:59:57.423Z","herramienta":"WebSearch","consulta":"Snowpipe \"generally available\" release notes docs.snowflake.com auto-ingest","llamada":"ca89922d1eb0bf55"}
+{"fecha_hora":"2026-10-04T05:00:07.816Z","herramienta":"WebSearch","consulta":"Snowflake blog Snowpipe \"generally available\" announcement continuous data ingestion","llamada":"13ad66a161d25940"}
+{"fecha_hora":"2026-10-04T05:00:39.026Z","herramienta":"WebFetch","url":"https://www.snowflake.com/en/blog/snowpipe-serverless-loading-for-streaming-data-2/","llamada":"83cbc36c7779c00a"}
+{"fecha_hora":"2026-10-04T05:00:51.090Z","herramienta":"WebSearch","consulta":"\"Snowpipe\" auto-ingest Google Cloud Storage Azure \"generally available\" 2020 release notes","llamada":"5862344da37efe66"}
+{"fecha_hora":"2026-10-04T05:01:05.972Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/intro-editions","llamada":"a6fe5a301ba8202a"}
+{"fecha_hora":"2026-10-04T05:01:49.360Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/data-integration/openflow/about","llamada":"a1847afbf674f58b"}
+{"fecha_hora":"2026-10-04T05:01:55.748Z","herramienta":"WebSearch","consulta":"Openflow Snowflake Deployments \"General availability\" release note","llamada":"5a4058f88a330a8b"}
+{"fecha_hora":"2026-10-04T05:02:02.037Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2025/other/2025-11-04-openflow","llamada":"d74807e5063474a0"}
+{"fecha_hora":"2026-10-04T05:02:03.672Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2026/other/2026-08-05-openflow-sql-server-cdc-ga","llamada":"0bedd5c87a8d7015"}
+{"fecha_hora":"2026-10-04T05:02:11.735Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/data-integration/openflow/connectors/about-openflow-connectors","llamada":"965aef4d2c9a283f"}
+{"fecha_hora":"2026-10-04T05:02:24.666Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/data-integration/openflow/connectors/about-openflow-connectors","llamada":"b68f600eba20338d"}
+{"fecha_hora":"2026-10-04T05:02:33.331Z","herramienta":"WebSearch","consulta":"\"Openflow Connector for PostgreSQL\" OR \"Openflow Connector for MySQL\" general availability release note 2025","llamada":"39e3a8aef7ff061a"}
+{"fecha_hora":"2026-10-04T05:02:41.868Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/data-integration/openflow/connectors/mysql/about","llamada":"873e0fd904daf583"}
+{"fecha_hora":"2026-10-04T05:02:48.441Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2025/other/2025-05-30-openflow","llamada":"1659811e2d9c4378"}
+{"fecha_hora":"2026-10-04T05:02:58.871Z","herramienta":"WebSearch","consulta":"\"Snowpipe\" \"is now generally available\" Snowflake","llamada":"581db4629bba309c"}
+{"fecha_hora":"2026-10-04T05:03:02.617Z","herramienta":"WebFetch","url":"https://www.snowflake.com/blog/auto-ingest-snowpipe-is-now-generally-available/","llamada":"195ad9120135f13d"}
+{"fecha_hora":"2026-10-04T05:03:05.474Z","herramienta":"WebFetch","url":"https://www.snowflake.com/en/blog/auto-ingest-snowpipe-is-now-generally-available/","llamada":"45c09d2fd851fe34"}
+{"fecha_hora":"2026-10-04T05:03:15.527Z","herramienta":"WebSearch","consulta":"Snowpipe release note 2025 OR 2026 \"General availability\" Snowpipe file ingestion docs.snowflake.com release-notes","llamada":"438decceea5a393e"}
+{"fecha_hora":"2026-10-04T05:03:28.305Z","herramienta":"WebSearch","consulta":"Snowflake release notes Snowpipe auto-ingest \"Google Cloud Storage\" \"generally available\" 2020 OR 2021","llamada":"70e7d1ad1e7c776d"}
+{"fecha_hora":"2026-10-04T05:03:34.604Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2023/7_33","llamada":"a5ca08bef75ec63a"}
+{"fecha_hora":"2026-10-04T05:03:42.679Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/snowpipe-streaming/snowpipe-streaming-classic-deprecation","llamada":"50571eebe9cf9b1e"}
+{"fecha_hora":"2026-10-04T05:03:50.813Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/intro-key-concepts","llamada":"d307ca844270465a"}
+{"fecha_hora":"2026-10-04T05:04:03.641Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/intro-key-concepts","llamada":"87ee889391fd76f6"}
+{"fecha_hora":"2026-10-04T05:04:12.807Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/tables-iceberg","llamada":"28ec36ebf571daa6"}
+{"fecha_hora":"2026-10-04T05:04:20.216Z","herramienta":"WebSearch","consulta":"Apache Iceberg tables \"General availability\" Snowflake release note June 2024","llamada":"7c2c562e7985ccb5"}
+{"fecha_hora":"2026-10-04T05:04:25.632Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2024/other/2024-06-10-iceberg-tables","llamada":"bab74ffb31580c1d"}
+{"fecha_hora":"2026-10-04T05:04:35.950Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/tables-iceberg","llamada":"6a7fb5bf422d1dd1"}
+{"fecha_hora":"2026-10-04T05:04:45.053Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/dynamic-tables/overview","llamada":"e832f49c9f51aed4"}
+{"fecha_hora":"2026-10-04T05:04:56.059Z","herramienta":"WebSearch","consulta":"dynamic tables \"General availability\" Snowflake release note April 2024","llamada":"88a1b9a6b5eedd4b"}
+{"fecha_hora":"2026-10-04T05:05:00.706Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2024/other/2024-04-29-dynamic-tables","llamada":"ab225c14a1e6e30a"}
+{"fecha_hora":"2026-10-04T05:05:07.665Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/developer-guide/snowpark/index","llamada":"439573a98b2a4f39"}
+{"fecha_hora":"2026-10-04T05:05:13.885Z","herramienta":"WebSearch","consulta":"Snowpark for Python \"general availability\" release notes November 2022 docs.snowflake.com","llamada":"55912345418d985e"}
+{"fecha_hora":"2026-10-04T05:05:23.095Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/clients-drivers/snowpark-python-2022","llamada":"95a1028d5485a688"}
+{"fecha_hora":"2026-10-04T05:05:30.626Z","herramienta":"WebSearch","consulta":"\"Snowpark for Python\" \"generally available\" Snowflake blog","llamada":"bf344293d49de0a5"}
+{"fecha_hora":"2026-10-04T05:05:36.322Z","herramienta":"WebFetch","url":"https://www.snowflake.com/en/blog/snowpark-python-innovation-available-all-snowflake-customers/","llamada":"286d257272dba0bc"}
+{"fecha_hora":"2026-10-04T05:05:45.362Z","herramienta":"WebFetch","url":"https://www.snowflake.com/en/news/press-releases/snowflake-disrupts-application-development-with-general-availability-of-snowpark-for-python-native-streamlit-support-and-more-2/","llamada":"ef4a0058b211fdb8"}
+{"fecha_hora":"2026-10-04T05:05:54.010Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/warehouses-overview","llamada":"10bd89af2575471c"}
+{"fecha_hora":"2026-10-04T05:06:32.750Z","herramienta":"WebSearch","consulta":"Snowflake press release 2015 \"general availability\" Snowflake Elastic Data Warehouse","llamada":"ef446fe404f3810b"}
+{"fecha_hora":"2026-10-04T05:07:03.697Z","herramienta":"WebSearch","consulta":"snowflake.com news \"Elastic Data Warehouse\" \"general availability\" 2015","llamada":"bcda7ef65fe2ec23"}
+{"fecha_hora":"2026-10-04T05:07:09.020Z","herramienta":"WebFetch","url":"https://www.globenewswire.com/news-release/2015/12/16/1186880/0/en/Snowflake-Computing-Concludes-Historic-Year-With-Recognition-for-Its-Elastic-Data-Warehouse-in-the-Cloud.html","llamada":"aa471bd689627789"}
+{"fecha_hora":"2026-10-04T05:07:21.913Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/views-semantic/overview","llamada":"5c25aedcf44c81ca"}
+{"fecha_hora":"2026-10-04T05:07:29.826Z","herramienta":"WebSearch","consulta":"semantic views \"General availability\" Snowflake release note 2025","llamada":"7f458109dea2bc7f"}
+{"fecha_hora":"2026-10-04T05:07:35.685Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2025/9_25","llamada":"a343776d7ccaf6f9"}
+{"fecha_hora":"2026-10-04T05:07:43.128Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/developer-guide/streamlit/about-streamlit","llamada":"de9299b9f12b64b6"}
+{"fecha_hora":"2026-10-04T05:07:49.167Z","herramienta":"WebSearch","consulta":"\"Streamlit in Snowflake\" \"General Availability\" release note December 2023","llamada":"703cf25739717f0a"}
+{"fecha_hora":"2026-10-04T05:07:54.100Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2023/other/2023-12-01","llamada":"7997d02ffbe1d62c"}
+{"fecha_hora":"2026-10-04T05:07:55.017Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2024/other/2024-01-25","llamada":"b7f5fe9058e6bd24"}
+{"fecha_hora":"2026-10-04T05:08:04.277Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-analyst","llamada":"631265ea46d74c10"}
+{"fecha_hora":"2026-10-04T05:08:12.631Z","herramienta":"WebSearch","consulta":"\"Cortex Analyst\" \"General availability\" release note","llamada":"1bd53521cd1b2bd2"}
+{"fecha_hora":"2026-10-04T05:08:19.085Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2026/other/2026-08-28-cortex-analyst-transition-cortex-agents","llamada":"7cfc9d976b23648f"}
+{"fecha_hora":"2026-10-04T05:08:26.593Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2026/other/2026-08-28-cortex-analyst-transition-cortex-agents","llamada":"133996c44e504d66"}
+{"fecha_hora":"2026-10-04T05:08:36.439Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-agents","llamada":"a78b6a015557b86e"}
+{"fecha_hora":"2026-10-04T05:08:45.561Z","herramienta":"WebSearch","consulta":"\"Cortex Agents\" \"General availability\" release note 2025 docs.snowflake.com","llamada":"0f0b39ee8c623db9"}
+{"fecha_hora":"2026-10-04T05:08:50.598Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2025/other/2025-11-04-cortex-agents","llamada":"0a1776148808ac6d"}
+{"fecha_hora":"2026-10-04T05:09:01.567Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/snowflake-cortex/snowflake-intelligence","llamada":"7c7bca22da1eda63"}
+{"fecha_hora":"2026-10-04T05:09:10.501Z","herramienta":"WebSearch","consulta":"\"Snowflake CoWork\" \"Snowflake Intelligence\" renamed release note","llamada":"3d1b875f4a1ea486"}
+{"fecha_hora":"2026-10-04T05:09:18.531Z","herramienta":"WebSearch","consulta":"Snowflake CoWork release note docs.snowflake.com \"formerly Snowflake Intelligence\"","llamada":"043cfb9d883f2995"}
+{"fecha_hora":"2026-10-04T05:09:24.865Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2025/other/2025-11-04-snowflake-intelligence","llamada":"80936f0ca5c44254"}
+{"fecha_hora":"2026-10-04T05:10:01.934Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/snowflake-cortex/snowflake-cowork","llamada":"5331c692341cdee6"}
+{"fecha_hora":"2026-10-04T05:10:09.727Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/snowflake-horizon","llamada":"39e0ddb0cf2a3fbd"}
+{"fecha_hora":"2026-10-04T05:10:21.038Z","herramienta":"WebSearch","consulta":"Snowflake \"lineage\" Snowsight \"General availability\" release note","llamada":"064d3cc3b7212f2a"}
+{"fecha_hora":"2026-10-04T05:10:30.328Z","herramienta":"WebSearch","consulta":"Snowflake \"row access policies\" \"generally available\" OR \"general availability\" release notes","llamada":"1e339b3104e3f985"}
+{"fecha_hora":"2026-10-04T05:10:37.388Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2023/7_32","llamada":"22b94a0c4d647cbb"}
+{"fecha_hora":"2026-10-04T05:10:47.198Z","herramienta":"WebSearch","consulta":"Snowflake blog \"Row Access Policies\" \"generally available\" OR \"Dynamic Data Masking\" \"generally available\"","llamada":"69de9619d04dbb36"}
+{"fecha_hora":"2026-10-04T05:10:53.865Z","herramienta":"WebFetch","url":"https://www.snowflake.com/en/blog/protect-sensitive-data-tag-based-masking/","llamada":"61a27a7ee2d6112a"}
+{"fecha_hora":"2026-10-04T05:11:04.540Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/all-release-notes","llamada":"2f5c738e2e224f2a"}
+{"fecha_hora":"2026-10-04T05:11:18.958Z","herramienta":"WebSearch","consulta":"docs.snowflake.com release-notes 2021 \"Row Access Policies\" \"General Availability\"","llamada":"e81635ff69570118"}
+{"fecha_hora":"2026-10-04T05:11:27.640Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/security-row-intro","llamada":"5f416efa2d34953d"}
+{"fecha_hora":"2026-10-04T05:11:34.515Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/security-column-ddm-intro","llamada":"c733309f053f8245"}
+{"fecha_hora":"2026-10-04T05:11:43.042Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/access-history","llamada":"32fbf34fcd1c1d94"}
+{"fecha_hora":"2026-10-04T05:11:51.557Z","herramienta":"WebSearch","consulta":"Snowflake \"Access History\" \"General Availability\" release note docs.snowflake.com","llamada":"1ea9b39f4c72c830"}
+{"fecha_hora":"2026-10-04T05:11:57.183Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2023-07","llamada":"50132ca6cfbb2d76"}
+{"fecha_hora":"2026-10-04T05:12:10.400Z","herramienta":"WebSearch","consulta":"\"row access policies\" Snowflake 2021 \"now generally available\" row-level security announcement","llamada":"f82d279f4e557f7a"}
+{"fecha_hora":"2026-10-04T05:12:19.851Z","herramienta":"WebSearch","consulta":"\"Horizon Catalog\" Snowflake \"General availability\" release note 2025 OR 2026","llamada":"f60d4d69b304faaf"}
+{"fecha_hora":"2026-10-04T05:12:26.966Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2026/other/2026-05-26-tables-iceberg-query-using-external-query-engine-snowflake-horizon-writes-ga","llamada":"47c1573e6c5862ae"}
+{"fecha_hora":"2026-10-04T05:12:33.037Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2026/other/2026-05-26-tables-iceberg-query-using-external-query-engine-snowflake-horizon-writes-ga","llamada":"cf2d05ba9215fff7"}
+{"fecha_hora":"2026-10-04T05:12:44.447Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/tables-iceberg-access-using-external-query-engine-snowflake-horizon","llamada":"39c903de5a97743a"}
+{"fecha_hora":"2026-10-04T05:12:53.161Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/resource-monitors","llamada":"19fab28aa546c3a5"}
+{"fecha_hora":"2026-10-04T05:13:03.423Z","herramienta":"WebSearch","consulta":"Snowflake budgets \"General Availability\" release note cost management","llamada":"a63e3f468585eca0"}
+{"fecha_hora":"2026-10-04T05:13:12.387Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2024/other/2024-04-12-cost","llamada":"a4ea0536dfa46171"}
+{"fecha_hora":"2026-10-04T05:13:13.821Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/budgets","llamada":"5c343876d84b61e7"}
+{"fecha_hora":"2026-10-04T05:13:20.654Z","herramienta":"WebSearch","consulta":"\"April 11, 2024\" Budgets Release Notes \"General Availability\" Snowflake","llamada":"fc4dd1f2e836b682"}
+{"fecha_hora":"2026-10-04T05:13:25.053Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2024/other/2024-04-11-budgets","llamada":"9f367e6f6b799721"}
+{"fecha_hora":"2026-10-04T05:13:39.314Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/intro-editions","llamada":"ba821ce8b260b46f"}
+{"fecha_hora":"2026-10-04T05:13:49.854Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/tasks-intro","llamada":"45d35bc766d066c9"}
+{"fecha_hora":"2026-10-04T05:14:02.918Z","herramienta":"WebSearch","consulta":"Snowflake tasks \"General availability\" release note serverless tasks OR triggered tasks OR task graphs","llamada":"38cd0b3c170c8e01"}
+{"fecha_hora":"2026-10-04T05:14:07.950Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2024/8_27","llamada":"7d5d9fa188a77a10"}
+{"fecha_hora":"2026-10-04T05:14:48.016Z","herramienta":"WebSearch","consulta":"Snowsight dashboards deprecation OR \"Snowsight dashboards\" 2026 Snowflake documentation","llamada":"1e1398bbcd70accd"}
+{"fecha_hora":"2026-10-04T05:14:55.906Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/bcr-bundles/un-bundled/bcr-2260","llamada":"105601c0f2abe53e"}
+{"fecha_hora":"2026-10-04T05:15:01.171Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/developer-guide/streamlit/about-streamlit","llamada":"32511784fed2ad56"}
+{"fecha_hora":"2026-10-04T05:15:10.538Z","herramienta":"WebSearch","consulta":"Streamlit in Snowflake \"query warehouse\" runtime environments app queries warehouse docs","llamada":"de042af04d0dcec7"}
+{"fecha_hora":"2026-10-04T05:15:16.746Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/developer-guide/streamlit/app-development/runtime-environments","llamada":"10a2ee51e96e3bff"}
+{"fecha_hora":"2026-10-04T05:15:25.229Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/data-integration/openflow/about","llamada":"2675eadd2808d4f3"}
+{"fecha_hora":"2026-10-04T05:15:34.316Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/data-integration/openflow/connectors/salesforce-bulk-api/about","llamada":"bad114a51803d8a9"}
+{"fecha_hora":"2026-10-04T05:15:43.850Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/data-integration/openflow/connectors/mysql/about","llamada":"9af3fb5507f21926"}
+{"fecha_hora":"2026-10-04T05:15:50.229Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2026/other/2026-09-15-snowpipe-streaming-elastic-channels-ga","llamada":"c327850817fcbebd"}
+{"fecha_hora":"2026-10-04T05:16:02.267Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/views-semantic/overview","llamada":"5cf608c849d41582"}
+{"fecha_hora":"2026-10-04T05:16:35.794Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/views-semantic/sql","llamada":"956d5ddac84994b5"}
+{"fecha_hora":"2026-10-04T05:16:47.872Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-agents","llamada":"c531801c25f53170"}
+{"fecha_hora":"2026-10-04T05:16:59.991Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/data-load-snowpipe-intro","llamada":"f6d75a6d4436b859"}
+{"fecha_hora":"2026-10-04T05:17:12.317Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/tables-iceberg","llamada":"a269efa6f03b022c"}
+{"fecha_hora":"2026-10-04T05:17:23.594Z","herramienta":"WebSearch","consulta":"Snowflake Horizon press release built-in governance \"Snowflake Horizon\" generally available features 2024","llamada":"6da612cd6178265e"}
+{"fecha_hora":"2026-10-04T05:17:33.213Z","herramienta":"WebSearch","consulta":"\"data lineage\" Snowflake \"General availability\" release note 2024 Snowsight lineage graph","llamada":"e9e304237bb56fc9"}
+{"fecha_hora":"2026-10-04T05:17:40.212Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/ui-snowsight-lineage","llamada":"f6cbd74eee37cb13"}
+{"fecha_hora":"2026-10-04T05:17:45.402Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2025/other/2025-10-03-process-lineage","llamada":"d8a3316c23e89dc7"}
+{"fecha_hora":"2026-10-04T05:17:54.368Z","herramienta":"WebSearch","consulta":"Snowflake \"Data lineage\" \"(General availability)\" 2025 release note docs.snowflake.com/en/release-notes/2025","llamada":"598f42e74ad81f4d"}
+{"fecha_hora":"2026-10-04T05:18:01.598Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2025/9_03","llamada":"f6b5a41838605e78"}
+{"fecha_hora":"2026-10-04T05:18:17.855Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-analyst","llamada":"34da57526e1394c9"}
+{"fecha_hora":"2026-10-04T05:19:19.555Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/resource-monitors","llamada":"f688be2e15c4ae95"}
+{"fecha_hora":"2026-10-04T05:19:31.045Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2024/other/2024-11-12-dynamic-iceberg-tables","llamada":"e365b43c4ca367f0"}
+{"fecha_hora":"2026-10-04T05:21:50.495Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/access-history","llamada":"5192c707cfa6145d"}
+{"fecha_hora":"2026-10-04T05:21:51.776Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/warehouses-multicluster","llamada":"ab801e318ac3f4f1"}
+{"fecha_hora":"2026-10-04T05:21:53.524Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/dynamic-tables/overview","llamada":"c1a563b122b552a3"}
+{"fecha_hora":"2026-10-04T05:22:00.601Z","herramienta":"WebFetch","url":"https://www.snowflake.com/en/news/press-releases/snowflake-cowork-powers-the-agentic-enterprise-as-the-personal-agent-for-knowledge-workers-to-work-smarter/","llamada":"536f6b93abf98244"}
+{"fecha_hora":"2026-10-04T05:22:10.156Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2025/other/2025-11-10-snowpipe-streaming-gcp-ga","llamada":"57837d0427e3f062"}
+{"fecha_hora":"2026-10-04T05:22:10.438Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2025/other/2025-11-05-snowpipe-streaming-azure-ga","llamada":"231f7faab893306d"}
+{"fecha_hora":"2026-10-04T05:22:19.679Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/snowflake-horizon","llamada":"a82068c07a3c89e8"}
+{"fecha_hora":"2026-10-04T05:22:21.288Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/warehouses-overview","llamada":"877d48be1ee586ff"}
+{"fecha_hora":"2026-10-04T05:24:10.672Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/data-time-travel","llamada":"1a9d15212e3fd233"}
+{"fecha_hora":"2026-10-04T05:36:34.559Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/tasks-intro","llamada":"8a5ac07a6b22ab5a"}
+{"fecha_hora":"2026-10-04T05:37:06.340Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/warehouses-overview","llamada":"9ea21ad5464b49e0"}
+{"fecha_hora":"2026-10-04T05:37:09.405Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/data-integration/openflow/about","llamada":"a40aa7643b59f27a"}
+{"fecha_hora":"2026-10-04T05:37:18.189Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/warehouses-multicluster","llamada":"cff5e667f98acbb3"}
+{"fecha_hora":"2026-10-04T05:37:36.758Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/developer-guide/snowpark/index.md","llamada":"fbcbfce43f3a5c2a"}
+{"fecha_hora":"2026-10-04T05:37:37.041Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/snowflake-cortex/snowflake-cowork.md","llamada":"b2c9cb38087d23f4"}
+{"fecha_hora":"2026-10-04T05:37:37.329Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-analyst.md","llamada":"c838ba6583281384"}
+{"fecha_hora":"2026-10-04T05:37:38.550Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-agents.md","llamada":"77d637c0b83ad4d4"}
+{"fecha_hora":"2026-10-04T05:37:48.615Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2025/9_25.md","llamada":"f264879a6778f297"}
+{"fecha_hora":"2026-10-04T05:37:49.191Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/dynamic-tables/overview.md","llamada":"0abd0d708851c156"}
+{"fecha_hora":"2026-10-04T05:37:52.048Z","herramienta":"WebFetch","url":"https://www.snowflake.com/en/news/press-releases/snowflake-disrupts-application-development-with-general-availability-of-snowpark-for-python-native-streamlit-support-and-more-2/","llamada":"9f07a0db191a9105"}
+{"fecha_hora":"2026-10-04T05:38:09.322Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/release-notes/2025/9_25.md","llamada":"2cc3e0c885c50259"}
+{"fecha_hora":"2026-10-04T05:38:10.924Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/dynamic-tables/overview.md","llamada":"34f95d8fce4a7943"}
+{"fecha_hora":"2026-10-04T05:38:20.782Z","herramienta":"WebSearch","consulta":"snowflake.com press release June 2015 \"Snowflake Elastic Data Warehouse\" general availability Series C Altimeter","llamada":"e243a0f8702b6feb"}
+{"fecha_hora":"2026-10-04T05:38:29.467Z","herramienta":"WebFetch","url":"https://www.snowflake.com/resource/sigmod-2016-paper-snowflake-elastic-data-warehouse/","llamada":"af4cb80f5bc8cca9"}
+{"fecha_hora":"2026-10-04T05:38:50.597Z","herramienta":"WebFetch","url":"https://docs.snowflake.com/en/user-guide/tasks-intro.md","llamada":"131039ac14026187"}
+{"fecha_hora":"2026-10-04T06:21:57.023Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/mirroring/overview","llamada":"ed5b0cbf75c632ce"}
+{"fecha_hora":"2026-10-04T06:21:58.448Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview","llamada":"76c3de4b5bcb5ff3"}
+{"fecha_hora":"2026-10-04T06:22:00.150Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/data-factory/what-is-copy-job","llamada":"5856683469c66211"}
+{"fecha_hora":"2026-10-04T06:22:01.422Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/data-engineering/lakehouse-overview","llamada":"141d393b46703d1c"}
+{"fecha_hora":"2026-10-04T06:22:09.523Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/data-science/concept-data-agent","llamada":"7f541a82f25c6b2b"}
+{"fecha_hora":"2026-10-04T06:22:11.742Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/fundamentals/direct-lake-overview","llamada":"3fc14144fabeb64f"}
+{"fecha_hora":"2026-10-04T06:22:12.792Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/onelake/security/get-started-security","llamada":"d76b713d74737411"}
+{"fecha_hora":"2026-10-04T06:22:13.998Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/governance/information-protection","llamada":"0c0264aa16c137cd"}
+{"fecha_hora":"2026-10-04T06:22:23.412Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/enterprise/licenses","llamada":"efa63c93eb1a2311"}
+{"fecha_hora":"2026-10-04T06:22:25.173Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/enterprise/metrics-app","llamada":"da01335f47234d2a"}
+{"fecha_hora":"2026-10-04T06:22:25.719Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/data-factory/pipeline-overview","llamada":"80306923732122d8"}
+{"fecha_hora":"2026-10-04T06:22:26.604Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/data-factory/dataflows-gen2-overview","llamada":"d8a0231b797a3e9e"}
+{"fecha_hora":"2026-10-04T06:22:31.137Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/data-warehouse/data-warehousing","llamada":"4171b7de76e1a6d4"}
+{"fecha_hora":"2026-10-04T06:22:32.824Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/fundamentals/microsoft-fabric-overview","llamada":"f47c1c28ff25b235"}
+{"fecha_hora":"2026-10-04T06:22:33.927Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/data-engineering/data-engineering-overview","llamada":"7c53c01255ec4274"}
+{"fecha_hora":"2026-10-04T06:22:39.296Z","herramienta":"WebFetch","url":"https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/","llamada":"4af031da2d7ae2e1"}
+{"fecha_hora":"2026-10-04T06:22:54.918Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/fundamentals/whats-new-archive","llamada":"1bace0bc939614fc"}
+{"fecha_hora":"2026-10-04T06:23:08.015Z","herramienta":"WebFetch","url":"https://raw.githubusercontent.com/MicrosoftDocs/fabric-docs/main/docs/fundamentals/whats-new-archive.md","llamada":"081ae02fd01fa83e"}
+{"fecha_hora":"2026-10-04T06:23:23.592Z","herramienta":"WebFetch","url":"https://raw.githubusercontent.com/MicrosoftDocs/fabric-docs/main/docs/fundamentals/whats-new.md","llamada":"19675770be9f0577"}
+{"fecha_hora":"2026-10-04T06:23:31.741Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/fundamentals/whats-new-archive","llamada":"cd73897197d3889d"}
+{"fecha_hora":"2026-10-04T06:23:49.629Z","herramienta":"WebFetch","url":"https://raw.githubusercontent.com/MicrosoftDocs/fabric-docs/main/docs/fundamentals/whats-new.md","llamada":"34c5a12ff853a1a0"}
+{"fecha_hora":"2026-10-04T06:24:05.107Z","herramienta":"WebSearch","consulta":"Copy job Data Factory Microsoft Fabric \"generally available\" announcement","llamada":"fad0348fd6e58183"}
+{"fecha_hora":"2026-10-04T06:24:05.812Z","herramienta":"WebSearch","consulta":"Apache Airflow job Microsoft Fabric generally available learn.microsoft.com","llamada":"b9cb4290d60f6a83"}
+{"fecha_hora":"2026-10-04T06:24:06.034Z","herramienta":"WebSearch","consulta":"SQL Server mirroring Microsoft Fabric generally available SQL Server 2025","llamada":"3615ae9981a85dd4"}
+{"fecha_hora":"2026-10-04T06:24:06.158Z","herramienta":"WebSearch","consulta":"\"OneLake security\" \"generally available\" Microsoft Fabric","llamada":"1904f23537db185e"}
+{"fecha_hora":"2026-10-04T06:24:11.235Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/mirroring/sql-server","llamada":"2ad4faf08f0b8daa"}
+{"fecha_hora":"2026-10-04T06:24:12.617Z","herramienta":"WebFetch","url":"https://blog.fabric.microsoft.com/en-us/blog/simplify-your-data-ingestion-with-copy-job-general-availability-announcement","llamada":"7ba95b3db12d96a0"}
+{"fecha_hora":"2026-10-04T06:24:22.357Z","herramienta":"WebFetch","url":"https://community.fabric.microsoft.com/blog/fbc_fabricupdatesblogs/mirroring-sql-server-postgressql-cosmos-db-updates-to-snowflake-mirroring-and-th/5172477","llamada":"787201c26ac647bd"}
+{"fecha_hora":"2026-10-04T06:24:22.488Z","herramienta":"WebFetch","url":"https://community.fabric.microsoft.com/t5/Fabric-Updates-Blogs/OneLake-security-Generally-Available/ba-p/5176756","llamada":"94ff476825e2ae8c"}
+{"fecha_hora":"2026-10-04T06:24:22.506Z","herramienta":"WebFetch","url":"https://community.fabric.microsoft.com/blog/fbc_fabricupdatesblogs/running-apache-airflow-jobs-seamlessly-in-microsoft-fabric/5172862","llamada":"7df12ae3e7f344e3"}
+{"fecha_hora":"2026-10-04T06:24:35.263Z","herramienta":"WebFetch","url":"https://github.com/MicrosoftDocs/fabric-docs/tree/main/docs/fundamentals","llamada":"a140b2cfa8db7868"}
+{"fecha_hora":"2026-10-04T06:24:40.859Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/data-factory/apache-airflow-jobs-concepts","llamada":"2ff912115414789f"}
+{"fecha_hora":"2026-10-04T06:24:47.240Z","herramienta":"WebSearch","consulta":"\"Apache Airflow job\" Fabric \"generally available\" site:learn.microsoft.com","llamada":"12cceccc1be2bcf5"}
+{"fecha_hora":"2026-10-04T06:25:08.639Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/fundamentals/whats-new","llamada":"25582e479a6ffc52"}
+{"fecha_hora":"2026-10-04T06:25:12.502Z","herramienta":"WebSearch","consulta":"Microsoft Learn Fabric Data Factory \"what's new\" Apache Airflow job generally available Copy job generally available","llamada":"4ca2f3d0b8f34cb8"}
+{"fecha_hora":"2026-10-04T06:25:29.487Z","herramienta":"WebSearch","consulta":"Microsoft Fabric \"Capacity Metrics app\" \"generally available\" health page timepoint","llamada":"cc91b9d8701104cb"}
+{"fecha_hora":"2026-10-04T06:25:31.300Z","herramienta":"WebSearch","consulta":"OneLake security roles \"generally available\" row-level column-level security learn.microsoft.com fabric onelake security","llamada":"5fecc50da4235bc6"}
+{"fecha_hora":"2026-10-04T06:25:31.426Z","herramienta":"WebSearch","consulta":"\"generally available\" mirroring \"SQL Server\" Fabric learn.microsoft.com mirroring limitations tutorial","llamada":"cbc423d16c58ba42"}
+{"fecha_hora":"2026-10-04T06:25:35.004Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/sql/sql-server/fabric-database/fabric-mirrored-databases?view=sql-server-ver17","llamada":"dfcc7793a6e25eaf"}
+{"fecha_hora":"2026-10-04T06:25:35.716Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/mirroring/sql-server-faq","llamada":"a41a939fabbcb8db"}
+{"fecha_hora":"2026-10-04T06:25:43.822Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/mirroring/azure-sql-database","llamada":"f2abbb3fab8fa143"}
+{"fecha_hora":"2026-10-04T06:25:50.453Z","herramienta":"WebSearch","consulta":"learn.microsoft.com fabric \"is generally available\" mirroring OR \"copy job\" OR \"OneLake security\" OR \"Airflow\"","llamada":"77906ac63415d8b4"}
+{"fecha_hora":"2026-10-04T06:25:55.650Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/security/security-feature-availability","llamada":"d206fc93c2648440"}
+{"fecha_hora":"2026-10-04T06:25:56.336Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/data-factory/compare-fabric-data-factory-and-azure-data-factory","llamada":"3cf01232aad7653b"}
+{"fecha_hora":"2026-10-04T06:26:11.031Z","herramienta":"WebSearch","consulta":"microsoft.com/en-us/microsoft-fabric/blog general availability Copy job Apache Airflow job OneLake security mirroring SQL Server","llamada":"800a6e0cc6a898bc"}
+{"fecha_hora":"2026-10-04T06:26:23.655Z","herramienta":"WebFetch","url":"https://www.microsoft.com/en-us/microsoft-fabric/blog/2025/03/31/fabcon-2025-fueling-tomorrows-ai-with-new-agentic-capabilities-and-security-innovations-in-fabric/","llamada":"60250f927eabbb20"}
+{"fecha_hora":"2026-10-04T06:26:35.909Z","herramienta":"WebSearch","consulta":"microsoft.com microsoft-fabric blog 2026 \"OneLake security\" \"generally available\"","llamada":"20c9c51169cd0675"}
+{"fecha_hora":"2026-10-04T06:26:35.913Z","herramienta":"WebSearch","consulta":"microsoft.com microsoft-fabric blog Ignite 2025 \"SQL Server\" mirroring \"generally available\" Fabric","llamada":"8b3623edb3c463dc"}
+{"fecha_hora":"2026-10-04T06:26:46.852Z","herramienta":"WebFetch","url":"https://azure.microsoft.com/en-us/blog/microsoft-databases-and-microsoft-fabric-your-unified-and-ai-powered-data-estate/","llamada":"6b70336fe4f049fb"}
+{"fecha_hora":"2026-10-04T06:26:47.928Z","herramienta":"WebFetch","url":"https://techcommunity.microsoft.com/blog/SQLServer/sql-server-2025-is-now-generally-available/4470570","llamada":"511fad6229eb4d0f"}
+{"fecha_hora":"2026-10-04T06:26:54.556Z","herramienta":"WebFetch","url":"https://azure.microsoft.com/en-us/blog/microsoft-databases-and-microsoft-fabric-your-unified-and-ai-powered-data-estate/","llamada":"eecf5d1d15591cfa"}
+{"fecha_hora":"2026-10-04T06:27:08.621Z","herramienta":"WebSearch","consulta":"Arun Ulag FabCon 2026 blog Microsoft Fabric announcements general availability OneLake security","llamada":"c138b35148e1460c"}
+{"fecha_hora":"2026-10-04T06:27:21.690Z","herramienta":"WebFetch","url":"https://azure.microsoft.com/en-us/blog/fabcon-and-sqlcon-2026-in-barcelona-building-the-data-foundation-for-microsoft-copilot-and-agents/","llamada":"187391f38c1bc7d6"}
+{"fecha_hora":"2026-10-04T06:27:21.722Z","herramienta":"WebFetch","url":"https://azure.microsoft.com/en-us/blog/fabcon-and-sqlcon-2026-unifying-databases-and-fabric-on-a-single-data-platform/","llamada":"da06cb147d76286c"}
+{"fecha_hora":"2026-10-04T06:27:32.375Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/onelake/security/data-access-control-model","llamada":"2e889ab9b0fe98ab"}
+{"fecha_hora":"2026-10-04T06:27:35.829Z","herramienta":"WebFetch","url":"https://azure.microsoft.com/en-us/blog/fabcon-and-sqlcon-2026-unifying-databases-and-fabric-on-a-single-data-platform/","llamada":"bec9230c17dd5732"}
+{"fecha_hora":"2026-10-04T06:28:44.826Z","herramienta":"WebSearch","consulta":"\"OneLake security\" \"now generally available\" OR \"is generally available\" learn.microsoft.com fabric onelake","llamada":"ccefa51cf181ed87"}
+{"fecha_hora":"2026-10-04T06:28:58.881Z","herramienta":"WebFetch","url":"https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/","llamada":"5ee2af3d98dacef9"}
+{"fecha_hora":"2026-10-04T06:29:08.657Z","herramienta":"WebFetch","url":"https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/","llamada":"949b4352e0acbd9c"}
+{"fecha_hora":"2026-10-04T06:29:17.387Z","herramienta":"WebFetch","url":"https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/","llamada":"0c46a53ece8ed81c"}
+{"fecha_hora":"2026-10-04T06:29:31.438Z","herramienta":"WebFetch","url":"https://www.microsoft.com/en-us/microsoft-fabric/blog/2025/03/31/fabcon-2025-fueling-tomorrows-ai-with-new-agentic-capabilities-and-security-innovations-in-fabric/","llamada":"fa2dc409032c7e9a"}
+{"fecha_hora":"2026-10-04T06:29:45.073Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/data-factory/copy-job-connectors","llamada":"d96b28e6f0ef5f6a"}
+{"fecha_hora":"2026-10-04T06:30:23.218Z","herramienta":"WebFetch","url":"https://azure.microsoft.com/en-us/blog/microsoft-databases-and-microsoft-fabric-your-unified-and-ai-powered-data-estate/","llamada":"695cd930879e1c37"}
+{"fecha_hora":"2026-10-04T06:30:33.865Z","herramienta":"WebFetch","url":"https://www.microsoft.com/en-us/microsoft-fabric/blog/2025/03/31/fabcon-2025-fueling-tomorrows-ai-with-new-agentic-capabilities-and-security-innovations-in-fabric/","llamada":"e9278bf337daa901"}
+{"fecha_hora":"2026-10-04T06:30:41.064Z","herramienta":"WebFetch","url":"https://azure.microsoft.com/en-us/blog/fabcon-and-sqlcon-2026-unifying-databases-and-fabric-on-a-single-data-platform/","llamada":"22189ebd2767926d"}
+{"fecha_hora":"2026-10-04T06:30:48.698Z","herramienta":"WebFetch","url":"https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/","llamada":"08e041f74b24870c"}
+{"fecha_hora":"2026-10-04T17:37:40.241Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/onelake/security/get-started-security","llamada":"59294e45f46e356e"}
+{"fecha_hora":"2026-10-04T17:37:45.527Z","herramienta":"WebSearch","consulta":"OneLake security generally available Microsoft Fabric 2026","llamada":"626c4690f0fe7c37"}
+{"fecha_hora":"2026-10-04T17:38:18.556Z","herramienta":"WebFetch","url":"https://community.fabric.microsoft.com/t5/Fabric-Updates-Blogs/OneLake-security-Generally-Available/ba-p/5176756","llamada":"e6ffaa1eb62386cb"}
+{"fecha_hora":"2026-10-04T17:38:18.612Z","herramienta":"WebFetch","url":"https://blog.fabric.microsoft.com/en-us/blog/whats-new-in-onelake-and-the-fabric-platform-more-sources-security-and-capacity-tooling/","llamada":"5f17cabc9408a983"}
+{"fecha_hora":"2026-10-04T17:38:23.855Z","herramienta":"WebFetch","url":"https://community.fabric.microsoft.com/blog/fbc_fabricupdatesblogs/fabcon-and-sqlcon-barcelona-2026-what%E2%80%99s-new-in-microsoft-onelake-and-its-rapidly/5369146","llamada":"c184eae815481dd8"}
+{"fecha_hora":"2026-10-04T17:38:27.955Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/fundamentals/whats-new","llamada":"8a2127cb8cf74886"}
+{"fecha_hora":"2026-10-04T17:38:45.654Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/fundamentals/whats-new","llamada":"671c08a6c6e662d8"}
+{"fecha_hora":"2026-10-04T17:38:54.403Z","herramienta":"WebSearch","consulta":"\"OneLake security\" \"generally available\" site:microsoft.com","llamada":"fab3f2babbe3bf0a"}
+{"fecha_hora":"2026-10-04T17:39:01.998Z","herramienta":"WebSearch","consulta":"\"OneLake security\" generally available learn.microsoft.com fabric onelake security","llamada":"7623c8ba1f69fa0f"}
+{"fecha_hora":"2026-10-04T17:39:08.117Z","herramienta":"WebFetch","url":"https://community.fabric.microsoft.com/t5/Fabric-Updates-Blog/OneLake-security-Generally-Available/ba-p/5176756","llamada":"194d357410ced867"}
+{"fecha_hora":"2026-10-04T17:39:08.427Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/governance/governance-compliance-overview","llamada":"4c7fe485dfe64d84"}
+{"fecha_hora":"2026-10-04T17:39:20.852Z","herramienta":"WebFetch","url":"https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/","llamada":"dc74d0a7dceab889"}
+{"fecha_hora":"2026-10-04T17:39:31.408Z","herramienta":"WebFetch","url":"https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/","llamada":"0e3349611e36ab3b"}
+{"fecha_hora":"2026-10-04T17:39:47.933Z","herramienta":"WebSearch","consulta":"\"OneLake catalog\" generally available Govern tab Microsoft Fabric","llamada":"c3171ac27d6f1879"}
+{"fecha_hora":"2026-10-04T17:39:48.090Z","herramienta":"WebSearch","consulta":"Microsoft Build 2026 Fabric announcements OneLake security now generally available blog","llamada":"e2cd093e945ac15d"}
+{"fecha_hora":"2026-10-04T17:39:52.810Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/governance/onelake-catalog-overview","llamada":"bc324a1dfa2ea9ab"}
+{"fecha_hora":"2026-10-04T17:39:58.066Z","herramienta":"WebSearch","consulta":"\"OneLake security is now generally available\"","llamada":"e9e52fb8cd117014"}
+{"fecha_hora":"2026-10-04T17:40:03.310Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/governance/onelake-catalog-govern","llamada":"1533fdb5a2d90e15"}
+{"fecha_hora":"2026-10-04T17:40:08.743Z","herramienta":"WebSearch","consulta":"FabCon Europe 2025 Vienna announcements \"OneLake catalog\" govern generally available azure.microsoft.com blog","llamada":"79d4377a51868af0"}
+{"fecha_hora":"2026-10-04T17:40:18.339Z","herramienta":"WebFetch","url":"https://www.microsoft.com/en-us/microsoft-fabric/blog/2025/09/16/fabcon-vienna-build-data-rich-agents-on-an-enterprise-ready-foundation/","llamada":"8fc5de7e0b6f882e"}
+{"fecha_hora":"2026-10-04T17:40:24.132Z","herramienta":"WebFetch","url":"https://www.microsoft.com/en-us/microsoft-fabric/blog/2025/09/16/fabcon-vienna-build-data-rich-agents-on-an-enterprise-ready-foundation/","llamada":"64f22b822f7e1dd4"}
+{"fecha_hora":"2026-10-04T17:40:33.400Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/onelake/security/table-column-row-security","llamada":"f986c734e4a4a0a9"}
+{"fecha_hora":"2026-10-04T17:40:39.472Z","herramienta":"WebSearch","consulta":"learn.microsoft.com fabric onelake security \"data-access-control-model\" OR \"table-column-row-security\" OneLake security roles row-level column-level","llamada":"a32985a995559aea"}
+{"fecha_hora":"2026-10-04T17:40:47.908Z","herramienta":"WebSearch","consulta":"microsoft.com/en-us/microsoft-fabric/blog 2026 OneLake security \"generally available\"","llamada":"27d29cdf08a763e7"}
+{"fecha_hora":"2026-10-04T17:40:50.390Z","herramienta":"WebSearch","consulta":"azure.microsoft.com blog Microsoft Fabric May 2026 Build OneLake security generally available","llamada":"f41d4901fb8d7aa1"}
+{"fecha_hora":"2026-10-04T17:41:10.201Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/onelake/security/data-access-control-model","llamada":"1580d82d6715359e"}
+{"fecha_hora":"2026-10-04T17:41:17.038Z","herramienta":"WebSearch","consulta":"github MicrosoftDocs fabric-docs whats-new \"OneLake security (Generally Available)\"","llamada":"22651c1e1af6127a"}
+{"fecha_hora":"2026-10-04T17:41:20.473Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/release-plan/onelake","llamada":"ddf47fa8931a0e26"}
+{"fecha_hora":"2026-10-04T17:41:27.801Z","herramienta":"WebFetch","url":"https://roadmap.fabric.microsoft.com/?product=onelake","llamada":"d165196f9127dc7a"}
+{"fecha_hora":"2026-10-04T17:41:43.739Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/fundamentals/whats-new","llamada":"70a030f8e27126f3"}
+{"fecha_hora":"2026-10-04T17:41:55.938Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/onelake/security/read-secured-data","llamada":"031a64deace8ae6b"}
+{"fecha_hora":"2026-10-04T17:42:00.327Z","herramienta":"WebSearch","consulta":"site:learn.microsoft.com \"OneLake security\" \"generally available\"","llamada":"378ced171a551383"}
+{"fecha_hora":"2026-10-04T17:42:42.511Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/admin/track-user-activities","llamada":"8853c468eefd8add"}
+{"fecha_hora":"2026-10-04T17:42:43.384Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/governance/lineage","llamada":"1a4a43ec1c918560"}
+{"fecha_hora":"2026-10-04T17:42:44.360Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/governance/domains","llamada":"956bb9d63acae743"}
+{"fecha_hora":"2026-10-04T17:43:15.101Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/onelake/onelake-diagnostics-overview","llamada":"632a7b6157398898"}
+{"fecha_hora":"2026-10-04T17:43:16.428Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/fabric/governance/information-protection","llamada":"c27efb2868cbac0d"}
+{"fecha_hora":"2026-10-04T17:43:29.219Z","herramienta":"WebFetch","url":"https://learn.microsoft.com/en-us/purview/dlp-powerbi-get-started","llamada":"9368b5880b33436b"}
+{"fecha_hora":"2026-10-04T17:43:42.293Z","herramienta":"WebFetch","url":"https://azure.microsoft.com/en-us/blog/fabcon-and-sqlcon-2026-unifying-databases-and-fabric-on-a-single-data-platform/","llamada":"cddd8660f6ff5392"}
+{"fecha_hora":"2026-10-04T17:43:43.651Z","herramienta":"WebFetch","url":"https://www.microsoft.com/en-us/microsoft-fabric/blog/2025/03/31/fabcon-2025-fueling-tomorrows-ai-with-new-agentic-capabilities-and-security-innovations-in-fabric/","llamada":"c4de626a4b615485"}
+{"fecha_hora":"2026-10-04T17:56:33.394Z","herramienta":"WebFetch","url":"https://www.microsoft.com/en-us/microsoft-fabric/blog/2025/09/16/fabcon-vienna-build-data-rich-agents-on-an-enterprise-ready-foundation/","llamada":"bebb38698488d2db"}
+{"fecha_hora":"2026-10-04T18:36:54.693Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/metric-views/","llamada":"81b646952078e9fc"}
+{"fecha_hora":"2026-10-04T18:36:55.127Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/dashboards/","llamada":"b349c46e2a487c99"}
+{"fecha_hora":"2026-10-04T18:36:55.292Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/compute/sql-warehouse/","llamada":"b39baad57b9e75bf"}
+{"fecha_hora":"2026-10-04T18:37:10.634Z","herramienta":"WebSearch","consulta":"Databricks One generally available business users","llamada":"78d1db73d5b9d6ae"}
+{"fecha_hora":"2026-10-04T18:37:10.693Z","herramienta":"WebSearch","consulta":"Databricks publish to Power BI service generally available","llamada":"0c567be2fd9a00e4"}
+{"fecha_hora":"2026-10-04T18:37:10.788Z","herramienta":"WebSearch","consulta":"Databricks Apps generally available release notes","llamada":"4acbe39290078bb6"}
+{"fecha_hora":"2026-10-04T18:37:31.998Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/release-notes/product/2025/may","llamada":"34d7ef6769980823"}
+{"fecha_hora":"2026-10-04T18:37:34.501Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/dev-tools/databricks-apps/","llamada":"20fedd960e7e64da"}
+{"fecha_hora":"2026-10-04T18:37:46.464Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/workspace/databricks-one","llamada":"82c8c0c756d63f93"}
+{"fecha_hora":"2026-10-04T18:37:47.938Z","herramienta":"WebSearch","consulta":"Lakebase generally available Databricks release notes synced tables","llamada":"4ec52db71e8bef8d"}
+{"fecha_hora":"2026-10-04T18:38:05.632Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/ai-bi/release-notes/2024","llamada":"ef99912b84958d92"}
+{"fecha_hora":"2026-10-04T18:38:07.884Z","herramienta":"WebSearch","consulta":"\"Genie One\" generally available Databricks release notes 2026","llamada":"d1029377b6783b1d"}
+{"fecha_hora":"2026-10-04T18:38:19.573Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/ai-bi/release-notes/2026","llamada":"0c826ab4a32e17cf"}
+{"fecha_hora":"2026-10-04T18:38:33.158Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/partners/bi/power-bi/","llamada":"50846e7b5b84a0f6"}
+{"fecha_hora":"2026-10-04T18:38:34.055Z","herramienta":"WebSearch","consulta":"\"Genie One is now generally available\" Databricks","llamada":"d8cbe9ee9da188d5"}
+{"fecha_hora":"2026-10-04T18:39:14.720Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/partners/bi/power-bi/","llamada":"8eedb8dc737458fa"}
+{"fecha_hora":"2026-10-04T18:39:38.878Z","herramienta":"WebFetch","url":"https://www.databricks.com/blog/announcing-general-availability-publish-microsoft-power-bi-service-unity-catalog","llamada":"7c2bc50fa53dc980"}
+{"fecha_hora":"2026-10-04T18:39:39.353Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/partners/bi/power-bi/service","llamada":"62942447a3eb0886"}
+{"fecha_hora":"2026-10-04T18:39:50.801Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/release-notes/product/2024/september","llamada":"f4dea0b7a5c8bae9"}
+{"fecha_hora":"2026-10-04T18:40:00.589Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/dev-tools/databricks-apps/","llamada":"89b6e5a1290d9d8d"}
+{"fecha_hora":"2026-10-04T18:40:08.514Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/dev-tools/databricks-apps/auth","llamada":"944800923634315e"}
+{"fecha_hora":"2026-10-04T18:40:28.254Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/metric-views/","llamada":"3c5fcaa384014dbc"}
+{"fecha_hora":"2026-10-04T18:40:30.457Z","herramienta":"WebFetch","url":"https://www.databricks.com/blog/redefining-semantics-data-layer-future-bi-and-ai","llamada":"8853c48645636e72"}
+{"fecha_hora":"2026-10-04T18:40:40.436Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/compute/sql-warehouse/","llamada":"d5fe350c81d12d9a"}
+{"fecha_hora":"2026-10-04T18:40:52.680Z","herramienta":"WebSearch","consulta":"\"dashboards are now generally available\" Databricks Lakeview release notes 2024","llamada":"d7dd71b702715e19"}
+{"fecha_hora":"2026-10-04T18:40:53.358Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/dashboards/","llamada":"3f0c38ccc6be1d0f"}
+{"fecha_hora":"2026-10-04T18:41:00.330Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/sql/release-notes/2024","llamada":"a19c497b09670100"}
+{"fecha_hora":"2026-10-04T18:41:58.005Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/dev-tools/databricks-apps/","llamada":"edd0bf5147682b14"}
+{"fecha_hora":"2026-10-04T18:42:07.570Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/dev-tools/databricks-apps/auth","llamada":"269b97fd878492dd"}
+{"fecha_hora":"2026-10-04T18:42:08.834Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/partners/bi/power-bi/","llamada":"0c1caa1c381ba636"}
+{"fecha_hora":"2026-10-04T18:42:21.329Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/partners/bi/power-bi/service","llamada":"5bdee3d3402a4dec"}
+{"fecha_hora":"2026-10-04T18:43:13.610Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/ai-bi/release-notes/2026","llamada":"b95aee64cd1d0456"}
+{"fecha_hora":"2026-10-04T18:43:26.040Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/release-notes/product/2025/may","llamada":"4d5134cefeafcd4c"}
+{"fecha_hora":"2026-10-04T18:43:26.274Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/sql/release-notes/2024","llamada":"c1f2a29ac677a783"}
+{"fecha_hora":"2026-10-04T18:54:41.284Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/metric-views/","llamada":"98b3c98374c3ad9e"}
+{"fecha_hora":"2026-10-04T18:54:41.579Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/partners/bi/power-bi/","llamada":"988d8711430960a7"}

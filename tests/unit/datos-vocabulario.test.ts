@@ -10,18 +10,13 @@ import { parse } from "yaml";
 import { vocabularioVetado } from "@/lib/datos/vocabulario";
 
 /**
- * Deuda declarada: «lago de datos» en el mapa de Fabric aprobado el 2026-09-29. Decisión de la persona
- * (2026-09-30): «data lake» es el nombre real y no se traduce; se corrige en el S2, la próxima vez que se
- * investigue Fabric (/investigar fabric) y se apruebe la propuesta; entonces se borran de aquí. La validación de
- * toda propuesta nueva ya rechaza el calco (src/lib/investigador/validar.ts).
+ * Deuda declarada, con su ruta exacta. La de «lago de datos» (mapa de Fabric aprobado el 2026-09-29; decisión de la
+ * persona del 2026-09-30: «data lake» es el nombre real y no se traduce) se pagó al aprobarse Fabric v0.2.0 el
+ * 2026-10-04. La autoevaluación comercial de Databricks («mejor precio y rendimiento», S2-AUD-07) se pagó al
+ * aprobarse Databricks v0.2.0, su capa de consumo, el mismo día. Las versiones archivadas (data/mapas/versiones/) no
+ * se leen aquí: guardan los bytes que se aprobaron y no cambian.
  */
-const CONOCIDAS = new Set([
-  "data/mapas/fabric.mapa.yaml /nodos/1/fuentes/0/titulo/es",
-  "data/mapas/fabric.mapa.yaml /nodos/5/fuentes/0/titulo/es",
-  "data/mapas/fabric.mapa.yaml /nodos/6/experto/es",
-  "data/mapas/fabric.mapa.yaml /nodos/6/terminos/es/lakehouse",
-  "data/mapas/fabric.mapa.yaml /glosario/es/OneLake",
-]);
+const CONOCIDAS = new Set<string>([]);
 
 function hallazgos(dir: string): string[] {
   const out: string[] = [];

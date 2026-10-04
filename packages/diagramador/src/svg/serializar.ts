@@ -8,7 +8,7 @@ const ORDEN: Record<string, readonly string[]> = {
   svg: ["xmlns", "id", "class", "lang", "viewBox", "width", "height", "role", "aria-labelledby", "aria-describedby", "aria-details", "data-vista"],
   title: ["id"],
   desc: ["id"],
-  g: ["id", "class", "role", "tabindex", "aria-label", "aria-describedby", "aria-hidden", "data-dueno", "data-nodo", "data-nodos", "data-paso", "data-flujo"],
+  g: ["id", "class", "role", "tabindex", "aria-label", "aria-describedby", "aria-hidden", "data-dueno", "data-mapa", "data-nodo", "data-nodos", "data-paso", "data-flujo", "data-marca"],
   rect: ["class", "data-caja", "x", "y", "width", "height", "rx"],
   path: ["id", "class", "d", "fill", "stroke", "stroke-width", "stroke-linecap", "stroke-linejoin"],
   use: ["class", "href", "x", "y"],

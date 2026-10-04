@@ -14,6 +14,10 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     setupFiles: ["./tests/setup.ts"],
+    // Cargar data/ valida cada mapa y lo dibuja a cuatro edades (V16), también sus versiones archivadas: con la suite
+    // en paralelo y la máquina o el runner cargados, una sola carga pasa de los 5 s por omisión (S2, Fase 2 de la
+    // auditoría). Una prueba colgada sigue fallando, a los 20 s.
+    testTimeout: 20_000,
     // El diagramador lleva sus propias pruebas dentro del paquete (regla del reusable).
     include: ["tests/unit/**/*.test.{ts,tsx}", "packages/diagramador/test/**/*.test.ts"],
     coverage: {

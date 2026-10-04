@@ -77,6 +77,17 @@ describe("vista del investigador", () => {
     rmSync(join(raiz, carpeta, "error-validacion.json"));
   });
 
+  it("los dos números van aparte: los bloqueos que contó el hook (0) y los reintentos que declara la corrida (2)", () => {
+    const original = readFileSync(join(raiz, carpeta, "propuesta.json"), "utf8");
+    writeFileSync(join(raiz, carpeta, "propuesta.json"), JSON.stringify({ ...p, ejecucion: { ...p.ejecucion, reintentos: 2 } }));
+    try {
+      const v = vistaInvestigador(d(), PLATAFORMA, "es", "2026-09-27", raiz, RANGOS).propuesta!;
+      expect([v.reintentos, v.reintentosDeclarados]).toEqual([0, 2]);
+    } finally {
+      writeFileSync(join(raiz, carpeta, "propuesta.json"), original);
+    }
+  });
+
   it("M-20: cada afirmación dice de qué habla (el componente, u «origen → destino»)", () => {
     writeFileSync(join(raiz, carpeta, "propuesta.json"), JSON.stringify(p));
     const v = vistaInvestigador(d(), PLATAFORMA, "es", "2026-09-27", raiz, RANGOS).propuesta!;

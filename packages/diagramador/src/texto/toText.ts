@@ -1,4 +1,4 @@
-// `toText(map, grammar, { language, textos })` (G10, § 4.6): la versión en texto, en HTML, equivalente al
+// `toText(map, grammar, { language, texts, queryDate? })` (G10, § 4.6): la versión en texto, en HTML, equivalente al
 // dibujo, sobre un mapa YA VALIDADO (G14: sin dato válido no hay dibujo ni lectura). Lista ordenada anidada
 // banda → bloque → nodo → flujos (las referencias de franja son flujos como los demás), y cada recorrido
 // como lista ordenada con sus ramas. Cada `li` de nodo y de flujo lleva su
@@ -14,19 +14,19 @@ import { idiomaPedido } from "./idioma";
 
 export interface OpcionesTexto {
   language: string;
-  textos: Record<string, TextosMotor>;
+  texts: Record<string, TextosMotor>;
   /** Id del elemento raíz (el destino de «Saltar el diagrama» y de `aria-details`). */
   id?: string;
   /**
    * Fecha de consulta (AAAA-MM-DD): con ella, cada nodo por revisar o vencido dice sus días (§ 4.8: el
    * texto completo va también en la lectura). Lo vigente no se marca, como en el dibujo.
    */
-  fechaConsulta?: string;
+  queryDate?: string;
 }
 
 export function toText(map: Mapa, grammar: Gramatica, opciones: OpcionesTexto): string {
   const l = opciones.language;
-  const t = idiomaPedido("toText", grammar, l, opciones.textos);
+  const t = idiomaPedido("toText", grammar, l, opciones.texts);
   const e = (s: string) => escapar(s);
   const nodo = new Map(map.nodos.map((n) => [n.id, n]));
   const tipo = new Map(grammar.tipos_de_nodo.map((x) => [x.id, x]));
@@ -37,7 +37,7 @@ export function toText(map: Mapa, grammar: Gramatica, opciones: OpcionesTexto): 
   const nodosDe = (banda: string) => ordenarPor(map.nodos.filter((n) => n.banda_id === banda), (n) => n.orden ?? Number.MAX_SAFE_INTEGER, (n) => n.id);
 
   const vigencia = (n: Nodo): string => {
-    const frase = fraseVigencia(grammar, t, n.fecha_verificacion, opciones.fechaConsulta);
+    const frase = fraseVigencia(grammar, t, n.fecha_verificacion, opciones.queryDate);
     return frase ? ` ${e(frase)}` : "";
   };
 

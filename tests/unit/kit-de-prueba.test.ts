@@ -5,6 +5,7 @@ import { join } from "node:path";
 import { afterAll, describe, expect, it } from "vitest";
 import { parse } from "yaml";
 import type { Gramatica } from "diagramador";
+import { vistaVersiones } from "@/lib/atlas";
 import { cargarDatos, ErrorDeDatos } from "@/lib/datos";
 import { esquemaPlataforma } from "@/lib/datos/esquemas";
 import { esquemaVerificacion, sha256, validarPropuesta } from "@/lib/investigador";
@@ -63,5 +64,29 @@ describe("kit de prueba · base incompleta", () => {
       fallas = e.fallas;
     }
     expect(fallas).toEqual(["data/mapas/plataforma-norte.mapa.yaml · V3 · /nodos/9/fecha_verificacion · tablero · falta el campo «fecha_verificacion»"]);
+  });
+});
+
+// La versión anterior de muestra (S2, D-S2-08): con ella, `/[idioma]/atlas/plataforma-ejemplo/versiones` muestra las
+// cuatro marcas de diferencia, que los datos reales no traen. Sale del mapa de ejemplo por código.
+describe("kit de prueba · versión anterior de muestra", () => {
+  const VERSIONES = `${KIT}/versiones-de-muestra`;
+  const ARCHIVO = "data/mapas/versiones/plataforma-ejemplo-0.0.9.mapa.yaml";
+  it("regenerarla con scripts/kit-de-prueba/versiones.mjs da los mismos bytes", () => {
+    const salida = mkdtempSync(join(tmpdir(), "bigd-kit-"));
+    temporales.push(salida);
+    const r = spawnSync("node", ["scripts/kit-de-prueba/versiones.mjs", salida], { encoding: "utf8" });
+    expect(r.status, r.stderr).toBe(0);
+    expect(readFileSync(join(salida, ARCHIVO), "utf8") === readFileSync(join(VERSIONES, ARCHIVO), "utf8")).toBe(true);
+  });
+  it("copiada a data/, carga en modo publicación y la página muestra las cuatro clases de cambio", () => {
+    const dir = mkdtempSync(join(tmpdir(), "bigd-kit-"));
+    temporales.push(dir);
+    cpSync("data", dir, { recursive: true });
+    cpSync(`${VERSIONES}/data`, dir, { recursive: true });
+    const [par, ...resto] = vistaVersiones(cargarDatos(dir, process.cwd()), "plataforma-ejemplo", "es", "2026-10-04").pares;
+    expect(resto).toEqual([]);
+    expect([par!.antes, par!.despues]).toEqual(["0.0.9", "0.1.0"]);
+    expect(new Set([...par!.svg.matchAll(/data-marca="([a-z]+)"/g)].map((m) => m[1]))).toEqual(new Set(["nuevo", "retirado", "renombrado", "madurez"]));
   });
 });

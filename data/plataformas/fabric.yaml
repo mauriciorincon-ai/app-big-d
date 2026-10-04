@@ -1,5 +1,5 @@
-# Microsoft Fabric: su mapa lo propuso /investigar y lo aprobó una persona, afirmación por afirmación
-# (data/revisiones/fabric.jsonl). Publicada desde el S1.
+# Microsoft Fabric: su mapa lo propuso /investigar y lo aprobó una persona (data/revisiones/fabric.jsonl).
+# Publicada desde el S1; v0.2.0 y v0.3.0 (la capa de gobierno) en el S2.
 id: fabric
 nombre:
   es: Microsoft Fabric

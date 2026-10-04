@@ -1,7 +1,8 @@
-# Se lista como «próximamente» sin contenido inventado: su mapa llega con su propia investigación (S2).
+# Databricks: su mapa lo propuso /investigar y lo aprobó una persona (data/revisiones/databricks.jsonl). Publicada en el S2;
+# v0.2.0 (la capa de consumo) en el mismo sprint.
 id: databricks
 nombre:
   es: Databricks
   en: Databricks
-estado: proximamente
+estado: publicada
 ficticia: false

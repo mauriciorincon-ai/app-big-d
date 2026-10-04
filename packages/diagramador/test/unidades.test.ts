@@ -54,4 +54,14 @@ describe("métricas de texto como dato (G15)", () => {
     expect(m.abreviar("Vista previa pública", 12, 400, max)).toBe("Vista previa…");
     expect(m.abreviar("Beta", 12, 400, max)).toBe("Beta");
   });
+  it("no parte un paréntesis corto (§ 5.3): «(F SKU)» viaja entero a la línea siguiente", () => {
+    const max = m.ancho("Compute capacity (F", 13, 700);
+    expect(m.partir("Compute capacity (F SKU)", 13, 700, max).lineas).toEqual(["Compute capacity", "(F SKU)"]);
+    // Con lugar para todo, una sola línea; un paréntesis que no cabe en una línea sí se parte por palabras.
+    expect(m.partir("Compute capacity (F SKU)", 13, 700, m.ancho("Compute capacity (F SKU)", 13, 700)).lineas).toEqual(["Compute capacity (F SKU)"]);
+    const largo = "Motor (una aclaración que no cabe en una línea)";
+    const angosto = m.ancho("aclaración que no", 13, 700);
+    expect(m.partir(largo, 13, 700, angosto).lineas.join(" ")).toBe(largo);
+    expect(m.partir(largo, 13, 700, angosto).lineas.length).toBeGreaterThan(2);
+  });
 });

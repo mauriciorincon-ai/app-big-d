@@ -6,7 +6,7 @@
 import type { Banda, Nodo } from "../tipos";
 import { mitad, type Decimas } from "../util/numeros";
 import { ordenarPor } from "../util/orden";
-import { M, porIdioma, plural, resumenVigencia, type Contexto } from "./contexto";
+import { M, avisar, porIdioma, plural, resumenVigencia, type Contexto } from "./contexto";
 import { plantilla } from "./escena";
 import { cabeceraFranja, etiquetaModos, trazo, ZONA } from "./piezas";
 import { numerarPasos } from "./nivel2";
@@ -98,7 +98,7 @@ export function carriles(ctx: Contexto, nivel: 1 | 2, conRecorrido?: string | tr
     const orden = [0, -1, 1, -2, 2, -3, 3][n] ?? n;
     // El canal y el borde entre carriles miden 50 u y 48 u: una pista a más de 23 u del centro ya roza o
     // cruza la caja de al lado (M-1 de la auditoría del S1: la 6.ª y la 7.ª caían a ±30 u sin aviso).
-    if (Math.abs(orden * paso) > 230) ctx.avisos.push(`carriles: la pista ${n + 1} de ${clave} se sale del canal`);
+    if (Math.abs(orden * paso) > 230) avisar(ctx, "carriles", clave, `la pista ${n + 1} de ${clave} se sale del canal`);
     return base + orden * paso;
   };
   const lineas: Elemento[] = [];
@@ -145,9 +145,9 @@ export function carriles(ctx: Contexto, nivel: 1 | 2, conRecorrido?: string | tr
     escena.push(tarjetaCarril(ctx, nivel, p, pasos, recorrido, rotulos));
   }
   escena.push(...lineas, ...etiquetas);
-  const vista = recorrido ? "recorrido" : nivel === 1 ? "nivel-1" : "nivel-2";
+  const vista = recorrido ? "recorrido" : nivel === 1 ? "nivel1" : "nivel2";
   const valores = (l: string) => ({ sujeto: ctx.mapa.sujeto_nombre[l]!, capas: lanes.length, franjas: 0, nodos: ctx.mapa.nodos.length, recorrido: recorrido?.titulo[l] ?? "" });
-  if (ctx.transversales.length) ctx.avisos.push("carriles: las franjas transversales en una gramática de carriles no se dibujan todavía");
+  if (ctx.transversales.length) avisar(ctx, "carriles", ctx.mapa.sujeto_id, "las franjas transversales en una gramática de carriles no se dibujan todavía");
   return {
     vista,
     sujeto: ctx.mapa.sujeto_id,
@@ -165,6 +165,7 @@ export function carriles(ctx: Contexto, nivel: 1 | 2, conRecorrido?: string | tr
     descripcion: porIdioma(ctx, (l, t) => plantilla(t.descripcion[vista], valores(l))),
     ...(recorrido ? { recorrido: { id: recorrido.id, titulo: recorrido.titulo, pasos } } : {}),
     vigencia: resumenVigencia(ctx, [...piezas.values()]),
+    cruces: [],
     avisos: ctx.avisos,
   };
 }

@@ -27,7 +27,7 @@ export interface Medidor {
   ancho(texto: string, tamano: number, peso: number): Decimas;
   /** ¿Cabe `texto` en `max` décimas? Comparación exacta. */
   cabe(texto: string, tamano: number, peso: number, max: Decimas): boolean;
-  /** Corte voraz por espacios. Devuelve las líneas y las palabras que no caben solas en `max`. */
+  /** Corte voraz por espacios, sin partir un paréntesis corto (§ 5.3). Devuelve las líneas y las palabras que no caben solas en `max`. */
   partir(texto: string, tamano: number, peso: number, max: Decimas): { lineas: string[]; anchas: string[] };
   /** Recorta por palabras con «…» hasta caber (D6: el texto entero vive en la ficha y en la lectura). */
   abreviar(texto: string, tamano: number, peso: number, max: Decimas): string;
@@ -58,11 +58,27 @@ export function medidor(fuente: FuenteMetricas): Medidor {
   };
   const cabe = (texto: string, tamano: number, peso: number, max: Decimas): boolean =>
     avances(texto, peso) * tamano * MARGEN_NUM * 10 <= max * MARGEN_DEN * upem;
+  // § 5.3 (0.4.0): un paréntesis corto —el que cabe entero en una línea— no se parte: «Compute capacity (F SKU)»
+  // jamás corta entre «(F» y «SKU)». Sus palabras viajan juntas como una sola pieza del corte voraz.
+  const piezas = (texto: string, tamano: number, peso: number, max: Decimas): string[] => {
+    const palabras = texto.split(" ");
+    const abierto = (p: string) => p.split("(").length > p.split(")").length;
+    const out: string[] = [];
+    for (let i = 0; i < palabras.length; i++) {
+      const cierre = abierto(palabras[i]!) ? palabras.findIndex((p, j) => j > i && p.includes(")")) : -1;
+      const junto = cierre > i ? palabras.slice(i, cierre + 1).join(" ") : "";
+      if (junto && cabe(junto, tamano, peso, max)) {
+        out.push(junto);
+        i = cierre;
+      } else out.push(palabras[i]!);
+    }
+    return out;
+  };
   const partir = (texto: string, tamano: number, peso: number, max: Decimas) => {
     const lineas: string[] = [];
     const anchas: string[] = [];
     let actual = "";
-    for (const palabra of texto.split(" ")) {
+    for (const palabra of piezas(texto, tamano, peso, max)) {
       const candidata = actual ? `${actual} ${palabra}` : palabra;
       if (cabe(candidata, tamano, peso, max)) actual = candidata;
       else {

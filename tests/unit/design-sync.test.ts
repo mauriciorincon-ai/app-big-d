@@ -26,6 +26,9 @@ describe("design-sync (bundle del design system)", () => {
     for (const [ruta, html] of Object.entries(esperado).filter(([r]) => r.startsWith("components/"))) {
       expect(html.split("\n")[0], ruta).toMatch(/^<!-- @dsCard group="[^"]+" name="[^"]+" -->$/);
       expect(html, ruta).not.toMatch(/<(?:script|link|img|image)\b|@import|url\(/i);
+      // Un id repetido en una misma tarjeta rompe los enlaces de accesibilidad (aria-*) y las referencias del SVG.
+      const ids = [...html.matchAll(/ id="([^"]+)"/g)].map((m) => m[1]);
+      expect(ids.length, `${ruta}: ids repetidos`).toBe(new Set(ids).size);
       // URL admitidas, ninguna es una petición: el espacio de nombres del SVG y las fuentes ficticias de la
       // Plataforma Ejemplo (example.org, regla 12), que la ficha nombra como texto.
       const urls = [...html.matchAll(/https?:\/\/[^"<>\s]+/g)].map((m) => m[0]);

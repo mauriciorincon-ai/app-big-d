@@ -10,7 +10,7 @@ import { TEXTOS } from "./lib/textos";
 const ejemplo = EJEMPLOS.find((m) => m.sujeto_id === "plataforma-ejemplo")!;
 const g = (m: Mapa) => GRAMATICAS[m.gramatica_id]!;
 const ficha = (m: Mapa, id: string, language = "es", fechaConsulta?: string) =>
-  toCard(m, g(m), id, { language, textos: TEXTOS, ...(fechaConsulta ? { fechaConsulta } : {}) });
+  toCard(m, g(m), id, { language, texts: TEXTOS, ...(fechaConsulta ? { queryDate: fechaConsulta } : {}) });
 
 describe("la ficha dice lo que dice el mapa", () => {
   it("cada nodo de cada mapa, en cada idioma: nombre, tipo con su glifo, madurez con su medidor y todas sus fuentes", () => {
@@ -59,6 +59,6 @@ describe("la ficha dice lo que dice el mapa", () => {
     raro.nodos[0]!.nombre.es = "A <b> & «C»";
     expect(ficha(raro, raro.nodos[0]!.id)).toContain("<h2>A &lt;b&gt; &amp; «C»</h2>");
     expect(() => ficha(ejemplo, "no-existe")).toThrow(/no tiene el nodo/);
-    expect(() => toCard(ejemplo, g(ejemplo), "tablero", { language: "en", textos: { es: TEXTOS.es! } })).toThrow(/cadenas de interfaz/);
+    expect(() => toCard(ejemplo, g(ejemplo), "tablero", { language: "en", texts: { es: TEXTOS.es! } })).toThrow(/cadenas de interfaz/);
   });
 });

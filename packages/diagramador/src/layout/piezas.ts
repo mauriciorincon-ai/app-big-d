@@ -4,7 +4,7 @@
 import type { Banda, NivelMadurez, TextoIdioma } from "../tipos";
 import { dividirRedondeando, fmt, mitad, type Decimas } from "../util/numeros";
 import { camino, conFlecha, filete, g, path, plantilla, rect, texto, simbolo } from "./escena";
-import { COL, CANAL, M, colX, porIdioma, type Contexto, type Vigencia } from "./contexto";
+import { COL, CANAL, M, avisar, colX, porIdioma, type Contexto, type Vigencia } from "./contexto";
 import type { Caja, Elemento, Punto } from "./tipos";
 
 // ── Cabeceras de capa (§ 5.3) ─────────────────────────────────────────────────────────────────────────
@@ -56,7 +56,7 @@ export function guias(n: number, fin: Decimas): Elemento {
 /** Corte voraz con aviso si una palabra no cabe sola. */
 export function partir(ctx: Contexto, t: string, tamano: number, peso: number, max: Decimas, que: string, idioma: string): string[] {
   const { lineas, anchas } = ctx.sans.partir(t, tamano, peso, max);
-  for (const p of anchas) ctx.avisos.push(`${que} (${idioma}): la palabra «${p}» no cabe en ${fmt(max)} u`);
+  for (const p of anchas) avisar(ctx, "texto", que, `${que} (${idioma}): la palabra «${p}» no cabe en ${fmt(max)} u`);
   return lineas;
 }
 
@@ -65,7 +65,7 @@ export function lineasPorIdioma(ctx: Contexto, t: TextoIdioma, tamano: number, p
   const out: Record<string, string[]> = {};
   for (const l of ctx.idiomas) {
     out[l] = partir(ctx, t[l]!, tamano, peso, max, que, l);
-    if (out[l]!.length > maxLineas) ctx.avisos.push(`${que} (${l}): ${out[l]!.length} líneas; caben ${maxLineas}`);
+    if (out[l]!.length > maxLineas) avisar(ctx, "texto", que, `${que} (${l}): ${out[l]!.length} líneas; caben ${maxLineas}`);
   }
   return out;
 }
@@ -175,7 +175,7 @@ export function cabeceraFranja(ctx: Contexto, b: Banda, y: Decimas, alto: Decima
     pregunta: partir(ctx, b.pregunta_lider[l]!, 13, 400, ZONA, `pregunta ${b.id}`, l),
   }));
   const altoTexto = Math.max(...cortes.map((c) => c.nombre.length * 190 + 40 + c.pregunta.length * 170));
-  if (altoTexto > alto - 40) ctx.avisos.push(`cabecera de la franja ${b.id}: ${fmt(altoTexto)} u en ${fmt(alto)} u`);
+  if (altoTexto > alto - 40) avisar(ctx, "texto", b.id, `cabecera de la franja ${b.id}: ${fmt(altoTexto)} u en ${fmt(alto)} u`);
   const arriba = y + mitad(alto - altoTexto);
   const lineasN = Math.max(...cortes.map((c) => c.nombre.length));
   hijos.push(texto("dg-t-banda dg-t-banda-franja", M + 140, ctx.sans.base(arriba, 15, 19), 190, Object.fromEntries(cortes.map((c) => [c.l, c.nombre]))));
@@ -241,7 +241,7 @@ export function referencias(ctx: Contexto, refs: readonly Referencia[], desde: D
     const w = anchos[i]!;
     const h = 300;
     const x = xs[i]!;
-    if (x < desde || x + w > limite) ctx.avisos.push(`referencia ${r.id}: se sale del lienzo`);
+    if (x < desde || x + w > limite) avisar(ctx, "fuera-del-lienzo", r.id, `referencia ${r.id}`);
     const ms = marcadores(ctx, r.modos);
     const caja: Caja = { x, y: r.cy - mitad(h), w, h };
     cajas.push({ id: r.id, dueno: r.flujo, caja });

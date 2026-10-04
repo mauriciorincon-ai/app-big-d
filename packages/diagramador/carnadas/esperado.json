@@ -1,6 +1,6 @@
 {
-  "contrato_version": "0.3.0",
-  "nota": "Cada carnada debe fallar por SU regla y con SU id; los mapas reales deben aceptarse. `fase` dice en qué fase de la validación (1 esquema · 2 reglas en código) se espera la detección. `cobertura: true` marca la carnada que necesita la tabla de cobertura de la fuente como entrada de validate (V15). Se reporta «detectó k de n».",
+  "contrato_version": "0.4.0",
+  "nota": "Cada carnada debe fallar por SU regla y con SU id (y puede reportar además los `secundarios` listados, D-S1-03); los mapas reales y P1 deben aceptarse (P1 además se dibuja sin avisos). `fase` dice en qué fase de la validación (1 esquema · 2 reglas en código) se espera la detección. `cobertura: true` marca la carnada que necesita la tabla de cobertura de la fuente como entrada de validate (V15). Se reporta «detectó k de n».",
   "casos": [
     {
       "archivo": "C01-gramatica-incompatible.mapa.json",
@@ -33,7 +33,14 @@
       "fase": 2,
       "regla": "V2",
       "id": "captura-cambios",
-      "descripcion": "Un nodo vive en una capa fuera de la gramática común (RF-09.6)"
+      "descripcion": "Un nodo vive en una capa fuera de la gramática común (RF-09.6)",
+      "secundarios": [
+        {
+          "regla": "V3",
+          "id": "captura-cambios",
+          "por_que": "su bloque «entrada» sigue anclado en ingesta y el nodo ya no vive ahí"
+        }
+      ]
     },
     {
       "archivo": "C04-nodo-sin-fuente.mapa.json",
@@ -66,7 +73,14 @@
       "fase": 2,
       "regla": "V4",
       "id": "f-semantico-tablero",
-      "descripcion": "Un flujo hacia un nodo que no existe (RF-09.6)"
+      "descripcion": "Un flujo hacia un nodo que no existe (RF-09.6)",
+      "secundarios": [
+        {
+          "regla": "V5",
+          "id": "admision-paciente/p7",
+          "por_que": "sin ese flujo, ningún flujo une los pasos 6 → 7"
+        }
+      ]
     },
     {
       "archivo": "C07-recorrido-no-llega-al-consumo.mapa.json",
@@ -77,7 +91,14 @@
       "fase": 2,
       "regla": "V5",
       "id": "admision-paciente",
-      "descripcion": "El recorrido no llega al consumo (RF-09.5)"
+      "descripcion": "El recorrido no llega al consumo (RF-09.5)",
+      "secundarios": [
+        {
+          "regla": "V12",
+          "id": "admision-paciente/p5",
+          "por_que": "el paso 5 sigue declarando «paralela» con una sola rama"
+        }
+      ]
     },
     {
       "archivo": "C08-paso-sin-flujo.mapa.json",
@@ -316,6 +337,39 @@
       "regla": null,
       "id": null,
       "descripcion": "Un flujo agregado con los CUATRO modos entre dos bloques (origen → entrada): debe aceptarse y, en el nivel 1, dibujarse como una línea con la etiqueta de los cuatro marcadores que cabe en el canal a 380 px, sin avisos de geometría (P4, G-Diseño)"
+    },
+    {
+      "archivo": "P1-mapa-denso.mapa.json",
+      "clase": "mapa",
+      "gramatica": "plataformas-datos",
+      "modo": "publicacion",
+      "tipo": "acepta",
+      "fase": null,
+      "regla": null,
+      "id": null,
+      "descripcion": "Mapa denso (la forma del primer mapa real del piloto con nombres neutrales: 19 nodos, 19 flujos, 7 bloques, 3 saltos en el nivel 1 y 4 en el nivel 2, 7 pistas en un canal, 3 referencias largas en una fila de franja, rama paralela): debe aceptarse y DIBUJARSE en nivel 1, nivel 2, recorrido y cada ventana con 0 avisos, D11 = 0 y toda etiqueta a ≤ 30 u de su trazo (§ 5.3, § 5.6)"
+    },
+    {
+      "archivo": "P2-paso-que-se-sigue.mapa.json",
+      "clase": "mapa",
+      "gramatica": "plataformas-datos",
+      "modo": "privado",
+      "tipo": "error",
+      "fase": 2,
+      "regla": "V5",
+      "id": "admision-paciente/px",
+      "descripcion": "Un paso del recorrido que se sigue a sí mismo (`sigue_de` = su propio id): exactamente un V5; antes validaba y la numeración agotaba la memoria (F-018)"
+    },
+    {
+      "archivo": "P3-paso-que-sigue-a-uno-posterior.mapa.json",
+      "clase": "mapa",
+      "gramatica": "plataformas-datos",
+      "modo": "privado",
+      "tipo": "error",
+      "fase": 2,
+      "regla": "V5",
+      "id": "admision-paciente/p7",
+      "descripcion": "Dos pasos en orden invertido (p7, que sigue a p6, va antes que p6): exactamente un V5 en p7; antes numeraba dos «1» y un 6b sin 6a (F-018)"
     },
     {
       "archivo": "../ejemplos/plataforma-ejemplo.mapa.json",

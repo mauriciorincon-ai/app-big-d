@@ -74,6 +74,8 @@ function reglaMapa(s: string[], e: ErrorEsquema, mapa: Registro): { regla: strin
     return { regla: "V5", id: rec };
   }
   if (raiz === "glosario") return { regla: "V14", id: sujeto };
+  // § 7 (0.4.0): el `enum` de `estado` es V8, la regla que mira el estado del mapa.
+  if (raiz === "estado" && e.keyword === "enum") return { regla: "V8", id: sujeto };
   return { regla: "V1", id: sujeto };
 }
 

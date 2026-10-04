@@ -1,0 +1,1199 @@
+# APROBADO por una persona el 2026-10-04 (UTC) desde propuestas/2026-10-04-databricks-consumo (scripts/aprobar.mjs).
+# Solo contiene afirmaciones aprobadas. No se edita a mano: se vuelve a investigar.
+contrato_version: 0.4.0
+gramatica_id: plataformas-datos
+gramatica_version: 0.2.0
+sujeto_id: databricks
+sujeto_nombre:
+  es: Databricks
+  en: Databricks
+version: 0.2.0
+fecha_actualizacion: 2026-10-04
+estado: aprobada
+bloques:
+  - id: origen
+    nombre:
+      es: Sistemas de origen
+      en: Source systems
+    banda_id: fuentes
+    lider:
+      es: "Donde nacen los datos: bases del día a día, aplicaciones en la nube y archivos."
+      en: "Where data is born: day-to-day databases, cloud applications and files."
+  - id: entrada
+    nombre:
+      es: Entrada de datos
+      en: Data intake
+    banda_id: ingesta
+    lider:
+      es: Trae los datos a la plataforma, o los consulta donde están sin copiarlos.
+      en: Brings data into the platform, or queries it where it lives without copying it.
+  - id: almacen
+    nombre:
+      es: Tablas gestionadas
+      en: Managed tables
+    banda_id: almacenamiento
+    lider:
+      es: "Guarda los datos en tablas de formato abierto: primero tal como llegan, después ya preparados."
+      en: "Keeps the data in open-format tables: first as it arrives, then once it is prepared."
+  - id: preparacion
+    nombre:
+      es: Preparación
+      en: Preparation
+    banda_id: procesamiento
+    lider:
+      es: Limpia y combina los datos, describiendo el resultado o escribiendo el código.
+      en: Cleans and combines the data, by describing the result or by writing the code.
+  - id: consumo-bi
+    nombre:
+      es: Tableros y aplicaciones
+      en: Dashboards and apps
+    banda_id: consumo
+    lider:
+      es: Convierte los datos en indicadores con una sola definición, que la gente consulta en tableros, en programas como Power BI o en aplicaciones.
+      en: Turns the data into indicators with a single definition, which people check on dashboards, in tools such as Power BI or in apps.
+  - id: agentes
+    nombre:
+      es: Agentes
+      en: Agents
+    banda_id: ia
+    lider:
+      es: Responde preguntas en lenguaje natural con los datos que cada persona puede ver.
+      en: Answers plain-language questions with the data each person is allowed to see.
+  - id: gobierno
+    nombre:
+      es: Gobierno
+      en: Governance
+    banda_id: gobierno
+    lider:
+      es: Decide quién ve qué datos y deja rastro de dónde vienen y de quién los usa.
+      en: Decides who sees which data and keeps a trail of where it comes from and who uses it.
+nodos:
+  - id: bases-operacionales
+    banda_id: fuentes
+    tipo_id: tipo-externo
+    bloque_id: origen
+    orden: 1
+    nombre:
+      es: Bases de datos operacionales
+      en: Operational databases
+    lider:
+      es: Los sistemas del día a día, como el de admisiones, donde se registra cada operación.
+      en: The day-to-day systems, such as admissions, where every transaction is recorded.
+    experto:
+      es: Bases relacionales como SQL Server, MySQL o PostgreSQL. Lakeflow Connect las ingiere con captura de cambios (CDC); Lakehouse Federation las consulta en su lugar, sin migrarlas.
+      en: Relational databases such as SQL Server, MySQL or PostgreSQL. Lakeflow Connect ingests them with change data capture (CDC); Lakehouse Federation queries them in place, without migrating them.
+    por_que_importa:
+      es: "Copiarlas o consultarlas donde están es una decisión: con grandes volúmenes o baja latencia, Databricks recomienda copiarlas."
+      en: "Copying them or querying them where they live is a decision: for large volumes or low latency, Databricks recommends copying."
+    terminos:
+      es:
+        captura de cambios (CDC): Técnica que trae del origen solo las filas nuevas, modificadas o borradas.
+      en:
+        change data capture (CDC): A technique that brings over only the rows added, changed or deleted at the source.
+    madurez: disponible-general
+    fuentes:
+      - url: https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/
+        titulo:
+          es: Conceptos de los conectores de Lakeflow Connect (documentación de Databricks)
+          en: Lakeflow Connect connector concepts | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://docs.databricks.com/aws/en/release-notes/product/2025/august
+        titulo:
+          es: Notas de versión de la plataforma Databricks, agosto de 2025
+          en: August 2025 | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://docs.databricks.com/aws/en/query-federation/
+        titulo:
+          es: Conexión a bases de datos y catálogos externos (documentación de Databricks)
+          en: Connect to external databases and catalogs | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: aplicaciones-saas
+    banda_id: fuentes
+    tipo_id: tipo-externo
+    bloque_id: origen
+    orden: 2
+    nombre:
+      es: Aplicaciones en la nube
+      en: Cloud applications
+    lider:
+      es: Programas que la organización usa como servicio por internet, como los de ventas o de personal.
+      en: Software the organisation uses as an online service, such as sales or HR systems.
+    experto:
+      es: Aplicaciones empresariales SaaS como Salesforce, HubSpot, Jira, Workday o ServiceNow, de las que Lakeflow Connect ingiere datos con conectores gestionados.
+      en: Enterprise SaaS applications such as Salesforce, HubSpot, Jira, Workday or ServiceNow, from which Lakeflow Connect ingests data through managed connectors.
+    por_que_importa:
+      es: "Solo entran por los conectores que existen: un sistema sin conector propio necesita uno de la comunidad o uno a medida."
+      en: "They only come in through existing connectors: a system without a built-in one needs a community or custom connector."
+    terminos:
+      es:
+        SaaS: Software que se usa como servicio por internet, sin instalarlo en servidores propios.
+      en:
+        SaaS: Software used as a service over the internet, without installing it on your own servers.
+    madurez: disponible-general
+    fuentes:
+      - url: https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/
+        titulo:
+          es: Conceptos de los conectores de Lakeflow Connect (documentación de Databricks)
+          en: Lakeflow Connect connector concepts | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://docs.databricks.com/aws/en/release-notes/product/2025/august
+        titulo:
+          es: Notas de versión de la plataforma Databricks, agosto de 2025
+          en: August 2025 | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: archivos-nube
+    banda_id: fuentes
+    tipo_id: tipo-externo
+    bloque_id: origen
+    orden: 3
+    nombre:
+      es: Archivos en la nube
+      en: Files in cloud storage
+    lider:
+      es: Archivos que llegan al almacenamiento en la nube de la organización, como exportaciones de otros sistemas.
+      en: Files that land in the organisation's cloud storage, such as exports from other systems.
+    experto:
+      es: Archivos en Amazon S3 u otros almacenamientos de nube, que Auto Loader procesa a medida que llegan; puede manejar miles de millones en una migración o un relleno de tablas.
+      en: Files in Amazon S3 or other cloud storage, which Auto Loader processes as they arrive; it can handle billions of them when migrating or backfilling tables.
+    por_que_importa:
+      es: Si cambian las columnas de los archivos, Auto Loader avisa y rescata los datos que de otro modo se perderían.
+      en: If the files' columns change, Auto Loader flags it and rescues data that would otherwise be lost.
+    madurez: disponible-general
+    fuentes:
+      - url: https://docs.databricks.com/aws/en/ingestion/cloud-object-storage/auto-loader/
+        titulo:
+          es: Qué es Auto Loader (documentación de Databricks)
+          en: What is Auto Loader? | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://docs.databricks.com/aws/en/release-notes/product/2020/august
+        titulo:
+          es: Notas de versión de la plataforma Databricks, agosto de 2020
+          en: August 2020 | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: lakeflow-connect
+    banda_id: ingesta
+    tipo_id: cap-ingesta
+    bloque_id: entrada
+    orden: 1
+    nombre:
+      es: Lakeflow Connect
+      en: Lakeflow Connect
+    lider:
+      es: "Conectores listos para usar que traen datos de bases y aplicaciones: todo la primera vez y después solo lo que cambió."
+      en: "Ready-made connectors that bring in data from databases and applications: everything the first time, then only what changed."
+    experto:
+      es: Conectores gestionados que crean canalizaciones de ingesta gobernadas; traen todo en la primera ejecución, escriben en tablas de streaming y se programan con uno o varios horarios.
+      en: Managed connectors that create governed ingestion pipelines; they bring everything on the first run, write to streaming tables and run on one or more schedules.
+    por_que_importa:
+      es: "Cada conector tiene su propio estado de lanzamiento: antes de contar con uno, hay que revisar el del sistema de origen."
+      en: "Each connector has its own release state: before relying on one, check the state for that source system."
+    madurez: disponible-general
+    fuentes:
+      - url: https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/
+        titulo:
+          es: Conceptos de los conectores de Lakeflow Connect (documentación de Databricks)
+          en: Lakeflow Connect connector concepts | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://www.databricks.com/blog/announcing-general-availability-databricks-lakeflow
+        titulo:
+          es: Anuncio de disponibilidad general de Databricks Lakeflow (blog de Databricks, 12 de junio de 2025)
+          en: Announcing the General Availability of Databricks Lakeflow | Databricks Blog
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: auto-loader
+    banda_id: ingesta
+    tipo_id: cap-ingesta
+    bloque_id: entrada
+    orden: 2
+    nombre:
+      es: Auto Loader
+      en: Auto Loader
+    lider:
+      es: Detecta los archivos nuevos que llegan a la nube y los carga sin trabajo manual.
+      en: Spots new files as they land in cloud storage and loads them with no manual work.
+    experto:
+      es: Fuente de Structured Streaming que procesa de forma incremental los archivos nuevos; guarda en un punto de control qué archivos ya leyó y garantiza procesar cada uno exactamente una vez.
+      en: Structured Streaming source that incrementally processes new files; it records the files already read in a checkpoint and guarantees each one is processed exactly once.
+    por_que_importa:
+      es: Tras una interrupción retoma donde se quedó, sin duplicar ni perder archivos.
+      en: After an interruption it resumes where it left off, without duplicating or losing files.
+    madurez: disponible-general
+    fuentes:
+      - url: https://docs.databricks.com/aws/en/ingestion/cloud-object-storage/auto-loader/
+        titulo:
+          es: Qué es Auto Loader (documentación de Databricks)
+          en: What is Auto Loader? | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://docs.databricks.com/aws/en/release-notes/product/2020/august
+        titulo:
+          es: Notas de versión de la plataforma Databricks, agosto de 2020
+          en: August 2020 | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: lakehouse-federation
+    banda_id: ingesta
+    tipo_id: cap-ingesta
+    bloque_id: entrada
+    orden: 3
+    nombre:
+      es: Lakehouse Federation
+      en: Lakehouse Federation
+    lider:
+      es: Consulta bases de datos externas donde están, sin copiarlas a la plataforma.
+      en: Queries external databases where they live, without copying them into the platform.
+    experto:
+      es: Acceso gobernado y de solo lectura a datos externos mediante catálogos foráneos de Unity Catalog, con delegación automática de las consultas al origen y permisos finos por tabla.
+      en: Governed, read-only access to external data through Unity Catalog foreign catalogs, with automatic query pushdown and fine-grained table-level permissions.
+    por_que_importa:
+      es: Con grandes volúmenes o cuando importa la latencia, Databricks recomienda ingerir con Lakeflow Connect en lugar de federar.
+      en: For large volumes or when latency matters, Databricks recommends ingesting with Lakeflow Connect rather than federating.
+    madurez: disponible-general
+    fuentes:
+      - url: https://docs.databricks.com/aws/en/query-federation/
+        titulo:
+          es: Conexión a bases de datos y catálogos externos (documentación de Databricks)
+          en: Connect to external databases and catalogs | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://docs.databricks.com/aws/en/release-notes/product/2024/august
+        titulo:
+          es: Notas de versión de la plataforma Databricks, agosto de 2024
+          en: August 2024 | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: tablas-streaming
+    banda_id: almacenamiento
+    tipo_id: cap-almacenamiento
+    bloque_id: almacen
+    orden: 1
+    nombre:
+      es: Tablas de streaming
+      en: Streaming tables
+    lider:
+      es: Guardan los datos tal como llegan y procesan cada registro nuevo una sola vez.
+      en: Keep the data as it arrives and process each new record only once.
+    experto:
+      es: "Tablas gestionadas de Unity Catalog que son destino de streaming, guardadas en Delta Lake: el formato abierto predeterminado en Databricks, que añade a los archivos Parquet un registro de transacciones ACID."
+      en: "Unity Catalog managed tables that act as streaming targets, stored in Delta Lake: the open format Databricks uses by default, which adds an ACID transaction log to Parquet files."
+    por_que_importa:
+      es: Garantizan procesar cada registro una sola vez solo si el origen únicamente agrega datos.
+      en: They guarantee each record is processed once only when the source just appends data.
+    terminos:
+      es:
+        ACID: Garantías de que una transacción se aplica completa o no se aplica, sin dejar datos a medias.
+      en:
+        ACID: Guarantees that a transaction is applied in full or not at all, never half-done.
+    madurez: disponible-general
+    fuentes:
+      - url: https://docs.databricks.com/aws/en/ldp/concepts/
+        titulo:
+          es: Qué son las canalizaciones de Lakeflow (documentación de Databricks)
+          en: What are Lakeflow pipelines? | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://docs.databricks.com/aws/en/delta/
+        titulo:
+          es: Qué es Delta Lake en Databricks (documentación de Databricks)
+          en: What is Delta Lake in Databricks? | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://www.databricks.com/blog/announcing-general-availability-materialized-views-and-streaming-tables-databricks-sql
+        titulo:
+          es: Anuncio de disponibilidad general de vistas materializadas y tablas de streaming en Databricks SQL (blog de Databricks, 5 de noviembre de 2024)
+          en: Announcing the General Availability of Materialized Views and Streaming Tables for Databricks SQL | Databricks Blog
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: vistas-materializadas
+    banda_id: almacenamiento
+    tipo_id: cap-almacenamiento
+    bloque_id: almacen
+    orden: 2
+    nombre:
+      es: Vistas materializadas
+      en: Materialized views
+    lider:
+      es: Guardan resultados ya calculados, para que tableros y consultas respondan rápido.
+      en: Store results that are already computed, so dashboards and queries respond fast.
+    experto:
+      es: Tablas gestionadas de Unity Catalog que son destino por lotes; un motor incremental las mantiene al día y, cuando puede, reprocesa solo los datos nuevos o cambiados del origen.
+      en: Unity Catalog managed tables that act as batch targets; an incremental engine keeps them current and, when it can, reprocesses only new or changed source data.
+    por_que_importa:
+      es: Varias consultas y tableros reutilizan el mismo resultado en lugar de recalcularlo cada uno.
+      en: Several queries and dashboards reuse the same result instead of each one recomputing it.
+    madurez: disponible-general
+    fuentes:
+      - url: https://docs.databricks.com/aws/en/ldp/concepts/
+        titulo:
+          es: Qué son las canalizaciones de Lakeflow (documentación de Databricks)
+          en: What are Lakeflow pipelines? | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://www.databricks.com/blog/announcing-general-availability-materialized-views-and-streaming-tables-databricks-sql
+        titulo:
+          es: Anuncio de disponibilidad general de vistas materializadas y tablas de streaming en Databricks SQL (blog de Databricks, 5 de noviembre de 2024)
+          en: Announcing the General Availability of Materialized Views and Streaming Tables for Databricks SQL | Databricks Blog
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: canalizaciones-lakeflow
+    banda_id: procesamiento
+    tipo_id: cap-transformacion
+    bloque_id: preparacion
+    orden: 1
+    nombre:
+      es: Canalizaciones de Lakeflow
+      en: Lakeflow pipelines
+    lider:
+      es: Se describe qué tablas deben resultar; la plataforma ordena los pasos y los repite si fallan.
+      en: You describe which tables should result; the platform orders the steps and retries them when they fail.
+    experto:
+      es: Marco declarativo en SQL y Python para canalizaciones por lotes y de streaming; ejecuta los pasos en el orden correcto con el máximo paralelismo, reintenta fallas pasajeras y valida los datos con expectativas.
+      en: Declarative framework in SQL and Python for batch and streaming pipelines; it runs steps in the right order with maximum parallelism, retries transient failures and validates data with expectations.
+    por_que_importa:
+      es: El modo continuo reduce la latencia, pero mantiene el cómputo siempre encendido y cuesta más que el modo programado.
+      en: Continuous mode cuts latency, but keeps compute always running and costs more than triggered mode.
+    terminos:
+      es:
+        expectativas: Reglas opcionales que validan los datos a medida que pasan por la canalización.
+      en:
+        expectations: Optional rules that validate data as it flows through the pipeline.
+    madurez: disponible-general
+    fuentes:
+      - url: https://docs.databricks.com/aws/en/ldp/concepts/
+        titulo:
+          es: Qué son las canalizaciones de Lakeflow (documentación de Databricks)
+          en: What are Lakeflow pipelines? | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://docs.databricks.com/aws/en/ldp/concepts/pipeline-mode
+        titulo:
+          es: Modo programado frente a modo continuo de las canalizaciones (documentación de Databricks)
+          en: Triggered vs. continuous pipeline mode | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://www.databricks.com/blog/announcing-general-availability-databricks-lakeflow
+        titulo:
+          es: Anuncio de disponibilidad general de Databricks Lakeflow (blog de Databricks, 12 de junio de 2025)
+          en: Announcing the General Availability of Databricks Lakeflow | Databricks Blog
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: cuadernos
+    banda_id: procesamiento
+    tipo_id: cap-transformacion
+    bloque_id: preparacion
+    orden: 2
+    nombre:
+      es: Cuadernos (notebooks)
+      en: Notebooks
+    lider:
+      es: Donde los equipos escriben y ejecutan código para explorar y transformar los datos.
+      en: Where teams write and run code to explore and transform the data.
+    experto:
+      es: "Cuadernos que se ejecutan en cómputo serverless: recursos bajo demanda que no hay que aprovisionar en la cuenta de nube del cliente."
+      en: "Notebooks that run on serverless compute: on-demand resources with nothing to provision in the customer's cloud account."
+    por_que_importa:
+      es: "La lógica escrita en cuadernos sueltos puede duplicar la de las canalizaciones: conviene decidir qué vive en cada lugar."
+      en: "Logic written in standalone notebooks can duplicate pipeline logic: it pays to decide what lives where."
+    madurez: disponible-general
+    fuentes:
+      - url: https://docs.databricks.com/aws/en/compute/serverless/
+        titulo:
+          es: Conexión al cómputo serverless (documentación de Databricks)
+          en: Connect to serverless compute | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://docs.databricks.com/aws/en/release-notes/product/2024/july
+        titulo:
+          es: Notas de versión de la plataforma Databricks, julio de 2024
+          en: July 2024 | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: vistas-metricas
+    banda_id: consumo
+    tipo_id: cap-consumo
+    bloque_id: consumo-bi
+    orden: 1
+    nombre:
+      es: Vistas de métricas
+      en: Metric views
+    lider:
+      es: Definen una sola vez qué significa cada indicador, para que todos los tableros digan lo mismo.
+      en: Define once what each indicator means, so every dashboard says the same thing.
+    experto:
+      es: Separan las medidas de las dimensiones para definir cada métrica una vez; se construyen sobre tablas, vistas o consultas SQL de Unity Catalog y se consultan desde editores SQL, cuadernos, tableros y agentes, con las mismas definiciones.
+      en: They separate measures from dimensions so each metric is defined once; they are built over Unity Catalog tables, views or SQL queries and are queried from SQL editors, notebooks, dashboards and agents, all sharing the same definitions.
+    por_que_importa:
+      es: Sin una definición común, dos áreas pueden reportar cifras distintas del mismo indicador.
+      en: Without a shared definition, two departments can report different figures for the same indicator.
+    madurez: disponible-general
+    fuentes:
+      - url: https://docs.databricks.com/aws/en/metric-views/
+        titulo:
+          es: Vistas de métricas de Unity Catalog (documentación de Databricks)
+          en: Unity Catalog metric views | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://docs.databricks.com/aws/en/uc-semantics/metric-views/yaml-reference
+        titulo:
+          es: Referencia de la sintaxis YAML de las vistas de métricas (documentación de Databricks)
+          en: Metric view YAML syntax reference | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://www.databricks.com/blog/redefining-semantics-data-layer-future-bi-and-ai
+        titulo:
+          es: Anuncio de disponibilidad general de Unity Catalog Business Semantics (blog de Databricks, 2 de abril de 2026)
+          en: Announcing General Availability and Open Sourcing of Unity Catalog Business Semantics | Databricks Blog
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: sql-warehouse
+    banda_id: consumo
+    tipo_id: cap-consumo
+    bloque_id: consumo-bi
+    orden: 2
+    nombre:
+      es: SQL warehouses
+      en: SQL warehouses
+    lider:
+      es: El motor que responde las consultas de tableros, agentes y analistas.
+      en: The engine that answers queries from dashboards, agents and analysts.
+    experto:
+      es: Recurso de cómputo para consultar y explorar datos; lo usan el editor de consultas, Catalog Explorer, los tableros y las herramientas de BI de terceros que se conectan a él.
+      en: Compute resource for querying and exploring data, used by the query editor, Catalog Explorer, dashboards and the third-party BI tools that connect to it.
+    por_que_importa:
+      es: Hay tres tipos (serverless, pro y clásico); según Databricks, el serverless da cómputo inmediato y pide menos administración.
+      en: There are three types (serverless, pro and classic); per Databricks, serverless gives instant compute and needs less management.
+    madurez: disponible-general
+    fuentes:
+      - url: https://docs.databricks.com/aws/en/compute/sql-warehouse/
+        titulo:
+          es: Conexión a un SQL warehouse (documentación de Databricks)
+          en: Connect to a SQL warehouse | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://docs.databricks.com/aws/en/release-notes/product/2023/march
+        titulo:
+          es: Notas de versión de la plataforma Databricks, marzo de 2023
+          en: March 2023 | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: tableros-aibi
+    banda_id: consumo
+    tipo_id: cap-consumo
+    bloque_id: consumo-bi
+    orden: 3
+    nombre:
+      es: Tableros AI/BI
+      en: AI/BI dashboards
+    lider:
+      es: Los tableros donde la dirección consulta los indicadores; se pueden compartir aun con quien no entra al espacio de trabajo.
+      en: The dashboards where management checks the indicators; they can be shared even with people outside the workspace.
+    experto:
+      es: Tableros con creación asistida por IA y biblioteca de visualizaciones, alimentados por conjuntos de datos definidos sobre tablas, vistas o consultas; se publican con permisos de datos compartidos o individuales, se incrustan en otros sitios y se envían por correo o Slack. Genie Code importa informes de Power BI y Tableau.
+      en: Dashboards with AI-assisted authoring and a visualisation library, fed by datasets defined over tables, views or queries; they are published with shared or individual data permissions, embedded in other sites and delivered by email or Slack. Genie Code imports Power BI and Tableau reports.
+    por_que_importa:
+      es: Al publicar hay que elegir entre permisos de datos compartidos o individuales, y eso cambia lo que ve cada persona.
+      en: Publishing means choosing shared or individual data permissions, and that changes what each person sees.
+    madurez: disponible-general
+    fuentes:
+      - url: https://docs.databricks.com/aws/en/dashboards/
+        titulo:
+          es: Tableros (documentación de Databricks)
+          en: Dashboards | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://www.databricks.com/blog/aibi-genie-now-generally-available
+        titulo:
+          es: Anuncio de disponibilidad general de AI/BI Genie (blog de Databricks, 12 de junio de 2025)
+          en: AI/BI Genie is now Generally Available | Databricks Blog
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://docs.databricks.com/aws/en/sql/release-notes/2024
+        titulo:
+          es: Notas de versión de Databricks SQL, 2024 (documentación de Databricks)
+          en: Databricks SQL release notes 2024 | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://docs.databricks.com/aws/en/ai-bi/release-notes/2024
+        titulo:
+          es: Notas de versión de AI/BI, 2024 (documentación de Databricks)
+          en: AI/BI release notes 2024 | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://docs.databricks.com/aws/en/ai-bi/release-notes/2026
+        titulo:
+          es: Notas de versión de AI/BI y Genie One, 2026 (documentación de Databricks)
+          en: AI/BI and Genie One release notes 2026 | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: herramientas-bi
+    banda_id: consumo
+    tipo_id: tipo-externo
+    bloque_id: consumo-bi
+    orden: 4
+    nombre:
+      es: Herramientas de BI externas
+      en: External BI tools
+    lider:
+      es: Programas de informes de otras empresas, como Power BI o Tableau, que leen los datos de la plataforma.
+      en: Reporting software from other vendors, such as Power BI or Tableau, that reads the platform's data.
+    experto:
+      es: Power BI se conecta a los SQL warehouses, y Power BI, Tableau, Sigma y otras herramientas pueden consultar las vistas de métricas. Desde Databricks se publican tablas y esquemas como modelos semánticos de Power BI, con licencia Premium de Power BI; Databricks recomienda OAuth, que permite auditar por usuario.
+      en: Power BI connects to SQL warehouses, and Power BI, Tableau, Sigma and other tools can query metric views. Tables and schemas can be published from Databricks as Power BI semantic models, which needs a Power BI Premium licence; Databricks recommends OAuth, which allows per-user auditing.
+    por_que_importa:
+      es: "Los informes de Power BI que leían las vistas de métricas con una opción del conector dejaron de funcionar: conviene probar la conexión antes de contar con ella."
+      en: "Power BI reports that read metric views through a connector option stopped working: test the connection before relying on it."
+    terminos:
+      es:
+        BI (inteligencia de negocio): Informes y tableros con los que una organización analiza sus datos para decidir.
+      en:
+        BI (business intelligence): Reports and dashboards an organisation uses to analyse its data and make decisions.
+    madurez: disponible-general
+    fuentes:
+      - url: https://docs.databricks.com/aws/en/partners/bi/power-bi/
+        titulo:
+          es: Power BI con Databricks (documentación de Databricks)
+          en: Power BI with Databricks | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://docs.databricks.com/aws/en/partners/bi/power-bi/service
+        titulo:
+          es: Publicar en el servicio de Power BI desde Databricks (documentación de Databricks)
+          en: Publish to the Power BI service from Databricks | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://docs.databricks.com/aws/en/release-notes/product/2024/september
+        titulo:
+          es: Notas de versión de la plataforma Databricks, septiembre de 2024
+          en: September 2024 | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://docs.databricks.com/aws/en/metric-views/
+        titulo:
+          es: Vistas de métricas de Unity Catalog (documentación de Databricks)
+          en: Unity Catalog metric views | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: databricks-apps
+    banda_id: consumo
+    tipo_id: cap-consumo
+    bloque_id: consumo-bi
+    orden: 5
+    nombre:
+      es: Databricks Apps
+      en: Databricks Apps
+    lider:
+      es: Aplicaciones a la medida, como formularios o pantallas de operación, que corren dentro de la plataforma y usan sus datos.
+      en: Custom applications, such as data-entry forms or operations screens, that run inside the platform and use its data.
+    experto:
+      es: Aplicaciones de datos e IA en Python o Node.js que corren en la plataforma serverless, sin infraestructura aparte; usan Unity Catalog para el gobierno y Databricks SQL para consultar, y se cobran por hora de cómputo mientras están encendidas.
+      en: Data and AI applications in Python or Node.js that run on the serverless platform with no separate infrastructure; they use Unity Catalog for governance and Databricks SQL for queries, and are billed per hour of compute while running.
+    por_que_importa:
+      es: Con su propia identidad, la aplicación usa los mismos permisos para todos; con la de quien la usa, aplica los permisos y filtros de cada persona.
+      en: Under its own identity, the app uses the same permissions for everyone; under the user's identity, it applies each person's permissions and filters.
+    madurez: disponible-general
+    fuentes:
+      - url: https://docs.databricks.com/aws/en/dev-tools/databricks-apps/
+        titulo:
+          es: Databricks Apps (documentación de Databricks)
+          en: Databricks Apps | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://docs.databricks.com/aws/en/dev-tools/databricks-apps/auth
+        titulo:
+          es: Configurar la autorización de una aplicación de Databricks (documentación de Databricks)
+          en: Configure authorization in a Databricks app | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://docs.databricks.com/aws/en/release-notes/product/2025/may
+        titulo:
+          es: Notas de versión de la plataforma Databricks, mayo de 2025
+          en: May 2025 | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: genie-agents
+    banda_id: ia
+    tipo_id: cap-ia
+    bloque_id: agentes
+    orden: 1
+    nombre:
+      es: Genie Agents
+      en: Genie Agents
+    lider:
+      es: Responde preguntas en lenguaje natural sobre los datos, y cada persona ve solo lo que tiene permiso de ver.
+      en: Answers plain-language questions about the data, and each person sees only what they are allowed to see.
+    experto:
+      es: Convierte preguntas en consultas SQL de solo lectura a partir de los nombres y descripciones de tablas y columnas de Unity Catalog; las consultas corren en su SQL warehouse y el acceso se evalúa con la identidad de quien pregunta.
+      en: Turns questions into read-only SQL queries from the names and descriptions of Unity Catalog tables and columns; queries run on its SQL warehouse and access is evaluated as the asker's identity.
+    por_que_importa:
+      es: "Admite otros idiomas, pero su marco envuelve las instrucciones en inglés: un equipo que pregunta en español debe probarlo antes de contar con él."
+      en: "It works in other languages, but its framework wraps prompts in English: a team asking in Spanish should test it before relying on it."
+    madurez: disponible-general
+    fuentes:
+      - url: https://docs.databricks.com/aws/en/genie-agents/concepts
+        titulo:
+          es: Conceptos de Genie Agents (documentación de Databricks)
+          en: Genie Agents concepts | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://docs.databricks.com/aws/en/ai-bi/release-notes/2024
+        titulo:
+          es: Notas de versión de AI/BI, 2024 (documentación de Databricks)
+          en: AI/BI release notes 2024 | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: unity-catalog
+    banda_id: gobierno
+    tipo_id: cap-gobierno
+    bloque_id: gobierno
+    orden: 1
+    nombre:
+      es: Unity Catalog
+      en: Unity Catalog
+    lider:
+      es: "El inventario central de los datos: quién puede usarlos, de dónde vienen y quién los consultó."
+      en: "The central inventory of the data: who may use it, where it comes from and who has queried it."
+    experto:
+      es: "Capa unificada de gobierno de datos e IA: privilegios, políticas por atributos y filtros por fila y columna; sigue el linaje desde el origen hasta los modelos y registra cada acceso en la tabla de auditoría del sistema."
+      en: "Unified governance layer for data and AI: privileges, attribute-based policies and row and column filters; it tracks lineage from source data through to models and records every access in the audit log system table."
+    por_que_importa:
+      es: "Deja registro de cada acceso a los datos: es la base para auditar quién vio qué información."
+      en: "It records every data access: the basis for auditing who saw which information."
+    terminos:
+      es:
+        linaje: El rastro de dónde viene un dato y por qué transformaciones pasó.
+      en:
+        lineage: The trail of where a piece of data comes from and which transformations it went through.
+    madurez: disponible-general
+    fuentes:
+      - url: https://docs.databricks.com/aws/en/data-governance/unity-catalog/
+        titulo:
+          es: Qué es Unity Catalog (documentación de Databricks)
+          en: What is Unity Catalog? | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://docs.databricks.com/aws/en/data-governance/unity-catalog/data-lineage
+        titulo:
+          es: Linaje en Unity Catalog (documentación de Databricks)
+          en: Lineage in Unity Catalog | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://docs.databricks.com/aws/en/release-notes/product/2022/august
+        titulo:
+          es: Notas de versión de la plataforma Databricks, agosto de 2022
+          en: August 2022 | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: filtros-mascaras
+    banda_id: gobierno
+    tipo_id: cap-gobierno
+    bloque_id: gobierno
+    orden: 2
+    nombre:
+      es: Filtros de fila y máscaras
+      en: Row filters and column masks
+    lider:
+      es: Cada persona ve solo las filas y los valores que le corresponden.
+      en: Each person sees only the rows and values meant for them.
+    experto:
+      es: Funciones SQL definidas por el usuario que, al consultar la tabla, evalúan cada fila para decidir si el usuario la ve y devuelven cada valor de columna original o enmascarado.
+      en: SQL user-defined functions that, at query time, evaluate each row to decide whether the user sees it and return each column value either original or masked.
+    por_que_importa:
+      es: "Las versiones de Databricks Runtime anteriores a 12.2 LTS no los admiten y no devuelven datos de esas tablas: hay que revisar las versiones en uso."
+      en: "Databricks Runtime versions below 12.2 LTS do not support them and return no data from those tables: check the versions in use."
+    madurez: disponible-general
+    fuentes:
+      - url: https://docs.databricks.com/aws/en/tables/row-and-column-filters
+        titulo:
+          es: Filtros de fila y máscaras de columna (documentación de Databricks)
+          en: Row filters and column masks | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://docs.databricks.com/aws/en/release-notes/product/2024/august
+        titulo:
+          es: Notas de versión de la plataforma Databricks, agosto de 2024
+          en: August 2024 | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: uso-facturable
+    banda_id: operacion
+    tipo_id: tipo-operacion
+    orden: 1
+    nombre:
+      es: Tabla de uso facturable
+      en: Billable usage table
+    lider:
+      es: Registra cuánto consume cada carga de trabajo, para saber en qué se gasta.
+      en: Records how much each workload consumes, to see where the money goes.
+    experto:
+      es: Tabla del sistema system.billing.usage con el uso facturable de toda la cuenta, centralizado y enviado a todas las regiones; los registros suelen aparecer en menos de 12 horas.
+      en: The system.billing.usage system table holds billable usage for the whole account, centralised and routed to every region; records typically appear within 12 hours.
+    por_que_importa:
+      es: "El consumo aparece con horas de retraso: sirve para analizar el gasto, no para frenarlo en el momento."
+      en: "Usage shows up hours later: it is for analysing spend, not for stopping it as it happens."
+    madurez: disponible-general
+    fuentes:
+      - url: https://docs.databricks.com/aws/en/admin/system-tables/billing
+        titulo:
+          es: Referencia de la tabla del sistema de uso facturable (documentación de Databricks)
+          en: Billable usage system table reference | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://docs.databricks.com/aws/en/release-notes/product/2024/september
+        titulo:
+          es: Notas de versión de la plataforma Databricks, septiembre de 2024
+          en: September 2024 | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: presupuestos
+    banda_id: operacion
+    tipo_id: tipo-operacion
+    orden: 2
+    nombre:
+      es: Presupuestos
+      en: Budgets
+    lider:
+      es: Avisan por correo cuando el gasto del mes supera el límite fijado.
+      en: Send an email alert when the month's spending goes over the set limit.
+    experto:
+      es: Umbrales mensuales en dólares a precio de lista, para toda la cuenta o filtrados por equipos, proyectos o espacios de trabajo; el bloqueo del uso solo aplica a las solicitudes que pasan por Unity Gateway.
+      en: Monthly thresholds in US dollars at list price, for the whole account or filtered by team, project or workspace; blocking usage only applies to requests that go through Unity Gateway.
+    por_que_importa:
+      es: No tienen en cuenta créditos ni descuentos negociados, así que su cifra puede no coincidir con la factura.
+      en: They ignore billing credits and negotiated discounts, so their figure may not match the invoice.
+    madurez: disponible-general
+    fuentes:
+      - url: https://docs.databricks.com/aws/en/admin/account-settings/budgets
+        titulo:
+          es: Crear y vigilar presupuestos (documentación de Databricks)
+          en: Create and monitor budgets | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://docs.databricks.com/aws/en/release-notes/product/2026/july
+        titulo:
+          es: Notas de versión de la plataforma Databricks, julio de 2026
+          en: July 2026 | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+  - id: lakeflow-jobs
+    banda_id: orquestacion
+    tipo_id: cap-transformacion
+    orden: 1
+    nombre:
+      es: Lakeflow Jobs
+      en: Lakeflow Jobs
+    lider:
+      es: "Decide qué tareas se ejecutan, en qué orden y cuándo: a una hora fija o cuando llegan datos nuevos."
+      en: "Decides which tasks run, in what order and when: at a set time or when new data arrives."
+    experto:
+      es: Automatización de flujos de trabajo que coordina varias tareas, como cuadernos y canalizaciones, con disparadores por horario o por evento y avisos por correo, Slack o webhooks.
+      en: Workflow automation that coordinates several tasks, such as notebooks and pipelines, with schedule or event triggers and notifications by email, Slack or webhooks.
+    por_que_importa:
+      es: Si nadie coordina el orden, un paso puede leer datos que otro todavía no terminó de preparar.
+      en: If nobody coordinates the order, one step can read data another has not finished preparing.
+    madurez: disponible-general
+    fuentes:
+      - url: https://docs.databricks.com/aws/en/jobs/
+        titulo:
+          es: Lakeflow Jobs (documentación de Databricks)
+          en: Lakeflow Jobs | Databricks on AWS
+        fecha: 2026-10-04
+        tipo: oficial
+      - url: https://www.databricks.com/blog/announcing-general-availability-databricks-lakeflow
+        titulo:
+          es: Anuncio de disponibilidad general de Databricks Lakeflow (blog de Databricks, 12 de junio de 2025)
+          en: Announcing the General Availability of Databricks Lakeflow | Databricks Blog
+        fecha: 2026-10-04
+        tipo: oficial
+    fecha_verificacion: 2026-10-04
+flujos:
+  - id: f-bases-connect
+    origen: bases-operacionales
+    destino: lakeflow-connect
+    modo_id: continuo
+    que_viaja:
+      es: Cambios de las tablas
+      en: Table changes
+    lider:
+      es: Los cambios de la base se capturan de forma continua.
+      en: Changes in the database are captured continuously.
+  - id: f-saas-connect
+    origen: aplicaciones-saas
+    destino: lakeflow-connect
+    modo_id: por-lotes
+    que_viaja:
+      es: Registros nuevos o cambiados
+      en: New or changed records
+    lider:
+      es: Se traen en los horarios que se fijen.
+      en: They come in on the schedules you set.
+  - id: f-archivos-autoloader
+    origen: archivos-nube
+    destino: auto-loader
+    modo_id: continuo
+    que_viaja:
+      es: Archivos nuevos
+      en: New files
+    lider:
+      es: Cada archivo se detecta apenas llega.
+      en: Each file is picked up as soon as it lands.
+  - id: f-bases-federacion
+    origen: bases-operacionales
+    destino: lakehouse-federation
+    modo_id: sin-copia
+    que_viaja:
+      es: Consultas a las tablas de origen
+      en: Queries on the source tables
+    lider:
+      es: Las tablas se consultan en la base de origen, sin copiarlas.
+      en: The tables are queried in the source database, never copied.
+  - id: f-connect-streaming
+    origen: lakeflow-connect
+    destino: tablas-streaming
+    modo_id: por-lotes
+    que_viaja:
+      es: Datos nuevos y cambiados
+      en: New and changed data
+    lider:
+      es: Lo ingerido se escribe en las tablas de destino.
+      en: What is ingested is written to the destination tables.
+  - id: f-autoloader-streaming
+    origen: auto-loader
+    destino: tablas-streaming
+    modo_id: continuo
+    que_viaja:
+      es: Contenido de los archivos
+      en: File contents
+    lider:
+      es: Los archivos se cargan en tablas a medida que llegan.
+      en: Files are loaded into tables as they arrive.
+  - id: f-streaming-canalizacion
+    origen: tablas-streaming
+    destino: canalizaciones-lakeflow
+    modo_id: por-lotes
+    que_viaja:
+      es: Datos crudos
+      en: Raw data
+    lider:
+      es: En cada ejecución programada, la canalización toma lo que llegó.
+      en: On each scheduled run, the pipeline takes what has arrived.
+  - id: f-canalizacion-vistas
+    origen: canalizaciones-lakeflow
+    destino: vistas-materializadas
+    modo_id: por-lotes
+    que_viaja:
+      es: Tablas limpias y combinadas
+      en: Clean, joined tables
+    lider:
+      es: Lo limpio queda en vistas que se actualizan solo con lo nuevo.
+      en: Clean results land in views that update with only what is new.
+  - id: f-streaming-cuadernos
+    origen: tablas-streaming
+    destino: cuadernos
+    modo_id: a-demanda
+    que_viaja:
+      es: Tablas leídas en su lugar
+      en: Tables read in place
+    lider:
+      es: El código de los equipos lee las tablas directamente.
+      en: The teams' code reads the tables directly.
+  - id: f-vistas-metricas
+    origen: vistas-materializadas
+    destino: vistas-metricas
+    modo_id: sin-copia
+    que_viaja:
+      es: Tablas de origen de las métricas
+      en: Source tables for the metrics
+    lider:
+      es: Las métricas se definen sobre las tablas, sin copiarlas.
+      en: Metrics are defined over the tables, without copying them.
+  - id: f-metricas-tableros
+    origen: vistas-metricas
+    destino: tableros-aibi
+    modo_id: a-demanda
+    que_viaja:
+      es: Consultas de indicadores
+      en: Indicator queries
+    lider:
+      es: El tablero pide los indicadores cuando alguien lo abre.
+      en: The dashboard asks for the indicators when someone opens it.
+  - id: f-metricas-bi
+    origen: vistas-metricas
+    destino: herramientas-bi
+    modo_id: a-demanda
+    que_viaja:
+      es: Consultas de indicadores
+      en: Indicator queries
+    lider:
+      es: Las herramientas externas pueden pedir los indicadores ya definidos.
+      en: External tools can ask for the indicators already defined.
+  - id: f-vistas-genie
+    origen: vistas-materializadas
+    destino: genie-agents
+    modo_id: a-demanda
+    que_viaja:
+      es: Contexto para responder
+      en: Context to answer
+    lider:
+      es: El agente consulta las tablas elegidas para responder.
+      en: The agent queries the chosen tables to answer.
+  - id: f-vistas-warehouse
+    origen: vistas-materializadas
+    destino: sql-warehouse
+    modo_id: a-demanda
+    que_viaja:
+      es: Tablas consultadas
+      en: Queried tables
+    lider:
+      es: El motor de consultas lee las tablas cuando alguien pregunta.
+      en: The query engine reads the tables when someone asks.
+  - id: f-federacion-warehouse
+    origen: lakehouse-federation
+    destino: sql-warehouse
+    modo_id: sin-copia
+    que_viaja:
+      es: Consultas federadas
+      en: Federated queries
+    lider:
+      es: Las consultas a bases externas se responden sin copiar sus datos.
+      en: Queries on external databases are answered without copying their data.
+  - id: f-warehouse-tableros
+    origen: sql-warehouse
+    destino: tableros-aibi
+    modo_id: a-demanda
+    que_viaja:
+      es: Resultados de consultas
+      en: Query results
+    lider:
+      es: Las consultas del tablero se ejecutan en este motor.
+      en: The dashboard's queries run on this engine.
+  - id: f-warehouse-bi
+    origen: sql-warehouse
+    destino: herramientas-bi
+    modo_id: a-demanda
+    que_viaja:
+      es: Resultados de consultas
+      en: Query results
+    lider:
+      es: Power BI y otras herramientas consultan los datos con este motor.
+      en: Power BI and other tools query the data on this engine.
+  - id: f-warehouse-apps
+    origen: sql-warehouse
+    destino: databricks-apps
+    modo_id: a-demanda
+    que_viaja:
+      es: Resultados de consultas
+      en: Query results
+    lider:
+      es: Las aplicaciones consultan los datos con este motor.
+      en: The apps query the data on this engine.
+  - id: f-warehouse-genie
+    origen: sql-warehouse
+    destino: genie-agents
+    modo_id: a-demanda
+    que_viaja:
+      es: Resultados de consultas
+      en: Query results
+    lider:
+      es: Las preguntas al agente se responden con consultas en este motor.
+      en: Questions to the agent are answered with queries on this engine.
+  - id: f-catalogo-vistas
+    origen: unity-catalog
+    destino: vistas-materializadas
+    modo_id: a-demanda
+    que_viaja:
+      es: Permisos y políticas
+      en: Permissions and policies
+    lider:
+      es: Unity Catalog dice quién puede leer cada tabla.
+      en: Unity Catalog says who may read each table.
+  - id: f-filtros-vistas
+    origen: filtros-mascaras
+    destino: vistas-materializadas
+    modo_id: a-demanda
+    que_viaja:
+      es: Filas y valores visibles por persona
+      en: Rows and values visible per person
+    lider:
+      es: Cada persona recibe solo sus filas.
+      en: Each person receives only their rows.
+  - id: f-jobs-connect
+    origen: lakeflow-jobs
+    destino: lakeflow-connect
+    modo_id: a-demanda
+    que_viaja:
+      es: Orden de ejecución
+      en: Run order
+    lider:
+      es: Cada horario de ingesta se ejecuta como un trabajo programado.
+      en: Each ingestion schedule runs as a scheduled job.
+  - id: f-jobs-canalizacion
+    origen: lakeflow-jobs
+    destino: canalizaciones-lakeflow
+    modo_id: a-demanda
+    que_viaja:
+      es: Orden de ejecución
+      en: Run order
+    lider:
+      es: Da la orden de ejecutar la canalización.
+      en: It gives the order to run the pipeline.
+  - id: f-jobs-cuadernos
+    origen: lakeflow-jobs
+    destino: cuadernos
+    modo_id: a-demanda
+    que_viaja:
+      es: Orden de ejecución
+      en: Run order
+    lider:
+      es: Da la orden de ejecutar el código de los equipos.
+      en: It gives the order to run the teams' code.
+  - id: f-cuadernos-uso
+    origen: cuadernos
+    destino: uso-facturable
+    modo_id: por-lotes
+    que_viaja:
+      es: Consumo de cómputo
+      en: Compute usage
+    lider:
+      es: Lo que gasta cada ejecución aparece en la tabla horas después.
+      en: What each run uses shows up in the table hours later.
+recorridos:
+  - id: registro-admision
+    titulo:
+      es: Un registro de admisión, de punta a punta
+      en: One admission record, end to end
+    pasos:
+      - id: p1
+        nodo_id: bases-operacionales
+        que_pasa:
+          es: Nace el registro
+          en: The record is born
+        lider:
+          es: Un paciente ficticio ingresa y queda registrado en el sistema de admisiones.
+          en: A fictional patient is admitted and recorded in the admissions system.
+        experto:
+          es: Inserción en una tabla de la base operacional de origen.
+          en: Insert into a table in the source operational database.
+      - id: p2
+        nodo_id: lakeflow-connect
+        que_pasa:
+          es: Se captura el cambio
+          en: The change is captured
+        lider:
+          es: El conector detecta el registro nuevo y lo lleva a la plataforma.
+          en: The connector picks up the new record and brings it into the platform.
+        experto:
+          es: La pasarela de ingesta, que corre como tarea continua, lee el cambio; la canalización de ingesta lo escribe en su siguiente ejecución.
+          en: The ingestion gateway, running as a continuous task, reads the change; the ingestion pipeline writes it on its next run.
+      - id: p3
+        nodo_id: tablas-streaming
+        que_pasa:
+          es: Se guarda tal cual
+          en: Stored as is
+        lider:
+          es: El registro queda guardado sin modificar.
+          en: The record is stored unchanged.
+        experto:
+          es: Fila nueva en una tabla de streaming en formato Delta Lake, gobernada por Unity Catalog.
+          en: New row in a streaming table in Delta Lake format, governed by Unity Catalog.
+      - id: p4
+        nodo_id: canalizaciones-lakeflow
+        que_pasa:
+          es: Se limpia y combina
+          en: Cleaned and combined
+        lider:
+          es: Se corrigen formatos y se une con otros datos del paciente.
+          en: Formats are corrected and it is joined with the patient's other data.
+        experto:
+          es: La canalización, en modo programado, procesa lo que llegó y valida los datos con expectativas.
+          en: The pipeline, in triggered mode, processes what has arrived and validates the data with expectations.
+      - id: p5
+        nodo_id: vistas-materializadas
+        bifurca: paralela
+        que_pasa:
+          es: Queda listo para usarse
+          en: Ready to be used
+        lider:
+          es: El registro limpio queda disponible para tableros y agentes.
+          en: The clean record is available to dashboards and agents.
+        experto:
+          es: El motor incremental actualiza la vista materializada reprocesando solo los datos nuevos.
+          en: The incremental engine refreshes the materialized view by reprocessing only the new data.
+      - id: p6
+        nodo_id: vistas-metricas
+        sigue_de: p5
+        que_pasa:
+          es: Se vuelve indicador
+          en: Becomes an indicator
+        lider:
+          es: Cuenta dentro del indicador de admisiones del día.
+          en: It counts inside the day's admissions indicator.
+        experto:
+          es: La vista de métricas agrega la tabla según la medida definida una sola vez.
+          en: The metric view aggregates the table using the measure defined once.
+      - id: p7
+        nodo_id: tableros-aibi
+        sigue_de: p6
+        que_pasa:
+          es: Aparece en el tablero
+          en: Shows on the dashboard
+        lider:
+          es: La dirección ve la ocupación actualizada.
+          en: Management sees the updated occupancy.
+        experto:
+          es: El tablero consulta la vista de métricas cuando alguien lo abre.
+          en: The dashboard queries the metric view when someone opens it.
+      - id: p8
+        nodo_id: genie-agents
+        sigue_de: p5
+        que_pasa:
+          es: Sirve de contexto a un agente
+          en: Serves as context for an agent
+        lider:
+          es: Un agente puede responder cuántos ingresos hubo hoy, a quien tenga permiso de verlo.
+          en: An agent can answer how many admissions there were today, to anyone allowed to see it.
+        experto:
+          es: Genie genera una consulta de solo lectura sobre la tabla, con la identidad de quien pregunta.
+          en: Genie generates a read-only query over the table, using the asker's identity.
+glosario:
+  es:
+    lakehouse: Plataforma que guarda los datos en tablas de formato abierto y permite analizarlos con consultas como las de una base de datos para análisis.
+    Delta Lake: Formato abierto de tablas que añade a los archivos Parquet un registro de transacciones.
+    serverless: Modalidad en la que el proveedor asigna y administra el cómputo bajo demanda, sin servidores que aprovisionar.
+    streaming: Procesamiento de los datos a medida que llegan, en lugar de en tandas.
+    catálogo: "Inventario central de los datos: qué hay, dónde está y quién puede usarlo."
+    canalización: Secuencia de pasos que mueve y transforma los datos desde su origen hasta su destino.
+  en:
+    lakehouse: A platform that keeps data in open-format tables and lets you analyse it with queries like those of an analytics database.
+    Delta Lake: An open table format that adds a transaction log to Parquet files.
+    serverless: A model in which the provider allocates and manages compute on demand, with no servers to provision.
+    streaming: Processing data as it arrives, rather than in batches.
+    catalog: "Central inventory of the data: what exists, where it is and who may use it."
+    pipeline: A sequence of steps that moves and transforms data from its source to its destination.

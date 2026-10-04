@@ -6,6 +6,9 @@ export const VETADAS: Array<[RegExp, string]> = [
   [/casa del lago/i, "calco de «lakehouse» (mercado § 6.B)"],
   [/lago de datos/i, "calco de «data lake»: se dice «data lake» y se explica en el glosario"],
   [/lorem|ipsum|TODO|FIXME|XXX/, "relleno o pendiente"],
+  // Neutralidad (regla 5): un fabricante que se califica a sí mismo no es un hecho del atlas, aunque vaya atribuido
+  // (S2-AUD-07). La cita literal de la fuente sí puede decirlo: solo se miran los textos que Big-D publica.
+  [/mejor (relaci[oó]n de )?precio|best price|optimal price|price[- ]performance|l[ií]der del mercado|industry[- ]leading/i, "autoevaluación comercial del fabricante: el atlas no la repite"],
 ];
 
 /** Cada texto de un dato con su ruta (JSON Pointer). */

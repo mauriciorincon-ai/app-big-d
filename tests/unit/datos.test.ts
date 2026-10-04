@@ -2,7 +2,7 @@
 // El cargador del build (G14 y la regla «el conocimiento es dato»): los datos reales pasan, y cada forma de
 // dato roto rompe la carga con su archivo, su regla y su id — jamás se completa por inferencia. Cada caso
 // trabaja sobre una copia de data/ en un directorio temporal; el data/ del repo no se toca.
-import { cpSync, mkdtempSync, readFileSync, rmSync, unlinkSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, unlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
@@ -28,6 +28,15 @@ const editarYaml = (archivo: string, f: (d: Record<string, unknown>) => void) =>
   f(d);
   writeFileSync(archivo, stringify(d));
 };
+/**
+ * Una plataforma «próximamente» sin mapa, propia de la prueba. Las reales cambian de estado con cada aprobación
+ * (Databricks se publicó el 2026-10-04 y rompió cuatro casos que la usaban de ejemplo sin mapa).
+ */
+const PROXIMA = "nueva";
+const conProxima = (d: string) =>
+  writeFileSync(join(d, `plataformas/${PROXIMA}.yaml`), stringify({ id: PROXIMA, nombre: { es: "Nueva", en: "New" }, estado: "proximamente", ficticia: false }));
+const con = (...fs: ((d: string) => void)[]) => (d: string) => fs.forEach((f) => f(d));
+
 function fallas(dir: string): string[] {
   try {
     cargarDatos(dir, RAIZ);
@@ -53,30 +62,30 @@ describe("los datos del repo", () => {
     const d = cargarDatos();
     const primera = d.plataformas.find((p) => p.estado === "publicada")!.id;
     expect(rutaAtlas(d, "en")).toBe(`/en/atlas/${primera}`);
-    expect(rutaAtlas({ plataformas: d.plataformas.map((p) => ({ ...p, estado: "proximamente" as const })), atlas: new Map() }, "es")).toBe("/es");
+    expect(rutaAtlas({ plataformas: d.plataformas.map((p) => ({ ...p, estado: "proximamente" as const })), atlas: new Map(), versiones: new Map(), historicas: new Map() }, "es")).toBe("/es");
   });
 
   it("B-5: el investigador por defecto es la primera plataforma por id; sin plataformas, la portada", () => {
     const d = cargarDatos();
     expect(rutaInvestigador(d, "es")).toBe(`/es/investigador/${d.plataformas[0]!.id}`);
-    expect(rutaInvestigador({ plataformas: [], atlas: new Map() }, "en")).toBe("/en");
+    expect(rutaInvestigador({ plataformas: [], atlas: new Map(), versiones: new Map(), historicas: new Map() }, "en")).toBe("/en");
   });
 });
 
 describe("un dato roto rompe la carga con archivo, regla e id", () => {
   it("una plataforma sin nombre en un idioma", () => {
-    const dir = copia((d) => editarYaml(join(d, "plataformas/databricks.yaml"), (x) => delete (x.nombre as Record<string, string>).en));
-    expect(fallas(dir)).toEqual([expect.stringMatching(/^data\/plataformas\/databricks\.yaml · nombre\.en · /)]);
+    const dir = copia(con(conProxima, (d) => editarYaml(join(d, `plataformas/${PROXIMA}.yaml`), (x) => delete (x.nombre as Record<string, string>).en)));
+    expect(fallas(dir)).toEqual([expect.stringMatching(/^data\/plataformas\/nueva\.yaml · nombre\.en · /)]);
   });
 
   it("un archivo que no se llama como su id", () => {
-    const dir = copia((d) => editarYaml(join(d, "plataformas/snowflake.yaml"), (x) => (x.id = "nieve")));
-    expect(fallas(dir)).toEqual(["data/plataformas/snowflake.yaml · id · el archivo se llama como su id: «nieve.yaml»"]);
+    const dir = copia(con(conProxima, (d) => editarYaml(join(d, `plataformas/${PROXIMA}.yaml`), (x) => (x.id = "nieve"))));
+    expect(fallas(dir)).toEqual(["data/plataformas/nueva.yaml · id · el archivo se llama como su id: «nieve.yaml»"]);
   });
 
   it("una plataforma publicada sin mapa, y una «próximamente» que ya tiene mapa", () => {
-    const sinMapa = copia((d) => editarYaml(join(d, "plataformas/databricks.yaml"), (x) => (x.estado = "publicada")));
-    expect(fallas(sinMapa)).toEqual(["data/plataformas/databricks.yaml · estado · publicada sin mapa: falta data/mapas/databricks.mapa.yaml"]);
+    const sinMapa = copia(con(conProxima, (d) => editarYaml(join(d, `plataformas/${PROXIMA}.yaml`), (x) => (x.estado = "publicada"))));
+    expect(fallas(sinMapa)).toEqual(["data/plataformas/nueva.yaml · estado · publicada sin mapa: falta data/mapas/nueva.mapa.yaml"]);
     const conMapa = copia((d) => editarYaml(join(d, "plataformas/plataforma-ejemplo.yaml"), (x) => (x.estado = "proximamente")));
     expect(fallas(conMapa)).toEqual([expect.stringContaining("data/plataformas/plataforma-ejemplo.yaml · estado · «proximamente» pero ya hay")]);
   });
@@ -109,7 +118,7 @@ describe("un dato roto rompe la carga con archivo, regla e id", () => {
 
   it("M-10: un YAML mal formado nombra su archivo (plataforma, mapa y gramática) y no aborta la carga", () => {
     const repetir = (archivo: string, clave: string) => (d: string) => writeFileSync(join(d, archivo), `${clave}: a\n${clave}: b\n${readFileSync(join(d, archivo), "utf8")}`);
-    expect(fallas(copia(repetir("plataformas/databricks.yaml", "id")))).toEqual([expect.stringMatching(/^data\/plataformas\/databricks\.yaml · yaml · Map keys must be unique/)]);
+    expect(fallas(copia(con(conProxima, repetir(`plataformas/${PROXIMA}.yaml`, "id"))))).toEqual([expect.stringMatching(/^data\/plataformas\/nueva\.yaml · yaml · Map keys must be unique/)]);
     expect(fallas(copia(repetir("mapas/fabric.mapa.yaml", "version")))).toEqual([expect.stringMatching(/^data\/mapas\/fabric\.mapa\.yaml · yaml · Map keys must be unique/)]);
     expect(fallas(copia(repetir("gramaticas/plataformas-datos.gramatica.yaml", "id")))).toEqual([expect.stringMatching(/^data\/gramaticas\/plataformas-datos\.gramatica\.yaml · yaml · /)]);
   });
@@ -142,6 +151,68 @@ describe("un dato roto rompe la carga con archivo, regla e id", () => {
     expect(fallas(falta)).toEqual(["data/gramaticas/plataformas-datos.gramatica.yaml · no existe"]);
     const rota = copia((d) => editarYaml(join(d, "gramaticas/plataformas-datos.gramatica.yaml"), (x) => (x.idiomas = ["es"])));
     expect(fallas(rota).join("\n")).toContain("data/gramaticas/plataformas-datos.gramatica.yaml · G");
+  });
+});
+
+// D-S2-09: las versiones anteriores de un mapa publicado viven en data/mapas/versiones/, con sus bytes aprobados. Se
+// cargan como un mapa publicado (se dibujan en la página de diferencias) y cada forma rota nombra su archivo.
+describe("versiones archivadas", () => {
+  const archivar = (version: string, nombre = `fabric-${version}.mapa.yaml`, cambio?: (m: Record<string, unknown>) => void) => (d: string) => {
+    mkdirSync(join(d, "mapas/versiones"), { recursive: true });
+    const m = parse(readFileSync(join(d, "mapas/fabric.mapa.yaml"), "utf8"));
+    m.version = version;
+    cambio?.(m);
+    writeFileSync(join(d, "mapas/versiones", nombre), stringify(m));
+  };
+  const dos = con;
+  const vigente = parse(readFileSync(join(RAIZ, "data/mapas/fabric.mapa.yaml"), "utf8")).version as string;
+  it("se cargan por plataforma, de la más vieja a la más nueva (0.0.10 va después de 0.0.9)", () => {
+    const d = cargarDatos(copia(dos(archivar("0.0.10"), archivar("0.0.9"))), RAIZ);
+    // Las dos de la prueba van primero: las archivadas de verdad, si las hay, son de 0.1.0 en adelante.
+    expect(d.versiones.get("fabric")!.slice(0, 2).map((v) => [v.version, v.archivo])).toEqual([
+      ["0.0.9", "data/mapas/versiones/fabric-0.0.9.mapa.yaml"],
+      ["0.0.10", "data/mapas/versiones/fabric-0.0.10.mapa.yaml"],
+    ]);
+    // Las reales: una por archivo de data/mapas/versiones/.
+    const archivos = existsSync(join(RAIZ, "data/mapas/versiones")) ? readdirSync(join(RAIZ, "data/mapas/versiones")).filter((f) => f.endsWith(".mapa.yaml")) : [];
+    expect([...cargarDatos().versiones.values()].flat().length).toBe(archivos.length);
+  });
+  it("cada forma rota nombra su archivo: nombre, plataforma sin mapa, versión que no coincide o no es anterior, otra extensión", () => {
+    expect(fallas(copia(archivar("0.0.1", "fabric.v0.0.1.mapa.yaml")))).toEqual([expect.stringMatching(/^data\/mapas\/versiones\/fabric\.v0\.0\.1\.mapa\.yaml · nombre · /)]);
+    expect(fallas(copia(con(conProxima, archivar("0.0.1", `${PROXIMA}-0.0.1.mapa.yaml`))))).toEqual(["data/mapas/versiones/nueva-0.0.1.mapa.yaml · versión archivada de «nueva», que no tiene un mapa publicado"]);
+    expect(fallas(copia(archivar("0.0.2", "fabric-0.0.1.mapa.yaml")))).toEqual(["data/mapas/versiones/fabric-0.0.1.mapa.yaml · /version · dice 0.0.2 y el nombre 0.0.1"]);
+    expect(fallas(copia(archivar(vigente)))).toEqual([`data/mapas/versiones/fabric-${vigente}.mapa.yaml · /version · ${vigente} no es anterior a la vigente (${vigente})`]);
+    // Un archivo con otra extensión no se ignora en silencio: es una falla de nombre (S2-AUD-40).
+    expect(fallas(copia(archivar("0.0.1", "fabric-0.0.1.mapa.yml")))).toEqual([expect.stringMatching(/^data\/mapas\/versiones\/fabric-0\.0\.1\.mapa\.yml · nombre · /)]);
+  });
+  it("una archivada de una plataforma real que las reglas de hoy no validan pasa a histórica: se lista con sus motivos y no se dibuja", () => {
+    const d = cargarDatos(copia(archivar("0.0.1", undefined, (m) => ((m.nodos as { fuentes: unknown[] }[])[0]!.fuentes = []))), RAIZ);
+    const [h] = d.historicas.get("fabric")!;
+    expect([h!.version, h!.archivo]).toEqual(["0.0.1", "data/mapas/versiones/fabric-0.0.1.mapa.yaml"]);
+    expect(h!.motivos.length).toBeGreaterThan(0);
+    for (const f of h!.motivos) expect(f).toMatch(/^data\/mapas\/versiones\/fabric-0\.0\.1\.mapa\.yaml · V\d+ · /);
+    expect(d.versiones.get("fabric")?.some((v) => v.version === "0.0.1")).toBeFalsy();
+  });
+  it("hoy no hay ninguna histórica", () => {
+    // Si una versión pasa a histórica, es una decisión que se registra en la bitácora y se cambia esta prueba en el
+    // mismo commit: así nunca ocurre en silencio (ADR `map-versioning`, decisión 6).
+    expect([...cargarDatos().historicas.values()].flat()).toEqual([]);
+  });
+  // Una ficticia no tiene aprobación que ancle sus versiones: la suya que no valida rompe la carga, y la regla 12
+  // (solo dominios reservados) vale también para sus versiones archivadas (S2-AUD-33).
+  const archivarEjemplo = (version: string, cambio: (m: Record<string, unknown>) => void) => (d: string) => {
+    mkdirSync(join(d, "mapas/versiones"), { recursive: true });
+    const m = parse(readFileSync(join(d, "mapas/plataforma-ejemplo.mapa.yaml"), "utf8"));
+    m.version = version;
+    cambio(m);
+    writeFileSync(join(d, "mapas/versiones", `plataforma-ejemplo-${version}.mapa.yaml`), stringify(m));
+  };
+  it("en una ficticia: una archivada que no valida rompe la carga, y una que cita un dominio real también", () => {
+    const sinFuentes = fallas(copia(archivarEjemplo("0.0.1", (m) => ((m.nodos as { fuentes: unknown[] }[])[0]!.fuentes = []))));
+    expect(sinFuentes.length).toBeGreaterThan(0);
+    for (const f of sinFuentes) expect(f).toMatch(/^data\/mapas\/versiones\/plataforma-ejemplo-0\.0\.1\.mapa\.yaml · V\d+ · /);
+    const real = fallas(copia(archivarEjemplo("0.0.1", (m) => ((m.nodos as { fuentes: { url: string }[] }[])[0]!.fuentes[0]!.url = "https://docs.databricks.com/x"))));
+    expect(real).toEqual([expect.stringMatching(/^data\/mapas\/versiones\/plataforma-ejemplo-0\.0\.1\.mapa\.yaml · \/nodos\/0\/fuentes\/0\/url · .*una plataforma ficticia solo cita dominios reservados/)]);
   });
 });
 

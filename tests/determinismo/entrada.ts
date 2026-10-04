@@ -2,6 +2,7 @@
 // packages/diagramador/test/golden.test.ts, con los datos importados como JSON (esbuild los empaqueta; el
 // navegador no lee archivos). Expone `window.diagramadorGolden()` → [{ archivo, svg }].
 import { layout, toSVG, type Gramatica, type Mapa, type Vista } from "../../packages/diagramador/src/index";
+import { mapasLado, salidasLado, versiones } from "../../packages/diagramador/test/lib/lado";
 import { TEXTOS } from "../../packages/diagramador/test/lib/textos";
 import gAgentes from "../../packages/diagramador/gramaticas/agentes-ia.json";
 import gPlataformas from "../../packages/diagramador/gramaticas/plataformas-datos.json";
@@ -16,16 +17,18 @@ import mPApp from "../../packages/diagramador/ejemplos/prueba-arquitectura-app.m
 import mPNubes from "../../packages/diagramador/ejemplos/prueba-nubes.mapa.json";
 import mPProcesos from "../../packages/diagramador/ejemplos/prueba-procesos.mapa.json";
 import mA3 from "../../packages/diagramador/carnadas/A3-cuatro-modos-en-un-par.mapa.json";
+import mA2 from "../../packages/diagramador/carnadas/A2-ocho-bloques.mapa.json";
+import mP1 from "../../packages/diagramador/carnadas/P1-mapa-denso.mapa.json";
 
 const FECHA = "2026-09-26";
-const VISTAS: Vista[] = ["nivel-1", "nivel-2", "recorrido"];
+const VISTAS: Vista[] = ["nivel1", "nivel2", "recorrido"];
 const GRAMATICAS = Object.fromEntries([gAgentes, gPlataformas, gPAgentes, gPApp, gPNubes, gPProcesos].map((g) => [g.id, g as unknown as Gramatica]));
 const EJEMPLOS = [mAgente, mPlataforma, mPAgentes, mPApp, mPNubes, mPProcesos] as unknown as Mapa[];
 
 function casos(): { clave: string; mapa: Mapa; vista: Vista }[] {
   return [
     ...EJEMPLOS.flatMap((m) => VISTAS.map((vista) => ({ clave: m.sujeto_id, mapa: m, vista }))),
-    { clave: "carnada-a3", mapa: mA3 as unknown as Mapa, vista: "nivel-1" as Vista },
+    { clave: "carnada-a3", mapa: mA3 as unknown as Mapa, vista: "nivel1" as Vista },
   ];
 }
 
@@ -38,13 +41,22 @@ const BLOQUES = [
 (globalThis as unknown as { diagramadorGolden: () => { archivo: string; svg: string }[] }).diagramadorGolden = () => [
   ...casos().flatMap((c) => {
     const g = GRAMATICAS[c.mapa.gramatica_id]!;
-    const geo = layout(c.mapa, g, c.vista, { textos: TEXTOS, fechaConsulta: FECHA });
+    const geo = layout(c.mapa, g, c.vista, { texts: TEXTOS, queryDate: FECHA });
     return g.idiomas.map((idioma) => ({ archivo: `${c.clave}.${c.vista}.${idioma}.svg`, svg: toSVG(geo, { language: idioma }) }));
   }),
   ...BLOQUES.flatMap(([m, grupo]) => {
     const mapa = m as unknown as Mapa;
     const g = GRAMATICAS[mapa.gramatica_id]!;
-    const geo = layout(mapa, g, "bloque", { textos: TEXTOS, fechaConsulta: FECHA, grupo });
+    const geo = layout(mapa, g, "bloque", { texts: TEXTOS, queryDate: FECHA, group: grupo });
     return g.idiomas.map((idioma) => ({ archivo: `${mapa.sujeto_id}.bloque-${grupo}.${idioma}.svg`, svg: toSVG(geo, { language: idioma }) }));
   }),
+  // El lado a lado y las diferencias: los mismos casos que `SALIDAS_LADO` en golden.test.ts.
+  ...(() => {
+    const ejemplo = mPlataforma as unknown as Mapa;
+    const g = GRAMATICAS["plataformas-datos"]!;
+    const { antes, despues } = versiones(ejemplo);
+    return salidasLado(g, mapasLado(ejemplo, mP1 as unknown as Mapa, mA2 as unknown as Mapa, mA3 as unknown as Mapa), antes, despues).flatMap((s) =>
+      g.idiomas.map((idioma) => ({ archivo: `${s.archivo}.${idioma}.svg`, svg: s.svg(idioma) })),
+    );
+  })(),
 ];

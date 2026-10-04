@@ -1,6 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
-import { abrir } from "./lib/abrir";
-import { IDIOMAS, PUBLICADAS, RUTAS } from "./lib/rutas";
+import { POR_PAGINA } from "../../src/lib/atlas/estado-lado";
+import { abrir, listo } from "./lib/abrir";
+import { conDibujo, IDIOMAS, PUBLICADAS, RUTAS, VERSIONADAS } from "./lib/rutas";
 
 // G11 del diagramador (CONTRATO § 2) en el producto, a 380 px y en los tres motores: esta spec corre en
 // mobile-chromium y en los proyectos g11-firefox y g11-webkit de playwright.config. En cada ruta del export la
@@ -60,13 +61,14 @@ for (const ruta of RUTAS)
   test(`${ruta}: la página no se desliza de lado y el texto del dibujo cabe`, async ({ page }) => {
     await page.goto(ruta);
     expect(await desborde(page)).toBeLessThanOrEqual(0);
-    if (ruta.includes("/atlas/")) expect(await problemas(page, ".lienzo")).toEqual([]);
+    if (conDibujo(ruta)) expect(await problemas(page, ".lienzo")).toEqual([]);
   });
 
-for (const idioma of IDIOMAS)
-  for (const p of PUBLICADAS)
-    test(`/${idioma}/atlas/${p}: la ventana de cada bloque cabe, y su dibujo también`, async ({ page }) => {
-      await page.goto(`/${idioma}/atlas/${p}`);
+// Las ventanas de los bloques del nivel 1 y, en las versiones de un mapa, las de cada versión (S2, D-S2-08).
+const CON_VENTANAS = IDIOMAS.flatMap((i) => [...PUBLICADAS.map((p) => `/${i}/atlas/${p}`), ...VERSIONADAS.map((p) => `/${i}/atlas/${p}/versiones`)]);
+for (const ruta of CON_VENTANAS)
+    test(`${ruta}: la ventana de cada bloque cabe, y su dibujo también`, async ({ page }) => {
+      await page.goto(ruta);
       const bloques = page.locator(".lienzo .dg-elem");
       const n = await bloques.count();
       expect(n).toBeGreaterThan(0);
@@ -81,3 +83,23 @@ for (const idioma of IDIOMAS)
         await expect(panel).toBeHidden();
       }
     });
+
+// El lado a lado se dibuja en ancho (en teléfono es una lista por banda): ahí, cada fila con sus bloques y con sus
+// componentes desplegados, en los tres motores. Todas las publicadas, página por página (`POR_PAGINA` a la vez).
+test.describe("lado a lado en ancho", () => {
+  test.use({ viewport: { width: 1400, height: 900 } });
+  for (const idioma of IDIOMAS)
+    test(`/${idioma}/comparar: el texto de cada fila cabe, con bloques y desplegado`, async ({ page }) => {
+      const paginas = Math.ceil(PUBLICADAS.length / POR_PAGINA);
+      for (let pagina = 1; pagina <= paginas; pagina++) {
+        await page.goto(`/${idioma}/comparar?plataformas=${PUBLICADAS.join(",")}&pagina=${pagina}`);
+        await listo(page);
+        const visibles = await page.locator(".lado-fila").evaluateAll((fs) => fs.filter((f) => f.getClientRects().length).map((f) => (f as HTMLElement).dataset.fila));
+        expect(visibles).toEqual(PUBLICADAS.slice((pagina - 1) * POR_PAGINA, pagina * POR_PAGINA));
+        expect(await problemas(page, ".lado-ancho .lienzo"), `página ${pagina}, bloques`).toEqual([]);
+        await page.locator(".lado-ancho .lado-todo").click();
+        await expect(page.locator(".lado-ancho .lado-todo")).toHaveAttribute("aria-expanded", "true");
+        expect(await problemas(page, ".lado-ancho .lienzo"), `página ${pagina}, desplegado`).toEqual([]);
+      }
+    });
+});

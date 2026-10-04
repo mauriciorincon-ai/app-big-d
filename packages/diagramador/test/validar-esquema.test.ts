@@ -29,7 +29,7 @@ describe("mapa: error de esquema → regla e id", () => {
     ["sin nodos", (m) => (m.nodos = []), "V3", "plataforma-ejemplo", /al menos 1/],
     ["falta el estado", (m) => delete m.estado, "V1", "plataforma-ejemplo", /falta el campo «estado»/],
     ["campo desconocido en la raíz", (m) => (m.extra = 1), "V1", "plataforma-ejemplo", /campo no permitido «extra»/],
-    ["estado fuera del enum", (m) => (m.estado = "borrador"), "V1", "plataforma-ejemplo", /debe ser uno de/],
+    ["estado fuera del enum (§ 7: V8)", (m) => (m.estado = "borrador"), "V8", "plataforma-ejemplo", /debe ser uno de/],
     ["nodo con madurez mal escrita", (m) => (m.nodos[0].madurez = "Disponible"), "V3", "sistema-admisiones", /patrón/],
     ["nombre vacío", (m) => (m.nodos[0].nombre = {}), "V3", "sistema-admisiones", /al menos 1 idioma/],
     ["clave de idioma inválida", (m) => (m.nodos[0].nombre = { ES: "x" }), "V3", "sistema-admisiones", /clave no válida|patrón/],
@@ -119,10 +119,16 @@ describe("reglas de la fase 2 que las carnadas no ejercitan", () => {
     const m = mapa((x) => (x.recorridos[0].pasos = x.recorridos[0].pasos.slice(0, 5).map((p: Record<string, unknown>) => ({ ...p, bifurca: undefined }))));
     expect(privado(m, g).errores.some((e) => /no llega a ninguna/.test(e.mensaje))).toBe(true);
   });
-  it("V15 sin cobertura no corre y lo declara como aviso", () => {
+  it("V15 sin cobertura y V16 sin cadenas de interfaz no corren, y lo declaran como avisos", () => {
     const inf = privado(M);
-    expect(inf.avisos.map((a) => a.regla)).toEqual(["V15"]);
+    expect(inf.avisos.map((a) => a.regla)).toEqual(["V15", "V16"]);
     expect(inf.ok).toBe(true);
+  });
+  it("V3 (alerta, 0.4.0, F-022): un bloque sin componentes valida, pero se dice", () => {
+    const m = mapa((x) => x.bloques.push({ ...x.bloques[0], id: "vacio" }));
+    const inf = privado(m);
+    expect(inf.alertas.filter((a) => a.regla === "V3").map((a) => `${a.id} · ${a.mensaje}`)).toEqual(["vacio · el bloque no tiene componentes"]);
+    expect(inf.errores).toEqual([]);
   });
   it("V14 en un diccionario: términos solo en un idioma", () => {
     const m = mapa((x) => (x.glosario = { es: { a: "b" } }));

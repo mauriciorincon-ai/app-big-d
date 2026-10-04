@@ -4,7 +4,30 @@
 import type { TextoIdioma } from "../tipos";
 import type { Decimas } from "../util/numeros";
 
-export type Vista = "nivel-1" | "nivel-2" | "recorrido" | "bloque";
+export type Vista = "nivel1" | "nivel2" | "recorrido" | "bloque";
+/** Lo que puede dibujar una geometría: las vistas de `layout` y el lado a lado de `compare` (§ 4.4). */
+export type VistaGeometria = Vista | "compare";
+/**
+ * Clase de un aviso de geometría (§ 5.6). `texto` es extensión del piloto (va a «Enmiendas»): un texto con más
+ * líneas que su caja, una palabra que no cabe sola o una cabecera de franja más alta que su fila.
+ */
+export type TipoAviso = "D11" | "pistas" | "fuera-del-lienzo" | "encima" | "etiqueta" | "bloque-vacio" | "canal" | "carriles" | "texto";
+/**
+ * Aviso de geometría con forma fija (§ 5.6): `id` es el elemento que lo causa, o la descripción del texto (`texto`) o
+ * del canal (`canal`); en `compare` lleva delante el prefijo de su fila (D12). `mensaje` empieza por «<tipo>: ».
+ */
+export interface Aviso {
+  vista: VistaGeometria;
+  tipo: TipoAviso;
+  id: string;
+  mensaje: string;
+}
+/** Un tramo de flujo que atraviesa la caja de un nodo ajeno (D11). */
+export interface Cruce {
+  flujo: string;
+  caja: string;
+  tramo: [Punto, Punto];
+}
 /** Semáforo de vigencia (§ 4.8): se cuenta desde `fecha_verificacion` hasta la fecha de consulta. */
 export type Vigencia = "vigente" | "revisar" | "vencido";
 export type Punto = readonly [Decimas, Decimas];
@@ -52,7 +75,12 @@ export interface PasoGeo {
 }
 
 export interface Geometria {
-  vista: Vista;
+  vista: VistaGeometria;
+  /**
+   * Variante del dibujo de una misma vista, para el espacio de nombres por defecto de `toSVG` (D8): en el lado a lado,
+   * «n1» con la rejilla de componentes contraída y «n2» con alguna banda desplegada; así las dos de una fila conviven.
+   */
+  variante?: string;
   sujeto: string;
   gramatica: string;
   idiomas: string[];
@@ -60,7 +88,10 @@ export interface Geometria {
   alto: Decimas;
   /** Columnas de capa, para el índice de bandas del lienzo deslizable (G11). */
   columnas: { banda: string; x: Decimas; numero: string; nombre: TextoIdioma }[];
-  /** Filas de franja (o de carril): dónde empieza cada una y cuánto mide (G5). */
+  /**
+   * Filas de franja (o de carril): dónde empieza cada una y cuánto mide (G5). En `compare`, una fila por mapa: `banda`
+   * es el prefijo del mapa (D12).
+   */
   filas: { banda: string; y: Decimas; alto: Decimas }[];
   cajas: CajaPropia[];
   trazados: Trazado[];
@@ -73,19 +104,28 @@ export interface Geometria {
   /**
    * Semáforo de vigencia (§ 4.8) del mapa (su nodo más viejo) y de cada elemento activable de la vista
    * (bloque, caja sin bloque o ficha en el nivel 1; nodo en el nivel 2). Es el MISMO cálculo que dibuja
-   * las insignias: la app lo usa para la píldora del mapa sin repetir la regla.
+   * las insignias: la app lo usa para la píldora del mapa sin repetir la regla. En `compare`, `elementos` es una
+   * entrada por fila (su prefijo) y `dias` el peor de todas.
    */
   vigencia: { dias: number; estado: Vigencia; elementos: { id: string; dias: number; estado: Vigencia }[] };
-  /** Avisos de geometría (§ 5.3): etiquetas que no caben, textos de más líneas que su caja, pistas agotadas. */
-  avisos: string[];
+  /** Cruces D11 (§ 8): tramos que atraviesan una caja ajena. Siempre vacío en un dibujo publicable. */
+  cruces: Cruce[];
+  /** Avisos de geometría (§ 5.6), uno por causa; un consumidor que publica aborta ante cualquiera. */
+  avisos: Aviso[];
+}
+
+/** Un plural de interfaz como dato por idioma (§ 8 v0.4.0): `one` para n = 1, `other` para lo demás; «{n}» es el número. */
+export interface Plural {
+  one: string;
+  other: string;
 }
 
 /** Cadenas de interfaz que el motor dibuja, por idioma (D-S1-06): llegan de la app, el paquete no las trae. */
 export interface TextosMotor {
   /** «{n} componente» / «{n} componentes». */
-  componentes: readonly [string, string];
+  componentes: Plural;
   /** «{n} fuente» / «{n} fuentes». */
-  fuentes: readonly [string, string];
+  fuentes: Plural;
   sinBloque: string;
   /** Rótulo sobre las franjas transversales. */
   transversales: string;
@@ -101,9 +141,29 @@ export interface TextosMotor {
   /** Vigencia en palabras para el nombre accesible: «{n}» días. */
   porRevisar: string;
   vencido: string;
-  /** Títulos y descripciones del SVG por vista: «{sujeto}», «{capas}», «{franjas}», «{nodos}», «{recorrido}», «{bloque}». */
-  titulo: Record<Vista, string>;
-  descripcion: Record<Vista, string>;
+  /**
+   * Títulos y descripciones del SVG por vista: «{sujeto}», «{capas}», «{franjas}», «{nodos}», «{recorrido}», «{bloque}»;
+   * en el lado a lado, «{sujetos}» y «{mapas}».
+   */
+  titulo: Record<VistaGeometria, string>;
+  descripcion: Record<VistaGeometria, string>;
+  /** Lado a lado (§ 4.4) y sus marcas de diferencia (§ 4.7). */
+  lado: {
+    /** Rótulo de cada fila, por el estado de su nodo más viejo: «{version}» y «{n}» días. */
+    fila: Plural;
+    filaRevisar: string;
+    filaVencido: string;
+    /** Cuenta del bloque compacto: «{n} comp.». */
+    comp: Plural;
+    sinComponentes: string;
+    /** Palabra de cada marca de diferencia: va siempre con su glifo (G7). */
+    marcas: { nuevo: string; retirado: string; renombrado: string; madurez: string };
+    /**
+     * Lista explicativa (`diffToText`): qué cambió en cada componente («{banda}», «{madurez}», «{antes}», «{ahora}»),
+     * cuántos flujos o pasos cambiaron («{n}») y la línea de «sin diferencias».
+     */
+    detalle: { nuevo: string; retirado: string; renombrado: string; madurez: string; otros: Plural; ninguna: string };
+  };
   /** Nombre accesible de un paso: «{numero}» y «{que}». */
   paso: string;
   /** Lectura en texto (G10): «{nombre}», «{modo}» y «{que}». */
@@ -125,18 +185,19 @@ export interface TextosMotor {
     consultado: string;
     tipoFuente: { oficial: string; tercero: string };
   };
-  /** Leyenda (§ 4.9): títulos, regla de vigencia («{revisar}», «{vencido}») y nota de marcas (D7). */
-  leyenda: { tipos: string; modos: string; madurez: string; vigencia: string; reglaVigencia: string; vigente: string; porRevisar: string; vencido: string; notaMarcas: string };
+  /** Leyenda (§ 4.9): títulos, regla de vigencia («{revisar}», «{vencido}»), regla del haz y nota de marcas (D7). */
+  leyenda: { tipos: string; modos: string; madurez: string; vigencia: string; reglaVigencia: string; vigente: string; porRevisar: string; vencido: string; haz: string; notaMarcas: string };
 }
 
 export interface OpcionesLayout {
-  textos: Record<string, TextosMotor>;
+  /** Cadenas de interfaz por idioma (§ 8: los nombres de la API van en inglés; los del dato, en español). */
+  texts: Record<string, TextosMotor>;
   /** Fecha de consulta (AAAA-MM-DD) para el semáforo de vigencia (§ 4.8): una entrada, jamás el reloj. */
-  fechaConsulta: string;
+  queryDate: string;
   /** Recorrido a dibujar en la vista «recorrido» (por defecto, el primero). */
   recorrido?: string;
   /** Elemento del nivel 1 que se abre en la vista «bloque»: el id de un bloque o «_<banda>» (sus nodos sin bloque). */
-  grupo?: string;
+  group?: string;
   /** Tabla de métricas (por defecto, la del piloto) y fuentes de interfaz y mono dentro de ella. */
   metricas?: import("../texto/metricas").TablaMetricas;
   fuente?: string;

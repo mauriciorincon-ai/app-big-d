@@ -42,6 +42,27 @@ Vercel protection):
 copying the command (D-S1-57): it invokes nothing, and a person still types `/investigar` in their own session.
 The launch guard (`sin-lanzar`) was confirmed live on 2026-09-30: the person's `/investigar` starts normally.
 
+## Re-read before the S2 release (2026-10-04)
+
+Both sources re-read on 2026-10-04, before the S2 merge to `main`:
+- *Legal and compliance*: the same passages as in S1. Consumer Terms for Free, Pro and Max. "Advertised usage
+  limits for Pro and Max plans assume ordinary, individual usage of Claude Code and the Agent SDK". OAuth "is
+  designed to support ordinary use of Claude Code", and now lists Team and Enterprise among the plans it serves.
+  Developers "may not collect, store, or intermediate Claude.ai credentials or session tokens", nor "route requests
+  through Free, Pro, or Max plan credentials on behalf of their users". Nothing prevents "an end user from signing in
+  to the unmodified Claude Code binary with their own Claude subscription". New wording: "sign-in to a Claude
+  account must complete through Anthropic's own flow", third-party developers may not "offer Claude.ai login into
+  their own applications", and "Anthropic reserves the right to take measures to enforce these restrictions". Big-D
+  neither signs anyone in nor offers anything to third parties, so none of it applies.
+- *Consumer Terms of Service*: still effective October 8, 2025, with the same two passages (no automated or
+  non-human access except via an API key or where explicitly permitted; no sharing of account credentials).
+
+**Changes in S2 that touch this posture:** none. The person ran `/investigar` five times in their own interactive
+session (Databricks, Snowflake, Fabric, Fabric governance, Databricks consumption) and approved each map in their own
+terminal. The citation verifier now retries with HTTP/1.1 and without its user agent when a site cuts the
+connection. It is plain `curl` with no model, no cookies and no identifiers. The CI gained an offline Vercel build
+for the CSP gate. It involves no model and no credentials.
+
 ## Decision — how each 7-S rule is met
 
 | 7-S rule | How Big-D meets it | Gate |

@@ -67,6 +67,9 @@ const MAQUETA = [
   [/^\/(es|en)\/atlas\/[^/]+$/, "atlas-nivel-1"],
   [/^\/(es|en)\/atlas\/[^/]+\/componentes$/, "atlas-nivel-2"],
   [/^\/(es|en)\/atlas\/[^/]+\/recorrido$/, "atlas-recorrido"],
+  [/^\/(es|en)\/comparar$/, "lado-a-lado"],
+  // Las versiones de un mapa: el estado «diferencias entre versiones» de la misma maqueta (D-S2-08).
+  [/^\/(es|en)\/atlas\/[^/]+\/versiones$/, "lado-a-lado"],
 ];
 
 // Puerto libre y servidor propio: jamás se reusa un servidor que ya estuviera escuchando.
@@ -136,7 +139,8 @@ let interacciones = 0;
 async function medir(pagina, clave) {
   const r = await pagina.evaluate(() => {
     const el = document.documentElement;
-    const out = { desborde: el.scrollWidth - el.clientWidth, fuente: true, fuera: [], pisadas: [], lienzo: null };
+    const out = { desborde: el.scrollWidth - el.clientWidth, fuente: true, fuera: [], pisadas: [], lienzos: [] };
+    const todos = [...document.querySelectorAll(".lienzo")];
     const familia = getComputedStyle(document.body).fontFamily.split(",")[0].replace(/"/g, "").trim();
     out.fuente = [...document.fonts].some((f) => f.family.replace(/"/g, "") === familia && f.status === "loaded");
     for (const svg of document.querySelectorAll("svg.dg-svg[viewBox]")) {
@@ -153,9 +157,12 @@ async function medir(pagina, clave) {
           if (b.x < c.b.x + c.b.width && b.x + b.width > c.b.x && b.y < c.b.y + c.b.height && b.y + b.height > c.b.y) out.pisadas.push(`«${txt}» (${dueno ?? "sin dueño"}) pisa ${c.dueno}`);
         }
       }
+      // Un registro por lienzo (la página de versiones trae uno por par); el último SVG visible de cada uno manda.
       const lz = svg.closest(".lienzo");
       const estilo = getComputedStyle(lz);
-      out.lienzo = { svg: svg.getBoundingClientRect().width, cliente: lz.clientWidth, area: lz.scrollWidth - lz.clientWidth, desliza: estilo.overflowX === "auto" || estilo.overflowX === "scroll", padding: parseFloat(estilo.paddingLeft) + parseFloat(estilo.paddingRight) };
+      const i = todos.indexOf(lz);
+      out.lienzos = out.lienzos.filter((l) => l.i !== i);
+      out.lienzos.push({ i, svg: svg.getBoundingClientRect().width, cliente: lz.clientWidth, area: lz.scrollWidth - lz.clientWidth, desliza: estilo.overflowX === "auto" || estilo.overflowX === "scroll", padding: parseFloat(estilo.paddingLeft) + parseFloat(estilo.paddingRight) });
     }
     return out;
   });
@@ -163,14 +170,14 @@ async function medir(pagina, clave) {
   if (!r.fuente) fallas.push(`${clave}: la fuente no cargó`);
   for (const f of r.fuera) fallas.push(`${clave}: texto fuera del lienzo ${f}`);
   for (const f of r.pisadas) fallas.push(`${clave}: ${f}`);
-  if (r.lienzo) {
-    const l = r.lienzo;
+  for (const l of r.lienzos) {
+    const cual = r.lienzos.length > 1 ? `el lienzo ${l.i + 1}` : "el lienzo";
     const debe = Math.max(0, Math.round(l.svg + l.padding - l.cliente));
-    if (!l.desliza) fallas.push(`${clave}: el lienzo no se desliza de lado`);
-    if (Math.abs(l.area - debe) > 1) fallas.push(`${clave}: área de desplazamiento ${l.area}px, esperada ${debe}px (SVG ${l.svg}px en ${l.cliente}px)`);
+    if (!l.desliza) fallas.push(`${clave}: ${cual} no se desliza de lado`);
+    if (Math.abs(l.area - debe) > 1) fallas.push(`${clave}: área de desplazamiento de ${cual}: ${l.area}px, esperada ${debe}px (SVG ${l.svg}px en ${l.cliente}px)`);
     // El final del área de desplazamiento muestra el borde derecho del SVG.
-    const fin = await pagina.evaluate(() => {
-      const lz = document.querySelector(".lienzo");
+    const fin = await pagina.evaluate((i) => {
+      const lz = document.querySelectorAll(".lienzo")[i];
       const antes = lz.scrollLeft;
       lz.style.scrollBehavior = "auto";
       lz.scrollLeft = lz.scrollWidth;
@@ -179,11 +186,9 @@ async function medir(pagina, clave) {
       lz.scrollLeft = antes;
       lz.style.scrollBehavior = "";
       return { derecha: svg.right, visible: caja.right };
-    });
-    if (fin.derecha > fin.visible + 1) fallas.push(`${clave}: al final del desplazamiento el SVG sigue cortado (${Math.round(fin.derecha - fin.visible)}px)`);
-    return l;
+    }, l.i);
+    if (fin.derecha > fin.visible + 1) fallas.push(`${clave}: al final del desplazamiento de ${cual}, el SVG sigue cortado (${Math.round(fin.derecha - fin.visible)}px)`);
   }
-  return null;
 }
 
 /**
@@ -269,10 +274,67 @@ async function interactuar(pagina, ruta, tema, ancho, clave) {
     });
   } else cambio((await indice.first().isVisible().catch(() => false)) === false, "el lienzo cabe y el índice se ve igual");
 
+  // Lado a lado (S2): selector, paginación, «Desplegar todo» (ancho y teléfono), pestañas de banda y plegables del
+  // teléfono. Cada uno cambia qué se ve; la URL guarda la selección y la página.
+  if (await pagina.locator(".lado-filas").count()) {
+    const filas = () => pagina.locator(".lado-fila").evaluateAll((fs) => fs.filter((f) => f.getClientRects().length).map((f) => f.dataset.fila).join(" "));
+    const resumen = pagina.locator(".selector summary");
+    await marcar(resumen);
+    await resumen.click();
+    const casillas = pagina.locator(".selector-lista input");
+    await marcar(casillas);
+    for (let i = 0; i < (await casillas.count()); i++) {
+      const antes = await pagina.evaluate(() => [location.search, document.documentElement.getAttribute("data-lado-elegidas")].join("|"));
+      await casillas.nth(i).uncheck();
+      const ahora = await pagina.evaluate(() => [location.search, document.documentElement.getAttribute("data-lado-elegidas")].join("|"));
+      cambio(ahora !== antes, `quitar la plataforma ${i + 1} del selector no cambió la URL ni las elegidas`);
+      await casillas.nth(i).check();
+    }
+    cambio((await pagina.evaluate(() => location.search)) === "", "con todas elegidas otra vez, la URL no volvió a quedar limpia");
+    await resumen.click();
+    if (ancho >= 900) {
+      const pags = pagina.locator(".paginacion button");
+      await marcar(pags);
+      const antes = await filas();
+      await pags.last().click();
+      cambio((await filas()) !== antes && (await pagina.evaluate(() => location.search)) === "?pagina=2", "«Siguiente» no pasó a la página 2");
+      await pags.first().click();
+      cambio((await filas()) === antes, "«Anterior» no volvió a la página 1");
+    }
+    for (const sel of [".lado-ancho .lado-todo", ".lado-angosto .lado-todo"]) {
+      const b = pagina.locator(sel);
+      if (!(await b.isVisible())) continue;
+      await marcar(b);
+      await b.click();
+      const abierto = await pagina.evaluate((s) => ({ exp: document.querySelector(s).getAttribute("aria-expanded"), n2: [...document.querySelectorAll('[data-variante="n2"]')].some((e) => e.getClientRects().length), det: document.querySelectorAll("#lado-angosto details[open]").length }), sel);
+      cambio(abierto.exp === "true" && (sel.includes("ancho") ? abierto.n2 : abierto.det > 0), `«Desplegar todo» (${sel}) no desplegó`);
+      await b.click();
+      cambio((await b.getAttribute("aria-expanded")) === "false", `«Contraer todo» (${sel}) no contrajo`);
+    }
+    const pestanas = pagina.locator(".lado-angosto-cabeza .indice button");
+    if (await pestanas.first().isVisible()) {
+      await marcar(pestanas);
+      for (let i = (await pestanas.count()) - 1; i >= 0; i--) {
+        await pestanas.nth(i).click();
+        const banda = await pagina.locator(".lado-banda:not([hidden])").getAttribute("data-banda");
+        cambio(banda === (await pagina.locator(".lado-banda").nth(i).getAttribute("data-banda")), `la pestaña de banda ${i + 1} no mostró su banda`);
+      }
+      const plegables = pagina.locator(".lado-banda:not([hidden]) details.lado-comp > summary");
+      await marcar(pagina.locator("details.lado-comp > summary"));
+      if (await plegables.count()) {
+        await plegables.first().click();
+        cambio(await plegables.first().evaluate((s) => s.parentElement.open), "el plegable de un bloque en el teléfono no se abrió");
+        await plegables.first().click();
+      }
+    }
+  }
+
   // Niveles 2 y 3: cada componente abre el panel con su ficha; nivel 1: cada bloque (o grupo sin bloque) abre
-  // su ventana. El foco va al título; Esc cierra y devuelve el foco al elemento; «Cerrar» también cierra.
-  const activables = (await pagina.locator(".lienzo .dg-nodo").count()) ? ".lienzo .dg-nodo" : ".lienzo .dg-elem";
-  if (await pagina.locator("#panel-ficha").count()) {
+  // su ventana. El foco va al título; Esc cierra y devuelve el foco al elemento; «Cerrar» también cierra. En el lado
+  // a lado, los dos: los bloques de cada fila y los componentes desplegados (en ancho).
+  const lado = (await pagina.locator(".lado-filas").count()) > 0;
+  const activables = lado ? ".lado-ancho .dg-elem" : (await pagina.locator(".lienzo .dg-nodo").count()) ? ".lienzo .dg-nodo" : ".lienzo .dg-elem";
+  if ((await pagina.locator("#panel-ficha").count()) && (!lado || ancho >= 900)) {
     const nodos = pagina.locator(activables);
     await marcar(nodos);
     const panel = pagina.locator("#panel-ficha");
@@ -284,14 +346,14 @@ async function interactuar(pagina, ruta, tema, ancho, clave) {
       await panel.waitFor({ state: "visible", timeout: 2000 }).catch(() => {});
       const titulo = (await panel.isVisible()) ? await panel.locator("h2").textContent() : "";
       cambio(titulo === nombre, `«${nombre}» no abrió su panel (título: «${titulo}»)`);
-      if (activables.endsWith(".dg-elem"))
+      if (activables.endsWith(".dg-elem") && (!lado || (await nodo.evaluate((e) => e.classList.contains("dg-lado-bloque")))))
         cambio((await panel.locator('svg[data-vista="bloque"] .dg-nodo').count()) > 0 && (await panel.locator(".dg-tarjeta").count()) > 0, `la ventana de «${nombre}» no trae sus componentes dibujados y sus tarjetas`);
       cambio(await pagina.evaluate(() => document.activeElement?.tagName === "H2"), `al abrir «${nombre}» el foco no fue al título`);
       await pagina.keyboard.press("Escape");
       cambio(await panel.isHidden(), `Esc no cerró la ficha de «${nombre}»`);
     }
     if (n) {
-      const primero = nodos.first();
+      const primero = nodos.filter({ visible: true }).first();
       await primero.focus();
       await pagina.keyboard.press("Enter");
       cambio(await panel.isVisible(), "Enter sobre un elemento del lienzo no abrió su panel");
@@ -357,11 +419,14 @@ async function interactuar(pagina, ruta, tema, ancho, clave) {
     cambio((await pagina.evaluate(() => navigator.clipboard.readText())) === texto, `«Copiar» no dejó «${texto}» en el portapapeles`);
   }
 
-  const lienzoFoco = pagina.locator(".lienzo[tabindex]");
-  if (await lienzoFoco.count()) {
-    await marcar(lienzoFoco);
-    await lienzoFoco.focus();
-    cambio(await lienzoFoco.evaluate((e) => e === document.activeElement), "el lienzo no recibe el foco");
+  // Cada lienzo recibe el foco (la página de versiones trae uno por par).
+  const lienzos = pagina.locator(".lienzo[tabindex]").filter({ visible: true });
+  await marcar(lienzos);
+  const nLienzos = await lienzos.count();
+  for (let i = 0; i < nLienzos; i++) {
+    const l = lienzos.nth(i);
+    await l.focus();
+    cambio(await l.evaluate((e) => e === document.activeElement), `el lienzo ${i + 1} no recibe el foco`);
   }
 
   // Saltos: «Saltar el diagrama» lleva a la lectura; «Saltar al contenido» al main.
@@ -370,7 +435,7 @@ async function interactuar(pagina, ruta, tema, ancho, clave) {
     [".saltar", "#contenido"],
   ]) {
     const a = pagina.locator(sel);
-    if (!(await a.count())) continue;
+    if (!(await a.count()) || (sel === ".saltar-diagrama" && !(await a.evaluate((e) => e.getClientRects().length > 0)))) continue;
     await marcar(a);
     await a.focus();
     await pagina.keyboard.press("Enter");
@@ -389,7 +454,7 @@ async function interactuar(pagina, ruta, tema, ancho, clave) {
 
   // Al final de los clics (la hoja modal tapa el resto en teléfono): una ficha abierta para la captura de
   // estado; sus enlaces a fuentes entran en la pasada de enlaces que sigue.
-  if ((await pagina.locator("#panel-ficha").count()) && (await pagina.locator(activables).count()) > 1)
+  if ((await pagina.locator("#panel-ficha").count()) && (!lado || ancho >= 900) && (await pagina.locator(activables).count()) > 1)
     await pagina.locator(activables).nth(1).evaluate((el) => el.dispatchEvent(new MouseEvent("click", { bubbles: true })));
 
   // Enlaces: cada uno lleva a una ruta que existe (el de idioma, además, cambia lang).

@@ -3,10 +3,10 @@
 // para sus ids (D8, D12) y sin sellos de versión (las versiones van en el manifiesto).
 import type { Geometria } from "../layout/tipos";
 import { fmt } from "../util/numeros";
-import { GLIFOS, MARCADORES, MARCAS } from "./glifos";
+import { DIFERENCIAS, GLIFOS, MARCADORES, MARCAS } from "./glifos";
 import { atributos, elemento, escapar, type Serializacion } from "./serializar";
 
-const CORTA = { "nivel-1": "n1", "nivel-2": "n2", recorrido: "rec", bloque: "bl" } as const;
+const CORTA = { nivel1: "n1", nivel2: "n2", recorrido: "rec", bloque: "bl", compare: "lado" } as const;
 
 export interface OpcionesSVG {
   language: string;
@@ -18,7 +18,7 @@ export interface OpcionesSVG {
   hintId?: string;
 }
 
-function defs(s: Serializacion): string {
+function defs(s: Serializacion, lado: boolean): string {
   let out = "<defs>";
   for (const [nombre, gl] of Object.entries(GLIFOS))
     out += gl.trazo
@@ -30,6 +30,9 @@ function defs(s: Serializacion): string {
       : `<path${atributos("path", { id: `m-${nombre}`, d: m.d, fill: "none", stroke: "currentColor", "stroke-width": "1.6", "stroke-linecap": "round", "stroke-linejoin": "round" }, s)}/>`;
   for (const [nombre, k] of Object.entries(MARCAS))
     out += `<path${atributos("path", { id: `k-${nombre}`, d: k.d, fill: "none", stroke: "currentColor", "stroke-width": k.trazo, "stroke-linecap": "round", "stroke-linejoin": "round" }, s)}/>`;
+  if (lado)
+    for (const [nombre, k] of Object.entries(DIFERENCIAS))
+      out += `<path${atributos("path", { id: `d-${nombre}`, d: k.d, fill: "none", stroke: "currentColor", "stroke-width": k.trazo, "stroke-linecap": "round", "stroke-linejoin": "round" }, s)}/>`;
   return `${out}</defs>`;
 }
 
@@ -38,7 +41,7 @@ export function toSVG(geo: Geometria, opciones: OpcionesSVG): string {
   if (!geo.idiomas.includes(idioma)) throw new Error(`toSVG: la gramática no declara el idioma «${idioma}»`);
   const s: Serializacion = {
     idioma,
-    prefijo: opciones.prefix ?? `${geo.sujeto}-${CORTA[geo.vista]}-${idioma}`,
+    prefijo: opciones.prefix ?? `${geo.sujeto}-${CORTA[geo.vista]}${geo.variante ? `-${geo.variante}` : ""}-${idioma}`,
     activable: opciones.hintId ? { "aria-describedby": opciones.hintId } : undefined,
   };
   const raiz = atributos(
@@ -63,7 +66,7 @@ export function toSVG(geo: Geometria, opciones: OpcionesSVG): string {
     `<svg${raiz}>`,
     `<title${atributos("title", { id: "titulo" }, s)}>${escapar(geo.titulo[idioma]!)}</title>`,
     `<desc${atributos("desc", { id: "desc" }, s)}>${escapar(geo.descripcion[idioma]!)}</desc>`,
-    defs(s),
+    defs(s, geo.vista === "compare"),
     ...geo.escena.map((e) => elemento(e, s)).filter(Boolean),
     "</svg>",
   ];

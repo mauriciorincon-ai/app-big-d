@@ -66,6 +66,8 @@ export interface PropuestaVista {
   modelo: string;
   /** Reintentos que CONTÓ el hook de fin (`.reintentos`), no los que declara el modelo (B-45). */
   reintentos: number;
+  /** Reintentos que declara la corrida (`ejecucion.reintentos`). */
+  reintentosDeclarados: number;
   fallas: string[];
   /** La verificación existe y es de esta versión de la propuesta. */
   verificada: boolean;
@@ -90,7 +92,7 @@ const ORDEN: Record<Vigencia, number> = { vigente: 0, revisar: 1, vencido: 2 };
 
 /** Vigencia por banda: su componente más viejo manda (el mismo cálculo del motor, nodo por nodo). */
 export function vigenciaPorBanda(atlas: Atlas, idioma: Idioma, fecha: string): BandaVigencia[] {
-  const geo = layout(atlas.mapa, atlas.gramatica, "nivel-2", { textos: textosMotor(), fechaConsulta: fecha });
+  const geo = layout(atlas.mapa, atlas.gramatica, "nivel2", { texts: textosMotor(), queryDate: fecha });
   const porNodo = new Map(geo.vigencia.elementos.map((e) => [e.id, e]));
   const bandas = [...(["capa", "carril", "transversal"] as const)].flatMap((c) =>
     atlas.gramatica.bandas.filter((b) => b.clase === c).sort((a, b) => a.orden - b.orden),
@@ -103,7 +105,8 @@ export function vigenciaPorBanda(atlas: Atlas, idioma: Idioma, fecha: string): B
   });
 }
 
-function revisiones(raiz: string, id: string): Revision[] {
+/** El historial de revisiones de una plataforma (data/revisiones/<id>.jsonl), de la más vieja a la más nueva. */
+export function revisiones(raiz: string, id: string): Revision[] {
   const archivo = join(raiz, "data/revisiones", `${id}.jsonl`);
   if (!existsSync(archivo)) return [];
   return readFileSync(archivo, "utf8")
@@ -184,7 +187,7 @@ export function vistaInvestigador(d: Datos, id: string, idioma: Idioma, fecha: s
   try {
     dato = JSON.parse(bytes.toString("utf8"));
   } catch (e) {
-    vista.propuesta = { carpeta: `propuestas/${carpeta}`, fecha: "", modelo: "", reintentos: reintentosDe(dir), fallas: [`propuesta.json no es JSON: ${(e as Error).message}`], verificada: false, fuentes: 0, diff: { primera: !atlas, nuevos: 0, renombrados: 0, retirados: 0, madurez: 0 }, afirmaciones: [], retiros: [], preguntas: [] };
+    vista.propuesta = { carpeta: `propuestas/${carpeta}`, fecha: "", modelo: "", reintentos: reintentosDe(dir), reintentosDeclarados: 0, fallas: [`propuesta.json no es JSON: ${(e as Error).message}`], verificada: false, fuentes: 0, diff: { primera: !atlas, nuevos: 0, renombrados: 0, retirados: 0, madurez: 0 }, afirmaciones: [], retiros: [], preguntas: [] };
     return vista;
   }
   const forma = esquemaPropuesta.safeParse(dato);
@@ -208,6 +211,7 @@ export function vistaInvestigador(d: Datos, id: string, idioma: Idioma, fecha: s
     ...(p?.capa ? { capa: p.capa } : {}),
     modelo: p?.ejecucion.modelo ?? "",
     reintentos: reintentosDe(dir),
+    reintentosDeclarados: p?.ejecucion.reintentos ?? 0,
     fallas,
     verificada,
     ...(verificada && verif?.success ? { fechaVerificacion: verif.data.fecha } : {}),

@@ -37,12 +37,12 @@ export default defineConfig({
     {
       name: "g11-firefox",
       use: { ...devices["Desktop Firefox"] },
-      testMatch: /g11\.spec\.ts/,
+      testMatch: /(g11|csp)\.spec\.ts/,
     },
     {
       name: "g11-webkit",
       use: { ...devices["Desktop Safari"] },
-      testMatch: /g11\.spec\.ts/,
+      testMatch: /(g11|csp)\.spec\.ts/,
     },
   ],
   webServer: {
