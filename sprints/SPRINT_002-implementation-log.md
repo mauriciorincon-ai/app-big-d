@@ -1209,6 +1209,34 @@ final, de a una.
 | 11 | Checks con conclusión propia | los 5 en `success` en `2f11545`; `quality` corrió por primera vez el build como Vercel (dicho en el summary) |
 | 12 | Disco en runtime | export estático: la app no escribe al correr. El investigador escribe solo en `propuestas/` (hook). El arnés de capturas verifica byte a byte que sirve `out/` de este repo |
 
+## Después del merge del PR #5 (2026-10-04): el PR #6 de dependabot
+
+- La persona mergeó el PR #5 (`c147310`) y avisó: «6 se dañó». El homepage sigue apuntando al repo (`homepageUrl ==
+  url`).
+- **El PR #6** sube seis paquetes de desarrollo y de la app. Dependabot lo rehízo sobre el `main` nuevo (`885cff0`):
+  `@sentry/nextjs` 11.0.0 → 11.2.0, `next` y `eslint-config-next` 16.3.6 → 16.3.8, `vitest` y `@vitest/coverage-v8`
+  5.0.2 → 5.0.3, y `ajv` 8.18.0 → 8.20.0. Su CI (la del 2026-10-03 y la versión rehecha) estaba en rojo por dos
+  causas:
+  1. **Regla 18:** `why-is-node-running` 3.2.2 (`main`) → 3.2.1. No es pnpm degradando: `vitest` 5.0.3 la **fija
+     exacta** (`"why-is-node-running": "3.2.1"`; la 5.0.2 pedía `^3.2.1`, según `npm view`). El gate trataba toda
+     bajada como degradación silenciosa.
+  2. **`ajv` 8.20** cambia el validador generado del diagramador (`esquemas.generado.js`): solo los comentarios de
+     ruta (`ajv@8.18.0` → `ajv@8.20.0`), la lógica es la misma. Se regeneró con `compilar-esquemas.mjs`.
+- **Cambio del gate** (`scripts/verificar-dependencias.mjs`): una bajada se acepta solo si algún paquete del lockfile
+  del PR que usa esa versión la declara **exacta** (consulta al registro con `npm view`), y lo dice («bajada forzada,
+  aceptada: … porque vitest@5.0.3 la fija exacta»). Una bajada que el rango admite, sin dependiente o sin registro,
+  sigue en rojo. Prueba nueva: `tests/unit/verificar-dependencias.test.ts` (5).
+
+| Gate | ¿Puede fallar? | Rojo | A quién nombró | Verde |
+|---|---|---|---|---|
+| Bajada forzada aceptada solo si es exacta | Sí: un rango que admite la versión de `main` es pnpm degradando | `exacta` acepta cualquier rango | «una bajada que el rango declarado admite sigue en rojo» | 5/5 al restaurar |
+| La bajada forzada no queda en rojo | Sí | la rama que la acepta, apagada | «acepta la bajada que un paquete del PR fija exacta, y dice cuál» | 5/5 al restaurar |
+| El caso real | Sí | el gate anterior sobre el PR #6 (la CI del PR) | `why-is-node-running: 3.2.2 (origin/main) → 3.2.1` | el gate nuevo: «bajada forzada, aceptada…» y 669 paquetes |
+
+- **Verificado sobre `885cff0` (el PR #6 rehecho sobre `main`):** `pnpm install --frozen-lockfile`, `pnpm peers check`,
+  `typecheck`, `lint`, `pnpm test` 1402/1402 (66 archivos), `pnpm build` (CSP en 46 páginas) y `pnpm audit` (el
+  aviso de `braces`, ignorado con su gate).
+
 ## Desviación del plan
 
 Lo que el plan aprobado ya declaró frente a la orden y a `SPRINT_002.md`:

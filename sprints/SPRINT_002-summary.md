@@ -312,6 +312,11 @@ codigo`, hexágono, métricas de Inter) no entra aquí. Su renovación va a la o
    a la vez, con todas las plataformas apiladas». Que la planeadora la redacte así en la constitución de la app.
 6. **Las mutaciones de una prueba de integridad deben romper lo que la prueba dice medir.** Una mutación que rompe
    el YAML pasa por el error equivocado y deja de medir la huella cuando cambian los datos.
+7. **Regla 18, bajadas forzadas** (después del merge, PR #6 de dependabot). El gate del kit
+   (`scripts/verificar-dependencias.mjs`) trata toda bajada frente a `main` como pnpm degradando en silencio. Pero un
+   bump puede fijar una versión exacta más vieja: `vitest` 5.0.3 fija `why-is-node-running` 3.2.1. La app acepta esa
+   bajada solo si un paquete que la usa la declara exacta en el registro (`npm view`), y la nombra; todo lo demás
+   sigue en rojo. Propuesta para el kit: el mismo criterio en su plantilla.
 
 ## Deuda técnica aceptada
 
