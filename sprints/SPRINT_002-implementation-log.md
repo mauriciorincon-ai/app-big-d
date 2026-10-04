@@ -1080,6 +1080,41 @@ final, de a una.
         aprobadas · 0 rechazadas»; la ventana de Gobierno de la v0.2.0 no trae los dos nuevos ni el paso a
         «Componentes», y la de la v0.3.0 trae los dos y el paso.
     - Se cierra S2-AUD-06: la madurez de «Seguridad de OneLake» sale de una cita aprobada.
+  - **P3 (S2-AUD-07), 2026-10-04.** Pregunta: «¿Quieres correr `/investigar databricks consumo` ahora, para quitar
+    esa frase?» («Databricks presenta la versión serverless como la de mejor precio y rendimiento»). **Respuesta: la
+    persona corrió `/investigar databricks consumo`.**
+    - **Propuesta `propuestas/2026-10-04-databricks-consumo`:** 21 componentes, 25 flujos, 131 afirmaciones y 0
+      retiros; 1 reintento del validador. SQL warehouses ya no dice «mejor precio y rendimiento» (la validación lo
+      rechaza) y sale A-47, su único respaldo. Entran Herramientas de BI externas y Databricks Apps (bloque de
+      consumo, que pasa a llamarse «Tableros y aplicaciones»), con 3 flujos nuevos. A-115 no está: el investigador
+      la retiró antes de entregar.
+    - **Comprobado de mi lado:**
+      - `validar.mjs`: válida, 131 afirmaciones; `verificacion.json`: de estos bytes, 131/131 verificadas;
+      - ensayo de la aprobación en la copia: Databricks v0.2.0, carga, `mapasSinAprobacion` vacío y v0.1.0
+        archivada; el recorrido no cambia (8 pasos);
+      - pruebas de la copia: fallan las dos esperables (la deuda de vocabulario se paga; la copia no tiene git) y
+        una frágil de `mapas-aprobados`: ponía «Casi» delante de un texto entre comillas y rompía el YAML en lugar
+        de la huella, porque la primera versión archivada pasa a ser la de Databricks. Se corrige en el repo: «Casi»
+        va dentro de las comillas; pasa en el repo y en la copia;
+      - build de la copia: pasa (V16 a cuatro edades); `/es/atlas/databricks/versiones` muestra «De v0.1.0 a
+        v0.2.0» con «+ nuevo» en el bloque de consumo.
+    - **Lo que `diff` no ve:** el bloque `consumo-bi` cambia de nombre («Tableros» → «Tableros y aplicaciones») y la
+      página de versiones no lo dice; `diff` (§ 4.7) solo compara componentes. Va a «Enmiendas» del summary.
+    - **Parada:** la pantalla de revisión, servida desde el build del repo en :3148, se le abrió a la persona en
+      `/es/investigador/databricks`.
+    - **Aprobada por la persona (2026-10-04 UTC).** Respondió «listo» tras la revisión; el comando (131 aprobadas,
+      0 rechazadas; la lista salta A-47 y A-115, que la propuesta no trae) se le puso en el portapapeles con el `cd`
+      delante, con el aviso de no pegarlo si había desmarcado alguna, y lo corrió en su Terminal. Resultado:
+      - **131 aprobadas · 0 rechazadas · 0 retiros · mapa v0.2.0**, revisión 2 de `data/revisiones/databricks.jsonl`
+        (huella `d999d60a…`); el contenido es el del ensayo (solo cambia el comentario de cabecera);
+      - v0.1.0 archivada en `data/mapas/versiones/databricks-0.1.0.mapa.yaml`;
+      - «mejor precio y rendimiento» ya no está en el mapa: **`CONOCIDAS` queda vacía** y se cierra S2-AUD-07 (su
+        prueba «la deuda declarada existe de verdad» se puso en rojo al aprobar, como debía).
+    - **Lo que cambió con el dato:** guía i2 (Databricks v0.2.0, «2 revisiones», 131), j3 (el estado vacío pasa a
+      Snowflake, la única real con una sola versión), «Ya aprobado» e historial; manual ES/EN (limitación: un bloque
+      que cambia de nombre no se marca); README del kit y su script; ADR `map-versioning`; cabecera de
+      `data/plataformas/databricks.yaml`. Comprobado en el build: «mapa aprobado v0.2.0 · … · 2 revisiones en el
+      historial», «131 aprobadas · 0 rechazadas», y `/es/atlas/snowflake/versiones` con su estado vacío.
 
 ## Desviación del plan
 

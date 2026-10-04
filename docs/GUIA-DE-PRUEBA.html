@@ -126,7 +126,7 @@
       <ul>
         <li>La forma de «en el mismo diagrama»: un solo botón, arriba a la derecha (mirada M1, 2026-10-02).</li>
         <li>El lado a lado en el preview del PR #5 (mirada M2, 2026-10-03).</li>
-        <li>Los mapas de Databricks (106 afirmaciones), Snowflake (143) y Fabric v0.2.0 (84) y v0.3.0, la capa de gobierno (102), aprobados por una persona,
+        <li>Los mapas de Databricks v0.1.0 (106 afirmaciones) y v0.2.0, la capa de consumo (131), Snowflake (143) y Fabric v0.2.0 (84) y v0.3.0, la capa de gobierno (102), aprobados por una persona,
           con la decisión sobre cada afirmación registrada (2026-10-04, UTC).</li>
       </ul>
       <strong>Ya aprobado en el S1:</strong>
@@ -334,7 +334,7 @@
     <ul class="pasos">
       <li data-origen="nuevo"><input type="checkbox" id="i1"><label for="i1">Recorre Databricks y Snowflake en sus tres niveles (cambia en «Plataforma»). Esperado: la <strong>misma gramática</strong> que Fabric; ningún texto se sale de su caja; en «Recorrido de un dato», Databricks tiene 8 pasos y se divide en 6a / 6b, y Snowflake tiene 9 y se divide en 5a / 5b.
         <span class="origen origen-nuevo">Nuevo · S2</span></label></li>
-      <li data-origen="nuevo"><input type="checkbox" id="i2"><label for="i2">Abre <code>/es/investigador/databricks</code> y <code>/es/investigador/snowflake</code>. Esperado: «mapa aprobado v0.1.0», <strong>«Aprobada por una persona»</strong> con fecha, y 106 (Databricks) y 143 (Snowflake) afirmaciones aprobadas, 0 rechazadas.
+      <li data-origen="nuevo"><input type="checkbox" id="i2"><label for="i2">Abre <code>/es/investigador/databricks</code> y <code>/es/investigador/snowflake</code>. Esperado: <strong>«Aprobada por una persona»</strong> con fecha y 0 rechazadas; Databricks dice «mapa aprobado v0.2.0», «2 revisiones en el historial» y 131 aprobadas; Snowflake, «mapa aprobado v0.1.0» y 143 aprobadas.
         <span class="origen origen-nuevo">Nuevo · S2</span></label></li>
     </ul>
   </section>
@@ -347,7 +347,7 @@
         <span class="origen origen-nuevo">Nuevo · S2</span></label></li>
       <li data-origen="nuevo"><input type="checkbox" id="j2"><label for="j2">En «De v0.2.0 a v0.3.0», toca el bloque de «Gobierno y seguridad» de la <strong>fila de arriba</strong>. Esperado: su ventana dice «… · versión 0.2.0» y muestra los componentes de entonces, <strong>sin</strong> Auditoría ni Catálogo y <strong>sin</strong> el paso a «Componentes». Ciérrala y toca el mismo bloque en la fila de abajo: dice «versión 0.3.0», trae los dos nuevos y sí trae el paso.
         <span class="origen origen-nuevo">Nuevo · S2</span></label></li>
-      <li data-origen="nuevo"><input type="checkbox" id="j3"><label for="j3">Abre <code>/es/atlas/databricks/versiones</code>. Esperado: <strong>«El mapa de Databricks tiene una sola versión.»</strong>, sin dibujo, y el enlace para volver a su atlas.
+      <li data-origen="nuevo"><input type="checkbox" id="j3"><label for="j3">Abre <code>/es/atlas/snowflake/versiones</code>. Esperado: <strong>«El mapa de Snowflake tiene una sola versión.»</strong>, sin dibujo, y el enlace para volver a su atlas.
         <span class="origen origen-nuevo">Nuevo · S2</span></label></li>
       <li data-origen="nuevo"><input type="checkbox" id="j4"><label for="j4">Con el <strong>kit</strong>, copia la versión anterior de muestra, compila y abre <code>/es/atlas/plataforma-ejemplo/versiones</code>. Esperado: «De v0.0.9 a v0.1.0» con las cuatro marcas, cada una con símbolo y palabra: <strong>«+ nuevo»</strong> (Filtros por fila y enmascaramiento), <strong>«− retirado»</strong> (Cuadernos interactivos, en la fila de arriba), <strong>«→ renombrado»</strong> (antes «Conector JDBC») y <strong>«madurez»</strong> (el agente, de beta a vista previa pública); la lista de abajo explica las cuatro. Al terminar, el comando de limpieza del README del kit.
         <span class="origen origen-nuevo">Nuevo · S2</span></label></li>
@@ -393,6 +393,10 @@
         <li><strong>S2 · 2026-10-04, Fabric v0.3.0:</strong> las mismas 52 pruebas. La persona aprobó la capa de gobierno de
           Fabric (102 afirmaciones), así que f1, j1 y j2 cuentan la versión nueva: j1 ve primero el par con «+ nuevo» y
           después el que no cambia el dibujo. Ninguna eliminada.</li>
+        <li><strong>S2 · 2026-10-04, Databricks v0.2.0:</strong> las mismas 52 pruebas. La persona aprobó la capa de
+          consumo de Databricks (131 afirmaciones), que quita la autoevaluación comercial del fabricante. i2 cuenta la
+          versión nueva, y j3 mira el estado vacío en Snowflake, porque Databricks ya tiene una versión anterior.
+          Ninguna eliminada.</li>
       </ul>
     </details>
   </footer>

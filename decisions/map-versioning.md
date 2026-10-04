@@ -81,6 +81,9 @@ fixed the same day.
 
 **Second use.** Fabric v0.3.0 (the governance layer, 102 claims) was approved on 2026-10-04 and archived v0.2.0. It
 is the first real pair with a drawn mark: two new components in the governance band, one «new» pill on its block.
+Databricks v0.2.0 (the consumption layer, 131 claims) followed the same day and archived v0.1.0. Its consumption block
+was renamed («Tableros» → «Tableros y aplicaciones»), and the versions page does not say so: `diff` compares components,
+not blocks. It goes to the contract amendments in the summary.
 
 **What the archive keeps.** One file per approved version stays in the repository. Archived versions keep whatever
 they said, including vocabulary the current gate rejects ("lago de datos" in Fabric v0.1.0). The vocabulary gate

@@ -1,4 +1,5 @@
-# Databricks: su mapa lo propuso /investigar y lo aprobó una persona (data/revisiones/databricks.jsonl). Publicada en el S2.
+# Databricks: su mapa lo propuso /investigar y lo aprobó una persona (data/revisiones/databricks.jsonl). Publicada en el S2;
+# v0.2.0 (la capa de consumo) en el mismo sprint.
 id: databricks
 nombre:
   es: Databricks

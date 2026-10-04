@@ -187,6 +187,8 @@ a ninguna ni pide cuentas.
     eso, de la v0.1.0 a la v0.2.0 de Fabric dice «Sin cambios en el dibujo», y lo que cambió (el texto de seis
     componentes y las fuentes de nueve) aparece en «Lo que dicen los componentes». De la v0.2.0 a la v0.3.0 sí
     cambió el dibujo: dos componentes nuevos en «Gobierno y seguridad».
+  - Si un bloque cambia de nombre, la página no lo dice: compara componentes, no bloques. Le pasa a Databricks, cuyo
+    bloque «Tableros» se llama «Tableros y aplicaciones» desde la v0.2.0.
 
 ### Preguntas frecuentes
 
@@ -379,6 +381,8 @@ manages and controls; it never operates a platform**: it connects to none and as
     is why, from Fabric's v0.1.0 to its v0.2.0, it says “No changes in the drawing”, and what did change (the text of
     six components and the sources of nine) appears under “What the components say”. From v0.2.0 to v0.3.0 the
     drawing did change: two new components in “Governance and security”.
+  - If a block is renamed, the page does not say so: it compares components, not blocks. It happens to Databricks,
+    whose “Dashboards” block is called “Dashboards and apps” since v0.2.0.
 
 ### Frequently asked questions
 

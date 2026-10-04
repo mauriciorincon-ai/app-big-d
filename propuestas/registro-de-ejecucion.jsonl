@@ -377,3 +377,39 @@
 {"fecha_hora":"2026-10-04T17:43:42.293Z","herramienta":"WebFetch","url":"https://azure.microsoft.com/en-us/blog/fabcon-and-sqlcon-2026-unifying-databases-and-fabric-on-a-single-data-platform/","llamada":"cddd8660f6ff5392"}
 {"fecha_hora":"2026-10-04T17:43:43.651Z","herramienta":"WebFetch","url":"https://www.microsoft.com/en-us/microsoft-fabric/blog/2025/03/31/fabcon-2025-fueling-tomorrows-ai-with-new-agentic-capabilities-and-security-innovations-in-fabric/","llamada":"c4de626a4b615485"}
 {"fecha_hora":"2026-10-04T17:56:33.394Z","herramienta":"WebFetch","url":"https://www.microsoft.com/en-us/microsoft-fabric/blog/2025/09/16/fabcon-vienna-build-data-rich-agents-on-an-enterprise-ready-foundation/","llamada":"bebb38698488d2db"}
+{"fecha_hora":"2026-10-04T18:36:54.693Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/metric-views/","llamada":"81b646952078e9fc"}
+{"fecha_hora":"2026-10-04T18:36:55.127Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/dashboards/","llamada":"b349c46e2a487c99"}
+{"fecha_hora":"2026-10-04T18:36:55.292Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/compute/sql-warehouse/","llamada":"b39baad57b9e75bf"}
+{"fecha_hora":"2026-10-04T18:37:10.634Z","herramienta":"WebSearch","consulta":"Databricks One generally available business users","llamada":"78d1db73d5b9d6ae"}
+{"fecha_hora":"2026-10-04T18:37:10.693Z","herramienta":"WebSearch","consulta":"Databricks publish to Power BI service generally available","llamada":"0c567be2fd9a00e4"}
+{"fecha_hora":"2026-10-04T18:37:10.788Z","herramienta":"WebSearch","consulta":"Databricks Apps generally available release notes","llamada":"4acbe39290078bb6"}
+{"fecha_hora":"2026-10-04T18:37:31.998Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/release-notes/product/2025/may","llamada":"34d7ef6769980823"}
+{"fecha_hora":"2026-10-04T18:37:34.501Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/dev-tools/databricks-apps/","llamada":"20fedd960e7e64da"}
+{"fecha_hora":"2026-10-04T18:37:46.464Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/workspace/databricks-one","llamada":"82c8c0c756d63f93"}
+{"fecha_hora":"2026-10-04T18:37:47.938Z","herramienta":"WebSearch","consulta":"Lakebase generally available Databricks release notes synced tables","llamada":"4ec52db71e8bef8d"}
+{"fecha_hora":"2026-10-04T18:38:05.632Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/ai-bi/release-notes/2024","llamada":"ef99912b84958d92"}
+{"fecha_hora":"2026-10-04T18:38:07.884Z","herramienta":"WebSearch","consulta":"\"Genie One\" generally available Databricks release notes 2026","llamada":"d1029377b6783b1d"}
+{"fecha_hora":"2026-10-04T18:38:19.573Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/ai-bi/release-notes/2026","llamada":"0c826ab4a32e17cf"}
+{"fecha_hora":"2026-10-04T18:38:33.158Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/partners/bi/power-bi/","llamada":"50846e7b5b84a0f6"}
+{"fecha_hora":"2026-10-04T18:38:34.055Z","herramienta":"WebSearch","consulta":"\"Genie One is now generally available\" Databricks","llamada":"d8cbe9ee9da188d5"}
+{"fecha_hora":"2026-10-04T18:39:14.720Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/partners/bi/power-bi/","llamada":"8eedb8dc737458fa"}
+{"fecha_hora":"2026-10-04T18:39:38.878Z","herramienta":"WebFetch","url":"https://www.databricks.com/blog/announcing-general-availability-publish-microsoft-power-bi-service-unity-catalog","llamada":"7c2bc50fa53dc980"}
+{"fecha_hora":"2026-10-04T18:39:39.353Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/partners/bi/power-bi/service","llamada":"62942447a3eb0886"}
+{"fecha_hora":"2026-10-04T18:39:50.801Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/release-notes/product/2024/september","llamada":"f4dea0b7a5c8bae9"}
+{"fecha_hora":"2026-10-04T18:40:00.589Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/dev-tools/databricks-apps/","llamada":"89b6e5a1290d9d8d"}
+{"fecha_hora":"2026-10-04T18:40:08.514Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/dev-tools/databricks-apps/auth","llamada":"944800923634315e"}
+{"fecha_hora":"2026-10-04T18:40:28.254Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/metric-views/","llamada":"3c5fcaa384014dbc"}
+{"fecha_hora":"2026-10-04T18:40:30.457Z","herramienta":"WebFetch","url":"https://www.databricks.com/blog/redefining-semantics-data-layer-future-bi-and-ai","llamada":"8853c48645636e72"}
+{"fecha_hora":"2026-10-04T18:40:40.436Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/compute/sql-warehouse/","llamada":"d5fe350c81d12d9a"}
+{"fecha_hora":"2026-10-04T18:40:52.680Z","herramienta":"WebSearch","consulta":"\"dashboards are now generally available\" Databricks Lakeview release notes 2024","llamada":"d7dd71b702715e19"}
+{"fecha_hora":"2026-10-04T18:40:53.358Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/dashboards/","llamada":"3f0c38ccc6be1d0f"}
+{"fecha_hora":"2026-10-04T18:41:00.330Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/sql/release-notes/2024","llamada":"a19c497b09670100"}
+{"fecha_hora":"2026-10-04T18:41:58.005Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/dev-tools/databricks-apps/","llamada":"edd0bf5147682b14"}
+{"fecha_hora":"2026-10-04T18:42:07.570Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/dev-tools/databricks-apps/auth","llamada":"269b97fd878492dd"}
+{"fecha_hora":"2026-10-04T18:42:08.834Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/partners/bi/power-bi/","llamada":"0c1caa1c381ba636"}
+{"fecha_hora":"2026-10-04T18:42:21.329Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/partners/bi/power-bi/service","llamada":"5bdee3d3402a4dec"}
+{"fecha_hora":"2026-10-04T18:43:13.610Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/ai-bi/release-notes/2026","llamada":"b95aee64cd1d0456"}
+{"fecha_hora":"2026-10-04T18:43:26.040Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/release-notes/product/2025/may","llamada":"4d5134cefeafcd4c"}
+{"fecha_hora":"2026-10-04T18:43:26.274Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/sql/release-notes/2024","llamada":"c1f2a29ac677a783"}
+{"fecha_hora":"2026-10-04T18:54:41.284Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/metric-views/","llamada":"98b3c98374c3ad9e"}
+{"fecha_hora":"2026-10-04T18:54:41.579Z","herramienta":"WebFetch","url":"https://docs.databricks.com/aws/en/partners/bi/power-bi/","llamada":"988d8711430960a7"}

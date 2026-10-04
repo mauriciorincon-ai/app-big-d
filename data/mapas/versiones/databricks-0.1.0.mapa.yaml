@@ -1,4 +1,4 @@
-# APROBADO por una persona el 2026-10-04 (UTC) desde propuestas/2026-10-04-databricks-consumo (scripts/aprobar.mjs).
+# APROBADO por una persona el 2026-10-04 (UTC) desde propuestas/2026-10-03-databricks (scripts/aprobar.mjs).
 # Solo contiene afirmaciones aprobadas. No se edita a mano: se vuelve a investigar.
 contrato_version: 0.4.0
 gramatica_id: plataformas-datos
@@ -7,7 +7,7 @@ sujeto_id: databricks
 sujeto_nombre:
   es: Databricks
   en: Databricks
-version: 0.2.0
+version: 0.1.0
 fecha_actualizacion: 2026-10-04
 estado: aprobada
 bloques:
@@ -45,12 +45,12 @@ bloques:
       en: Cleans and combines the data, by describing the result or by writing the code.
   - id: consumo-bi
     nombre:
-      es: Tableros y aplicaciones
-      en: Dashboards and apps
+      es: Tableros
+      en: Dashboards
     banda_id: consumo
     lider:
-      es: Convierte los datos en indicadores con una sola definición, que la gente consulta en tableros, en programas como Power BI o en aplicaciones.
-      en: Turns the data into indicators with a single definition, which people check on dashboards, in tools such as Power BI or in apps.
+      es: Convierte los datos en indicadores con una sola definición, que la gente consulta en tableros.
+      en: Turns the data into indicators with a single definition, which people check on dashboards.
   - id: agentes
     nombre:
       es: Agentes
@@ -96,19 +96,19 @@ nodos:
         titulo:
           es: Conceptos de los conectores de Lakeflow Connect (documentación de Databricks)
           en: Lakeflow Connect connector concepts | Databricks on AWS
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
       - url: https://docs.databricks.com/aws/en/release-notes/product/2025/august
         titulo:
           es: Notas de versión de la plataforma Databricks, agosto de 2025
           en: August 2025 | Databricks on AWS
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
       - url: https://docs.databricks.com/aws/en/query-federation/
         titulo:
           es: Conexión a bases de datos y catálogos externos (documentación de Databricks)
           en: Connect to external databases and catalogs | Databricks on AWS
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
     fecha_verificacion: 2026-10-04
   - id: aplicaciones-saas
@@ -139,13 +139,13 @@ nodos:
         titulo:
           es: Conceptos de los conectores de Lakeflow Connect (documentación de Databricks)
           en: Lakeflow Connect connector concepts | Databricks on AWS
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
       - url: https://docs.databricks.com/aws/en/release-notes/product/2025/august
         titulo:
           es: Notas de versión de la plataforma Databricks, agosto de 2025
           en: August 2025 | Databricks on AWS
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
     fecha_verificacion: 2026-10-04
   - id: archivos-nube
@@ -171,13 +171,13 @@ nodos:
         titulo:
           es: Qué es Auto Loader (documentación de Databricks)
           en: What is Auto Loader? | Databricks on AWS
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
       - url: https://docs.databricks.com/aws/en/release-notes/product/2020/august
         titulo:
           es: Notas de versión de la plataforma Databricks, agosto de 2020
           en: August 2020 | Databricks on AWS
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
     fecha_verificacion: 2026-10-04
   - id: lakeflow-connect
@@ -203,13 +203,13 @@ nodos:
         titulo:
           es: Conceptos de los conectores de Lakeflow Connect (documentación de Databricks)
           en: Lakeflow Connect connector concepts | Databricks on AWS
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
       - url: https://www.databricks.com/blog/announcing-general-availability-databricks-lakeflow
         titulo:
           es: Anuncio de disponibilidad general de Databricks Lakeflow (blog de Databricks, 12 de junio de 2025)
           en: Announcing the General Availability of Databricks Lakeflow | Databricks Blog
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
     fecha_verificacion: 2026-10-04
   - id: auto-loader
@@ -235,13 +235,13 @@ nodos:
         titulo:
           es: Qué es Auto Loader (documentación de Databricks)
           en: What is Auto Loader? | Databricks on AWS
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
       - url: https://docs.databricks.com/aws/en/release-notes/product/2020/august
         titulo:
           es: Notas de versión de la plataforma Databricks, agosto de 2020
           en: August 2020 | Databricks on AWS
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
     fecha_verificacion: 2026-10-04
   - id: lakehouse-federation
@@ -267,13 +267,13 @@ nodos:
         titulo:
           es: Conexión a bases de datos y catálogos externos (documentación de Databricks)
           en: Connect to external databases and catalogs | Databricks on AWS
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
       - url: https://docs.databricks.com/aws/en/release-notes/product/2024/august
         titulo:
           es: Notas de versión de la plataforma Databricks, agosto de 2024
           en: August 2024 | Databricks on AWS
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
     fecha_verificacion: 2026-10-04
   - id: tablas-streaming
@@ -304,19 +304,19 @@ nodos:
         titulo:
           es: Qué son las canalizaciones de Lakeflow (documentación de Databricks)
           en: What are Lakeflow pipelines? | Databricks on AWS
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
       - url: https://docs.databricks.com/aws/en/delta/
         titulo:
           es: Qué es Delta Lake en Databricks (documentación de Databricks)
           en: What is Delta Lake in Databricks? | Databricks on AWS
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
       - url: https://www.databricks.com/blog/announcing-general-availability-materialized-views-and-streaming-tables-databricks-sql
         titulo:
           es: Anuncio de disponibilidad general de vistas materializadas y tablas de streaming en Databricks SQL (blog de Databricks, 5 de noviembre de 2024)
           en: Announcing the General Availability of Materialized Views and Streaming Tables for Databricks SQL | Databricks Blog
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
     fecha_verificacion: 2026-10-04
   - id: vistas-materializadas
@@ -342,13 +342,13 @@ nodos:
         titulo:
           es: Qué son las canalizaciones de Lakeflow (documentación de Databricks)
           en: What are Lakeflow pipelines? | Databricks on AWS
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
       - url: https://www.databricks.com/blog/announcing-general-availability-materialized-views-and-streaming-tables-databricks-sql
         titulo:
           es: Anuncio de disponibilidad general de vistas materializadas y tablas de streaming en Databricks SQL (blog de Databricks, 5 de noviembre de 2024)
           en: Announcing the General Availability of Materialized Views and Streaming Tables for Databricks SQL | Databricks Blog
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
     fecha_verificacion: 2026-10-04
   - id: canalizaciones-lakeflow
@@ -379,19 +379,19 @@ nodos:
         titulo:
           es: Qué son las canalizaciones de Lakeflow (documentación de Databricks)
           en: What are Lakeflow pipelines? | Databricks on AWS
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
       - url: https://docs.databricks.com/aws/en/ldp/concepts/pipeline-mode
         titulo:
           es: Modo programado frente a modo continuo de las canalizaciones (documentación de Databricks)
           en: Triggered vs. continuous pipeline mode | Databricks on AWS
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
       - url: https://www.databricks.com/blog/announcing-general-availability-databricks-lakeflow
         titulo:
           es: Anuncio de disponibilidad general de Databricks Lakeflow (blog de Databricks, 12 de junio de 2025)
           en: Announcing the General Availability of Databricks Lakeflow | Databricks Blog
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
     fecha_verificacion: 2026-10-04
   - id: cuadernos
@@ -417,13 +417,13 @@ nodos:
         titulo:
           es: Conexión al cómputo serverless (documentación de Databricks)
           en: Connect to serverless compute | Databricks on AWS
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
       - url: https://docs.databricks.com/aws/en/release-notes/product/2024/july
         titulo:
           es: Notas de versión de la plataforma Databricks, julio de 2024
           en: July 2024 | Databricks on AWS
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
     fecha_verificacion: 2026-10-04
   - id: vistas-metricas
@@ -438,8 +438,8 @@ nodos:
       es: Definen una sola vez qué significa cada indicador, para que todos los tableros digan lo mismo.
       en: Define once what each indicator means, so every dashboard says the same thing.
     experto:
-      es: Separan las medidas de las dimensiones para definir cada métrica una vez; se construyen sobre tablas, vistas o consultas SQL de Unity Catalog y se consultan desde editores SQL, cuadernos, tableros y agentes, con las mismas definiciones.
-      en: They separate measures from dimensions so each metric is defined once; they are built over Unity Catalog tables, views or SQL queries and are queried from SQL editors, notebooks, dashboards and agents, all sharing the same definitions.
+      es: Separan las medidas de las dimensiones para definir cada métrica una vez; se construyen sobre tablas, vistas o consultas SQL de Unity Catalog, para que tableros, consultas SQL, cuadernos y agentes usen las mismas definiciones.
+      en: They separate measures from dimensions so each metric is defined once; they are built over Unity Catalog tables, views or SQL queries, so dashboards, SQL queries, notebooks and agents share the same definitions.
     por_que_importa:
       es: Sin una definición común, dos áreas pueden reportar cifras distintas del mismo indicador.
       en: Without a shared definition, two departments can report different figures for the same indicator.
@@ -449,19 +449,19 @@ nodos:
         titulo:
           es: Vistas de métricas de Unity Catalog (documentación de Databricks)
           en: Unity Catalog metric views | Databricks on AWS
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
       - url: https://docs.databricks.com/aws/en/uc-semantics/metric-views/yaml-reference
         titulo:
           es: Referencia de la sintaxis YAML de las vistas de métricas (documentación de Databricks)
           en: Metric view YAML syntax reference | Databricks on AWS
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
       - url: https://www.databricks.com/blog/redefining-semantics-data-layer-future-bi-and-ai
         titulo:
           es: Anuncio de disponibilidad general de Unity Catalog Business Semantics (blog de Databricks, 2 de abril de 2026)
           en: Announcing General Availability and Open Sourcing of Unity Catalog Business Semantics | Databricks Blog
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
     fecha_verificacion: 2026-10-04
   - id: sql-warehouse
@@ -476,8 +476,8 @@ nodos:
       es: El motor que responde las consultas de tableros, agentes y analistas.
       en: The engine that answers queries from dashboards, agents and analysts.
     experto:
-      es: Recurso de cómputo para consultar y explorar datos; lo usan el editor de consultas, Catalog Explorer, los tableros y las herramientas de BI de terceros que se conectan a él.
-      en: Compute resource for querying and exploring data, used by the query editor, Catalog Explorer, dashboards and the third-party BI tools that connect to it.
+      es: Recurso de cómputo para consultar y explorar datos; lo usan el editor de consultas, Catalog Explorer y los tableros. Databricks presenta la versión serverless como la de mejor precio y rendimiento.
+      en: Compute resource for querying and exploring data, used by the query editor, Catalog Explorer and dashboards. Databricks presents the serverless option as its best price-performance.
     por_que_importa:
       es: Hay tres tipos (serverless, pro y clásico); según Databricks, el serverless da cómputo inmediato y pide menos administración.
       en: There are three types (serverless, pro and classic); per Databricks, serverless gives instant compute and needs less management.
@@ -487,13 +487,13 @@ nodos:
         titulo:
           es: Conexión a un SQL warehouse (documentación de Databricks)
           en: Connect to a SQL warehouse | Databricks on AWS
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
       - url: https://docs.databricks.com/aws/en/release-notes/product/2023/march
         titulo:
           es: Notas de versión de la plataforma Databricks, marzo de 2023
           en: March 2023 | Databricks on AWS
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
     fecha_verificacion: 2026-10-04
   - id: tableros-aibi
@@ -508,8 +508,8 @@ nodos:
       es: Los tableros donde la dirección consulta los indicadores; se pueden compartir aun con quien no entra al espacio de trabajo.
       en: The dashboards where management checks the indicators; they can be shared even with people outside the workspace.
     experto:
-      es: Tableros con creación asistida por IA y biblioteca de visualizaciones, alimentados por conjuntos de datos definidos sobre tablas, vistas o consultas; se publican con permisos de datos compartidos o individuales, se incrustan en otros sitios y se envían por correo o Slack. Genie Code importa informes de Power BI y Tableau.
-      en: Dashboards with AI-assisted authoring and a visualisation library, fed by datasets defined over tables, views or queries; they are published with shared or individual data permissions, embedded in other sites and delivered by email or Slack. Genie Code imports Power BI and Tableau reports.
+      es: Tableros con creación asistida por IA y biblioteca de visualizaciones, alimentados por conjuntos de datos definidos sobre tablas, vistas o consultas; se publican con permisos de datos compartidos o individuales.
+      en: Dashboards with AI-assisted authoring and a visualisation library, fed by datasets defined over tables, views or queries; they are published with shared or individual data permissions.
     por_que_importa:
       es: Al publicar hay que elegir entre permisos de datos compartidos o individuales, y eso cambia lo que ve cada persona.
       en: Publishing means choosing shared or individual data permissions, and that changes what each person sees.
@@ -519,118 +519,13 @@ nodos:
         titulo:
           es: Tableros (documentación de Databricks)
           en: Dashboards | Databricks on AWS
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
       - url: https://www.databricks.com/blog/aibi-genie-now-generally-available
         titulo:
           es: Anuncio de disponibilidad general de AI/BI Genie (blog de Databricks, 12 de junio de 2025)
           en: AI/BI Genie is now Generally Available | Databricks Blog
-        fecha: 2026-10-04
-        tipo: oficial
-      - url: https://docs.databricks.com/aws/en/sql/release-notes/2024
-        titulo:
-          es: Notas de versión de Databricks SQL, 2024 (documentación de Databricks)
-          en: Databricks SQL release notes 2024 | Databricks on AWS
-        fecha: 2026-10-04
-        tipo: oficial
-      - url: https://docs.databricks.com/aws/en/ai-bi/release-notes/2024
-        titulo:
-          es: Notas de versión de AI/BI, 2024 (documentación de Databricks)
-          en: AI/BI release notes 2024 | Databricks on AWS
-        fecha: 2026-10-04
-        tipo: oficial
-      - url: https://docs.databricks.com/aws/en/ai-bi/release-notes/2026
-        titulo:
-          es: Notas de versión de AI/BI y Genie One, 2026 (documentación de Databricks)
-          en: AI/BI and Genie One release notes 2026 | Databricks on AWS
-        fecha: 2026-10-04
-        tipo: oficial
-    fecha_verificacion: 2026-10-04
-  - id: herramientas-bi
-    banda_id: consumo
-    tipo_id: tipo-externo
-    bloque_id: consumo-bi
-    orden: 4
-    nombre:
-      es: Herramientas de BI externas
-      en: External BI tools
-    lider:
-      es: Programas de informes de otras empresas, como Power BI o Tableau, que leen los datos de la plataforma.
-      en: Reporting software from other vendors, such as Power BI or Tableau, that reads the platform's data.
-    experto:
-      es: Power BI se conecta a los SQL warehouses, y Power BI, Tableau, Sigma y otras herramientas pueden consultar las vistas de métricas. Desde Databricks se publican tablas y esquemas como modelos semánticos de Power BI, con licencia Premium de Power BI; Databricks recomienda OAuth, que permite auditar por usuario.
-      en: Power BI connects to SQL warehouses, and Power BI, Tableau, Sigma and other tools can query metric views. Tables and schemas can be published from Databricks as Power BI semantic models, which needs a Power BI Premium licence; Databricks recommends OAuth, which allows per-user auditing.
-    por_que_importa:
-      es: "Los informes de Power BI que leían las vistas de métricas con una opción del conector dejaron de funcionar: conviene probar la conexión antes de contar con ella."
-      en: "Power BI reports that read metric views through a connector option stopped working: test the connection before relying on it."
-    terminos:
-      es:
-        BI (inteligencia de negocio): Informes y tableros con los que una organización analiza sus datos para decidir.
-      en:
-        BI (business intelligence): Reports and dashboards an organisation uses to analyse its data and make decisions.
-    madurez: disponible-general
-    fuentes:
-      - url: https://docs.databricks.com/aws/en/partners/bi/power-bi/
-        titulo:
-          es: Power BI con Databricks (documentación de Databricks)
-          en: Power BI with Databricks | Databricks on AWS
-        fecha: 2026-10-04
-        tipo: oficial
-      - url: https://docs.databricks.com/aws/en/partners/bi/power-bi/service
-        titulo:
-          es: Publicar en el servicio de Power BI desde Databricks (documentación de Databricks)
-          en: Publish to the Power BI service from Databricks | Databricks on AWS
-        fecha: 2026-10-04
-        tipo: oficial
-      - url: https://docs.databricks.com/aws/en/release-notes/product/2024/september
-        titulo:
-          es: Notas de versión de la plataforma Databricks, septiembre de 2024
-          en: September 2024 | Databricks on AWS
-        fecha: 2026-10-04
-        tipo: oficial
-      - url: https://docs.databricks.com/aws/en/metric-views/
-        titulo:
-          es: Vistas de métricas de Unity Catalog (documentación de Databricks)
-          en: Unity Catalog metric views | Databricks on AWS
-        fecha: 2026-10-04
-        tipo: oficial
-    fecha_verificacion: 2026-10-04
-  - id: databricks-apps
-    banda_id: consumo
-    tipo_id: cap-consumo
-    bloque_id: consumo-bi
-    orden: 5
-    nombre:
-      es: Databricks Apps
-      en: Databricks Apps
-    lider:
-      es: Aplicaciones a la medida, como formularios o pantallas de operación, que corren dentro de la plataforma y usan sus datos.
-      en: Custom applications, such as data-entry forms or operations screens, that run inside the platform and use its data.
-    experto:
-      es: Aplicaciones de datos e IA en Python o Node.js que corren en la plataforma serverless, sin infraestructura aparte; usan Unity Catalog para el gobierno y Databricks SQL para consultar, y se cobran por hora de cómputo mientras están encendidas.
-      en: Data and AI applications in Python or Node.js that run on the serverless platform with no separate infrastructure; they use Unity Catalog for governance and Databricks SQL for queries, and are billed per hour of compute while running.
-    por_que_importa:
-      es: Con su propia identidad, la aplicación usa los mismos permisos para todos; con la de quien la usa, aplica los permisos y filtros de cada persona.
-      en: Under its own identity, the app uses the same permissions for everyone; under the user's identity, it applies each person's permissions and filters.
-    madurez: disponible-general
-    fuentes:
-      - url: https://docs.databricks.com/aws/en/dev-tools/databricks-apps/
-        titulo:
-          es: Databricks Apps (documentación de Databricks)
-          en: Databricks Apps | Databricks on AWS
-        fecha: 2026-10-04
-        tipo: oficial
-      - url: https://docs.databricks.com/aws/en/dev-tools/databricks-apps/auth
-        titulo:
-          es: Configurar la autorización de una aplicación de Databricks (documentación de Databricks)
-          en: Configure authorization in a Databricks app | Databricks on AWS
-        fecha: 2026-10-04
-        tipo: oficial
-      - url: https://docs.databricks.com/aws/en/release-notes/product/2025/may
-        titulo:
-          es: Notas de versión de la plataforma Databricks, mayo de 2025
-          en: May 2025 | Databricks on AWS
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
     fecha_verificacion: 2026-10-04
   - id: genie-agents
@@ -656,13 +551,13 @@ nodos:
         titulo:
           es: Conceptos de Genie Agents (documentación de Databricks)
           en: Genie Agents concepts | Databricks on AWS
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
       - url: https://docs.databricks.com/aws/en/ai-bi/release-notes/2024
         titulo:
           es: Notas de versión de AI/BI, 2024 (documentación de Databricks)
           en: AI/BI release notes 2024 | Databricks on AWS
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
     fecha_verificacion: 2026-10-04
   - id: unity-catalog
@@ -693,19 +588,19 @@ nodos:
         titulo:
           es: Qué es Unity Catalog (documentación de Databricks)
           en: What is Unity Catalog? | Databricks on AWS
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
       - url: https://docs.databricks.com/aws/en/data-governance/unity-catalog/data-lineage
         titulo:
           es: Linaje en Unity Catalog (documentación de Databricks)
           en: Lineage in Unity Catalog | Databricks on AWS
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
       - url: https://docs.databricks.com/aws/en/release-notes/product/2022/august
         titulo:
           es: Notas de versión de la plataforma Databricks, agosto de 2022
           en: August 2022 | Databricks on AWS
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
     fecha_verificacion: 2026-10-04
   - id: filtros-mascaras
@@ -731,13 +626,13 @@ nodos:
         titulo:
           es: Filtros de fila y máscaras de columna (documentación de Databricks)
           en: Row filters and column masks | Databricks on AWS
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
       - url: https://docs.databricks.com/aws/en/release-notes/product/2024/august
         titulo:
           es: Notas de versión de la plataforma Databricks, agosto de 2024
           en: August 2024 | Databricks on AWS
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
     fecha_verificacion: 2026-10-04
   - id: uso-facturable
@@ -762,13 +657,13 @@ nodos:
         titulo:
           es: Referencia de la tabla del sistema de uso facturable (documentación de Databricks)
           en: Billable usage system table reference | Databricks on AWS
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
       - url: https://docs.databricks.com/aws/en/release-notes/product/2024/september
         titulo:
           es: Notas de versión de la plataforma Databricks, septiembre de 2024
           en: September 2024 | Databricks on AWS
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
     fecha_verificacion: 2026-10-04
   - id: presupuestos
@@ -793,13 +688,13 @@ nodos:
         titulo:
           es: Crear y vigilar presupuestos (documentación de Databricks)
           en: Create and monitor budgets | Databricks on AWS
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
       - url: https://docs.databricks.com/aws/en/release-notes/product/2026/july
         titulo:
           es: Notas de versión de la plataforma Databricks, julio de 2026
           en: July 2026 | Databricks on AWS
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
     fecha_verificacion: 2026-10-04
   - id: lakeflow-jobs
@@ -824,13 +719,13 @@ nodos:
         titulo:
           es: Lakeflow Jobs (documentación de Databricks)
           en: Lakeflow Jobs | Databricks on AWS
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
       - url: https://www.databricks.com/blog/announcing-general-availability-databricks-lakeflow
         titulo:
           es: Anuncio de disponibilidad general de Databricks Lakeflow (blog de Databricks, 12 de junio de 2025)
           en: Announcing the General Availability of Databricks Lakeflow | Databricks Blog
-        fecha: 2026-10-04
+        fecha: 2026-10-03
         tipo: oficial
     fecha_verificacion: 2026-10-04
 flujos:
@@ -944,16 +839,6 @@ flujos:
     lider:
       es: El tablero pide los indicadores cuando alguien lo abre.
       en: The dashboard asks for the indicators when someone opens it.
-  - id: f-metricas-bi
-    origen: vistas-metricas
-    destino: herramientas-bi
-    modo_id: a-demanda
-    que_viaja:
-      es: Consultas de indicadores
-      en: Indicator queries
-    lider:
-      es: Las herramientas externas pueden pedir los indicadores ya definidos.
-      en: External tools can ask for the indicators already defined.
   - id: f-vistas-genie
     origen: vistas-materializadas
     destino: genie-agents
@@ -994,26 +879,6 @@ flujos:
     lider:
       es: Las consultas del tablero se ejecutan en este motor.
       en: The dashboard's queries run on this engine.
-  - id: f-warehouse-bi
-    origen: sql-warehouse
-    destino: herramientas-bi
-    modo_id: a-demanda
-    que_viaja:
-      es: Resultados de consultas
-      en: Query results
-    lider:
-      es: Power BI y otras herramientas consultan los datos con este motor.
-      en: Power BI and other tools query the data on this engine.
-  - id: f-warehouse-apps
-    origen: sql-warehouse
-    destino: databricks-apps
-    modo_id: a-demanda
-    que_viaja:
-      es: Resultados de consultas
-      en: Query results
-    lider:
-      es: Las aplicaciones consultan los datos con este motor.
-      en: The apps query the data on this engine.
   - id: f-warehouse-genie
     origen: sql-warehouse
     destino: genie-agents

@@ -67,13 +67,13 @@ stop and name the file, the rule, the field and the id. Clean up with the comman
 ## 4. Versión anterior de muestra · Sample previous version (`versiones-de-muestra/`)
 
 Una versión anterior **inventada** de la Plataforma Ejemplo (v0.0.9), para ver en el producto las cuatro marcas de
-diferencia de la página «Versiones del mapa». Los datos reales solo traen «+ nuevo» (Fabric, de v0.2.0 a v0.3.0);
-entre su v0.1.0 y su v0.2.0 no cambió el dibujo. Respecto de la versión publicada, la v0.0.9 llama «Conector JDBC» al conector de bases
+diferencia de la página «Versiones del mapa». Los datos reales solo traen «+ nuevo» (Fabric, de v0.2.0 a v0.3.0, y
+Databricks, de v0.1.0 a v0.2.0); entre la v0.1.0 y la v0.2.0 de Fabric no cambió el dibujo. Respecto de la versión publicada, la v0.0.9 llama «Conector JDBC» al conector de bases
 relacionales, tiene «Cuadernos interactivos», no tiene los filtros por fila y tiene el agente de datos en beta.
 
-Los tres mapas reales y las versiones anteriores de Fabric (v0.1.0 y v0.2.0) viven en `data/` (`data/mapas/`,
-`data/mapas/versiones/`); el bloque J de la guía los usa. Esta muestra sintética existe para ver las cuatro marcas: los
-pares reales de Fabric solo traen «+ nuevo».
+Los tres mapas reales y sus versiones anteriores (Fabric v0.1.0 y v0.2.0, Databricks v0.1.0) viven en `data/`
+(`data/mapas/`, `data/mapas/versiones/`); el bloque J de la guía los usa. Esta muestra sintética existe para ver las
+cuatro marcas: los pares reales solo traen «+ nuevo».
 
 ```sh
 cp -R docs/kit-de-prueba/versiones-de-muestra/. .

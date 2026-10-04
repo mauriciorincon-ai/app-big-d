@@ -23,7 +23,7 @@ describe("los mapas publicados son los aprobados", () => {
     const ruta = join(copia, "mapas/fabric.mapa.yaml");
     const texto = readFileSync(ruta, "utf8");
     const i = texto.indexOf("lider:");
-    writeFileSync(ruta, texto.slice(0, i) + texto.slice(i).replace(/(es: )(\S)/, "$1Casi $2"));
+    writeFileSync(ruta, texto.slice(0, i) + texto.slice(i).replace(/(es: "?)(\S)/, "$1Casi $2"));
     const f = mapasSinAprobacion(cargarDatos(copia), copia);
     expect(f).toEqual([expect.stringMatching(/^data\/mapas\/fabric\.mapa\.yaml · su huella no es la que aprobó una persona/)]);
   });
@@ -57,7 +57,8 @@ describe("los mapas publicados son los aprobados", () => {
       const ruta = join(otra, "mapas/versiones", v.archivo.split("/").at(-1)!);
       const texto = readFileSync(ruta, "utf8");
       const i = texto.indexOf("lider:");
-      writeFileSync(ruta, texto.slice(0, i) + texto.slice(i).replace(/(es: )(\S)/, "$1Casi $2"));
+      // «Casi» va dentro de las comillas si el texto las lleva: delante de ellas rompería el YAML, no la huella.
+      writeFileSync(ruta, texto.slice(0, i) + texto.slice(i).replace(/(es: "?)(\S)/, "$1Casi $2"));
       expect(mapasSinAprobacion(cargarDatos(otra), otra)).toEqual([expect.stringContaining(`${v.archivo} · no es la versión ${v.version} que aprobó una persona`)]);
     } finally {
       rmSync(otra, { recursive: true, force: true });

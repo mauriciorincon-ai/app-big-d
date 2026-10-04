@@ -12,16 +12,11 @@ import { vocabularioVetado } from "@/lib/datos/vocabulario";
 /**
  * Deuda declarada, con su ruta exacta. La de «lago de datos» (mapa de Fabric aprobado el 2026-09-29; decisión de la
  * persona del 2026-09-30: «data lake» es el nombre real y no se traduce) se pagó al aprobarse Fabric v0.2.0 el
- * 2026-10-04. Las versiones archivadas (data/mapas/versiones/) no se leen aquí: guardan los bytes que se aprobaron y
- * no cambian.
+ * 2026-10-04. La autoevaluación comercial de Databricks («mejor precio y rendimiento», S2-AUD-07) se pagó al
+ * aprobarse Databricks v0.2.0, su capa de consumo, el mismo día. Las versiones archivadas (data/mapas/versiones/) no
+ * se leen aquí: guardan los bytes que se aprobaron y no cambian.
  */
-const CONOCIDAS = new Set<string>([
-  // Deuda (S2-AUD-07): autoevaluación comercial en el mapa de Databricks aprobado el 2026-10-04 («mejor precio y
-  // rendimiento»). Se paga la próxima vez que se investigue su capa de consumo; la validación de toda propuesta nueva
-  // ya la rechaza.
-  "data/mapas/databricks.mapa.yaml /nodos/11/experto/es",
-  "data/mapas/databricks.mapa.yaml /nodos/11/experto/en",
-]);
+const CONOCIDAS = new Set<string>([]);
 
 function hallazgos(dir: string): string[] {
   const out: string[] = [];
