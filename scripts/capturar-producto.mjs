@@ -139,7 +139,8 @@ let interacciones = 0;
 async function medir(pagina, clave) {
   const r = await pagina.evaluate(() => {
     const el = document.documentElement;
-    const out = { desborde: el.scrollWidth - el.clientWidth, fuente: true, fuera: [], pisadas: [], lienzo: null };
+    const out = { desborde: el.scrollWidth - el.clientWidth, fuente: true, fuera: [], pisadas: [], lienzos: [] };
+    const todos = [...document.querySelectorAll(".lienzo")];
     const familia = getComputedStyle(document.body).fontFamily.split(",")[0].replace(/"/g, "").trim();
     out.fuente = [...document.fonts].some((f) => f.family.replace(/"/g, "") === familia && f.status === "loaded");
     for (const svg of document.querySelectorAll("svg.dg-svg[viewBox]")) {
@@ -156,9 +157,12 @@ async function medir(pagina, clave) {
           if (b.x < c.b.x + c.b.width && b.x + b.width > c.b.x && b.y < c.b.y + c.b.height && b.y + b.height > c.b.y) out.pisadas.push(`«${txt}» (${dueno ?? "sin dueño"}) pisa ${c.dueno}`);
         }
       }
+      // Un registro por lienzo (la página de versiones trae uno por par); el último SVG visible de cada uno manda.
       const lz = svg.closest(".lienzo");
       const estilo = getComputedStyle(lz);
-      out.lienzo = { svg: svg.getBoundingClientRect().width, cliente: lz.clientWidth, area: lz.scrollWidth - lz.clientWidth, desliza: estilo.overflowX === "auto" || estilo.overflowX === "scroll", padding: parseFloat(estilo.paddingLeft) + parseFloat(estilo.paddingRight) };
+      const i = todos.indexOf(lz);
+      out.lienzos = out.lienzos.filter((l) => l.i !== i);
+      out.lienzos.push({ i, svg: svg.getBoundingClientRect().width, cliente: lz.clientWidth, area: lz.scrollWidth - lz.clientWidth, desliza: estilo.overflowX === "auto" || estilo.overflowX === "scroll", padding: parseFloat(estilo.paddingLeft) + parseFloat(estilo.paddingRight) });
     }
     return out;
   });
@@ -166,14 +170,14 @@ async function medir(pagina, clave) {
   if (!r.fuente) fallas.push(`${clave}: la fuente no cargó`);
   for (const f of r.fuera) fallas.push(`${clave}: texto fuera del lienzo ${f}`);
   for (const f of r.pisadas) fallas.push(`${clave}: ${f}`);
-  if (r.lienzo) {
-    const l = r.lienzo;
+  for (const l of r.lienzos) {
+    const cual = r.lienzos.length > 1 ? `el lienzo ${l.i + 1}` : "el lienzo";
     const debe = Math.max(0, Math.round(l.svg + l.padding - l.cliente));
-    if (!l.desliza) fallas.push(`${clave}: el lienzo no se desliza de lado`);
-    if (Math.abs(l.area - debe) > 1) fallas.push(`${clave}: área de desplazamiento ${l.area}px, esperada ${debe}px (SVG ${l.svg}px en ${l.cliente}px)`);
+    if (!l.desliza) fallas.push(`${clave}: ${cual} no se desliza de lado`);
+    if (Math.abs(l.area - debe) > 1) fallas.push(`${clave}: área de desplazamiento de ${cual}: ${l.area}px, esperada ${debe}px (SVG ${l.svg}px en ${l.cliente}px)`);
     // El final del área de desplazamiento muestra el borde derecho del SVG.
-    const fin = await pagina.evaluate(() => {
-      const lz = document.querySelector(".lienzo");
+    const fin = await pagina.evaluate((i) => {
+      const lz = document.querySelectorAll(".lienzo")[i];
       const antes = lz.scrollLeft;
       lz.style.scrollBehavior = "auto";
       lz.scrollLeft = lz.scrollWidth;
@@ -182,11 +186,9 @@ async function medir(pagina, clave) {
       lz.scrollLeft = antes;
       lz.style.scrollBehavior = "";
       return { derecha: svg.right, visible: caja.right };
-    });
-    if (fin.derecha > fin.visible + 1) fallas.push(`${clave}: al final del desplazamiento el SVG sigue cortado (${Math.round(fin.derecha - fin.visible)}px)`);
-    return l;
+    }, l.i);
+    if (fin.derecha > fin.visible + 1) fallas.push(`${clave}: al final del desplazamiento de ${cual}, el SVG sigue cortado (${Math.round(fin.derecha - fin.visible)}px)`);
   }
-  return null;
 }
 
 /**
@@ -417,11 +419,14 @@ async function interactuar(pagina, ruta, tema, ancho, clave) {
     cambio((await pagina.evaluate(() => navigator.clipboard.readText())) === texto, `«Copiar» no dejó «${texto}» en el portapapeles`);
   }
 
-  const lienzoFoco = pagina.locator(".lienzo[tabindex]").filter({ visible: true });
-  if (await lienzoFoco.count()) {
-    await marcar(lienzoFoco);
-    await lienzoFoco.focus();
-    cambio(await lienzoFoco.evaluate((e) => e === document.activeElement), "el lienzo no recibe el foco");
+  // Cada lienzo recibe el foco (la página de versiones trae uno por par).
+  const lienzos = pagina.locator(".lienzo[tabindex]").filter({ visible: true });
+  await marcar(lienzos);
+  const nLienzos = await lienzos.count();
+  for (let i = 0; i < nLienzos; i++) {
+    const l = lienzos.nth(i);
+    await l.focus();
+    cambio(await l.evaluate((e) => e === document.activeElement), `el lienzo ${i + 1} no recibe el foco`);
   }
 
   // Saltos: «Saltar el diagrama» lleva a la lectura; «Saltar al contenido» al main.

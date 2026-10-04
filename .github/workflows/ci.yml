@@ -37,6 +37,7 @@ jobs:
       - name: Build como en Vercel (adapter de Next) y CSP en lo que se publica
         env:
           NEXT_ENABLE_ADAPTER: "1"
+          VERCEL_TELEMETRY_DISABLED: "1"
         run: |
           mkdir -p .vercel
           printf '%s' '{"projectId":"prj_ci","orgId":"team_ci","settings":{"framework":"nextjs","installCommand":"true"}}' > .vercel/project.json

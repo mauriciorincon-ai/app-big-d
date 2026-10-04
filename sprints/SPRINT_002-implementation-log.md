@@ -1146,8 +1146,68 @@ final, de a una.
     - **Gate unitario** (`csp.test.ts`, 3 pruebas nuevas): las carpetas con y sin adapter, la inyección en las dos
       sin tocar la maqueta, y el verificador. ¿Puede fallar? Sí. **Rojo:** `carpetasDeSalida` devolviendo solo
       `out/` → caen las dos pruebas de carpetas. **Verde** al restaurar.
-    - **Falta la prueba real:** que el preview del commit nuevo sirva la meta. Se le pregunta a la persona igual que
-      antes, guardando la página.
+    - **Prueba real en el preview de `2f11545` (2026-10-04):** la persona abrió `/es/atlas/fabric/versiones` y
+      guardó la página (Cmd+S). Trae **una** meta de CSP justo después de `<meta charSet>`, sin `unsafe-inline`, con
+      las 9 directivas; sus 7 scripts en línea tienen huella en `script-src`. Los 9 scripts con `src` son del mismo
+      origen: el preview no inyecta nada de afuera. **Se cierra S2-AUD-32** con la CSP vista en lo que Vercel
+      publica.
+    - **CI de `2f11545`:** los 5 checks y Vercel en `success`. El job `quality` corrió por primera vez el build como
+      Vercel: su log dice «Running onBuildComplete from Vercel», «csp: out/ · 46 páginas», «csp: .next/output/static/
+      · 46 páginas» y «csp publicada: 46 páginas en .vercel/output/static, cada una con su meta e idéntica a out». e2e:
+      785 pasan y 9 se saltan (794).
+- **Pasada final de capturas sobre el build de cierre** (datos de Fabric v0.3.0 y Databricks v0.2.0, CSP en las dos
+  carpetas):
+  - **El arnés se cayó en la página de versiones de Fabric,** que ahora trae dos pares y dos lienzos: suponía un solo
+    lienzo por página (modo estricto de Playwright). Además medía el área de desplazamiento del último lienzo y el
+    final del desplazamiento del primero. Ahora recorre cada lienzo: foco, área y final, y nombra cuál falla.
+    - ¿Puede fallar? Sí. **Rojo:** en el HTML compilado de `/es/atlas/fabric/versiones`, el segundo lienzo sin
+      desplazamiento lateral → «el lienzo 2 no se desliza de lado». **Verde** al restaurar el archivo.
+  - **Resultado:** 44 rutas × 380/1280 × oscuro/claro = **176 encuadres, 13 020 comprobaciones de interacción, 0
+    fallas**.
+  - **Leídos como imagen:** `/es/atlas/fabric/versiones` (oscuro 1280 y claro 380: los dos pares, «+ nuevo» en el
+    bloque de Gobierno de la fila v0.3.0, la pista «Desliza de lado» en cada par); `/es/atlas/databricks/componentes`
+    (claro 1280: Consumo con 5 componentes, «Herramientas de BI externas» con el glifo de sistema externo, el canal
+    de la derecha denso pero sin cruzar nodos); `/es/comparar` (oscuro 1280: «Tableros y aplicaciones · 5 comp.» en
+    Databricks y «Gobierno · 4 comp.» en Fabric).
+
+### Frases: segunda pasada de «¿qué frases caducaron?» (después del último ajuste, 2026-10-04)
+
+- **Dónde:** las líneas que agregó la Fase 2 (`git diff 9979603..HEAD`) en `docs/`, `README.md`, `src/lib/i18n/`,
+  `decisions/`, `design-sync/README.md`, `.claude/`, `data/plataformas/` y esta bitácora, más
+  `sprints/SPRINT_002-summary.md` y los dos mapas que cambiaron (Fabric v0.3.0 y Databricks v0.2.0).
+- **Cómo:** por promesa aplazada (todavía no · aún no · por ahora · de momento · mientras tanto · próximamente ·
+  llega después · en esta versión · más adelante · no (se) puede · sin embargo · podrás · permitirá; en inglés not
+  yet · for now · coming soon · will be able), más «ya no» y «hoy no».
+- **Lo que quedó, y es cierto hoy:**
+  - «Todavía no» / «Not yet» de la pregunta frecuente del manual: el núcleo comparativo no existe (S3);
+  - «`design-system.md` does not yet» del ADR de extensiones: el design system es de solo lectura y la planeadora
+    lo actualiza;
+  - «Today there are none, and a test says so» del ADR `map-versioning`: con Fabric v0.1.0 y v0.2.0 y Databricks
+    v0.1.0 archivadas, la prueba «hoy no hay ninguna histórica» sigue en verde;
+  - «ya no la dibujan» (manual e i18n): describe la versión histórica, que hoy funciona así.
+- **En los mapas aprobados:** «por ahora solo admite inglés» (agente de datos de Fabric) y «por ahora» de Airflow son
+  afirmaciones citadas del fabricante, con su fecha de verificación y su vigencia; no son promesas de la app y un mapa
+  aprobado no se edita a mano.
+- **En el summary:** ninguna frase de promesa aplazada.
+
+### `/deploy-check` (2026-10-04, sobre `2f11545` más el commit del summary)
+
+| § | Casilla | Resultado |
+|---|---|---|
+| 1 | `pnpm test` (con `--coverage`) | 1397/1397, 65 archivos, 98,9 % de líneas |
+| 1 | e2e sin flaky | CI de `2f11545`: 785 pasan, 9 saltadas a propósito, 0 reintentos |
+| 2 | `pnpm typecheck` · `@ts-ignore` nuevos | en verde · 0 |
+| 3 | `pnpm lint` · capturas con área de desplazamiento e interacción · reduced-motion · tintas vetadas | en verde · 176 encuadres, 13 020 comprobaciones, 0 fallas (cada lienzo medido) · 266 e2e · barrido en `pnpm test` |
+| 4 | `pnpm build` · bundle frente a `main` | en verde (CSP en `out/`; con el adapter, también en `.next/output/static/`) · `main` compilado en la copia: el JS de cada ruta común cambia +0,0 %; chunks totales 1127 → 1143 KB (+1,4 %) |
+| 5 | audit · overrides · versiones exportadas · secretos · variables | 1 aviso ignorado con gate (`braces`) · `package.json` sin `pnpm.overrides` · ninguna dependencia cambió · gitleaks en cada commit · `NEXT_ENABLE_ADAPTER` y `VERCEL_TELEMETRY_DISABLED` solo en la CI, no son de la app |
+| 6 | Observabilidad | sin endpoints (export estático); Sentry client-only inerte sin DSN |
+| 7 | axe · teclado · diseño | `/comparar` en `lado.spec` (dos temas, desplegado y con la ficha abierta) y las rutas de versiones en las demás pasadas de axe · e2e de teclado · M1 y M2 aprobadas; extensiones por ADR |
+| 8 | Lighthouse | job `lighthouse` en `success` sobre 21 URL (mediana de 3) |
+| 9 | Cero enlaces · homepage | barrido limpio tras el último `git add` · el campo apunta al repo (`homepageUrl == url`) |
+| 9 | Frases · manual · README · CHANGELOG · ADRs · matriz | segunda pasada arriba · manual 7 y 8 · el setup no cambió · `CHANGELOG.md` es el del kit (n/a) · 5 ADRs · matriz en verde |
+| 10 | Bitácora · summary · 7-S | al día · `sprints/SPRINT_002-summary.md` · **relectura de los términos el 2026-10-04** en `decisions/investigator-7s-compliance.md`, sin cambios que toquen la postura |
+| 11 | Checks con conclusión propia | los 5 en `success` en `2f11545`; `quality` corrió por primera vez el build como Vercel (dicho en el summary) |
+| 12 | Disco en runtime | export estático: la app no escribe al correr. El investigador escribe solo en `propuestas/` (hook). El arnés de capturas verifica byte a byte que sirve `out/` de este repo |
 
 ## Desviación del plan
 
@@ -1208,3 +1268,11 @@ Lo que se desvió después del plan (agregado en la Fase 2 de la auditoría, S2-
     diferencias van a «Enmiendas».
 20. **Límite de tiempo de las pruebas** (`vitest.config.ts`, `testTimeout: 20_000`): no estaba en el plan; se agregó
     en la Fase 2 de la auditoría porque cargar `data/` pasaba de los 5 s con la máquina cargada.
+21. **Dos investigaciones más en la Fase 2 de la auditoría:** `/investigar fabric gobierno` (P2) y `/investigar
+    databricks consumo` (P3), invocadas y aprobadas por la persona. Fabric queda en v0.3.0 y Databricks en v0.2.0;
+    la orden pedía Fabric v0.2.0 y Databricks v0.1.0.
+22. **El job `quality` hace el build como Vercel** (S2-AUD-32, Alto por la P4): `vercel build` sin conexión con
+    `NEXT_ENABLE_ADAPTER=1` y el verificador de la CSP publicada, en lugar de `pnpm build`. No es un job nuevo: la
+    ruleset no cambia.
+23. **El contrato v0.5.0 llegó a la planeadora durante el sprint** (`143facf`, 2026-10-04). El lock se queda en el
+    0.4.0 que pide la orden: 57/57 contra `143facf^`. La renovación va a la orden del S3.
