@@ -37,3 +37,9 @@ date:
 
 The planning house folds them into the next design-system version. Until then, this ADR and
 `decisions/design-system-s1-extensions.md` are the extensions, and `design-sync/README.md` cites both.
+
+## Folded into the design system (2026-10-04)
+
+`design-system.md` v0.6.0 (S3, phase 0) folds the nine rows above (rows «Lado a lado», «Desplegar todo», «Marca de
+diferencia», «Versiones de un mapa» and the diagram-grammar row) and corrects the three out-of-date lines this ADR
+named. This ADR stays as the record of how each extension was seen.

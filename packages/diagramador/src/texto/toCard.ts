@@ -22,6 +22,12 @@ export interface OpcionesFicha {
 }
 
 
+/** El nombre del tipo `codigo` (0.5.0): opcional en `texts`; si un mapa lo usa y falta, error claro. */
+function tipoCodigo(t: { codigo?: string }): string {
+  if (t.codigo === undefined) throw new Error("texts: el mapa cita una fuente de código y falta `ficha.tipoFuente.codigo` (0.5.0)");
+  return t.codigo;
+}
+
 export function toCard(map: Mapa, grammar: Gramatica, nodeId: string, opciones: OpcionesFicha): string {
   const l = opciones.language;
   const t = idiomaPedido("toCard", grammar, l, opciones.texts);
@@ -46,7 +52,7 @@ export function toCard(map: Mapa, grammar: Gramatica, nodeId: string, opciones: 
   // 0.5.0 (§ 3.3): una fuente de código se escribe `ruta:lineas` como texto, jamás como enlace (cero enlaces).
   const fuentes = n.fuentes.map((s) =>
     s.tipo === "codigo"
-      ? `<li><span>${e(s.titulo[l]!)}</span> <code class="dg-ficha-cod">${e(s.lineas ? `${s.ruta}:${s.lineas}` : s.ruta)}</code><span class="dg-ficha-fecha">${e(s.fecha)} · ${e(f.tipoFuente.codigo)}</span></li>`
+      ? `<li><span>${e(s.titulo[l]!)}</span> <code class="dg-ficha-cod">${e(s.lineas ? `${s.ruta}:${s.lineas}` : s.ruta)}</code><span class="dg-ficha-fecha">${e(s.fecha)} · ${e(tipoCodigo(f.tipoFuente))}</span></li>`
       : `<li><a href="${e(s.url)}">${e(s.titulo[l]!)}</a><span class="dg-ficha-fecha">${e(s.fecha)} · ${e(f.tipoFuente[s.tipo])}</span></li>`,
   );
 

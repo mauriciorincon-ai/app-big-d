@@ -205,8 +205,8 @@ export interface TextosMotor {
     fuentes: string;
     verificado: string;
     consultado: string;
-    /** `codigo` (0.5.0): una fuente que es un archivo del repositorio. */
-    tipoFuente: { oficial: string; tercero: string; codigo: string };
+    /** `codigo` (0.5.0): una fuente que es un archivo del repositorio. Opcional: si un mapa la usa y falta, error claro. */
+    tipoFuente: { oficial: string; tercero: string; codigo?: string };
   };
   /** Leyenda (§ 4.9): títulos, regla de vigencia («{revisar}», «{vencido}»), regla del haz y nota de marcas (D7). */
   leyenda: { tipos: string; modos: string; madurez: string; vigencia: string; reglaVigencia: string; vigente: string; porRevisar: string; vencido: string; haz: string; notaMarcas: string };

@@ -68,3 +68,10 @@ design-system version.
   «Selector de plataforma del atlas» to § 5, close the two § 10 debts (selector and trademark note; empty state
   in context), add the window to the movement table (no motion: it opens and closes by attribute), and draw the
   «to review» mark as the warning triangle (§ 4.8 and the mark table).
+
+## Folded into the design system (2026-10-04)
+
+`design-system.md` v0.6.0 (S3, phase 0) folds the five decisions above: § 5 has «Ventana de un bloque» instead of
+«Ficha breve», the atlas platform selector and the trademark note at the foot of the legend; § 4 draws «por revisar»
+with the warning triangle; the empty state in context lives in the «Estado vacío» row; § 10 drops the two S1 debts.
+This ADR stays as the record of how each decision was seen.

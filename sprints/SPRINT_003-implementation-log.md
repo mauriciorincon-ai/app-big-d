@@ -99,6 +99,65 @@ Bajo las tres clases de mirada (kit v1.36.0), M1 —una pantalla nueva fuera de 
 | ADR por aviso ignorado (`avisos-ignorados.test.ts`) | Sí: un `ignoreGhsas` sin ADR con fecha y condición de retiro | «## Retirement condition» → «## When to remove it» en el ADR (`demo-rojo.sh`) | «cada aviso ignorado tiene su ADR» | ✓ 4 pruebas |
 | `verificar-dependencias.mjs` falla cerrado sin base | Sí | `node scripts/verificar-dependencias.mjs origin/no-existe` | «no puedo leer la rama base origin/no-existe … Un gate que no puede mirar no está verde» (exit 1) | ✓ `origin/main`: 669 paquetes, ninguno por debajo (exit 0) |
 
+### Contrato v0.6.0 con lo pendiente de la 0.5.0 (D-S3-03, D-S3-04)
+
+- **Copia y lock.** `node scripts/contrato/fijar.mjs --origen c8d3957 --copiar` copió los 51 archivos del contrato con
+  `git show` desde el árbol de ese commit (no del HEAD, ni con un editor) y escribió el lock: `version: 0.6.0`,
+  `origen: c8d395766dbc824d722d7eee4f567cfafac8f64b`, 57 huellas (51 + las 6 de `metricas/`). `verificar.mjs`
+  compara contra ese commit y solo informa la deriva frente al HEAD: «✓ v0.6.0, 57 archivos idénticos a su origen
+  (c8d3957) · el HEAD de la planeadora (c8a8dd3) no cambió reusables/diagramador desde el origen».
+- **Versión y migración.** `CONTRATO_VERSION` 0.6.0 y los saltos 0.4 → 0.5 → 0.6 en memoria (el CHANGELOG los declara
+  sin ruptura); Fabric, Databricks, Snowflake y sus versiones archivadas cargan con su huella aprobada.
+  `desde-contrato.mjs` regeneró la gramática y la Plataforma Ejemplo; las recetas del kit de prueba, su muestra.
+- **0.6.0.** Plurales por la regla del idioma (tabla propia es/en/de/it/fr/pt, sin `Intl`; un idioma sin regla es
+  error) · `diff` compara bloques por id y nombre (F-030): píldora «renombrado» en el bloque del lado a lado y líneas
+  de bloque en `diffToText` · `carnadas.test` sin `DIBUJO_CONOCIDO` ni `ALERTAS_CONOCIDAS` (A1 en privado: sus dos
+  líneas de más llegan como avisos V16; C10 con sus cuatro V3 en `secundarios`) → **34/34**.
+- **0.5.0.** `nodo.papel` (marcador dentro de la esquina superior derecha de la tarjeta; su palabra en el nombre
+  accesible y en la lectura) · `condicion` en tres formas, V13 con mensaje de las tres y **V17** · fuente `codigo`
+  escrita `ruta:lineas`, jamás como enlace (la app rechaza una fuente de código en una plataforma ficticia y el
+  investigador solo cruza fuentes con URL) · glifo `hexagono` · `options.fuente_metricas` (una tabla por fuente,
+  probada con una segunda tabla de fixture; Inter no entra al paquete y el lock se queda en 57).
+- **Validador.** Con las formas alternativas (`anyOf`), Ajv reportaba cada forma: una fuente sin título daba cinco
+  entradas. Se queda la forma más cercana. El validador compilado ya no lleva las anotaciones del esquema (`title`,
+  `description`): la 0.6.0 nombra la gramática `agentes-ia` en una descripción y G3 lo cazó en el código del paquete.
+- **Golden.** De los 44, cambian **solo** los 6 de `agente-ejemplo`, y solo por el glifo: un script reemplazó en la
+  versión anterior `g-escudo` por `g-hexagono` en los `<use>` y quitó de la nueva la definición del hexágono, y los
+  dos textos quedaron idénticos en los 6. Las definiciones nuevas (`g-hexagono`, `p-inicio`, `p-fin`) van al final
+  del `<defs>` y solo en el SVG que las usa. Nace `lado.diferencias-bloque` (es/en): el renombre de un bloque, con su
+  píldora (2 usos de la marca contra 1 en `lado.diferencias`). Determinismo: 6/6 en Chromium, Firefox y WebKit
+  (local).
+- **App.** `/versiones` de Databricks dice «Bloque; antes «Tableros»» y marca el bloque renombrado (prueba nueva en
+  `versiones.test.ts`, es/en). El manual (ES/EN) deja de decir que la página no ve el renombre de un bloque.
+- **Para «Enmiendas al contrato del diagramador»** (summary): el path del marcador de `papel` (§ 5.4 no lo trae; el
+  piloto propone disco lleno para inicio y anillo con disco para fin, en caja de 12 u) · V17 no está en la tabla de
+  § 7 ni fija su id (el piloto la reporta en cada rama por defecto que sobra, con el id del flujo) · el nombre
+  `fuente_metricas` contradice la regla de § 8 de nombres de API en inglés · `diffToText` conserva la firma
+  `(antes, después, gramática, opciones)`: necesita los nombres y las bandas de lo retirado, que el resultado de
+  `diff` no trae · la etiqueta `f(entradas)` de § 3.4: ninguna regla de § 4/5 dice dónde se dibuja sobre la línea ni
+  cómo se evita que pise otra cosa (G11, D11); el piloto la escribe en la lectura en texto (las tres formas) y no
+  sobre el dibujo · los textos nuevos de interfaz (`papel`, `condicion`, `lado.detalle.bloque`,
+  `ficha.tipoFuente.codigo`) son opcionales: un consumidor cuyos mapas no los usan no los trae, y si los usa sin
+  ellos el motor da un error claro.
+
+### Design system v0.6 (D-S3-17)
+
+`design-system.md` 0.5.2 → **0.6.0** (el frontmatter decía 0.5.1): se funden las cinco decisiones del S1 y las nueve
+filas del S2 (ADR `design-system-s1-extensions` y `design-system-s2-extensions`, que quedan como registro de cómo se
+vio cada una), se corrigen las tres líneas que el ADR del S2 señaló (el conmutador «Ver: bloques / componentes», el
+selector que no filtraba, la nota de marcas y el selector «del S1») y § 10 dice que la maqueta conserva lo
+reemplazado. Sin mirada: documenta lo que la persona ya vio o un ADR decidió. `design-sync/README.md` cita la 0.6.0;
+el bundle regenerado no cambia (`node scripts/design-sync/generar.mjs`, 11 archivos).
+
+### Gates nuevos del contrato (regla 15)
+
+| Gate | ¿Puede fallar? | Rojo (mutación) | A quién nombró | Verde |
+| ---- | -------------- | --------------- | -------------- | ----- |
+| Forma más cercana de un `anyOf` (`contrato-0-6.test.ts`) | Sí: sin el filtro, una fuente sin título da varias entradas | `formaMasCercana(errores)` → `errores` en `esquema.ts` | «una fuente sin título da UNA entrada» | ✓ 17 pruebas |
+| V17 (`contrato-0-6.test.ts`) | Sí | la segunda rama por defecto ya no se cuenta | «V17: dos ramas por defecto» | ✓ 17 pruebas |
+| `origen` en el lock (`contrato-lock.test.ts`) | Sí: un lock sin el commit de origen | la línea `origen:` comentada en `CONTRATO.lock` | «fija el commit de la planeadora» | ✓ 61 pruebas |
+| `verificar.mjs` contra el commit | Sí | un espacio al final de `version: 0.6.0` en `CONTRATO.md` | «CONTRATO.md: la copia no coincide con CONTRATO.lock» | ✓ «57 archivos idénticos a su origen (c8d3957)» |
+
 ## Desviación del plan
 
 Los hechos 1–10 y las decisiones D-S3-01…18 del plan aprobado (`Reglas del motor` incluidas) son la desviación de
