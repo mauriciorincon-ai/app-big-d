@@ -43,8 +43,11 @@ export function toCard(map: Mapa, grammar: Gramatica, nodeId: string, opciones: 
     ...delGlosario.map(([k, v]) => `<div class="dg-del-glosario"><dt>${e(k)} <span class="dg-ficha-cod">${e(f.glosario)}</span></dt><dd>${e(v)}</dd></div>`),
   ];
 
-  const fuentes = n.fuentes.map(
-    (s) => `<li><a href="${e(s.url)}">${e(s.titulo[l]!)}</a><span class="dg-ficha-fecha">${e(s.fecha)} · ${e(f.tipoFuente[s.tipo])}</span></li>`,
+  // 0.5.0 (§ 3.3): una fuente de código se escribe `ruta:lineas` como texto, jamás como enlace (cero enlaces).
+  const fuentes = n.fuentes.map((s) =>
+    s.tipo === "codigo"
+      ? `<li><span>${e(s.titulo[l]!)}</span> <code class="dg-ficha-cod">${e(s.lineas ? `${s.ruta}:${s.lineas}` : s.ruta)}</code><span class="dg-ficha-fecha">${e(s.fecha)} · ${e(f.tipoFuente.codigo)}</span></li>`
+      : `<li><a href="${e(s.url)}">${e(s.titulo[l]!)}</a><span class="dg-ficha-fecha">${e(s.fecha)} · ${e(f.tipoFuente[s.tipo])}</span></li>`,
   );
 
   const meta = [`<span>${e(plantilla(f.verificado, { fecha: n.fecha_verificacion }))}</span>`];

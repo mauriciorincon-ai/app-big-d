@@ -35,6 +35,8 @@ export const es: Textos = {
       compare: "{mapas} plataformas alineadas por banda: las {capas} capas y las {franjas} franjas en columnas, una plataforma por fila.",
     },
     paso: "Paso {numero}: {que}",
+    papel: { inicio: "inicio", fin: "fin" },
+    condicion: { si: "si {condicion}", porDefecto: "si no" },
     hacia: "Hacia {nombre}, {modo}: {que}",
     desde: "Desde {nombre}, {modo}: {que}",
     recorridoDe: "Recorrido: {titulo}",
@@ -48,7 +50,7 @@ export const es: Textos = {
       fuentes: "Fuentes",
       verificado: "verificado {fecha}",
       consultado: "consultado {fecha} (UTC)",
-      tipoFuente: { oficial: "oficial", tercero: "tercero" },
+      tipoFuente: { oficial: "oficial", tercero: "tercero", codigo: "código" },
     },
     lado: {
       fila: { one: "v{version} · verificado hace {n} día", other: "v{version} · verificado hace {n} días" },
@@ -63,7 +65,8 @@ export const es: Textos = {
         renombrado: "Antes «{antes}». Mismo componente.",
         madurez: "Madurez: de {antes} a {ahora}.",
         otros: { one: "Además, {n} cambio en flujos o pasos.", other: "Además, {n} cambios en flujos o pasos." },
-        ninguna: "Sin cambios en el dibujo: los mismos componentes, con los mismos nombres y la misma madurez.",
+        ninguna: "Sin cambios en el dibujo: los mismos bloques y componentes, con los mismos nombres y la misma madurez.",
+        bloque: { nuevo: "Bloque nuevo en {banda}.", retirado: "Bloque retirado del mapa.", renombrado: "Bloque; antes «{antes}». El mismo bloque, con otro nombre." },
       },
     },
     leyenda: {

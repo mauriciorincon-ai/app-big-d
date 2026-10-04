@@ -183,12 +183,13 @@ a ninguna ni pide cuentas.
   - Si el mapa tiene una sola versión, la página lo dice y no muestra un dibujo.
   - Si las reglas de hoy ya no pueden dibujar una versión vieja, la página la nombra («aprobada y archivada; las
     reglas de hoy ya no la dibujan») y no la compara.
-  - El dibujo solo marca lo que cambia el mapa: componentes nuevos, retirados, renombrados o con otra madurez. Por
+  - El dibujo solo marca lo que cambia el mapa: componentes nuevos, retirados, renombrados o con otra madurez, y
+    bloques nuevos, retirados o renombrados. Por
     eso, de la v0.1.0 a la v0.2.0 de Fabric dice «Sin cambios en el dibujo», y lo que cambió (el texto de seis
     componentes y las fuentes de nueve) aparece en «Lo que dicen los componentes». De la v0.2.0 a la v0.3.0 sí
     cambió el dibujo: dos componentes nuevos en «Gobierno y seguridad».
-  - Si un bloque cambia de nombre, la página no lo dice: compara componentes, no bloques. Le pasa a Databricks, cuyo
-    bloque «Tableros» se llama «Tableros y aplicaciones» desde la v0.2.0.
+  - Si un bloque cambia de nombre, la página lo marca como «renombrado» y dice su nombre anterior (desde el sprint 3).
+    Le pasa a Databricks, cuyo bloque «Tableros» se llama «Tableros y aplicaciones» desde la v0.2.0.
 
 ### Preguntas frecuentes
 
@@ -377,12 +378,13 @@ manages and controls; it never operates a platform**: it connects to none and as
   - If the map has a single version, the page says so and shows no drawing.
   - If today's rules can no longer draw an old version, the page names it (“approved and archived; today's rules no
     longer draw it”) and does not compare it.
-  - The drawing only marks what changes the map: new, removed or renamed components, or a different maturity. That
+  - The drawing only marks what changes the map: new, removed or renamed components, a different maturity, and new,
+    removed or renamed blocks. That
     is why, from Fabric's v0.1.0 to its v0.2.0, it says “No changes in the drawing”, and what did change (the text of
     six components and the sources of nine) appears under “What the components say”. From v0.2.0 to v0.3.0 the
     drawing did change: two new components in “Governance and security”.
-  - If a block is renamed, the page does not say so: it compares components, not blocks. It happens to Databricks,
-    whose “Dashboards” block is called “Dashboards and apps” since v0.2.0.
+  - If a block is renamed, the page marks it as “renamed” and gives its former name (since sprint 3). It happens to
+    Databricks, whose “Dashboards” block is called “Dashboards and apps” since v0.2.0.
 
 ### Frequently asked questions
 

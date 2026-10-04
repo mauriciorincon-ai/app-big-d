@@ -23,7 +23,7 @@ import {
   type Referencia,
 } from "./piezas";
 import { rutear, type Conexion, type Pieza } from "./rutas";
-import type { Caja, CajaPropia, Elemento, Geometria, PasoGeo } from "./tipos";
+import type { Caja, CajaPropia, Elemento, Geometria, PasoGeo, TextosMotor } from "./tipos";
 
 const ALTO = 840;
 const SEPARACION = 400;
@@ -71,11 +71,18 @@ export function numerarPasos(r: Recorrido): PasoGeo[] {
   });
 }
 
+/** El papel de un nodo terminal en palabras (§ 3.3): sin su texto, el marcador sería un glifo solo (G7). */
+export function textoPapel(t: TextosMotor, papel: "inicio" | "fin"): string {
+  if (!t.papel) throw new Error(`texts: el mapa usa «papel: ${papel}» y faltan los textos \`papel\` (0.5.0)`);
+  return t.papel[papel];
+}
+
 function ariaNodo(ctx: Contexto, n: Nodo, pasos: { numero: string; que: Record<string, string> }[]): Record<string, string> {
   const dias = diasDe(ctx, [n]);
   const estado = vigenciaDe(ctx, dias);
   return porIdioma(ctx, (l, t) => {
     let s = `${n.nombre[l]}. ${ctx.tipo.get(n.tipo_id)!.nombre[l]}. ${ctx.madurez.get(n.madurez)!.nombre[l]}.`;
+    if (n.papel) s += ` ${textoPapel(t, n.papel)}.`;
     if (estado !== "vigente") s += ` ${plantilla(estado === "revisar" ? t.porRevisar : t.vencido, { n: dias })}`;
     for (const p of pasos) s += ` ${plantilla(t.paso, { numero: p.numero, que: p.que[l]! })}.`;
     return s;
@@ -99,7 +106,10 @@ export function tarjetaNodo(
   // «enmascaramiento» (116 u en 13/700) cabe en 117 (scripts/maqueta/pantallas/lado.mjs, `nodoComp`).
   const gx = lado ? x + 170 : x + 120 + 80;
   const nx = lado ? x + 290 : x + 120 + 220;
-  const tw = w - (nx - x) - (lado ? 60 : 80);
+  // `papel` (0.5.0): el marcador de entrada o salida va dentro de la esquina superior derecha de la tarjeta (12 u a
+  // 7 u de los bordes); la tarjeta no cambia de tamaño y el nombre se parte 14 u antes para no pisarlo.
+  const tw = w - (nx - x) - (lado ? 60 : 80) - (n.papel ? 140 : 0);
+  if (n.papel) hijos.push(simbolo(`p-${n.papel}`, x + w - 130, y + 130, "dg-papel"));
   if (compacto) {
     hijos.push(simbolo(`g-${tp.glifo}`, gx, y + mitad(h), `dg-c-${tp.token_color}`));
     const nombre = lineasPorIdioma(ctx, n.nombre, 13, 700, tw, 2, `ficha ${n.id}`);
@@ -111,7 +121,7 @@ export function tarjetaNodo(
     // Fila inferior: madurez (si no es disponible, abreviada por palabras si no cabe: D6) y fuentes.
     const yr = y + h - 80 - 160;
     const nf = n.fuentes.length;
-    const fuentes = porIdioma(ctx, (l, t) => (mad.disponible ? plural(t.fuentes, nf) : String(nf)));
+    const fuentes = porIdioma(ctx, (l, t) => (mad.disponible ? plural(t.fuentes, nf, l) : String(nf)));
     const fw = Math.max(...ctx.idiomas.map((l) => ctx.sans.ancho(fuentes[l]!, 12, 400)));
     const docX = x + w - 80 - fw - 100;
     if (!mad.disponible) {

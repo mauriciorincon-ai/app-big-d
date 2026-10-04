@@ -134,7 +134,18 @@ export function reglasMapa(m: Mapa, g: Gramatica, opciones: { mode: Modo; covera
     const modo = modos.get(f.modo_id);
     if (!modo) errores.push(e("V2", ruta("flujos", i, "modo_id"), f.id, `modo inexistente en la gramática: «${f.modo_id}»`));
     else if (modo.exige_condicion && !f.condicion)
-      errores.push(e("V13", ruta("flujos", i), f.id, `el modo «${modo.id}» exige condición (señal · operador · valor) y el flujo no la trae`));
+      errores.push(e("V13", ruta("flujos", i), f.id, `el modo «${modo.id}» exige condición (tripleta, función o rama por defecto: § 3.4) y el flujo no la trae`));
+  });
+
+  // V17 (0.5.0, § 3.4): a lo sumo una rama por defecto por nodo de origen. § 7 no la tabula ni fija su id: el piloto
+  // la reporta en CADA flujo por defecto que sobra (el segundo y siguientes, en el orden del mapa), con el id del
+  // flujo; va a «Enmiendas».
+  const porDefecto = new Map<string, string>();
+  m.flujos.forEach((f, i) => {
+    if (!f.condicion || !("por_defecto" in f.condicion)) return;
+    const primero = porDefecto.get(f.origen);
+    if (primero === undefined) porDefecto.set(f.origen, f.id);
+    else errores.push(e("V17", ruta("flujos", i, "condicion"), f.id, `el nodo «${f.origen}» ya tiene una rama por defecto («${primero}»); a lo sumo una por origen`));
   });
 
   // V5 y V12

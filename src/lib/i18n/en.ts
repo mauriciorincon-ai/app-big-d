@@ -35,6 +35,8 @@ export const en: Textos = {
       compare: "{mapas} platforms aligned by band: the {capas} layers and the {franjas} bands as columns, one platform per row.",
     },
     paso: "Step {numero}: {que}",
+    papel: { inicio: "start", fin: "end" },
+    condicion: { si: "if {condicion}", porDefecto: "otherwise" },
     hacia: "To {nombre}, {modo}: {que}",
     desde: "From {nombre}, {modo}: {que}",
     recorridoDe: "Journey: {titulo}",
@@ -48,7 +50,7 @@ export const en: Textos = {
       fuentes: "Sources",
       verificado: "verified {fecha}",
       consultado: "checked {fecha} (UTC)",
-      tipoFuente: { oficial: "official", tercero: "third party" },
+      tipoFuente: { oficial: "official", tercero: "third party", codigo: "code" },
     },
     lado: {
       fila: { one: "v{version} · verified {n} day ago", other: "v{version} · verified {n} days ago" },
@@ -63,7 +65,8 @@ export const en: Textos = {
         renombrado: "Formerly “{antes}”. Same component.",
         madurez: "Maturity: from {antes} to {ahora}.",
         otros: { one: "Also, {n} change in flows or steps.", other: "Also, {n} changes in flows or steps." },
-        ninguna: "No changes in the drawing: the same components, with the same names and maturity.",
+        ninguna: "No changes in the drawing: the same blocks and components, with the same names and maturity.",
+        bloque: { nuevo: "New block in {banda}.", retirado: "Block removed from the map.", renombrado: "Block; formerly “{antes}”. The same block, under a new name." },
       },
     },
     leyenda: {

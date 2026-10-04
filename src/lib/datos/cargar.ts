@@ -85,7 +85,7 @@ export function esDominioDeEjemplo(url: string): boolean {
 function fuentesDeFicticia(mapa: Mapa, archivo: string, fallas: string[]): void {
   mapa.nodos.forEach((n, i) =>
     n.fuentes.forEach((f, k) => {
-      if (!esDominioDeEjemplo(f.url)) fallas.push(`${archivo} · /nodos/${i}/fuentes/${k}/url · ${n.id} · una plataforma ficticia solo cita dominios reservados (example.org, *.invalid…)`);
+      if (!("url" in f) || !esDominioDeEjemplo(f.url)) fallas.push(`${archivo} · /nodos/${i}/fuentes/${k}/url · ${n.id} · una plataforma ficticia solo cita dominios reservados (example.org, *.invalid…)`);
     }),
   );
 }

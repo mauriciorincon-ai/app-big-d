@@ -9,12 +9,16 @@ import { FUENTES_MAQUETA, PAQUETE, huellasDeLaCopia, leerLock, sha256, versionDe
 // (un formateador, una edición «de paso») la pone en rojo. Contra la planeadora compara
 // `scripts/contrato/verificar.mjs` (local) y `/cierre-sprint` (desde la planeadora).
 describe("CONTRATO.lock", () => {
-  const { version, huellas } = leerLock() as { version: string; huellas: Map<string, string> };
+  const { version, origen, huellas } = leerLock() as { version: string; origen: string | null; huellas: Map<string, string> };
   const copia = huellasDeLaCopia() as [string, string][];
 
   it("declara la versión del CONTRATO.md copiado, que es la que implementa el paquete", () => {
     expect(version).toBe(versionDelContrato());
     expect(version).toBe(CONTRATO_VERSION);
+  });
+
+  it("fija el commit de la planeadora del que sale la copia (`origen`, D-S3-04)", () => {
+    expect(origen).toMatch(/^[0-9a-f]{40}$/);
   });
 
   it("cubre exactamente los archivos de la copia", () => {

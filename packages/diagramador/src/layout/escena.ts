@@ -2,7 +2,8 @@
 // trigonometría (G2): los tramos son horizontales o verticales, así que su largo es |dx| + |dy| y su
 // dirección es un signo.
 import { fmt, type Decimas } from "../util/numeros";
-import type { Elemento, Punto, ValorAtributo } from "./tipos";
+import type { Condicion } from "../tipos";
+import type { Elemento, Punto, TextosMotor, ValorAtributo } from "./tipos";
 
 type Attrs = Record<string, ValorAtributo | undefined>;
 const limpiar = (a: Attrs): Record<string, ValorAtributo> => {
@@ -23,6 +24,17 @@ export const texto = (clase: string, x: Decimas, y: Decimas, lh: Decimas, lineas
   attrs: limpiar({ class: clase, ...extra }),
   texto: { x, y, lh, lineas },
 });
+
+/**
+ * La condición de un flujo en palabras (0.5.0, § 3.4): la tripleta y la función van en la notación del plan
+ * (`señal op valor`, `f(entradas)`; el motor no las evalúa) dentro de «{condicion}»; la rama por defecto, con su texto.
+ */
+export function textoCondicion(c: Condicion, t: TextosMotor): string {
+  if (!t.condicion) throw new Error("texts: el mapa usa `condicion` y faltan los textos `condicion` (0.5.0)");
+  if ("por_defecto" in c) return t.condicion.porDefecto;
+  const cond = "funcion" in c ? `${c.funcion}(${c.entradas.join(", ")})` : `${c.senal} ${c.operador} ${String(c.valor)}`;
+  return plantilla(t.condicion.si, { condicion: cond });
+}
 
 const signo = (n: number): number => (n > 0 ? 1 : n < 0 ? -1 : 0);
 const largo = (a: Punto, b: Punto): number => Math.abs(b[0] - a[0]) + Math.abs(b[1] - a[1]);

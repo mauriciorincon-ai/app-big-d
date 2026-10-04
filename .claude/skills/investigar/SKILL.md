@@ -45,7 +45,7 @@ En `propuestas/<AAAA-MM-DD>-<plataforma>[-<capa>]/propuesta.json` (fecha de hoy)
   "plataforma": "<id>",
   "fecha": "AAAA-MM-DD",
   "ejecucion": { "herramienta": "claude-code", "modelo": "<el modelo de esta sesión>", "reintentos": 0 },
-  "mapa": { "…": "un mapa COMPLETO del contrato 0.4.0 (la versión de packages/diagramador/CONTRATO.lock): estado \"propuesta\", sujeto_id = <id>, sujeto_nombre = el nombre de data/plataformas en es y en, version \"0.0.0\", fecha_actualizacion de hoy; cada nodo con fuentes (url, titulo {es,en}, fecha de hoy, tipo) y fecha_verificacion de hoy" },
+  "mapa": { "…": "un mapa COMPLETO del contrato 0.6.0 (la versión de packages/diagramador/CONTRATO.lock): estado \"propuesta\", sujeto_id = <id>, sujeto_nombre = el nombre de data/plataformas en es y en, version \"0.0.0\", fecha_actualizacion de hoy; cada nodo con fuentes (url, titulo {es,en}, fecha de hoy, tipo) y fecha_verificacion de hoy" },
   "afirmaciones": [
     {
       "id": "A-1",

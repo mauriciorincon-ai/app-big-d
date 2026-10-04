@@ -8,8 +8,8 @@ export type Vista = "nivel1" | "nivel2" | "recorrido" | "bloque";
 /** Lo que puede dibujar una geometría: las vistas de `layout` y el lado a lado de `compare` (§ 4.4). */
 export type VistaGeometria = Vista | "compare";
 /**
- * Clase de un aviso de geometría (§ 5.6). `texto` es extensión del piloto (va a «Enmiendas»): un texto con más
- * líneas que su caja, una palabra que no cabe sola o una cabecera de franja más alta que su fila.
+ * Clase de un aviso de geometría (§ 5.6). `texto` (en el contrato desde la 0.6.0): un texto con más líneas que su
+ * caja, una palabra que no cabe sola o una cabecera de franja más alta que su fila.
  */
 export type TipoAviso = "D11" | "pistas" | "fuera-del-lienzo" | "encima" | "etiqueta" | "bloque-vacio" | "canal" | "carriles" | "texto";
 /**
@@ -162,10 +162,32 @@ export interface TextosMotor {
      * Lista explicativa (`diffToText`): qué cambió en cada componente («{banda}», «{madurez}», «{antes}», «{ahora}»),
      * cuántos flujos o pasos cambiaron («{n}») y la línea de «sin diferencias».
      */
-    detalle: { nuevo: string; retirado: string; renombrado: string; madurez: string; otros: Plural; ninguna: string };
+    detalle: {
+      nuevo: string;
+      retirado: string;
+      renombrado: string;
+      madurez: string;
+      otros: Plural;
+      ninguna: string;
+      /**
+       * 0.6.0 (F-030): las líneas de un bloque nuevo («{banda}»), retirado o renombrado («{antes}»). Opcional: si las
+       * diferencias traen bloques y faltan, `diffToText` da un error claro.
+       */
+      bloque?: { nuevo: string; retirado: string; renombrado: string };
+    };
   };
   /** Nombre accesible de un paso: «{numero}» y «{que}». */
   paso: string;
+  /**
+   * 0.5.0 (§ 3.3): el papel de un nodo terminal, en su nombre accesible y en la lectura. Opcional: un consumidor cuyos
+   * mapas no usan `papel` no lo trae; si un mapa lo usa y falta, el motor da un error claro.
+   */
+  papel?: { inicio: string; fin: string };
+  /**
+   * 0.5.0 (§ 3.4): la condición de un flujo en la lectura: «{condicion}» (la tripleta `señal op valor` o la función
+   * `f(entradas)`, en notación del plan) y la rama por defecto. Opcional como `papel`.
+   */
+  condicion?: { si: string; porDefecto: string };
   /** Lectura en texto (G10): «{nombre}», «{modo}» y «{que}». */
   hacia: string;
   desde: string;
@@ -183,7 +205,8 @@ export interface TextosMotor {
     fuentes: string;
     verificado: string;
     consultado: string;
-    tipoFuente: { oficial: string; tercero: string };
+    /** `codigo` (0.5.0): una fuente que es un archivo del repositorio. */
+    tipoFuente: { oficial: string; tercero: string; codigo: string };
   };
   /** Leyenda (§ 4.9): títulos, regla de vigencia («{revisar}», «{vencido}»), regla del haz y nota de marcas (D7). */
   leyenda: { tipos: string; modos: string; madurez: string; vigencia: string; reglaVigencia: string; vigente: string; porRevisar: string; vencido: string; haz: string; notaMarcas: string };
@@ -198,8 +221,15 @@ export interface OpcionesLayout {
   recorrido?: string;
   /** Elemento del nivel 1 que se abre en la vista «bloque»: el id de un bloque o «_<banda>» (sus nodos sin bloque). */
   group?: string;
-  /** Tabla de métricas (por defecto, la del piloto) y fuentes de interfaz y mono dentro de ella. */
+  /**
+   * G15 (0.5.0): la tabla de métricas de la fuente que sirve el consumidor (una por fuente: Space Grotesk en el piloto,
+   * Inter en planlang). La geometría es determinista POR tabla. Por defecto, la del piloto. El nombre lo fija § 8 en
+   * español aunque § 8 pida nombres de API en inglés (va a «Enmiendas»). `metricas` es su nombre anterior.
+   */
+  fuente_metricas?: import("../texto/metricas").TablaMetricas;
+  /** Nombre anterior de `fuente_metricas` (S1–S2); si llegan las dos, deben ser la misma tabla. */
   metricas?: import("../texto/metricas").TablaMetricas;
+  /** Fuentes de interfaz y mono dentro de la tabla (por defecto, las del piloto). */
   fuente?: string;
   fuenteMono?: string;
 }
