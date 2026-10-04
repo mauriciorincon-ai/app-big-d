@@ -158,6 +158,53 @@ el bundle regenerado no cambia (`node scripts/design-sync/generar.mjs`, 11 archi
 | `origen` en el lock (`contrato-lock.test.ts`) | Sí: un lock sin el commit de origen | la línea `origen:` comentada en `CONTRATO.lock` | «fija el commit de la planeadora» | ✓ 61 pruebas |
 | `verificar.mjs` contra el commit | Sí | un espacio al final de `version: 0.6.0` en `CONTRATO.md` | «CONTRATO.md: la copia no coincide con CONTRATO.lock» | ✓ «57 archivos idénticos a su origen (c8d3957)» |
 
+### Build como el proveedor y margen de Lighthouse (kit v1.37.0 / v1.39.0)
+
+- `node scripts/build-como-proveedor.mjs` en local (vercel@60.1.3 sin conexión, adapter de Next): «✓ 59 páginas
+  publicadas idénticas a out» (incluye las 13 de la maqueta en `diseno/`, que el verificador de la CSP no mira) y
+  después `node scripts/csp/verificar-salida.mjs .vercel/output/static out`: «46 páginas … cada una con su meta e
+  idéntica a out». Los dos pasos corren en `quality`.
+
+| Gate | ¿Puede fallar? | Rojo (mutación) | A quién nombró | Verde |
+| ---- | -------------- | --------------- | -------------- | ----- |
+| Salida publicada = `out/` (`verificar-salida-publicada.mjs`) | Sí: un paso posterior al build que solo toca `out/` | un comentario tras el charset en `out/es.html`, después del build | «es.html: distinta de la de out (13796 vs 13847 bytes)» | ✓ restaurado |
+| Cada URL medida tiene presupuesto (`lighthouse-margen.mjs`) | Sí, pero solo si una URL queda fuera de `perf-budget.json`; el margen bajo el 10 % avisa y no falla | `"path": "/*"` → `"/es/*"` | «la URL medida /en no cae bajo ningún path» (y las otras /en) | ✓ exit 0 |
+
+### CI del PR #8 (borrador) y margen de Lighthouse
+
+- **Push de `c764f3a`** (commits `d4de420`, `471c522`, `c764f3a`), corrida 37241742843, leída con `gh pr checks 8`
+  y `gh run view`: `quality` · `e2e` · `lighthouse` · `diagramador (ubuntu-latest)` · `diagramador (macos-latest)`,
+  los cinco con conclusión propia `success`; Vercel `pass`. Cero comentarios en el PR (ni del bot ni de nadie).
+  Sigue en borrador y su cuerpo empieza con la línea del merge.
+- **Cifras de la corrida:**
+  - `quality`: 1443 pruebas pasan y 4 se saltan (1447).
+  - `verificar-dependencias`: 669 paquetes, ninguno por debajo de `origin/main`.
+  - `build-como-proveedor`: 59 páginas publicadas idénticas a `out/`.
+  - CSP publicada: 46 páginas con su meta e idénticas a `out/`.
+  - `diagramador`: 901 pruebas en Node y 6 huellas en 3 navegadores, en ubuntu y en macOS.
+  - `e2e`: 785 pasan.
+- **Primera vez en CI** (regla 15, «¿lo viste correr?»): el paso `build-como-proveedor.mjs` en `quality`,
+  `lighthouse-margen.mjs` en `lighthouse` y las 3 pruebas del hook de secretos que no necesitan gitleaks. Sin
+  corrida anterior no hay histórico contra el cual afirmar regresión o no-regresión.
+- **K-S3-6.** El runner de CI no trae gitleaks. Las 4 pruebas que lo necesitan se saltan ahí:
+  - `gitleaks-escritura` (2);
+  - la de la carnada en `githooks-pre-commit` (1);
+  - la de la carnada en `hook-secretos` (1).
+
+  Corren en local (K5, 5/5 con gitleaks 8.30.1). Viene del estampado. La carnada solo se ve bloqueada en la máquina
+  del usuario. Va a «Sugerencias» y a la auditoría como candidata: instalar gitleaks en `quality`, con su rojo.
+- **Margen de Lighthouse:** `lighthouse-margen.mjs` avisó 4 veces, todas de LCP, con medianas de 3:
+  - `/es/atlas/plataforma-ejemplo/recorrido`: 2706 ms;
+  - `/en/atlas/plataforma-ejemplo/recorrido`: 2709 ms;
+  - `/es/atlas/fabric/recorrido`: 2710 ms;
+  - `/es/comparar`: 2733 ms.
+
+  Contra el presupuesto de 2900 ms el margen va del 5,8 al 6,7 %; contra el techo de 3,0 s, del 8,9 al 9,8 %.
+  **Decisión en `decisions/lcp-budget-by-profile.md` § «Margin against the budget»:** el margen bajo el 10 % se
+  acepta a sabiendas, porque los 2900 ms ya son la alarma 100 ms bajo el techo del ADR. El presupuesto no se sube.
+  El aviso sigue encendido, y la única palanca es el subconjunto de las fuentes, que va a «Enmiendas». La fase 4
+  vuelve a medir con las 4 rutas nuevas.
+
 ## Desviación del plan
 
 Los hechos 1–10 y las decisiones D-S3-01…18 del plan aprobado (`Reglas del motor` incluidas) son la desviación de
