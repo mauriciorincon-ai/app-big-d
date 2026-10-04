@@ -719,6 +719,31 @@ afirmaciones; sin retiros, sin componentes ni flujos nuevos. **Cero «lago de da
 |---|---|---|---|---|
 | `kit-de-prueba.test.ts` · versión anterior de muestra (2) | Sí | Muestra editada a mano (madurez «beta» → «vista previa pública») | «regenerarla … da los mismos bytes» y «… muestra las cuatro clases de cambio» | Restaurada |
 
+### Pasada final de capturas y LCP
+
+- **Pasada de capturas con interacción** (`scripts/capturar-producto.mjs`, build del 2026-10-04): 44 rutas × 380/1280 ×
+  oscuro/claro = **176 encuadres, 11 588 comprobaciones de interacción, 0 fallas**. Leí como imagen los nuevos
+  (`/atlas/<p>/versiones` en los dos anchos y temas, con su ventana abierta; Databricks y Snowflake en sus tres
+  niveles; `/comparar` con cuatro plataformas).
+- **Defecto visto en la lectura de los encuadres, no en la pasada:** a 380 px la página de versiones se deslizaba
+  sin la pista «Desliza de lado…» ni las sombras de los bordes, porque le faltaba `ControlLienzo`, que marca el
+  desborde. Agregado, uno por par (la sección de cada par lleva `id="version-N"`), con la regla CSS de la pista.
+  Reconstruido y mirado de nuevo: aparecen la pista y la sombra derecha. Las e2e de las rutas de versiones
+  (`-g versiones`, 116) pasan. `design-sync/` regenerado: su gate de deriva lo pidió.
+- **LCP medido al cierre** (Lighthouse 13.4.1, local, Chromium de Playwright 1243, mediana de 3; ADR
+  `lcp-budget-by-profile`, presupuesto 2900 ms y techo de 3,0 s):
+
+| Ruta | LCP | CLS | TBT | Peso | Categorías |
+|---|---|---|---|---|---|
+| `/es/comparar` (4 plataformas) | 2783 ms | 0 | 11 ms | 469 KB | 98/100/100/100/100 |
+| `/es/atlas/fabric/versiones` | 2613 ms | 0,006 | 4 ms | 309 KB | 97/100/100/100/100 |
+| `/es/atlas/fabric` | 2478 ms | 0,014 | 11 ms | 373 KB | 98/100/100/100/100 |
+| `/es/atlas/databricks` | 2465 ms | 0,014 | 5 ms | 345 KB | 98/100/100/100/100 |
+
+  En la fase 2, `/es/comparar` midió 2765 ms y 401 KB con dos plataformas publicadas; con cuatro sube a 2783 ms y
+  469 KB (dos SVG por fila). Todo dentro del presupuesto; la CI corre el mismo Lighthouse sobre
+  `lighthouse-urls.json`, que ya incluye las dos rutas de versiones.
+
 ## Desviación del plan
 
 Lo que el plan aprobado ya declaró frente a la orden y a `SPRINT_002.md`:

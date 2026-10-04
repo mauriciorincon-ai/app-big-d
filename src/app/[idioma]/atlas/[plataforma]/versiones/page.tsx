@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ControlLienzo } from "@/components/atlas/ControlLienzo";
 import { PanelFicha } from "@/components/atlas/PanelFicha";
 import { Meta } from "@/components/Meta";
 import {
@@ -87,6 +88,7 @@ export default async function Versiones({
         v.pares.map((p, i) => (
           <section
             key={`${p.antes}-${p.despues}`}
+            id={`version-${i}`}
             className="version-par"
             aria-labelledby={`par-${i}`}
           >
@@ -162,6 +164,10 @@ export default async function Versiones({
           </section>
         ))
       )}
+      {/* Cada lienzo avisa cuando no cabe: la pista y las sombras de los bordes (como en las vistas del atlas). */}
+      {v.pares.map((p, i) => (
+        <ControlLienzo key={`${p.antes}-${p.despues}`} mapa={`version-${i}`} />
+      ))}
       <p className="solo-lector" id={ID_PISTA}>
         {tv.pistaActivar}
       </p>
