@@ -5,14 +5,12 @@
 > **Primera app del portafolio con especificación completa del usuario, primera con perfil
 > exportado estático y PILOTO del primer reusable de la casa (el diagramador).** Nace con el
 > pipeline completo desde el día 0 (Etapa de Diseño · dos filtros ⭐/⭐⭐ · cierre en dos actos ·
-> cero enlaces · bilingüe integral). **Sincronizada con el CONTRATO v0.4.0 el 2026-10-01 (líneas del diagramador regeneradas: V1–V16, franjas abajo, sin angosta). Sincronizada antes el 2026-09-27
-> (S1, fase 0): sección Stack/IA + regla 7-S; aplica además los deltas del kit v1.30.0/v1.31.0.**
-> **Deltas aplicados en la app el 2026-09-27 (S1, fase 0), desde `kit-app/CLAUDE.md` v1.32.0:** dos clases
-> de mirada (regla 10), `gh pr checks` tras cada push y métrica `manual` (regla 15), «preview del PR #N» en el
-> README de diseño (regla 17), comprobación mecánica de dependencias (regla 18) y reglas 21 y 22.
-> **Deltas aplicados en la app el 2026-10-02 (S2, fase 0):** líneas del diagramador v0.4.0 desde
-> `ordenes/CLAUDE-md-para-app.md`; desde `kit-app/CLAUDE.md` v1.33.0, la regla 23 (matriz de envejecimiento y
-> LCP por perfil) y la regla 17 de v1.32.1 (el campo homepage apunta al propio repo).
+> cero enlaces · bilingüe integral). **Regenerada por la planeadora el 2026-10-04 con el kit v1.39.0 y el CONTRATO
+> v0.6.0** (modo regenerar, método v1.39.0): reglas propias de la app (S1–S2: regla 4 reescrita, regla 2 con el comando
+> de aprobación desde la pantalla, regla 7 en v0.6.0) + reglas del kit v1.34.0–v1.39.0 (reglas 24–27, build como el
+> proveedor, bajadas forzadas, página guardada, PR en borrador con la línea del merge). La fase 0 del S3 la sincroniza;
+> frase centinela: «lo que el proveedor publica no es lo que el build escribe». Sincronizaciones anteriores: 2026-10-01
+> (CONTRATO v0.4.0), 2026-09-27 (S1, fase 0: Stack/IA + regla 7-S).**
 
 ## Las dos casas (regla dura)
 
@@ -62,7 +60,10 @@ y reproducible con conocimiento de las plataformas, ni el atlas neutral (mercado
    [capa]`: una skill de Claude Code que escribe **propuestas** validadas por esquema (Zod) en
    `propuestas/`, con **cita textual por afirmación comprobada por código** (`curl` sobre la fuente
    cruda), en **ambos idiomas**; hooks registran cada fuente y bloquean escrituras fuera de
-   `propuestas/`. Jamás aprueba, jamás corre sola, jamás en tiempo de ejecución. Lleva **ADR «código
+   `propuestas/`. Jamás aprueba, jamás corre sola, jamás en tiempo de ejecución. **El comando de aprobación
+   sale SOLO de la pantalla de revisión** (CONTRATO § 12, S2-AUD-08): la pantalla lo arma con los ids de lo que la
+   persona marcó; tú no lo redactas ni lo dejas copiado; si lo extraes del HTML compilado, verificas que los ids
+   coinciden con la propuesta y avisas que no se pegue si desmarcó algo. Lleva **ADR «código
    primero»** (`decisions/PLANTILLA-ADR-codigo-primero.md`; borrador en la planeadora,
    `investigacion/2026-09-26-tecnica-nucleo.md` § 4) ANTES de existir. Ningún proveedor cableado: la
    independencia vive en el contrato de entrada/salida.
@@ -74,8 +75,10 @@ y reproducible con conocimiento de las plataformas, ni el atlas neutral (mercado
 4. **N PLATAFORMAS, JAMÁS TRES CABLEADAS.** Agregar una plataforma es agregar archivos de datos
    (RNF-06), nunca código. Un `3` literal, un arreglo `[a, b, c]` o un tipo con tres campos con
    nombre en el núcleo o en las vistas es hallazgo **Alto** (`/audita-sprint` casilla 6). La vista
-   lado a lado muestra **tres a la vez en ancho y una en teléfono** como **constante declarada de la
-   vista** que pagina más allá. La cuarta plataforma ficticia entra desde E1 como carnada.
+   lado a lado muestra **tres a la vez en ancho** (`POR_PAGINA`, **constante declarada de la vista** que pagina
+   más allá) y, en el teléfono, **una banda a la vez con TODAS las plataformas elegidas apiladas**; «Desplegar
+   todo» abre los componentes dentro del mismo diagrama (M1/M2 del S2). La cuarta plataforma ficticia entra desde
+   E1 como carnada.
 5. **NEUTRALIDAD VERIFICABLE.** Ninguna plataforma tiene tratamiento especial en el código;
    **reordenar las plataformas no cambia ningún resultado** (test de propiedad, y demostración en la
    demo). **Sin logos ni íconos de fabricantes** (nombres comerciales en uso nominativo; glifos
@@ -88,14 +91,14 @@ y reproducible con conocimiento de las plataformas, ni el atlas neutral (mercado
    vigencia 30/60 días calculada contra la fecha de evaluación (informe) o de consulta (atlas y demo).
 7. **EL DIAGRAMADOR ES UN REUSABLE DE LA CASA; ESTA APP ES SU PILOTO, NO SU DUEÑA.**
    `packages/diagramador/` **no importa nada de la app**, no contiene ningún nombre de plataforma ni
-   de dominio (lint G3), lleva sus propias pruebas y cumple el `CONTRATO.md` **v0.4.0** (2026-10-01):
+   de dominio (lint G3), lleva sus propias pruebas y cumple el `CONTRATO.md` **v0.6.0** (2026-10-04; el lock se renueva en la fase 0 del S3 y registra el commit de origen):
    garantías G1–G15, reglas D1–D15, validación G1–G7 y V1–V16 con `coverage`, **los 34 casos de
    carnada y los que nazcan**, avisos de geometría § 5.6 con **matriz de envejecimiento** (todo mapa a
    cuatro edades), cero flujos que atraviesen nodos (D11), texto dentro del lienzo a 380 px en una sola
    disposición horizontal con lienzo deslizable (G11), mapas de idioma `{es, en}`, serializador SVG
    propio (D8), `text-rendering: geometricPrecision` en la hoja (G15). Lleva
-   `packages/diagramador/CONTRATO.lock` con la versión y la **huella SHA-256** del contrato copiado
-   (`shasum -a 256`); `/cierre-sprint` la compara con la de la planeadora. Arquitectura fijada por
+   `packages/diagramador/CONTRATO.lock` con la versión, el **commit de origen** (`origen: <sha>`) y la **huella
+   SHA-256** de cada archivo copiado (`shasum -a 256`); `/cierre-sprint` la compara con la planeadora en ese commit. Arquitectura fijada por
    el spike y la investigación (P1): **colocación propia por bandas + ruteo ortogonal por canales**;
    ELK y dagre están **prohibidos** como motor de colocación (elkjs solo como plan B de ruteo, por
    ADR). Toda falla del diagramador se anota en el summary con síntoma y causa: va al registro de
@@ -174,6 +177,10 @@ y reproducible con conocimiento de las plataformas, ni el atlas neutral (mercado
   lleva `output: "export"`; no hay servidor: `pnpm start` sirve `out/` con `serve` (versión exacta)
   y así Lighthouse y Playwright corren igual que en el perfil web. Sin Server Actions, sin rutas
   dinámicas sin `generateStaticParams`, sin `next/image` con el loader por defecto (`unoptimized`).
+  **La CI construye COMO EL PROVEEDOR (kit v1.39.0; aquí desde el S2, S2-AUD-32):** el job `quality` hace `vercel
+  build` sin conexión con el adapter de Next y exige que cada página de `.next/output/static/` (lo que Vercel publica)
+  sea idéntica a la de `out/`; **todo paso posterior al build (la CSP por meta, huellas) escribe en las dos carpetas**.
+  El script del kit `scripts/build-como-proveedor.mjs` reemplaza al paso a mano del S2 en la fase 0 del S3.
 - **Deploy:** Vercel Hobby sirve el export (preview por PR, prod desde `main`, **protección de
   deployment: la app privada NO es pública** — Vercel Authentication en producción Y previews; la
   única superficie pública es la demo dentro de hoja-de-vida). **Observabilidad:** Sentry client-only
@@ -290,7 +297,10 @@ decisions/NNN-titulo.md   (ADRs de implementación)
    la palabra de fase sin comentar el artefacto: **DETENTE y repregunta «¿qué viste al
    abrirlo?»** antes de construir encima — esa negativa es la demo en rojo de este gate.
    AskUserQuestion/previews ASCII **no sustituyen la mirada**: si preguntas por chat sobre un
-   artefacto visual, pide la respuesta con el archivo abierto y dilo. Cada mirada queda
+   artefacto visual, pide la respuesta con el archivo abierto y dilo. **Y cuando la mirada exige leer el HTML del
+   preview (una meta, una cabecera, un script; kit v1.39.0, método v1.41.0), la mecánica es la PÁGINA GUARDADA
+   (Cmd+S) y buscar en el archivo**, nunca «ver código fuente»: en Safari Cmd+Opt+U no hace nada sin el menú de
+   desarrollo y el primer «no» puede ser falso *(Big-D S2, P4)*. Cada mirada queda
    **registrada** (README de diseño o bitácora) ANTES de la construcción siguiente — la
    planeadora lo audita en G-Diseño y al cierre; sin registro, el cierre queda condicionado.
    **Y el PLAN de miradas —número, agrupación y ORDEN— es parte del gate (kit v1.21.0):**
@@ -396,7 +406,16 @@ decisions/NNN-titulo.md   (ADRs de implementación)
    floja de gitleaks, 2026-07-15; contraprecedente que sí lo hizo: PR desechable con `openai`
    → anti-IA en rojo en 7 s, Velo S1). La demo puede ir en un **PR desechable** que se cierra
    sin mergear; se registra igual. Aplica también al **verificar un gate heredado** cuando un
-   sprint depende de él por primera vez.
+   sprint depende de él por primera vez. **La demo se corre con `scripts/demo-rojo.sh` (kit
+   v1.35.0):** mutación literal → gate (debe fallar) → restauración desde UNA carpeta de respaldo
+   verificada con `grep` y `cmp` → gate restaurado (debe pasar); `--puerto` mata el server viejo
+   por puerto y comprueba que no quede `EADDRINUSE`. Y la **tercera pregunta** antes de darla por
+   hecha: *¿puede fallar siquiera?* — un test de determinismo sin un miembro con azar no puede
+   *(ds S5: K-S5-8/10/11)*. **Endurecido en v1.38.0 (ds S6, AU-S6-12 y K-S6-2/4/5):** `--debe-nombrar`
+   exige que el rojo venga de la aserción (un servidor que no arrancó o una mutación que no compila no
+   son rojos); un exit 126/127 no cuenta como rojo; `--minimo-tests N` rechaza un verde que corrió menos
+   de N pruebas (un filtro `-t` que no coincide sale 0); una interrupción restaura antes de salir; y la
+   presencia/ausencia de la mutación se verifica con Python, también cuando `--buscar` tiene varias líneas.
    **Y su hermana (kit v1.16.0): un gate que nunca EJECUTÓ tampoco es un gate.** `skipped` no es
    verde: un job con `needs:` sobre otro que falló queda saltado y GitHub lo lista entre los
    checks requeridos **sin alarma**, así que una columna sin rojo se lee como aprobación. Antes de
@@ -504,10 +523,26 @@ decisions/NNN-titulo.md   (ADRs de implementación)
    CI pasa VERDE porque **ninguna puerta compara el resultado contra la INTENCIÓN del PR**:
    leer la salida del install ES el gate. `pnpm peers check` corre en quality (es lo único que
    ve un peer insatisfecho). Overrides: en `pnpm-workspace.yaml`, jamás en `package.json`.
-   **Comprobación MECÁNICA (kit v1.32.0):** `scripts/verificar-dependencias.mjs` compara las
+   **Comprobación MECÁNICA (kit v1.32.0; falla CERRADO desde v1.35.0 — si no puede leer la rama
+   base sale en rojo, no «se omite»; solo un repo cuya base no tiene lockfile pasa en verde con
+   aviso):** `scripts/verificar-dependencias.mjs` compara las
    versiones de `pnpm-lock.yaml` del PR contra `origin/main` y falla si alguna quedó por debajo;
    corre en el job `quality` en cada PR. Leer la salida del install sigue siendo obligatorio; el
    script es la red que no depende de que alguien la lea.
+   **Excepciones de auditoría (kit v1.34.0):** `pnpm audit --audit-level high` es gate y su nivel no se baja. Si una
+   advisory alta o crítica **no tiene versión parcheada publicada** (GitHub la lista con `first_patched_version: null`),
+   se ignora **solo esa advisory, por id**, en `pnpm-workspace.yaml` → `auditConfig.ignoreGhsas` (pnpm 11 ya no lee
+   `pnpm.*` en `package.json`), con un **ADR en `decisions/`** que diga id, razón (ruta de la dependencia, si es solo de
+   desarrollo), fecha y **condición de retiro**. El PR que traiga el parche borra la entrada y cierra el ADR. Una
+   advisory CON parche nunca se excepciona: se sube la dependencia. *(HackGuard, estampado 2026-10-03: `braces` sin
+   parche vía `eslint-config-next`.)*
+   **Bajadas FORZADAS (kit v1.39.0, Big-D PR #6):** a veces el bump trae un paquete que **fija exacta** una versión
+   más vieja que la de `main` (`vitest` 5.0.3 fija `why-is-node-running` 3.2.1; la 5.0.2 pedía `^3.2.1`). Esa bajada
+   es la intención del PR, no pnpm degradando: `verificar-dependencias.mjs` la acepta **solo si algún paquete del
+   lockfile del PR que usa esa versión la declara exacta en el registro** (`npm view`), y nombra cuál («bajada forzada
+   aceptada porque vitest@5.0.3 la fija exacta»). Un rango que admite la versión de `main`, sin dependiente o sin
+   registro, sigue en rojo; una degradación a propósito sigue declarándose en `degradaciones-permitidas.json`.
+
 19. **Todo puente entre dos lenguajes exige su GATE DE CONTRATO, en el mismo sprint que lo
    cruza (kit v1.28.0).** Donde un dato cambia de lenguaje o de runtime —Rust→TS por eventos
    de Tauri, worker→UI por `postMessage`, servidor→cliente por JSON, Swift→Rust por FFI— la
@@ -553,6 +588,38 @@ decisions/NNN-titulo.md   (ADRs de implementación)
     calendario toca.)* **LCP por perfil:** si la app mide texto con una tabla de métricas (G15) y por eso
     sirve sus fuentes con `display: block`, el presupuesto de LCP es **3,0 s declarado por ADR** (estándares
     v2.17.0), con el subconjunto de las fuentes a su cobertura como deuda pagable.
+24. **Las protecciones del sistema del usuario se enseñan ANTES de tocarlas (kit v1.36.0, método v1.38.0 —
+    regla dura del pipeline).** Antes de crear, modificar o invocar algo que el sistema operativo protege
+    —Llavero, permisos TCC, ítems de inicio o launchd, Touch ID, Automatización, cuentas, certificados—
+    presentas una **matriz de una fila por acción: qué · para qué · qué aviso vas a ver · cómo se deshace** y
+    esperas un «sí» por acción. Vale para scripts, tests, `/release-check` y cualquier comando que corras tú:
+    si no sabes si pide permiso, se enseña. *(Origen: Angel Ghost S3 — un ítem de inicio «sh · desarrollador no
+    identificado», seis contraseñas de administrador y un `cargo test` que abrió el micrófono.)*
+    `/audita-sprint` lo pregunta (casilla 8). En apps que ya tienen esta regla con otro número, cítala por NOMBRE.
+25. **El comando de pruebas por defecto no toca hardware ni permisos (kit v1.36.0).** `pnpm test`, `cargo test`,
+    `pytest` a secas corren solo lo que no abre micrófono, cámara, audio del sistema, Llavero, red local ni
+    diálogos del sistema. Lo que los toca va detrás de una marca explícita (`#[ignore]`, una *feature*, un
+    `describe.skip` con `RUN_HARDWARE=1`) y lo corre la CI (`cargo test -- --include-ignored` en
+    `build-escritorio`) o un comando nombrado en el README. Un verde que costó un aviso del sistema al usuario
+    no es un verde.
+26. **Worktrees prohibidos (kit v1.37.0, regla del usuario 2026-09-27).** Todo el trabajo ocurre en el checkout
+    principal `~/Code/app-<slug>`: nada de `git worktree` ni de `.claude/worktrees`. Un trabajo en paralelo (una
+    etapa de diseño mientras corre un sprint sin pantalla) vive como archivos en este directorio y se comitea a su
+    rama sin cambiar de rama (índice temporal); jamás `git stash` a secas sobre trabajo ajeno. *(planlang: la Etapa
+    de Diseño y el S1 convivieron así; un worktree duplica el `node_modules`, pierde el `settings.local.json` y
+    deja ramas que nadie cierra.)*
+27. **La evidencia se escribe DESPUÉS del hecho (kit v1.38.0, método v1.40.0).** Una frase de evidencia en
+    la bitácora, el summary o el PR —«leído como imagen», «N de N», «% de líneas», «medido con…», «en verde
+    en la CI»— se escribe después de la corrida que la produce, con su cuenta tomada del resultado, nunca
+    como plan en pasado. Es la hermana de «ninguna cifra sin procedencia»: una evidencia anticipada es una
+    promesa disfrazada. La segunda pasada de la casilla 4 de `/audita-sprint` busca estas frases y exige la
+    corrida que las sostiene *(ds S6: «leído como imagen» antes de leer, «36 de 36» que mezclaba anchos con
+    altos y «93,24 % de líneas» que era la cifra de sentencias; se corrigieron porque alguien releyó)*.
+    **Y la pasada de capturas cubre los extremos de magnitud** de cada dataset o contenido de ejemplo (el
+    valor más grande y el más pequeño que la app puede mostrar: seis dígitos, ~1e-11, el texto más largo),
+    no solo el ejemplo principal *(ds S6: los dos defectos del cierre vivían en el gráfico de precios)*.
+    **Un spike de costos se corre con máquina quieta y carga registrada** (molde
+    `docs/SPIKE-DE-COSTOS.plantilla.md`; se repite el lote si hubo carga) *(ds S6, K-S6-3)*.
 
 ## Estándares (los 6+1, gates en CI)
 
@@ -593,7 +660,11 @@ ajustes"; **el modelo poderoso audita y PLANEA los ajustes para que CUALQUIER mo
 capacidad los ejecute**; Fase 2 solo tras aprobación del usuario) — ANTES de la guía/gate ⭐.
 Luego, con la DoD completa: `/deploy-check` → genera `sprints/SPRINT_NNN-summary.md`
 (plantilla abajo; **registra la auditoría: hallazgos y pagos**) → PR → gate ⭐ del usuario →
-merge con CI verde. **El summary es CONDICIÓN DE MERGE (método v1.24.0): viaja DENTRO del PR
+merge con CI verde. **El PR del sprint nace en borrador (`gh pr create --draft`) y su cuerpo EMPIEZA con la línea
+del merge (kit v1.38.0, método v1.40.0):** «cuando esté verde: marca el PR listo, mergea con **squash** y
+borra la rama; después corre `/cierre-sprint big-d`» — la misma línea cierra el summary (sección fija
+«Para mergear»). El merge lo hace el usuario; escrita solo al final de la orden no llegó al momento del
+merge *(ds S6: dos PRs entraron como merge commit, uno al arrancar la fase 0)*. **El summary es CONDICIÓN DE MERGE (método v1.24.0): viaja DENTRO del PR
 del sprint — un PR de sprint sin `SPRINT_NNN-summary.md` no se mergea.** Sin summary el sprint
 es INVISIBLE para la planeadora (el S3 de Innmobiliaria lo estuvo UN MES) — y sin auditoría
 registrada, el cierre queda condicionado. **Y si el sprint se mergea SIN completar sus fases,
@@ -668,6 +739,7 @@ pr: <link>
 ## Sugerencias de mejora al método  [¿algo de metodo/metodo.md debería cambiar?]
 ## Deuda técnica aceptada  [qué, por qué, sprint de pago]
 ## Archivos clave (máx. 10) · ## Cómo probar
+## Para mergear  [línea FIJA (kit v1.38.0): «marca el PR listo, mergea con SQUASH y borra la rama; después corre /cierre-sprint big-d» — la hace el usuario]
 ```
 
 ## Patrones de dominio de esta app
@@ -682,15 +754,18 @@ pr: <link>
   de reproducibilidad) · `legibilidad.ts` (presupuesto ≤ 50 palabras / ≤ 95 sílabas; detector de
   jerga es/en). Todo puro, entero, con semilla; propiedades con fast-check (monotonía **corregida**:
   la posición del líder nunca empeora; invariancia al orden; suma de pesos; reproducibilidad).
-- **Diagramador (`packages/diagramador/`, CONTRATO v0.4.0):** `validate`/`validateGrammar` (esquema +
+- **Diagramador (`packages/diagramador/`, CONTRATO v0.6.0):** `validate`/`validateGrammar` (esquema +
   G1–G7 + V1–V16 con cobertura; informe en tres listas `errores · alertas · avisos`, entradas `{doc, fase,
   regla, ruta, id, idioma?, mensaje}`) · `layout` (bandas → columnas fijas por gramática, nodos de altura
   uniforme, **franjas abajo**, carril exprés y canales con pistas a 6 u; vistas `nivel1 · nivel2 · recorrido
   · carriles · bloque`; geometría + avisos § 5.6; cero cruces D11 a cuatro edades) · `toSVG` (serializador
   propio, orden de atributos fijo, números cuantizados, `-0` normalizado, roles `graphics-*`, un SVG por
   idioma, `<defs>` con espacio de nombres) · `toText`/`toCard`/`toBlockCards`/`toLegend` con
-  `options.texts` y `queryDate` · `compare` (lado a lado, bandas alineadas G5, N del consumidor, nivel por
-  banda — **S2**) · `diff` (JSON canónico) · **una sola disposición horizontal con lienzo deslizable** (sin
+  `options.texts` y `queryDate` · `compare` (lado a lado: N del consumidor, nivel por banda en el mismo dibujo, `part` filas
+  independientes, `marks`, `variante`, precondiciones; **S2 ✓**, 44 golden) · `diff` (JSON canónico; compara nodos
+  por nombre y madurez y bloques por nombre — F-030 motor en S3; no ve textos ni fuentes) · `diffToText` ·
+  `agingDates` · **versionado de mapas** (`data/mapas/versiones/`, archivo byte a byte al aprobar, migración en
+  cadena, históricas listadas y no dibujadas) · **una sola disposición horizontal con lienzo deslizable** (sin
   angosta) · `CONTRATO.lock`. Los 34 casos de `reusables/diagramador/carnadas/` como suite obligatoria.
 - **Datos (`data/`):** esquemas Zod → JSON Schema; carga que falla con campo e id; instantáneas
   `snapshots/<fecha>.json` con SHA-256 (RFC 8785); gramática `plataformas-datos` copiada de la
@@ -714,3 +789,4 @@ generados, demo y ficha técnica. El dato nace como mapa de idioma `{ es, en }` 
 idioma más una traducción aparte); **redactado, no traducido** (la traducción automática de contenido
 de producto está prohibida); las pruebas de texto, capturas y e2e con texto corren en AMBOS idiomas;
 conmutador visible desde la maqueta de la Etapa de Diseño.
+

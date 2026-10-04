@@ -27,3 +27,6 @@ public/diseno/
 
 # Caché de resultados de Vitest 5 (se coló en el PR #3 con un `git add -A`).
 .vitest/
+
+# Respaldo y salida de scripts/demo-rojo.sh (kit v1.35.0; la plantilla del kit no lo ignora: K-S3-1)
+.demo-rojo/

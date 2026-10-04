@@ -1,0 +1,116 @@
+---
+sprint: 003
+app: big-d
+feature: el-comparador
+branch: sprint-003/comparador
+orden: portafolio/big-d/ordenes/SPRINT_003-orden.md (planeadora, G-Plan 2026-10-04)
+plan: aprobado 2026-10-04 · «construye» 2026-10-04
+---
+
+# Sprint 003 — bitácora de implementación (Big-D · «El comparador»)
+
+## Plan aprobado (resumen)
+
+Cinco fases con parada al final de cada una (espera «continúa»):
+
+| Fase | Qué | Parada humana |
+| ---- | --- | ------------- |
+| 0 | Constitución regenerada, kit v1.39.0, contrato v0.6.0 (+ lo pendiente de la 0.5.0) con lock 57/57 y `origen`, deuda del S2, DS v0.6, PR en borrador | «continúa» |
+| 1 | Datos (capacidades, criterios, escala, convenciones, evidencias, caso) y núcleo `src/engine/` (puntaje, sensibilidad, pros y contras, huella, vigencia) con propiedades y la misma huella en 3 navegadores | «continúa» |
+| 2 | SMAA en un Web Worker con su gate de contrato y las pantallas base, perfil y comparación | «continúa» (sin gate de FORMA: fidelidad a la maqueta) |
+| 3 | M1 (boceto de la revisión de evidencias) · modo evidencias de `/investigar` · P0 ensayo con la Plataforma Ejemplo · P1–P3 databricks, snowflake, fabric · instantánea · parada de DECISIÓN del perfil | M1 sí/no · P0–P3 en tu terminal · D1… una pregunta por mensaje + tu comando |
+| 4 | Instrumento y gate de publicación, matriz de envejecimiento, e2e, guía v3, manual, ADRs, `design-sync/`, `/audita-sprint`, `/deploy-check`, summary | aprobación de la fase 2 de la auditoría |
+
+Tus respuestas en el plan (2026-10-04): las 11 evidencias de la Plataforma Ejemplo las propongo yo y las apruebas tú
+como ensayo; el perfil queda «aprobado» con tu comando, armado por la pantalla del perfil.
+
+## Fase 0 — Setup, contrato v0.6.0 y kit v1.39.0 (2026-10-04)
+
+### Supuestos del kit
+
+| # | Supuesto | Resultado |
+| - | -------- | --------- |
+| K1 | `githooks/pre-commit` ejecutable y `core.hooksPath = githooks` | ✓ 100755 · `githooks` |
+| K2 | scripts `typecheck · lint · test · test:e2e · build · start` | ✓ los seis |
+| K3 | `pnpm peers check` limpio | ✓ «No peer dependency issues found» |
+| K4 | `ci.yml` con los 5 checks de la ruleset `main-protegida` | ✓ `quality, e2e, lighthouse, diagramador (ubuntu-latest), diagramador (macos-latest)` (leído con `gh api …/rulesets`) |
+| K5 | Carnada canónica bloqueada por el hook de escritura | ✓ `gitleaks-escritura.test.ts` y `githooks-pre-commit.test.ts`, 5/5 (gitleaks 8.30.1) |
+| K6 | Cero PRs de dependencias abiertos | ✓ 0 abiertos (el #6 se cerró al mergear el #7) |
+| K7 | `build-como-proveedor.mjs --solo-detectar` | ✓ «aplica (output: "export")» |
+| K8 | `demo-rojo.sh --debe-nombrar` sobre un gate existente | ✓ lint «cero IA en runtime»: `import "openai"` en `src/lib/observability.ts` → rojo nombrando «Cero IA en runtime» → restaurado (Python + cmp) → verde |
+| K9 | El hook de secretos falla cerrado sin gitleaks (kit v1.37.0) | ✗ el de la app avisaba y dejaba pasar → se paga en esta fase (D-S3-02) |
+
+### Fricciones con el kit (K-S3-n, van a «Sugerencias» del summary)
+
+- **K-S3-1.** `scripts/demo-rojo.sh` guarda su respaldo en `.demo-rojo/`, pero la plantilla `gitignore.plantilla` del
+  kit no lo ignora: un `git add -A` tras una demo lo subiría. Se añadió a `.gitignore`.
+- **K-S3-2.** `tests/unit/hook-secretos.test.ts` del kit supone el hook de shell del kit (matcher exacto
+  `Write|Edit`, `jq`, aviso en stdout). El de Big-D es un script de Node que también cubre MultiEdit y NotebookEdit y
+  avisa en stderr (lo que Claude Code le muestra al agente al bloquear con 2). Se adaptó la prueba: busca el hook por
+  su comando, pone `node` en el PATH vacío, fija `CLAUDE_PROJECT_DIR` y lee stderr. Además el hook del kit escribe
+  su aviso en stdout: con exit 2, el agente no ve por qué lo bloquearon.
+- **K-S3-3.** El `ci.yml` del kit corre `pnpm build` y luego `build-como-proveedor.mjs`, que vuelve a construir
+  (`vercel build` corre `pnpm build`). Big-D construye una sola vez: solo el paso del proveedor, y luego su
+  verificación de la meta CSP como superconjunto.
+- **K-S3-4.** `plan-sprint.md` v1.36.0 reescribió (f) con las tres clases de mirada y perdió el ítem 10
+  (`/audita-sprint` obligatoria), «`gh pr checks` tras CADA push» y «segundas vueltas sin parada». La app fusionó:
+  el (f) del kit más esas tres cosas.
+- **K-S3-5.** La constitución regenerada se contradice en dos puntos: la línea 181 dice que se compara
+  `.next/output/static/` (el script compara `.vercel/output/static`), y la regla 10 dice «dos clases de mirada»
+  mientras `plan-sprint` v1.36.0 dice tres. Se copió tal cual (la orden pide copia entera).
+
+### Constitución (D-S3-01)
+
+`CLAUDE.md` = copia byte a byte de `ordenes/CLAUDE-md-para-app.md` (`cmp` sin diferencias; 792 líneas; centinela «lo
+que el proveedor publica no es lo que el build escribe» presente una vez). La copia solo pierde la historia de la
+cabecera anterior, que queda aquí:
+
+> Sincronizada con el CONTRATO v0.4.0 el 2026-10-01 (líneas del diagramador regeneradas: V1–V16, franjas abajo, sin
+> angosta). Sincronizada antes el 2026-09-27 (S1, fase 0): sección Stack/IA + regla 7-S; aplica además los deltas del
+> kit v1.30.0/v1.31.0. Deltas aplicados el 2026-09-27 (S1, fase 0), desde `kit-app/CLAUDE.md` v1.32.0: dos clases de
+> mirada (regla 10), `gh pr checks` tras cada push y métrica `manual` (regla 15), «preview del PR #N» (regla 17),
+> comprobación mecánica de dependencias (regla 18) y reglas 21 y 22. Deltas aplicados el 2026-10-02 (S2, fase 0):
+> líneas del diagramador v0.4.0; desde `kit-app/CLAUDE.md` v1.33.0, la regla 23 y la regla 17 de v1.32.1.
+
+Bajo las tres clases de mirada (kit v1.36.0), M1 —una pantalla nueva fuera de la maqueta aprobada— es de
+**DECISIÓN** y abre parada, como dice el plan.
+
+### Kit v1.34.0 → v1.39.0 (D-S3-02)
+
+| Archivo | Qué se hizo |
+| ------- | ----------- |
+| `scripts/demo-rojo.sh` | copia (v1.38.0, `--debe-nombrar`, `--minimo-tests`) |
+| `scripts/degradaciones-permitidas.json` | copia (`[]`) |
+| `scripts/verificar-dependencias.mjs` + `tests/unit/verificar-dependencias.test.ts` | copia del kit: trae la «bajada forzada» de Big-D, la lista declarada y falla cerrado sin base |
+| `scripts/build-como-proveedor.mjs` · `scripts/verificar-salida-publicada.mjs` · `tests/unit/salida-publicada.test.ts` | copia; en `quality` reemplazan el paso a mano del S2 (K-S3-3) |
+| `scripts/lighthouse-margen.mjs` | copia; en `lighthouse` tras los dos `lhci assert` |
+| `.claude/COMANDOS.md` · `.claude/commands/audita-sprint.md` · `.claude/skills/diseno-ui.md` | copia |
+| `.claude/commands/plan-sprint.md` | fusión (K-S3-4) |
+| `.claude/commands/deploy-check.md` | fusión: el del kit (§4 contra `merge-base`, perfil estático, homepage que se repara) con las casillas de Big-D (7-S con `/investigar` y la matriz con sus pruebas) |
+| `.claude/settings.json` · `scripts/hooks/gitleaks-escritura.mjs` · `tests/unit/hook-secretos.test.ts` | el hook propio falla cerrado sin gitleaks o si gitleaks no termina en 0/1; `KIT_SIN_GITLEAKS=1` lo salta; prueba del kit adaptada (K-S3-2) |
+| `decisions/audit-exception-braces.md` · `tests/unit/avisos-ignorados.test.ts` | ADR de la excepción (kit v1.34.0) y la prueba exige un ADR por aviso ignorado |
+| `.gitignore` | `.demo-rojo/` (K-S3-1) |
+
+### Gates nuevos de la fase (regla 15: ¿puede fallar? · rojo · a quién nombró · verde)
+
+| Gate | ¿Puede fallar? | Rojo (mutación) | A quién nombró | Verde |
+| ---- | -------------- | --------------- | -------------- | ----- |
+| Hook de secretos falla cerrado (`hook-secretos.test.ts`) | Sí: si el hook vuelve a dejar pasar sin gitleaks | `process.exit(0)` antes del aviso «falta gitleaks» (`demo-rojo.sh`) | «sin gitleaks bloquea, y lo dice» | ✓ 4 pruebas, restaurado con cmp |
+| ADR por aviso ignorado (`avisos-ignorados.test.ts`) | Sí: un `ignoreGhsas` sin ADR con fecha y condición de retiro | «## Retirement condition» → «## When to remove it» en el ADR (`demo-rojo.sh`) | «cada aviso ignorado tiene su ADR» | ✓ 4 pruebas |
+| `verificar-dependencias.mjs` falla cerrado sin base | Sí | `node scripts/verificar-dependencias.mjs origin/no-existe` | «no puedo leer la rama base origin/no-existe … Un gate que no puede mirar no está verde» (exit 1) | ✓ `origin/main`: 669 paquetes, ninguno por debajo (exit 0) |
+
+## Desviación del plan
+
+Los hechos 1–10 y las decisiones D-S3-01…18 del plan aprobado (`Reglas del motor` incluidas) son la desviación de
+la orden; se resumen aquí y se amplían a medida que ocurren:
+
+- Cambian los 6 golden de `agente-ejemplo` (el glifo `hexagono`); la orden decía que no cambiaban.
+- Criterios de la especificación § 10.3, no los de la maqueta; `criterio_id` en la evidencia transversal.
+- «robusta» en lugar de «sólida»; `esencial` por criterio en el caso (el plan del sprint lo ponía en el criterio).
+- M1 (la maqueta del investigador no tiene modo evidencias); ensayo P0 con la Plataforma Ejemplo; la aprobación del
+  perfil por comando.
+- Perilla `BIGD_DATOS`; huella del núcleo dentro del job `diagramador`; Zod fuera del navegador.
+- «Estrellas y barras» en lugar de espaciados con restos mayores para el muestreo.
+- Correcciones a la maqueta como mirada de TEXTO: evidencia limitante incoherente en Norte y Ejemplo, etiquetas de
+  rango por punto entero, leximin dentro de la banda, crédito del empate al primero de la lista.
+- K-S3-3: un solo build en `quality` (el kit construye dos veces).

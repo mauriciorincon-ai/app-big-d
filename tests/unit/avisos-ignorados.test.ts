@@ -2,8 +2,9 @@
 // Gate de los avisos de seguridad aceptados (`auditConfig.ignoreGhsas` en pnpm-workspace.yaml, S2 2026-10-02): el
 // audit de la CI los salta, así que alguien tiene que vigilar que el permiso no crezca en silencio. Cada aviso
 // ignorado (1) está en esta tabla con el paquete que afecta, y (2) ese paquete NO se alcanza desde ninguna
-// dependencia de producción del lockfile (solo de desarrollo: no viaja al sitio exportado).
-import { readFileSync } from "node:fs";
+// dependencia de producción del lockfile (solo de desarrollo: no viaja al sitio exportado), y (3) tiene su ADR
+// (kit v1.34.0: `decisions/audit-exception-*.md` con el id, la ruta de dependencias, la fecha y la condición de retiro).
+import { readdirSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { parse } from "yaml";
 
@@ -65,6 +66,23 @@ describe("avisos de seguridad ignorados en el audit", () => {
 
   it("cada aviso ignorado está documentado aquí con su paquete", () => {
     expect(ignorados.filter((g) => !(g in ACEPTADOS))).toEqual([]);
+  });
+
+  it("cada aviso ignorado tiene su ADR con la ruta, la fecha y la condición de retiro (kit v1.34.0)", () => {
+    const adrs = readdirSync("decisions")
+      .filter((f) => f.startsWith("audit-exception-"))
+      .map((f) => readFileSync(`decisions/${f}`, "utf8"));
+    const sinAdr = ignorados.filter(
+      (g) =>
+        !adrs.some(
+          (t) =>
+            t.includes(g) &&
+            t.includes(ACEPTADOS[g]!) &&
+            /\*\*Date:\*\*/.test(t) &&
+            /## Retirement condition/.test(t),
+        ),
+    );
+    expect(sinAdr).toEqual([]);
   });
 
   it("ningún paquete de un aviso ignorado se alcanza desde producción", () => {
