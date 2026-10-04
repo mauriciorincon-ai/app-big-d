@@ -818,6 +818,76 @@ final, de a una.
     la planeadora anterior a `143facf` (`git archive 143facf^`, con `DIAGRAMADOR_ORIGEN`) da **57/57 idénticos**: el
     lock del S2 es el 0.4.0 que pide la orden. El 0.5.0 (`papel`, condiciones, `fuente codigo`, hexágono, métricas de
     Inter) no entra en este sprint: va al summary para la orden del S3.
+- **Lote 1: CI del push `3055d88`:** los 6 checks en `success` propio, 0 comentarios del bot.
+- **Lote 2 (app): inicio.**
+- **Lote 2 (app): hecho.** Hallazgos S2-AUD-04, -05, -24, -25, -26, -27, -28, -29, -30, -31, -36 y -49.
+  - **Hidratación del lado a lado (04).** `Lado.tsx` escribe en `<html>` los atributos que salen de la URL REAL, no
+    del estado del render. Al hidratar, el render usa la instantánea del servidor (sin consulta), y antes escribía
+    «todas, página 1» encima de lo que había puesto el script previo. Prueba nueva con `hydrateRoot`.
+    - **Síntoma vecino que se acepta:** antes de hidratar, el resumen del selector y la paginación dicen «4 de 4» y
+      «1–3 de 4». Es texto del HTML estático; las filas, que es lo que salta, ya no saltan.
+  - **Nota de marcas con los nombres reales (05).** Sale del dato: las plataformas no ficticias, en el orden de las
+    plataformas. `/es/comparar` dice «Databricks, Microsoft Fabric y Snowflake son marcas de sus titulares…» y
+    `/en/comparar`, «… and Snowflake are trademarks of their owners…». Sin ninguna real, queda la nota genérica del
+    motor (la vitrina de `design-sync/` usa solo la ficticia).
+  - **Textos (29, 30).**
+    - La nota del selector dice que en el teléfono van todas, una banda a la vez.
+    - La pantalla de revisión muestra dos rótulos aparte: «validador al cerrar: N bloqueos» (lo que contó el hook) y
+      «la corrida declara N reintentos» (lo que declara la propuesta).
+  - **Miradas de TEXTO, «maquetado, no visto»** (no bloquean; viajan al gate del ciclo): la nota de marcas, la nota
+    del selector y los dos rótulos de reintentos.
+  - **`/versiones` cuenta fuentes renovadas sin la fecha de consulta (36).** Fabric pasa de 19 a 9: en los otros
+    diez solo cambió la fecha, que cambia en cada corrida del investigador. Caso nuevo: un par que solo difiere en
+    la fecha da 0.
+  - **Paquete de diseño (24).** La tarjeta del lado a lado se parte en dos: `lado-a-lado.html` y
+    `lado-a-lado-desplegado.html`. Las dos vistas de una fila llevan los mismos ids y en el producto nunca están a la
+    vez. `design-sync.test` comprueba ahora que ninguna tarjeta repita ids.
+  - **e2e (25–28).**
+    - axe sobre `/comparar` con todo desplegado y la ficha abierta, en los dos temas, en ancho y en teléfono.
+    - «sin volver a dibujar» marca cada SVG en lugar de contarlos.
+    - La comprobación «al salir, el `<html>` queda limpio» pasa a una prueba que corre; la vieja se saltaba siempre.
+    - `POR_PAGINA` se importa de `src/lib/atlas/estado-lado.ts` en `lado.spec` y `g11.spec`.
+  - **Lighthouse (31).** Entran `/es/atlas/snowflake` y `/en/atlas/snowflake/componentes`, el mapa más denso.
+    Mediana de 3 en local, con Lighthouse 13.4.1 servido en :3148:
+
+    | Ruta | LCP | Desempeño | Peso |
+    | --- | --- | --- | --- |
+    | `/es/atlas/snowflake` | 2536 ms | 97 | 368 KB |
+    | `/en/atlas/snowflake/componentes` | 2543 ms | 97 | 369 KB |
+
+    Las dos quedan bajo el presupuesto de 2900 ms.
+  - **Matriz de envejecimiento (49).** Los días salen de los umbrales de la gramática de cada atlas: 0, r − 1, r,
+    v − 1, v, 100 y 400. Una prueba nueva cruza la matriz con `agingDates` del motor.
+  - **Demos en rojo (regla 15)** — ¿puede fallar? sí · rojo · a quién nombró · verde al restaurar:
+
+    | Arreglo deshecho | Qué cayó y a quién nombró |
+    | --- | --- |
+    | Hidratación (04), con el código anterior | la prueba nueva, `["a b c","d"]` |
+    | Nota genérica (05) | «la nota de marcas nombra cada plataforma real…», en `es` y `en` |
+    | `reintentosDeclarados` en 0 (30) | «los dos números van aparte…» |
+    | Fuentes con fecha (36) | Fabric (19 ≠ 9) y «una fuente que solo cambió su fecha…» |
+    | Tarjeta sin partir (24) | `components/componentes-s2/lado-a-lado.html: ids repetidos` (224 ids, 112 distintos) |
+    | Matriz sin el +100 (49) | «cada mapa: sus cuatro edades…», que nombró `databricks 2027-01-12` |
+    | Matriz con `r + 1` (49) | la misma prueba, que nombró `databricks 2026-11-03` |
+
+    Las tres de e2e van en un solo build con tres mutaciones a la vez en `Lado.tsx`. Cada una tumbó solo su
+    prueba, y se restauró al terminar:
+
+    | Mutación en `Lado.tsx` | Qué cayó |
+    | --- | --- |
+    | `aria-controls="no-existe"` | axe con todo desplegado, en los dos temas, en ancho y en teléfono (`aria-valid-attr-value`) |
+    | `key={estado.pagina}` en `.lado-filas` | «la paginación y el selector cambian las filas sin volver a dibujar» |
+    | sin la limpieza al salir | «el idioma conserva la consulta…»: `[true, true]` |
+
+  - **Corridas:**
+    - `pnpm test`: 1380/1380, con cobertura.
+    - Un build: `csp: 46 páginas`.
+    - e2e completo: 774 pasaron, 9 saltadas y 5 con tiempo agotado. Las 5 eran `csp.spec` en Firefox, con la
+      máquina a carga 42 por otra sesión que compilaba Rust; corridas solas, `csp.spec` en Firefox dio 53/53.
+    - `typecheck` y `lint` en verde; `grep -nE "(/|\*) 3\b|= 3;" tests/e2e/*.ts` vacío.
+    - Las 9 saltadas son las de siempre: las que piden una plataforma sin mapa, más el ancho en el teléfono.
+  - **P4 (S2-AUD-32).** No pude leer el log del build del preview: no hay CLI de Vercel ni sesión, y el preview tiene
+    Vercel Authentication. La pregunta va a la persona.
 
 ## Desviación del plan
 

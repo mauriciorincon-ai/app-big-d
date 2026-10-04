@@ -215,13 +215,23 @@ export function bundle(): Record<string, string> {
       ),
       fuente("toCard, nivel 2 (design-system.md § 5, «Ficha de nodo»)."),
     ],
+    // Dos tarjetas, no una: las dos vistas de la misma fila llevan los mismos ids (en el producto, una sola a la vez).
     [
       "componentes-s2/lado-a-lado.html",
       "Componentes · S2",
       "Lado a lado",
-      `${lado(false)}${lado(true)}`,
+      lado(false),
       fuente(
-        "compare, parte «header» y «rows» con levelByBand: la fila con sus bloques y con todos sus componentes; un solo botón arriba a la derecha del recuadro alterna entre las dos, sin mover las columnas (mirada M1 del S2, 2026-10-02).",
+        "compare, parte «header» y «rows» con levelByBand: la fila con sus bloques. Un solo botón arriba a la derecha del recuadro alterna con todos sus componentes, sin mover las columnas (mirada M1 del S2, 2026-10-02).",
+      ),
+    ],
+    [
+      "componentes-s2/lado-a-lado-desplegado.html",
+      "Componentes · S2",
+      "Lado a lado · desplegado",
+      lado(true),
+      fuente(
+        "compare con todas las bandas en 2: la misma fila con todos sus componentes; el botón dice «Contraer» y las columnas no se movieron (mirada M1 del S2, 2026-10-02).",
       ),
     ],
     [

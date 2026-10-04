@@ -94,6 +94,10 @@ export interface Textos {
       sinComponentes: string;
       ventanaDe: string;
       numeros: readonly string[];
+      /** Nota de marcas con los nombres reales, del dato: [una marca, varias]; «{marcas}» es la lista. */
+      notaMarcas: readonly [string, string];
+      /** Conjunción para listar las marcas: « y ». */
+      y: string;
     };
     /** Versiones de un mapa (`/[idioma]/atlas/[plataforma]/versiones`, D-S2-08). Plurales [uno, varios]. */
     versiones: {
@@ -147,7 +151,10 @@ export interface Textos {
       nota: string;
       corrida: string;
       modelo: string;
+      /** Bloqueos que contó el hook de fin (`.reintentos`). */
       reintentos: readonly [string, string];
+      /** Reintentos que declara la propia corrida (`ejecucion.reintentos`). */
+      reintentosDeclarados: readonly [string, string];
       fuentes: readonly [string, string];
       verificadaEl: string;
       invalida: string;

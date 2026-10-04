@@ -218,6 +218,13 @@ export function vistaLado(d: Datos, idioma: Idioma, fechaConsulta: string): Vist
     `.lado-filas{width:${geoCabecera.ancho / 10}px}`,
     ...(guia === undefined ? [] : [`.lado-filas::before{left:${guia}px}`]),
   ].join("\n");
+  // Nota de marcas con los nombres reales (SPRINT_002, «Forma obligatoria»): del dato —las no ficticias, en el orden
+  // de las plataformas—, jamás una lista a mano. Sin ninguna real, la nota genérica del motor.
+  const reales = plataformas.filter((p) => !p.ficticia).map((p) => p.nombre[idioma]);
+  const marcas = reales.length > 1 ? `${reales.slice(0, -1).join(", ")}${t.atlas.lado.y}${reales.at(-1)}` : (reales[0] ?? "");
+  const tmLeyenda = reales.length
+    ? { ...tm, [idioma]: { ...tm[idioma]!, leyenda: { ...tm[idioma]!.leyenda, notaMarcas: plantilla(t.atlas.lado.notaMarcas[reales.length === 1 ? 0 : 1], { marcas }) } } }
+    : tm;
 
   return {
     ids,
@@ -229,7 +236,7 @@ export function vistaLado(d: Datos, idioma: Idioma, fechaConsulta: string): Vist
     fichas: fichasLado,
     titulos,
     lectura,
-    leyenda: toLegend(g, { language: idioma, texts: tm }),
+    leyenda: toLegend(g, { language: idioma, texts: tmLeyenda }),
     css,
     script: scriptLado(ids, POR_PAGINA),
   };

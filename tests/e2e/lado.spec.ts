@@ -1,12 +1,14 @@
+import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
+import { POR_PAGINA } from "../../src/lib/atlas/estado-lado";
 import { abrir, abrirConTecla, listo } from "./lib/abrir";
 import { PLATAFORMAS, PUBLICADAS } from "./lib/rutas";
 
 // El lado a lado (`/[idioma]/comparar`, S2): la forma aprobada en la mirada M1 —un solo botón arriba a la derecha
 // del recuadro despliega los componentes en el mismo diagrama— y lo que vive en la URL (qué plataformas y qué
 // página). Ancho: selector, paginación, botón, ventanas y fichas, idioma con consulta, el primer pintado sin JS. En
-// teléfono: una banda a la vez, todas las elegidas apiladas, el mismo botón. Tres a la vez es la constante de la vista.
-const POR_PAGINA = 3;
+// teléfono: una banda a la vez, todas las elegidas apiladas, el mismo botón. Cuántas a la vez es la constante de la
+// vista (`POR_PAGINA`), la misma que usa el producto.
 const filasVisibles = (page: Page) =>
   page.locator(".lado-fila").evaluateAll((fs) => fs.filter((f) => f.getClientRects().length).map((f) => (f as HTMLElement).dataset.fila));
 
@@ -17,7 +19,11 @@ test.describe("en ancho", () => {
   test("la paginación y el selector cambian las filas sin volver a dibujar, y lo escriben en la URL", async ({ page }) => {
     await page.goto("/es/comparar");
     await listo(page);
-    const svgs = await page.locator(".lado-ancho svg").count();
+    // Cada SVG lleva una marca propia: si React lo volviera a crear, la marca desaparece (contar no lo vería).
+    const svgs = await page.locator(".lado-ancho svg").evaluateAll((ss) => {
+      ss.forEach((s, i) => ((s as unknown as { __n: number }).__n = i));
+      return ss.length;
+    });
     expect(await filasVisibles(page)).toEqual(PLATAFORMAS.slice(0, POR_PAGINA));
     const siguiente = page.locator(".paginacion button").last();
     const anterior = page.locator(".paginacion button").first();
@@ -43,8 +49,8 @@ test.describe("en ancho", () => {
     await expect(casillas.last()).toBeChecked();
     await expect(casillas.last()).toBeDisabled();
     expect(await filasVisibles(page)).toEqual([PLATAFORMAS.at(-1)]);
-    // Nada se volvió a dibujar: los mismos SVG, solo cambió qué se ve.
-    expect(await page.locator(".lado-ancho svg").count()).toBe(svgs);
+    // Nada se volvió a dibujar: los mismos SVG (con su marca), solo cambió qué se ve.
+    expect(await page.locator(".lado-ancho svg").evaluateAll((ss) => ss.map((s) => (s as unknown as { __n?: number }).__n))).toEqual([...Array(svgs).keys()]);
   });
 
   test("una URL con consulta muestra sus filas desde el primer pintado, antes de que React hidrate", async ({ page }) => {
@@ -122,6 +128,10 @@ test.describe("en ancho", () => {
     await expect(page.locator(".niveles a", { hasText: "Lado a lado" })).toHaveAttribute("aria-current", "page");
     await expect(page.locator(".barra .nav a", { hasText: "Atlas" })).toHaveAttribute("aria-current", "true");
     expect(await filasVisibles(page)).toEqual(PLATAFORMAS.slice(0, POR_PAGINA));
+    // Al salir sin recargar (Link de Next), el <html> ya no guarda el estado del lado a lado.
+    await page.locator(".niveles a", { hasText: "Visión general" }).click();
+    await expect(page).toHaveURL(/\/es\/atlas\/[^/]+$/);
+    expect(await page.evaluate(() => [document.documentElement.hasAttribute("data-lado"), document.documentElement.hasAttribute("data-lado-elegidas")])).toEqual([false, false]);
   });
 
   test("una plataforma sin mapa es una fila «próximamente» que lleva a su página del investigador", async ({ page }) => {
@@ -133,8 +143,6 @@ test.describe("en ancho", () => {
     await expect(fila.locator(".lado-pronto-nombre")).toContainText("próximamente");
     await fila.getByRole("link").click();
     await expect(page).toHaveURL(new RegExp(`/es/investigador/${pronto}$`));
-    // Al salir, el <html> ya no guarda el estado del lado a lado.
-    expect(await page.evaluate(() => [document.documentElement.hasAttribute("data-lado"), document.documentElement.hasAttribute("data-lado-elegidas")])).toEqual([false, false]);
   });
 });
 
@@ -178,3 +186,21 @@ test.describe("en teléfono", () => {
     await expect(page.locator(".paginacion")).toBeHidden();
   });
 });
+
+// axe sobre los estados que el estado inicial no muestra: todo desplegado y, en ancho, la ficha de un componente
+// abierta, en los dos temas.
+for (const [esquema, tema] of [
+  ["dark", "oscuro"],
+  ["light", "claro"],
+] as const)
+  test(`axe con todo desplegado y la ficha abierta (${tema})`, async ({ page, isMobile }) => {
+    await page.emulateMedia({ colorScheme: esquema });
+    await page.goto("/es/comparar");
+    await listo(page);
+    const boton = page.locator(isMobile ? ".lado-angosto .lado-todo" : ".lado-ancho .lado-todo");
+    await boton.click();
+    await expect(boton).toHaveAttribute("aria-expanded", "true");
+    if (!isMobile) await abrir(page.locator('.lado-fila [data-variante="n2"] .dg-nodo').first(), page.locator("#panel-ficha"));
+    const serias = (await new AxeBuilder({ page }).analyze()).violations.filter((v) => v.impact === "critical" || v.impact === "serious");
+    expect(serias, JSON.stringify(serias.map((v) => [v.id, v.nodes.map((n) => n.target)]))).toEqual([]);
+  });

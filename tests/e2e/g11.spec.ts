@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
+import { POR_PAGINA } from "../../src/lib/atlas/estado-lado";
 import { abrir, listo } from "./lib/abrir";
 import { conDibujo, IDIOMAS, PUBLICADAS, RUTAS, VERSIONADAS } from "./lib/rutas";
 
@@ -84,17 +85,17 @@ for (const ruta of CON_VENTANAS)
     });
 
 // El lado a lado se dibuja en ancho (en teléfono es una lista por banda): ahí, cada fila con sus bloques y con sus
-// componentes desplegados, en los tres motores. Todas las publicadas, página por página (tres a la vez).
+// componentes desplegados, en los tres motores. Todas las publicadas, página por página (`POR_PAGINA` a la vez).
 test.describe("lado a lado en ancho", () => {
   test.use({ viewport: { width: 1400, height: 900 } });
   for (const idioma of IDIOMAS)
     test(`/${idioma}/comparar: el texto de cada fila cabe, con bloques y desplegado`, async ({ page }) => {
-      const paginas = Math.ceil(PUBLICADAS.length / 3);
+      const paginas = Math.ceil(PUBLICADAS.length / POR_PAGINA);
       for (let pagina = 1; pagina <= paginas; pagina++) {
         await page.goto(`/${idioma}/comparar?plataformas=${PUBLICADAS.join(",")}&pagina=${pagina}`);
         await listo(page);
         const visibles = await page.locator(".lado-fila").evaluateAll((fs) => fs.filter((f) => f.getClientRects().length).map((f) => (f as HTMLElement).dataset.fila));
-        expect(visibles).toEqual(PUBLICADAS.slice((pagina - 1) * 3, pagina * 3));
+        expect(visibles).toEqual(PUBLICADAS.slice((pagina - 1) * POR_PAGINA, pagina * POR_PAGINA));
         expect(await problemas(page, ".lado-ancho .lienzo"), `página ${pagina}, bloques`).toEqual([]);
         await page.locator(".lado-ancho .lado-todo").click();
         await expect(page.locator(".lado-ancho .lado-todo")).toHaveAttribute("aria-expanded", "true");

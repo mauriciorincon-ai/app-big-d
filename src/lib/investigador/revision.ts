@@ -66,6 +66,8 @@ export interface PropuestaVista {
   modelo: string;
   /** Reintentos que CONTÓ el hook de fin (`.reintentos`), no los que declara el modelo (B-45). */
   reintentos: number;
+  /** Reintentos que declara la corrida (`ejecucion.reintentos`). */
+  reintentosDeclarados: number;
   fallas: string[];
   /** La verificación existe y es de esta versión de la propuesta. */
   verificada: boolean;
@@ -185,7 +187,7 @@ export function vistaInvestigador(d: Datos, id: string, idioma: Idioma, fecha: s
   try {
     dato = JSON.parse(bytes.toString("utf8"));
   } catch (e) {
-    vista.propuesta = { carpeta: `propuestas/${carpeta}`, fecha: "", modelo: "", reintentos: reintentosDe(dir), fallas: [`propuesta.json no es JSON: ${(e as Error).message}`], verificada: false, fuentes: 0, diff: { primera: !atlas, nuevos: 0, renombrados: 0, retirados: 0, madurez: 0 }, afirmaciones: [], retiros: [], preguntas: [] };
+    vista.propuesta = { carpeta: `propuestas/${carpeta}`, fecha: "", modelo: "", reintentos: reintentosDe(dir), reintentosDeclarados: 0, fallas: [`propuesta.json no es JSON: ${(e as Error).message}`], verificada: false, fuentes: 0, diff: { primera: !atlas, nuevos: 0, renombrados: 0, retirados: 0, madurez: 0 }, afirmaciones: [], retiros: [], preguntas: [] };
     return vista;
   }
   const forma = esquemaPropuesta.safeParse(dato);
@@ -209,6 +211,7 @@ export function vistaInvestigador(d: Datos, id: string, idioma: Idioma, fecha: s
     ...(p?.capa ? { capa: p.capa } : {}),
     modelo: p?.ejecucion.modelo ?? "",
     reintentos: reintentosDe(dir),
+    reintentosDeclarados: p?.ejecucion.reintentos ?? 0,
     fallas,
     verificada,
     ...(verificada && verif?.success ? { fechaVerificacion: verif.data.fecha } : {}),

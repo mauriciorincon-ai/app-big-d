@@ -58,6 +58,10 @@ function sinAvisos(geo: Geometria, que: string): Geometria {
  * `aprobaciones`: versión → fecha (UTC) de su aprobación, leída de data/revisiones/ por la página (esta vista no lee
  * el disco). `n` de los textos: los componentes en el orden del mapa nuevo.
  */
+/** Las fuentes sin su fecha de consulta: lo que dice cada una, no cuándo se leyó. */
+const sinFecha = (fuentes: Mapa["nodos"][number]["fuentes"]) =>
+  fuentes.map((f) => ({ ...f, fecha: "" }));
+
 export function vistaVersiones(
   d: Datos,
   id: string,
@@ -120,8 +124,12 @@ export function vistaVersiones(
           ),
         )
         .map((n) => n.nombre[idioma]!),
+      // Una fuente renovada es otra fuente (dirección, título, cita…), no la misma consultada otro día: la fecha
+      // de consulta cambia en cada corrida del investigador, y la aprobación tampoco la cuenta (M-22).
       fuentes: siguen.filter(
-        (n) => canonico(n.fuentes) !== canonico(previos.get(n.id)!.fuentes),
+        (n) =>
+          canonico(sinFecha(n.fuentes)) !==
+          canonico(sinFecha(previos.get(n.id)!.fuentes)),
       ).length,
     });
     // Ventanas de los bloques de las dos filas: cada fila es su versión (el motor les puso el prefijo `<id>-v<versión>`).

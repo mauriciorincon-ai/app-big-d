@@ -160,6 +160,10 @@ describe("vista del lado a lado", () => {
     expect(v.columnas).toHaveLength(d.atlas.values().next().value!.gramatica.bandas.length);
   });
 
+  it.each(IDIOMAS)("en %s: la nota de marcas nombra cada plataforma real, del dato, y ninguna ficticia", (idioma) => {
+    const nota = /<p class="dg-leyenda-nota">([^<]*)<\/p>/.exec(vistaLado(d, idioma, FECHA).leyenda)![1]!;
+    for (const p of d.plataformas) expect(nota.includes(p.nombre[idioma]), p.id).toBe(!p.ficticia);
+  });
   it.each(IDIOMAS)("en %s: todo lo que se toca abre algo, y nada sobra (bloques → ventana, componentes → ficha)", (idioma) => {
     const v = vistaLado(d, idioma, FECHA);
     const tocables = new Set(v.filas.flatMap((f) => [f.n1 ?? "", f.n2 ?? ""]).flatMap(activables));

@@ -73,12 +73,15 @@ export function Lado({ ids, porPagina, nombres, versiones, t, saltarDiagrama, in
   const visibles = estado.visibles.join(" ");
   const elegidas = estado.elegidas.join(" ");
 
-  // Los atributos que lee el CSS generado; al salir de la página se quitan (otra página no los usa).
+  // Los atributos que lee el CSS generado salen de la URL REAL, no del estado del render: al hidratar, el render usa
+  // la instantánea del servidor (sin consulta), y escribir ese estado pisaría lo que ya puso el script previo
+  // (S2-AUD-04). Al salir de la página se quitan (otra página no los usa).
   useLayoutEffect(() => {
+    const real = estadoDeConsulta(window.location.search, ids, porPagina);
     const h = document.documentElement;
-    h.setAttribute(ATRIBUTO_VISIBLES, visibles);
-    h.setAttribute(ATRIBUTO_ELEGIDAS, elegidas);
-  }, [visibles, elegidas]);
+    h.setAttribute(ATRIBUTO_VISIBLES, real.visibles.join(" "));
+    h.setAttribute(ATRIBUTO_ELEGIDAS, real.elegidas.join(" "));
+  }, [visibles, elegidas, ids, porPagina]);
   // El botón de página que se deshabilita pierde el foco: pasa al otro, ya habilitado en este render.
   useLayoutEffect(() => {
     enfocar.current?.focus();

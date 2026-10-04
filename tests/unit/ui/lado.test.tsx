@@ -2,6 +2,7 @@
 // como única fuente de la selección y la página, el botón «Desplegar todo» de las dos vistas, las pestañas de banda
 // del teléfono y la limpieza del <html> al salir. El e2e (`lado.spec.ts`) lo mira en el navegador de verdad.
 import { act, fireEvent, render, screen } from "@testing-library/react";
+import { hydrateRoot } from "react-dom/client";
 import { renderToString } from "react-dom/server";
 import { afterEach, describe, expect, it } from "vitest";
 import { Lado, type PropsLado } from "@/components/atlas/Lado";
@@ -57,6 +58,36 @@ describe("Lado", () => {
     expect(html).toContain("1–3 de 4");
     expect([...html.matchAll(/data-fila="(\w)"[^>]*data-inicio/g)].map((m) => m[1])).toEqual(["a", "b", "c"]);
     expect(html).toContain('aria-expanded="false"');
+  });
+
+  it("al hidratar con consulta, el <html> nunca pasa por el estado por defecto (lo dejó el script previo)", async () => {
+    const raiz = document.createElement("div");
+    raiz.innerHTML = renderToString(<Lado {...props()} />);
+    document.body.appendChild(raiz);
+    window.history.replaceState(null, "", "/es/comparar?plataformas=d");
+    const h = document.documentElement;
+    h.setAttribute("data-lado", "d"); // lo que dejó el script previo al pintado
+    const vistos: string[] = [];
+    const poner = h.setAttribute.bind(h);
+    h.setAttribute = (k: string, v: string) => {
+      if (k === "data-lado") vistos.push(v);
+      poner(k, v);
+    };
+    let r: ReturnType<typeof hydrateRoot> | undefined;
+    try {
+      await act(async () => {
+        r = hydrateRoot(raiz, <Lado {...props()} />);
+      });
+    } finally {
+      delete (h as unknown as Record<string, unknown>).setAttribute; // vuelve el del prototipo
+    }
+    try {
+      expect(vistos.length).toBeGreaterThan(0);
+      expect(vistos.every((v) => v === "d"), JSON.stringify(vistos)).toBe(true);
+    } finally {
+      act(() => r!.unmount());
+      raiz.remove();
+    }
   });
 
   it("lee la URL al montar, pone los atributos del <html> y los quita al salir", () => {

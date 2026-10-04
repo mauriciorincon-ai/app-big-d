@@ -97,7 +97,19 @@ describe("versiones de un mapa", () => {
     expect(p!.diferencias).toContain("Sin cambios en el dibujo");
     expect(p!.svg).not.toContain('class="dg-dif ');
     expect(p!.textos).toHaveLength(6);
-    expect(p!.fuentes).toBe(19);
+    // Nueve con otra fuente; en los otros diez solo cambió la fecha de consulta, que no cuenta (S2-AUD-36).
+    expect(p!.fuentes).toBe(9);
+  });
+
+  it("una fuente que solo cambió su fecha de consulta no es una fuente renovada", () => {
+    const v1 = structuredClone(d.atlas.get(EJEMPLO)!.mapa);
+    v1.version = "0.1.0";
+    const v2 = structuredClone(v1);
+    v2.version = "0.2.0";
+    v2.nodos = v2.nodos.map((n) => ({ ...n, fuentes: n.fuentes.map((f) => ({ ...f, fecha: "2026-12-31" })) }));
+    const [p] = vistaVersiones(conCadena(d, EJEMPLO, [v1, v2]), EJEMPLO, "es", FECHA).pares;
+    expect(p!.fuentes).toBe(0);
+    expect(p!.textos).toEqual([]);
   });
 
   it("una plataforma con una sola versión no tiene pares (estado vacío)", () => {
