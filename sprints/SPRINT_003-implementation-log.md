@@ -525,6 +525,32 @@ resultado (la maqueta las ordena por id).
   archivos, 1625 pruebas en verde · `E2E_PUERTO=3147 pnpm test:e2e`: 898 en verde y 9 saltadas (2,2 min), INP de la base
   sembrada con CPU 4×: 16 ms · búsqueda de «sabana» fuera de `sprints/`: 0 coincidencias.
 
+## Fase 3 — Contenido (desde 2026-10-05)
+
+El usuario dio «Continua» al cierre de la fase 2 y la mirada de las tres pantallas quedó registrada arriba (el nombre
+del caso fue su único ajuste).
+
+### M1 — boceto de la revisión de evidencias (mirada de FORMA)
+
+- **Qué es.** `scripts/propuestas/revision-evidencias.mjs` → `docs/propuestas-de-diseno/revision-evidencias.html`
+  (+ `.js`): la revisión de una propuesta de evidencias con cuatro evidencias ficticias de la Plataforma Ejemplo
+  (fuentes `example.org`). La escala, los topes y las madureces salen de `data/`; el comando lo arma
+  `comandoAprobar` de la app (el boceto no lo redacta) y el aviso de arriba dice que no se corre.
+- **Qué propone.** En cada tarjeta: la regla de 0 a 4 con el puntaje propuesto (borde grueso + glifo + «propuesto»),
+  lo que el tope por madurez no deja contar en rayado y el nivel que sí cuenta en borde punteado («cuenta»); el texto
+  del nivel propuesto; «¿Por qué N y no N−1 ni N+1?» con la justificación; la cita con su verificación; fuente,
+  madurez, conflicto de interés, componentes, limitaciones y «esencial». Arriba, la escala completa en un
+  desplegable. **Ninguna evidencia viene aprobada de entrada** (en los mapas, las verificadas sí): el código
+  comprueba la cita, no el puntaje. Las rechazadas por el código entran rechazadas y sin botones.
+- **Pasada de capturas e interacción (2026-10-05, Chromium, archivo local).** 380 y 1280 px en los dos temas y los
+  dos idiomas, leídas como imagen; tocar «Aprobar» en todas las tarjetas → el comando aparece con
+  `--aprobar A-1,A-2,A-3 --rechazar A-4 --retirar -`; cero errores de consola. Dos defectos que la pasada encontró y
+  se corrigieron antes de mostrarlo: (1) el comando y las tres insignias se veían desde el principio (una regla
+  `display` anulaba `hidden`); (2) a 380 px «soportado» y «propuesto» se salían de sus casillas (12 elementos) → en
+  el teléfono la regla va en vertical, un nivel por renglón. Medido después: 0 elementos fuera de su casilla y sin
+  desplazamiento lateral a 380, 480, 768, 900 y 1280 px en los dos idiomas. Regenerar da los mismos bytes.
+- **Respuesta del usuario:** pendiente (pregunta enviada el 2026-10-05).
+
 ## Desviación del plan
 
 Los hechos 1–10 y las decisiones D-S3-01…18 del plan aprobado (`Reglas del motor` incluidas) son la desviación de
