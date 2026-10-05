@@ -193,7 +193,8 @@ export const esquemaCaso = z
     acepta_vista_previa: z.boolean(),
     /** La fecha contra la que se cuenta la vigencia de las evidencias: una entrada, nunca el reloj. */
     fecha_evaluacion: fecha,
-    instantanea: versionInstantanea,
+    /** La instantánea contra la que se evalúa; un borrador puede no tenerla todavía (se mira contra la base viva). */
+    instantanea: versionInstantanea.nullable(),
     estado_aprobacion: z.enum(["borrador", "aprobado"]),
     /** El sello que escribe el comando de aprobación: la fecha y la huella del perfil aprobado. */
     aprobacion: z.strictObject({ fecha, huella: hex64 }).optional(),
@@ -212,6 +213,7 @@ export const esquemaCaso = z
     });
     const aprobado = c.estado_aprobacion === "aprobado";
     if (aprobado && !c.aprobacion) r(["aprobacion"], "obligatorio en un perfil aprobado");
+    if (aprobado && c.instantanea === null) r(["instantanea"], "un perfil aprobado se evalúa contra una instantánea (RF-01.4)");
     if (!aprobado && c.aprobacion) r(["aprobacion"], "solo un perfil aprobado lleva sello");
     if (aprobado) c.decisiones_implicitas.forEach((d, i) => d.respuesta === null && r(["decisiones_implicitas", i, "respuesta"], "un perfil aprobado responde todas sus decisiones implícitas"));
   });

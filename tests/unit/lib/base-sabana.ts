@@ -2,7 +2,7 @@
 // Este), una evidencia aprobada por plataforma y criterio con los puntajes de la maqueta, la instantánea que las congela
 // y el caso del Hospital Ficticio de la Sabana aprobado con su sello. Toma de data/ lo que es común (gramática,
 // capacidades, criterios, escala, convenciones) para no copiarlo a mano. Fuentes example.org (regla 12).
-import { cpSync, mkdirSync, writeFileSync } from "node:fs";
+import { cpSync, mkdirSync, readdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { stringify } from "yaml";
 import { cargarConocimiento } from "@/lib/datos/cargar-conocimiento";
@@ -81,11 +81,20 @@ export function casoSabana(version: string): Caso {
   return { ...caso, aprobacion: { fecha: "2026-09-26", huella: huellaCaso(caso) } };
 }
 
-/** Arma la base en `dir` (vacío) y devuelve la versión de su instantánea. */
-export function armarBaseSabana(dir: string, raiz = process.cwd()): string {
+/**
+ * Arma la base en `dir` (vacío) y devuelve la versión de su instantánea. Con `atlas`, el árbol sirve también para
+ * construir el sitio (BIGD_DATOS): la Plataforma Ejemplo queda publicada con su mapa y sus versiones archivadas de
+ * data/mapas, y las demás ficticias, «próximamente».
+ */
+export function armarBaseSabana(dir: string, { atlas = false, raiz = process.cwd() }: { atlas?: boolean; raiz?: string } = {}): string {
   for (const d of ["gramaticas", "capacidades", "criterios", "escalas", "convenciones"]) cpSync(join(raiz, "data", d), join(dir, d), { recursive: true });
   mkdirSync(join(dir, "plataformas"));
-  for (const [id, [es, en]] of Object.entries(NOMBRES)) escribir(join(dir, "plataformas", `${id}.yaml`), { id, nombre: { es, en }, estado: "proximamente", ficticia: true });
+  for (const [id, [es, en]] of Object.entries(NOMBRES)) escribir(join(dir, "plataformas", `${id}.yaml`), { id, nombre: { es, en }, estado: atlas && id === "plataforma-ejemplo" ? "publicada" : "proximamente", ficticia: true });
+  if (atlas) {
+    mkdirSync(join(dir, "mapas", "versiones"), { recursive: true });
+    cpSync(join(raiz, "data/mapas/plataforma-ejemplo.mapa.yaml"), join(dir, "mapas/plataforma-ejemplo.mapa.yaml"));
+    for (const f of readdirSync(join(raiz, "data/mapas/versiones")).filter((x) => x.startsWith("plataforma-ejemplo-"))) cpSync(join(raiz, "data/mapas/versiones", f), join(dir, "mapas/versiones", f));
+  }
   for (const [p, ss] of Object.entries(PUNTAJES)) {
     mkdirSync(join(dir, "evidencias", p), { recursive: true });
     CRITERIOS.forEach((c, i) => escribir(join(dir, "evidencias", p, `evi-${p}-${c.slice(5)}.yaml`), evidenciaFicticia(p, c, ss[i]!)));

@@ -130,7 +130,7 @@ describe("una base rota no carga y dice dónde (RF-01.2)", () => {
     ["un perfil aprobado con una decisión sin responder", (d) => yaml(d, "casos/hospital-sabana.yaml", (c) => void ((c.decisiones_implicitas as Record<string, unknown>[])[0]!.respuesta = null)), /· decisiones_implicitas\[0\]\.respuesta · un perfil aprobado responde todas sus decisiones implícitas$/],
     ["un perfil aprobado editado a mano", (d) => yaml(d, "casos/hospital-sabana.yaml", (c) => void (c.acepta_vista_previa = true)), /· aprobacion\.huella · no es la huella del perfil: un perfil aprobado no se edita a mano/],
     ["un caso que referencia una instantánea que no existe", (d) => yaml(d, "casos/hospital-sabana.yaml", (c) => void (c.instantanea = "2026-09-27.1")), /· instantanea · no existe data\/instantaneas\/2026-09-27\.1\.json$/],
-    ["una restricción que elimina una plataforma que no está en la instantánea", (d) => yaml(d, "casos/hospital-sabana.yaml", (c) => void ((c.restricciones as { elimina: Record<string, unknown>[] }[])[0]!.elimina[0]!.plataforma_id = "oeste")), /· restricciones\[0\]\.elimina\[0\]\.plataforma_id · «oeste» no es una plataforma de la instantánea$/],
+    ["una restricción que elimina una plataforma que no está en la instantánea", (d) => yaml(d, "casos/hospital-sabana.yaml", (c) => void ((c.restricciones as { elimina: Record<string, unknown>[] }[])[0]!.elimina[0]!.plataforma_id = "oeste")), /· restricciones\[0\]\.elimina\[0\]\.plataforma_id · «oeste» no es una plataforma de la instantánea 2026-09-26\.1$/],
     ["dos archivos de convenciones", (d) => writeFileSync(join(d, "convenciones/otro.yaml"), "id: metodo\n"), /^data\/convenciones · la base trae exactamente un archivo de convenciones/],
     // Criterios y capacidades.
     ["un criterio de capacidad sin capacidad", (d) => yaml(d, "criterios/crit-ia.yaml", (c) => void delete c.capacidad_id), /crit-ia\.yaml:\d+:\d+ · crit-ia · capacidad_id · obligatorio en un criterio de tipo capacidad$/],
@@ -205,8 +205,8 @@ describe("una base rota no carga y dice dónde (RF-01.2)", () => {
       const cs = c.criterios as Record<string, number>[];
       cs[0]!.peso_centesimas += cs.pop()!.peso_centesimas;
     }), /· criterios · falta el peso de crit-ecosistema/],
-    ["un requisito sobre un criterio que no existe", (d) => yaml(d, "casos/hospital-sabana.yaml", (c) => void ((c.requisitos as Record<string, unknown>[])[0]!.criterio_id = "crit-magia")), /· requisitos\[0\]\.criterio_id · «crit-magia» no es un criterio de la instantánea$/],
-    ["una restricción sobre un criterio que no existe", (d) => yaml(d, "casos/hospital-sabana.yaml", (c) => void ((c.restricciones as Record<string, unknown>[])[0]!.criterio_id = "crit-magia")), /· restricciones\[0\]\.criterio_id · «crit-magia» no es un criterio de la instantánea$/],
+    ["un requisito sobre un criterio que no existe", (d) => yaml(d, "casos/hospital-sabana.yaml", (c) => void ((c.requisitos as Record<string, unknown>[])[0]!.criterio_id = "crit-magia")), /· requisitos\[0\]\.criterio_id · «crit-magia» no es un criterio de la instantánea 2026-09-26\.1$/],
+    ["una restricción sobre un criterio que no existe", (d) => yaml(d, "casos/hospital-sabana.yaml", (c) => void ((c.restricciones as Record<string, unknown>[])[0]!.criterio_id = "crit-magia")), /· restricciones\[0\]\.criterio_id · «crit-magia» no es un criterio de la instantánea 2026-09-26\.1$/],
   ];
 
   it.each(casos)("%s", (_que, romper, esperado) => {

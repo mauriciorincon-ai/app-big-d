@@ -213,19 +213,21 @@ export function cargarConocimiento(dir = dirDatos()): Conocimiento {
   for (const x of casos) {
     const c = x.v;
     vetadas(x, ["nombre", "descripcion", "contexto", "requisitos", "restricciones", "decisiones_implicitas"], fallas);
-    const inst = porVersion.get(c.instantanea);
-    if (!inst) {
+    // Un borrador sin instantánea se cruza con la base viva; con instantánea, con lo que ella congeló.
+    const inst = c.instantanea === null ? null : porVersion.get(c.instantanea);
+    if (c.instantanea !== null && !inst) {
       fallas.push(linea(x.l, ["instantanea"], `no existe data/instantaneas/${c.instantanea}.json`));
       continue;
     }
-    const ids = new Set(inst.contenido.criterios.map((k) => k.id));
-    const plats = new Set(inst.contenido.plataformas.map((p) => p.id));
-    c.criterios.forEach((k, i) => !ids.has(k.criterio_id) && fallas.push(linea(x.l, ["criterios", i, "criterio_id"], `«${k.criterio_id}» no es un criterio de la instantánea ${inst.version}`)));
+    const donde = inst ? `la instantánea ${inst.version}` : "la base";
+    const ids = new Set((inst ? inst.contenido.criterios : criterios.map((y) => y.v)).map((k) => k.id));
+    const plats = new Set((inst ? inst.contenido.plataformas : plataformas).map((p) => p.id));
+    c.criterios.forEach((k, i) => !ids.has(k.criterio_id) && fallas.push(linea(x.l, ["criterios", i, "criterio_id"], `«${k.criterio_id}» no es un criterio de ${donde}`)));
     for (const k of ids) if (!c.criterios.some((y) => y.criterio_id === k)) fallas.push(linea(x.l, ["criterios"], `falta el peso de ${k} (puede ser 0, pero se declara)`));
-    c.requisitos.forEach((r, i) => !ids.has(r.criterio_id) && fallas.push(linea(x.l, ["requisitos", i, "criterio_id"], `«${r.criterio_id}» no es un criterio de la instantánea`)));
+    c.requisitos.forEach((r, i) => !ids.has(r.criterio_id) && fallas.push(linea(x.l, ["requisitos", i, "criterio_id"], `«${r.criterio_id}» no es un criterio de ${donde}`)));
     c.restricciones.forEach((r, i) => {
-      if (!ids.has(r.criterio_id)) fallas.push(linea(x.l, ["restricciones", i, "criterio_id"], `«${r.criterio_id}» no es un criterio de la instantánea`));
-      r.elimina.forEach((e, k) => !plats.has(e.plataforma_id) && fallas.push(linea(x.l, ["restricciones", i, "elimina", k, "plataforma_id"], `«${e.plataforma_id}» no es una plataforma de la instantánea`)));
+      if (!ids.has(r.criterio_id)) fallas.push(linea(x.l, ["restricciones", i, "criterio_id"], `«${r.criterio_id}» no es un criterio de ${donde}`));
+      r.elimina.forEach((e, k) => !plats.has(e.plataforma_id) && fallas.push(linea(x.l, ["restricciones", i, "elimina", k, "plataforma_id"], `«${e.plataforma_id}» no es una plataforma de ${donde}`)));
     });
     if (c.estado_aprobacion === "aprobado" && c.aprobacion && c.aprobacion.huella !== huellaCaso(c)) fallas.push(linea(x.l, ["aprobacion", "huella"], "no es la huella del perfil: un perfil aprobado no se edita a mano (se vuelve a aprobar)"));
   }

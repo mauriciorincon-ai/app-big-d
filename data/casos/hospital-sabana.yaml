@@ -1,0 +1,117 @@
+# Perfil del caso hospitalario (especificación § 10.4). BORRADOR: lo propuso el agente de construcción a partir de la
+# descripción del caso; cada peso, rango, restricción y decisión implícita lo decide la persona en la parada de
+# DECISIÓN del S3 (D-S3-12), con la pantalla del perfil abierta. Hasta que se apruebe no se evalúa (RF-03.5). Ficticio.
+id: hospital-sabana
+nombre:
+  es: "Hospital Ficticio de la Sabana"
+  en: "Sabana Fictional Hospital"
+descripcion:
+  es: "Un hospital ficticio que busca una plataforma analítica gobernada para sus datos clínicos y administrativos."
+  en: "A fictional hospital looking for a governed analytics platform for its clinical and administrative data."
+contexto:
+  - elemento: { es: "Organización", en: "Organization" }
+    descripcion:
+      es: "Hospital sin ánimo de lucro, de tamaño medio, parte de un grupo corporativo."
+      en: "Mid-sized non-profit hospital, part of a corporate group."
+  - elemento: { es: "Situación actual", en: "Current situation" }
+    descripcion:
+      es: "Sistema administrativo y clínico sobre una base de datos relacional comercial; repositorio analítico en una nube pública; tableros en una herramienta de inteligencia de negocio de uso corporativo."
+      en: "Administrative and clinical system on a commercial relational database; analytics repository on a public cloud; dashboards in a business intelligence tool used across the group."
+  - elemento: { es: "Identidad", en: "Identity" }
+    descripcion:
+      es: "Directorio corporativo administrado por el grupo, no por el hospital."
+      en: "Corporate directory managed by the group, not by the hospital."
+  - elemento: { es: "Datos", en: "Data" }
+    descripcion:
+      es: "Clínicos y administrativos, con información sensible de pacientes."
+      en: "Clinical and administrative, with sensitive patient information."
+  - elemento: { es: "Equipo", en: "Team" }
+    descripcion:
+      es: "Muy pequeño, con fuerte experiencia en inteligencia de negocio y poca en ingeniería de plataformas."
+      en: "Very small, with strong business intelligence experience and little platform engineering."
+  - elemento: { es: "Presupuesto", en: "Budget" }
+    descripcion:
+      es: "Restringido y sujeto a la aprobación del grupo."
+      en: "Constrained and subject to the group's approval."
+  - elemento: { es: "Objetivo", en: "Goal" }
+    descripcion:
+      es: "Una plataforma analítica gobernada que habilite casos de inteligencia artificial en los próximos dos años."
+      en: "A governed analytics platform that enables artificial intelligence use cases within the next two years."
+requisitos:
+  - descripcion: { es: "Proteger los datos clínicos con filtros por fila y enmascaramiento por columna.", en: "Protect clinical data with row filters and column masking." }
+    criterio_id: crit-gobierno
+    tipo: obligatorio
+  - descripcion: { es: "Usar el directorio de identidad que administra el grupo.", en: "Use the identity directory the group manages." }
+    criterio_id: crit-ecosistema
+    tipo: obligatorio
+  - descripcion: { es: "Anticipar el gasto para someterlo a la aprobación del grupo.", en: "Anticipate spending so the group can approve it." }
+    criterio_id: crit-costo
+    tipo: obligatorio
+  - descripcion: { es: "Traer los cambios de la base relacional de origen sin cargas completas cada día.", en: "Bring in changes from the source relational database without full daily loads." }
+    criterio_id: crit-ingesta
+    tipo: preferente
+  - descripcion: { es: "Seguir publicando en la herramienta de tableros del grupo.", en: "Keep publishing in the group's dashboard tool." }
+    criterio_id: crit-consumo
+    tipo: preferente
+  - descripcion: { es: "Construir agentes sobre los datos gobernados dentro de dos años.", en: "Build agents on the governed data within two years." }
+    criterio_id: crit-ia
+    tipo: preferente
+  - descripcion: { es: "Que el equipo actual pueda operarla sin contratar ingeniería de plataformas.", en: "The current team can run it without hiring platform engineering." }
+    criterio_id: crit-habilidades
+    tipo: preferente
+# Pesos en centésimas (suman 10 000 = 100 puntos), propuestos por el agente: el dato clínico manda (gobierno y
+# cumplimiento, esenciales), luego el costo, el equipo pequeño y la identidad del grupo. Rango ±20 % para todos.
+criterios:
+  - { criterio_id: crit-gobierno, peso_centesimas: 2000, rango_relativo_pct: 20, origen: propuesto-por-agente, esencial: true }
+  - { criterio_id: crit-cumplimiento, peso_centesimas: 1200, rango_relativo_pct: 20, origen: propuesto-por-agente, esencial: true }
+  - { criterio_id: crit-costo, peso_centesimas: 1200, rango_relativo_pct: 20, origen: propuesto-por-agente, esencial: false }
+  - { criterio_id: crit-habilidades, peso_centesimas: 1200, rango_relativo_pct: 20, origen: propuesto-por-agente, esencial: false }
+  - { criterio_id: crit-ecosistema, peso_centesimas: 1000, rango_relativo_pct: 20, origen: propuesto-por-agente, esencial: false }
+  - { criterio_id: crit-consumo, peso_centesimas: 800, rango_relativo_pct: 20, origen: propuesto-por-agente, esencial: false }
+  - { criterio_id: crit-ingesta, peso_centesimas: 800, rango_relativo_pct: 20, origen: propuesto-por-agente, esencial: false }
+  - { criterio_id: crit-transformacion, peso_centesimas: 600, rango_relativo_pct: 20, origen: propuesto-por-agente, esencial: false }
+  - { criterio_id: crit-almacenamiento, peso_centesimas: 500, rango_relativo_pct: 20, origen: propuesto-por-agente, esencial: false }
+  - { criterio_id: crit-ia, peso_centesimas: 500, rango_relativo_pct: 20, origen: propuesto-por-agente, esencial: false }
+  - { criterio_id: crit-dependencia, peso_centesimas: 200, rango_relativo_pct: 20, origen: propuesto-por-agente, esencial: false }
+restricciones:
+  - id: res-plataforma-real
+    descripcion: { es: "La plataforma existe en el mercado: una ficticia no se puede recomendar.", en: "The platform exists on the market: a fictional one cannot be recommended." }
+    criterio_id: crit-ecosistema
+    elimina:
+      - plataforma_id: plataforma-ejemplo
+        razon: { es: "Es ficticia: existe para probar la herramienta y cita solo example.org.", en: "It is fictional: it exists to test the tool and cites only example.org." }
+  - id: res-identidad-del-grupo
+    descripcion: { es: "La identidad se gestiona con el directorio corporativo del grupo.", en: "Identity is managed with the group's corporate directory." }
+    criterio_id: crit-ecosistema
+    elimina: []
+decisiones_implicitas:
+  - id: una-o-combinacion
+    pregunta: { es: "¿Una plataforma o una combinación?", en: "One platform or a combination?" }
+    opciones:
+      - id: una
+        texto: { es: "Una sola plataforma", en: "A single platform" }
+        nota: { es: "Menos integración; la decisión de una vía pesa más.", en: "Less integration; the one-way decision weighs more." }
+      - id: combinacion
+        texto: { es: "Una combinación de dos", en: "A combination of two" }
+        nota: { es: "Fuera del alcance del comparador: se documenta como supuesto.", en: "Outside the comparator's scope: documented as an assumption." }
+    respuesta: null
+  - id: quien-opera
+    pregunta: { es: "¿Quién opera la plataforma?", en: "Who operates the platform?" }
+    opciones:
+      - id: gestionado
+        texto: { es: "Un servicio gestionado por el fabricante", en: "A vendor-managed service" }
+      - id: propio
+        texto: { es: "El equipo propio", en: "The in-house team" }
+    respuesta: null
+  - id: migrar-o-coexistir
+    pregunta: { es: "¿Migrar o coexistir con el repositorio analítico actual?", en: "Migrate from the current analytics repository or coexist with it?" }
+    opciones:
+      - id: migrar
+        texto: { es: "Migrar todo a la plataforma nueva", en: "Migrate everything to the new platform" }
+      - id: coexistir
+        texto: { es: "Coexistir durante la transición", en: "Coexist during the transition" }
+    respuesta: null
+acepta_vista_previa: false
+fecha_evaluacion: "2026-10-04"
+instantanea: null
+estado_aprobacion: borrador

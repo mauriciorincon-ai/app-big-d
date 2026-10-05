@@ -72,8 +72,17 @@ export function huellaCaso(c: Caso): string {
   return huellaDe(perfil);
 }
 
+/** Lo que el núcleo evalúa: una instantánea, o la base viva de un borrador que aún no tiene (versión «base-viva»). */
+export type Congelada = Pick<Instantanea, "version" | "huella" | "contenido">;
+
+/** La base viva como si se congelara hoy: para mirar un borrador que aún no tiene instantánea (nunca para aprobarlo). */
+export function baseViva(b: Base): Congelada {
+  const contenido = contenidoDe(b);
+  return { version: "base-viva", huella: huellaDe(contenido), contenido };
+}
+
 /** La entrada del núcleo: el caso y la base congelada en su instantánea. */
-export function entradaDe(caso: Caso, inst: Instantanea): Entrada {
+export function entradaDe(caso: Caso, inst: Congelada): Entrada {
   const c = inst.contenido;
   const escalas = new Set(c.criterios.map((x) => x.escala_id));
   const escala = c.escalas.find((e) => escalas.has(e.id));
