@@ -4,7 +4,7 @@
 // tests/determinismo/NUCLEO.SHA256SUMS. Sin fast-check: el generador es un xorshift entero propio, el mismo en todos.
 // La simulación entra también: la del caso de la maqueta entera (4 semillas × 10 000) y la de cinco bases aleatorias.
 import { CASOS_DE_REFERENCIA, canonicoEstricto, entradaSimulacion, evaluar, simular, type Entrada } from "../../src/engine";
-import { sabana } from "../unit/nucleo/lib/sabana";
+import { futuro } from "../unit/nucleo/lib/futuro";
 
 function xorshift(semilla: number) {
   let x = semilla >>> 0 || 1;
@@ -27,7 +27,7 @@ function aleatoria(semilla: number): Entrada {
   const pesos = [0, ...cortes, 10_000].slice(1).map((x, i, xs) => x - (i ? xs[i - 1]! : 0));
   const P = Array.from({ length: n }, (_, i) => `plat-${String.fromCharCode(97 + i)}`);
   const C = Array.from({ length: k }, (_, j) => `crit-${String.fromCharCode(97 + j)}`);
-  const e = sabana();
+  const e = futuro();
   return {
     caso: { ...e.caso, id: `aleatoria-${semilla}`, acepta_vista_previa: r(2) === 1, pesos: C.map((criterio_id, j) => ({ criterio_id, peso: pesos[j]!, esencial: r(3) === 0, rango_pct: 10 * r(5) })), restricciones: n > 2 && r(2) ? [{ id: "res-x", elimina: [P[r(n)]!] }] : [] },
     base: {
@@ -42,19 +42,19 @@ function aleatoria(semilla: number): Entrada {
 export function casosNucleo(): { caso: string; texto: string }[] {
   const out: { caso: string; texto: string }[] = CASOS_DE_REFERENCIA.map((c) => ({ caso: `referencia-${c.id}`, texto: canonicoEstricto(evaluar(c.entrada)) }));
   const variantes: [string, (e: Entrada) => void][] = [
-    ["sabana", () => {}],
-    ["sabana-acepta-vista-previa", (e) => void (e.caso.acepta_vista_previa = true)],
-    ["sabana-tarde", (e) => void (e.caso.fecha_evaluacion = "2026-12-31")],
+    ["futuro", () => {}],
+    ["futuro-acepta-vista-previa", (e) => void (e.caso.acepta_vista_previa = true)],
+    ["futuro-tarde", (e) => void (e.caso.fecha_evaluacion = "2026-12-31")],
     // Justo 60 días después de las verificaciones (2026-09-20): el borde entre «por revisar» y «vencida».
-    ["sabana-dia-60", (e) => void (e.caso.fecha_evaluacion = "2026-11-19")],
-    ["sabana-gobierno-cero", (e) => {
+    ["futuro-dia-60", (e) => void (e.caso.fecha_evaluacion = "2026-11-19")],
+    ["futuro-gobierno-cero", (e) => {
       const g = e.caso.pesos.find((p) => p.criterio_id === "crit-gobierno")!;
       e.caso.pesos.find((p) => p.criterio_id === "crit-ingesta")!.peso += g.peso;
       g.peso = 0;
     }],
   ];
   for (const [nombre, cambio] of variantes) {
-    const e = sabana();
+    const e = futuro();
     cambio(e);
     out.push({ caso: nombre, texto: canonicoEstricto(evaluar(e)) });
   }
@@ -65,7 +65,7 @@ export function casosNucleo(): { caso: string; texto: string }[] {
     if (!es) throw new Error(`${nombre}: sin simulación`);
     out.push({ caso: nombre, texto: canonicoEstricto(simular(aceptadas ? { ...es, aceptadas } : es)) });
   };
-  simulada("simulacion-sabana", sabana());
+  simulada("simulacion-futuro", futuro());
   for (const s of [2, 4, 6, 10, 17]) simulada(`simulacion-aleatoria-${s}`, aleatoria(s * 7_919), 2_000);
   return out;
 }

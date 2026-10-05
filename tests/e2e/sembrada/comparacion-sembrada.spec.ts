@@ -9,7 +9,7 @@ import { plantilla } from "../../../src/lib/atlas/plantilla";
 import { textos } from "../../../src/lib/i18n";
 import { listo } from "../lib/abrir";
 
-const CASO = "hospital-sabana";
+const CASO = "hospital-futuro";
 const PAGINAS = ["es", "en"].flatMap((i) => [`/${i}/base`, `/${i}/casos/${CASO}`, `/${i}/casos/${CASO}/comparacion`]);
 
 declare global {

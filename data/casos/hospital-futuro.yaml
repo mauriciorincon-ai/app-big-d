@@ -1,10 +1,10 @@
 # Perfil del caso hospitalario (especificación § 10.4). BORRADOR: lo propuso el agente de construcción a partir de la
 # descripción del caso; cada peso, rango, restricción y decisión implícita lo decide la persona en la parada de
 # DECISIÓN del S3 (D-S3-12), con la pantalla del perfil abierta. Hasta que se apruebe no se evalúa (RF-03.5). Ficticio.
-id: hospital-sabana
+id: hospital-futuro
 nombre:
-  es: "Hospital Ficticio de la Sabana"
-  en: "Sabana Fictional Hospital"
+  es: "Hospital Ficticio del Futuro"
+  en: "Fictional Hospital of the Future"
 descripcion:
   es: "Un hospital ficticio que busca una plataforma analítica gobernada para sus datos clínicos y administrativos."
   en: "A fictional hospital looking for a governed analytics platform for its clinical and administrative data."

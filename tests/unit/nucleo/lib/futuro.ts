@@ -1,5 +1,5 @@
 // El caso de la maqueta (docs/diseno/comparacion.html, scripts/maqueta/pantallas/caso.mjs) como entrada del núcleo:
-// el Hospital Ficticio de la Sabana con cuatro plataformas ficticias (Este sale por la residencia de datos). Los
+// el Hospital Ficticio del Futuro con cuatro plataformas ficticias (Este sale por la residencia de datos). Los
 // criterios son los de la especificación § 10.2–10.3: los tres de la maqueta que no existen allí se leen como su par
 // más cercano (equipo → habilidades, apertura → dependencia, operación → ecosistema). Pesos y puntajes, los de la
 // maqueta, en centésimas.
@@ -61,7 +61,7 @@ export function base(): BaseMotor {
 
 export function caso(): CasoMotor {
   return {
-    id: "hospital-sabana",
+    id: "hospital-futuro",
     estado: "aprobado",
     acepta_vista_previa: false,
     fecha_evaluacion: "2026-09-26",
@@ -73,4 +73,4 @@ export function caso(): CasoMotor {
   };
 }
 
-export const sabana = (): Entrada => ({ caso: caso(), base: base() });
+export const futuro = (): Entrada => ({ caso: caso(), base: base() });

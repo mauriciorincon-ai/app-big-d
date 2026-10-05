@@ -1,6 +1,6 @@
 // Una base de conocimiento COMPLETA y ficticia en disco: las cuatro plataformas de la maqueta (Ejemplo, Norte, Sur y
 // Este), una evidencia aprobada por plataforma y criterio con los puntajes de la maqueta, la instantánea que las congela
-// y el caso del Hospital Ficticio de la Sabana aprobado con su sello. Toma de data/ lo que es común (gramática,
+// y el caso del Hospital Ficticio del Futuro aprobado con su sello. Toma de data/ lo que es común (gramática,
 // capacidades, criterios, escala, convenciones) para no copiarlo a mano. Fuentes example.org (regla 12).
 import { cpSync, mkdirSync, readdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
@@ -8,7 +8,7 @@ import { stringify } from "yaml";
 import { cargarConocimiento } from "@/lib/datos/cargar-conocimiento";
 import type { Caso } from "@/lib/datos/conocimiento";
 import { huellaCaso, nuevaInstantanea } from "@/lib/datos/instantanea";
-import { CRITERIOS, PESOS, PUNTAJES } from "../nucleo/lib/sabana";
+import { CRITERIOS, PESOS, PUNTAJES } from "../nucleo/lib/futuro";
 
 const NOMBRES: Record<string, [string, string]> = {
   "plataforma-ejemplo": ["Plataforma Ejemplo (ficticia)", "Example Platform (fictional)"],
@@ -53,11 +53,11 @@ export function evidenciaFicticia(p: string, c: string, puntaje: number): Record
 
 const t = (es: string, en: string) => ({ es, en });
 
-export function casoSabana(version: string): Caso {
+export function casoFuturo(version: string): Caso {
   const esenciales = new Set(["crit-almacenamiento", "crit-gobierno", "crit-cumplimiento"]);
   const caso: Caso = {
-    id: "hospital-sabana",
-    nombre: t("Hospital Ficticio de la Sabana", "Sabana Fictional Hospital"),
+    id: "hospital-futuro",
+    nombre: t("Hospital Ficticio del Futuro", "Fictional Hospital of the Future"),
     descripcion: t("El caso de la maqueta: un hospital ficticio que elige su plataforma de datos.", "The mockup case: a fictional hospital choosing its data platform."),
     contexto: [
       { elemento: t("Organización", "Organization"), descripcion: t("Hospital sin ánimo de lucro, de tamaño medio, parte de un grupo corporativo.", "Mid-sized non-profit hospital, part of a corporate group.") },
@@ -86,7 +86,7 @@ export function casoSabana(version: string): Caso {
  * construir el sitio (BIGD_DATOS): la Plataforma Ejemplo queda publicada con su mapa y sus versiones archivadas de
  * data/mapas, y las demás ficticias, «próximamente».
  */
-export function armarBaseSabana(dir: string, { atlas = false, raiz = process.cwd() }: { atlas?: boolean; raiz?: string } = {}): string {
+export function armarBaseFuturo(dir: string, { atlas = false, raiz = process.cwd() }: { atlas?: boolean; raiz?: string } = {}): string {
   for (const d of ["gramaticas", "capacidades", "criterios", "escalas", "convenciones"]) cpSync(join(raiz, "data", d), join(dir, d), { recursive: true });
   mkdirSync(join(dir, "plataformas"));
   for (const [id, [es, en]] of Object.entries(NOMBRES)) escribir(join(dir, "plataformas", `${id}.yaml`), { id, nombre: { es, en }, estado: atlas && id === "plataforma-ejemplo" ? "publicada" : "proximamente", ficticia: true });
@@ -103,6 +103,6 @@ export function armarBaseSabana(dir: string, { atlas = false, raiz = process.cwd
   mkdirSync(join(dir, "instantaneas"));
   writeFileSync(join(dir, "instantaneas", `${inst.version}.json`), `${JSON.stringify(inst, null, 2)}\n`);
   mkdirSync(join(dir, "casos"));
-  escribir(join(dir, "casos", "hospital-sabana.yaml"), casoSabana(inst.version));
+  escribir(join(dir, "casos", "hospital-futuro.yaml"), casoFuturo(inst.version));
   return inst.version;
 }

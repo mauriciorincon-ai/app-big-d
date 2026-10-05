@@ -8,7 +8,7 @@ import { conocimiento, congeladaDe, evaluacionDe, idsDeCasos } from "@/lib/caso/
 import { pestanasCaso, pestanasConocimiento, rutaBase, rutaCaso, rutaComparacion } from "@/lib/caso/rutas";
 import { cargarConocimiento } from "@/lib/datos/cargar-conocimiento";
 import { textos } from "@/lib/i18n";
-import { armarBaseSabana } from "../lib/base-sabana";
+import { armarBaseFuturo } from "../lib/base-futuro";
 
 const dir = mkdtempSync(join(tmpdir(), "bigd-casos-"));
 afterAll(() => rmSync(dir, { recursive: true, force: true }));
@@ -19,13 +19,13 @@ describe("el caso del repo (borrador)", () => {
   });
 
   it("los ids de los casos salen del nombre de sus archivos, sin validar la base", () => {
-    expect(idsDeCasos()).toContain("hospital-sabana");
+    expect(idsDeCasos()).toContain("hospital-futuro");
     expect(idsDeCasos(join(dir, "no-existe"))).toEqual([]);
   });
 
   it("un borrador sin instantánea se mira contra la base viva y no puntúa: dice que es borrador y qué evidencia falta", () => {
     const k = conocimiento();
-    const caso = k.casos.find((c) => c.id === "hospital-sabana")!;
+    const caso = k.casos.find((c) => c.id === "hospital-futuro")!;
     expect(caso.estado_aprobacion).toBe("borrador");
     expect(congeladaDe(k, caso).version).toBe("base-viva");
     const e = evaluacionDe(k, caso);
@@ -47,7 +47,7 @@ describe("el caso del repo (borrador)", () => {
 
 describe("el caso de la base sembrada (aprobado)", () => {
   it("se evalúa contra su instantánea y trae la robustez con los pesos del perfil", () => {
-    const version = armarBaseSabana(dir);
+    const version = armarBaseFuturo(dir);
     const k = cargarConocimiento(dir);
     const e = evaluacionDe(k, k.casos[0]!);
     expect(e.congelada.version).toBe(version);

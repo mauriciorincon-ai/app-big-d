@@ -1,4 +1,4 @@
-// El caso ficticio de la comparación (Hospital Ficticio de la Sabana) y TODO lo que se calcula sobre él:
+// El caso ficticio de la comparación (Hospital Ficticio del Futuro) y TODO lo que se calcula sobre él:
 // totales, punto de inversión, salida del empate y robustez por simulación. La comparación (pagina-m3) y el
 // informe (m4-informe) leen de aquí: ninguna cifra del caso se escribe a mano en una página.
 

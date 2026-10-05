@@ -13,15 +13,15 @@ import { Pestanas } from "@/components/Pestanas";
 import { atender, entradaSimulacion, evaluar, simular, type Peticion, type Resultado } from "@/engine";
 import { plantilla } from "@/lib/atlas/plantilla";
 import { textos } from "@/lib/i18n";
-import { CRITERIOS } from "../nucleo/lib/sabana";
-import { sabana } from "../nucleo/lib/sabana";
+import { CRITERIOS } from "../nucleo/lib/futuro";
+import { futuro } from "../nucleo/lib/futuro";
 
-vi.mock("next/navigation", () => ({ usePathname: () => "/es/casos/hospital-sabana" }));
+vi.mock("next/navigation", () => ({ usePathname: () => "/es/casos/hospital-futuro" }));
 
 type Evaluado = Extract<Resultado, { tipo: "evaluado" }>;
 const T = textos("es");
 const tc = T.caso.comparacion;
-const entrada = sabana();
+const entrada = futuro();
 const r = evaluar(entrada) as Evaluado;
 const simulacion = simular(entradaSimulacion(entrada, r)!);
 const nombres: Nombres = {
@@ -57,7 +57,7 @@ class WorkerFalso {
 }
 
 beforeEach(() => {
-  window.history.replaceState(null, "", "/es/casos/hospital-sabana/comparacion");
+  window.history.replaceState(null, "", "/es/casos/hospital-futuro/comparacion");
   vi.stubGlobal("Worker", WorkerFalso);
 });
 afterEach(() => {
@@ -102,7 +102,7 @@ describe("Exploracion: sensibilidad y robustez", () => {
   });
 
   it("una URL con un peso explorado abre en ese peso; elegir otro criterio lo mueve a su peso del perfil", async () => {
-    window.history.replaceState(null, "", "/es/casos/hospital-sabana/comparacion?criterio=crit-costo&t=600");
+    window.history.replaceState(null, "", "/es/casos/hospital-futuro/comparacion?criterio=crit-costo&t=600");
     exploracion();
     expect(screen.getByRole("slider").getAttribute("aria-valuetext")).toBe("6");
     fireEvent.change(screen.getByLabelText(tc.sensibilidad.criterio), { target: { value: "crit-ia" } });
@@ -171,7 +171,7 @@ describe("la base y la navegación", () => {
   });
 
   it("una sección o una pestaña sin ruta se muestra pendiente, sin enlace", () => {
-    render(<NavSecciones etiqueta="Secciones" secciones={[{ ruta: "/es/casos/hospital-sabana", texto: "Caso", prefijos: ["/es/casos/"] }, { texto: "Instrumento", prefijos: [] }]} />);
+    render(<NavSecciones etiqueta="Secciones" secciones={[{ ruta: "/es/casos/hospital-futuro", texto: "Caso", prefijos: ["/es/casos/"] }, { texto: "Instrumento", prefijos: [] }]} />);
     expect(screen.getByRole("link", { name: "Caso" }).getAttribute("aria-current")).toBe("page");
     expect(screen.getByText("Instrumento").tagName).toBe("SPAN");
     cleanup();

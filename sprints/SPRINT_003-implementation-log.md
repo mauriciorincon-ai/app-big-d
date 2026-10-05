@@ -502,6 +502,29 @@ resultado (la maqueta las ordena por id).
   - `lighthouse-margen`: los mismos 3 avisos de LCP de la fase 1 (los `recorrido` de Ejemplo y el de Fabric), que
     cubre el ADR del margen. Las rutas nuevas entran a Lighthouse en la fase 4.
 
+## Mirada de la fase 2 y nombre del caso (2026-10-05)
+
+- **Mirada de las tres pantallas.** Tras el compact el usuario respondió «Continua» sin comentar las pantallas; se le
+  repreguntó «¿qué viste al abrirla?» con la comparación abierta en su navegador (el servidor de la base sembrada,
+  puerto 3148, se había caído en la pausa y se levantó otra vez). Respuesta, 2026-10-05: «Cambiale hospital de la
+  sabana a no se Hospital del futuro algo mas generico aqui en colombia hay uno cercano y no quiero confisiones». Leyó
+  el título de la página: mirada registrada, con el nombre del caso como único ajuste pedido.
+- **El ajuste (decidido sin re-preguntar: ajuste menor ya comentado).** El caso pasa a «Hospital Ficticio del Futuro»
+  / «Fictional Hospital of the Future», id `hospital-futuro` (la URL también mostraba el nombre). Se conserva
+  «Ficticio», como en las plataformas (regla 12). El perfil seguía en borrador (`propuesto_por_agente`): no se tocó
+  nada aprobado.
+- **Qué cambió.** `data/casos/hospital-futuro.yaml` (renombrado) · la base sembrada (`tests/unit/lib/base-futuro.ts`)
+  y la entrada del núcleo de las pruebas (`tests/unit/nucleo/lib/futuro.ts`) · las pruebas que las usan · el
+  generador de la maqueta (`scripts/maqueta/pantallas/`) y la maqueta regenerada con `pnpm maqueta` (4 archivos de
+  `docs/diseno/`, 7 líneas, solo el nombre y la ruta del archivo del perfil; «sin avisos») · 5 sumas de
+  `tests/determinismo/NUCLEO.SHA256SUMS`: las de las entradas del caso, porque el resultado lleva su id (las 9 de
+  referencia y las 6 aleatorias, idénticas) · el fixture del Worker, regenerado sin diferencias.
+- **Lo que conserva el nombre viejo, a propósito.** Esta bitácora y `sprints/ETAPA-DISENO-auditoria.md` (son historia)
+  y el historial de git (no se reescribe). La planeadora no lo menciona (búsqueda sin coincidencias).
+- **Corridas tras el renombre (2026-10-05, locales).** `pnpm typecheck` y `pnpm lint` limpios · `pnpm test`: 81
+  archivos, 1625 pruebas en verde · `E2E_PUERTO=3147 pnpm test:e2e`: 898 en verde y 9 saltadas (2,2 min), INP de la base
+  sembrada con CPU 4×: 16 ms · búsqueda de «sabana» fuera de `sprints/`: 0 coincidencias.
+
 ## Desviación del plan
 
 Los hechos 1–10 y las decisiones D-S3-01…18 del plan aprobado (`Reglas del motor` incluidas) son la desviación de
@@ -521,3 +544,5 @@ la orden; se resumen aquí y se amplían a medida que ocurren:
   segundo aceptaba el 0,47 %); el perfil en borrador entra en la fase 2 (la orden lo ponía en la 3) para que las
   pantallas muestren el estado honesto; `instantanea: null` en un borrador; la robustez del perfil se calcula en el
   build y el Worker solo corre al explorar; las 13 extensiones del ADR `design-system-s3-extensions`.
+- 2026-10-05: el caso se llama «Hospital Ficticio del Futuro» (`hospital-futuro`) a pedido del usuario (antes «de la
+  Sabana», que se confunde con una institución real cercana); la maqueta se regeneró con su generador.

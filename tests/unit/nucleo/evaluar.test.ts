@@ -1,8 +1,8 @@
 // @vitest-environment node
-// El núcleo sobre el caso de la maqueta (Hospital Ficticio de la Sabana) y sobre los casos de referencia (RF-09.1).
+// El núcleo sobre el caso de la maqueta (Hospital Ficticio del Futuro) y sobre los casos de referencia (RF-09.1).
 import { describe, expect, it } from "vitest";
 import { CASOS_DE_REFERENCIA, correrReferencia, evaluar, type Resultado, type Sensibilidad } from "@/engine";
-import { sabana } from "./lib/sabana";
+import { futuro } from "./lib/futuro";
 
 type Evaluado = Extract<Resultado, { tipo: "evaluado" }>;
 const evaluado = (r: Resultado): Evaluado => {
@@ -11,7 +11,7 @@ const evaluado = (r: Resultado): Evaluado => {
 };
 
 describe("el caso de la maqueta", () => {
-  const r = evaluado(evaluar(sabana()));
+  const r = evaluado(evaluar(futuro()));
 
   it("Este sale por la residencia de datos antes de puntuar", () => {
     expect(r.descartadas).toEqual([{ plataforma_id: "este", restricciones: ["res-residencia"] }]);
@@ -62,7 +62,7 @@ describe("el caso de la maqueta", () => {
   });
 
   it("con una sola plataforma no hay empate ni sensibilidad: no hay a quién invertir", () => {
-    const e = sabana();
+    const e = futuro();
     e.caso.restricciones = [{ id: "res-solo-norte", elimina: ["este", "plataforma-ejemplo", "sur"] }];
     const u = evaluado(evaluar(e));
     expect(u.veredicto).toEqual({ tipo: "unica", plataforma_id: "norte" });
@@ -84,7 +84,7 @@ describe("el caso de la maqueta", () => {
 
   it("alerta por la madurez de la IA de Ejemplo y por las evidencias que pasan de 30 días a la fecha de evaluación", () => {
     expect(r.alertas.filter((a) => a.motivo === "madurez").map((a) => a.evidencia_id)).toEqual(["evi-plataforma-ejemplo-ia"]);
-    const e = sabana();
+    const e = futuro();
     e.caso.fecha_evaluacion = "2026-11-19";
     const tarde = evaluado(evaluar(e));
     expect(new Set(tarde.alertas.map((a) => a.motivo))).toEqual(new Set(["vencida", "madurez"]));
@@ -94,7 +94,7 @@ describe("el caso de la maqueta", () => {
 
 describe("lo que no se evalúa (RF-03.5, RF-02.3)", () => {
   it("un perfil en borrador y una celda sin evidencia aprobada se dicen juntos, con lo que falta", () => {
-    const e = sabana();
+    const e = futuro();
     e.caso.estado = "borrador";
     e.base.evidencias = e.base.evidencias.filter((x) => x.id !== "evi-sur-costo");
     const r = evaluar(e);
@@ -103,23 +103,23 @@ describe("lo que no se evalúa (RF-03.5, RF-02.3)", () => {
   });
 
   it("la falta de evidencia de una plataforma descartada no bloquea", () => {
-    const e = sabana();
+    const e = futuro();
     e.base.evidencias = e.base.evidencias.filter((x) => x.plataforma_id !== "este");
     expect(evaluar(e).tipo).toBe("evaluado");
   });
 
   it.each([
-    ["los pesos no suman 10 000", (e: ReturnType<typeof sabana>) => void (e.caso.pesos[0]!.peso += 1), "suman 10001"],
-    ["el caso no pesa los criterios de la base", (e: ReturnType<typeof sabana>) => void e.caso.pesos.pop(), "el caso pesa"],
-    ["una restricción nombra una plataforma que no existe", (e: ReturnType<typeof sabana>) => void e.caso.restricciones.push({ id: "res-x", elimina: ["oeste"] }), "«oeste»"],
-    ["un puntaje fuera de la escala", (e: ReturnType<typeof sabana>) => void (e.base.evidencias[0]!.puntaje = 5), "entre 0 y 4"],
-    ["una celda con varias evidencias y ninguna esencial", (e: ReturnType<typeof sabana>) => {
+    ["los pesos no suman 10 000", (e: ReturnType<typeof futuro>) => void (e.caso.pesos[0]!.peso += 1), "suman 10001"],
+    ["el caso no pesa los criterios de la base", (e: ReturnType<typeof futuro>) => void e.caso.pesos.pop(), "el caso pesa"],
+    ["una restricción nombra una plataforma que no existe", (e: ReturnType<typeof futuro>) => void e.caso.restricciones.push({ id: "res-x", elimina: ["oeste"] }), "«oeste»"],
+    ["un puntaje fuera de la escala", (e: ReturnType<typeof futuro>) => void (e.base.evidencias[0]!.puntaje = 5), "entre 0 y 4"],
+    ["una celda con varias evidencias y ninguna esencial", (e: ReturnType<typeof futuro>) => {
       e.base.evidencias[0]!.esencial = false;
       e.base.evidencias.push({ ...e.base.evidencias[0]!, id: "evi-norte-ingesta-2" });
     }, "ninguna esencial"],
-    ["una madurez sin tope", (e: ReturnType<typeof sabana>) => void (e.base.evidencias[0]!.madurez = "rumor"), "«rumor»"],
+    ["una madurez sin tope", (e: ReturnType<typeof futuro>) => void (e.base.evidencias[0]!.madurez = "rumor"), "«rumor»"],
   ])("si %s, el núcleo lanza en vez de calcular", (_que, romper, mensaje) => {
-    const e = sabana();
+    const e = futuro();
     romper(e);
     expect(() => evaluar(e)).toThrow(mensaje);
   });

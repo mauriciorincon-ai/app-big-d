@@ -2,10 +2,10 @@
 // peticiones (el caso de la maqueta por pasos, una que agota el tope de intentos y una que no se puede simular). Lo
 // usan el script que escribe tests/fixtures/simulacion-worker.json y la prueba que lo compara.
 import { atender, entradaSimulacion, evaluar, type Respuesta } from "../../src/engine";
-import { sabana } from "../../tests/unit/nucleo/lib/sabana";
+import { futuro } from "../../tests/unit/nucleo/lib/futuro";
 
 export function mensajes(): Respuesta[] {
-  const e = sabana();
+  const e = futuro();
   const r = evaluar(e);
   if (r.tipo !== "evaluado") throw new Error("el caso de la maqueta no se evaluó");
   const base = entradaSimulacion(e, r)!;

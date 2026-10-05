@@ -5,13 +5,13 @@
 import fc from "fast-check";
 import { describe, expect, it } from "vitest";
 import { avanzar, canonicoEstricto, entradaSimulacion, enteroMenorQue, enZonaGris, evaluar, iniciar, muestras, rangoEntero, resultadoDe, semiamplitud, sfc32, siguiente, simular, type Entrada, type EntradaSimulacion, type Resultado } from "@/engine";
-import { sabana } from "./lib/sabana";
+import { futuro } from "./lib/futuro";
 
 const SEMILLA = 20_261_004;
 type Evaluado = Extract<Resultado, { tipo: "evaluado" }>;
 const ev = (e: Entrada) => evaluar(e) as Evaluado;
-const entradaSabana = (cambio: (e: Entrada) => void = () => {}) => {
-  const e = sabana();
+const entradaFuturo = (cambio: (e: Entrada) => void = () => {}) => {
+  const e = futuro();
   cambio(e);
   return entradaSimulacion(e, ev(e))!;
 };
@@ -131,7 +131,7 @@ describe("el muestreo es uniforme y exacto sobre los puntos enteros del politopo
 });
 
 describe("la simulación del caso de la maqueta", () => {
-  const r = simular(entradaSabana());
+  const r = simular(entradaFuturo());
 
   it("Norte queda primera en todas las combinaciones de las cuatro semillas: robusta, estable y sin zona gris", () => {
     expect(r.estado).toBe("completa");
@@ -159,11 +159,11 @@ describe("la simulación del caso de la maqueta", () => {
   });
 
   it("con una inversión dentro de un rango declarado, la misma aceptabilidad ya no es robusta: moderada (RF-04.7)", () => {
-    expect(simular({ ...entradaSabana(), inversion_en_rango: true, aceptadas: 200, semillas: [SEMILLA] }).clase).toBe("moderada");
+    expect(simular({ ...entradaFuturo(), inversion_en_rango: true, aceptadas: 200, semillas: [SEMILLA] }).clase).toBe("moderada");
   });
 
   it("con el primer puesto empatado no hay ganadora ni clase", () => {
-    expect(simular({ ...entradaSabana(), ganadora: null, aceptadas: 200, semillas: [SEMILLA] })).toMatchObject({ ganadora: null, clase: null, frontera: false });
+    expect(simular({ ...entradaFuturo(), ganadora: null, aceptadas: 200, semillas: [SEMILLA] })).toMatchObject({ ganadora: null, clase: null, frontera: false });
   });
 });
 
@@ -178,7 +178,7 @@ describe("créditos, pasos, orden y tope", () => {
   it("el resultado no depende del tamaño de paso (propiedad: el Worker corta donde quiera)", () => {
     fc.assert(
       fc.property(fc.integer({ min: 1, max: 997 }), (paso) => {
-        const e = { ...entradaSabana(), aceptadas: 300 };
+        const e = { ...entradaFuturo(), aceptadas: 300 };
         const s = iniciar(e);
         while (!s.fin) avanzar(s, paso);
         expect(canonicoEstricto(resultadoDe(s))).toBe(canonicoEstricto(simular(e)));
@@ -188,8 +188,8 @@ describe("créditos, pasos, orden y tope", () => {
   });
 
   it("reordenar las plataformas de la entrada del caso no cambia la simulación", () => {
-    const e = sabana();
-    const p = sabana();
+    const e = futuro();
+    const p = futuro();
     p.base.plataformas.reverse();
     p.base.evidencias.reverse();
     p.caso.pesos.reverse();
@@ -198,13 +198,13 @@ describe("créditos, pasos, orden y tope", () => {
   });
 
   it("el tope de intentos falla cerrado: sin clase y sin seguir con las otras semillas", () => {
-    const r = simular({ ...entradaSabana(), tope_intentos: 50 });
+    const r = simular({ ...entradaFuturo(), tope_intentos: 50 });
     expect(r).toMatchObject({ estado: "tope-de-intentos", clase: null, estable: false, frontera: false });
     expect(r.semillas.map((s) => [s.estado, s.intentos])).toEqual([["tope-de-intentos", 50]]);
   });
 
   it("con una sola plataforma no hay simulación; más de 18 no caben en el crédito exacto", () => {
-    const e = sabana();
+    const e = futuro();
     e.caso.restricciones = [{ id: "res-x", elimina: ["este", "plataforma-ejemplo", "sur"] }];
     expect(entradaSimulacion(e, ev(e))).toBeNull();
     expect(() => iniciar(politopo([10_000], [0], { plataformas: Array.from({ length: 19 }, (_, i) => `p${i}`), puntajes: Array.from({ length: 19 }, () => [1]) }))).toThrow("hasta 18 plataformas");

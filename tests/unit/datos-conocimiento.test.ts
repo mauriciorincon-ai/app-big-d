@@ -12,8 +12,8 @@ import { canonicoEstricto, evaluar } from "@/engine";
 import { ErrorDeDatos } from "@/lib/datos";
 import { cargarConocimiento } from "@/lib/datos/cargar-conocimiento";
 import { contenidoDe, entradaDe, huellaDe, nuevaInstantanea } from "@/lib/datos/instantanea";
-import { armarBaseSabana, FECHA_INSTANTANEA } from "./lib/base-sabana";
-import { sabana } from "./nucleo/lib/sabana";
+import { armarBaseFuturo, FECHA_INSTANTANEA } from "./lib/base-futuro";
+import { futuro } from "./nucleo/lib/futuro";
 
 const dirs: string[] = [];
 afterEach(() => {
@@ -23,7 +23,7 @@ afterEach(() => {
 function base(cambio?: (dir: string, version: string) => void): string {
   const dir = mkdtempSync(join(tmpdir(), "bigd-conocimiento-"));
   dirs.push(dir);
-  const version = armarBaseSabana(dir);
+  const version = armarBaseFuturo(dir);
   cambio?.(dir, version);
   return dir;
 }
@@ -63,7 +63,7 @@ describe("una base completa y ficticia", () => {
     expect(k.evidencias).toHaveLength(44);
     expect(k.instantaneas.map((i) => [i.version, i.cambios.length])).toEqual([[`${FECHA_INSTANTANEA}.1`, 44]]);
     const r = evaluar(entradaDe(k.casos[0]!, k.instantaneas[0]!));
-    const m = evaluar(sabana());
+    const m = evaluar(futuro());
     if (r.tipo !== "evaluado" || m.tipo !== "evaluado") throw new Error("no se evaluó");
     expect(r.orden).toEqual(m.orden);
     expect(r.veredicto).toEqual(m.veredicto);
@@ -125,12 +125,12 @@ describe("una base rota no carga y dice dónde (RF-01.2)", () => {
       const ruta = join(d, "instantaneas", `${v}.json`);
       writeFileSync(ruta, readFileSync(ruta, "utf8").replace('"puntaje": 4', '"puntaje": 3'));
     }, /instantaneas\/2026-09-26\.1\.json:\d+:\d+ · 2026-09-26\.1 · huella · no es la huella de su contenido/],
-    ["un caso cuyos pesos no suman 100", (d) => yaml(d, "casos/hospital-sabana.yaml", (c) => void ((c.criterios as Record<string, number>[])[0]!.peso_centesimas += 1)), /hospital-sabana\.yaml:\d+:\d+ · hospital-sabana · criterios · los pesos suman 10001 centésimas y deben sumar 10 000/],
-    ["un caso sin «¿una plataforma o combinación?» (E-17)", (d) => yaml(d, "casos/hospital-sabana.yaml", (c) => void (c.decisiones_implicitas = (c.decisiones_implicitas as { id: string }[]).filter((x) => x.id !== "una-o-combinacion"))), /· decisiones_implicitas · falta la decisión «una-o-combinacion»/],
-    ["un perfil aprobado con una decisión sin responder", (d) => yaml(d, "casos/hospital-sabana.yaml", (c) => void ((c.decisiones_implicitas as Record<string, unknown>[])[0]!.respuesta = null)), /· decisiones_implicitas\[0\]\.respuesta · un perfil aprobado responde todas sus decisiones implícitas$/],
-    ["un perfil aprobado editado a mano", (d) => yaml(d, "casos/hospital-sabana.yaml", (c) => void (c.acepta_vista_previa = true)), /· aprobacion\.huella · no es la huella del perfil: un perfil aprobado no se edita a mano/],
-    ["un caso que referencia una instantánea que no existe", (d) => yaml(d, "casos/hospital-sabana.yaml", (c) => void (c.instantanea = "2026-09-27.1")), /· instantanea · no existe data\/instantaneas\/2026-09-27\.1\.json$/],
-    ["una restricción que elimina una plataforma que no está en la instantánea", (d) => yaml(d, "casos/hospital-sabana.yaml", (c) => void ((c.restricciones as { elimina: Record<string, unknown>[] }[])[0]!.elimina[0]!.plataforma_id = "oeste")), /· restricciones\[0\]\.elimina\[0\]\.plataforma_id · «oeste» no es una plataforma de la instantánea 2026-09-26\.1$/],
+    ["un caso cuyos pesos no suman 100", (d) => yaml(d, "casos/hospital-futuro.yaml", (c) => void ((c.criterios as Record<string, number>[])[0]!.peso_centesimas += 1)), /hospital-futuro\.yaml:\d+:\d+ · hospital-futuro · criterios · los pesos suman 10001 centésimas y deben sumar 10 000/],
+    ["un caso sin «¿una plataforma o combinación?» (E-17)", (d) => yaml(d, "casos/hospital-futuro.yaml", (c) => void (c.decisiones_implicitas = (c.decisiones_implicitas as { id: string }[]).filter((x) => x.id !== "una-o-combinacion"))), /· decisiones_implicitas · falta la decisión «una-o-combinacion»/],
+    ["un perfil aprobado con una decisión sin responder", (d) => yaml(d, "casos/hospital-futuro.yaml", (c) => void ((c.decisiones_implicitas as Record<string, unknown>[])[0]!.respuesta = null)), /· decisiones_implicitas\[0\]\.respuesta · un perfil aprobado responde todas sus decisiones implícitas$/],
+    ["un perfil aprobado editado a mano", (d) => yaml(d, "casos/hospital-futuro.yaml", (c) => void (c.acepta_vista_previa = true)), /· aprobacion\.huella · no es la huella del perfil: un perfil aprobado no se edita a mano/],
+    ["un caso que referencia una instantánea que no existe", (d) => yaml(d, "casos/hospital-futuro.yaml", (c) => void (c.instantanea = "2026-09-27.1")), /· instantanea · no existe data\/instantaneas\/2026-09-27\.1\.json$/],
+    ["una restricción que elimina una plataforma que no está en la instantánea", (d) => yaml(d, "casos/hospital-futuro.yaml", (c) => void ((c.restricciones as { elimina: Record<string, unknown>[] }[])[0]!.elimina[0]!.plataforma_id = "oeste")), /· restricciones\[0\]\.elimina\[0\]\.plataforma_id · «oeste» no es una plataforma de la instantánea 2026-09-26\.1$/],
     ["dos archivos de convenciones", (d) => writeFileSync(join(d, "convenciones/otro.yaml"), "id: metodo\n"), /^data\/convenciones · la base trae exactamente un archivo de convenciones/],
     // Criterios y capacidades.
     ["un criterio de capacidad sin capacidad", (d) => yaml(d, "criterios/crit-ia.yaml", (c) => void delete c.capacidad_id), /crit-ia\.yaml:\d+:\d+ · crit-ia · capacidad_id · obligatorio en un criterio de tipo capacidad$/],
@@ -194,19 +194,19 @@ describe("una base rota no carga y dice dónde (RF-01.2)", () => {
       writeFileSync(ruta, JSON.stringify(i, null, 2));
     }, /· contenido\.evidencias\[0\]\.estado_aprobacion · una instantánea congela solo evidencias aprobadas$/],
     // Casos.
-    ["una respuesta que no es una opción", (d) => yaml(d, "casos/hospital-sabana.yaml", (c) => void ((c.decisiones_implicitas as Record<string, unknown>[])[0]!.respuesta = "tres")), /· decisiones_implicitas\[0\]\.respuesta · «tres» no es una de sus opciones$/],
-    ["un borrador con sello", (d) => yaml(d, "casos/hospital-sabana.yaml", (c) => void (c.estado_aprobacion = "borrador")), /· aprobacion · solo un perfil aprobado lleva sello$/],
-    ["un aprobado sin sello", (d) => yaml(d, "casos/hospital-sabana.yaml", (c) => void delete c.aprobacion), /· aprobacion · obligatorio en un perfil aprobado$/],
-    ["un criterio pesado dos veces", (d) => yaml(d, "casos/hospital-sabana.yaml", (c) => {
+    ["una respuesta que no es una opción", (d) => yaml(d, "casos/hospital-futuro.yaml", (c) => void ((c.decisiones_implicitas as Record<string, unknown>[])[0]!.respuesta = "tres")), /· decisiones_implicitas\[0\]\.respuesta · «tres» no es una de sus opciones$/],
+    ["un borrador con sello", (d) => yaml(d, "casos/hospital-futuro.yaml", (c) => void (c.estado_aprobacion = "borrador")), /· aprobacion · solo un perfil aprobado lleva sello$/],
+    ["un aprobado sin sello", (d) => yaml(d, "casos/hospital-futuro.yaml", (c) => void delete c.aprobacion), /· aprobacion · obligatorio en un perfil aprobado$/],
+    ["un criterio pesado dos veces", (d) => yaml(d, "casos/hospital-futuro.yaml", (c) => {
       const cs = c.criterios as Record<string, unknown>[];
       cs[1]!.criterio_id = cs[0]!.criterio_id;
     }), /· criterios · un criterio aparece dos veces$/],
-    ["un criterio de la instantánea sin peso", (d) => yaml(d, "casos/hospital-sabana.yaml", (c) => {
+    ["un criterio de la instantánea sin peso", (d) => yaml(d, "casos/hospital-futuro.yaml", (c) => {
       const cs = c.criterios as Record<string, number>[];
       cs[0]!.peso_centesimas += cs.pop()!.peso_centesimas;
     }), /· criterios · falta el peso de crit-ecosistema/],
-    ["un requisito sobre un criterio que no existe", (d) => yaml(d, "casos/hospital-sabana.yaml", (c) => void ((c.requisitos as Record<string, unknown>[])[0]!.criterio_id = "crit-magia")), /· requisitos\[0\]\.criterio_id · «crit-magia» no es un criterio de la instantánea 2026-09-26\.1$/],
-    ["una restricción sobre un criterio que no existe", (d) => yaml(d, "casos/hospital-sabana.yaml", (c) => void ((c.restricciones as Record<string, unknown>[])[0]!.criterio_id = "crit-magia")), /· restricciones\[0\]\.criterio_id · «crit-magia» no es un criterio de la instantánea 2026-09-26\.1$/],
+    ["un requisito sobre un criterio que no existe", (d) => yaml(d, "casos/hospital-futuro.yaml", (c) => void ((c.requisitos as Record<string, unknown>[])[0]!.criterio_id = "crit-magia")), /· requisitos\[0\]\.criterio_id · «crit-magia» no es un criterio de la instantánea 2026-09-26\.1$/],
+    ["una restricción sobre un criterio que no existe", (d) => yaml(d, "casos/hospital-futuro.yaml", (c) => void ((c.restricciones as Record<string, unknown>[])[0]!.criterio_id = "crit-magia")), /· restricciones\[0\]\.criterio_id · «crit-magia» no es un criterio de la instantánea 2026-09-26\.1$/],
   ];
 
   it.each(casos)("%s", (_que, romper, esperado) => {
