@@ -1,0 +1,62 @@
+/* Big-D — piezas comunes de las secciones Conocimiento y Caso (S3), portadas de la maqueta aprobada
+   (docs/diseno/assets/bigd.css, «Miradas 3–4»): sección, tarjeta, filas, estado, veredicto, insignia, semáforo, tabla,
+   listas con glifo. Las movidas desde investigador.css conservan su texto y su orden. */
+.seccion { padding: 8px 0 24px; }
+.seccion > h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 4px; }
+.kit-nota { font-size: 14px; color: var(--tinta-2); max-width: 72ch; margin: 0 0 14px; }
+.kit-grid { display: grid; gap: 20px; margin: 0 0 16px; }
+@media (min-width: 900px) { .kit-grid { grid-template-columns: 1fr 1fr; } }
+.filas { margin: 0; padding: 0; list-style: none; }
+.filas > li { display: grid; gap: 4px 14px; align-items: center; padding: 12px 0; border-top: 1px solid var(--linea); font-size: 15px; }
+.filas > li:last-child { border-bottom: 1px solid var(--linea); }
+.semaforo { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; width: max-content; font: 500 13px/1 var(--letra-mono); color: var(--tinta-1); padding: 6px 10px 6px 8px; border: 1px solid var(--linea); border-radius: 999px; }
+.semaforo-revisar { border-color: var(--tinta-1); font-weight: 700; }
+.semaforo-vencido { background: var(--tinta-1); color: var(--fondo); border-color: var(--tinta-1); font-weight: 700; }
+.tarjeta { border: 1px solid var(--linea); border-radius: 6px; padding: 16px 18px; background: var(--sup-1); font-size: 15px; }
+.tarjeta h3 { font-size: 16px; font-weight: 700; margin: 0 0 6px; }
+.tarjeta p { margin: 0 0 6px; }
+.tarjeta .meta { margin-top: 8px; }
+.huella { font: 500 13px/1.5 var(--letra-mono); word-break: break-all; color: var(--tinta-2); }
+.huella b { color: var(--tinta-1); font-weight: 600; }
+.conteo { font: 500 13px/1.5 var(--letra-mono); color: var(--tinta-2); margin: 14px 0; display: flex; flex-wrap: wrap; gap: 4px 12px; }
+.estado { border: 1px solid var(--linea); border-radius: 6px; padding: 18px; background: var(--sup-1); display: grid; gap: 8px; justify-items: start; font-size: 15px; }
+.estado h2 { font-size: 18px; font-weight: 700; margin: 0; }
+.estado p { margin: 0; color: var(--tinta-2); max-width: 72ch; }
+.estado-error { border-color: var(--tinta-1); border-width: 1.5px; }
+.error-lista { margin: 8px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; justify-self: stretch; }
+.error-lista li { font: 500 13px/1.6 var(--letra-mono); padding: 8px 12px; border-left: 2px solid var(--tinta-1); background: var(--sup-2); word-break: break-word; }
+.veredicto { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; padding: 14px 18px; border: 1.5px solid var(--tinta-1); border-radius: 6px; margin: 0 0 18px; font-size: 15px; background: var(--sup-1); }
+.veredicto b { font-size: 17px; display: inline-flex; align-items: center; gap: 8px; }
+.veredicto .mono { color: var(--tinta-2); font: 500 13px/1.4 var(--letra-mono); }
+.evidencia-afirma { font-weight: 700; margin: 0; }
+.evidencia-cita { margin: 0; padding: 8px 14px; border-left: 2px solid var(--tinta-1); color: var(--tinta-2); }
+.evidencia-no-verificada { border-left-style: dashed; }
+.insignia { display: inline-flex; align-items: center; gap: 6px; font: 600 12px/1 var(--letra-mono); letter-spacing: 0.04em; padding: 5px 10px; border: 1.5px solid var(--tinta-1); border-radius: 999px; color: var(--tinta-1); white-space: nowrap; }
+.insignia-llena { background: var(--tinta-1); color: var(--fondo); }
+.insignia-punteada { border-style: dashed; }
+.kit-niveles { margin-bottom: 20px; }
+@media (min-width: 900px) { .kit-grid.tres { grid-template-columns: 1fr 1fr 1fr; } }
+.dos { display: grid; gap: 20px; }
+.dos > * { min-width: 0; }
+@media (min-width: 900px) { .dos { grid-template-columns: 1fr 1fr; } }
+.kit-fila { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; margin: 0 0 16px; }
+.enlace-boton { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 2px; font: 600 15px/1 var(--letra); color: var(--tinta-1); background: none; border: 0; border-bottom: 1.5px solid var(--tinta-1); cursor: pointer; text-decoration: none; }
+.campo-aviso { display: inline-flex; align-items: center; gap: 6px; font: 600 13px/1.3 var(--letra); color: var(--tinta-1); }
+.insignia-suave { border-color: var(--tinta-2); color: var(--tinta-2); border-width: 1px; }
+.insignia-larga { white-space: normal; text-align: left; line-height: 1.3; }
+.tabla-marco { overflow-x: auto; margin: 0 0 16px; }
+.tabla { width: 100%; border-collapse: collapse; font-size: 14px; }
+.tabla th, .tabla td { text-align: left; padding: 10px 12px 10px 0; border-bottom: 1px solid var(--linea); vertical-align: top; }
+.tabla th { font: 600 12px/1 var(--letra-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--tinta-2); }
+.tabla tbody th { font: 400 14px/1.4 var(--letra); letter-spacing: normal; text-transform: none; color: var(--tinta-1); text-align: left; }
+.pros + .kit-nota { margin-top: 12px; }
+.tabla .insignia { margin-left: 8px; }
+.tabla tr[aria-current] td { font-weight: 700; color: var(--tinta-1); }
+.pros { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; font-size: 15px; }
+.pros li { display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; }
+.pros li svg { margin-top: 3px; }
+.pros small { display: block; color: var(--tinta-2); font-size: 13px; }
+.leyenda-inline { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13px; color: var(--tinta-2); margin: 10px 0 0; }
+.leyenda-inline span { display: inline-flex; align-items: center; gap: 6px; }
+.filtros { display: flex; flex-wrap: wrap; gap: 12px 16px; margin: 0 0 18px; }
+.filtros .campo { min-width: 180px; flex: 1 1 180px; }

@@ -6,7 +6,9 @@ import type { TextosMotor } from "diagramador";
 // Plantillas con {marcas}: las llena la app; los pares [uno, varios] son el plural.
 export interface Textos {
   sitio: { nombre: string; descripcion: string };
-  barra: { sello: string; secciones: string; atlas: string; conocimiento: string; idioma: string; tema: string; oscuro: string; claro: string };
+  barra: { sello: string; secciones: string; atlas: string; conocimiento: string; caso: string; instrumento: string; idioma: string; tema: string; oscuro: string; claro: string };
+  /** Pestañas de las secciones Conocimiento (05–06) y Caso (07–10), el mismo componente que los niveles del atlas (D-S3-16). */
+  secciones: { etiqueta: string; investigador: string; base: string; perfil: string; comparacion: string; decisiones: string; informe: string };
   saltarContenido: string;
   pie: string;
   inicio: { ojo: string; titulo: string; sub: string };
@@ -123,6 +125,194 @@ export interface Textos {
       historica: string;
     };
   };
+  /** Base de conocimiento (`/[idioma]/base`, D-S3-05). Plurales [uno, varios]. */
+  base: {
+    titulo: string;
+    ojo: string;
+    sub: string;
+    cargada: string;
+    instantanea: string;
+    sinInstantanea: string;
+    noCarga: readonly [string, string];
+    evidencias: {
+      titulo: string;
+      nota: string;
+      aprobadas: readonly [string, string];
+      propuestas: readonly [string, string];
+      plataformas: readonly [string, string];
+      criterios: readonly [string, string];
+      mostrando: string;
+      vacio: { titulo: string; texto: string };
+      filtros: { plataforma: string; criterio: string; estado: string; todas: string; todos: string; ambas: string; aprobadas: string; propuestas: string };
+      estado: { propuesta: string; aprobada: string; rechazada: string };
+      puntaje: string;
+      fuente: string;
+      madurez: string;
+      conflicto: string;
+      verificacion: string;
+      verificada: string;
+      noVerificable: string;
+      tipoFuente: { oficial: string; tercero: string };
+      conflictos: { "propio-fabricante": string; "fabricante-competidor": string; "socio-comercial": string; "resena-incentivada": string; independiente: string };
+      dias: string;
+      porQue: string;
+      ficticias: string;
+    };
+    criterios: { titulo: string; nota: string; capacidad: string; transversal: string };
+    escala: { titulo: string; nota: string; madurez: string; tope: string; topeVistaPrevia: string; sinTope: string };
+    convenciones: { titulo: string; nota: string; empate: string; robustez: string; vigencia: string; prosContras: string; sensibilidad: string; simulacion: string };
+    instantaneas: {
+      titulo: string;
+      nota: string;
+      version: string;
+      huella: string;
+      evidencias: string;
+      plataformas: string;
+      cambios: string;
+      vigente: string;
+      vacio: string;
+      cambio: { nueva: string; modificada: string; retirada: string };
+      ninguno: string;
+    };
+    error: { titulo: string; formato: string; consecuencias: string; ninguna: string; ci: string };
+  };
+  /** El caso: perfil (`/[idioma]/casos/[caso]`) y comparación (`…/comparacion`). Plurales [uno, varios]. */
+  caso: {
+    numeros: readonly string[];
+    y: string;
+    vigencia: { vigente: string; revisar: string; vencido: string };
+    perfil: {
+      ojo: string;
+      sub: string;
+      borrador: string;
+      aprobado: string;
+      archivo: string;
+      evaluacion: string;
+      instantanea: string;
+      sinInstantanea: string;
+      soloLectura: string;
+      pesos: { titulo: string; nota: string; suma: string; sumaBien: string; origen: string; origenAgente: string; origenPersona: string; rango: string; sinRango: string; esencial: string; etiquetaBarra: string };
+      restricciones: { titulo: string; nota: string; elimina: string; todas: string; origen: string; vacio: string };
+      decisiones: { titulo: string; nota: string; sinResponder: string; respondida: string; elegida: string };
+      contexto: string;
+      requisitos: { titulo: string; obligatorio: string; preferente: string; criterio: string };
+      aprobar: { boton: string; faltanDecisiones: readonly [string, string]; faltaInstantanea: string; comando: string };
+      sello: { titulo: string; detalle: string; comparar: string };
+    };
+    comparacion: {
+      ojo: string;
+      sub: readonly [string, string];
+      /** El subtítulo cuando la comparación no se calcula: nada se puntuó. */
+      subPendiente: readonly [string, string];
+      fuera: readonly [string, string];
+      reproducible: string;
+      perfilAprobado: string;
+      perfilBorrador: string;
+      instantanea: string;
+      baseViva: string;
+      evaluacion: string;
+      eliminada: string;
+      vistas: { etiqueta: string; totales: string; sensibilidad: string; robustez: string; pros: string };
+      noEvaluable: {
+        titulo: string;
+        borrador: string;
+        todasDescartadas: string;
+        faltaEvidencia: readonly [string, string];
+        faltaPorPlataforma: readonly [string, string];
+        verPerfil: string;
+        verBase: string;
+      };
+      totales: {
+        titulo: string;
+        veredicto: { empate: string; clara: string; unica: string };
+        empate: string;
+        empateVarias: string;
+        clara: string;
+        unica: string;
+        leximinOrdena: string;
+        exacto: string;
+        sello: string;
+        minimo: string;
+        limitante: string;
+        verPuntajes: string;
+        banda: string;
+        esencial: string;
+        barra: string;
+      };
+      matriz: { titulo: string; nota: string; criterio: string; peso: string; total: string; mejor: string; limitante: string; formula: string; tope: string; escala: string; topeNota: string; alertas: string; alerta: string; alertaMadurez: string };
+      sensibilidad: {
+        titulo: string;
+        nota: string;
+        criterio: string;
+        control: string;
+        rango: string;
+        rangoTope: string;
+        inversion: string;
+        sinInversion: string;
+        entraEmpate: string;
+        saleEmpate: string;
+        reparto: string;
+        cambia: string;
+        abajo: string;
+        arriba: string;
+        nada: string;
+        lider: readonly [string, string];
+        puesto: readonly [string, string];
+        hayEmpate: string;
+        noHayEmpate: string;
+        exacto: string;
+        bandaNota: string;
+        puestoNota: string;
+        sinCambiosPuestos: string;
+        sigue: string;
+        tabla: string;
+        peso: string;
+        actual: string;
+        explorado: string;
+        indefinida: string;
+        rangoVacio: string;
+        minimoQueInvierte: string;
+      };
+      robustez: {
+        titulo: string;
+        nota: string;
+        plataforma: string;
+        puesto: string;
+        primero: string;
+        umbrales: string;
+        clase: { robusta: string; moderada: string; fragil: string };
+        tituloClase: string;
+        primera: string;
+        intervalo: string;
+        cerca: string;
+        estable: string;
+        inestable: string;
+        zonaGris: string;
+        metodo: string;
+        creer: string;
+        nunca: string;
+        gana: string;
+        tendria: string;
+        porDebajo: string;
+        porEncima: string;
+        dentroRango: string;
+        fueraRango: string;
+        pesosDe: string;
+        pesosPerfil: string;
+        pesosExplorados: string;
+        sinGanadora: string;
+        curso: string;
+        progreso: string;
+        cursoNota: string;
+        cancelar: string;
+        cancelada: string;
+        tope: string;
+        error: string;
+        noAplica: string;
+      };
+      pros: { titulo: string; destaca: string; corta: string; item: string; mejor: string; esencial: string; tope: string; nadaDestaca: string; nadaCorta: string; nota: string };
+    };
+  };
   investigador: {
     titulo: string;
     ojo: string;
@@ -130,7 +320,6 @@ export interface Textos {
     mapaAprobado: string;
     sinMapa: string;
     historial: readonly [string, string];
-    secciones: { etiqueta: string; investigador: string; base: string };
     vigencia: {
       titulo: string;
       /** «{revisar}» y «{vencido}»: umbrales de la gramática. */

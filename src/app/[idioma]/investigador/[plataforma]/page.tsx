@@ -1,18 +1,20 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CampoPlataforma } from "@/components/atlas/CampoPlataforma";
 import { Meta } from "@/components/Meta";
+import { Pestanas } from "@/components/Pestanas";
 import { MarcaVigencia } from "@/components/atlas/MarcaVigencia";
 import { RevisionPropuesta } from "@/components/investigador/RevisionPropuesta";
 import { SinMapa } from "@/components/investigador/SinMapa";
 import { Solicitar } from "@/components/investigador/Solicitar";
 import { plantilla, plural } from "@/lib/atlas";
+import { pestanasConocimiento } from "@/lib/caso/rutas";
 import { datos, fechaDeConsulta } from "@/lib/datos";
 import { esIdioma, textos } from "@/lib/i18n";
 import { conteo, vistaInvestigador } from "@/lib/investigador/revision";
 import { urlSolicitud } from "@/lib/investigador/solicitud";
 // Estilos solo de esta pantalla: no bloquean el pintado del atlas.
+import "@/styles/secciones.css";
 import "@/styles/investigador.css";
 
 // Conocimiento · investigador de una plataforma (fiel a docs/diseno/investigador.html): la vigencia de cada
@@ -64,20 +66,7 @@ export default async function Investigador({ params }: PageProps<"/[idioma]/inve
           nota={textos(idioma).atlas.plataforma.notaInvestigador}
         />
       </div>
-      <ul className="niveles" aria-label={t.secciones.etiqueta}>
-        <li>
-          <Link href={`/${idioma}/investigador/${plataforma}`} aria-current="page">
-            <span className="n">05</span>
-            {t.secciones.investigador}
-          </Link>
-        </li>
-        <li>
-          <span className="pend">
-            <span className="n">06</span>
-            {t.secciones.base}
-          </span>
-        </li>
-      </ul>
+      <Pestanas etiqueta={textos(idioma).secciones.etiqueta} pestanas={pestanasConocimiento(textos(idioma).secciones, idioma, `/${idioma}/investigador/${plataforma}`, "investigador")} />
 
       {v.bandas ? (
         <section className="seccion" aria-labelledby="vig-t">

@@ -335,6 +335,156 @@ Todas con `scripts/demo-rojo.sh --debe-nombrar` (y `--minimo-tests 1` en las de 
   - apertura → dependencia;
   - operación → ecosistema.
 
+## Fase 2 — SMAA, Worker y pantallas base, perfil y comparación (2026-10-04)
+
+«continúa» del usuario el 2026-10-04 tras el resumen de la fase 1. Una pausa para compactar la sesión a mitad de fase
+(«Haz pausa para hacer un compact»); se retomó con «continúa».
+
+### Qué se construyó
+
+- **Simulación (`src/engine/simulacion.ts`, `sfc32.ts`, `protocolo.ts`; `7d7ca27`):**
+  - sfc32 del anexo A, con su sonda reproducida.
+  - Muestreo exactamente uniforme sobre los puntos enteros del politopo: rangos redondeados hacia dentro, criterios
+    fijos fuera, cada peso libre uniforme en su caja salvo el más ancho, que se despeja de la suma y se acepta si
+    cabe.
+  - Aceptabilidad por puesto en créditos enteros de mcm(1..N) por combinación (un empate exacto reparte 1/k), vector
+    central por restos mayores, frecuencia de «las dos primeras a menos de la banda», zona gris y semiamplitud
+    exactas con BigInt, semilla principal y tres de estabilidad (`frontera`).
+  - Por pasos, con el mismo resultado para cualquier tamaño de paso; falla cerrada en el tope de intentos;
+    N máximo 18.
+- **Worker y su contrato (D-S3-08, regla 19):** `src/workers/simulacion.worker.ts` recorre el generador puro
+  `atender`; `scripts/nucleo/fixture-simulacion.mjs` recorre el mismo y escribe `tests/fixtures/simulacion-worker.json`
+  (9 mensajes); Zod valida el fixture en Vitest (`src/lib/caso/contrato-worker.ts`) y la pantalla lee con la guarda
+  estructural `esRespuesta` (sin Zod en el navegador). Seis huellas de simulación se suman al conjunto entre motores
+  (40 sumas).
+- **Perfil del caso en borrador (`09f8527`):** `data/casos/hospital-sabana.yaml`, propuesto por el agente desde
+  § 10.4, con las tres decisiones implícitas sin responder; un borrador puede no tener instantánea (`instantanea:
+  null`) y se mira contra la base viva. Las decide la persona en la parada D… de la fase 3.
+- **Base sembrada (D-S3-14):** `scripts/datos/construir-sembrada.mjs` arma la base ficticia de la maqueta en
+  `.sembrada/datos` y construye el sitio con `BIGD_DATOS` hacia `out-sembrada/` (ignorados en git y en ESLint).
+- **Navegación (D-S3-16):** la barra lleva las cuatro secciones de la maqueta (Instrumento pendiente, sin enlace,
+  hasta la fase 4); `Pestanas` generaliza las pestañas de sección (05–06 Conocimiento; 07–10 Caso, con 09 y 10
+  pendientes). El investigador enlaza su pestaña 06 a la base.
+- **Pantallas:**
+  - `/[idioma]/base` (maqueta `base.html`): evidencias con su cita, verificación, madurez, conflicto y «por qué este
+    puntaje», con filtros (plataforma, criterio, estado); criterios; escala con los topes por madurez; convenciones
+    del método con su declaración; instantáneas. Con una base que no carga, el build se detiene; en desarrollo la
+    página muestra los errores con el formato del cargador.
+  - `/[idioma]/casos/[caso]` (maqueta `perfil.html`): pesos y rangos con su origen, restricciones con lo que eliminan
+    y por qué, decisiones implícitas (la elegida con un anillo lleno), «Aprobar perfil» deshabilitado con su razón,
+    y el contexto y los requisitos plegados. Solo lectura.
+  - `/[idioma]/casos/[caso]/comparacion` (maqueta `comparacion.html`): con el dato de hoy, el bloqueo honesto
+    («perfil en borrador» y «faltan 33 evidencias aprobadas», por plataforma). Con la base sembrada: veredicto y
+    totales, matriz, alertas de envejecimiento, sensibilidad de un factor (el criterio y el peso en la URL, totales
+    con la fórmula racional exacta), robustez (la del perfil calculada en el build; la de un peso explorado, en el
+    Worker, por pasos y cancelable) y pros y contras.
+- **Piezas:** `src/lib/caso/` (`casos.ts` carga del build, `formato.ts` números sin `Intl`, `explorar.ts` reparto
+  por restos mayores, `estado-exploracion.ts` estado en la URL, `rutas.ts`); `src/components/caso/` (`Comparacion`,
+  `Exploracion`, `Barras` en SVG, `Iconos`, `MarcoTabla`); `src/components/base/FiltroEvidencias.tsx`; estilos
+  `secciones.css` (lo común, movido de `investigador.css` sin cambiar su texto ni su orden), `caso.css` y
+  `conocimiento.css`.
+- **ADR** `decisions/design-system-s3-extensions.md`: 13 extensiones del design system, cada una con su razón.
+
+### Decisiones de la fase
+
+- **Muestreo de la simulación (desviación de D-S3-07):** «estrellas y barras» era exacto pero aceptaba el 0,47 % de
+  los intentos en el caso de la maqueta (10,9 s para las cuatro semillas). El muestreo por cajas con el peso más
+  ancho despejado es igual de exacto (uniforme sobre los mismos puntos enteros) y acepta el 90,3 % (89 ms). Las dos
+  formas coinciden en estadística sobre el caso de la maqueta; la prueba χ² sobre un politopo enumerable cubre la
+  nueva.
+- **La robustez del perfil sale del build:** la página trae, en su HTML estático, la simulación con los pesos del
+  perfil (la misma función pura que corre el Worker). El Worker solo corre al explorar otro peso. Así no hay un
+  «calculando» al abrir la página.
+- **Pesos explorados:** los totales y los eventos usan la fórmula racional exacta; los pesos enteros por restos
+  mayores (a igual resto, el de menor id) solo entran a la simulación.
+- **URL:** guarda `criterio` y `t` (centésimas), nunca el vector; una consulta que no cabe cae al peso del perfil.
+  Mientras se arrastra el control, el peso vive en el componente y la URL se escribe tras 300 ms quieto
+  (`history.replaceState` tiene cupo en Safari).
+- **El leximin solo se nombra a igual total** (D-S3-06): la frase de la maqueta «el desempate leximin tampoco los
+  separa», con totales distintos, no se dice.
+- **En «se queda corta» no se dice «la mejor del conjunto»** (la mejor de un criterio en que todas quedan cortas):
+  confundía.
+- **Con la comparación sin calcular**, el subtítulo dice «N plataformas por comparar», no «puntuadas».
+- **Todo `style=` fuera del HTML** (CSP del S2): las barras son SVG con posiciones en por ciento como atributos y
+  el progreso es un `<progress>`.
+
+### Gates nuevos de la fase (regla 15: ¿puede fallar? · rojo · a quién nombró · verde)
+
+Todas con `scripts/demo-rojo.sh --debe-nombrar`, 2026-10-04:
+
+| Gate | ¿Puede fallar? | Rojo (mutación) | A quién nombró | Verde |
+| ---- | -------------- | --------------- | -------------- | ----- |
+| χ² del muestreo | Sí | Un límite corrido en uno | «χ² sobre un politopo de 21 puntos» | ✓ |
+| Empate exacto 1/k | Sí | Crédito entero a cada empatada (`parte = L`) | «un empate exacto de totales reparte el puesto 1/k» (900 esperado, 1800 recibido) | ✓ |
+| Tope de intentos | Sí | Sin `agotada ||` | «el tope de intentos falla cerrado» (corrían las 4 semillas) | ✓ |
+| Tamaño de paso | Sí | Reiniciar los intentos en cada llamada | «el resultado no depende del tamaño de paso» | ✓ |
+| Zona gris exacta | Sí | `d*d` → `d` | «coinciden con el cálculo en coma flotante» | ✓ |
+| Contrato Worker ↔ UI (fixture + Zod) | Sí | `aceptadas` → `aceptada` y fixture regenerado | «cumple el esquema Zod del lado que lee» (`unrecognized_keys`) | ✓ 7 pruebas |
+| Costura de punta a punta, e2e (`tests/e2e/sembrada/`) | Sí | La guarda de la pantalla rechaza un resultado `completa` | «mover un peso cruza la costura» | ✓ 1 |
+| Costura en Vitest (Worker falso con el `atender` real) | Sí | La misma | «mover el peso escribe la URL, pide la simulación» | ✓ 10 |
+| INP con la CPU 4× | Sí, pero no con la primera mutación | 1.ª: un bucle de 120 ms en el manejador → **pasó**: el bucle mide tiempo de reloj y la CPU lenta no lo alarga (120 < 200). 2.ª: 250 ms | «toBeLessThanOrEqual», peor interacción 272 ms | ✓ 1 (24 ms) |
+| Estado honesto con el dato real (`tests/e2e/caso.spec.ts`) | Sí | El motivo «borrador» escribe el de «todas descartadas» | «la comparación no puntúa» | ✓ 6 |
+| Filtros de la base | Sí | `hidden={false}` | «los filtros de la base» | ✓ 1 |
+| Brecha truncada (`formato.ts`) | Sí | Redondear en vez de truncar | «4,9975» | ✓ 7 |
+| Reparto por restos mayores | Sí | Desempate por id invertido | «a igual resto» | ✓ 7 |
+| Estado en la URL | Sí | Aceptar un peso fuera de la rejilla | «una que no cabe» | ✓ 7 |
+| Instantánea citada que no existe | Sí | Caer a la base viva si no hay instantáneas | «un caso que cita una instantánea que no está» | ✓ 7 |
+| Nada desborda a 380 px | Sí: se vio rojo sobre el defecto real | — (la comparación medía 383 px: los hijos de `.dos` no se encogían) | «a 380 px nada desborda la página» | ✓ tras `min-width: 0` |
+| axe: marco de tabla enfocable | Sí: se vio rojo sobre el defecto real | — (`scrollable-region-focusable` en la tabla de aceptabilidad) | «sin violaciones serias», en los dos temas | ✓ tras `MarcoTabla` |
+
+Las rutas nuevas entran solas (por `tests/e2e/lib/rutas.ts`) a las pruebas que recorren el sitio: CSP en cuatro
+motores, G11, mismo árbol con movimiento reducido y axe en los dos temas. Esos gates ya se vieron en rojo en el S1 y
+el S2; aquí corren por primera vez sobre estas rutas.
+
+### Pasada de capturas (regla 22) y fidelidad a la maqueta
+
+El arnés `scripts/capturar-producto.mjs` aprendió:
+
+- la perilla `--arbol out-sembrada`;
+- el emparejamiento de las tres rutas con sus maquetas;
+- los controles nuevos: el selector de criterio, el control del peso (cambia el peso y la URL; cancela la simulación
+  si todavía corre), los filtros (prueba cada opción hasta que una cambia la página), los marcos de tabla, varias
+  lecturas plegadas y «Aprobar perfil» deshabilitado con su razón.
+
+Corridas:
+
+- Sitio sembrado, 6 rutas × 2 temas × 2 anchos con la maqueta al lado: 24 encuadres, 896 comprobaciones de
+  interacción, 0 fallas. La primera corrida dio 8 fallas del arnés (la opción «Solo aprobadas» no cambia nada si todas
+  están aprobadas); se corrigió el arnés, no la pantalla.
+- Sitio real, las mismas 6 rutas con la maqueta: 24 encuadres, 408 comprobaciones, 0 fallas.
+- Sitio real, todas las rutas, solo midiendo: 200 encuadres, 13 636 comprobaciones, 0 fallas. La primera corrida dio
+  8 fallas: el chequeo nuevo del botón deshabilitado alcanzaba al «Anterior» del lado a lado; se limitó a «Aprobar
+  perfil».
+
+**Leído como imagen** (el resto de los 48 encuadres por pantalla quedó medido por el arnés, no leído):
+
+| Encuadre | Qué encontré al leerlo | Arreglo |
+| -------- | ---------------------- | ------- |
+| Comparación sembrada, 1280, claro (página entera) | La columna de criterios con estilo de cabecera; la estrella del criterio esencial cae de línea; los porcentajes de la aceptabilidad se parten | `.tabla tbody th` con letra de cuerpo; `.esencial` en línea (Tailwind pone `svg { display: block }`); celdas sin partir |
+| Control del peso, 1280, claro (ampliado) | La pista de la barra no se ve | La clase `.pista` chocaba con la pista de deslizar del atlas (`display: none`): las clases de las barras pasan a `barra-…` |
+| Sensibilidad, decisiones, pesos, tarjeta de evidencia y criterios, 1280 (ampliados) | El radio deshabilitado y marcado casi no se ve; las barras de los pesos con anchos distintos por fila; el selector de criterio pegado al bloque; una sangría de más en la verificación | Anillo lleno / círculo vacío (ADR fila 4); columna de 200 px; `.filtros` a `secciones.css`; `dd > .mono` |
+| Par comparación sembrada, 1280, oscuro + robustez ampliada | La barrita de aceptabilidad ocupa toda la celda y el porcentaje queda encima; falta la nota bajo la matriz; la frase del leximin con totales distintos | `.barra-svg.barra-mini` a 64 px; `matriz.nota`; el leximin solo a igual total |
+| Totales, sensibilidad y pesos a 380, claro (ampliados) | «Ver puntajes» se estira a lo ancho | `justify-self: start` en teléfono |
+| Base sembrada, 1280, oscuro (arriba y abajo) | Los números de la simulación sin separador de miles; la declaración pegada a la lista; la insignia «vigente» pegada a la versión | `entero()`; márgenes |
+| Par comparación real, 1280, oscuro | «Tres plataformas puntuadas» cuando nada se puntuó | `subPendiente`: «por comparar» |
+| Par perfil real, 1280, oscuro | «Aprobar perfil» quedaba después de las lecturas plegadas | Va tras las decisiones, como en la maqueta |
+| Par base real, 1280, claro | El estado vacío dice que no hay evidencias y qué las trae | — |
+| Par comparación sembrada en inglés, 1280, claro (tras los arreglos) | «Se queda corta» decía «la mejor del conjunto» | No se dice en esa lista |
+| Comparación real, 1280, claro, y perfil real en inglés, 1280, oscuro (pasada final) | Los arreglos quedaron | — |
+
+Diferencias de forma frente a la maqueta que quedan (todas en el ADR `design-system-s3-extensions`): el selector de
+criterio y el control nativo del peso; el anillo de la opción elegida; las secciones de criterios, escala y
+convenciones en la base; el contexto y los requisitos plegados en el perfil; las columnas de la matriz en el orden del
+resultado (la maqueta las ordena por id).
+
+### Corridas
+
+- `pnpm typecheck` y `pnpm lint` limpios.
+- `pnpm test`: 81 archivos y 1625 pruebas, con la cobertura en verde; `src/lib/caso` 99,2 % de sentencias y
+  `src/components/caso` 93,7 %.
+- `E2E_PUERTO=3147 pnpm test:e2e` (los dos sitios construidos por la configuración): 898 pasan y 9 se saltan.
+- INP con la CPU 4×: la peor interacción midió 24 a 32 ms en las corridas locales (umbral 200).
+
 ## Desviación del plan
 
 Los hechos 1–10 y las decisiones D-S3-01…18 del plan aprobado (`Reglas del motor` incluidas) son la desviación de
@@ -350,3 +500,7 @@ la orden; se resumen aquí y se amplían a medida que ocurren:
 - Correcciones a la maqueta como mirada de TEXTO: evidencia limitante incoherente en Norte y Ejemplo, etiquetas de
   rango por punto entero, leximin dentro de la banda, crédito del empate al primero de la lista.
 - K-S3-3: un solo build en `quality` (el kit construye dos veces).
+- Fase 2: el muestreo por cajas con el peso más ancho despejado en lugar de «estrellas y barras» (los dos exactos; el
+  segundo aceptaba el 0,47 %); el perfil en borrador entra en la fase 2 (la orden lo ponía en la 3) para que las
+  pantallas muestren el estado honesto; `instantanea: null` en un borrador; la robustez del perfil se calcula en el
+  build y el Worker solo corre al explorar; las 13 extensiones del ADR `design-system-s3-extensions`.
