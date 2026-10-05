@@ -1,0 +1,68 @@
+# Escala anclada del puntaje de evidencia (especificación § 11.1, RF-02.2): cada nivel con una descripción observable.
+# La tabla de topes es RF-04.2 en el dato: lo que no está disponible de forma general aporta a lo sumo 2; si el caso
+# acepta vista previa, la vista previa y la beta cuentan enteras; lo anunciado y lo retirado, nunca.
+id: esc-evidencia
+nombre:
+  es: "Puntaje de evidencia (0 a 4)"
+  en: "Evidence score (0 to 4)"
+niveles:
+  - valor: 0
+    nombre:
+      es: "no soportado"
+      en: "not supported"
+    descripcion:
+      es: "No soportado."
+      en: "Not supported."
+  - valor: 1
+    nombre:
+      es: "parcial o con terceros"
+      en: "partial or via third parties"
+    descripcion:
+      es: "Posible solo con herramientas de terceros o con desarrollo manual considerable."
+      en: "Possible only with third-party tools or with considerable manual development."
+  - valor: 2
+    nombre:
+      es: "soportado con límites"
+      en: "supported with limits"
+    descripcion:
+      es: "Soportado con limitaciones importantes, o solo en vista previa o beta."
+      en: "Supported with major limitations, or only in preview or beta."
+  - valor: 3
+    nombre:
+      es: "maduro"
+      en: "mature"
+    descripcion:
+      es: "Disponible de forma general, con limitaciones menores documentadas."
+      en: "Generally available, with minor documented limitations."
+  - valor: 4
+    nombre:
+      es: "maduro y nativo"
+      en: "mature and native"
+    descripcion:
+      es: "Disponible de forma general, nativo, maduro y sin limitaciones relevantes para el caso."
+      en: "Generally available, native, mature and without limitations relevant to the case."
+tope_por_madurez:
+  - madurez: disponible-general
+    disponible: true
+    tope: 4
+    tope_aceptando_vista_previa: 4
+  - madurez: vista-previa-publica
+    disponible: false
+    tope: 2
+    tope_aceptando_vista_previa: 4
+  - madurez: vista-previa-privada
+    disponible: false
+    tope: 2
+    tope_aceptando_vista_previa: 4
+  - madurez: beta
+    disponible: false
+    tope: 2
+    tope_aceptando_vista_previa: 4
+  - madurez: anunciado
+    disponible: false
+    tope: 2
+    tope_aceptando_vista_previa: 2
+  - madurez: retirado
+    disponible: false
+    tope: 2
+    tope_aceptando_vista_previa: 2

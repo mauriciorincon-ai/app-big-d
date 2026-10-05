@@ -1,0 +1,15 @@
+# Capacidad de la especificación § 10.2: el nombre es el del tipo en la gramática plataformas-datos (el cargador lo exige).
+id: cap-ingesta
+nombre:
+  es: "Ingesta e integración de datos"
+  en: "Data ingestion and integration"
+definicion:
+  es: "Traer los datos desde los sistemas donde nacen hasta la plataforma, completos y a tiempo, sin reconstruirlos a mano."
+  en: "Bringing data from the systems where it originates into the platform, complete and on time, without rebuilding it by hand."
+preguntas_guia:
+  - es: "¿Qué conectores nativos existen para bases relacionales de origen?"
+    en: "Which native connectors exist for source relational databases?"
+  - es: "¿Soporta captura de cambios?"
+    en: "Does it support change data capture?"
+  - es: "¿Soporta llegada incremental de archivos?"
+    en: "Does it support incremental file arrival?"

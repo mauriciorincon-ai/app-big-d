@@ -1,0 +1,10 @@
+# Criterio de la especificación § 10.3 (transversal: se alimenta de evidencias del propio criterio).
+id: crit-dependencia
+nombre:
+  es: "Dependencia del proveedor"
+  en: "Vendor lock-in"
+que_evalua:
+  es: "Qué tan costoso sería salir de la plataforma (más puntaje: más fácil salir)."
+  en: "How costly it would be to leave the platform (higher score: easier to leave)."
+tipo: transversal
+escala_id: esc-evidencia

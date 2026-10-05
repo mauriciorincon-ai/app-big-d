@@ -214,6 +214,111 @@ el bundle regenerado no cambia (`node scripts/design-sync/generar.mjs`, 11 archi
 
   Margen del 5,8 al 6,5 %. La decisión del ADR lo cubre.
 
+## Fase 1 — Datos y núcleo (2026-10-04)
+
+«continúa» del usuario el 2026-10-04 tras el resumen de la fase 0.
+
+### Qué se construyó
+
+- **Núcleo `src/engine/`** (puro, entero, sin reloj ni azar, sin Zod y sin `node:`):
+  - `puntaje.ts`: celdas con el tope por madurez antes del mínimo de las esenciales, evidencia limitante, totales en
+    unidades (U = Σ peso × puntaje), orden con leximin y puesto compartido en el empate exacto, veredicto con la banda
+    de empate del dato.
+  - `sensibilidad.ts`: rectas exactas por plataforma, cortes racionales (inversión, entrada y salida del empate,
+    puestos 2 y 3), estados por tramo sin evaluar en puntos medios, eventos en la rejilla alejándose del peso actual,
+    `rango-vacio` con el mínimo que invertiría, `indefinida` con todo el peso en un criterio y `totalesCon` para la
+    pantalla.
+  - `pros-contras.ts` (contra el ancla y la mejor), `alertas.ts` (vigencia y madurez), `vigencia.ts` (días civiles
+    enteros, copia del algoritmo del diagramador), `canonico.ts` (RFC 8785 estricto), `racional.ts`, `evaluar.ts`,
+    `referencia.ts` (9 casos de RF-09.1 con su resultado esperado) y `tipos.ts`.
+- **Datos `src/lib/datos/`:**
+  - `conocimiento.ts`: esquemas Zod de capacidad, criterio, escala con la tabla de topes, convenciones, evidencia,
+    caso e instantánea.
+  - `posicion.ts`: lectura con `archivo:línea:col · id · campo · regla` y mensajes de Zod en español.
+  - `cargar-conocimiento.ts`: el cargador, que cruza archivos, gramática, celdas, instantáneas y sellos.
+  - `instantanea.ts`: contenido congelado, huella, cambios, siguiente versión, huella del caso y la entrada del núcleo.
+- **Dato real:** `data/capacidades/` (6, con los nombres de la gramática), `data/criterios/` (11: 6 de capacidad y 5
+  transversales de § 10.3), `data/escalas/esc-evidencia.yaml` (§ 11.1 con los topes de RF-04.2) y
+  `data/convenciones/metodo.yaml` (70/50, 5 puntos, 30/60, anclas 4 y 2, rejilla de una décima, semilla 20261004 con
+  tres de estabilidad, 10 000 aceptadas, tope de 5 000 000 intentos, z = 1,96 y la declaración de convención). Sin
+  evidencias, instantáneas ni casos: llegan en la fase 3.
+- **Pruebas:**
+  - `tests/unit/nucleo/`: canónico, racionales y fechas; evaluar sobre el caso de la maqueta; los casos de
+    referencia; 7 propiedades; huellas; aislamiento.
+  - `tests/unit/datos-conocimiento.test.ts`: la base del repo, una base ficticia completa de punta a punta y 65 formas
+    de dato roto, cada una con su línea.
+  - `tests/unit/lib/base-sabana.ts`: arma en disco la base ficticia de la maqueta (Ejemplo, Norte, Sur y Este; 44
+    evidencias; la instantánea; el caso aprobado con su sello).
+- **Gate entre motores (D-S3-15):** `tests/determinismo/nucleo-casos.ts` (9 de referencia, 5 variantes del caso de
+  la maqueta y 20 bases pseudoaleatorias fijas), `nucleo.spec.ts` (Chromium, Firefox y WebKit con `crypto.subtle`),
+  `tests/unit/nucleo/huellas.test.ts` (Node) y `NUCLEO.SHA256SUMS` (34 sumas). El job `diagramador` corre ahora
+  también `tests/unit/nucleo` en ubuntu y macOS.
+- `fast-check` fijado exacto en 4.10.2 (D-S3-09).
+
+### Comprobado contra la maqueta
+
+- Totales del caso de la maqueta: Norte 31 500 U (78,75), Ejemplo 30 300 (75,75), Sur 25 500 (63,75); brecha de
+  1 200 U < 2 000: empate técnico entre Norte y Ejemplo. Este sale por la restricción de residencia.
+- Sensibilidad del gobierno (25 puntos, rango 0–50):
+  - La inversión exacta cae en 16 250/11 centésimas (14,77 puntos), la misma fórmula de la maqueta (`tInv` =
+    325/22). Bajando el peso, la rejilla la muestra en **14,7**: en 14,8 Norte todavía lidera.
+  - La salida del empate cae en 35 000/11 (31,82) y la rejilla la muestra en **31,9**, como la maqueta.
+
+### Correcciones a la maqueta (mirada de TEXTO, «maquetado, no visto» → ⭐)
+
+- La inversión del gobierno dice «14,8» (redondeo); la pantalla dirá 14,7, el primer valor en que el cambio ya se ve.
+- La evidencia limitante de Ejemplo es la IA y la de Norte la IA 0/4, y la IA no es esencial en el caso. Con la regla
+  (el esencial más bajo; a igual puntaje, el de más peso):
+  - Ejemplo: gobierno 3/4, que empata con cumplimiento 3/4 y gana por peso;
+  - Norte: almacenamiento 3/4.
+
+### Gates nuevos de la fase (regla 15: ¿puede fallar? · rojo · a quién nombró · verde)
+
+Todas con `scripts/demo-rojo.sh --debe-nombrar` (y `--minimo-tests 1` en las de Vitest), 2026-10-04:
+
+| Gate | ¿Puede fallar? | Rojo (mutación) | A quién nombró | Verde |
+| ---- | -------------- | --------------- | -------------- | ----- |
+| Monotonía corregida (E-1) | Sí | La redacción original: «la ventaja de p sobre cada q no baja al subir w_c» | «monotonía corregida». Contraejemplo con t1 = 0 y t2 = 1: la ventaja de p baja de 3 a 2,9997 aunque p tiene el máximo (empatado en 0) | ✓ 1 prueba |
+| Invariancia al orden | Sí, pero no con la primera mutación | 1.ª: quitar el desempate por id de `ordenar` → **pasó**: las evaluadas ya llegan por id y el orden es estable (defensa redundante, se queda). 2.ª: quitar el `.sort` de las evaluadas | «invariancia al orden», con tres plataformas empatadas | ✓ 1 prueba |
+| Huella del núcleo en 3 navegadores | Sí | La fecha de `sabana-tarde`, de 12-31 a 12-30 | «el núcleo da en este navegador las huellas que da en Node» en Chromium, Firefox y WebKit, con la huella de `sabana-tarde` | ✓ 3 |
+| Huella del núcleo en Node | Sí, pero el conjunto no tocaba el día 60 | 1.ª: vencida desde el día 61 (`>=` → `>`) → **pasó**: ninguna entrada caía en el día 60. Se agregó `sabana-dia-60` (34 sumas) y se repitió | «cada resultado del núcleo tiene la huella fijada», con el diff en `sabana-dia-60` | ✓ 1 prueba |
+| Carga: base incompleta (RF-01.2) | Sí | `fecha_verificacion` opcional en el esquema | «evidencia sin fecha de verificación» | ✓ 1 prueba |
+| Casos de referencia (RF-09.1) | Sí | Ganadora clara con cualquier brecha ≥ 0 | «empate-exacto da lo esperado» | ✓ 1 prueba |
+| Rejilla de la sensibilidad | Sí, pero no con la primera mutación | 1.ª: piso en vez de techo en el bucle de subida → **pasó**: es inocua (el bucle sube solo). 2.ª: redondeo al más cercano, como la maqueta | «la rejilla lo muestra en 31,9» (`expected 3180 to be 3190`) | ✓ 1 prueba |
+| Oráculo de fuerza bruta | Sí | Sin los cortes de las rectas (solo los de la banda) | «oráculo de fuerza bruta». Contraejemplo de dos plataformas: pesos [1, 9999] | ✓ 1 prueba |
+| Aislamiento del núcleo | Sí | `import { z } from "zod"` en `vigencia.ts` | «se queda dentro de src/engine» (`vigencia.ts → zod`) | ✓ 1 prueba |
+
+### Corridas
+
+- `pnpm typecheck`, `pnpm lint` y `pnpm peers check` limpios.
+- `pnpm test`: 75 archivos y 1569 pruebas, con la cobertura en verde.
+- Las 7 propiedades tardan unos 2,7 s, con semilla 20261004 y las corridas fijas.
+- `playwright test -c playwright.determinismo.config.ts tests/determinismo/nucleo.spec.ts`: 3 de 3 en local.
+- Cobertura de ramas:
+  - `src/engine/`: de 88,9 % a 100 % por archivo;
+  - los cuatro módulos nuevos de `src/lib/datos/`: de 70,5 % a 92,2 %.
+
+### Decisiones de la fase (concretan D-S3-05 y D-S3-06)
+
+- **Evidencias:**
+  - Viven en `data/evidencias/<plataforma>/evi-<plataforma>-….yaml`.
+  - Cada fuente lleva su `cita` textual y su `verificacion` (verificada o no verificable, fecha, HTTP y sha256).
+  - `conflicto_de_interes` es la enumeración de E-18 más `propio-fabricante`: la lista de E-18 no tenía al propio
+    fabricante, que es el caso de toda documentación oficial.
+- **Topes por madurez:** anunciado y retirado tienen tope 2 y no suben con `acepta_vista_previa` (RF-04.2 al pie de
+  la letra; la escala no dice más).
+- **Caso:**
+  - El sello es `aprobacion: {fecha, huella}`, sin «por»: cero identificadores.
+  - Cada peso lleva `origen` (RF-03.3) y, además, `fijado_por` (quién del caso, como la maqueta).
+  - Los criterios con peso 0 se declaran igual.
+- **Instantánea:** es un JSON que se basta solo (`data/instantaneas/<versión>.json`, con el contenido congelado). El
+  caso evalúa la instantánea, nunca la base viva.
+- **Sensibilidad:** vigila los puestos 2 y 3 solo hasta N − 1, porque el último queda determinado por los demás.
+- **Prueba con la base de la maqueta:** sus criterios que no están en la especificación se leen así:
+  - equipo → habilidades;
+  - apertura → dependencia;
+  - operación → ecosistema.
+
 ## Desviación del plan
 
 Los hechos 1–10 y las decisiones D-S3-01…18 del plan aprobado (`Reglas del motor` incluidas) son la desviación de
