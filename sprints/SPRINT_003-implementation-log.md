@@ -298,6 +298,22 @@ Todas con `scripts/demo-rojo.sh --debe-nombrar` (y `--minimo-tests 1` en las de 
   - `src/engine/`: de 88,9 % a 100 % por archivo;
   - los cuatro módulos nuevos de `src/lib/datos/`: de 70,5 % a 92,2 %.
 
+### CI del push de la fase 1
+
+- Push de `1f71c8c`, corrida 37246264327. `quality`, `e2e`, `lighthouse`, `diagramador (ubuntu-latest)` y
+  `diagramador (macos-latest)` terminaron los cinco con conclusión propia `success`; Vercel en `pass`; el PR no tiene
+  comentarios.
+- **Primera vez en la CI** (regla 15, «¿lo viste correr?»): `tests/unit/nucleo` dentro del job `diagramador` y
+  `nucleo.spec.ts`.
+- **Cifras:**
+  - `quality`: pasan 1565 pruebas y se saltan 4 (las de gitleaks, K-S3-6).
+  - `diagramador`, en ubuntu y en macOS: 29 archivos y 954 pruebas en Node; 9 de 9 en los navegadores (6 del
+    diagramador y el núcleo en Chromium, Firefox y WebKit).
+  - `e2e`: pasan 785.
+  - Build como el proveedor: 59 páginas idénticas a `out/`; la CSP está en las 46.
+  - `lighthouse-margen`: 3 avisos de LCP (las dos rutas de `recorrido` de Ejemplo y la de Fabric), que cubre el ADR
+    del margen.
+
 ### Decisiones de la fase (concretan D-S3-05 y D-S3-06)
 
 - **Evidencias:**
