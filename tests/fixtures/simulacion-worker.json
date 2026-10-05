@@ -1,0 +1,265 @@
+[
+  {
+    "tipo": "progreso",
+    "id": 1,
+    "semilla": 20261004,
+    "indice": 0,
+    "semillas": 2,
+    "aceptadas": 219,
+    "objetivo": 600,
+    "intentos": 250
+  },
+  {
+    "tipo": "progreso",
+    "id": 1,
+    "semilla": 20261004,
+    "indice": 0,
+    "semillas": 2,
+    "aceptadas": 441,
+    "objetivo": 600,
+    "intentos": 500
+  },
+  {
+    "tipo": "progreso",
+    "id": 1,
+    "semilla": 20261005,
+    "indice": 1,
+    "semillas": 2,
+    "aceptadas": 68,
+    "objetivo": 600,
+    "intentos": 72
+  },
+  {
+    "tipo": "progreso",
+    "id": 1,
+    "semilla": 20261005,
+    "indice": 1,
+    "semillas": 2,
+    "aceptadas": 288,
+    "objetivo": 600,
+    "intentos": 322
+  },
+  {
+    "tipo": "progreso",
+    "id": 1,
+    "semilla": 20261005,
+    "indice": 1,
+    "semillas": 2,
+    "aceptadas": 523,
+    "objetivo": 600,
+    "intentos": 572
+  },
+  {
+    "tipo": "resultado",
+    "id": 1,
+    "resultado": {
+      "estado": "completa",
+      "plataformas": [
+        "norte",
+        "plataforma-ejemplo",
+        "sur"
+      ],
+      "criterios": [
+        "crit-almacenamiento",
+        "crit-consumo",
+        "crit-costo",
+        "crit-cumplimiento",
+        "crit-dependencia",
+        "crit-ecosistema",
+        "crit-gobierno",
+        "crit-habilidades",
+        "crit-ia",
+        "crit-ingesta",
+        "crit-transformacion"
+      ],
+      "L": 6,
+      "objetivo": 600,
+      "ganadora": "norte",
+      "semillas": [
+        {
+          "semilla": 20261004,
+          "estado": "completa",
+          "aceptadas": 600,
+          "intentos": 678,
+          "aceptabilidad": [
+            [
+              3600,
+              0,
+              0
+            ],
+            [
+              0,
+              3600,
+              0
+            ],
+            [
+              0,
+              0,
+              3600
+            ]
+          ],
+          "central": [
+            [
+              1003,
+              1000,
+              1203,
+              798,
+              301,
+              198,
+              2498,
+              497,
+              503,
+              803,
+              1196
+            ],
+            null,
+            null
+          ],
+          "cerca": 597,
+          "clase": "robusta",
+          "zona_gris": false,
+          "semiamplitud_centesimas": 0
+        },
+        {
+          "semilla": 20261005,
+          "estado": "completa",
+          "aceptadas": 600,
+          "intentos": 656,
+          "aceptabilidad": [
+            [
+              3600,
+              0,
+              0
+            ],
+            [
+              0,
+              3600,
+              0
+            ],
+            [
+              0,
+              0,
+              3600
+            ]
+          ],
+          "central": [
+            [
+              1002,
+              999,
+              1194,
+              794,
+              297,
+              202,
+              2508,
+              502,
+              501,
+              803,
+              1198
+            ],
+            null,
+            null
+          ],
+          "cerca": 598,
+          "clase": "robusta",
+          "zona_gris": false,
+          "semiamplitud_centesimas": 0
+        }
+      ],
+      "clase": "robusta",
+      "estable": true,
+      "frontera": false
+    }
+  },
+  {
+    "tipo": "progreso",
+    "id": 2,
+    "semilla": 20261004,
+    "indice": 0,
+    "semillas": 2,
+    "aceptadas": 23,
+    "objetivo": 600,
+    "intentos": 25
+  },
+  {
+    "tipo": "resultado",
+    "id": 2,
+    "resultado": {
+      "estado": "tope-de-intentos",
+      "plataformas": [
+        "norte",
+        "plataforma-ejemplo",
+        "sur"
+      ],
+      "criterios": [
+        "crit-almacenamiento",
+        "crit-consumo",
+        "crit-costo",
+        "crit-cumplimiento",
+        "crit-dependencia",
+        "crit-ecosistema",
+        "crit-gobierno",
+        "crit-habilidades",
+        "crit-ia",
+        "crit-ingesta",
+        "crit-transformacion"
+      ],
+      "L": 6,
+      "objetivo": 600,
+      "ganadora": "norte",
+      "semillas": [
+        {
+          "semilla": 20261004,
+          "estado": "tope-de-intentos",
+          "aceptadas": 36,
+          "intentos": 40,
+          "aceptabilidad": [
+            [
+              216,
+              0,
+              0
+            ],
+            [
+              0,
+              216,
+              0
+            ],
+            [
+              0,
+              0,
+              216
+            ]
+          ],
+          "central": [
+            [
+              973,
+              996,
+              1246,
+              808,
+              304,
+              194,
+              2477,
+              496,
+              507,
+              798,
+              1201
+            ],
+            null,
+            null
+          ],
+          "cerca": 36,
+          "clase": null,
+          "zona_gris": false,
+          "semiamplitud_centesimas": null
+        }
+      ],
+      "clase": null,
+      "estable": false,
+      "frontera": false
+    }
+  },
+  {
+    "tipo": "error",
+    "id": 3,
+    "mensaje": "núcleo: la simulación compara al menos dos plataformas"
+  }
+]

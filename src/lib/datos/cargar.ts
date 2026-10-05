@@ -4,6 +4,7 @@ import { coberturaDeRangos, validate, validateGrammar, type Cobertura, type Entr
 import { parse } from "yaml";
 import { IDIOMAS, textos } from "@/lib/i18n";
 import { esquemaPlataforma, type Plataforma } from "./esquemas";
+import { dirDatos } from "./dir";
 import { fechaDeConsulta } from "./fecha";
 import { migrarContrato } from "./migrar";
 
@@ -104,7 +105,7 @@ function cobertura(raiz: string): Cobertura {
  * `dir` = la carpeta de datos; `raiz` = la del repo (para la cobertura de la fuente); `fecha` = el «hoy» de las
  * cuatro edades en que V16 dibuja cada mapa (la fecha de consulta del build).
  */
-export function cargarDatos(dir = join(process.cwd(), "data"), raiz = process.cwd(), fecha = fechaDeConsulta()): Datos {
+export function cargarDatos(dir = dirDatos(), raiz = process.cwd(), fecha = fechaDeConsulta()): Datos {
   const fallas: string[] = [];
   // Un YAML mal formado rompía la carga con «Map keys must be unique at line 2», sin decir qué archivo.
   const leerYaml = (ruta: string, archivo: string): unknown => {

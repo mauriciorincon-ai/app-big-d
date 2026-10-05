@@ -102,7 +102,7 @@ export function entradaDe(caso: Caso, inst: Instantanea): Entrada {
         fecha_verificacion: e.fecha_verificacion,
       })),
       escala: { max: escala.niveles.at(-1)!.valor, topes: escala.tope_por_madurez },
-      convenciones: { umbral_empate_centesimas: c.convenciones.umbral_empate_centesimas, vigencia: c.convenciones.vigencia, pros_contras: c.convenciones.pros_contras, sensibilidad: c.convenciones.sensibilidad },
+      convenciones: { umbral_empate_centesimas: c.convenciones.umbral_empate_centesimas, vigencia: c.convenciones.vigencia, pros_contras: c.convenciones.pros_contras, sensibilidad: c.convenciones.sensibilidad, robustez: c.convenciones.robustez, simulacion: c.convenciones.simulacion },
     },
   };
 }

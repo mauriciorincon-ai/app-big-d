@@ -2,7 +2,8 @@
 // el caso de la maqueta en cuatro variantes y veinte bases pseudoaleatorias fijas. Node (tests/unit/nucleo/huellas)
 // y los tres navegadores (nucleo.spec.ts) evalúan las mismas y comparan la huella SHA-256 del texto canónico con
 // tests/determinismo/NUCLEO.SHA256SUMS. Sin fast-check: el generador es un xorshift entero propio, el mismo en todos.
-import { CASOS_DE_REFERENCIA, canonicoEstricto, evaluar, type Entrada } from "../../src/engine";
+// La simulación entra también: la del caso de la maqueta entera (4 semillas × 10 000) y la de cinco bases aleatorias.
+import { CASOS_DE_REFERENCIA, canonicoEstricto, entradaSimulacion, evaluar, simular, type Entrada } from "../../src/engine";
 import { sabana } from "../unit/nucleo/lib/sabana";
 
 function xorshift(semilla: number) {
@@ -58,5 +59,13 @@ export function casosNucleo(): { caso: string; texto: string }[] {
     out.push({ caso: nombre, texto: canonicoEstricto(evaluar(e)) });
   }
   for (let s = 1; s <= 20; s++) out.push({ caso: `aleatoria-${s}`, texto: canonicoEstricto(evaluar(aleatoria(s * 7_919))) });
+  const simulada = (nombre: string, e: Entrada, aceptadas?: number) => {
+    const r = evaluar(e);
+    const es = r.tipo === "evaluado" ? entradaSimulacion(e, r) : null;
+    if (!es) throw new Error(`${nombre}: sin simulación`);
+    out.push({ caso: nombre, texto: canonicoEstricto(simular(aceptadas ? { ...es, aceptadas } : es)) });
+  };
+  simulada("simulacion-sabana", sabana());
+  for (const s of [2, 4, 6, 10, 17]) simulada(`simulacion-aleatoria-${s}`, aleatoria(s * 7_919), 2_000);
   return out;
 }

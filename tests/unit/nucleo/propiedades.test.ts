@@ -44,7 +44,7 @@ function entrada(b: Base): Entrada {
       criterios: b.pesos.map((_, j) => ({ id: C(j), tipo: "transversal" as const })),
       evidencias: b.puntajes.flatMap((ss, i) => ss.map((s, j) => ({ id: `evi-${P(i)}-${C(j)}`, plataforma_id: P(i), criterio_id: C(j), puntaje: s, madurez: "disponible-general", esencial: true, estado: "aprobada" as const, fecha_verificacion: "2026-10-01" }))),
       escala: { max: 4, topes: [{ madurez: "disponible-general", disponible: true, tope: 4, tope_aceptando_vista_previa: 4 }] },
-      convenciones: { umbral_empate_centesimas: 500, vigencia: { revisar_dias: 30, vencido_dias: 60 }, pros_contras: { ancla_destaca: 4, ancla_corta: 2, max_por_lista: 3 }, sensibilidad: { paso_centesimas: 10 } },
+      convenciones: { umbral_empate_centesimas: 500, vigencia: { revisar_dias: 30, vencido_dias: 60 }, pros_contras: { ancla_destaca: 4, ancla_corta: 2, max_por_lista: 3 }, sensibilidad: { paso_centesimas: 10 }, robustez: { robusta_pct: 70, fragil_pct: 50 }, simulacion: { semilla: 1, semillas_estabilidad: [2], aceptadas: 100, tope_intentos: 100_000, z_centesimas: 196 } },
     },
   };
 }

@@ -12,6 +12,6 @@ it("cada import de src/engine es relativo y se queda dentro de src/engine", () =
   const ajenos = readdirSync(DIR)
     .filter((f) => f.endsWith(".ts"))
     .flatMap((f) => [...readFileSync(join(DIR, f), "utf8").matchAll(/^\s*(?:import|export)\b[^;]*?\bfrom\s+["']([^"']+)["']/gm)].map((m) => [f, m[1]!] as const))
-    .filter(([, de]) => !/^\.\/[a-z-]+$/.test(de));
+    .filter(([, de]) => !/^\.\/[a-z0-9-]+$/.test(de));
   expect(ajenos).toEqual([]);
 });

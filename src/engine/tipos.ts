@@ -49,6 +49,10 @@ export interface ConvencionesMotor {
   pros_contras: { ancla_destaca: number; ancla_corta: number; max_por_lista: number };
   /** La rejilla en que la pantalla muestra un evento de la sensibilidad (10 = una décima de punto). */
   sensibilidad: { paso_centesimas: number };
+  /** RF-04.7: robusta desde `robusta_pct`, frágil por debajo de `fragil_pct` (E-7: convención declarada). */
+  robustez: { robusta_pct: number; fragil_pct: number };
+  /** RF-04.6: semilla declarada y las de estabilidad, combinaciones aceptadas, tope de intentos y z del intervalo. */
+  simulacion: { semilla: number; semillas_estabilidad: number[]; aceptadas: number; tope_intentos: number; z_centesimas: number };
 }
 
 /** Lo que el núcleo necesita de la instantánea de conocimiento. */

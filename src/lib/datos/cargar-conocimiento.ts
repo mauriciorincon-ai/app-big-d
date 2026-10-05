@@ -6,6 +6,7 @@ import { ErrorDeDatos, esDominioDeEjemplo } from "./cargar";
 import { esquemaCapacidad, esquemaCaso, esquemaConvenciones, esquemaCriterio, esquemaEscala, esquemaEvidencia, esquemaInstantanea, type Capacidad, type Caso, type Convenciones, type Criterio, type Escala, type Evidencia, type Instantanea } from "./conocimiento";
 import { esquemaPlataforma, type Plataforma } from "./esquemas";
 import { cambiosEntre, compararInstantanea, huellaCaso, huellaDe, type Base } from "./instantanea";
+import { dirDatos } from "./dir";
 import { migrarContrato } from "./migrar";
 import { leerConPosicion, linea, validarLeido, type Leido, type Ruta } from "./posicion";
 import { vocabularioVetado } from "./vocabulario";
@@ -103,7 +104,7 @@ function cruzarBase(b: { plataformas: { id: string; ficticia: boolean }[]; capac
 }
 
 /** `dir` = la carpeta de datos (data/ o un árbol de prueba). */
-export function cargarConocimiento(dir = join(process.cwd(), "data")): Conocimiento {
+export function cargarConocimiento(dir = dirDatos()): Conocimiento {
   const fallas: string[] = [];
 
   const plataformas = entidades<Plataforma>(join(dir, "plataformas"), "data/plataformas", esquemaPlataforma, fallas).map((x) => x.v);

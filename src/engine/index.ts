@@ -10,3 +10,6 @@ export { PUESTOS_VIGILADOS, sensibilidadDe, TOTAL, totalesCon } from "./sensibil
 export type * from "./tipos";
 export { diasEntre, estadoVigencia, type EstadoVigencia } from "./vigencia";
 export { CASOS_DE_REFERENCIA, correrReferencia, resumen, type CasoDeReferencia, type Resumen } from "./referencia";
+export { enteroMenorQue, sfc32, siguiente, type Sfc32 } from "./sfc32";
+export { avanzar, entradaSimulacion, enZonaGris, iniciar, muestras, N_MAX_SIMULACION, rangoEntero, resultadoDe, semiamplitud, simular, type Clase, type EntradaSimulacion, type EstadoSimulacion, type ResultadoSemilla, type ResultadoSimulacion } from "./simulacion";
+export { atender, type Peticion, type Respuesta } from "./protocolo";

@@ -53,6 +53,8 @@ export function base(): BaseMotor {
       vigencia: { revisar_dias: 30, vencido_dias: 60 },
       pros_contras: { ancla_destaca: 4, ancla_corta: 2, max_por_lista: 3 },
       sensibilidad: { paso_centesimas: 10 },
+      robustez: { robusta_pct: 70, fragil_pct: 50 },
+      simulacion: { semilla: 20_261_004, semillas_estabilidad: [20_261_005, 20_261_006, 20_261_007], aceptadas: 10_000, tope_intentos: 5_000_000, z_centesimas: 196 },
     },
   };
 }
