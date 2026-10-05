@@ -485,6 +485,23 @@ resultado (la maqueta las ordena por id).
 - `E2E_PUERTO=3147 pnpm test:e2e` (los dos sitios construidos por la configuración): 898 pasan y 9 se saltan.
 - INP con la CPU 4×: la peor interacción midió 24 a 32 ms en las corridas locales (umbral 200).
 
+
+### CI del push de la fase 2
+
+- Push de `f7654d1` (con `7d7ca27` y `09f8527`), corrida 37253334325. `quality`, `e2e`, `lighthouse`,
+  `diagramador (ubuntu-latest)` y `diagramador (macos-latest)` terminaron los cinco con conclusión propia `success`;
+  Vercel en `pass`; el PR no tiene comentarios.
+- **Primera vez en la CI** (regla 15, «¿lo viste correr?»): el segundo servidor de Playwright (el sitio sembrado),
+  el proyecto `sembrada`, `tests/e2e/caso.spec.ts` y las rutas nuevas dentro de las pruebas que recorren el sitio.
+- **Cifras:**
+  - `quality`: pasan 1621 pruebas y se saltan 4 (las de gitleaks, K-S3-6). Build como el proveedor: 65 páginas
+    idénticas a `out/`; la CSP está en las 52.
+  - `diagramador`: 972 pruebas en Node (macOS) y 9 de 9 en los navegadores (el núcleo y la simulación en Chromium,
+    Firefox y WebKit).
+  - `e2e`: pasan 898 y se saltan 9. INP con la CPU 4× en el runner: peor interacción 72 ms en 21 eventos.
+  - `lighthouse-margen`: los mismos 3 avisos de LCP de la fase 1 (los `recorrido` de Ejemplo y el de Fabric), que
+    cubre el ADR del margen. Las rutas nuevas entran a Lighthouse en la fase 4.
+
 ## Desviación del plan
 
 Los hechos 1–10 y las decisiones D-S3-01…18 del plan aprobado (`Reglas del motor` incluidas) son la desviación de
