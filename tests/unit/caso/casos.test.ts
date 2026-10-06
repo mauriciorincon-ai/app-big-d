@@ -33,9 +33,16 @@ describe("el caso del repo (borrador)", () => {
     if (e.resultado.tipo !== "no-evaluable") throw new Error("el borrador no debía evaluarse");
     expect(e.resultado.motivos.map((m) => m.motivo)).toEqual(["perfil-en-borrador", "falta-evidencia"]);
     const falta = e.resultado.motivos.find((m) => m.motivo === "falta-evidencia");
-    // Ejemplo sale por su restricción: quedan las reales, cada una sin sus criterios.
-    const reales = k.plataformas.filter((p) => !p.ficticia).length;
-    expect(falta && "faltantes" in falta ? falta.faltantes.length : 0).toBe(reales * caso.criterios.length);
+    // Ejemplo sale por su restricción: quedan las reales, y de cada una los criterios del caso sin una evidencia
+    // aprobada. Se cuenta aquí desde el dato (no con el motor), para que la prueba siga a cada aprobación.
+    const criterioDe = (e: (typeof k.evidencias)[number]) => e.criterio_id ?? k.criterios.find((c) => c.capacidad_id === e.capacidad_id)?.id;
+    const cubiertas = new Set(k.evidencias.filter((e) => e.estado_aprobacion === "aprobada").map((e) => `${e.plataforma_id} ${criterioDe(e)}`));
+    const esperadas = k.plataformas
+      .filter((p) => !p.ficticia)
+      .flatMap((p) => caso.criterios.filter((c) => !cubiertas.has(`${p.id} ${c.criterio_id}`)).map((c) => `${p.id} ${c.criterio_id}`));
+    expect(esperadas.length).toBeGreaterThan(0);
+    const faltantes = falta && "faltantes" in falta ? falta.faltantes.map((f) => `${f.plataforma_id} ${f.criterio_id}`) : [];
+    expect(faltantes.toSorted()).toEqual(esperadas.toSorted());
   });
 
   it("un caso que cita una instantánea que no está en la base es un error, no la base viva", () => {

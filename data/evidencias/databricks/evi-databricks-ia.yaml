@@ -1,0 +1,67 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-databricks-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/databricks.jsonl).
+id: evi-databricks-ia
+plataforma_id: databricks
+capacidad_id: cap-ia
+afirmacion:
+  es: Con Genie Agents cada persona ve solo los datos que tiene autorizados y cada consulta queda a su nombre; Unity Catalog gobierna también los modelos, con control de acceso, auditoría y linaje.
+  en: With Genie Agents each person sees only the data they are authorized to see and every query is attributed to them; Unity Catalog also governs models, with access control, auditing and lineage.
+componentes:
+  - genie-agents
+  - unity-catalog
+madurez: disponible-general
+puntaje: 3
+justificacion_puntaje:
+  es: "3 y no 4: Genie admite otros idiomas, pero su marco envuelve las instrucciones en inglés, algo que un hospital que pregunta en español tiene que probar antes de contar con él. 3 y no 2: el agente y el gobierno de modelos en Unity Catalog son nativos, sin herramientas de terceros, y Genie está disponible de forma general."
+  en: "3, not 4: Genie works in other languages, but its framework wraps prompts in English, something a hospital asking in Spanish has to test before relying on it. 3, not 2: the agent and model governance in Unity Catalog are native, with no third-party tools, and Genie is generally available."
+esencial: true
+fuentes:
+  - url: https://docs.databricks.com/aws/en/genie-agents/concepts
+    titulo: Genie Agents concepts | Databricks on AWS
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Each user sees only the data they are authorized to access, and each query is attributed to the end user in
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 093426b6869ac8ab2cc3377c7b57391e1fa8a91251d589c850ca6a3acbba8587
+  - url: https://docs.databricks.com/aws/en/genie-agents/concepts
+    titulo: Genie Agents concepts | Databricks on AWS
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: You can use Genie Agents in languages other than English, such as Portuguese and French. However, the underlying agent framework wraps prompts in English.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 093426b6869ac8ab2cc3377c7b57391e1fa8a91251d589c850ca6a3acbba8587
+  - url: https://docs.databricks.com/aws/en/machine-learning/manage-model-lifecycle/
+    titulo: Manage model lifecycle in Unity Catalog | Databricks on AWS
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Models in Unity Catalog extends the benefits of Unity Catalog to ML models, including centralized access control, auditing, lineage, and model discovery across workspaces.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 5a21b5a51fd906de02eb02ef26de0c18c66f5105504906987a0fcf4abaa0f912
+  - url: https://www.databricks.com/blog/aibi-genie-now-generally-available
+    titulo: AI/BI Genie is now Generally Available | Databricks Blog
+    tipo: oficial
+    fecha_publicacion: 2025-06-12
+    conflicto_de_interes: propio-fabricante
+    cita: AI/BI Genie will now join AI/BI Dashboards as Generally Available on all clouds
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: d90ca405435cd01498c80cc1f5f613983086a4cac419bf3fdeaa6373a0815293
+fecha_verificacion: 2026-10-06
+limitaciones:
+  - es: El marco del agente envuelve las instrucciones en inglés, aunque se le pregunte en otro idioma.
+    en: The agent framework wraps prompts in English, even when asked in another language.
+origen: agente-investigador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

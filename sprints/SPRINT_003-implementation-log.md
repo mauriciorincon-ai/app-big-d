@@ -673,6 +673,42 @@ del caso fue su único ajuste).
   `pnpm test`: 86 archivos y 1679 pruebas. `pnpm build`: 52 páginas con CSP. `serve` con la `compression` nueva
   responde 200 y comprime con gzip. `caso.spec.ts` y `csp.spec.ts` en `desktop-chromium`: 65 en verde.
 
+- **CI del push de `ef597eb`** (corrida 37398823351, leída con `gh pr checks 8` el 2026-10-05): `quality` 2m54s ·
+  `diagramador` ubuntu 1m51s y macOS 1m36s · `e2e` 6m1s · `lighthouse` 14m8s · Vercel. Los cinco checks con conclusión
+  propia `success`.
+
+### P1 — evidencias de Databricks (D-S3-10, 2026-10-05)
+
+- **La investigación.** El usuario invocó `/investigar databricks evidencias` en su sesión. El investigador escribió
+  `propuestas/2026-10-05-databricks-evidencias/` con 11 evidencias, una por criterio, todas esenciales y en
+  disponibilidad general: 4 en transformación, 2 en costo y 3 en las demás. Son 49 citas en 33 páginas oficiales
+  (`docs.databricks.com` y `www.databricks.com`, `propio-fabricante`), con 4 preguntas guía sin responder. El registro
+  de ejecución suma 63 líneas (59 WebFetch y 4 WebSearch), sin datos personales.
+- **Comprobado por mí, aparte del agente (2026-10-05).** `validar.mjs`: «propuesta válida · 11 evidencias».
+  `verificar-citas.mjs`, corrido de nuevo sobre la página cruda: 49 de 49 verificadas, 0 no verificables y
+  0 no encontradas. Pasada de capturas de la revisión (puerto 3150; 380 y 1280 px; los dos temas y los dos idiomas):
+  11 tarjetas, ningún elemento más ancho que su tarjeta ni fuera de su casilla, sin desplazamiento lateral, cero
+  errores de consola o CSP, y el comando con los 11 ids al aprobar todas. La tarjeta A-7 (costo, 2) se leyó como
+  imagen en `1280 oscuro es` y `380 claro en`.
+- **La decisión de la persona.** Con la página abierta y la indicación de mirar A-3 (el único 4) y A-7 (costo, 2), su
+  respuesta del 2026-10-05 fue «Todo aprobado», con el comando de la pantalla (`--aprobar A-1,…,A-11 --rechazar -
+  --retirar -`). Los ids coinciden con la propuesta. Antes de la terminal hubo un ensayo en seco sobre una copia de
+  `data/`: las 11 cargan y no aparece ninguna falla. El comando se copió con `pbcopy`, dos veces a pedido de la
+  persona, y ella lo corrió en su Terminal. Resultado: 11 archivos en `data/evidencias/databricks/` y una línea en
+  `data/revisiones/evidencias/databricks.jsonl`, con fecha 2026-10-06 (UTC).
+- **Lo que el dato nuevo cambió en las pruebas.** `tests/unit/caso/casos.test.ts` esperaba 33 evidencias faltantes
+  (3 plataformas reales × 11 criterios) y ahora hay 22. Ahora calcula desde el dato, sin el motor, los pares
+  plataforma-criterio sin una evidencia aprobada y los compara uno a uno con lo que dice el motor. Demo en rojo con
+  `scripts/demo-rojo.sh --debe-nombrar --minimo-tests 7`: en `src/engine/evaluar.ts`, el motor deja de anotar las
+  faltantes de Fabric. Rojo nombrando «un borrador sin instantánea se mira contra la base viva», restaurado con `cmp`
+  y verde con 7 pruebas. Cuando P3 complete la base, esta prueba y su lista de motivos cambian otra vez, porque ya no
+  faltará evidencia.
+- **Corridas (2026-10-05, locales).**
+  - `pnpm typecheck` y `pnpm lint` limpios.
+  - `pnpm test`: 86 archivos, 1679 pruebas en verde (tras el ajuste).
+  - `pnpm build`: 52 páginas con CSP.
+  - `E2E_PUERTO=3147 pnpm test:e2e`: 898 en verde y 9 saltadas. La base muestra 22 tarjetas.
+
 ## Desviación del plan
 
 Los hechos 1–10 y las decisiones D-S3-01…18 del plan aprobado (`Reglas del motor` incluidas) son la desviación de

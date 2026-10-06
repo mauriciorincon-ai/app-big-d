@@ -1,0 +1,726 @@
+{
+  "version": 1,
+  "tipo": "evidencias",
+  "plataforma": "databricks",
+  "fecha": "2026-10-05",
+  "origen": "agente-investigador",
+  "ejecucion": {
+    "herramienta": "claude-code",
+    "modelo": "claude-opus-5-5",
+    "reintentos": 0
+  },
+  "evidencias": [
+    {
+      "id": "A-1",
+      "evidencia": {
+        "id": "evi-databricks-ingesta",
+        "plataforma_id": "databricks",
+        "capacidad_id": "cap-ingesta",
+        "afirmacion": {
+          "es": "Trae los datos de bases relacionales con conectores propios: la primera vez todo y después solo lo que cambió. El conector de SQL Server está disponible de forma general; el de PostgreSQL, en vista previa. Auto Loader carga los archivos nuevos a medida que llegan a la nube.",
+          "en": "Built-in connectors bring in data from relational databases: everything on the first run, then only what changed. The SQL Server connector is generally available; the PostgreSQL one is in preview. Auto Loader loads new files as they land in cloud storage."
+        },
+        "componentes": ["lakeflow-connect", "auto-loader"],
+        "madurez": "disponible-general",
+        "puntaje": 3,
+        "justificacion_puntaje": {
+          "es": "3 y no 4: no todos los orígenes están al mismo nivel: el conector de PostgreSQL sigue en vista previa pública y algunas fuentes o tablas todavía no admiten la ingesta incremental. 3 y no 2: el conector de SQL Server, la ingesta incremental y la carga de archivos nuevos son nativos y están disponibles de forma general.",
+          "en": "3, not 4: not every source is at the same level: the PostgreSQL connector is still in public preview, and some sources or tables do not yet support incremental ingestion. 3, not 2: the SQL Server connector, incremental ingestion and new-file loading are native and generally available."
+        },
+        "esencial": true,
+        "fuentes": [
+          {
+            "url": "https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/",
+            "titulo": "Lakeflow Connect connector concepts | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Lakeflow Connect uses incremental ingestion to improve pipeline efficiency. On the first run of your pipeline, it ingests all of the selected data from the source."
+          },
+          {
+            "url": "https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/",
+            "titulo": "Lakeflow Connect connector concepts | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Some sources or specific tables don't support incremental ingestion at this time."
+          },
+          {
+            "url": "https://docs.databricks.com/aws/en/release-notes/product/2025/august",
+            "titulo": "August 2025 | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "The Microsoft SQL Server ingestion connector in Lakeflow Connect is now generally available."
+          },
+          {
+            "url": "https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/postgresql-pipeline",
+            "titulo": "Ingest data from PostgreSQL | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "The PostgreSQL connector for Lakeflow Connect is in Public Preview."
+          },
+          {
+            "url": "https://docs.databricks.com/aws/en/ingestion/cloud-object-storage/auto-loader/",
+            "titulo": "What is Auto Loader? | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Auto Loader incrementally and efficiently processes new data files as they arrive in cloud storage without any additional setup."
+          }
+        ],
+        "limitaciones": [
+          {
+            "es": "El conector de PostgreSQL está en vista previa pública.",
+            "en": "The PostgreSQL connector is in public preview."
+          },
+          {
+            "es": "Algunas fuentes o tablas todavía no admiten la ingesta incremental.",
+            "en": "Some sources or tables do not yet support incremental ingestion."
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-2",
+      "evidencia": {
+        "id": "evi-databricks-almacenamiento",
+        "plataforma_id": "databricks",
+        "capacidad_id": "cap-almacenamiento",
+        "afirmacion": {
+          "es": "Toda tabla es de Delta Lake, un formato abierto de código abierto, salvo que se pida otra cosa; también admite tablas Iceberg gestionadas, y otros motores leen y escriben las tablas del catálogo por una interfaz abierta.",
+          "en": "Every table is a Delta Lake table, an open-source open format, unless otherwise specified; it also supports managed Iceberg tables, and other engines read and write catalog tables through an open interface."
+        },
+        "componentes": ["tablas-streaming", "vistas-materializadas"],
+        "madurez": "disponible-general",
+        "puntaje": 3,
+        "justificacion_puntaje": {
+          "es": "3 y no 4: la apertura tiene un borde documentado: los clientes Iceberg solo pueden leer las tablas Delta, no escribirlas. 3 y no 2: el formato abierto es el predeterminado, otros motores leen y escriben las tablas del catálogo por una interfaz documentada y las tablas Iceberg gestionadas están disponibles de forma general.",
+          "en": "3, not 4: the openness has a documented edge: Iceberg clients can only read Delta tables, not write them. 3, not 2: the open format is the default, other engines read and write catalog tables through a documented interface, and managed Iceberg tables are generally available."
+        },
+        "esencial": true,
+        "fuentes": [
+          {
+            "url": "https://docs.databricks.com/aws/en/delta/",
+            "titulo": "What is Delta Lake in Databricks? | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Delta Lake is the default format for all operations on Databricks"
+          },
+          {
+            "url": "https://docs.databricks.com/aws/en/delta/",
+            "titulo": "What is Delta Lake in Databricks? | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Delta Lake is open source software that extends Parquet data files with a file-based transaction log for ACID transactions"
+          },
+          {
+            "url": "https://docs.databricks.com/aws/en/external-access/",
+            "titulo": "Access Databricks data using external systems | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Use the Unity REST API to read, write to, and create Unity Catalog managed and external tables backed by Delta Lake from supported Delta clients."
+          },
+          {
+            "url": "https://docs.databricks.com/aws/en/release-notes/product/2026/may",
+            "titulo": "May 2026 | Databricks on AWS",
+            "tipo": "oficial",
+            "fecha_publicacion": "2026-05-21",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Unity Catalog managed Apache Iceberg tables, foreign Apache Iceberg tables, and Apache Iceberg v3 features are generally available"
+          },
+          {
+            "url": "https://docs.databricks.com/aws/en/delta/uniform",
+            "titulo": "Read Delta tables with Iceberg clients | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Iceberg client support is read-only. Writes are not supported."
+          }
+        ],
+        "limitaciones": [
+          {
+            "es": "Los clientes Iceberg solo leen las tablas Delta; no pueden escribirlas.",
+            "en": "Iceberg clients can only read Delta tables; they cannot write to them."
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-3",
+      "evidencia": {
+        "id": "evi-databricks-transformacion",
+        "plataforma_id": "databricks",
+        "capacidad_id": "cap-transformacion",
+        "afirmacion": {
+          "es": "Las canalizaciones declarativas ejecutan los pasos en el orden correcto, reintentan las fallas pasajeras y validan los datos con reglas de calidad; Lakeflow Jobs las programa a una hora fija o cuando llegan datos nuevos.",
+          "en": "Declarative pipelines run steps in the right order, retry transient failures and validate data with quality rules; Lakeflow Jobs schedules them at a set time or when new data arrives."
+        },
+        "componentes": ["canalizaciones-lakeflow", "lakeflow-jobs"],
+        "madurez": "disponible-general",
+        "puntaje": 4,
+        "justificacion_puntaje": {
+          "es": "4 y no 3: el orden de los pasos, los reintentos, las reglas de calidad y los disparadores por horario o por llegada de datos son nativos y están disponibles de forma general. La limitación documentada (con la acción de fallar, un registro inválido detiene la actualización hasta que alguien intervenga) es una opción entre otras, no un hueco, y no impide preparar los datos de un hospital en pasos repetibles.",
+          "en": "4, not 3: step ordering, retries, quality rules and schedule or data-arrival triggers are native and generally available. The documented limitation (with the fail action, an invalid record stops the update until someone steps in) is one option among others, not a gap, and does not prevent preparing a hospital's data in repeatable steps."
+        },
+        "esencial": true,
+        "fuentes": [
+          {
+            "url": "https://docs.databricks.com/aws/en/ldp/concepts/",
+            "titulo": "What are Lakeflow pipelines? | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "in the correct order with maximum parallelism, and retry transient failures progressively"
+          },
+          {
+            "url": "https://docs.databricks.com/aws/en/ldp/expectations",
+            "titulo": "Manage data quality with pipeline expectations | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Use expectations to apply quality constraints that validate data as it flows through ETL pipelines."
+          },
+          {
+            "url": "https://docs.databricks.com/aws/en/ldp/expectations",
+            "titulo": "Manage data quality with pipeline expectations | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Invalid records prevent the update from succeeding. Manual intervention is required before reprocessing."
+          },
+          {
+            "url": "https://docs.databricks.com/aws/en/jobs/",
+            "titulo": "Lakeflow Jobs | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "A trigger can be time-based, such as running a job at a scheduled time (for example, every day at 2 AM), or event-based, such as running a job when new data arrives in cloud storage."
+          },
+          {
+            "url": "https://www.databricks.com/blog/announcing-general-availability-databricks-lakeflow",
+            "titulo": "Announcing the General Availability of Databricks Lakeflow | Databricks Blog",
+            "tipo": "oficial",
+            "fecha_publicacion": "2025-06-12",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "unified data engineering solution, is now Generally Available. It includes expanded ingestion connectors for popular data sources"
+          }
+        ],
+        "limitaciones": [
+          {
+            "es": "Con la acción de fallar, un registro inválido impide la actualización y hace falta intervenir a mano antes de reprocesar.",
+            "en": "With the fail action, an invalid record blocks the update and manual intervention is needed before reprocessing."
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-4",
+      "evidencia": {
+        "id": "evi-databricks-consumo",
+        "plataforma_id": "databricks",
+        "capacidad_id": "cap-consumo",
+        "afirmacion": {
+          "es": "Las vistas de métricas definen cada indicador una sola vez para tableros, consultas y agentes; los tableros AI/BI se comparten aun con quien no entra al espacio de trabajo, y Power BI se conecta a los SQL warehouses.",
+          "en": "Metric views define each indicator once for dashboards, queries and agents; AI/BI dashboards can be shared even with people outside the workspace, and Power BI connects to SQL warehouses."
+        },
+        "componentes": [
+          "vistas-metricas",
+          "tableros-aibi",
+          "herramientas-bi",
+          "sql-warehouse"
+        ],
+        "madurez": "disponible-general",
+        "puntaje": 3,
+        "justificacion_puntaje": {
+          "es": "3 y no 4: Microsoft retiró del conector de Power BI la opción que leía las vistas de métricas, así que leer los indicadores definidos desde Power BI exige otro camino. 3 y no 2: la capa semántica, los tableros y el conector están disponibles de forma general.",
+          "en": "3, not 4: Microsoft removed the Power BI connector option that read metric views, so reading the defined indicators from Power BI takes another route. 3, not 2: the semantic layer, the dashboards and the connector are generally available."
+        },
+        "esencial": true,
+        "fuentes": [
+          {
+            "url": "https://docs.databricks.com/aws/en/metric-views/",
+            "titulo": "Unity Catalog metric views | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "They provide a centralized way to define and manage business metrics by separating measure definitions from the fields (also called dimensions) used to group, filter, and aggregate them, so you can define metrics once and query them at runtime."
+          },
+          {
+            "url": "https://www.databricks.com/blog/redefining-semantics-data-layer-future-bi-and-ai",
+            "titulo": "Announcing General Availability and Open Sourcing of Unity Catalog Business Semantics | Databricks Blog",
+            "tipo": "oficial",
+            "fecha_publicacion": "2026-04-02",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Define governed metrics, dimensions, and rules once at the data layer so every dashboard, SQL query, notebook, and AI agent works from the same trusted definitions."
+          },
+          {
+            "url": "https://docs.databricks.com/aws/en/dashboards/",
+            "titulo": "Dashboards | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "When published, your dashboards can be shared with anyone registered to your Databricks account, even if they don't have access to the workspace."
+          },
+          {
+            "url": "https://docs.databricks.com/aws/en/partners/bi/power-bi/",
+            "titulo": "Power BI with Databricks | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Connect Power BI Desktop to Databricks clusters and SQL warehouses using Partner Connect or manual configuration."
+          },
+          {
+            "url": "https://docs.databricks.com/aws/en/partners/bi/power-bi/",
+            "titulo": "Power BI with Databricks | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Microsoft has removed the Metric View BI Compatibility Mode option from the Databricks connector for Power BI."
+          }
+        ],
+        "limitaciones": [
+          {
+            "es": "Microsoft retiró del conector de Power BI la opción de compatibilidad con las vistas de métricas.",
+            "en": "Microsoft removed the metric view compatibility option from the Power BI connector."
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-5",
+      "evidencia": {
+        "id": "evi-databricks-gobierno",
+        "plataforma_id": "databricks",
+        "capacidad_id": "cap-gobierno",
+        "afirmacion": {
+          "es": "Unity Catalog controla el acceso con privilegios, políticas por atributos y filtros por fila y columna, y sigue el linaje de forma automática, hasta el nivel de columna cuando es posible.",
+          "en": "Unity Catalog controls access with privileges, attribute-based policies and row and column filters, and tracks lineage automatically, down to the column level where possible."
+        },
+        "componentes": ["unity-catalog", "filtros-mascaras"],
+        "madurez": "disponible-general",
+        "puntaje": 3,
+        "justificacion_puntaje": {
+          "es": "3 y no 4: los filtros de fila y las máscaras de columna no se pueden aplicar a una vista, solo a tablas, así que la protección se pone en cada tabla. 3 y no 2: el catálogo, los permisos, los filtros y el linaje son nativos y están disponibles de forma general.",
+          "en": "3, not 4: row filters and column masks cannot be applied to a view, only to tables, so protection goes on each table. 3, not 2: the catalog, permissions, filters and lineage are native and generally available."
+        },
+        "esencial": true,
+        "fuentes": [
+          {
+            "url": "https://docs.databricks.com/aws/en/data-governance/unity-catalog/",
+            "titulo": "What is Unity Catalog? | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Manage who can access what using privileges, attribute-based policies, row and column filters, and workspace bindings."
+          },
+          {
+            "url": "https://docs.databricks.com/aws/en/data-governance/unity-catalog/",
+            "titulo": "What is Unity Catalog? | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Automatically track how data and AI assets flow and connect, from source data through to models, services, and dashboards."
+          },
+          {
+            "url": "https://docs.databricks.com/aws/en/data-governance/unity-catalog/data-lineage",
+            "titulo": "Lineage in Unity Catalog | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Unity Catalog captures lineage to the column level as much as possible."
+          },
+          {
+            "url": "https://docs.databricks.com/aws/en/tables/row-and-column-filters",
+            "titulo": "Row filters and column masks | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "You cannot apply row-level security or column masks to a view."
+          }
+        ],
+        "limitaciones": [
+          {
+            "es": "Los filtros de fila y las máscaras de columna no se aplican a vistas.",
+            "en": "Row filters and column masks cannot be applied to views."
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-6",
+      "evidencia": {
+        "id": "evi-databricks-ia",
+        "plataforma_id": "databricks",
+        "capacidad_id": "cap-ia",
+        "afirmacion": {
+          "es": "Con Genie Agents cada persona ve solo los datos que tiene autorizados y cada consulta queda a su nombre; Unity Catalog gobierna también los modelos, con control de acceso, auditoría y linaje.",
+          "en": "With Genie Agents each person sees only the data they are authorized to see and every query is attributed to them; Unity Catalog also governs models, with access control, auditing and lineage."
+        },
+        "componentes": ["genie-agents", "unity-catalog"],
+        "madurez": "disponible-general",
+        "puntaje": 3,
+        "justificacion_puntaje": {
+          "es": "3 y no 4: Genie admite otros idiomas, pero su marco envuelve las instrucciones en inglés, algo que un hospital que pregunta en español tiene que probar antes de contar con él. 3 y no 2: el agente y el gobierno de modelos en Unity Catalog son nativos, sin herramientas de terceros, y Genie está disponible de forma general.",
+          "en": "3, not 4: Genie works in other languages, but its framework wraps prompts in English, something a hospital asking in Spanish has to test before relying on it. 3, not 2: the agent and model governance in Unity Catalog are native, with no third-party tools, and Genie is generally available."
+        },
+        "esencial": true,
+        "fuentes": [
+          {
+            "url": "https://docs.databricks.com/aws/en/genie-agents/concepts",
+            "titulo": "Genie Agents concepts | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Each user sees only the data they are authorized to access, and each query is attributed to the end user in"
+          },
+          {
+            "url": "https://docs.databricks.com/aws/en/genie-agents/concepts",
+            "titulo": "Genie Agents concepts | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "You can use Genie Agents in languages other than English, such as Portuguese and French. However, the underlying agent framework wraps prompts in English."
+          },
+          {
+            "url": "https://docs.databricks.com/aws/en/machine-learning/manage-model-lifecycle/",
+            "titulo": "Manage model lifecycle in Unity Catalog | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Models in Unity Catalog extends the benefits of Unity Catalog to ML models, including centralized access control, auditing, lineage, and model discovery across workspaces."
+          },
+          {
+            "url": "https://www.databricks.com/blog/aibi-genie-now-generally-available",
+            "titulo": "AI/BI Genie is now Generally Available | Databricks Blog",
+            "tipo": "oficial",
+            "fecha_publicacion": "2025-06-12",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "AI/BI Genie will now join AI/BI Dashboards as Generally Available on all clouds"
+          }
+        ],
+        "limitaciones": [
+          {
+            "es": "El marco del agente envuelve las instrucciones en inglés, aunque se le pregunte en otro idioma.",
+            "en": "The agent framework wraps prompts in English, even when asked in another language."
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-7",
+      "evidencia": {
+        "id": "evi-databricks-costo",
+        "plataforma_id": "databricks",
+        "criterio_id": "crit-costo",
+        "afirmacion": {
+          "es": "Se paga por consumo, sin costos iniciales; los presupuestos avisan cuando el gasto pasa el límite, pero con hasta 24 horas de retraso, sin contar descuentos, y solo bloquean lo que pasa por Unity Gateway.",
+          "en": "It is pay-as-you-go, with no up-front costs; budgets alert when spending passes the limit, but up to 24 hours late, without counting discounts, and they only block what goes through Unity Gateway."
+        },
+        "componentes": ["uso-facturable", "presupuestos"],
+        "madurez": "disponible-general",
+        "puntaje": 2,
+        "justificacion_puntaje": {
+          "es": "2 y no 3: el cobro crece con el consumo y ninguna herramienta nativa frena a tiempo el gasto total: los presupuestos solo bloquean lo que pasa por Unity Gateway, avisan con hasta 24 horas de retraso y no cuentan créditos ni descuentos. 2 y no 1: medir el gasto, avisar y poner un tope de consumo por hora a cada recurso de cómputo se hace sin herramientas de terceros.",
+          "en": "2, not 3: charges grow with usage and no native tool stops total spending in time: budgets only block what goes through Unity Gateway, alert up to 24 hours late and ignore credits and discounts. 2, not 1: measuring spend, alerting and putting an hourly usage cap on each compute resource need no third-party tools."
+        },
+        "esencial": true,
+        "fuentes": [
+          {
+            "url": "https://www.databricks.com/product/pricing",
+            "titulo": "Pricing | Databricks",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Databricks offers you a pay-as-you-go approach with no up-front costs."
+          },
+          {
+            "url": "https://docs.databricks.com/aws/en/admin/account-settings/budgets",
+            "titulo": "Create and monitor budgets | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Block usage to prevent users from making further requests through Unity Gateway when the threshold is reached."
+          },
+          {
+            "url": "https://docs.databricks.com/aws/en/admin/account-settings/budgets",
+            "titulo": "Create and monitor budgets | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "There could be up to a 24-hour delay between usage occurring and an email notification being sent."
+          },
+          {
+            "url": "https://docs.databricks.com/aws/en/admin/account-settings/budgets",
+            "titulo": "Create and monitor budgets | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Budgets do not factor in any billing credits or negotiated discounts your account might have."
+          },
+          {
+            "url": "https://docs.databricks.com/aws/en/admin/clusters/policy-definition",
+            "titulo": "Compute policy reference | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Calculated attribute representing the maximum DBUs a resource can use on an hourly basis including the driver node. This metric is a direct way to control cost at the individual compute level."
+          }
+        ],
+        "limitaciones": [
+          {
+            "es": "El aviso de un presupuesto puede llegar hasta 24 horas después del consumo.",
+            "en": "A budget alert can arrive up to 24 hours after the usage."
+          },
+          {
+            "es": "Los presupuestos no cuentan créditos ni descuentos negociados.",
+            "en": "Budgets ignore credits and negotiated discounts."
+          },
+          {
+            "es": "El bloqueo al llegar al límite solo aplica a las solicitudes que pasan por Unity Gateway.",
+            "en": "Blocking at the limit only applies to requests that go through Unity Gateway."
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-8",
+      "evidencia": {
+        "id": "evi-databricks-cumplimiento",
+        "plataforma_id": "databricks",
+        "criterio_id": "crit-cumplimiento",
+        "afirmacion": {
+          "es": "Para datos de salud ofrece un perfil de seguridad de cumplimiento, con imagen de cómputo endurecida y monitoreo, y Unity Catalog guarda un registro de cada acceso a los datos.",
+          "en": "For health data it offers a compliance security profile, with a hardened compute image and monitoring, and Unity Catalog keeps a record of every data access."
+        },
+        "componentes": ["unity-catalog"],
+        "madurez": "disponible-general",
+        "puntaje": 3,
+        "justificacion_puntaje": {
+          "es": "3 y no 4: los controles para datos de salud exigen activar el perfil de seguridad de cumplimiento, que se cobra como complemento aparte, y en HIPAA sobre AWS las funciones en vista previa no se admiten para procesar datos de pacientes, salvo las que la documentación lista. 3 y no 2: el perfil y el registro de auditoría son nativos y están documentados.",
+          "en": "3, not 4: health-data controls require turning on the compliance security profile, billed as a separate add-on, and under HIPAA on AWS preview features are not supported for processing patient data, except those the documentation lists. 3, not 2: the profile and the audit log are native and documented."
+        },
+        "esencial": true,
+        "fuentes": [
+          {
+            "url": "https://docs.databricks.com/aws/en/security/privacy/hipaa",
+            "titulo": "HIPAA compliance features | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "HIPAA compliance controls require enabling the compliance security profile, which adds monitoring agents, provides a hardened compute image, and more."
+          },
+          {
+            "url": "https://docs.databricks.com/aws/en/security/privacy/hipaa",
+            "titulo": "HIPAA compliance features | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Databricks does not support the use of preview features for the processing of PHI on the HIPAA on AWS platform, with the exception of the features listed in"
+          },
+          {
+            "url": "https://docs.databricks.com/aws/en/security/privacy/security-profile",
+            "titulo": "Compliance security profile | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "If you enable this feature on any workspace, you are charged for the Enhanced Security and Compliance add-on"
+          },
+          {
+            "url": "https://docs.databricks.com/aws/en/data-governance/unity-catalog/",
+            "titulo": "What is Unity Catalog? | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Maintain a complete record of all data access and system activity using the audit log system table."
+          }
+        ],
+        "limitaciones": [
+          {
+            "es": "El perfil de seguridad de cumplimiento se cobra como complemento aparte.",
+            "en": "The compliance security profile is billed as a separate add-on."
+          },
+          {
+            "es": "En HIPAA sobre AWS, las funciones en vista previa no se admiten para procesar datos de pacientes, salvo las listadas.",
+            "en": "Under HIPAA on AWS, preview features are not supported for processing patient data, except those listed."
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-9",
+      "evidencia": {
+        "id": "evi-databricks-habilidades",
+        "plataforma_id": "databricks",
+        "criterio_id": "crit-habilidades",
+        "afirmacion": {
+          "es": "Las canalizaciones se escriben en SQL o Python, y con cómputo serverless las cargas corren sin aprovisionar recursos en la cuenta de nube.",
+          "en": "Pipelines are written in SQL or Python, and with serverless compute workloads run without provisioning resources in the cloud account."
+        },
+        "componentes": ["canalizaciones-lakeflow", "cuadernos"],
+        "madurez": "disponible-general",
+        "puntaje": 3,
+        "justificacion_puntaje": {
+          "es": "3 y no 4: el cómputo serverless solo admite las API de Spark Connect, no las API RDD de Spark, así que el código escrito con ellas no corre ahí tal como está. 3 y no 2: el trabajo diario usa SQL y Python, lenguajes estándar, y con serverless no hay recursos de cómputo que aprovisionar.",
+          "en": "3, not 4: serverless compute only supports Spark Connect APIs, not Spark RDD APIs, so code written with them does not run there as is. 3, not 2: daily work uses SQL and Python, standard languages, and with serverless there is no compute to provision."
+        },
+        "esencial": true,
+        "fuentes": [
+          {
+            "url": "https://docs.databricks.com/aws/en/ldp/concepts/",
+            "titulo": "What are Lakeflow pipelines? | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Lakeflow pipelines provide a declarative framework for building batch and streaming data pipelines in SQL and Python."
+          },
+          {
+            "url": "https://docs.databricks.com/aws/en/compute/serverless/",
+            "titulo": "Connect to serverless compute | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "When you choose to use serverless compute, you can run workloads without provisioning any compute resources in your cloud account."
+          },
+          {
+            "url": "https://docs.databricks.com/aws/en/compute/serverless/limitations",
+            "titulo": "Serverless compute limitations | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Only Spark Connect APIs are supported. Spark RDD APIs are not supported."
+          }
+        ],
+        "limitaciones": [
+          {
+            "es": "El cómputo serverless no admite las API RDD de Spark.",
+            "en": "Serverless compute does not support Spark RDD APIs."
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-10",
+      "evidencia": {
+        "id": "evi-databricks-dependencia",
+        "plataforma_id": "databricks",
+        "criterio_id": "crit-dependencia",
+        "afirmacion": {
+          "es": "Los datos quedan en Delta Lake, de código abierto; Unity Catalog tiene una implementación de código abierto compatible con la API de catálogo REST de Iceberg, y Databricks donó las canalizaciones declarativas a Apache Spark.",
+          "en": "Data stays in Delta Lake, which is open source; Unity Catalog has an open-source implementation compatible with Iceberg's REST catalog API, and Databricks donated declarative pipelines to Apache Spark."
+        },
+        "componentes": [
+          "tablas-streaming",
+          "unity-catalog",
+          "canalizaciones-lakeflow"
+        ],
+        "madurez": "disponible-general",
+        "puntaje": 3,
+        "justificacion_puntaje": {
+          "es": "3 y no 4: no todo sale igual de fácil: los clientes Iceberg externos no pueden acceder a las vistas, así que la lógica guardada en vistas habría que rehacerla en otro motor. 3 y no 2: los datos, el catálogo y las canalizaciones declarativas tienen versiones abiertas documentadas, y salir no exige convertir los datos.",
+          "en": "3, not 4: not everything leaves as easily: external Iceberg clients cannot access views, so logic kept in views would have to be rebuilt on another engine. 3, not 2: the data, the catalog and the declarative pipelines have documented open versions, and leaving does not require converting the data."
+        },
+        "esencial": true,
+        "fuentes": [
+          {
+            "url": "https://docs.databricks.com/aws/en/delta/",
+            "titulo": "What is Delta Lake in Databricks? | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Delta Lake is open source software that extends Parquet data files with a file-based transaction log for ACID transactions"
+          },
+          {
+            "url": "https://www.databricks.com/blog/open-sourcing-unity-catalog",
+            "titulo": "Open sourcing Unity Catalog | Databricks Blog",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "built on OpenAPI spec and an open source server implementation under Apache 2.0 license"
+          },
+          {
+            "url": "https://www.databricks.com/blog/open-sourcing-unity-catalog",
+            "titulo": "Open sourcing Unity Catalog | Databricks Blog",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "It is also compatible with Apache Hive's metastore API and Apache Iceberg's REST catalog API."
+          },
+          {
+            "url": "https://www.databricks.com/blog/bringing-declarative-pipelines-apache-spark-open-source-project",
+            "titulo": "Bringing Declarative Pipelines to the Apache Spark Open Source Project | Databricks Blog",
+            "tipo": "oficial",
+            "fecha_publicacion": "2025-06-12",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "donating Declarative Pipelines - a proven declarative API for building robust data pipelines with a fraction of the work - to Apache Spark"
+          },
+          {
+            "url": "https://docs.databricks.com/aws/en/external-access/iceberg",
+            "titulo": "Access Databricks tables from Apache Iceberg clients | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "External Iceberg clients can't access views."
+          }
+        ],
+        "limitaciones": [
+          {
+            "es": "Los clientes Iceberg externos no pueden acceder a las vistas.",
+            "en": "External Iceberg clients cannot access views."
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-11",
+      "evidencia": {
+        "id": "evi-databricks-ecosistema",
+        "plataforma_id": "databricks",
+        "criterio_id": "crit-ecosistema",
+        "afirmacion": {
+          "es": "Toma usuarios y grupos del proveedor de identidad de la organización con SCIM, un estándar abierto, o de forma automática desde Microsoft Entra ID, y Power BI se conecta a sus SQL warehouses.",
+          "en": "It takes users and groups from the organization's identity provider through SCIM, an open standard, or automatically from Microsoft Entra ID, and Power BI connects to its SQL warehouses."
+        },
+        "componentes": ["unity-catalog", "herramientas-bi", "sql-warehouse"],
+        "madurez": "disponible-general",
+        "puntaje": 3,
+        "justificacion_puntaje": {
+          "es": "3 y no 4: la conexión con Power BI tiene un tropiezo documentado: Microsoft retiró la opción del conector que leía las vistas de métricas. 3 y no 2: la gestión automática de identidades con Microsoft Entra ID y el conector de Power BI están disponibles de forma general, y SCIM sirve con cualquier proveedor de identidad que lo admita.",
+          "en": "3, not 4: the Power BI connection has a documented snag: Microsoft removed the connector option that read metric views. 3, not 2: automatic identity management with Microsoft Entra ID and the Power BI connector are generally available, and SCIM works with any identity provider that supports it."
+        },
+        "esencial": true,
+        "fuentes": [
+          {
+            "url": "https://docs.databricks.com/aws/en/release-notes/product/2026/may",
+            "titulo": "May 2026 | Databricks on AWS",
+            "tipo": "oficial",
+            "fecha_publicacion": "2026-05-26",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Automatic identity management with Microsoft Entra ID is now generally available."
+          },
+          {
+            "url": "https://docs.databricks.com/aws/en/admin/users-groups/scim/",
+            "titulo": "Sync users and groups from your identity provider using SCIM | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "System for Cross-domain Identity Management, an open standard that allows you to automate user provisioning"
+          },
+          {
+            "url": "https://docs.databricks.com/aws/en/partners/bi/power-bi/",
+            "titulo": "Power BI with Databricks | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Connect Power BI Desktop to Databricks clusters and SQL warehouses using Partner Connect or manual configuration."
+          },
+          {
+            "url": "https://docs.databricks.com/aws/en/partners/bi/power-bi/",
+            "titulo": "Power BI with Databricks | Databricks on AWS",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Microsoft has removed the Metric View BI Compatibility Mode option from the Databricks connector for Power BI."
+          }
+        ],
+        "limitaciones": [
+          {
+            "es": "Microsoft retiró del conector de Power BI la opción de compatibilidad con las vistas de métricas.",
+            "en": "Microsoft removed the metric view compatibility option from the Power BI connector."
+          }
+        ]
+      }
+    }
+  ],
+  "preguntas_guia": [
+    {
+      "pregunta": {
+        "es": "¿En qué estado está la captura de cambios desde MySQL con Lakeflow Connect? La documentación revisada no lo dice.",
+        "en": "What is the status of change capture from MySQL with Lakeflow Connect? The documentation reviewed does not say."
+      },
+      "respondida": false
+    },
+    {
+      "pregunta": {
+        "es": "¿Qué lenguajes domina hoy el equipo del hospital (SQL, Python, R, Spark)? El puntaje de habilidades depende de eso y la documentación no puede responderlo.",
+        "en": "Which languages does the hospital's team already know (SQL, Python, R, Spark)? The skills score depends on it, and the documentation cannot answer that."
+      },
+      "respondida": false
+    },
+    {
+      "pregunta": {
+        "es": "¿Cuánto costaría al mes la carga del caso? Se cobra por consumo y la documentación no da una cifra para un hospital.",
+        "en": "What would the case's workload cost per month? Billing is usage-based and the documentation gives no figure for a hospital."
+      },
+      "respondida": false
+    },
+    {
+      "pregunta": {
+        "es": "¿Pueden otros motores leer, sin copiarlas, las tablas de streaming donde el mapa guarda los datos? La documentación revisada no lo responde para ese tipo de tabla.",
+        "en": "Can other engines read, without copying them, the streaming tables where the map keeps the data? The documentation reviewed does not answer it for that kind of table."
+      },
+      "respondida": false
+    }
+  ]
+}
