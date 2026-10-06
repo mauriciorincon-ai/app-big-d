@@ -1,12 +1,17 @@
-// El caso y la base con el dato REAL de hoy (S3, fase 2): el perfil hospitalario es un borrador sin respuestas y la base
-// no tiene evidencias aprobadas, así que cada pantalla dice el estado honesto en vez de puntuar a medias. Cuando lleguen
-// las evidencias y el perfil se apruebe (fase 3), estas pruebas cambian con el dato: la comparación entera se prueba
-// hoy contra la base sembrada (tests/e2e/sembrada/).
+// El caso y la base con el dato REAL de hoy (S3, fase 3): el perfil hospitalario es un borrador sin respuestas y a la
+// base le faltan evidencias aprobadas, así que la comparación dice el estado honesto en vez de puntuar a medias; la base
+// muestra las que una persona ya aprobó (las cuenta en data/evidencias/, para que la prueba siga al dato). Cuando el
+// perfil se apruebe, estas pruebas cambian con el dato: la comparación entera se prueba hoy contra la base sembrada
+// (tests/e2e/sembrada/).
+import { readdirSync } from "node:fs";
 import { expect, test } from "@playwright/test";
 import { plantilla, plural } from "../../src/lib/atlas/plantilla";
 import { textos } from "../../src/lib/i18n";
 import { listo } from "./lib/abrir";
 import { CASOS, IDIOMAS } from "./lib/rutas";
+
+/** Las evidencias aprobadas del dato real: un archivo por evidencia en data/evidencias/<plataforma>/. */
+const APROBADAS = readdirSync("data/evidencias", { recursive: true, encoding: "utf8" }).filter((f) => f.endsWith(".yaml")).length;
 
 for (const idioma of IDIOMAS) {
   const T = textos(idioma);
@@ -39,9 +44,13 @@ for (const idioma of IDIOMAS) {
     });
   }
 
-  test(`${idioma} · la base sin evidencias lo dice, con sus criterios, su escala y sus convenciones`, async ({ page }) => {
+  test(`${idioma} · la base muestra las evidencias aprobadas, con sus criterios, su escala y sus convenciones`, async ({ page }) => {
+    expect(APROBADAS).toBeGreaterThan(0);
     await page.goto(`/${idioma}/base`);
-    await expect(page.locator('[data-estado="sin-evidencias"]')).toContainText(T.base.evidencias.vacio.titulo);
+    await listo(page);
+    await expect(page.locator('[data-estado="sin-evidencias"]')).toHaveCount(0);
+    await expect(page.locator(".evidencias > li")).toHaveCount(APROBADAS);
+    await expect(page.locator(".conteo").first()).toContainText(plural(T.base.evidencias.aprobadas, APROBADAS));
     await expect(page.locator(".criterios > li")).not.toHaveCount(0);
     await expect(page.locator(".niveles-escala > li")).toHaveCount(5);
     await expect(page.getByText(plantilla(T.base.convenciones.empate, { puntos: "5" }))).toBeVisible();

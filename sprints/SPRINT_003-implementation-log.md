@@ -617,6 +617,44 @@ del caso fue su único ajuste).
     idiomas, leída como imagen. 11 tarjetas, «Faltan 11 evidencias por decidir», ningún elemento fuera de su casilla,
     sin desplazamiento lateral y cero errores de consola o CSP. Al tocar «Aprobar» en todas, el comando aparece con
     las 11.
+- **CI del push de `4e06c99`** (corrida 37394316885, leída con `gh pr checks 8` el 2026-10-05): `quality` 2m10s ·
+  `diagramador` ubuntu 2m8s y macOS 1m43s · `e2e` 8m47s · `lighthouse` 14m5s · Vercel: los cinco checks y el
+  despliegue con conclusión propia `success`. El `--watch` se cortó por un error de red local
+  («can't assign requested address»); la lectura final se hizo con una segunda llamada.
+
+### P0 — ensayo de aprobación: Plataforma Ejemplo (D-S3-11, 2026-10-05)
+
+- **La decisión de la persona.** En la revisión de la propuesta (preview local, puerto 3150) marcó las 11 evidencias y
+  copió el comando de la pantalla. Respuesta, 2026-10-05: «Listo todo aprobado», con el comando pegado en el chat
+  (`--aprobar A-1,…,A-11 --rechazar - --retirar -`). Comparado con la propuesta: los mismos 11 ids y ningún rechazo.
+- **Antes de su terminal: un ensayo en seco** del núcleo de la aprobación sobre una copia temporal de `data/`, sin el
+  script y sin tocar el repo. Las 11 cargan con el cargador del build y `evidenciasSinAprobacion` no encontró nada.
+- **El comando.** La persona pidió el comando en su portapapeles. Se copió con `pbcopy` el texto que armó la pantalla,
+  sin cambios y con `cd ~/Code/app-big-d &&` delante. Ella abrió la Terminal y lo pegó. Salida (2026-10-05, hora local;
+  2026-10-06 en UTC): «aprobar: evidencias de plataforma-ejemplo el 2026-10-06 (UTC) · 11 aprobadas · 0 rechazadas →
+  data/evidencias/plataforma-ejemplo/».
+- **Lo que escribió.** 11 archivos en `data/evidencias/plataforma-ejemplo/`, cada uno con la cabecera «APROBADA por una
+  persona…», `aprobada_por: autor`, `fecha_aprobacion: 2026-10-06` y la verificación de su fuente («no verificable»,
+  HTTP 404). Una línea en `data/revisiones/evidencias/plataforma-ejemplo.jsonl` con las 11 huellas.
+- **Lo que el dato nuevo cambió en las pruebas.** Dos pruebas daban por hecho una base sin evidencias:
+  - `scripts-evidencias.test.ts` comprobaba que `data/evidencias` no existiera en la copia del repo. Ahora comprueba
+    que no se escribió nada de la plataforma de la prueba: ni su carpeta ni su línea de revisión.
+  - `caso.spec.ts` esperaba el estado «sin evidencias» en `/base` (4 en rojo en la suite completa: dos idiomas y dos
+    tamaños). Ahora cuenta las evidencias aprobadas de `data/evidencias/` y exige esa cantidad de tarjetas y el conteo
+    en plural, así que sigue al dato cuando lleguen P1–P3. Demo en rojo con `scripts/demo-rojo.sh --debe-nombrar
+    --minimo-tests 2`: en `src/app/[idioma]/base/page.tsx`, `evidencias.length === 0` pasó a `>= 0` (siempre vacía),
+    con build. Rojo en los dos idiomas, nombrando «la base muestra las evidencias aprobadas». Restaurado con `cmp` y
+    verde con 2 pruebas.
+  - Con la base real, el estado «sin evidencias» de `/base` se queda sin prueba de navegador. Va a la pasada de
+    capturas de la fase 4, sobre una base de `BIGD_DATOS` sin evidencias.
+- **Corridas (2026-10-05, locales).**
+  - `pnpm typecheck` y `pnpm lint` limpios.
+  - `pnpm test`: 86 archivos, 1679 pruebas en verde (tras el ajuste).
+  - `pnpm build`: 52 páginas con CSP.
+  - `E2E_PUERTO=3147 pnpm test:e2e`: 894 en verde, 9 saltadas y 4 en rojo (las de arriba). Después del ajuste,
+    `caso.spec.ts`: 12 en verde.
+  - El build muestra en `/es` y `/en/investigador/plataforma-ejemplo` el veredicto «Evidencias aprobadas por una
+    persona» y ya no muestra la propuesta pendiente.
 
 ## Desviación del plan
 

@@ -1,0 +1,34 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-plataforma-ejemplo-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/plataforma-ejemplo.jsonl).
+id: evi-plataforma-ejemplo-ecosistema
+plataforma_id: plataforma-ejemplo
+criterio_id: crit-ecosistema
+afirmacion:
+  es: Se conecta con directorios de identidad corporativos y con herramientas de tableros externas por conectores estándar.
+  en: It connects to corporate identity directories and to external dashboard tools through standard connectors.
+componentes:
+  - catalogo-central
+  - modelo-semantico
+madurez: disponible-general
+puntaje: 3
+justificacion_puntaje:
+  es: "3 y no 4: la sincronización con el directorio de identidad se configura a mano. 3 y no 2: los conectores están disponibles de forma general."
+  en: "3, not 4: syncing with the identity directory is configured by hand. 3, not 2: the connectors are generally available."
+esencial: true
+fuentes:
+  - url: https://example.org/plataforma-ejemplo/ecosistema
+    titulo: Example Platform docs · Integrations (fictional)
+    tipo: oficial
+    fecha_publicacion: 2026-09-15
+    conflicto_de_interes: propio-fabricante
+    cita: The platform integrates with enterprise identity directories and external BI tools through standard connectors; directory sync is configured manually.
+    verificacion:
+      resultado: no-verificable
+      fecha: 2026-10-06
+      http: 404
+      sha256: 25ddf2c883e0d1958ea971d279a7e4f0fd446724ee3db7db19dadabd4a62e484
+fecha_verificacion: 2026-10-06
+origen: curador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

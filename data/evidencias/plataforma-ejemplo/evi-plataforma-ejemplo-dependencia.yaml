@@ -1,0 +1,34 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-plataforma-ejemplo-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/plataforma-ejemplo.jsonl).
+id: evi-plataforma-ejemplo-dependencia
+plataforma_id: plataforma-ejemplo
+criterio_id: crit-dependencia
+afirmacion:
+  es: "Los datos quedan en formato abierto y el catálogo se puede exportar: salir no exige reescribirlos."
+  en: "Data stays in an open format and the catalog can be exported: leaving does not require rewriting it."
+componentes:
+  - almacen-tablas-abiertas
+  - catalogo-central
+madurez: disponible-general
+puntaje: 4
+justificacion_puntaje:
+  es: "4 y no 3: el formato y el catálogo son abiertos y están documentados, sin limitaciones relevantes para salir."
+  en: "4, not 3: the format and the catalog are open and documented, with no limitations that matter for leaving."
+esencial: true
+fuentes:
+  - url: https://example.org/plataforma-ejemplo/dependencia
+    titulo: Example Platform docs · Open formats (fictional)
+    tipo: oficial
+    fecha_publicacion: 2026-09-15
+    conflicto_de_interes: propio-fabricante
+    cita: All tables use an open format and the catalog can be exported, so other engines can read the data without conversion.
+    verificacion:
+      resultado: no-verificable
+      fecha: 2026-10-06
+      http: 404
+      sha256: 25ddf2c883e0d1958ea971d279a7e4f0fd446724ee3db7db19dadabd4a62e484
+fecha_verificacion: 2026-10-06
+origen: curador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

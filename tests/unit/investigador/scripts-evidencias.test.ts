@@ -45,7 +45,8 @@ describe("modo evidencias de punta a punta", () => {
     const r = correr(APROBAR, [carpeta, "--aprobar", todas, "--rechazar", "-", "--retirar", "-"]);
     expect(r.status).toBe(1);
     expect(r.stderr).toContain(`${idDe("ia")}: una de sus citas no aparece en la fuente`);
-    expect(existsSync(join(raiz, "data/evidencias"))).toBe(false);
+    expect(existsSync(join(raiz, "data/evidencias", PLATAFORMA))).toBe(false);
+    expect(existsSync(join(raiz, "data/revisiones/evidencias", `${PLATAFORMA}.jsonl`))).toBe(false);
   });
   it("aprobar: escribe cada evidencia aprobada y la línea de la revisión; la base carga y cada huella coincide", () => {
     const rechazada = idDe("ia");
