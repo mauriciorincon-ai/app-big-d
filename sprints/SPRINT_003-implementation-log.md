@@ -775,6 +775,50 @@ del caso fue su único ajuste).
   - `pnpm build`: 52 páginas con CSP.
   - `E2E_PUERTO=3147 pnpm test:e2e`: 896 en verde, 9 saltadas y 2 en rojo (`telefono.spec.ts`, arriba). Después del
     ajuste, `telefono.spec.ts`: 8 en verde, y `caso.spec.ts`: 12.
+- **CI del push de `edf38ca`** (corrida 37409157032, leída con `gh pr checks 8` el 2026-10-05): `quality` 2m32s ·
+  `diagramador` ubuntu 1m55s y macOS 1m16s · `e2e` 9m34s · `lighthouse` 13m21s · Vercel. Los cinco checks con conclusión
+  propia `success`.
+
+### Instantánea de la base (D-S3-13, 2026-10-05)
+
+- **Qué se construyó.** `scripts/instantanea.mjs AAAA-MM-DD` congela la base aprobada en
+  `data/instantaneas/<AAAA-MM-DD.N>.json` con la biblioteca de la fase 1 (`nuevaInstantanea`: huella RFC 8785 del
+  contenido aprobado, anterior y cambios). Es una derivación, no una aprobación: no decide nada. La fecha es un
+  argumento y nada lee el reloj. Antes de escribir, carga una copia de `data/` con la instantánea nueva usando el
+  cargador del build: si algo no pasa, no escribe nada. Si nada cambió desde la última, no congela otra. Escribe a un
+  temporal y lo renombra.
+- **Dos reglas nuevas del cargador** (`src/lib/datos/cargar-conocimiento.ts`), para que las fechas sean coherentes:
+  - una instantánea no congela una evidencia aprobada después de su fecha (`contenido.evidencias[i].fecha_aprobacion`);
+  - un caso no se evalúa antes de su instantánea (`fecha_evaluacion` < fecha de la instantánea).
+- **La instantánea real.** `node scripts/instantanea.mjs 2026-10-06` (la fecha UTC de las aprobaciones de P0–P3):
+  «instantanea: 2026-10-06.1 · 44 evidencias aprobadas · 44 cambios frente a nada (es la primera) · sha256
+  b378fc715d50dd1eb703f070df3298b126716f7cfb2b4c9271082dc5b3c7447b». Son las 33 reales y las 11 del ensayo.
+- **El caso la referencia.** El borrador (`propuesto_por_agente`, sin respuestas) pasa a `instantanea: "2026-10-06.1"`
+  y `fecha_evaluacion: "2026-10-06"` (antes: `null` y 2026-10-04, que la regla nueva habría rechazado). El perfil sigue
+  en borrador: la comparación no puntúa y solo dice que el perfil es un borrador.
+- **Gates nuevos (regla 15), corridos con `scripts/demo-rojo.sh --debe-nombrar --minimo-tests` el 2026-10-05.** Los
+  cinco salieron con 0 (rojo nombrando lo esperado, restaurado con `cmp`, verde):
+
+| # | Gate | Mutación | Nombró | Verde |
+|---|---|---|---|---|
+| 1 | Cargador: evidencia aprobada después de la instantánea | la condición → `false &&` | «una instantánea que congela una evidencia aprobada después de su fecha» | 71 pruebas |
+| 2 | Cargador: caso evaluado antes de su instantánea | `if (false && inst && …)` | «un caso evaluado antes de su instantánea» | 71 |
+| 3 | Script: si nada cambió, no congela otra | `if (false && ultima && …)` | «si nada cambió desde la última» | 5 |
+| 4 | Script: el ensayo en copia carga antes de escribir | la carga del ensayo → `void 0;` | «no congela una evidencia aprobada después de la fecha» | 5 |
+| 5 | e2e de la base: lista las instantáneas del dato y marca la vigente | la insignia «vigente» pasa a la fila 2 (con build) | «sus convenciones y sus instantáneas» | 2 |
+
+- **Lo que el dato nuevo cambió en las pruebas.** `casos.test.ts` ya no dice «un borrador sin instantánea se mira
+  contra la base viva»: ahora exige la instantánea del caso (o la base viva si no tiene) y cuenta las faltantes sobre lo
+  congelado. `caso.spec.ts` ya no espera «sin instantáneas»: lee las versiones de `data/instantaneas/` y exige una fila
+  por versión, de la más nueva a la más vieja, con la vigente marcada. Con la base real, los estados vacíos de `/base`
+  («sin evidencias» y «sin instantáneas») se quedan sin prueba de navegador: van a la pasada de capturas de la fase 4,
+  sobre una base de `BIGD_DATOS` vacía.
+- **Corridas (2026-10-05, locales).**
+  - `pnpm typecheck` y `pnpm lint` limpios.
+  - `pnpm test`: 87 archivos, 1686 pruebas en verde (+5 del script y +2 del cargador).
+  - `pnpm build`: 52 páginas con CSP.
+  - `E2E_PUERTO=3147 pnpm test:e2e`: 894 en verde, 9 saltadas y 2 en rojo (el «sin instantáneas» de
+    `caso.spec.ts`, arriba). Después del ajuste, `caso.spec.ts`: 12 en verde.
 
 ## Desviación del plan
 

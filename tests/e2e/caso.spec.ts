@@ -11,6 +11,11 @@ import { CASOS, IDIOMAS } from "./lib/rutas";
 
 /** Las evidencias aprobadas del dato real: un archivo por evidencia en data/evidencias/<plataforma>/. */
 const APROBADAS = readdirSync("data/evidencias", { recursive: true, encoding: "utf8" }).filter((f) => f.endsWith(".yaml")).length;
+/** Las instantáneas del dato real, de la más nueva a la más vieja (versión AAAA-MM-DD.N: por fecha y luego por N). */
+const INSTANTANEAS = readdirSync("data/instantaneas")
+  .filter((f) => f.endsWith(".json"))
+  .map((f) => f.slice(0, -".json".length))
+  .sort((a, b) => (a.slice(0, 10) === b.slice(0, 10) ? Number(b.slice(11)) - Number(a.slice(11)) : a < b ? 1 : -1));
 
 for (const idioma of IDIOMAS) {
   const T = textos(idioma);
@@ -44,7 +49,7 @@ for (const idioma of IDIOMAS) {
     });
   }
 
-  test(`${idioma} · la base muestra las evidencias aprobadas, con sus criterios, su escala y sus convenciones`, async ({ page }) => {
+  test(`${idioma} · la base muestra las evidencias aprobadas, con sus criterios, su escala, sus convenciones y sus instantáneas`, async ({ page }) => {
     expect(APROBADAS).toBeGreaterThan(0);
     await page.goto(`/${idioma}/base`);
     await listo(page);
@@ -54,7 +59,12 @@ for (const idioma of IDIOMAS) {
     await expect(page.locator(".criterios > li")).not.toHaveCount(0);
     await expect(page.locator(".niveles-escala > li")).toHaveCount(5);
     await expect(page.getByText(plantilla(T.base.convenciones.empate, { puntos: "5" }))).toBeVisible();
-    await expect(page.locator('[data-estado="sin-instantaneas"]')).toHaveText(T.base.instantaneas.vacio);
+    expect(INSTANTANEAS.length).toBeGreaterThan(0);
+    await expect(page.locator('[data-estado="sin-instantaneas"]')).toHaveCount(0);
+    const filas = page.locator('section[aria-labelledby="inst-t"] tbody tr');
+    await expect(filas).toHaveCount(INSTANTANEAS.length);
+    for (const [n, v] of INSTANTANEAS.entries()) await expect(filas.nth(n).locator("td").first()).toContainText(v);
+    await expect(filas.first()).toContainText(T.base.instantaneas.vigente);
     await expect(page.getByRole("link", { name: T.secciones.base })).toHaveAttribute("aria-current", "page");
     await page.getByRole("link", { name: T.secciones.investigador }).click();
     await expect(page).toHaveURL(new RegExp(`/${idioma}/investigador/`));

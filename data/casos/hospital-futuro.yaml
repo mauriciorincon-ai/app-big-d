@@ -112,6 +112,6 @@ decisiones_implicitas:
         texto: { es: "Coexistir durante la transición", en: "Coexist during the transition" }
     respuesta: null
 acepta_vista_previa: false
-fecha_evaluacion: "2026-10-04"
-instantanea: null
+fecha_evaluacion: "2026-10-06"
+instantanea: "2026-10-06.1"
 estado_aprobacion: borrador

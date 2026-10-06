@@ -23,22 +23,23 @@ describe("el caso del repo (borrador)", () => {
     expect(idsDeCasos(join(dir, "no-existe"))).toEqual([]);
   });
 
-  it("un borrador sin instantánea se mira contra la base viva y no puntúa: dice que es borrador y, si falta, qué evidencia", () => {
+  it("un borrador se mira contra su instantánea (o la base viva si aún no tiene) y no puntúa: dice que es borrador y, si falta, qué evidencia", () => {
     const k = conocimiento();
     const caso = k.casos.find((c) => c.id === "hospital-futuro")!;
     expect(caso.estado_aprobacion).toBe("borrador");
-    expect(congeladaDe(k, caso).version).toBe("base-viva");
+    const congelada = congeladaDe(k, caso);
+    expect(congelada.version).toBe(caso.instantanea ?? "base-viva");
     const e = evaluacionDe(k, caso);
     expect(e.simulacion).toBeNull();
     if (e.resultado.tipo !== "no-evaluable") throw new Error("el borrador no debía evaluarse");
     // Ejemplo sale por su restricción: quedan las reales, y de cada una los criterios del caso sin una evidencia
     // aprobada. Se cuenta aquí desde el dato (no con el motor), para que la prueba siga a cada aprobación.
     const criterioDe = (e: (typeof k.evidencias)[number]) => e.criterio_id ?? k.criterios.find((c) => c.capacidad_id === e.capacidad_id)?.id;
-    const cubiertas = new Set(k.evidencias.filter((e) => e.estado_aprobacion === "aprobada").map((e) => `${e.plataforma_id} ${criterioDe(e)}`));
+    const cubiertas = new Set(congelada.contenido.evidencias.filter((e) => e.estado_aprobacion === "aprobada").map((e) => `${e.plataforma_id} ${criterioDe(e)}`));
     const esperadas = k.plataformas
       .filter((p) => !p.ficticia)
       .flatMap((p) => caso.criterios.filter((c) => !cubiertas.has(`${p.id} ${c.criterio_id}`)).map((c) => `${p.id} ${c.criterio_id}`));
-    // Con las 33 evidencias reales aprobadas (S3, P1–P3) no falta ninguna: el único motivo es el borrador.
+    // Con las 33 evidencias reales aprobadas (S3, P1–P3) y congeladas no falta ninguna: el único motivo es el borrador.
     expect(e.resultado.motivos.map((m) => m.motivo)).toEqual(["perfil-en-borrador", ...(esperadas.length ? ["falta-evidencia"] : [])]);
     const falta = e.resultado.motivos.find((m) => m.motivo === "falta-evidencia");
     const faltantes = falta && "faltantes" in falta ? falta.faltantes.map((f) => `${f.plataforma_id} ${f.criterio_id}`) : [];

@@ -193,7 +193,14 @@ describe("una base rota no carga y dice dónde (RF-01.2)", () => {
       Object.assign(i.contenido.evidencias[0], { estado_aprobacion: "propuesta", aprobada_por: undefined, fecha_aprobacion: undefined });
       writeFileSync(ruta, JSON.stringify(i, null, 2));
     }, /· contenido\.evidencias\[0\]\.estado_aprobacion · una instantánea congela solo evidencias aprobadas$/],
+    ["una instantánea que congela una evidencia aprobada después de su fecha", (d, v) => {
+      const ruta = join(d, "instantaneas", `${v}.json`);
+      const i = JSON.parse(readFileSync(ruta, "utf8"));
+      i.contenido.evidencias[0].fecha_aprobacion = "2026-09-27";
+      writeFileSync(ruta, JSON.stringify(i, null, 2));
+    }, /· contenido\.evidencias\[0\]\.fecha_aprobacion · es posterior a la instantánea \(2026-09-26\): no se congela lo que aún no estaba aprobado$/],
     // Casos.
+    ["un caso evaluado antes de su instantánea", (d) => yaml(d, "casos/hospital-futuro.yaml", (c) => void (c.fecha_evaluacion = "2026-09-25")), /hospital-futuro\.yaml:\d+:\d+ · hospital-futuro · fecha_evaluacion · es anterior a su instantánea \(2026-09-26\): no se evalúa una base que aún no existía$/],
     ["una respuesta que no es una opción", (d) => yaml(d, "casos/hospital-futuro.yaml", (c) => void ((c.decisiones_implicitas as Record<string, unknown>[])[0]!.respuesta = "tres")), /· decisiones_implicitas\[0\]\.respuesta · «tres» no es una de sus opciones$/],
     ["un borrador con sello", (d) => yaml(d, "casos/hospital-futuro.yaml", (c) => void (c.estado_aprobacion = "borrador")), /· aprobacion · solo un perfil aprobado lleva sello$/],
     ["un aprobado sin sello", (d) => yaml(d, "casos/hospital-futuro.yaml", (c) => void delete c.aprobacion), /· aprobacion · obligatorio en un perfil aprobado$/],

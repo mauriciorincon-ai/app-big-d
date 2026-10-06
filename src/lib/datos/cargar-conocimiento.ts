@@ -197,6 +197,7 @@ export function cargarConocimiento(dir = dirDatos()): Conocimiento {
     if (!v.version.startsWith(`${v.fecha}.`)) fallas.push(linea(x.l, ["fecha"], `la versión ${v.version} es de otro día`));
     if (huellaDe(v.contenido) !== v.huella) fallas.push(linea(x.l, ["huella"], "no es la huella de su contenido: la instantánea cambió después de congelarse"));
     v.contenido.evidencias.forEach((e, i) => e.estado_aprobacion !== "aprobada" && fallas.push(linea(x.l, ["contenido", "evidencias", i, "estado_aprobacion"], "una instantánea congela solo evidencias aprobadas")));
+    v.contenido.evidencias.forEach((e, i) => e.fecha_aprobacion && e.fecha_aprobacion > v.fecha && fallas.push(linea(x.l, ["contenido", "evidencias", i, "fecha_aprobacion"], `es posterior a la instantánea (${v.fecha}): no se congela lo que aún no estaba aprobado`)));
     cruzarBase(v.contenido, (tipo, i, ruta, regla) => linea(x.l, ["contenido", tipo === "criterio" ? "criterios" : "evidencias", i, ...ruta], regla), fallas);
     instantaneas.push(x);
   }
@@ -219,6 +220,7 @@ export function cargarConocimiento(dir = dirDatos()): Conocimiento {
       fallas.push(linea(x.l, ["instantanea"], `no existe data/instantaneas/${c.instantanea}.json`));
       continue;
     }
+    if (inst && c.fecha_evaluacion < inst.fecha) fallas.push(linea(x.l, ["fecha_evaluacion"], `es anterior a su instantánea (${inst.fecha}): no se evalúa una base que aún no existía`));
     const donde = inst ? `la instantánea ${inst.version}` : "la base";
     const ids = new Set((inst ? inst.contenido.criterios : criterios.map((y) => y.v)).map((k) => k.id));
     const plats = new Set((inst ? inst.contenido.plataformas : plataformas).map((p) => p.id));
