@@ -708,6 +708,31 @@ del caso fue su único ajuste).
   - `pnpm test`: 86 archivos, 1679 pruebas en verde (tras el ajuste).
   - `pnpm build`: 52 páginas con CSP.
   - `E2E_PUERTO=3147 pnpm test:e2e`: 898 en verde y 9 saltadas. La base muestra 22 tarjetas.
+- **CI del push de `30675ed`** (corrida 37402543463, leída con `gh pr checks 8` el 2026-10-05): `quality` 2m49s ·
+  `diagramador` ubuntu 1m19s y macOS 1m17s · `e2e` 9m46s · `lighthouse` 13m56s · Vercel. Los cinco checks con conclusión
+  propia `success`.
+
+### P2 — evidencias de Snowflake (D-S3-10, 2026-10-05)
+
+- **La investigación.** El usuario invocó `/investigar snowflake evidencias`. El investigador escribió
+  `propuestas/2026-10-05-snowflake-evidencias/` con 11 evidencias, todas esenciales y en disponibilidad general: 2 en
+  costo y en dependencia, 3 en las demás. Son 73 citas en 40 páginas oficiales (`docs.snowflake.com`,
+  `propio-fabricante`), con 7 preguntas guía sin responder y un reintento anotado (tres citas tenían un enlace en medio
+  y se recortaron al tramo literal). El registro de ejecución suma 72 líneas, sin datos personales.
+- **Comprobado por mí, aparte del agente (2026-10-05).** `validar.mjs`: «propuesta válida · 11 evidencias».
+  `verificar-citas.mjs`: 73 de 73 verificadas, 0 no verificables y 0 no encontradas. Pasada de capturas de la revisión
+  (380 y 1280 px; los dos temas y los dos idiomas): 11 tarjetas, ningún elemento más ancho que su tarjeta ni fuera de
+  su casilla, sin desplazamiento lateral, cero errores, y el comando con los 11 ids. La tarjeta A-10 (dependencia, 2)
+  se leyó como imagen en `380 oscuro es`.
+- **La decisión de la persona.** Se le señalaron A-7 (costo, 2), A-10 (dependencia, 2) y A-3 (transformación, 3,
+  frente al 4 de Databricks). Su respuesta del 2026-10-05 fue «Ya todo aprobado», con el comando de la pantalla
+  (`--aprobar A-1,…,A-11 --rechazar - --retirar -`). Los ids coinciden con la propuesta. Hubo un ensayo en seco sobre
+  una copia de `data/` (11 cargan, sin fallas), y luego `pbcopy` y su Terminal. Resultado: 11 archivos en
+  `data/evidencias/snowflake/` y una línea en `data/revisiones/evidencias/snowflake.jsonl`, con fecha 2026-10-06 (UTC).
+- **Corridas (2026-10-05, locales, antes de que existiera la propuesta de Fabric).** `pnpm typecheck` y `pnpm lint`
+  limpios · `pnpm test`: 86 archivos y 1679 pruebas en verde · `pnpm build`: 52 páginas con CSP ·
+  `E2E_PUERTO=3147 pnpm test:e2e`: 898 en verde y 9 saltadas. Ninguna prueba tuvo que cambiar: las de la base y del
+  caso ya siguen al dato.
 
 ## Desviación del plan
 

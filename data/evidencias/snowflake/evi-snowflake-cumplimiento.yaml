@@ -1,0 +1,78 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-snowflake-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/snowflake.jsonl).
+id: evi-snowflake-cumplimiento
+plataforma_id: snowflake
+criterio_id: crit-cumplimiento
+afirmacion:
+  es: Para los datos de pacientes que cubre la ley estadounidense HIPAA, Snowflake ofrece la edición Business Critical y exige un acuerdo de socio comercial (BAA) firmado antes de guardarlos; las máscaras ocultan valores al consultar y el historial de accesos registra qué datos lee y escribe cada consulta.
+  en: For patient data covered by the US HIPAA law, Snowflake offers Business Critical Edition and requires a signed business associate agreement (BAA) before storing it; masks hide values at query time and access history records which data each query reads and writes.
+componentes:
+  - politicas-acceso
+  - horizon-catalog
+madurez: disponible-general
+puntaje: 3
+justificacion_puntaje:
+  es: "3 y no 4: los controles para datos de salud tienen condiciones: la edición pensada para esos datos es Business Critical, hace falta un BAA firmado antes de guardar un solo dato de pacientes y el historial de accesos exige la edición Enterprise o superior. 3 y no 2: el enmascaramiento, las políticas por fila y el historial de accesos son nativos y están documentados."
+  en: "3, not 4: health-data controls come with conditions: the edition meant for that data is Business Critical, a signed BAA is needed before storing any patient data, and access history requires Enterprise Edition or higher. 3, not 2: masking, row policies and access history are native and documented."
+esencial: true
+fuentes:
+  - url: https://docs.snowflake.com/en/user-guide/intro-editions
+    titulo: Snowflake editions | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: particularly PHI data that must comply with HIPAA and HITRUST CSF regulations
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 65c62b9f5f1ae51bf768b81455f1806f2d722d1d84599c02982c2265f2eb7321
+  - url: https://docs.snowflake.com/en/user-guide/intro-editions
+    titulo: Snowflake editions | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: a signed business associate agreement (BAA) must be in place between your agency/organization and Snowflake Inc.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 65c62b9f5f1ae51bf768b81455f1806f2d722d1d84599c02982c2265f2eb7321
+  - url: https://docs.snowflake.com/en/user-guide/access-history
+    titulo: Access History | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Access History in Snowflake refers to when the user query reads data and when the SQL statement performs a data write operation
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: de9b12327fc1e293aca492f49d81b0cbda5af8bbf71281a2ef56f78635500659
+  - url: https://docs.snowflake.com/en/user-guide/access-history
+    titulo: Access History | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Access History requires Enterprise Edition (or higher)
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: de9b12327fc1e293aca492f49d81b0cbda5af8bbf71281a2ef56f78635500659
+  - url: https://docs.snowflake.com/en/user-guide/security-column-ddm-intro
+    titulo: Understanding Dynamic Data Masking | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Dynamic Data Masking is a Column-level Security feature that uses masking policies to selectively mask plain-text data in table and view columns at query time.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: cea3df399f3e07bb5d73f2aa8226c73982dc2d2926dfb2f690c7f3404d0df024
+fecha_verificacion: 2026-10-06
+limitaciones:
+  - es: Hace falta un acuerdo de socio comercial (BAA) firmado antes de guardar datos de pacientes.
+    en: A signed business associate agreement (BAA) is needed before storing patient data.
+  - es: El historial de accesos exige la edición Enterprise o superior.
+    en: Access history requires Enterprise Edition or higher.
+origen: agente-investigador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

@@ -1,0 +1,591 @@
+{
+  "version": 1,
+  "fecha": "2026-10-06",
+  "propuesta_sha256": "1cd93fb5502be14f3a4dff86e6a7f4bfa8ff4df9be959baae10252e36df1a407",
+  "resultados": [
+    {
+      "afirmacion": "A-1",
+      "fuente": 0,
+      "url": "https://docs.snowflake.com/en/release-notes/2025/other/2025-05-30-openflow",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "b58d9b27ea31157cc0c5a0b55a310c0b7285803a9525ca20c5b42d2ed89032c8"
+    },
+    {
+      "afirmacion": "A-1",
+      "fuente": 1,
+      "url": "https://docs.snowflake.com/en/user-guide/data-integration/openflow/connectors/sql-server-cdc/about",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "2f0c0b9db421a928eef1ce6c8921ee8c46ee8c9351f08d47d72ed9f59a394374"
+    },
+    {
+      "afirmacion": "A-1",
+      "fuente": 2,
+      "url": "https://docs.snowflake.com/en/release-notes/2026/other/2026-08-05-openflow-sql-server-cdc-ga",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "14d8d62353704953f9b408403108976f301c546f4127500e0198949782eda792"
+    },
+    {
+      "afirmacion": "A-1",
+      "fuente": 3,
+      "url": "https://docs.snowflake.com/en/user-guide/data-integration/openflow/connectors/postgres/about",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "fee0c491160a931e09319d314e81c8d563185b626fe1300e1548e68a6971dd99"
+    },
+    {
+      "afirmacion": "A-1",
+      "fuente": 4,
+      "url": "https://docs.snowflake.com/en/user-guide/data-integration/openflow/connectors/postgres/about",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "fee0c491160a931e09319d314e81c8d563185b626fe1300e1548e68a6971dd99"
+    },
+    {
+      "afirmacion": "A-1",
+      "fuente": 5,
+      "url": "https://docs.snowflake.com/en/user-guide/data-integration/openflow/connectors/postgres/about",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "fee0c491160a931e09319d314e81c8d563185b626fe1300e1548e68a6971dd99"
+    },
+    {
+      "afirmacion": "A-1",
+      "fuente": 6,
+      "url": "https://docs.snowflake.com/en/user-guide/data-load-snowpipe-intro",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "696c29d06903b37723b3938f0bded9bbe9e7b9b27db3ec275dc49f797c481df7"
+    },
+    {
+      "afirmacion": "A-1",
+      "fuente": 7,
+      "url": "https://docs.snowflake.com/en/user-guide/snowpipe-streaming/data-load-snowpipe-streaming-overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "b5830d3d6e9861fc3b2572506c4fb0b5f88485b0fa38b1d6cce79f7bdece1e36"
+    },
+    {
+      "afirmacion": "A-2",
+      "fuente": 0,
+      "url": "https://docs.snowflake.com/en/user-guide/intro-key-concepts",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "f9cdae674d5e8678de7f051929c26037e935327585d15f36e2e92b1c747c33ab"
+    },
+    {
+      "afirmacion": "A-2",
+      "fuente": 1,
+      "url": "https://docs.snowflake.com/en/release-notes/2024/other/2024-06-10-iceberg-tables",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "ddd947329644c1862b66b8425af32dc8e9b02b4b75497de81bc82ba4ac1c9882"
+    },
+    {
+      "afirmacion": "A-2",
+      "fuente": 2,
+      "url": "https://docs.snowflake.com/en/release-notes/2024/other/2024-06-10-iceberg-tables",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "ddd947329644c1862b66b8425af32dc8e9b02b4b75497de81bc82ba4ac1c9882"
+    },
+    {
+      "afirmacion": "A-2",
+      "fuente": 3,
+      "url": "https://docs.snowflake.com/en/user-guide/tables-iceberg-access-using-external-query-engine-snowflake-horizon",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "d26b1a3d45c230d72660fe7132ef3c20598e37fdd42137eab7c80107c5c0b084"
+    },
+    {
+      "afirmacion": "A-2",
+      "fuente": 4,
+      "url": "https://docs.snowflake.com/en/user-guide/tables-iceberg-access-using-external-query-engine-snowflake-horizon",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "d26b1a3d45c230d72660fe7132ef3c20598e37fdd42137eab7c80107c5c0b084"
+    },
+    {
+      "afirmacion": "A-3",
+      "fuente": 0,
+      "url": "https://docs.snowflake.com/en/user-guide/dynamic-tables/overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "c4a10834e6a7a065ae6ead985dfb8df1fc57a5f641c1f933f95570f02bf1e3e4"
+    },
+    {
+      "afirmacion": "A-3",
+      "fuente": 1,
+      "url": "https://docs.snowflake.com/en/user-guide/dynamic-tables/overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "c4a10834e6a7a065ae6ead985dfb8df1fc57a5f641c1f933f95570f02bf1e3e4"
+    },
+    {
+      "afirmacion": "A-3",
+      "fuente": 2,
+      "url": "https://docs.snowflake.com/en/user-guide/dynamic-tables/overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "c4a10834e6a7a065ae6ead985dfb8df1fc57a5f641c1f933f95570f02bf1e3e4"
+    },
+    {
+      "afirmacion": "A-3",
+      "fuente": 3,
+      "url": "https://docs.snowflake.com/en/release-notes/2024/other/2024-04-29-dynamic-tables",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "877c16c443dfec1a27976b5c81d45596361c14c32d24168c28e1333901a34256"
+    },
+    {
+      "afirmacion": "A-3",
+      "fuente": 4,
+      "url": "https://docs.snowflake.com/en/user-guide/tasks-intro",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "33a4def260b90b25a183c4ee06f0740ec8eee2f709e214aaac190a60729d7cc7"
+    },
+    {
+      "afirmacion": "A-3",
+      "fuente": 5,
+      "url": "https://docs.snowflake.com/en/user-guide/data-quality-intro",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "b18f2a01e7f39f6b4786fe9a248865d4563a0c81293a27fc59dbb80802bbb199"
+    },
+    {
+      "afirmacion": "A-3",
+      "fuente": 6,
+      "url": "https://docs.snowflake.com/en/user-guide/data-quality-intro",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "b18f2a01e7f39f6b4786fe9a248865d4563a0c81293a27fc59dbb80802bbb199"
+    },
+    {
+      "afirmacion": "A-3",
+      "fuente": 7,
+      "url": "https://docs.snowflake.com/en/release-notes/2024/8_28",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "e3bd0b54b79099ac21e7544e9bce0f50bcf0047f7cb2f149bd282077088d9eb8"
+    },
+    {
+      "afirmacion": "A-4",
+      "fuente": 0,
+      "url": "https://docs.snowflake.com/en/user-guide/views-semantic/overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "0c670d0658712753b00c60735469d19c1027835743ecfda2d6f128375f3b58c1"
+    },
+    {
+      "afirmacion": "A-4",
+      "fuente": 1,
+      "url": "https://docs.snowflake.com/en/release-notes/2025/9_25",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "0f4b51f3a70075aa8718a53411c69fe5b5e9701792ccb4605695935b4316c66c"
+    },
+    {
+      "afirmacion": "A-4",
+      "fuente": 2,
+      "url": "https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-analyst",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "6674c5aa30329a580e4ce99cfcfdd622e55559f4f5a98da4a5e2aef0c923c94d"
+    },
+    {
+      "afirmacion": "A-4",
+      "fuente": 3,
+      "url": "https://docs.snowflake.com/en/user-guide/oauth-powerbi",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "777c244b3b9bd395a0bcf155726b92686facd0e18ab810609986a52459c0373b"
+    },
+    {
+      "afirmacion": "A-4",
+      "fuente": 4,
+      "url": "https://docs.snowflake.com/en/release-notes/bcr-bundles/un-bundled/bcr-2260",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "a879f9fdf4064448398ef8d4deab708c7b0c5b919822781e22634eed15529752"
+    },
+    {
+      "afirmacion": "A-4",
+      "fuente": 5,
+      "url": "https://docs.snowflake.com/en/developer-guide/streamlit/about-streamlit",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "4de740237db182f3a743b8622251a112fdf91484080ec0849938333603086cbc"
+    },
+    {
+      "afirmacion": "A-5",
+      "fuente": 0,
+      "url": "https://docs.snowflake.com/en/user-guide/snowflake-horizon",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "9c2b55385400c03e69960e2657dc8901aa2d3fc082bdec79d86a9ea4513d6d2f"
+    },
+    {
+      "afirmacion": "A-5",
+      "fuente": 1,
+      "url": "https://docs.snowflake.com/en/user-guide/snowflake-horizon",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "9c2b55385400c03e69960e2657dc8901aa2d3fc082bdec79d86a9ea4513d6d2f"
+    },
+    {
+      "afirmacion": "A-5",
+      "fuente": 2,
+      "url": "https://docs.snowflake.com/en/user-guide/security-row-intro",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "0fa3bf0031477b7dc3908186740793d658a33d8c611adda6789f3a4d1ca096d5"
+    },
+    {
+      "afirmacion": "A-5",
+      "fuente": 3,
+      "url": "https://docs.snowflake.com/en/user-guide/security-column-ddm-intro",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "cea3df399f3e07bb5d73f2aa8226c73982dc2d2926dfb2f690c7f3404d0df024"
+    },
+    {
+      "afirmacion": "A-5",
+      "fuente": 4,
+      "url": "https://docs.snowflake.com/en/release-notes/2025/9_03",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "3dadfa055068cb9bfcd2a2c68c004438023efedd391ae4c7e05550b0a56d4083"
+    },
+    {
+      "afirmacion": "A-5",
+      "fuente": 5,
+      "url": "https://docs.snowflake.com/en/user-guide/ui-snowsight-lineage",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "4a0d98dba1ba0cb3c4192ce71495252c9cdb0a784bfd1cdafaebfe4e5517af2b"
+    },
+    {
+      "afirmacion": "A-5",
+      "fuente": 6,
+      "url": "https://docs.snowflake.com/en/user-guide/ui-snowsight-lineage",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "4a0d98dba1ba0cb3c4192ce71495252c9cdb0a784bfd1cdafaebfe4e5517af2b"
+    },
+    {
+      "afirmacion": "A-5",
+      "fuente": 7,
+      "url": "https://docs.snowflake.com/en/user-guide/ui-snowsight-lineage",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "4a0d98dba1ba0cb3c4192ce71495252c9cdb0a784bfd1cdafaebfe4e5517af2b"
+    },
+    {
+      "afirmacion": "A-5",
+      "fuente": 8,
+      "url": "https://docs.snowflake.com/en/user-guide/security-row-intro",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "0fa3bf0031477b7dc3908186740793d658a33d8c611adda6789f3a4d1ca096d5"
+    },
+    {
+      "afirmacion": "A-6",
+      "fuente": 0,
+      "url": "https://docs.snowflake.com/en/release-notes/2025/other/2025-11-04-cortex-agents",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "1ea7433c2e2b5ffe230e6b82b44672db0da6636a278413420aaccf82e2007672"
+    },
+    {
+      "afirmacion": "A-6",
+      "fuente": 1,
+      "url": "https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-agents",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "28a20c6f888e7d1297e93fe306b97e2d435c8c8005efc44e8de2db4d7384ce5a"
+    },
+    {
+      "afirmacion": "A-6",
+      "fuente": 2,
+      "url": "https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-analyst",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "6674c5aa30329a580e4ce99cfcfdd622e55559f4f5a98da4a5e2aef0c923c94d"
+    },
+    {
+      "afirmacion": "A-6",
+      "fuente": 3,
+      "url": "https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-agents-evaluations",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "a193ae31edca319b848822be06cb96bc3ebc711456c4576767fbfedb9b52bf72"
+    },
+    {
+      "afirmacion": "A-6",
+      "fuente": 4,
+      "url": "https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-agents-evaluations",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "a193ae31edca319b848822be06cb96bc3ebc711456c4576767fbfedb9b52bf72"
+    },
+    {
+      "afirmacion": "A-6",
+      "fuente": 5,
+      "url": "https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-agents-evaluations",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "a193ae31edca319b848822be06cb96bc3ebc711456c4576767fbfedb9b52bf72"
+    },
+    {
+      "afirmacion": "A-6",
+      "fuente": 6,
+      "url": "https://docs.snowflake.com/en/user-guide/snowflake-cortex/cross-region-inference",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "332fb856a892e3a0ea88049243105ed28f924eecd8c400358eb05e3a134c20d4"
+    },
+    {
+      "afirmacion": "A-7",
+      "fuente": 0,
+      "url": "https://docs.snowflake.com/en/user-guide/warehouses-overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "c86561118d1916a11e33e075471fe12d075fa6933f8b49c7b2f9df63540199e9"
+    },
+    {
+      "afirmacion": "A-7",
+      "fuente": 1,
+      "url": "https://docs.snowflake.com/en/user-guide/resource-monitors",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "2331e6b0adaebe60ce512ea82577d71662c76bb512683f149bb3d08ce3f6e175"
+    },
+    {
+      "afirmacion": "A-7",
+      "fuente": 2,
+      "url": "https://docs.snowflake.com/en/user-guide/resource-monitors",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "2331e6b0adaebe60ce512ea82577d71662c76bb512683f149bb3d08ce3f6e175"
+    },
+    {
+      "afirmacion": "A-7",
+      "fuente": 3,
+      "url": "https://docs.snowflake.com/en/user-guide/resource-monitors",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "2331e6b0adaebe60ce512ea82577d71662c76bb512683f149bb3d08ce3f6e175"
+    },
+    {
+      "afirmacion": "A-7",
+      "fuente": 4,
+      "url": "https://docs.snowflake.com/en/user-guide/resource-monitors",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "2331e6b0adaebe60ce512ea82577d71662c76bb512683f149bb3d08ce3f6e175"
+    },
+    {
+      "afirmacion": "A-7",
+      "fuente": 5,
+      "url": "https://docs.snowflake.com/en/user-guide/budgets",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "0a4d52481bd42e5871b4951cdf6f87a997f1cad9fa886a52a4ff8426f1f2e7b4"
+    },
+    {
+      "afirmacion": "A-7",
+      "fuente": 6,
+      "url": "https://docs.snowflake.com/en/user-guide/budgets",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "0a4d52481bd42e5871b4951cdf6f87a997f1cad9fa886a52a4ff8426f1f2e7b4"
+    },
+    {
+      "afirmacion": "A-7",
+      "fuente": 7,
+      "url": "https://docs.snowflake.com/en/user-guide/budgets",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "0a4d52481bd42e5871b4951cdf6f87a997f1cad9fa886a52a4ff8426f1f2e7b4"
+    },
+    {
+      "afirmacion": "A-8",
+      "fuente": 0,
+      "url": "https://docs.snowflake.com/en/user-guide/intro-editions",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "65c62b9f5f1ae51bf768b81455f1806f2d722d1d84599c02982c2265f2eb7321"
+    },
+    {
+      "afirmacion": "A-8",
+      "fuente": 1,
+      "url": "https://docs.snowflake.com/en/user-guide/intro-editions",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "65c62b9f5f1ae51bf768b81455f1806f2d722d1d84599c02982c2265f2eb7321"
+    },
+    {
+      "afirmacion": "A-8",
+      "fuente": 2,
+      "url": "https://docs.snowflake.com/en/user-guide/access-history",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "de9b12327fc1e293aca492f49d81b0cbda5af8bbf71281a2ef56f78635500659"
+    },
+    {
+      "afirmacion": "A-8",
+      "fuente": 3,
+      "url": "https://docs.snowflake.com/en/user-guide/access-history",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "de9b12327fc1e293aca492f49d81b0cbda5af8bbf71281a2ef56f78635500659"
+    },
+    {
+      "afirmacion": "A-8",
+      "fuente": 4,
+      "url": "https://docs.snowflake.com/en/user-guide/security-column-ddm-intro",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "cea3df399f3e07bb5d73f2aa8226c73982dc2d2926dfb2f690c7f3404d0df024"
+    },
+    {
+      "afirmacion": "A-9",
+      "fuente": 0,
+      "url": "https://docs.snowflake.com/en/user-guide/intro-key-concepts",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "f9cdae674d5e8678de7f051929c26037e935327585d15f36e2e92b1c747c33ab"
+    },
+    {
+      "afirmacion": "A-9",
+      "fuente": 1,
+      "url": "https://docs.snowflake.com/en/user-guide/intro-key-concepts",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "f9cdae674d5e8678de7f051929c26037e935327585d15f36e2e92b1c747c33ab"
+    },
+    {
+      "afirmacion": "A-9",
+      "fuente": 2,
+      "url": "https://docs.snowflake.com/en/user-guide/dynamic-tables/overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "c4a10834e6a7a065ae6ead985dfb8df1fc57a5f641c1f933f95570f02bf1e3e4"
+    },
+    {
+      "afirmacion": "A-9",
+      "fuente": 3,
+      "url": "https://docs.snowflake.com/en/developer-guide/snowpark/index",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "b65e2c859013b48a1665e5b2ac18daf6a1190b68e1e9a6f946705c48a4a98d25"
+    },
+    {
+      "afirmacion": "A-9",
+      "fuente": 4,
+      "url": "https://docs.snowflake.com/en/user-guide/warehouses-considerations",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "3faba133c9d5882add5098f5fa6b150d19d8edb19cff240d29ce887973698849"
+    },
+    {
+      "afirmacion": "A-9",
+      "fuente": 5,
+      "url": "https://docs.snowflake.com/en/user-guide/warehouses-overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "c86561118d1916a11e33e075471fe12d075fa6933f8b49c7b2f9df63540199e9"
+    },
+    {
+      "afirmacion": "A-10",
+      "fuente": 0,
+      "url": "https://docs.snowflake.com/en/user-guide/intro-key-concepts",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "f9cdae674d5e8678de7f051929c26037e935327585d15f36e2e92b1c747c33ab"
+    },
+    {
+      "afirmacion": "A-10",
+      "fuente": 1,
+      "url": "https://docs.snowflake.com/en/user-guide/data-unload-overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "874328eff4e14e237a78981e42e59e615aba91162d449e67e9ea7aa2683e5860"
+    },
+    {
+      "afirmacion": "A-10",
+      "fuente": 2,
+      "url": "https://docs.snowflake.com/en/release-notes/2024/other/2024-06-10-iceberg-tables",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "ddd947329644c1862b66b8425af32dc8e9b02b4b75497de81bc82ba4ac1c9882"
+    },
+    {
+      "afirmacion": "A-10",
+      "fuente": 3,
+      "url": "https://docs.snowflake.com/en/user-guide/tables-iceberg-access-using-external-query-engine-snowflake-horizon",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "d26b1a3d45c230d72660fe7132ef3c20598e37fdd42137eab7c80107c5c0b084"
+    },
+    {
+      "afirmacion": "A-10",
+      "fuente": 4,
+      "url": "https://docs.snowflake.com/en/user-guide/tables-iceberg-access-using-external-query-engine-snowflake-horizon",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "d26b1a3d45c230d72660fe7132ef3c20598e37fdd42137eab7c80107c5c0b084"
+    },
+    {
+      "afirmacion": "A-11",
+      "fuente": 0,
+      "url": "https://docs.snowflake.com/en/user-guide/intro-cloud-platforms",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "ff4fa76db2ddc67094dea2c55e619fefc2aba1c4a60033bc0e87553bcc80e79d"
+    },
+    {
+      "afirmacion": "A-11",
+      "fuente": 1,
+      "url": "https://docs.snowflake.com/en/user-guide/intro-cloud-platforms",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "ff4fa76db2ddc67094dea2c55e619fefc2aba1c4a60033bc0e87553bcc80e79d"
+    },
+    {
+      "afirmacion": "A-11",
+      "fuente": 2,
+      "url": "https://docs.snowflake.com/en/user-guide/scim-intro",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "63f472364dd67a439067661854b01aaffeca190b8b27212bc59bfc8016621d73"
+    },
+    {
+      "afirmacion": "A-11",
+      "fuente": 3,
+      "url": "https://docs.snowflake.com/en/user-guide/oauth-powerbi",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "777c244b3b9bd395a0bcf155726b92686facd0e18ab810609986a52459c0373b"
+    },
+    {
+      "afirmacion": "A-11",
+      "fuente": 4,
+      "url": "https://docs.snowflake.com/en/user-guide/oauth-powerbi",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "777c244b3b9bd395a0bcf155726b92686facd0e18ab810609986a52459c0373b"
+    },
+    {
+      "afirmacion": "A-11",
+      "fuente": 5,
+      "url": "https://docs.snowflake.com/en/user-guide/data-integration/openflow/about",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "570349a1047b948e5c777385c2db5ec3ca662c72fc212700938a1e2bf5f913d8"
+    }
+  ]
+}
