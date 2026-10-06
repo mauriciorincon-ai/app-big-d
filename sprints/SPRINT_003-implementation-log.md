@@ -656,6 +656,23 @@ del caso fue su único ajuste).
   - El build muestra en `/es` y `/en/investigador/plataforma-ejemplo` el veredicto «Evidencias aprobadas por una
     persona» y ya no muestra la propuesta pendiente.
 
+### CI del push de `fb39b40`: dos avisos de seguridad nuevos (2026-10-05)
+
+- **Qué pasó.** El push de `fb39b40` (corrida 37398213162) dejó `quality` en rojo en `pnpm audit --audit-level high`
+  (`diagramador` ×2 y Vercel en verde; `e2e` y `lighthouse` quedaron saltados porque dependen de `quality`, y saltado
+  no cuenta como verde). El código no tuvo que ver: entre `4e06c99` y `fb39b40` se publicaron dos avisos altos, ambos
+  con versión corregida.
+  - `source-map-js` < 1.2.2 (GHSA-68fv-2mgg-jv7q). Llega por PostCSS, Tailwind y Vite. El rango de PostCSS
+    (`^1.2.1`) admite la corrección: `pnpm update source-map-js`.
+  - `compression` < 1.8.2 (GHSA-vc2v-76pw-4v95). Llega solo por `serve` 14.2.6, la última versión, que la fija exacta
+    en 1.8.1. Con parche publicado, la regla 18 no deja excepcionarla, así que va un override en
+    `pnpm-workspace.yaml` (`compression: 1.8.2`), con su porqué y la condición de retiro en el comentario. Trae
+    `destroy` 1.2.0 como dependencia nueva.
+- **Comprobado (2026-10-05, local).** `pnpm audit --audit-level high`: queda solo `braces`, la excepción del S2.
+  `verificar-dependencias`: 670 paquetes, ninguno por debajo de `origin/main`. `pnpm peers check` limpio.
+  `pnpm test`: 86 archivos y 1679 pruebas. `pnpm build`: 52 páginas con CSP. `serve` con la `compression` nueva
+  responde 200 y comprime con gzip. `caso.spec.ts` y `csp.spec.ts` en `desktop-chromium`: 65 en verde.
+
 ## Desviación del plan
 
 Los hechos 1–10 y las decisiones D-S3-01…18 del plan aprobado (`Reglas del motor` incluidas) son la desviación de

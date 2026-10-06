@@ -15,6 +15,13 @@ onlyBuiltDependencies:
   - '@tailwindcss/oxide'
 ignoredBuiltDependencies:
   - '@sentry/cli'
+# Subidas forzadas por un aviso de seguridad CON versión corregida (regla 18: no se excepciona, se sube). Cada una se
+# retira cuando el paquete que la fija exacta publique una versión que ya la traiga.
+overrides:
+  # compression < 1.8.2: denegación de servicio por fuga de memoria al cerrarse la respuesta antes de tiempo
+  # (GHSA-vc2v-76pw-4v95, alto, 2026-10-05). serve 14.2.6 (la última) la fija exacta en 1.8.1. serve solo sirve out/
+  # en local y en la CI; el sitio exportado no lo lleva.
+  compression: 1.8.2
 # Avisos de seguridad aceptados, uno por uno y con su porqué (S2, 2026-10-02). Cada uno con su ADR (kit v1.34.0:
 # decisions/audit-exception-*.md con id, ruta, fecha y condición de retiro). Los vigila
 # tests/unit/avisos-ignorados.test.ts: cada uno documentado, con ADR, y su paquete jamás alcanzable desde producción.
