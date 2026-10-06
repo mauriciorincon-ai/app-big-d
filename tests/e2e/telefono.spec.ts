@@ -51,16 +51,21 @@ test("ningún «·» abre una línea, y un número no se separa de su palabra", 
   }
   for (const [ruta, palabra] of [["/es/investigador/fabric", "rechazadas"], ["/en/investigador/fabric", "rejected"]] as const) {
     await page.goto(ruta);
-    const rectangulos = await page.locator(".veredicto .mono").evaluate((el, p) => {
-      const nodo = el.firstChild!;
-      const texto = nodo.textContent!;
-      const m = texto.match(new RegExp(`\\d+\\s${p}`))!;
-      const r = document.createRange();
-      r.setStart(nodo, m.index!);
-      r.setEnd(nodo, m.index! + m[0].length);
-      return r.getClientRects().length;
-    }, palabra);
-    expect(rectangulos, ruta).toBe(1);
+    // Fabric tiene dos veredictos: el de su mapa y el de sus evidencias (S3). Cada uno, en una sola pieza.
+    const rectangulos = await page.locator(".veredicto .mono").evaluateAll(
+      (els, p) =>
+        els.map((el) => {
+          const nodo = el.firstChild!;
+          const texto = nodo.textContent!;
+          const m = texto.match(new RegExp(`\\d+\\s${p}`))!;
+          const r = document.createRange();
+          r.setStart(nodo, m.index!);
+          r.setEnd(nodo, m.index! + m[0].length);
+          return r.getClientRects().length;
+        }),
+      palabra,
+    );
+    expect(rectangulos, ruta).toEqual([1, 1]);
   }
 });
 

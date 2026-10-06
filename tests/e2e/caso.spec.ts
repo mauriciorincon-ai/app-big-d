@@ -1,8 +1,7 @@
-// El caso y la base con el dato REAL de hoy (S3, fase 3): el perfil hospitalario es un borrador sin respuestas y a la
-// base le faltan evidencias aprobadas, así que la comparación dice el estado honesto en vez de puntuar a medias; la base
-// muestra las que una persona ya aprobó (las cuenta en data/evidencias/, para que la prueba siga al dato). Cuando el
-// perfil se apruebe, estas pruebas cambian con el dato: la comparación entera se prueba hoy contra la base sembrada
-// (tests/e2e/sembrada/).
+// El caso y la base con el dato REAL de hoy (S3, fase 3): la base tiene sus evidencias aprobadas por una persona (la
+// prueba las cuenta en data/evidencias/ para seguir al dato), pero el perfil hospitalario es un borrador sin respuestas,
+// así que la comparación dice el estado honesto en vez de puntuar. Cuando el perfil se apruebe, estas pruebas cambian
+// con el dato: la comparación entera se prueba hoy contra la base sembrada (tests/e2e/sembrada/).
 import { readdirSync } from "node:fs";
 import { expect, test } from "@playwright/test";
 import { plantilla, plural } from "../../src/lib/atlas/plantilla";
@@ -37,7 +36,8 @@ for (const idioma of IDIOMAS) {
       const estado = page.locator('[data-estado="no-evaluable"]');
       await expect(estado.getByRole("heading")).toHaveText(T.caso.comparacion.noEvaluable.titulo);
       await expect(estado.locator('[data-motivo="perfil-en-borrador"]')).toContainText(T.caso.comparacion.noEvaluable.borrador);
-      await expect(estado.locator('[data-motivo="falta-evidencia"]')).toBeVisible();
+      // Las 33 evidencias reales están aprobadas (S3, P1–P3): ya no falta ninguna, el único motivo es el borrador.
+      await expect(estado.locator('[data-motivo="falta-evidencia"]')).toHaveCount(0);
       await expect(page.locator(".totales, .matriz, #sens, #rob")).toHaveCount(0);
       await estado.getByRole("link", { name: T.caso.comparacion.noEvaluable.verBase }).click();
       await expect(page).toHaveURL(new RegExp(`/${idioma}/base$`));

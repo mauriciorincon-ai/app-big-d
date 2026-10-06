@@ -1,0 +1,89 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-fabric-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/fabric.jsonl).
+id: evi-fabric-ecosistema
+plataforma_id: fabric
+criterio_id: crit-ecosistema
+afirmacion:
+  es: Fabric corre dentro de un inquilino de Microsoft Entra y se autentica con Entra ID; se integra con Excel y Microsoft Teams, y sus accesos directos leen datos de Azure Data Lake Storage, Amazon S3 y Google Cloud Storage sin copiarlos.
+  en: Fabric runs inside a Microsoft Entra tenant and authenticates with Entra ID; it integrates with Excel and Microsoft Teams, and its shortcuts read data from Azure Data Lake Storage, Amazon S3 and Google Cloud Storage without copying it.
+componentes:
+  - onelake
+  - almacenamiento-externo
+  - informe-power-bi
+madurez: disponible-general
+puntaje: 3
+justificacion_puntaje:
+  es: "3 y no 4: el encaje depende de tener Microsoft: la identidad pasa por Microsoft Entra y las capacidades se compran en Azure, y en capacidades menores que F64 cada persona que ve informes de Power BI necesita una licencia Pro. 3 y no 2: Entra, Excel, Teams y los accesos directos a otras nubes son nativos, sin herramientas de terceros."
+  en: "3, not 4: the fit depends on having Microsoft: identity goes through Microsoft Entra and capacities are bought through Azure, and on capacities smaller than F64 every Power BI report viewer needs a Pro licence. 3, not 2: Entra, Excel, Teams and shortcuts to other clouds are native, with no third-party tools."
+esencial: true
+fuentes:
+  - url: https://learn.microsoft.com/en-us/fabric/enterprise/licenses
+    titulo: Understand Microsoft Fabric licenses and capacity - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Microsoft Fabric runs in a Microsoft Entra tenant.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 67966a8602820ff6590c18a931c4a45a358ac54dca97c68b82fa0e674b988485
+  - url: https://learn.microsoft.com/en-us/fabric/onelake/security/get-started-security
+    titulo: Data security overview - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: OneLake uses Microsoft Entra ID for authentication.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: ccc47cbb021e54c8f521f7cdcd292af4433e8fdf034314c72df4b79d781e3925
+  - url: https://learn.microsoft.com/en-us/fabric/fundamentals/microsoft-fabric-overview
+    titulo: What is Microsoft Fabric - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Fabric integrates with Microsoft 365 applications, enabling data to be analyzed and consumed in tools such as Excel and shared through collaboration surfaces like Microsoft Teams.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 4974a4c30ac55bc2ac41f4ce8bfb582a1ead404587e988cf0677329c5b4cfb74
+  - url: https://learn.microsoft.com/en-us/fabric/fundamentals/microsoft-fabric-overview
+    titulo: What is Microsoft Fabric - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Shortcuts provide zero-copy access to external data sources, such as Azure Data Lake Storage, Amazon S3, and Google Cloud Storage, without ETL or data migration.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 4974a4c30ac55bc2ac41f4ce8bfb582a1ead404587e988cf0677329c5b4cfb74
+  - url: https://learn.microsoft.com/en-us/fabric/enterprise/licenses
+    titulo: Understand Microsoft Fabric licenses and capacity - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: You purchase F capacities through Azure, and Azure bills you per second with no commitment, with the option of a yearly capacity reservation to save costs.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 67966a8602820ff6590c18a931c4a45a358ac54dca97c68b82fa0e674b988485
+  - url: https://learn.microsoft.com/en-us/fabric/enterprise/licenses
+    titulo: Understand Microsoft Fabric licenses and capacity - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: On F SKUs smaller than F64, each user viewing Power BI content must have Pro, PPU, or an individual trial.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 67966a8602820ff6590c18a931c4a45a358ac54dca97c68b82fa0e674b988485
+fecha_verificacion: 2026-10-06
+limitaciones:
+  - es: Fabric corre dentro de un inquilino de Microsoft Entra y sus capacidades se compran en Azure.
+    en: Fabric runs inside a Microsoft Entra tenant and its capacities are bought through Azure.
+  - es: En capacidades menores que F64, cada persona que ve informes de Power BI necesita una licencia Pro, PPU o de prueba.
+    en: On capacities smaller than F64, every Power BI report viewer needs a Pro, PPU or trial licence.
+origen: agente-investigador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

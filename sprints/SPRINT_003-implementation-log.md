@@ -734,6 +734,48 @@ del caso fue su único ajuste).
   `E2E_PUERTO=3147 pnpm test:e2e`: 898 en verde y 9 saltadas. Ninguna prueba tuvo que cambiar: las de la base y del
   caso ya siguen al dato.
 
+- **CI del push de `90b33ff`** (corrida 37407790412, leída con `gh pr checks 8` el 2026-10-05): `quality` 2m51s ·
+  `diagramador` ubuntu 1m51s y macOS 1m11s · `e2e` 9m39s · `lighthouse` 12m16s · Vercel. Los cinco checks con conclusión
+  propia `success`.
+
+### P3 — evidencias de Microsoft Fabric (D-S3-10, 2026-10-05)
+
+- **La investigación.** El usuario invocó `/investigar fabric evidencias`. El investigador escribió
+  `propuestas/2026-10-05-fabric-evidencias/` con 11 evidencias, todas esenciales y en disponibilidad general: 2 en IA
+  y 3 en las demás. Son 85 citas en 31 páginas oficiales de Microsoft (`learn.microsoft.com`, `azure.microsoft.com`,
+  `www.microsoft.com`; `propio-fabricante`), con 11 preguntas guía sin responder y sin reintentos del validador. El
+  registro de ejecución suma 49 líneas (43 WebFetch y 6 WebSearch), sin datos personales.
+- **Comprobado por mí, aparte del agente (2026-10-05).** `validar.mjs`: «propuesta válida · 11 evidencias».
+  `verificar-citas.mjs`: 85 de 85 verificadas, 0 no verificables y 0 no encontradas. Pasada de capturas de la revisión
+  (380 y 1280 px; los dos temas y los dos idiomas): 11 tarjetas, ningún elemento más ancho que su tarjeta ni fuera de
+  su casilla, sin desplazamiento lateral, cero errores, y el comando con los 11 ids. La tarjeta A-7 (costo, 3) se leyó
+  como imagen en `1280 oscuro es`.
+- **Neutralidad.** El autor declara dominar Fabric (regla 5). Al pedir la decisión se le señalaron los dos puntajes que
+  difieren de Databricks y Snowflake: A-7 costo 3 (las otras dos tienen 2) y A-6 IA 2 (las otras dos tienen 3).
+- **La decisión de la persona.** Su respuesta del 2026-10-05 fue «Aprobado todo», con el comando de la pantalla
+  (`--aprobar A-1,…,A-11 --rechazar - --retirar -`). Los ids coinciden con la propuesta. Hubo un ensayo en seco sobre
+  una copia de `data/` (11 cargan, sin fallas), y luego `pbcopy` y su Terminal. Resultado: 11 archivos en
+  `data/evidencias/fabric/` y una línea en `data/revisiones/evidencias/fabric.jsonl`, con fecha 2026-10-06 (UTC).
+  **Con esto la base tiene las 33 evidencias reales** (3 plataformas × 11 criterios) y las 11 del ensayo.
+- **Lo que el dato nuevo cambió en las pruebas.**
+  - `tests/unit/caso/casos.test.ts`: ya no falta evidencia, así que el único motivo para no puntuar es el borrador.
+    Ahora la prueba exige «falta evidencia» solo si el dato dice que falta. El rojo de P1 (el motor olvida las
+    faltantes de Fabric) ya no puede fallar, porque no queda ninguna faltante. Se reemplazó por el rojo contrario: el
+    motor anuncia «falta evidencia» aunque no falte (`if (faltantes.length)` → `if (true)` en `src/engine/evaluar.ts`).
+    Rojo nombrando «un borrador sin instantánea se mira contra la base viva», restaurado con `cmp`, verde con 7 pruebas.
+  - `tests/e2e/caso.spec.ts`: la comparación ya no muestra «falta evidencia» (`toHaveCount(0)`). La misma mutación, con
+    build, la pone en rojo nombrando «la comparación no puntúa y dice qué falta». Verde con 2 pruebas.
+  - `tests/e2e/telefono.spec.ts`: la página de Fabric tiene ahora dos veredictos (mapa y evidencias) y la prueba
+    buscaba uno («strict mode violation», 2 en rojo en la suite completa). Ahora revisa los dos (`[1, 1]`). Demo en
+    rojo: el detalle del veredicto de evidencias pierde su clase `mono`, con build. Rojo nombrando «ningún «·» abre una
+    línea» (`[1]` en vez de `[1, 1]`), verde con 1 prueba.
+- **Corridas (2026-10-05, locales).**
+  - `pnpm typecheck` y `pnpm lint` limpios.
+  - `pnpm test`: 86 archivos, 1679 pruebas en verde.
+  - `pnpm build`: 52 páginas con CSP.
+  - `E2E_PUERTO=3147 pnpm test:e2e`: 896 en verde, 9 saltadas y 2 en rojo (`telefono.spec.ts`, arriba). Después del
+    ajuste, `telefono.spec.ts`: 8 en verde, y `caso.spec.ts`: 12.
+
 ## Desviación del plan
 
 Los hechos 1–10 y las decisiones D-S3-01…18 del plan aprobado (`Reglas del motor` incluidas) son la desviación de
