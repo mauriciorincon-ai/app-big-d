@@ -5,7 +5,7 @@
 ## Context
 
 `design-system.md` v0.6.0 is read-only for product work: S3 extends it by ADR (D-S3-17). Phase 2 put three mockup
-screens in the product: `/[lang]/base` (`docs/diseno/base.html`), `/[lang]/casos/[case]` (`perfil.html`) and
+screens in the product (phase 3 adds the evidence review, rows 14–16): `/[lang]/base` (`docs/diseno/base.html`), `/[lang]/casos/[case]` (`perfil.html`) and
 `/[lang]/casos/[case]/comparacion` (`comparacion.html`). The mockup draws them as static states switched by the design
 room bar; the product has to run them on real data, under the static export's CSP (no `style=` attribute, S2) and with
 controls that work (rule 22). These are the places where the product departs from, or adds to, the mockup.
@@ -27,6 +27,9 @@ controls that work (rule 22). These are the places where the product departs fro
 | 11  | Under the matrix, the evidence that aged by the evaluation date (to review, expired, or not generally available) | `alertas` of the engine result (RF-01.5) had no reader | TEXT look, «maquetado, no visto» |
 | 12  | The bar's «Instrumento» section and the case tabs 09–10 are shown pending (no link) until their screens exist | The same rule as the atlas levels: never a control that does nothing | Same look as the atlas tabs |
 | 13  | Thousands use a narrow no-break space in Spanish («10 000») and a comma in English («10,000»); no `Intl` | Rule 1 of the app: the same page in every browser | Same look |
+| 14  | The evidence review (researcher, evidence mode) draws each piece of evidence on a 0-to-4 ruler: the proposed level with a thick border, a glyph and «propuesto»; the levels its maturity does not let count, hatched; the level that counts when the cap lowers it, dashed with «cuenta». Under it, the proposed level's text and «¿Por qué N y no …?». On a phone the ruler stands vertical, one level per line | The researcher mockup only reviews maps; this is the M1 sketch (`docs/propuestas-de-diseno/revision-evidencias.html`) | FORM look M1, approved 2026-10-05 («Si me sirve») |
+| 15  | Nothing comes approved by default in the evidence review, and the decision buttons keep full contrast while undecided: the S1 rule that dimmed them to 60 % is removed, also for maps | The code checks the quote, not the score (M1); axe flagged the dimmed buttons in the light theme once a review with nothing decided reached the e2e | M1 look; axe |
+| 16  | A piece of evidence names its components by the approved map's ids, and the review shows the map's name in the page's language | Rule 20: the data is bilingual; a free-text name came out in Spanish on the English page | Same look |
 
 ## Consequences
 

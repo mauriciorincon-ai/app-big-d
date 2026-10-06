@@ -370,6 +370,22 @@ export interface Textos {
       respondida: string;
       sinFuente: string;
     };
+    /** La propuesta de evidencias (D-S3-10, boceto M1): la regla de 0 a 4 por evidencia y nada aprobado de entrada. */
+    evidencias: {
+      titulo: string;
+      nota: string;
+      conteo: { n: readonly [string, string]; v: readonly [string, string]; nv: readonly [string, string]; ne: readonly [string, string] };
+      escala: { resumen: string; tope: string };
+      grupos: { decidir: string; verificadas: string; rechazadas: string };
+      regla: { etiqueta: string; propuesto: string; cuenta: string; rayado: string; rayadoVistaPrevia: string; porQue: string; ni: string };
+      meta: { fuente: string; madurez: string; conflicto: string; componentes: string; limitaciones: string; esencial: string; esencialSi: string };
+      tipoCriterio: { capacidad: string; transversal: string };
+      cambio: { nueva: string; cambiada: string; igual: string };
+      fuenteN: string;
+      faltan: readonly [string, string];
+      comandoNota: string;
+      veredicto: { titulo: string; detalle: string };
+    };
     veredicto: { aprobada: string; sinNovedades: string; detalle: string };
   };
 }

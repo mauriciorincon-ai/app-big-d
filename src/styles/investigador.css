@@ -30,7 +30,6 @@
 .afirmacion[data-rechazada] .evidencia-afirma { text-decoration: line-through; text-decoration-thickness: 1.5px; color: var(--tinta-2); }
 .decidir { display: inline-flex; gap: 8px; margin-left: auto; }
 .decidir .boton { min-height: 34px; padding: 0 12px; font-size: 14px; }
-.decidir .boton[aria-pressed="false"] { opacity: 0.6; }
 .afirmacion-sobre { margin: 0; font: 600 13px/1.4 var(--letra-mono); color: var(--tinta-1); }
 .retiros-lista { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 8px; }
 .retiros-lista li { display: grid; gap: 8px; padding: 12px 16px; border: 1px dashed var(--tinta-2); border-radius: 6px; background: var(--sup-1); font-size: 15px; }
@@ -49,3 +48,28 @@
 .preguntas ul { margin: 0; padding-left: 18px; list-style: disc; }
 .preguntas li { margin: 4px 0; }
 .preguntas small { color: var(--tinta-2); font: 500 12px/1.4 var(--letra-mono); }
+
+/* Revisión de evidencias (D-S3-10, boceto M1 aprobado el 2026-10-05; ADR design-system-s3-extensions): la regla de 0 a
+   4 por evidencia. El puntaje propuesto: borde grueso + glifo + «propuesto»; lo que la madurez no deja contar: rayado;
+   el nivel que cuenta si el tope lo baja: borde punteado + «cuenta». En el teléfono, en vertical: un nivel por renglón. */
+.escala-ref { margin: 0 0 18px; border: 1px solid var(--linea); border-radius: 6px; padding: 10px 14px; background: var(--sup-1); }
+.escala-ref summary { cursor: pointer; font-weight: 600; }
+.escala-anclas { margin: 10px 0 6px; padding-left: 0; list-style: none; display: grid; gap: 6px; font-size: 14px; }
+.escala-tira { list-style: none; margin: 2px 0 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
+.escala-tira li { border: 1px solid var(--linea); border-radius: 4px; padding: 6px 6px 8px; display: grid; gap: 3px; align-content: start; font-size: 12px; line-height: 1.25; color: var(--tinta-2); min-height: 66px; }
+.escala-tira li b { font: 700 16px/1 var(--letra-mono); color: var(--tinta-1); }
+.escala-tira li.sobre-tope { background-image: repeating-linear-gradient(135deg, transparent 0 5px, var(--linea) 5px 7px); }
+.escala-tira li.propuesto { border: 2px solid var(--tinta-1); color: var(--tinta-1); font-weight: 600; }
+.escala-tira li.cuenta { border: 2px dashed var(--tinta-1); color: var(--tinta-1); }
+.escala-tira li i { font: 600 11px/1.2 var(--letra-mono); font-style: normal; display: inline-flex; flex-wrap: wrap; align-items: center; gap: 3px; color: var(--tinta-1); }
+.escala-tira li i svg { display: inline-block; }
+@media (max-width: 479px) {
+  .escala-tira { grid-template-columns: 1fr; gap: 3px; }
+  .escala-tira li { grid-template-columns: 22px 1fr auto; align-items: center; gap: 8px; min-height: 0; padding: 5px 8px; font-size: 13px; }
+}
+.tope-nota { margin: 0; font-size: 13px; color: var(--tinta-2); }
+.evidencia-rev .ancla, .evidencia-rev .porque { margin: 0; }
+.evidencia-fuente { display: grid; gap: 6px; }
+.evidencia-fuente .ojo { margin: 0; }
+.evidencia-rev .verif svg, .evidencia-rev .insignia svg { display: inline-block; }
+.evidencia-rev .verif b { display: inline-flex; align-items: center; gap: 4px; }

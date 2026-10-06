@@ -1,5 +1,5 @@
 // Verificador de citas POR CÓDIGO (el investigador propone; esto comprueba). Para cada afirmación de una
-// propuesta, y para cada retiro (lo que sale del mapa aprobado, con la cita que prueba por qué), baja la página con `curl` —sin cookies, sin sesión, sin ningún dato del usuario, con un agente
+// propuesta (o cada fuente de cada evidencia, en una propuesta de evidencias), y para cada retiro (lo que sale del mapa aprobado, con la cita que prueba por qué), baja la página con `curl` —sin cookies, sin sesión, sin ningún dato del usuario, con un agente
 // genérico; si el servidor corta la conexión, reintenta con HTTP/1.1 y luego sin el agente— y busca la cita textual
 // en el texto de la página cruda (src/lib/investigador/texto.ts). Resultado
 // por afirmación: verificada · no-encontrada (el código la rechaza) · no-verificable (la revisa una persona),
@@ -63,7 +63,10 @@ try {
   const dir = carpetaPropuesta(process.argv[2]);
   const inv = await cargarTs("src/lib/investigador/index.ts");
   const bytes = readFileSync(join(dir, "propuesta.json"));
-  const forma = inv.esquemaPropuesta.safeParse(JSON.parse(bytes.toString("utf8")));
+  const dato = JSON.parse(bytes.toString("utf8"));
+  // Una propuesta de evidencias (D-S3-10) trae una cita por fuente de cada evidencia; una de mapa, una por afirmación.
+  const deEvidencias = inv.esPropuestaDeEvidencias(dato);
+  const forma = (deEvidencias ? inv.esquemaPropuestaEvidencias : inv.esquemaPropuesta).safeParse(dato);
   if (!forma.success) throw new Error(`propuesta.json no pasa el esquema; corre antes scripts/investigar/validar.mjs`);
   // Ninguna petición lleva un identificador de quien investiga (M-18 de la auditoría del S1): el hook lo
   // vigila en WebFetch, y este script también baja URLs. Si una lo lleva, no se baja nada ni se escribe nada.
@@ -75,20 +78,21 @@ try {
       return u.toLowerCase();
     }
   };
-  // Afirmaciones (A-n) y retiros (R-n): toda cita de la propuesta pasa por el mismo camino.
-  const citas = [...forma.data.afirmaciones, ...forma.data.retiros];
-  const conId = citas.filter((a) => ids.some((x) => legible(a.cita.url).includes(x)));
+  // Afirmaciones (A-n) y retiros (R-n), o cada fuente de cada evidencia (A-n y su número): toda cita pasa por el mismo camino.
+  const citas = deEvidencias ? inv.citasDe(forma.data) : [...forma.data.afirmaciones, ...forma.data.retiros].map((a) => ({ id: a.id, url: a.cita.url, texto: a.cita.texto }));
+  const conId = citas.filter((a) => ids.some((x) => legible(a.url).includes(x)));
   if (conId.length) throw new Error(`${conId.map((a) => a.id).join(", ")}: la URL de la cita lleva un identificador de quien investiga; no se consulta`);
   const tmp = mkdtempSync(join(tmpdir(), "bigd-citas-"));
   const cache = new Map();
   const resultados = [];
   for (const a of citas) {
-    if (!cache.has(a.cita.url)) cache.set(a.cita.url, bajar(a.cita.url, tmp));
-    const b = cache.get(a.cita.url);
-    const v = inv.verificarCita(b.http, b.cuerpo ? b.cuerpo.toString("utf8") : null, a.cita.texto);
+    if (!cache.has(a.url)) cache.set(a.url, bajar(a.url, tmp));
+    const b = cache.get(a.url);
+    const v = inv.verificarCita(b.http, b.cuerpo ? b.cuerpo.toString("utf8") : null, a.texto);
     resultados.push({
       afirmacion: a.id,
-      url: a.cita.url,
+      ...(a.fuente !== undefined ? { fuente: a.fuente } : {}),
+      url: a.url,
       resultado: v.resultado,
       http: b.http,
       sha256: b.cuerpo ? inv.sha256(b.cuerpo) : null,
@@ -100,8 +104,10 @@ try {
   inv.esquemaVerificacion.parse(verificacion);
   writeFileSync(join(dir, "verificacion.json"), `${JSON.stringify(verificacion, null, 2)}\n`);
   const cuenta = (r) => resultados.filter((x) => x.resultado === r).length;
-  const retiros = forma.data.retiros.length ? ` y ${forma.data.retiros.length} retiros` : "";
-  console.log(`verificar-citas: ${relative(RAIZ, dir)} · ${forma.data.afirmaciones.length} afirmaciones${retiros} · ${cuenta("verificada")} verificadas · ${cuenta("no-verificable")} no verificables · ${cuenta("no-encontrada")} no encontradas · ${cache.size} páginas`);
+  const que = deEvidencias
+    ? `${forma.data.evidencias.length} evidencias · ${citas.length} citas`
+    : `${forma.data.afirmaciones.length} afirmaciones${forma.data.retiros.length ? ` y ${forma.data.retiros.length} retiros` : ""}`;
+  console.log(`verificar-citas: ${relative(RAIZ, dir)} · ${que} · ${cuenta("verificada")} verificadas · ${cuenta("no-verificable")} no verificables · ${cuenta("no-encontrada")} no encontradas · ${cache.size} páginas`);
 } catch (e) {
   console.error(`verificar-citas: ${e.message}`);
   process.exit(1);

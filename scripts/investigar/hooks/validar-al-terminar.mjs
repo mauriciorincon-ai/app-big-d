@@ -1,5 +1,5 @@
-// Hook de fin del investigador (SubagentStop / Stop del agente): la propuesta más reciente de esta corrida
-// debe pasar la validación por código y tener sus citas verificadas. Si no, el agente sigue (salida 2, con
+// Hook de fin del investigador (SubagentStop / Stop del agente): la propuesta más reciente de esta corrida (de mapa o
+// de evidencias) debe pasar la validación por código y tener sus citas verificadas. Si no, el agente sigue (salida 2, con
 // las fallas) hasta 2 reintentos; al tercer intento se deja terminar y queda error-validacion.json con las
 // fallas: jamás se da por buena una propuesta inválida, ni se insiste para siempre. Si la validación misma
 // se rompe, cuenta como falla y sigue el mismo camino (B-29 de la auditoría del S1: fallar cerrado sin
@@ -38,15 +38,21 @@ async function validar() {
   } catch (err) {
     return [`propuesta.json no es JSON: ${err.message}`];
   }
-  const gid = dato?.mapa?.gramatica_id;
-  const rutaG = join(RAIZ, "data/gramaticas", `${gid}.gramatica.yaml`);
-  if (!existsSync(rutaG)) return [`no existe la gramática «${gid}»`];
-  const rangos = JSON.parse(readFileSync(join(RAIZ_REPO, "packages/diagramador/metricas/cobertura.json"), "utf8")).fuentes["space-grotesk"].rangos;
-  // Con el mapa aprobado a la vista: lo que la propuesta retira de él trae su argumento.
-  // Solo con un id de plataforma bien formado se arma la ruta (el dato lo escribió el modelo).
-  const rutaA = /^[a-z0-9][a-z0-9-]*$/.test(String(dato?.plataforma)) ? join(RAIZ, "data/mapas", `${dato.plataforma}.mapa.yaml`) : null;
-  const anterior = rutaA && existsSync(rutaA) ? parse(readFileSync(rutaA, "utf8")) : undefined;
-  fallas.push(...inv.validarPropuesta(dato, parse(readFileSync(rutaG, "utf8")), rangos, anterior).fallas);
+  if (inv.esPropuestaDeEvidencias(dato)) {
+    // Evidencias (D-S3-10): contra la base de conocimiento de hoy.
+    const { cargarConocimiento } = await cargarTs("src/lib/datos/cargar-conocimiento.ts");
+    fallas.push(...inv.validarPropuestaEvidencias(dato, inv.contextoDe(cargarConocimiento(join(RAIZ, "data")), inv.componentesDeMapas(join(RAIZ, "data")))).fallas);
+  } else {
+    const gid = dato?.mapa?.gramatica_id;
+    const rutaG = join(RAIZ, "data/gramaticas", `${gid}.gramatica.yaml`);
+    if (!existsSync(rutaG)) return [`no existe la gramática «${gid}»`];
+    const rangos = JSON.parse(readFileSync(join(RAIZ_REPO, "packages/diagramador/metricas/cobertura.json"), "utf8")).fuentes["space-grotesk"].rangos;
+    // Con el mapa aprobado a la vista: lo que la propuesta retira de él trae su argumento.
+    // Solo con un id de plataforma bien formado se arma la ruta (el dato lo escribió el modelo).
+    const rutaA = /^[a-z0-9][a-z0-9-]*$/.test(String(dato?.plataforma)) ? join(RAIZ, "data/mapas", `${dato.plataforma}.mapa.yaml`) : null;
+    const anterior = rutaA && existsSync(rutaA) ? parse(readFileSync(rutaA, "utf8")) : undefined;
+    fallas.push(...inv.validarPropuesta(dato, parse(readFileSync(rutaG, "utf8")), rangos, anterior).fallas);
+  }
   if (!fallas.length) {
     const rutaV = join(dir, "verificacion.json");
     const v = existsSync(rutaV) ? JSON.parse(readFileSync(rutaV, "utf8")) : null;

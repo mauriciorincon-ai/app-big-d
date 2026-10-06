@@ -32,8 +32,8 @@ export function ejecutaAprobar(comando) {
 const PERMITIDO = /^node scripts\/(?:investigar\/validar|verificar-citas)\.mjs propuestas\/[A-Za-z0-9][A-Za-z0-9._-]*\/?$/;
 /** Lo único que el investigador escribe: el propuesta.json de una carpeta de propuestas/. */
 const ESCRIBIBLE = /^propuestas\/[A-Za-z0-9][A-Za-z0-9._-]*\/propuesta\.json$/;
-/** Lo que lee: el dato, las propuestas, el contrato de su salida y su propia skill. */
-const LEIBLE = /^(?:data|propuestas|src\/lib\/investigador|\.claude\/skills\/investigar)(?:\/|$)/;
+/** Lo que lee: el dato, las propuestas, el contrato de su salida (con el esquema de la evidencia, D-S3-10) y su skill. */
+const LEIBLE = /^(?:(?:data|propuestas|src\/lib\/investigador|\.claude\/skills\/investigar)(?:\/|$)|src\/lib\/datos\/conocimiento\.ts$)/;
 
 /** La ruta relativa a la raíz de trabajo, con «/»; `null` si sale de ella. */
 function dentro(ruta, cwd) {
@@ -66,7 +66,7 @@ if (["Read", "Glob", "Grep"].includes(herramienta)) {
   const r = dentro(ruta, cwd);
   const patron = herramienta === "Glob" ? String(ti.pattern ?? "") : herramienta === "Grep" ? String(ti.glob ?? "") : "";
   if (!r || !LEIBLE.test(r) || patron.includes("..") || patron.startsWith("/") || patron.startsWith("~"))
-    bloquear(`BLOQUEADO: el investigador solo lee data/, propuestas/, src/lib/investigador/ y .claude/skills/investigar/ (pidió «${ruta ?? "(todo)"}»).`);
+    bloquear(`BLOQUEADO: el investigador solo lee data/, propuestas/, src/lib/investigador/, src/lib/datos/conocimiento.ts y .claude/skills/investigar/ (pidió «${ruta ?? "(todo)"}»).`);
   pasar();
 }
 

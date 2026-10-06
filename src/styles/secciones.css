@@ -60,3 +60,11 @@
 .leyenda-inline span { display: inline-flex; align-items: center; gap: 6px; }
 .filtros { display: flex; flex-wrap: wrap; gap: 12px 16px; margin: 0 0 18px; }
 .filtros .campo { min-width: 180px; flex: 1 1 180px; }
+/* Metadatos de una evidencia (fuente, madurez, conflicto…): los usan la base y la revisión de evidencias del investigador. */
+.evidencia-meta { margin: 0; display: grid; gap: 6px; }
+.evidencia-meta div { display: grid; grid-template-columns: 150px 1fr; gap: 8px; padding-top: 6px; border-top: 1px solid var(--linea); font-size: 14px; }
+.evidencia-meta dt { font-weight: 600; color: var(--tinta-2); }
+.evidencia-meta dd { margin: 0; }
+.evidencia-meta a { color: var(--tinta-1); text-decoration: underline; }
+.evidencia-meta dd > .mono { color: var(--tinta-2); margin-left: 6px; }
+@media (max-width: 479px) { .evidencia-meta div { grid-template-columns: 1fr; gap: 2px; } }

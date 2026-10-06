@@ -549,7 +549,74 @@ del caso fue su único ajuste).
   `display` anulaba `hidden`); (2) a 380 px «soportado» y «propuesto» se salían de sus casillas (12 elementos) → en
   el teléfono la regla va en vertical, un nivel por renglón. Medido después: 0 elementos fuera de su casilla y sin
   desplazamiento lateral a 380, 480, 768, 900 y 1280 px en los dos idiomas. Regenerar da los mismos bytes.
-- **Respuesta del usuario:** pendiente (pregunta enviada el 2026-10-05).
+- **Respuesta del usuario, 2026-10-05:** a «¿Te sirve esta forma de revisar cada evidencia?», con el boceto abierto en su
+  navegador: «Si me sirve». **M1 aprobada**; la pantalla del producto obedece el boceto (incluido «ninguna viene
+  aprobada de entrada»).
+
+### Modo evidencias del investigador (D-S3-10, 2026-10-05)
+
+- **Qué se construyó.** `src/lib/investigador/evidencias.ts` (esquema de la propuesta con `tipo: "evidencias"`,
+  validador contra la base, núcleo de la aprobación, línea del historial, `componentesDeMapas`) · `aprobados.ts`
+  (`evidenciasSinAprobacion`: cada evidencia aprobada tiene la huella de su revisión) · `revision.ts` (la propuesta de
+  evidencias pendiente, aparte de la de mapa) · `RevisionEvidencias.tsx` (la pantalla del boceto M1) y su sección en
+  `/[idioma]/investigador/[plataforma]` · `scripts/investigar/validar.mjs`, el hook de fin, `verificar-citas.mjs` y el
+  script de aprobación ramifican por tipo · la skill y el agente documentan `/investigar <plataforma> evidencias` · el
+  candado deja al investigador leer además `src/lib/datos/conocimiento.ts` · textos ES/EN · estilos de la regla.
+- **Decisiones.**
+  - La propuesta de MAPA no cambia: la de evidencias vive aparte y su historial va a
+    `data/revisiones/evidencias/<plataforma>.jsonl`. La aprueba el mismo script; en la terminal, la misma frontera
+    (`puedeAprobar`).
+  - **Nada aprobado de entrada** (M1): el código comprueba la cita, no el puntaje. La que tiene una cita no encontrada
+    entra rechazada y sin botones.
+  - **`componentes` son ids del mapa aprobado** de la plataforma (la pantalla lee el nombre en cada idioma; el validador
+    rechaza un id que el mapa no tiene; una plataforma sin mapa no tiene evidencias que proponer). Lo destapó la pasada
+    de capturas: en inglés salían los nombres en español. El esquema de la base no cambia (la base sembrada sigue con
+    texto); la exigencia vive en la propuesta.
+  - `aprobada_por: "autor"`: un rol, no un nombre personal en un dato público (el mismo autor que declara su conflicto
+    de interés al pie).
+  - La verificación es **por fuente**: `verificacion.json` lleva `fuente` (desde 0) en cada resultado; una evidencia
+    vale lo que su peor fuente.
+  - Zod 4 no recorta un esquema con reglas: la evidencia se parte en `esquemaEvidenciaCampos` + reglas, sin cambiar lo
+    que valida.
+  - `.evidencia-meta` pasa a `secciones.css` (la usan la base y la revisión).
+- **Gates nuevos (regla 15: ¿puede fallar? · rojo · a quién nombró · verde), corridos con `scripts/demo-rojo.sh
+  --debe-nombrar --minimo-tests` el 2026-10-05; los ocho salieron con 0 (rojo nombrando lo esperado, restaurado con
+  `cmp`, verde):**
+
+| # | Gate | Mutación | Nombró | Verde |
+|---|---|---|---|---|
+| 1 | Validador: capacidad inexistente | `if (false && e.capacidad_id …` | «rechaza una capacidad que no existe» | 31 pruebas |
+| 2 | Aprobación: cita no encontrada | `if (false && ev && …fuentes.some(` | «aprobar una cita no encontrada» | 31 |
+| 3 | Integridad: huella editada a mano | `else if (false && huella(dato) !== r.huella)` | «una palabra cambiada a mano lo rompe» | 4 |
+| 4 | Pantalla: nada aprobado de entrada | estado inicial aprueba las verificadas | «nada viene aprobado de entrada» | 4 |
+| 5 | Hook de fin: valida la de evidencias | la línea del validador → `void cargarConocimiento;` | «el de fin hace seguir a una inválida» | 6 |
+| 6 | Candado: solo el esquema de `src/lib/datos/` | la regla abre toda la carpeta | «nada más de src/lib/datos» | 6 |
+| 7 | verificar-citas: el número de la fuente | sin `fuente` en el resultado | «una por fuente, con el número de la fuente» | 5 |
+| 8 | Componentes: ids del mapa aprobado | `if (false && nodos && …)` | «un componente que no está en el mapa aprobado» | 34 |
+
+- **Defectos que salieron construyendo, y su arreglo.**
+  - **Contraste (axe, tema claro, 6 pruebas en rojo).** `.decidir .boton[aria-pressed="false"] { opacity: 0.6 }` (código
+    del S1, no de la maqueta) dejaba bajo AA los botones sin decidir. En los mapas no se veía: ninguna prueba de
+    navegador había mostrado una revisión pendiente. Con la de evidencias, donde nada viene decidido, axe lo nombró.
+    Se quitó la regla. El botón presionado se distingue por el subrayado, la insignia de la tarjeta y el borde
+    punteado con tachado de la rechazada. Rerun: `investigador` + `reduced-motion` en los proyectos, 312 en verde y
+    2 saltadas.
+  - Componentes en español en la página en inglés → ids del mapa (arriba).
+  - Al ícono de la verificación le faltaba espacio.
+- **P0 (ensayo), propuesta escrita.** `propuestas/2026-10-05-plataforma-ejemplo-evidencias/`: 11 evidencias de la
+  Plataforma Ejemplo, una por criterio, con los puntajes de la maqueta (la de IA en vista previa, para que se vea el
+  tope). Origen `curador`, fuentes `example.org`. La validación pasó. `verificar-citas`: las 11 «no verificables»
+  (`example.org` responde 404 a cualquier ruta inventada: es honesto, nadie publicó esas páginas). Las 11 esperan la
+  decisión de la persona.
+- **Corridas (2026-10-05, locales).**
+  - `pnpm typecheck` y `pnpm lint` limpios.
+  - `pnpm test`: 86 archivos, 1679 pruebas en verde.
+  - `E2E_PUERTO=3147 pnpm test:e2e`: 892 en verde, 9 saltadas y 6 en rojo (el contraste de arriba). Después del
+    arreglo, las dos specs afectadas: 312 en verde y 2 saltadas.
+  - Pasada de capturas de la revisión del ensayo (servidor en 3150): 380 y 1280 px en los dos temas y los dos
+    idiomas, leída como imagen. 11 tarjetas, «Faltan 11 evidencias por decidir», ningún elemento fuera de su casilla,
+    sin desplazamiento lateral y cero errores de consola o CSP. Al tocar «Aprobar» en todas, el comando aparece con
+    las 11.
 
 ## Desviación del plan
 
@@ -572,3 +639,5 @@ la orden; se resumen aquí y se amplían a medida que ocurren:
   build y el Worker solo corre al explorar; las 13 extensiones del ADR `design-system-s3-extensions`.
 - 2026-10-05: el caso se llama «Hospital Ficticio del Futuro» (`hospital-futuro`) a pedido del usuario (antes «de la
   Sabana», que se confunde con una institución real cercana); la maqueta se regeneró con su generador.
+- 2026-10-05 (D-S3-10): `componentes` de una evidencia propuesta son ids del mapa aprobado; `aprobada_por: "autor"`; el
+  historial de evidencias en `data/revisiones/evidencias/`; se quitó la opacidad de los botones sin decidir (contraste).

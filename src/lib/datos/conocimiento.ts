@@ -94,7 +94,7 @@ export const esquemaConvenciones = z
 /** E-18: quién publica la fuente y qué interés tiene respecto de la plataforma de la evidencia. */
 export const CONFLICTOS = ["propio-fabricante", "fabricante-competidor", "socio-comercial", "resena-incentivada", "independiente"] as const;
 
-const esquemaFuente = z.strictObject({
+export const esquemaFuente = z.strictObject({
   url: z.string().url("una dirección web").startsWith("https://", "solo fuentes https"),
   titulo: z.string().trim().min(1, "no puede ir vacío"),
   tipo: z.enum(["oficial", "tercero"]),
@@ -106,38 +106,43 @@ const esquemaFuente = z.strictObject({
   verificacion: z.strictObject({ resultado: z.enum(["verificada", "no-verificable"]), fecha, http: z.number().int().nullable(), sha256: hex64.nullable() }),
 });
 
-export const esquemaEvidencia = z
-  .strictObject({
-    id: idCon("evi"),
-    plataforma_id: id,
-    /** Exactamente una de las dos: la capacidad o el criterio transversal que evalúa. */
-    capacidad_id: idCon("cap").optional(),
-    criterio_id: idCon("crit").optional(),
-    afirmacion: textoIdioma,
-    componentes: z.array(z.string().trim().min(1, "no puede ir vacío")).min(1, "al menos un componente"),
-    madurez: id,
-    puntaje: entero(0, 4),
-    /** Por qué este puntaje y no el adyacente, contra el ancla de la escala (§ 11.1). */
-    justificacion_puntaje: textoIdioma,
-    /** Si cuenta para el mínimo cuando la celda tiene varias evidencias (RF-04.1). */
-    esencial: z.boolean(),
-    fuentes: z.array(esquemaFuente).min(1, "al menos una fuente"),
-    fecha_verificacion: fecha,
-    limitaciones: z.array(textoIdioma).optional(),
-    origen: z.enum(["curador", "agente-investigador"]),
-    estado_aprobacion: z.enum(["propuesta", "aprobada", "rechazada"]),
-    aprobada_por: z.string().trim().min(1, "no puede ir vacío").optional(),
-    fecha_aprobacion: fecha.optional(),
-  })
-  .superRefine((e, ctx) => {
-    const r = (path: string, message: string) => ctx.addIssue({ code: "custom", path: [path], message });
-    if (!!e.capacidad_id === !!e.criterio_id) r(e.capacidad_id ? "criterio_id" : "capacidad_id", "una evidencia evalúa una capacidad o un criterio transversal: exactamente uno de los dos");
-    const aprobada = e.estado_aprobacion === "aprobada";
-    if (aprobada && !e.aprobada_por) r("aprobada_por", "obligatorio en una evidencia aprobada");
-    if (aprobada && !e.fecha_aprobacion) r("fecha_aprobacion", "obligatorio en una evidencia aprobada");
-    if (!aprobada && e.aprobada_por) r("aprobada_por", "solo una evidencia aprobada lo lleva");
-    if (!aprobada && e.fecha_aprobacion) r("fecha_aprobacion", "solo una evidencia aprobada lo lleva");
-  });
+/**
+ * Los campos de una evidencia, sin las reglas que los cruzan: la propuesta del investigador (src/lib/investigador/
+ * evidencias.ts) toma de aquí los suyos (Zod no recorta un esquema con reglas).
+ */
+export const esquemaEvidenciaCampos = z.strictObject({
+  id: idCon("evi"),
+  plataforma_id: id,
+  /** Exactamente una de las dos: la capacidad o el criterio transversal que evalúa. */
+  capacidad_id: idCon("cap").optional(),
+  criterio_id: idCon("crit").optional(),
+  afirmacion: textoIdioma,
+  /** Los componentes que la respaldan; las que entran por el investigador nombran ids del mapa aprobado (D-S3-10). */
+  componentes: z.array(z.string().trim().min(1, "no puede ir vacío")).min(1, "al menos un componente"),
+  madurez: id,
+  puntaje: entero(0, 4),
+  /** Por qué este puntaje y no el adyacente, contra el ancla de la escala (§ 11.1). */
+  justificacion_puntaje: textoIdioma,
+  /** Si cuenta para el mínimo cuando la celda tiene varias evidencias (RF-04.1). */
+  esencial: z.boolean(),
+  fuentes: z.array(esquemaFuente).min(1, "al menos una fuente"),
+  fecha_verificacion: fecha,
+  limitaciones: z.array(textoIdioma).optional(),
+  origen: z.enum(["curador", "agente-investigador"]),
+  estado_aprobacion: z.enum(["propuesta", "aprobada", "rechazada"]),
+  aprobada_por: z.string().trim().min(1, "no puede ir vacío").optional(),
+  fecha_aprobacion: fecha.optional(),
+});
+
+export const esquemaEvidencia = esquemaEvidenciaCampos.superRefine((e, ctx) => {
+  const r = (path: string, message: string) => ctx.addIssue({ code: "custom", path: [path], message });
+  if (!!e.capacidad_id === !!e.criterio_id) r(e.capacidad_id ? "criterio_id" : "capacidad_id", "una evidencia evalúa una capacidad o un criterio transversal: exactamente uno de los dos");
+  const aprobada = e.estado_aprobacion === "aprobada";
+  if (aprobada && !e.aprobada_por) r("aprobada_por", "obligatorio en una evidencia aprobada");
+  if (aprobada && !e.fecha_aprobacion) r("fecha_aprobacion", "obligatorio en una evidencia aprobada");
+  if (!aprobada && e.aprobada_por) r("aprobada_por", "solo una evidencia aprobada lo lleva");
+  if (!aprobada && e.fecha_aprobacion) r("fecha_aprobacion", "solo una evidencia aprobada lo lleva");
+});
 
 /** La decisión implícita que todo caso tiene que discutir (E-17). */
 export const UNA_O_COMBINACION = "una-o-combinacion";

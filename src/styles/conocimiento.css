@@ -9,13 +9,6 @@
 .evidencia .evidencia-cita { margin: 0 0 12px; }
 .evidencia-estado { margin-left: auto; font: 600 12px/1 var(--letra-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--tinta-1); }
 .evidencia-propuesta { border-style: dashed; }
-.evidencia-meta { margin: 0; display: grid; gap: 6px; }
-.evidencia-meta div { display: grid; grid-template-columns: 150px 1fr; gap: 8px; padding-top: 6px; border-top: 1px solid var(--linea); font-size: 14px; }
-.evidencia-meta dt { font-weight: 600; color: var(--tinta-2); }
-.evidencia-meta dd { margin: 0; }
-.evidencia-meta a { color: var(--tinta-1); text-decoration: underline; }
-.evidencia-meta dd > .mono { color: var(--tinta-2); margin-left: 6px; }
-@media (max-width: 479px) { .evidencia-meta div { grid-template-columns: 1fr; gap: 2px; } }
 .criterios > li { grid-template-columns: 1fr; }
 @media (min-width: 720px) { .criterios > li { grid-template-columns: 280px 1fr; } }
 .criterios b { display: block; }
