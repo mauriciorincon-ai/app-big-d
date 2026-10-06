@@ -1,6 +1,6 @@
 {
-  "contrato_version": "0.4.0",
-  "nota": "Cada carnada debe fallar por SU regla y con SU id (y puede reportar además los `secundarios` listados, D-S1-03); los mapas reales y P1 deben aceptarse (P1 además se dibuja sin avisos). `fase` dice en qué fase de la validación (1 esquema · 2 reglas en código) se espera la detección. `cobertura: true` marca la carnada que necesita la tabla de cobertura de la fuente como entrada de validate (V15). Se reporta «detectó k de n».",
+  "contrato_version": "0.6.0",
+  "nota": "Cada carnada debe fallar por SU regla y con SU id (y puede reportar además los `secundarios` listados, D-S1-03); los mapas reales y P1 deben aceptarse (P1 además se dibuja sin avisos; A1 se valida en privado desde la 0.6.0). `fase` dice en qué fase de la validación (1 esquema · 2 reglas en código) se espera la detección. `cobertura: true` marca la carnada que necesita la tabla de cobertura de la fuente como entrada de validate (V15). Se reporta «detectó k de n».",
   "casos": [
     {
       "archivo": "C01-gramatica-incompatible.mapa.json",
@@ -131,7 +131,29 @@
       "fase": 2,
       "regla": "V7",
       "id": "plataforma-ejemplo",
-      "descripcion": "Once bloques cuando la gramática permite de 5 a 8"
+      "descripcion": "Once bloques cuando la gramática permite de 5 a 8",
+      "secundarios": [
+        {
+          "regla": "V3",
+          "id": "extra-1",
+          "por_que": "bloque sin componentes (alerta F-022)"
+        },
+        {
+          "regla": "V3",
+          "id": "extra-2",
+          "por_que": "bloque sin componentes (alerta F-022)"
+        },
+        {
+          "regla": "V3",
+          "id": "extra-3",
+          "por_que": "bloque sin componentes (alerta F-022)"
+        },
+        {
+          "regla": "V3",
+          "id": "extra-4",
+          "por_que": "bloque sin componentes (alerta F-022)"
+        }
+      ]
     },
     {
       "archivo": "C11-propuesta-en-publicacion.mapa.json",
@@ -309,12 +331,12 @@
       "archivo": "A1-cinco-bloques.mapa.json",
       "clase": "mapa",
       "gramatica": "plataformas-datos",
-      "modo": "publicacion",
+      "modo": "privado",
       "tipo": "acepta",
       "fase": null,
       "regla": null,
       "id": null,
-      "descripcion": "El mínimo de bloques de la gramática (5)"
+      "descripcion": "El mínimo de bloques de la gramática (5). En privado (0.6.0): prueba V7, no el dibujo — el rótulo de la banda «ia» sin bloque ocupa 3 líneas donde caben 2 en el nivel 1 (gap declarado en el contrato)"
     },
     {
       "archivo": "A2-ocho-bloques.mapa.json",

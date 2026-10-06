@@ -1,5 +1,11 @@
 import type { NextConfig } from "next";
 
+// D-S3-14 (regla 17-bis b): un build con la perilla BIGD_DATOS declara contra qué árbol corre, y en Vercel no corre.
+if (process.env.BIGD_DATOS) {
+  if (process.env.VERCEL) throw new Error("BIGD_DATOS está puesta en un build de Vercel: la publicación usa siempre data/");
+  console.log(`Big-D: build con los datos de ${process.env.BIGD_DATOS} (perilla de prueba; este build no se publica)`);
+}
+
 const nextConfig: NextConfig = {
   // Perfil EXPORTADO ESTÁTICO (kit v1.29.0): un HTML por ruta en out/, sin servidor.
   // `pnpm start` sirve out/ con serve (versión exacta) porque `next start` falla con export (E375).

@@ -1,13 +1,6 @@
-/* Big-D — pantalla del INVESTIGADOR, portada de la maqueta aprobada (docs/diseno/assets/bigd.css: sección,
-   semáforo por capa, comando, tarjeta de corrida, afirmación con cita y verificación, veredicto, estado). */
-.seccion { padding: 8px 0 24px; }
-.seccion > h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 4px; }
-.kit-nota { font-size: 14px; color: var(--tinta-2); max-width: 72ch; margin: 0 0 14px; }
-.kit-grid { display: grid; gap: 20px; margin: 0 0 16px; }
-@media (min-width: 900px) { .kit-grid { grid-template-columns: 1fr 1fr; } }
-.filas { margin: 0; padding: 0; list-style: none; }
-.filas > li { display: grid; gap: 4px 14px; align-items: center; padding: 12px 0; border-top: 1px solid var(--linea); font-size: 15px; }
-.filas > li:last-child { border-bottom: 1px solid var(--linea); }
+/* Big-D — pantalla del INVESTIGADOR, portada de la maqueta aprobada (docs/diseno/assets/bigd.css): semáforo por capa,
+   comando, tarjeta de corrida, afirmación con cita y verificación. Lo común a las secciones Conocimiento y Caso (sección,
+   tarjeta, estado, veredicto, insignia, semáforo) vive en secciones.css (S3). */
 .sem-lista > li { grid-template-columns: 32px 1fr; }
 .sem-lista .semaforo { grid-column: 2; }
 @media (min-width: 720px) { .sem-lista > li { grid-template-columns: 32px 1fr auto; } .sem-lista .semaforo { grid-column: auto; } }
@@ -16,32 +9,13 @@
 .sem-lista .sem-banda small { display: block; font-weight: 400; font-size: 13px; color: var(--tinta-2); }
 .sem-lista li[data-vencido] { background: var(--sup-1); }
 .sem-lista .solicitar { grid-column: 2 / -1; }
-.semaforo { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; width: max-content; font: 500 13px/1 var(--letra-mono); color: var(--tinta-1); padding: 6px 10px 6px 8px; border: 1px solid var(--linea); border-radius: 999px; }
-.semaforo-revisar { border-color: var(--tinta-1); font-weight: 700; }
-.semaforo-vencido { background: var(--tinta-1); color: var(--fondo); border-color: var(--tinta-1); font-weight: 700; }
 .comando { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; padding: 10px 14px; background: var(--sup-2); border: 1px solid var(--linea); border-radius: 6px; }
 .comando code { font: 500 14px/1.5 var(--letra-mono); word-break: break-all; }
 .comando .boton { min-height: 34px; padding: 0 12px; font-size: 14px; }
 .comando small { flex-basis: 100%; font-size: 13px; color: var(--tinta-2); }
-.tarjeta { border: 1px solid var(--linea); border-radius: 6px; padding: 16px 18px; background: var(--sup-1); font-size: 15px; }
-.tarjeta h3 { font-size: 16px; font-weight: 700; margin: 0 0 6px; }
-.tarjeta p { margin: 0 0 6px; }
-.tarjeta .meta { margin-top: 8px; }
-.huella { font: 500 13px/1.5 var(--letra-mono); word-break: break-all; color: var(--tinta-2); }
-.huella b { color: var(--tinta-1); font-weight: 600; }
-.conteo { font: 500 13px/1.5 var(--letra-mono); color: var(--tinta-2); margin: 14px 0; display: flex; flex-wrap: wrap; gap: 4px 12px; }
-.estado { border: 1px solid var(--linea); border-radius: 6px; padding: 18px; background: var(--sup-1); display: grid; gap: 8px; justify-items: start; font-size: 15px; }
-.estado h2 { font-size: 18px; font-weight: 700; margin: 0; }
-.estado p { margin: 0; color: var(--tinta-2); max-width: 72ch; }
 .solicitar { display: grid; gap: 6px; justify-items: start; }
 .solicitar .kit-nota { margin: 0; }
 .sem-lista .solicitar .boton { min-height: 34px; padding: 0 12px; font-size: 14px; }
-.estado-error { border-color: var(--tinta-1); border-width: 1.5px; }
-.error-lista { margin: 8px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; justify-self: stretch; }
-.error-lista li { font: 500 13px/1.6 var(--letra-mono); padding: 8px 12px; border-left: 2px solid var(--tinta-1); background: var(--sup-2); word-break: break-word; }
-.veredicto { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; padding: 14px 18px; border: 1.5px solid var(--tinta-1); border-radius: 6px; margin: 0 0 18px; font-size: 15px; background: var(--sup-1); }
-.veredicto b { font-size: 17px; display: inline-flex; align-items: center; gap: 8px; }
-.veredicto .mono { color: var(--tinta-2); font: 500 13px/1.4 var(--letra-mono); }
 /* Afirmaciones */
 .grupo-afirmaciones { margin: 18px 0 0; }
 .grupo-afirmaciones > h3 { display: block; margin: 0 0 12px; }
@@ -56,8 +30,6 @@
 .afirmacion[data-rechazada] .evidencia-afirma { text-decoration: line-through; text-decoration-thickness: 1.5px; color: var(--tinta-2); }
 .decidir { display: inline-flex; gap: 8px; margin-left: auto; }
 .decidir .boton { min-height: 34px; padding: 0 12px; font-size: 14px; }
-.decidir .boton[aria-pressed="false"] { opacity: 0.6; }
-.evidencia-afirma { font-weight: 700; margin: 0; }
 .afirmacion-sobre { margin: 0; font: 600 13px/1.4 var(--letra-mono); color: var(--tinta-1); }
 .retiros-lista { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 8px; }
 .retiros-lista li { display: grid; gap: 8px; padding: 12px 16px; border: 1px dashed var(--tinta-2); border-radius: 6px; background: var(--sup-1); font-size: 15px; }
@@ -66,13 +38,8 @@
 .retiro-porque .cod { font: 600 12px/1 var(--letra-mono); letter-spacing: 0.06em; color: var(--tinta-2); margin-right: 4px; }
 .retiro-fuente a { color: var(--tinta-1); text-decoration: underline; }
 .retiros-lista .mono { font: 500 12px/1.4 var(--letra-mono); color: var(--tinta-2); }
-.evidencia-cita { margin: 0; padding: 8px 14px; border-left: 2px solid var(--tinta-1); color: var(--tinta-2); }
-.evidencia-no-verificada { border-left-style: dashed; }
 .verif { font: 500 13px/1.5 var(--letra-mono); color: var(--tinta-2); display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px; }
 .verif b { color: var(--tinta-1); }
-.insignia { display: inline-flex; align-items: center; gap: 6px; font: 600 12px/1 var(--letra-mono); letter-spacing: 0.04em; padding: 5px 10px; border: 1.5px solid var(--tinta-1); border-radius: 999px; color: var(--tinta-1); white-space: nowrap; }
-.insignia-llena { background: var(--tinta-1); color: var(--fondo); }
-.insignia-punteada { border-style: dashed; }
 .diff-marca { display: inline-flex; align-items: center; font: 600 12px/1 var(--letra-mono); letter-spacing: 0.04em; color: var(--tinta-1); padding: 4px 8px; border: 1.5px solid var(--tinta-1); border-radius: 999px; }
 .diff-marca[data-cambio="igual"] { border-color: var(--linea); color: var(--tinta-2); border-width: 1px; }
 .aprobar { margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--linea); }
@@ -81,3 +48,28 @@
 .preguntas ul { margin: 0; padding-left: 18px; list-style: disc; }
 .preguntas li { margin: 4px 0; }
 .preguntas small { color: var(--tinta-2); font: 500 12px/1.4 var(--letra-mono); }
+
+/* Revisión de evidencias (D-S3-10, boceto M1 aprobado el 2026-10-05; ADR design-system-s3-extensions): la regla de 0 a
+   4 por evidencia. El puntaje propuesto: borde grueso + glifo + «propuesto»; lo que la madurez no deja contar: rayado;
+   el nivel que cuenta si el tope lo baja: borde punteado + «cuenta». En el teléfono, en vertical: un nivel por renglón. */
+.escala-ref { margin: 0 0 18px; border: 1px solid var(--linea); border-radius: 6px; padding: 10px 14px; background: var(--sup-1); }
+.escala-ref summary { cursor: pointer; font-weight: 600; }
+.escala-anclas { margin: 10px 0 6px; padding-left: 0; list-style: none; display: grid; gap: 6px; font-size: 14px; }
+.escala-tira { list-style: none; margin: 2px 0 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
+.escala-tira li { border: 1px solid var(--linea); border-radius: 4px; padding: 6px 6px 8px; display: grid; gap: 3px; align-content: start; font-size: 12px; line-height: 1.25; color: var(--tinta-2); min-height: 66px; }
+.escala-tira li b { font: 700 16px/1 var(--letra-mono); color: var(--tinta-1); }
+.escala-tira li.sobre-tope { background-image: repeating-linear-gradient(135deg, transparent 0 5px, var(--linea) 5px 7px); }
+.escala-tira li.propuesto { border: 2px solid var(--tinta-1); color: var(--tinta-1); font-weight: 600; }
+.escala-tira li.cuenta { border: 2px dashed var(--tinta-1); color: var(--tinta-1); }
+.escala-tira li i { font: 600 11px/1.2 var(--letra-mono); font-style: normal; display: inline-flex; flex-wrap: wrap; align-items: center; gap: 3px; color: var(--tinta-1); }
+.escala-tira li i svg { display: inline-block; }
+@media (max-width: 479px) {
+  .escala-tira { grid-template-columns: 1fr; gap: 3px; }
+  .escala-tira li { grid-template-columns: 22px 1fr auto; align-items: center; gap: 8px; min-height: 0; padding: 5px 8px; font-size: 13px; }
+}
+.tope-nota { margin: 0; font-size: 13px; color: var(--tinta-2); }
+.evidencia-rev .ancla, .evidencia-rev .porque { margin: 0; }
+.evidencia-fuente { display: grid; gap: 6px; }
+.evidencia-fuente .ojo { margin: 0; }
+.evidencia-rev .verif svg, .evidencia-rev .insignia svg { display: inline-block; }
+.evidencia-rev .verif b { display: inline-flex; align-items: center; gap: 4px; }

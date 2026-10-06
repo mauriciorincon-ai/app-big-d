@@ -1,6 +1,6 @@
 # SINTÉTICA (kit de prueba): versión anterior inventada de la Plataforma Ejemplo, para ver las cuatro marcas de
 # diferencia. No la aprobó nadie porque la plataforma es ficticia. Generada por scripts/kit-de-prueba/versiones.mjs.
-contrato_version: 0.4.0
+contrato_version: 0.6.0
 gramatica_id: plataformas-datos
 gramatica_version: 0.2.0
 sujeto_id: plataforma-ejemplo

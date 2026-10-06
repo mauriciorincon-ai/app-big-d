@@ -1,0 +1,11 @@
+# Criterio de la especificación § 10.2 (se alimenta de las evidencias de su capacidad).
+id: crit-transformacion
+nombre:
+  es: "Transformación y orquestación"
+  en: "Transformation and orchestration"
+que_evalua:
+  es: "Qué tan bien prepara los datos en pasos repetibles, con control de calidad y de dependencias."
+  en: "How well it prepares data in repeatable steps, with quality and dependency control."
+tipo: capacidad
+capacidad_id: cap-transformacion
+escala_id: esc-evidencia

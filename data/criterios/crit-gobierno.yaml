@@ -1,0 +1,11 @@
+# Criterio de la especificación § 10.2 (se alimenta de las evidencias de su capacidad).
+id: crit-gobierno
+nombre:
+  es: "Gobierno y seguridad"
+  en: "Governance and security"
+que_evalua:
+  es: "Qué tan bien controla el acceso, protege lo sensible y registra el linaje."
+  en: "How well it controls access, protects what is sensitive and records lineage."
+tipo: capacidad
+capacidad_id: cap-gobierno
+escala_id: esc-evidencia

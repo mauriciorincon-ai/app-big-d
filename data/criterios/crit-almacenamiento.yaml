@@ -1,0 +1,11 @@
+# Criterio de la especificación § 10.2 (se alimenta de las evidencias de su capacidad).
+id: crit-almacenamiento
+nombre:
+  es: "Almacenamiento"
+  en: "Storage"
+que_evalua:
+  es: "Qué tan abierto y portable es el formato en que guarda los datos."
+  en: "How open and portable the format it keeps the data in is."
+tipo: capacidad
+capacidad_id: cap-almacenamiento
+escala_id: esc-evidencia

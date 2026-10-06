@@ -1,0 +1,37 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-plataforma-ejemplo-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/plataforma-ejemplo.jsonl).
+id: evi-plataforma-ejemplo-gobierno
+plataforma_id: plataforma-ejemplo
+capacidad_id: cap-gobierno
+afirmacion:
+  es: Los permisos, los filtros por fila y el enmascaramiento de columnas se definen una vez en el catálogo central.
+  en: Permissions, row filters and column masking are defined once in the central catalog.
+componentes:
+  - catalogo-central
+  - filtros-filas
+madurez: disponible-general
+puntaje: 3
+justificacion_puntaje:
+  es: "3 y no 4: el registro de accesos se guarda 90 días, menos de lo que suele pedir una auditoría clínica. 3 y no 2: es nativo y está disponible de forma general."
+  en: "3, not 4: the access log is kept for 90 days, less than a clinical audit usually asks for. 3, not 2: it is native and generally available."
+esencial: true
+fuentes:
+  - url: https://example.org/plataforma-ejemplo/gobierno
+    titulo: Example Platform docs · Governance (fictional)
+    tipo: oficial
+    fecha_publicacion: 2026-09-15
+    conflicto_de_interes: propio-fabricante
+    cita: Row filters and column masks are defined once in the central catalog; access logs are retained for 90 days.
+    verificacion:
+      resultado: no-verificable
+      fecha: 2026-10-06
+      http: 404
+      sha256: 25ddf2c883e0d1958ea971d279a7e4f0fd446724ee3db7db19dadabd4a62e484
+fecha_verificacion: 2026-10-06
+limitaciones:
+  - es: El registro de accesos se guarda 90 días.
+    en: The access log is kept for 90 days.
+origen: curador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

@@ -1,0 +1,10 @@
+# Criterio de la especificación § 10.3 (transversal: se alimenta de evidencias del propio criterio).
+id: crit-ecosistema
+nombre:
+  es: "Ajuste al ecosistema existente"
+  en: "Fit with the existing ecosystem"
+que_evalua:
+  es: "Qué tan bien encaja con la nube, la identidad y las herramientas que la organización ya tiene."
+  en: "How well it fits the cloud, identity and tools the organization already has."
+tipo: transversal
+escala_id: esc-evidencia

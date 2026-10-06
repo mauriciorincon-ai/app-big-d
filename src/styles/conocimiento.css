@@ -1,0 +1,18 @@
+/* Big-D — BASE DE CONOCIMIENTO (S3), portada de la maqueta aprobada (docs/diseno/assets/bigd.css, «Miradas 3–4»): filtros,
+   tarjeta de evidencia con su cita y sus metadatos, criterios, escala con topes y convenciones. */
+.evidencias { list-style: none; padding: 0; }
+.evidencia { border: 1px solid var(--linea); border-radius: 6px; padding: 16px 18px; background: var(--sup-1); font-size: 15px; }
+.evidencia header { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 10px; }
+.evidencia .cod { font: 600 12px/1 var(--letra-mono); letter-spacing: 0.06em; color: var(--tinta-2); }
+.evidencia .conteo { margin: 0 0 10px; }
+.evidencia .evidencia-afirma { margin: 0 0 8px; }
+.evidencia .evidencia-cita { margin: 0 0 12px; }
+.evidencia-estado { margin-left: auto; font: 600 12px/1 var(--letra-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--tinta-1); }
+.evidencia-propuesta { border-style: dashed; }
+.criterios > li { grid-template-columns: 1fr; }
+@media (min-width: 720px) { .criterios > li { grid-template-columns: 280px 1fr; } }
+.criterios b { display: block; }
+.criterios small { display: block; font: 500 12px/1.4 var(--letra-mono); color: var(--tinta-2); }
+.niveles-escala > li { grid-template-columns: 32px 1fr; }
+.niveles-escala .n { font: 700 17px/1 var(--letra-mono); }
+.niveles-escala small { display: block; color: var(--tinta-2); font-size: 13px; }

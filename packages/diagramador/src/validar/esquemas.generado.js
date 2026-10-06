@@ -84,7 +84,7 @@ var require_ucs2length = __commonJS({
 
 // esquemas.js
 var validarGramaticaEsquema = validate52;
-var schema19 = { "$schema": "https://json-schema.org/draft/2020-12/schema", "$id": "diagramador/gramatica.schema.json", "title": "Gram\xE1tica del diagramador (contrato 0.4.0)", "description": "Reglas de un dominio: idiomas, bandas, tipos de nodo, modos de flujo, escala de madurez, vigencia y l\xEDmites. Todo texto que se dibuja es un MAPA DE IDIOMA {es, en, \u2026}; la gram\xE1tica declara qu\xE9 idiomas y cu\xE1l es el base. Las referencias cruzadas (ids \xFAnicos, \xF3rdenes \xFAnicos, niveles \xFAnicos, bandas de recorrido existentes, umbrales crecientes, idiomas completos) se validan en c\xF3digo: ver CONTRATO \xA7 6.", "type": "object", "additionalProperties": false, "required": ["contrato_version", "id", "version", "nombre", "idiomas", "idioma_base", "bandas", "tipos_de_nodo", "modos_de_flujo", "escala_madurez", "vigencia", "limites"], "properties": { "contrato_version": { "$ref": "#/$defs/semver" }, "id": { "$ref": "#/$defs/id" }, "version": { "$ref": "#/$defs/semver" }, "nombre": { "$ref": "#/$defs/texto_idioma" }, "descripcion": { "type": "string", "description": "Nota para quien mantiene la gram\xE1tica; no se dibuja, por eso no es mapa de idioma" }, "idiomas": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/idioma" }, "description": "Idiomas que todo texto de la gram\xE1tica y de sus mapas debe traer (G7, V14)" }, "idioma_base": { "$ref": "#/$defs/idioma", "description": "Idioma en que se redacta primero; debe estar en `idiomas` (G7)" }, "bandas": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/banda" } }, "tipos_de_nodo": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/tipo_de_nodo" } }, "modos_de_flujo": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/modo_de_flujo" } }, "escala_madurez": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/nivel_madurez" } }, "vigencia": { "type": "object", "additionalProperties": false, "required": ["umbral_revisar_dias", "umbral_vencido_dias"], "properties": { "umbral_revisar_dias": { "type": "integer", "minimum": 1 }, "umbral_vencido_dias": { "type": "integer", "minimum": 2 } } }, "recorrido_referencia": { "type": "object", "additionalProperties": false, "required": ["desde_bandas", "hasta_bandas", "llegadas"], "properties": { "desde_bandas": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/id" } }, "hasta_bandas": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/id" } }, "llegadas": { "enum": ["todas", "alguna"], "description": "todas: el recorrido debe terminar en CADA banda de hasta_bandas (p. ej., tablero Y agente); alguna: basta una" } } }, "limites": { "type": "object", "additionalProperties": false, "required": ["bloques_min", "bloques_max", "frases_lider_max", "nodos_por_banda_max"], "properties": { "bloques_min": { "type": "integer", "minimum": 0 }, "bloques_max": { "type": "integer", "minimum": 1 }, "frases_lider_max": { "type": "integer", "minimum": 1 }, "nodos_por_banda_max": { "type": "integer", "minimum": 1, "description": "Densidad m\xE1xima por banda en el nivel 2 (P10; V11). 6 en el piloto" } } }, "terminos_a_explicar": { "type": "object", "description": "Por idioma, los t\xE9rminos que un texto de l\xEDder no puede usar sin explicar (V9)", "propertyNames": { "$ref": "#/$defs/idioma" }, "additionalProperties": { "type": "array", "items": { "type": "string", "minLength": 1 } } } }, "$defs": { "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" }, "semver": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" }, "idioma": { "type": "string", "pattern": "^[a-z]{2}$" }, "texto_idioma": { "type": "object", "description": "Mapa de idioma: una cadena no vac\xEDa por idioma declarado. El esquema exige al menos uno; que est\xE9n TODOS los de `idiomas` lo verifica el c\xF3digo (G7 en la gram\xE1tica, V14 en el mapa)", "minProperties": 1, "propertyNames": { "$ref": "#/$defs/idioma" }, "additionalProperties": { "type": "string", "minLength": 1 } }, "etiqueta_idioma": { "type": "object", "minProperties": 1, "propertyNames": { "$ref": "#/$defs/idioma" }, "additionalProperties": { "type": "string", "minLength": 1, "maxLength": 4 } }, "banda": { "type": "object", "additionalProperties": false, "required": ["id", "nombre", "clase", "orden", "pregunta_lider"], "properties": { "id": { "$ref": "#/$defs/id" }, "nombre": { "$ref": "#/$defs/texto_idioma" }, "clase": { "enum": ["capa", "carril", "transversal"] }, "orden": { "type": "integer", "minimum": 1, "description": "\xDAnico dentro de cada clase" }, "pregunta_lider": { "$ref": "#/$defs/texto_idioma" } } }, "tipo_de_nodo": { "type": "object", "additionalProperties": false, "required": ["id", "nombre", "token_color", "glifo", "etiqueta_corta"], "properties": { "id": { "$ref": "#/$defs/id" }, "nombre": { "$ref": "#/$defs/texto_idioma" }, "token_color": { "$ref": "#/$defs/id", "description": "Nombre del token; el valor por tema lo fija el design system del consumidor bajo el umbral de paleta del CONTRATO \xA7 5.2" }, "glifo": { "enum": ["circulo", "cuadrado", "rombo", "triangulo", "escudo", "estrella", "anillo", "barras"], "description": "Paths de caja 16 u en el CONTRATO \xA7 5.4 (0.3.0: salen hexagono y pentagono, entran escudo y barras)" }, "etiqueta_corta": { "$ref": "#/$defs/etiqueta_idioma" } } }, "modo_de_flujo": { "type": "object", "additionalProperties": false, "required": ["id", "nombre", "estilo_linea", "marcador", "descripcion"], "properties": { "id": { "$ref": "#/$defs/id" }, "nombre": { "$ref": "#/$defs/texto_idioma" }, "estilo_linea": { "enum": ["continua", "discontinua", "punteada", "doble"] }, "marcador": { "enum": ["cuadros", "onda", "ida-y-vuelta", "enlace", "ninguno"], "description": "Paths de caja 12 u en el CONTRATO \xA7 5.4 (0.3.0: sale reloj, entra ida-y-vuelta)" }, "descripcion": { "$ref": "#/$defs/texto_idioma" }, "exige_condicion": { "type": "boolean", "description": "Si es true, todo flujo de este modo debe traer `condicion` (V13). Ausente = false" } } }, "nivel_madurez": { "type": "object", "additionalProperties": false, "required": ["id", "nombre", "nivel", "disponible"], "properties": { "id": { "$ref": "#/$defs/id" }, "nombre": { "$ref": "#/$defs/texto_idioma" }, "nivel": { "type": "integer", "minimum": -1, "maximum": 4, "description": "Se dibuja como medidor (D13): \u22121 vac\xEDo y tachado (retirado) \xB7 0 vac\xEDo discontinuo \xB7 1 un cuarto \xB7 2 la mitad \xB7 3 tres cuartos \xB7 4 lleno. \xDAnico dentro de la escala (G2)" }, "etiqueta_corta": { "$ref": "#/$defs/etiqueta_idioma", "description": "Opcional (0.4.0, D-S1-17): el nombre largo no cabe en bloques ni nodos; si falta, el motor usa el nombre" }, "disponible": { "type": "boolean" } } } } };
+var schema19 = { "$schema": "https://json-schema.org/draft/2020-12/schema", "$id": "diagramador/gramatica.schema.json", "type": "object", "additionalProperties": false, "required": ["contrato_version", "id", "version", "nombre", "idiomas", "idioma_base", "bandas", "tipos_de_nodo", "modos_de_flujo", "escala_madurez", "vigencia", "limites"], "properties": { "contrato_version": { "$ref": "#/$defs/semver" }, "id": { "$ref": "#/$defs/id" }, "version": { "$ref": "#/$defs/semver" }, "nombre": { "$ref": "#/$defs/texto_idioma" }, "descripcion": { "type": "string" }, "idiomas": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/idioma" } }, "idioma_base": { "$ref": "#/$defs/idioma" }, "bandas": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/banda" } }, "tipos_de_nodo": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/tipo_de_nodo" } }, "modos_de_flujo": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/modo_de_flujo" } }, "escala_madurez": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/nivel_madurez" } }, "vigencia": { "type": "object", "additionalProperties": false, "required": ["umbral_revisar_dias", "umbral_vencido_dias"], "properties": { "umbral_revisar_dias": { "type": "integer", "minimum": 1 }, "umbral_vencido_dias": { "type": "integer", "minimum": 2 } } }, "recorrido_referencia": { "type": "object", "additionalProperties": false, "required": ["desde_bandas", "hasta_bandas", "llegadas"], "properties": { "desde_bandas": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/id" } }, "hasta_bandas": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/id" } }, "llegadas": { "enum": ["todas", "alguna"] } } }, "limites": { "type": "object", "additionalProperties": false, "required": ["bloques_min", "bloques_max", "frases_lider_max", "nodos_por_banda_max"], "properties": { "bloques_min": { "type": "integer", "minimum": 0 }, "bloques_max": { "type": "integer", "minimum": 1 }, "frases_lider_max": { "type": "integer", "minimum": 1 }, "nodos_por_banda_max": { "type": "integer", "minimum": 1 } } }, "terminos_a_explicar": { "type": "object", "propertyNames": { "$ref": "#/$defs/idioma" }, "additionalProperties": { "type": "array", "items": { "type": "string", "minLength": 1 } } } }, "$defs": { "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" }, "semver": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" }, "idioma": { "type": "string", "pattern": "^[a-z]{2}$" }, "texto_idioma": { "type": "object", "minProperties": 1, "propertyNames": { "$ref": "#/$defs/idioma" }, "additionalProperties": { "type": "string", "minLength": 1 } }, "etiqueta_idioma": { "type": "object", "minProperties": 1, "propertyNames": { "$ref": "#/$defs/idioma" }, "additionalProperties": { "type": "string", "minLength": 1, "maxLength": 4 } }, "banda": { "type": "object", "additionalProperties": false, "required": ["id", "nombre", "clase", "orden", "pregunta_lider"], "properties": { "id": { "$ref": "#/$defs/id" }, "nombre": { "$ref": "#/$defs/texto_idioma" }, "clase": { "enum": ["capa", "carril", "transversal"] }, "orden": { "type": "integer", "minimum": 1 }, "pregunta_lider": { "$ref": "#/$defs/texto_idioma" } } }, "tipo_de_nodo": { "type": "object", "additionalProperties": false, "required": ["id", "nombre", "token_color", "glifo", "etiqueta_corta"], "properties": { "id": { "$ref": "#/$defs/id" }, "nombre": { "$ref": "#/$defs/texto_idioma" }, "token_color": { "$ref": "#/$defs/id" }, "glifo": { "enum": ["circulo", "cuadrado", "rombo", "triangulo", "escudo", "estrella", "anillo", "barras", "hexagono"] }, "etiqueta_corta": { "$ref": "#/$defs/etiqueta_idioma" } } }, "modo_de_flujo": { "type": "object", "additionalProperties": false, "required": ["id", "nombre", "estilo_linea", "marcador", "descripcion"], "properties": { "id": { "$ref": "#/$defs/id" }, "nombre": { "$ref": "#/$defs/texto_idioma" }, "estilo_linea": { "enum": ["continua", "discontinua", "punteada", "doble"] }, "marcador": { "enum": ["cuadros", "onda", "ida-y-vuelta", "enlace", "ninguno"] }, "descripcion": { "$ref": "#/$defs/texto_idioma" }, "exige_condicion": { "type": "boolean" } } }, "nivel_madurez": { "type": "object", "additionalProperties": false, "required": ["id", "nombre", "nivel", "disponible"], "properties": { "id": { "$ref": "#/$defs/id" }, "nombre": { "$ref": "#/$defs/texto_idioma" }, "nivel": { "type": "integer", "minimum": -1, "maximum": 4 }, "etiqueta_corta": { "$ref": "#/$defs/etiqueta_idioma" }, "disponible": { "type": "boolean" } } } } };
 var func1 = Object.prototype.hasOwnProperty;
 var func0 = require_equal().default;
 var func2 = require_ucs2length().default;
@@ -262,7 +262,7 @@ function validate58(data, { instancePath = "", parentData, parentDataProperty, r
   return errors === 0;
 }
 validate58.evaluated = { "props": true, "dynamicProps": false, "dynamicItems": false };
-var schema24 = { "type": "object", "additionalProperties": false, "required": ["id", "nombre", "clase", "orden", "pregunta_lider"], "properties": { "id": { "$ref": "#/$defs/id" }, "nombre": { "$ref": "#/$defs/texto_idioma" }, "clase": { "enum": ["capa", "carril", "transversal"] }, "orden": { "type": "integer", "minimum": 1, "description": "\xDAnico dentro de cada clase" }, "pregunta_lider": { "$ref": "#/$defs/texto_idioma" } } };
+var schema24 = { "type": "object", "additionalProperties": false, "required": ["id", "nombre", "clase", "orden", "pregunta_lider"], "properties": { "id": { "$ref": "#/$defs/id" }, "nombre": { "$ref": "#/$defs/texto_idioma" }, "clase": { "enum": ["capa", "carril", "transversal"] }, "orden": { "type": "integer", "minimum": 1 }, "pregunta_lider": { "$ref": "#/$defs/texto_idioma" } } };
 function validate64(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
   let vErrors = null;
   let errors = 0;
@@ -396,7 +396,7 @@ function validate64(data, { instancePath = "", parentData, parentDataProperty, r
   return errors === 0;
 }
 validate64.evaluated = { "props": true, "dynamicProps": false, "dynamicItems": false };
-var schema25 = { "type": "object", "additionalProperties": false, "required": ["id", "nombre", "token_color", "glifo", "etiqueta_corta"], "properties": { "id": { "$ref": "#/$defs/id" }, "nombre": { "$ref": "#/$defs/texto_idioma" }, "token_color": { "$ref": "#/$defs/id", "description": "Nombre del token; el valor por tema lo fija el design system del consumidor bajo el umbral de paleta del CONTRATO \xA7 5.2" }, "glifo": { "enum": ["circulo", "cuadrado", "rombo", "triangulo", "escudo", "estrella", "anillo", "barras"], "description": "Paths de caja 16 u en el CONTRATO \xA7 5.4 (0.3.0: salen hexagono y pentagono, entran escudo y barras)" }, "etiqueta_corta": { "$ref": "#/$defs/etiqueta_idioma" } } };
+var schema25 = { "type": "object", "additionalProperties": false, "required": ["id", "nombre", "token_color", "glifo", "etiqueta_corta"], "properties": { "id": { "$ref": "#/$defs/id" }, "nombre": { "$ref": "#/$defs/texto_idioma" }, "token_color": { "$ref": "#/$defs/id" }, "glifo": { "enum": ["circulo", "cuadrado", "rombo", "triangulo", "escudo", "estrella", "anillo", "barras", "hexagono"] }, "etiqueta_corta": { "$ref": "#/$defs/etiqueta_idioma" } } };
 function validate73(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
   let vErrors = null;
   let errors = 0;
@@ -565,7 +565,7 @@ function validate69(data, { instancePath = "", parentData, parentDataProperty, r
     }
     if (data.glifo !== void 0) {
       let data3 = data.glifo;
-      if (!(data3 === "circulo" || data3 === "cuadrado" || data3 === "rombo" || data3 === "triangulo" || data3 === "escudo" || data3 === "estrella" || data3 === "anillo" || data3 === "barras")) {
+      if (!(data3 === "circulo" || data3 === "cuadrado" || data3 === "rombo" || data3 === "triangulo" || data3 === "escudo" || data3 === "estrella" || data3 === "anillo" || data3 === "barras" || data3 === "hexagono")) {
         const err6 = { instancePath: instancePath + "/glifo", schemaPath: "#/properties/glifo/enum", keyword: "enum", params: { allowedValues: schema25.properties.glifo.enum }, message: "must be equal to one of the allowed values" };
         if (vErrors === null) {
           vErrors = [err6];
@@ -594,7 +594,7 @@ function validate69(data, { instancePath = "", parentData, parentDataProperty, r
   return errors === 0;
 }
 validate69.evaluated = { "props": true, "dynamicProps": false, "dynamicItems": false };
-var schema27 = { "type": "object", "additionalProperties": false, "required": ["id", "nombre", "estilo_linea", "marcador", "descripcion"], "properties": { "id": { "$ref": "#/$defs/id" }, "nombre": { "$ref": "#/$defs/texto_idioma" }, "estilo_linea": { "enum": ["continua", "discontinua", "punteada", "doble"] }, "marcador": { "enum": ["cuadros", "onda", "ida-y-vuelta", "enlace", "ninguno"], "description": "Paths de caja 12 u en el CONTRATO \xA7 5.4 (0.3.0: sale reloj, entra ida-y-vuelta)" }, "descripcion": { "$ref": "#/$defs/texto_idioma" }, "exige_condicion": { "type": "boolean", "description": "Si es true, todo flujo de este modo debe traer `condicion` (V13). Ausente = false" } } };
+var schema27 = { "type": "object", "additionalProperties": false, "required": ["id", "nombre", "estilo_linea", "marcador", "descripcion"], "properties": { "id": { "$ref": "#/$defs/id" }, "nombre": { "$ref": "#/$defs/texto_idioma" }, "estilo_linea": { "enum": ["continua", "discontinua", "punteada", "doble"] }, "marcador": { "enum": ["cuadros", "onda", "ida-y-vuelta", "enlace", "ninguno"] }, "descripcion": { "$ref": "#/$defs/texto_idioma" }, "exige_condicion": { "type": "boolean" } } };
 function validate77(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
   let vErrors = null;
   let errors = 0;
@@ -1636,7 +1636,7 @@ function validate52(data, { instancePath = "", parentData, parentDataProperty, r
 }
 validate52.evaluated = { "props": true, "dynamicProps": false, "dynamicItems": false };
 var validarMapaEsquema = validate90;
-var schema29 = { "$schema": "https://json-schema.org/draft/2020-12/schema", "$id": "diagramador/mapa.schema.json", "title": "Mapa del diagramador (contrato 0.4.0)", "description": "Contenido de un sujeto bajo una gram\xE1tica. Todo texto que se dibuja o se lee es un MAPA DE IDIOMA {es, en, \u2026} con los idiomas que declara la gram\xE1tica (V14). El esquema valida forma; las referencias contra la gram\xE1tica y dentro del mapa (bandas, tipos, modos, madurez, flujos, condiciones, recorridos, bloques, densidad, ids \xFAnicos, idiomas, cobertura de la fuente) se validan en c\xF3digo: ver CONTRATO \xA7 6.", "type": "object", "additionalProperties": false, "required": ["contrato_version", "gramatica_id", "gramatica_version", "sujeto_id", "sujeto_nombre", "version", "fecha_actualizacion", "estado", "bloques", "nodos", "flujos", "recorridos"], "properties": { "contrato_version": { "$ref": "#/$defs/semver" }, "gramatica_id": { "$ref": "#/$defs/id" }, "gramatica_version": { "$ref": "#/$defs/semver" }, "sujeto_id": { "$ref": "#/$defs/id" }, "sujeto_nombre": { "$ref": "#/$defs/texto_idioma" }, "version": { "$ref": "#/$defs/semver" }, "fecha_actualizacion": { "$ref": "#/$defs/fecha" }, "estado": { "enum": ["propuesta", "aprobada", "rechazada"] }, "bloques": { "type": "array", "items": { "$ref": "#/$defs/bloque" } }, "nodos": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/nodo" } }, "flujos": { "type": "array", "items": { "$ref": "#/$defs/flujo" } }, "recorridos": { "type": "array", "items": { "$ref": "#/$defs/recorrido" } }, "glosario": { "$ref": "#/$defs/diccionario_idioma", "description": "Por idioma, t\xE9rminos explicados para TODO el mapa (nodos, bloques, flujos y pasos). Un nodo puede adem\xE1s explicar los suyos en `terminos`. El renderizador muestra la explicaci\xF3n donde el t\xE9rmino aparece (F-001)." }, "refs_externas": { "$ref": "#/$defs/refs" } }, "$defs": { "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" }, "semver": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" }, "fecha": { "type": "string", "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$" }, "idioma": { "type": "string", "pattern": "^[a-z]{2}$" }, "texto_idioma": { "type": "object", "description": "Mapa de idioma: una cadena no vac\xEDa por idioma. Que est\xE9n TODOS los idiomas de la gram\xE1tica lo verifica V14", "minProperties": 1, "propertyNames": { "$ref": "#/$defs/idioma" }, "additionalProperties": { "type": "string", "minLength": 1 } }, "diccionario_idioma": { "type": "object", "description": "Por idioma, un diccionario t\xE9rmino \u2192 explicaci\xF3n", "propertyNames": { "$ref": "#/$defs/idioma" }, "additionalProperties": { "type": "object", "additionalProperties": { "type": "string", "minLength": 1 } } }, "refs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "description": "Opacas para el motor" }, "fuente": { "type": "object", "additionalProperties": false, "required": ["url", "titulo", "fecha", "tipo"], "properties": { "url": { "type": "string", "pattern": "^https://" }, "titulo": { "$ref": "#/$defs/texto_idioma" }, "fecha": { "$ref": "#/$defs/fecha" }, "tipo": { "enum": ["oficial", "tercero"] } } }, "bloque": { "type": "object", "additionalProperties": false, "required": ["id", "nombre", "banda_id", "lider"], "properties": { "id": { "$ref": "#/$defs/id" }, "nombre": { "$ref": "#/$defs/texto_idioma" }, "banda_id": { "$ref": "#/$defs/id", "description": "Banda donde se ancla el bloque en la visi\xF3n general" }, "lider": { "$ref": "#/$defs/texto_idioma" } } }, "nodo": { "type": "object", "additionalProperties": false, "required": ["id", "banda_id", "tipo_id", "nombre", "lider", "experto", "por_que_importa", "madurez", "fuentes", "fecha_verificacion"], "properties": { "id": { "$ref": "#/$defs/id" }, "banda_id": { "$ref": "#/$defs/id" }, "tipo_id": { "$ref": "#/$defs/id" }, "bloque_id": { "$ref": "#/$defs/id", "description": "Opcional: un nodo sin bloque no aparece en la visi\xF3n general; su banda muestra cu\xE1ntos nodos tiene" }, "nombre": { "$ref": "#/$defs/texto_idioma" }, "nombres_anteriores": { "type": "array", "items": { "$ref": "#/$defs/texto_idioma" } }, "orden": { "type": "integer", "minimum": 1, "description": "Posici\xF3n dentro de la banda (capa) o sobre el eje del flujo (carril y transversal); si falta, se ordena por id" }, "lider": { "$ref": "#/$defs/texto_idioma" }, "experto": { "$ref": "#/$defs/texto_idioma" }, "por_que_importa": { "$ref": "#/$defs/texto_idioma" }, "terminos": { "$ref": "#/$defs/diccionario_idioma" }, "madurez": { "$ref": "#/$defs/id" }, "fuentes": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/fuente" } }, "fecha_verificacion": { "$ref": "#/$defs/fecha" }, "refs_externas": { "$ref": "#/$defs/refs" } } }, "condicion": { "type": "object", "additionalProperties": false, "required": ["senal", "operador", "valor"], "description": "Condici\xF3n de un flujo condicional (0.3.0, pedido de planlang): la se\xF1al registrada, el operador y el valor del plan. Obligatoria si el modo declara `exige_condicion` (V13)", "properties": { "senal": { "$ref": "#/$defs/id" }, "operador": { "enum": ["<", "<=", "=", "!=", ">=", ">"] }, "valor": { "anyOf": [{ "type": "number" }, { "type": "string", "minLength": 1 }, { "type": "boolean" }] } } }, "flujo": { "type": "object", "additionalProperties": false, "required": ["id", "origen", "destino", "modo_id", "que_viaja", "lider"], "properties": { "id": { "$ref": "#/$defs/id" }, "origen": { "$ref": "#/$defs/id" }, "destino": { "$ref": "#/$defs/id" }, "modo_id": { "$ref": "#/$defs/id" }, "que_viaja": { "$ref": "#/$defs/texto_idioma" }, "lider": { "$ref": "#/$defs/texto_idioma" }, "condicion": { "$ref": "#/$defs/condicion" } } }, "paso": { "type": "object", "additionalProperties": false, "required": ["id", "nodo_id", "que_pasa", "lider", "experto"], "properties": { "id": { "$ref": "#/$defs/id" }, "nodo_id": { "$ref": "#/$defs/id" }, "sigue_de": { "$ref": "#/$defs/id", "description": "Paso anterior; si falta, es el paso previo de la lista. Dos pasos con el mismo sigue_de forman una rama" }, "bifurca": { "enum": ["paralela", "alternativa"], "description": "Obligatorio si de este paso salen dos o m\xE1s pasos: paralela = el recorrido sigue por TODAS las ramas (tablero Y agente); alternativa = por UNA (V12)" }, "que_pasa": { "$ref": "#/$defs/texto_idioma" }, "lider": { "$ref": "#/$defs/texto_idioma" }, "experto": { "$ref": "#/$defs/texto_idioma" } } }, "recorrido": { "type": "object", "additionalProperties": false, "required": ["id", "titulo", "pasos"], "properties": { "id": { "$ref": "#/$defs/id" }, "titulo": { "$ref": "#/$defs/texto_idioma" }, "pasos": { "type": "array", "minItems": 2, "items": { "$ref": "#/$defs/paso" } } } } } };
+var schema29 = { "$schema": "https://json-schema.org/draft/2020-12/schema", "$id": "diagramador/mapa.schema.json", "type": "object", "additionalProperties": false, "required": ["contrato_version", "gramatica_id", "gramatica_version", "sujeto_id", "sujeto_nombre", "version", "fecha_actualizacion", "estado", "bloques", "nodos", "flujos", "recorridos"], "properties": { "contrato_version": { "$ref": "#/$defs/semver" }, "gramatica_id": { "$ref": "#/$defs/id" }, "gramatica_version": { "$ref": "#/$defs/semver" }, "sujeto_id": { "$ref": "#/$defs/id" }, "sujeto_nombre": { "$ref": "#/$defs/texto_idioma" }, "version": { "$ref": "#/$defs/semver" }, "fecha_actualizacion": { "$ref": "#/$defs/fecha" }, "estado": { "enum": ["propuesta", "aprobada", "rechazada"] }, "bloques": { "type": "array", "items": { "$ref": "#/$defs/bloque" } }, "nodos": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/nodo" } }, "flujos": { "type": "array", "items": { "$ref": "#/$defs/flujo" } }, "recorridos": { "type": "array", "items": { "$ref": "#/$defs/recorrido" } }, "glosario": { "$ref": "#/$defs/diccionario_idioma" }, "refs_externas": { "$ref": "#/$defs/refs" } }, "$defs": { "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" }, "semver": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" }, "fecha": { "type": "string", "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$" }, "idioma": { "type": "string", "pattern": "^[a-z]{2}$" }, "texto_idioma": { "type": "object", "minProperties": 1, "propertyNames": { "$ref": "#/$defs/idioma" }, "additionalProperties": { "type": "string", "minLength": 1 } }, "diccionario_idioma": { "type": "object", "propertyNames": { "$ref": "#/$defs/idioma" }, "additionalProperties": { "type": "object", "additionalProperties": { "type": "string", "minLength": 1 } } }, "refs": { "type": "array", "items": { "type": "string", "minLength": 1 } }, "fuente": { "anyOf": [{ "type": "object", "additionalProperties": false, "required": ["url", "titulo", "fecha", "tipo"], "properties": { "url": { "type": "string", "pattern": "^https://" }, "titulo": { "$ref": "#/$defs/texto_idioma" }, "fecha": { "$ref": "#/$defs/fecha" }, "tipo": { "enum": ["oficial", "tercero"] } } }, { "type": "object", "additionalProperties": false, "required": ["ruta", "titulo", "fecha", "tipo"], "properties": { "ruta": { "type": "string", "pattern": "^[^:\\s/][^\\s]*$" }, "lineas": { "type": "string", "pattern": "^[0-9]+(-[0-9]+)?$" }, "titulo": { "$ref": "#/$defs/texto_idioma" }, "fecha": { "$ref": "#/$defs/fecha" }, "tipo": { "const": "codigo" } } }] }, "bloque": { "type": "object", "additionalProperties": false, "required": ["id", "nombre", "banda_id", "lider"], "properties": { "id": { "$ref": "#/$defs/id" }, "nombre": { "$ref": "#/$defs/texto_idioma" }, "banda_id": { "$ref": "#/$defs/id" }, "lider": { "$ref": "#/$defs/texto_idioma" } } }, "nodo": { "type": "object", "additionalProperties": false, "required": ["id", "banda_id", "tipo_id", "nombre", "lider", "experto", "por_que_importa", "madurez", "fuentes", "fecha_verificacion"], "properties": { "id": { "$ref": "#/$defs/id" }, "banda_id": { "$ref": "#/$defs/id" }, "tipo_id": { "$ref": "#/$defs/id" }, "bloque_id": { "$ref": "#/$defs/id" }, "nombre": { "$ref": "#/$defs/texto_idioma" }, "nombres_anteriores": { "type": "array", "items": { "$ref": "#/$defs/texto_idioma" } }, "orden": { "type": "integer", "minimum": 1 }, "lider": { "$ref": "#/$defs/texto_idioma" }, "experto": { "$ref": "#/$defs/texto_idioma" }, "por_que_importa": { "$ref": "#/$defs/texto_idioma" }, "terminos": { "$ref": "#/$defs/diccionario_idioma" }, "madurez": { "$ref": "#/$defs/id" }, "fuentes": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/fuente" } }, "fecha_verificacion": { "$ref": "#/$defs/fecha" }, "refs_externas": { "$ref": "#/$defs/refs" }, "papel": { "enum": ["inicio", "fin"] } } }, "condicion": { "anyOf": [{ "type": "object", "additionalProperties": false, "required": ["senal", "operador", "valor"], "properties": { "senal": { "$ref": "#/$defs/id" }, "operador": { "enum": ["<", "<=", "=", "!=", ">=", ">"] }, "valor": { "anyOf": [{ "type": "number" }, { "type": "string", "minLength": 1 }, { "type": "boolean" }] } } }, { "type": "object", "additionalProperties": false, "required": ["funcion", "entradas"], "properties": { "funcion": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" }, "entradas": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/id" } } } }, { "type": "object", "additionalProperties": false, "required": ["por_defecto"], "properties": { "por_defecto": { "const": true } } }] }, "flujo": { "type": "object", "additionalProperties": false, "required": ["id", "origen", "destino", "modo_id", "que_viaja", "lider"], "properties": { "id": { "$ref": "#/$defs/id" }, "origen": { "$ref": "#/$defs/id" }, "destino": { "$ref": "#/$defs/id" }, "modo_id": { "$ref": "#/$defs/id" }, "que_viaja": { "$ref": "#/$defs/texto_idioma" }, "lider": { "$ref": "#/$defs/texto_idioma" }, "condicion": { "$ref": "#/$defs/condicion" } } }, "paso": { "type": "object", "additionalProperties": false, "required": ["id", "nodo_id", "que_pasa", "lider", "experto"], "properties": { "id": { "$ref": "#/$defs/id" }, "nodo_id": { "$ref": "#/$defs/id" }, "sigue_de": { "$ref": "#/$defs/id" }, "bifurca": { "enum": ["paralela", "alternativa"] }, "que_pasa": { "$ref": "#/$defs/texto_idioma" }, "lider": { "$ref": "#/$defs/texto_idioma" }, "experto": { "$ref": "#/$defs/texto_idioma" } } }, "recorrido": { "type": "object", "additionalProperties": false, "required": ["id", "titulo", "pasos"], "properties": { "id": { "$ref": "#/$defs/id" }, "titulo": { "$ref": "#/$defs/texto_idioma" }, "pasos": { "type": "array", "minItems": 2, "items": { "$ref": "#/$defs/paso" } } } } } };
 function validate91(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
   let vErrors = null;
   let errors = 0;
@@ -1937,7 +1937,7 @@ function validate104(data, { instancePath = "", parentData, parentDataProperty, 
   return errors === 0;
 }
 validate104.evaluated = { "props": true, "dynamicProps": false, "dynamicItems": false };
-var schema36 = { "type": "object", "additionalProperties": false, "required": ["id", "banda_id", "tipo_id", "nombre", "lider", "experto", "por_que_importa", "madurez", "fuentes", "fecha_verificacion"], "properties": { "id": { "$ref": "#/$defs/id" }, "banda_id": { "$ref": "#/$defs/id" }, "tipo_id": { "$ref": "#/$defs/id" }, "bloque_id": { "$ref": "#/$defs/id", "description": "Opcional: un nodo sin bloque no aparece en la visi\xF3n general; su banda muestra cu\xE1ntos nodos tiene" }, "nombre": { "$ref": "#/$defs/texto_idioma" }, "nombres_anteriores": { "type": "array", "items": { "$ref": "#/$defs/texto_idioma" } }, "orden": { "type": "integer", "minimum": 1, "description": "Posici\xF3n dentro de la banda (capa) o sobre el eje del flujo (carril y transversal); si falta, se ordena por id" }, "lider": { "$ref": "#/$defs/texto_idioma" }, "experto": { "$ref": "#/$defs/texto_idioma" }, "por_que_importa": { "$ref": "#/$defs/texto_idioma" }, "terminos": { "$ref": "#/$defs/diccionario_idioma" }, "madurez": { "$ref": "#/$defs/id" }, "fuentes": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/fuente" } }, "fecha_verificacion": { "$ref": "#/$defs/fecha" }, "refs_externas": { "$ref": "#/$defs/refs" } } };
+var schema36 = { "type": "object", "additionalProperties": false, "required": ["id", "banda_id", "tipo_id", "nombre", "lider", "experto", "por_que_importa", "madurez", "fuentes", "fecha_verificacion"], "properties": { "id": { "$ref": "#/$defs/id" }, "banda_id": { "$ref": "#/$defs/id" }, "tipo_id": { "$ref": "#/$defs/id" }, "bloque_id": { "$ref": "#/$defs/id" }, "nombre": { "$ref": "#/$defs/texto_idioma" }, "nombres_anteriores": { "type": "array", "items": { "$ref": "#/$defs/texto_idioma" } }, "orden": { "type": "integer", "minimum": 1 }, "lider": { "$ref": "#/$defs/texto_idioma" }, "experto": { "$ref": "#/$defs/texto_idioma" }, "por_que_importa": { "$ref": "#/$defs/texto_idioma" }, "terminos": { "$ref": "#/$defs/diccionario_idioma" }, "madurez": { "$ref": "#/$defs/id" }, "fuentes": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/fuente" } }, "fecha_verificacion": { "$ref": "#/$defs/fecha" }, "refs_externas": { "$ref": "#/$defs/refs" }, "papel": { "enum": ["inicio", "fin"] } } };
 function validate120(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
   let vErrors = null;
   let errors = 0;
@@ -2014,8 +2014,10 @@ function validate120(data, { instancePath = "", parentData, parentDataProperty, 
   return errors === 0;
 }
 validate120.evaluated = { "props": true, "dynamicProps": false, "dynamicItems": false };
-var schema38 = { "type": "object", "additionalProperties": false, "required": ["url", "titulo", "fecha", "tipo"], "properties": { "url": { "type": "string", "pattern": "^https://" }, "titulo": { "$ref": "#/$defs/texto_idioma" }, "fecha": { "$ref": "#/$defs/fecha" }, "tipo": { "enum": ["oficial", "tercero"] } } };
+var schema38 = { "anyOf": [{ "type": "object", "additionalProperties": false, "required": ["url", "titulo", "fecha", "tipo"], "properties": { "url": { "type": "string", "pattern": "^https://" }, "titulo": { "$ref": "#/$defs/texto_idioma" }, "fecha": { "$ref": "#/$defs/fecha" }, "tipo": { "enum": ["oficial", "tercero"] } } }, { "type": "object", "additionalProperties": false, "required": ["ruta", "titulo", "fecha", "tipo"], "properties": { "ruta": { "type": "string", "pattern": "^[^:\\s/][^\\s]*$" }, "lineas": { "type": "string", "pattern": "^[0-9]+(-[0-9]+)?$" }, "titulo": { "$ref": "#/$defs/texto_idioma" }, "fecha": { "$ref": "#/$defs/fecha" }, "tipo": { "const": "codigo" } } }] };
 var pattern10 = new RegExp("^https://", "u");
+var pattern11 = new RegExp("^[^:\\s/][^\\s]*$", "u");
+var pattern12 = new RegExp("^[0-9]+(-[0-9]+)?$", "u");
 function validate124(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
   let vErrors = null;
   let errors = 0;
@@ -2026,9 +2028,12 @@ function validate124(data, { instancePath = "", parentData, parentDataProperty, 
   if (evaluated0.dynamicItems) {
     evaluated0.items = void 0;
   }
+  const _errs0 = errors;
+  let valid0 = false;
+  const _errs1 = errors;
   if (data && typeof data == "object" && !Array.isArray(data)) {
     if (data.url === void 0) {
-      const err0 = { instancePath, schemaPath: "#/required", keyword: "required", params: { missingProperty: "url" }, message: "must have required property 'url'" };
+      const err0 = { instancePath, schemaPath: "#/anyOf/0/required", keyword: "required", params: { missingProperty: "url" }, message: "must have required property 'url'" };
       if (vErrors === null) {
         vErrors = [err0];
       } else {
@@ -2037,7 +2042,7 @@ function validate124(data, { instancePath = "", parentData, parentDataProperty, 
       errors++;
     }
     if (data.titulo === void 0) {
-      const err1 = { instancePath, schemaPath: "#/required", keyword: "required", params: { missingProperty: "titulo" }, message: "must have required property 'titulo'" };
+      const err1 = { instancePath, schemaPath: "#/anyOf/0/required", keyword: "required", params: { missingProperty: "titulo" }, message: "must have required property 'titulo'" };
       if (vErrors === null) {
         vErrors = [err1];
       } else {
@@ -2046,7 +2051,7 @@ function validate124(data, { instancePath = "", parentData, parentDataProperty, 
       errors++;
     }
     if (data.fecha === void 0) {
-      const err2 = { instancePath, schemaPath: "#/required", keyword: "required", params: { missingProperty: "fecha" }, message: "must have required property 'fecha'" };
+      const err2 = { instancePath, schemaPath: "#/anyOf/0/required", keyword: "required", params: { missingProperty: "fecha" }, message: "must have required property 'fecha'" };
       if (vErrors === null) {
         vErrors = [err2];
       } else {
@@ -2055,7 +2060,7 @@ function validate124(data, { instancePath = "", parentData, parentDataProperty, 
       errors++;
     }
     if (data.tipo === void 0) {
-      const err3 = { instancePath, schemaPath: "#/required", keyword: "required", params: { missingProperty: "tipo" }, message: "must have required property 'tipo'" };
+      const err3 = { instancePath, schemaPath: "#/anyOf/0/required", keyword: "required", params: { missingProperty: "tipo" }, message: "must have required property 'tipo'" };
       if (vErrors === null) {
         vErrors = [err3];
       } else {
@@ -2065,7 +2070,7 @@ function validate124(data, { instancePath = "", parentData, parentDataProperty, 
     }
     for (const key0 in data) {
       if (!(key0 === "url" || key0 === "titulo" || key0 === "fecha" || key0 === "tipo")) {
-        const err4 = { instancePath, schemaPath: "#/additionalProperties", keyword: "additionalProperties", params: { additionalProperty: key0 }, message: "must NOT have additional properties" };
+        const err4 = { instancePath, schemaPath: "#/anyOf/0/additionalProperties", keyword: "additionalProperties", params: { additionalProperty: key0 }, message: "must NOT have additional properties" };
         if (vErrors === null) {
           vErrors = [err4];
         } else {
@@ -2078,7 +2083,7 @@ function validate124(data, { instancePath = "", parentData, parentDataProperty, 
       let data0 = data.url;
       if (typeof data0 === "string") {
         if (!pattern10.test(data0)) {
-          const err5 = { instancePath: instancePath + "/url", schemaPath: "#/properties/url/pattern", keyword: "pattern", params: { pattern: "^https://" }, message: 'must match pattern "^https://"' };
+          const err5 = { instancePath: instancePath + "/url", schemaPath: "#/anyOf/0/properties/url/pattern", keyword: "pattern", params: { pattern: "^https://" }, message: 'must match pattern "^https://"' };
           if (vErrors === null) {
             vErrors = [err5];
           } else {
@@ -2087,7 +2092,7 @@ function validate124(data, { instancePath = "", parentData, parentDataProperty, 
           errors++;
         }
       } else {
-        const err6 = { instancePath: instancePath + "/url", schemaPath: "#/properties/url/type", keyword: "type", params: { type: "string" }, message: "must be string" };
+        const err6 = { instancePath: instancePath + "/url", schemaPath: "#/anyOf/0/properties/url/type", keyword: "type", params: { type: "string" }, message: "must be string" };
         if (vErrors === null) {
           vErrors = [err6];
         } else {
@@ -2111,7 +2116,7 @@ function validate124(data, { instancePath = "", parentData, parentDataProperty, 
     if (data.tipo !== void 0) {
       let data3 = data.tipo;
       if (!(data3 === "oficial" || data3 === "tercero")) {
-        const err7 = { instancePath: instancePath + "/tipo", schemaPath: "#/properties/tipo/enum", keyword: "enum", params: { allowedValues: schema38.properties.tipo.enum }, message: "must be equal to one of the allowed values" };
+        const err7 = { instancePath: instancePath + "/tipo", schemaPath: "#/anyOf/0/properties/tipo/enum", keyword: "enum", params: { allowedValues: schema38.anyOf[0].properties.tipo.enum }, message: "must be equal to one of the allowed values" };
         if (vErrors === null) {
           vErrors = [err7];
         } else {
@@ -2121,7 +2126,7 @@ function validate124(data, { instancePath = "", parentData, parentDataProperty, 
       }
     }
   } else {
-    const err8 = { instancePath, schemaPath: "#/type", keyword: "type", params: { type: "object" }, message: "must be object" };
+    const err8 = { instancePath, schemaPath: "#/anyOf/0/type", keyword: "type", params: { type: "object" }, message: "must be object" };
     if (vErrors === null) {
       vErrors = [err8];
     } else {
@@ -2129,14 +2134,170 @@ function validate124(data, { instancePath = "", parentData, parentDataProperty, 
     }
     errors++;
   }
+  var _valid0 = _errs1 === errors;
+  valid0 = valid0 || _valid0;
+  if (_valid0) {
+    var props0 = true;
+  }
+  const _errs9 = errors;
+  if (data && typeof data == "object" && !Array.isArray(data)) {
+    if (data.ruta === void 0) {
+      const err9 = { instancePath, schemaPath: "#/anyOf/1/required", keyword: "required", params: { missingProperty: "ruta" }, message: "must have required property 'ruta'" };
+      if (vErrors === null) {
+        vErrors = [err9];
+      } else {
+        vErrors.push(err9);
+      }
+      errors++;
+    }
+    if (data.titulo === void 0) {
+      const err10 = { instancePath, schemaPath: "#/anyOf/1/required", keyword: "required", params: { missingProperty: "titulo" }, message: "must have required property 'titulo'" };
+      if (vErrors === null) {
+        vErrors = [err10];
+      } else {
+        vErrors.push(err10);
+      }
+      errors++;
+    }
+    if (data.fecha === void 0) {
+      const err11 = { instancePath, schemaPath: "#/anyOf/1/required", keyword: "required", params: { missingProperty: "fecha" }, message: "must have required property 'fecha'" };
+      if (vErrors === null) {
+        vErrors = [err11];
+      } else {
+        vErrors.push(err11);
+      }
+      errors++;
+    }
+    if (data.tipo === void 0) {
+      const err12 = { instancePath, schemaPath: "#/anyOf/1/required", keyword: "required", params: { missingProperty: "tipo" }, message: "must have required property 'tipo'" };
+      if (vErrors === null) {
+        vErrors = [err12];
+      } else {
+        vErrors.push(err12);
+      }
+      errors++;
+    }
+    for (const key1 in data) {
+      if (!(key1 === "ruta" || key1 === "lineas" || key1 === "titulo" || key1 === "fecha" || key1 === "tipo")) {
+        const err13 = { instancePath, schemaPath: "#/anyOf/1/additionalProperties", keyword: "additionalProperties", params: { additionalProperty: key1 }, message: "must NOT have additional properties" };
+        if (vErrors === null) {
+          vErrors = [err13];
+        } else {
+          vErrors.push(err13);
+        }
+        errors++;
+      }
+    }
+    if (data.ruta !== void 0) {
+      let data4 = data.ruta;
+      if (typeof data4 === "string") {
+        if (!pattern11.test(data4)) {
+          const err14 = { instancePath: instancePath + "/ruta", schemaPath: "#/anyOf/1/properties/ruta/pattern", keyword: "pattern", params: { pattern: "^[^:\\s/][^\\s]*$" }, message: 'must match pattern "^[^:\\s/][^\\s]*$"' };
+          if (vErrors === null) {
+            vErrors = [err14];
+          } else {
+            vErrors.push(err14);
+          }
+          errors++;
+        }
+      } else {
+        const err15 = { instancePath: instancePath + "/ruta", schemaPath: "#/anyOf/1/properties/ruta/type", keyword: "type", params: { type: "string" }, message: "must be string" };
+        if (vErrors === null) {
+          vErrors = [err15];
+        } else {
+          vErrors.push(err15);
+        }
+        errors++;
+      }
+    }
+    if (data.lineas !== void 0) {
+      let data5 = data.lineas;
+      if (typeof data5 === "string") {
+        if (!pattern12.test(data5)) {
+          const err16 = { instancePath: instancePath + "/lineas", schemaPath: "#/anyOf/1/properties/lineas/pattern", keyword: "pattern", params: { pattern: "^[0-9]+(-[0-9]+)?$" }, message: 'must match pattern "^[0-9]+(-[0-9]+)?$"' };
+          if (vErrors === null) {
+            vErrors = [err16];
+          } else {
+            vErrors.push(err16);
+          }
+          errors++;
+        }
+      } else {
+        const err17 = { instancePath: instancePath + "/lineas", schemaPath: "#/anyOf/1/properties/lineas/type", keyword: "type", params: { type: "string" }, message: "must be string" };
+        if (vErrors === null) {
+          vErrors = [err17];
+        } else {
+          vErrors.push(err17);
+        }
+        errors++;
+      }
+    }
+    if (data.titulo !== void 0) {
+      if (!validate97(data.titulo, { instancePath: instancePath + "/titulo", parentData: data, parentDataProperty: "titulo", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate97.errors : vErrors.concat(validate97.errors);
+        errors = vErrors.length;
+      }
+    }
+    if (data.fecha !== void 0) {
+      if (!validate102(data.fecha, { instancePath: instancePath + "/fecha", parentData: data, parentDataProperty: "fecha", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate102.errors : vErrors.concat(validate102.errors);
+        errors = vErrors.length;
+      }
+    }
+    if (data.tipo !== void 0) {
+      if ("codigo" !== data.tipo) {
+        const err18 = { instancePath: instancePath + "/tipo", schemaPath: "#/anyOf/1/properties/tipo/const", keyword: "const", params: { allowedValue: "codigo" }, message: "must be equal to constant" };
+        if (vErrors === null) {
+          vErrors = [err18];
+        } else {
+          vErrors.push(err18);
+        }
+        errors++;
+      }
+    }
+  } else {
+    const err19 = { instancePath, schemaPath: "#/anyOf/1/type", keyword: "type", params: { type: "object" }, message: "must be object" };
+    if (vErrors === null) {
+      vErrors = [err19];
+    } else {
+      vErrors.push(err19);
+    }
+    errors++;
+  }
+  var _valid0 = _errs9 === errors;
+  valid0 = valid0 || _valid0;
+  if (_valid0) {
+    if (props0 !== true) {
+      props0 = true;
+    }
+  }
+  if (!valid0) {
+    const err20 = { instancePath, schemaPath: "#/anyOf", keyword: "anyOf", params: {}, message: "must match a schema in anyOf" };
+    if (vErrors === null) {
+      vErrors = [err20];
+    } else {
+      vErrors.push(err20);
+    }
+    errors++;
+  } else {
+    errors = _errs0;
+    if (vErrors !== null) {
+      if (_errs0) {
+        vErrors.length = _errs0;
+      } else {
+        vErrors = null;
+      }
+    }
+  }
   validate124.errors = vErrors;
+  evaluated0.props = props0;
   return errors === 0;
 }
-validate124.evaluated = { "props": true, "dynamicProps": false, "dynamicItems": false };
-function validate129(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
+validate124.evaluated = { "dynamicProps": true, "dynamicItems": false };
+function validate131(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
   let vErrors = null;
   let errors = 0;
-  const evaluated0 = validate129.evaluated;
+  const evaluated0 = validate131.evaluated;
   if (evaluated0.dynamicProps) {
     evaluated0.props = void 0;
   }
@@ -2176,10 +2337,10 @@ function validate129(data, { instancePath = "", parentData, parentDataProperty, 
     }
     errors++;
   }
-  validate129.errors = vErrors;
+  validate131.errors = vErrors;
   return errors === 0;
 }
-validate129.evaluated = { "items": true, "dynamicProps": false, "dynamicItems": false };
+validate131.evaluated = { "items": true, "dynamicProps": false, "dynamicItems": false };
 function validate110(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
   let vErrors = null;
   let errors = 0;
@@ -2431,17 +2592,29 @@ function validate110(data, { instancePath = "", parentData, parentDataProperty, 
       }
     }
     if (data.refs_externas !== void 0) {
-      if (!validate129(data.refs_externas, { instancePath: instancePath + "/refs_externas", parentData: data, parentDataProperty: "refs_externas", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate129.errors : vErrors.concat(validate129.errors);
+      if (!validate131(data.refs_externas, { instancePath: instancePath + "/refs_externas", parentData: data, parentDataProperty: "refs_externas", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate131.errors : vErrors.concat(validate131.errors);
         errors = vErrors.length;
       }
     }
+    if (data.papel !== void 0) {
+      let data17 = data.papel;
+      if (!(data17 === "inicio" || data17 === "fin")) {
+        const err16 = { instancePath: instancePath + "/papel", schemaPath: "#/properties/papel/enum", keyword: "enum", params: { allowedValues: schema36.properties.papel.enum }, message: "must be equal to one of the allowed values" };
+        if (vErrors === null) {
+          vErrors = [err16];
+        } else {
+          vErrors.push(err16);
+        }
+        errors++;
+      }
+    }
   } else {
-    const err16 = { instancePath, schemaPath: "#/type", keyword: "type", params: { type: "object" }, message: "must be object" };
+    const err17 = { instancePath, schemaPath: "#/type", keyword: "type", params: { type: "object" }, message: "must be object" };
     if (vErrors === null) {
-      vErrors = [err16];
+      vErrors = [err17];
     } else {
-      vErrors.push(err16);
+      vErrors.push(err17);
     }
     errors++;
   }
@@ -2449,20 +2622,24 @@ function validate110(data, { instancePath = "", parentData, parentDataProperty, 
   return errors === 0;
 }
 validate110.evaluated = { "props": true, "dynamicProps": false, "dynamicItems": false };
-var schema41 = { "type": "object", "additionalProperties": false, "required": ["senal", "operador", "valor"], "description": "Condici\xF3n de un flujo condicional (0.3.0, pedido de planlang): la se\xF1al registrada, el operador y el valor del plan. Obligatoria si el modo declara `exige_condicion` (V13)", "properties": { "senal": { "$ref": "#/$defs/id" }, "operador": { "enum": ["<", "<=", "=", "!=", ">=", ">"] }, "valor": { "anyOf": [{ "type": "number" }, { "type": "string", "minLength": 1 }, { "type": "boolean" }] } } };
-function validate139(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
+var schema41 = { "anyOf": [{ "type": "object", "additionalProperties": false, "required": ["senal", "operador", "valor"], "properties": { "senal": { "$ref": "#/$defs/id" }, "operador": { "enum": ["<", "<=", "=", "!=", ">=", ">"] }, "valor": { "anyOf": [{ "type": "number" }, { "type": "string", "minLength": 1 }, { "type": "boolean" }] } } }, { "type": "object", "additionalProperties": false, "required": ["funcion", "entradas"], "properties": { "funcion": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" }, "entradas": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/id" } } } }, { "type": "object", "additionalProperties": false, "required": ["por_defecto"], "properties": { "por_defecto": { "const": true } } }] };
+var pattern13 = new RegExp("^[a-z][a-z0-9_]*$", "u");
+function validate141(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
   let vErrors = null;
   let errors = 0;
-  const evaluated0 = validate139.evaluated;
+  const evaluated0 = validate141.evaluated;
   if (evaluated0.dynamicProps) {
     evaluated0.props = void 0;
   }
   if (evaluated0.dynamicItems) {
     evaluated0.items = void 0;
   }
+  const _errs0 = errors;
+  let valid0 = false;
+  const _errs1 = errors;
   if (data && typeof data == "object" && !Array.isArray(data)) {
     if (data.senal === void 0) {
-      const err0 = { instancePath, schemaPath: "#/required", keyword: "required", params: { missingProperty: "senal" }, message: "must have required property 'senal'" };
+      const err0 = { instancePath, schemaPath: "#/anyOf/0/required", keyword: "required", params: { missingProperty: "senal" }, message: "must have required property 'senal'" };
       if (vErrors === null) {
         vErrors = [err0];
       } else {
@@ -2471,7 +2648,7 @@ function validate139(data, { instancePath = "", parentData, parentDataProperty, 
       errors++;
     }
     if (data.operador === void 0) {
-      const err1 = { instancePath, schemaPath: "#/required", keyword: "required", params: { missingProperty: "operador" }, message: "must have required property 'operador'" };
+      const err1 = { instancePath, schemaPath: "#/anyOf/0/required", keyword: "required", params: { missingProperty: "operador" }, message: "must have required property 'operador'" };
       if (vErrors === null) {
         vErrors = [err1];
       } else {
@@ -2480,7 +2657,7 @@ function validate139(data, { instancePath = "", parentData, parentDataProperty, 
       errors++;
     }
     if (data.valor === void 0) {
-      const err2 = { instancePath, schemaPath: "#/required", keyword: "required", params: { missingProperty: "valor" }, message: "must have required property 'valor'" };
+      const err2 = { instancePath, schemaPath: "#/anyOf/0/required", keyword: "required", params: { missingProperty: "valor" }, message: "must have required property 'valor'" };
       if (vErrors === null) {
         vErrors = [err2];
       } else {
@@ -2490,7 +2667,7 @@ function validate139(data, { instancePath = "", parentData, parentDataProperty, 
     }
     for (const key0 in data) {
       if (!(key0 === "senal" || key0 === "operador" || key0 === "valor")) {
-        const err3 = { instancePath, schemaPath: "#/additionalProperties", keyword: "additionalProperties", params: { additionalProperty: key0 }, message: "must NOT have additional properties" };
+        const err3 = { instancePath, schemaPath: "#/anyOf/0/additionalProperties", keyword: "additionalProperties", params: { additionalProperty: key0 }, message: "must NOT have additional properties" };
         if (vErrors === null) {
           vErrors = [err3];
         } else {
@@ -2508,7 +2685,7 @@ function validate139(data, { instancePath = "", parentData, parentDataProperty, 
     if (data.operador !== void 0) {
       let data1 = data.operador;
       if (!(data1 === "<" || data1 === "<=" || data1 === "=" || data1 === "!=" || data1 === ">=" || data1 === ">")) {
-        const err4 = { instancePath: instancePath + "/operador", schemaPath: "#/properties/operador/enum", keyword: "enum", params: { allowedValues: schema41.properties.operador.enum }, message: "must be equal to one of the allowed values" };
+        const err4 = { instancePath: instancePath + "/operador", schemaPath: "#/anyOf/0/properties/operador/enum", keyword: "enum", params: { allowedValues: schema41.anyOf[0].properties.operador.enum }, message: "must be equal to one of the allowed values" };
         if (vErrors === null) {
           vErrors = [err4];
         } else {
@@ -2519,11 +2696,11 @@ function validate139(data, { instancePath = "", parentData, parentDataProperty, 
     }
     if (data.valor !== void 0) {
       let data2 = data.valor;
-      const _errs5 = errors;
-      let valid1 = false;
-      const _errs6 = errors;
+      const _errs7 = errors;
+      let valid2 = false;
+      const _errs8 = errors;
       if (!(typeof data2 == "number" && isFinite(data2))) {
-        const err5 = { instancePath: instancePath + "/valor", schemaPath: "#/properties/valor/anyOf/0/type", keyword: "type", params: { type: "number" }, message: "must be number" };
+        const err5 = { instancePath: instancePath + "/valor", schemaPath: "#/anyOf/0/properties/valor/anyOf/0/type", keyword: "type", params: { type: "number" }, message: "must be number" };
         if (vErrors === null) {
           vErrors = [err5];
         } else {
@@ -2531,12 +2708,12 @@ function validate139(data, { instancePath = "", parentData, parentDataProperty, 
         }
         errors++;
       }
-      var _valid0 = _errs6 === errors;
-      valid1 = valid1 || _valid0;
-      const _errs8 = errors;
+      var _valid1 = _errs8 === errors;
+      valid2 = valid2 || _valid1;
+      const _errs10 = errors;
       if (typeof data2 === "string") {
         if (func2(data2) < 1) {
-          const err6 = { instancePath: instancePath + "/valor", schemaPath: "#/properties/valor/anyOf/1/minLength", keyword: "minLength", params: { limit: 1 }, message: "must NOT have fewer than 1 characters" };
+          const err6 = { instancePath: instancePath + "/valor", schemaPath: "#/anyOf/0/properties/valor/anyOf/1/minLength", keyword: "minLength", params: { limit: 1 }, message: "must NOT have fewer than 1 characters" };
           if (vErrors === null) {
             vErrors = [err6];
           } else {
@@ -2545,7 +2722,7 @@ function validate139(data, { instancePath = "", parentData, parentDataProperty, 
           errors++;
         }
       } else {
-        const err7 = { instancePath: instancePath + "/valor", schemaPath: "#/properties/valor/anyOf/1/type", keyword: "type", params: { type: "string" }, message: "must be string" };
+        const err7 = { instancePath: instancePath + "/valor", schemaPath: "#/anyOf/0/properties/valor/anyOf/1/type", keyword: "type", params: { type: "string" }, message: "must be string" };
         if (vErrors === null) {
           vErrors = [err7];
         } else {
@@ -2553,11 +2730,11 @@ function validate139(data, { instancePath = "", parentData, parentDataProperty, 
         }
         errors++;
       }
-      var _valid0 = _errs8 === errors;
-      valid1 = valid1 || _valid0;
-      const _errs10 = errors;
+      var _valid1 = _errs10 === errors;
+      valid2 = valid2 || _valid1;
+      const _errs12 = errors;
       if (typeof data2 !== "boolean") {
-        const err8 = { instancePath: instancePath + "/valor", schemaPath: "#/properties/valor/anyOf/2/type", keyword: "type", params: { type: "boolean" }, message: "must be boolean" };
+        const err8 = { instancePath: instancePath + "/valor", schemaPath: "#/anyOf/0/properties/valor/anyOf/2/type", keyword: "type", params: { type: "boolean" }, message: "must be boolean" };
         if (vErrors === null) {
           vErrors = [err8];
         } else {
@@ -2565,10 +2742,10 @@ function validate139(data, { instancePath = "", parentData, parentDataProperty, 
         }
         errors++;
       }
-      var _valid0 = _errs10 === errors;
-      valid1 = valid1 || _valid0;
-      if (!valid1) {
-        const err9 = { instancePath: instancePath + "/valor", schemaPath: "#/properties/valor/anyOf", keyword: "anyOf", params: {}, message: "must match a schema in anyOf" };
+      var _valid1 = _errs12 === errors;
+      valid2 = valid2 || _valid1;
+      if (!valid2) {
+        const err9 = { instancePath: instancePath + "/valor", schemaPath: "#/anyOf/0/properties/valor/anyOf", keyword: "anyOf", params: {}, message: "must match a schema in anyOf" };
         if (vErrors === null) {
           vErrors = [err9];
         } else {
@@ -2576,10 +2753,10 @@ function validate139(data, { instancePath = "", parentData, parentDataProperty, 
         }
         errors++;
       } else {
-        errors = _errs5;
+        errors = _errs7;
         if (vErrors !== null) {
-          if (_errs5) {
-            vErrors.length = _errs5;
+          if (_errs7) {
+            vErrors.length = _errs7;
           } else {
             vErrors = null;
           }
@@ -2587,7 +2764,7 @@ function validate139(data, { instancePath = "", parentData, parentDataProperty, 
       }
     }
   } else {
-    const err10 = { instancePath, schemaPath: "#/type", keyword: "type", params: { type: "object" }, message: "must be object" };
+    const err10 = { instancePath, schemaPath: "#/anyOf/0/type", keyword: "type", params: { type: "object" }, message: "must be object" };
     if (vErrors === null) {
       vErrors = [err10];
     } else {
@@ -2595,14 +2772,185 @@ function validate139(data, { instancePath = "", parentData, parentDataProperty, 
     }
     errors++;
   }
-  validate139.errors = vErrors;
+  var _valid0 = _errs1 === errors;
+  valid0 = valid0 || _valid0;
+  if (_valid0) {
+    var props0 = true;
+  }
+  const _errs14 = errors;
+  if (data && typeof data == "object" && !Array.isArray(data)) {
+    if (data.funcion === void 0) {
+      const err11 = { instancePath, schemaPath: "#/anyOf/1/required", keyword: "required", params: { missingProperty: "funcion" }, message: "must have required property 'funcion'" };
+      if (vErrors === null) {
+        vErrors = [err11];
+      } else {
+        vErrors.push(err11);
+      }
+      errors++;
+    }
+    if (data.entradas === void 0) {
+      const err12 = { instancePath, schemaPath: "#/anyOf/1/required", keyword: "required", params: { missingProperty: "entradas" }, message: "must have required property 'entradas'" };
+      if (vErrors === null) {
+        vErrors = [err12];
+      } else {
+        vErrors.push(err12);
+      }
+      errors++;
+    }
+    for (const key1 in data) {
+      if (!(key1 === "funcion" || key1 === "entradas")) {
+        const err13 = { instancePath, schemaPath: "#/anyOf/1/additionalProperties", keyword: "additionalProperties", params: { additionalProperty: key1 }, message: "must NOT have additional properties" };
+        if (vErrors === null) {
+          vErrors = [err13];
+        } else {
+          vErrors.push(err13);
+        }
+        errors++;
+      }
+    }
+    if (data.funcion !== void 0) {
+      let data3 = data.funcion;
+      if (typeof data3 === "string") {
+        if (!pattern13.test(data3)) {
+          const err14 = { instancePath: instancePath + "/funcion", schemaPath: "#/anyOf/1/properties/funcion/pattern", keyword: "pattern", params: { pattern: "^[a-z][a-z0-9_]*$" }, message: 'must match pattern "^[a-z][a-z0-9_]*$"' };
+          if (vErrors === null) {
+            vErrors = [err14];
+          } else {
+            vErrors.push(err14);
+          }
+          errors++;
+        }
+      } else {
+        const err15 = { instancePath: instancePath + "/funcion", schemaPath: "#/anyOf/1/properties/funcion/type", keyword: "type", params: { type: "string" }, message: "must be string" };
+        if (vErrors === null) {
+          vErrors = [err15];
+        } else {
+          vErrors.push(err15);
+        }
+        errors++;
+      }
+    }
+    if (data.entradas !== void 0) {
+      let data4 = data.entradas;
+      if (Array.isArray(data4)) {
+        if (data4.length < 1) {
+          const err16 = { instancePath: instancePath + "/entradas", schemaPath: "#/anyOf/1/properties/entradas/minItems", keyword: "minItems", params: { limit: 1 }, message: "must NOT have fewer than 1 items" };
+          if (vErrors === null) {
+            vErrors = [err16];
+          } else {
+            vErrors.push(err16);
+          }
+          errors++;
+        }
+        const len0 = data4.length;
+        for (let i0 = 0; i0 < len0; i0++) {
+          if (!validate93(data4[i0], { instancePath: instancePath + "/entradas/" + i0, parentData: data4, parentDataProperty: i0, rootData, dynamicAnchors })) {
+            vErrors = vErrors === null ? validate93.errors : vErrors.concat(validate93.errors);
+            errors = vErrors.length;
+          }
+        }
+      } else {
+        const err17 = { instancePath: instancePath + "/entradas", schemaPath: "#/anyOf/1/properties/entradas/type", keyword: "type", params: { type: "array" }, message: "must be array" };
+        if (vErrors === null) {
+          vErrors = [err17];
+        } else {
+          vErrors.push(err17);
+        }
+        errors++;
+      }
+    }
+  } else {
+    const err18 = { instancePath, schemaPath: "#/anyOf/1/type", keyword: "type", params: { type: "object" }, message: "must be object" };
+    if (vErrors === null) {
+      vErrors = [err18];
+    } else {
+      vErrors.push(err18);
+    }
+    errors++;
+  }
+  var _valid0 = _errs14 === errors;
+  valid0 = valid0 || _valid0;
+  if (_valid0) {
+    if (props0 !== true) {
+      props0 = true;
+    }
+  }
+  const _errs22 = errors;
+  if (data && typeof data == "object" && !Array.isArray(data)) {
+    if (data.por_defecto === void 0) {
+      const err19 = { instancePath, schemaPath: "#/anyOf/2/required", keyword: "required", params: { missingProperty: "por_defecto" }, message: "must have required property 'por_defecto'" };
+      if (vErrors === null) {
+        vErrors = [err19];
+      } else {
+        vErrors.push(err19);
+      }
+      errors++;
+    }
+    for (const key2 in data) {
+      if (!(key2 === "por_defecto")) {
+        const err20 = { instancePath, schemaPath: "#/anyOf/2/additionalProperties", keyword: "additionalProperties", params: { additionalProperty: key2 }, message: "must NOT have additional properties" };
+        if (vErrors === null) {
+          vErrors = [err20];
+        } else {
+          vErrors.push(err20);
+        }
+        errors++;
+      }
+    }
+    if (data.por_defecto !== void 0) {
+      if (true !== data.por_defecto) {
+        const err21 = { instancePath: instancePath + "/por_defecto", schemaPath: "#/anyOf/2/properties/por_defecto/const", keyword: "const", params: { allowedValue: true }, message: "must be equal to constant" };
+        if (vErrors === null) {
+          vErrors = [err21];
+        } else {
+          vErrors.push(err21);
+        }
+        errors++;
+      }
+    }
+  } else {
+    const err22 = { instancePath, schemaPath: "#/anyOf/2/type", keyword: "type", params: { type: "object" }, message: "must be object" };
+    if (vErrors === null) {
+      vErrors = [err22];
+    } else {
+      vErrors.push(err22);
+    }
+    errors++;
+  }
+  var _valid0 = _errs22 === errors;
+  valid0 = valid0 || _valid0;
+  if (_valid0) {
+    if (props0 !== true) {
+      props0 = true;
+    }
+  }
+  if (!valid0) {
+    const err23 = { instancePath, schemaPath: "#/anyOf", keyword: "anyOf", params: {}, message: "must match a schema in anyOf" };
+    if (vErrors === null) {
+      vErrors = [err23];
+    } else {
+      vErrors.push(err23);
+    }
+    errors++;
+  } else {
+    errors = _errs0;
+    if (vErrors !== null) {
+      if (_errs0) {
+        vErrors.length = _errs0;
+      } else {
+        vErrors = null;
+      }
+    }
+  }
+  validate141.errors = vErrors;
+  evaluated0.props = props0;
   return errors === 0;
 }
-validate139.evaluated = { "props": true, "dynamicProps": false, "dynamicItems": false };
-function validate132(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
+validate141.evaluated = { "dynamicProps": true, "dynamicItems": false };
+function validate134(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
   let vErrors = null;
   let errors = 0;
-  const evaluated0 = validate132.evaluated;
+  const evaluated0 = validate134.evaluated;
   if (evaluated0.dynamicProps) {
     evaluated0.props = void 0;
   }
@@ -2712,8 +3060,8 @@ function validate132(data, { instancePath = "", parentData, parentDataProperty, 
       }
     }
     if (data.condicion !== void 0) {
-      if (!validate139(data.condicion, { instancePath: instancePath + "/condicion", parentData: data, parentDataProperty: "condicion", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate139.errors : vErrors.concat(validate139.errors);
+      if (!validate141(data.condicion, { instancePath: instancePath + "/condicion", parentData: data, parentDataProperty: "condicion", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate141.errors : vErrors.concat(validate141.errors);
         errors = vErrors.length;
       }
     }
@@ -2726,15 +3074,15 @@ function validate132(data, { instancePath = "", parentData, parentDataProperty, 
     }
     errors++;
   }
-  validate132.errors = vErrors;
+  validate134.errors = vErrors;
   return errors === 0;
 }
-validate132.evaluated = { "props": true, "dynamicProps": false, "dynamicItems": false };
-var schema43 = { "type": "object", "additionalProperties": false, "required": ["id", "nodo_id", "que_pasa", "lider", "experto"], "properties": { "id": { "$ref": "#/$defs/id" }, "nodo_id": { "$ref": "#/$defs/id" }, "sigue_de": { "$ref": "#/$defs/id", "description": "Paso anterior; si falta, es el paso previo de la lista. Dos pasos con el mismo sigue_de forman una rama" }, "bifurca": { "enum": ["paralela", "alternativa"], "description": "Obligatorio si de este paso salen dos o m\xE1s pasos: paralela = el recorrido sigue por TODAS las ramas (tablero Y agente); alternativa = por UNA (V12)" }, "que_pasa": { "$ref": "#/$defs/texto_idioma" }, "lider": { "$ref": "#/$defs/texto_idioma" }, "experto": { "$ref": "#/$defs/texto_idioma" } } };
-function validate146(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
+validate134.evaluated = { "props": true, "dynamicProps": false, "dynamicItems": false };
+var schema43 = { "type": "object", "additionalProperties": false, "required": ["id", "nodo_id", "que_pasa", "lider", "experto"], "properties": { "id": { "$ref": "#/$defs/id" }, "nodo_id": { "$ref": "#/$defs/id" }, "sigue_de": { "$ref": "#/$defs/id" }, "bifurca": { "enum": ["paralela", "alternativa"] }, "que_pasa": { "$ref": "#/$defs/texto_idioma" }, "lider": { "$ref": "#/$defs/texto_idioma" }, "experto": { "$ref": "#/$defs/texto_idioma" } } };
+function validate149(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
   let vErrors = null;
   let errors = 0;
-  const evaluated0 = validate146.evaluated;
+  const evaluated0 = validate149.evaluated;
   if (evaluated0.dynamicProps) {
     evaluated0.props = void 0;
   }
@@ -2855,14 +3203,14 @@ function validate146(data, { instancePath = "", parentData, parentDataProperty, 
     }
     errors++;
   }
-  validate146.errors = vErrors;
+  validate149.errors = vErrors;
   return errors === 0;
 }
-validate146.evaluated = { "props": true, "dynamicProps": false, "dynamicItems": false };
-function validate143(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
+validate149.evaluated = { "props": true, "dynamicProps": false, "dynamicItems": false };
+function validate146(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
   let vErrors = null;
   let errors = 0;
-  const evaluated0 = validate143.evaluated;
+  const evaluated0 = validate146.evaluated;
   if (evaluated0.dynamicProps) {
     evaluated0.props = void 0;
   }
@@ -2934,8 +3282,8 @@ function validate143(data, { instancePath = "", parentData, parentDataProperty, 
         }
         const len0 = data2.length;
         for (let i0 = 0; i0 < len0; i0++) {
-          if (!validate146(data2[i0], { instancePath: instancePath + "/pasos/" + i0, parentData: data2, parentDataProperty: i0, rootData, dynamicAnchors })) {
-            vErrors = vErrors === null ? validate146.errors : vErrors.concat(validate146.errors);
+          if (!validate149(data2[i0], { instancePath: instancePath + "/pasos/" + i0, parentData: data2, parentDataProperty: i0, rootData, dynamicAnchors })) {
+            vErrors = vErrors === null ? validate149.errors : vErrors.concat(validate149.errors);
             errors = vErrors.length;
           }
         }
@@ -2958,10 +3306,10 @@ function validate143(data, { instancePath = "", parentData, parentDataProperty, 
     }
     errors++;
   }
-  validate143.errors = vErrors;
+  validate146.errors = vErrors;
   return errors === 0;
 }
-validate143.evaluated = { "props": true, "dynamicProps": false, "dynamicItems": false };
+validate146.evaluated = { "props": true, "dynamicProps": false, "dynamicItems": false };
 function validate90(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
   ;
   let vErrors = null;
@@ -3201,8 +3549,8 @@ function validate90(data, { instancePath = "", parentData, parentDataProperty, r
       if (Array.isArray(data12)) {
         const len2 = data12.length;
         for (let i2 = 0; i2 < len2; i2++) {
-          if (!validate132(data12[i2], { instancePath: instancePath + "/flujos/" + i2, parentData: data12, parentDataProperty: i2, rootData, dynamicAnchors })) {
-            vErrors = vErrors === null ? validate132.errors : vErrors.concat(validate132.errors);
+          if (!validate134(data12[i2], { instancePath: instancePath + "/flujos/" + i2, parentData: data12, parentDataProperty: i2, rootData, dynamicAnchors })) {
+            vErrors = vErrors === null ? validate134.errors : vErrors.concat(validate134.errors);
             errors = vErrors.length;
           }
         }
@@ -3221,8 +3569,8 @@ function validate90(data, { instancePath = "", parentData, parentDataProperty, r
       if (Array.isArray(data14)) {
         const len3 = data14.length;
         for (let i3 = 0; i3 < len3; i3++) {
-          if (!validate143(data14[i3], { instancePath: instancePath + "/recorridos/" + i3, parentData: data14, parentDataProperty: i3, rootData, dynamicAnchors })) {
-            vErrors = vErrors === null ? validate143.errors : vErrors.concat(validate143.errors);
+          if (!validate146(data14[i3], { instancePath: instancePath + "/recorridos/" + i3, parentData: data14, parentDataProperty: i3, rootData, dynamicAnchors })) {
+            vErrors = vErrors === null ? validate146.errors : vErrors.concat(validate146.errors);
             errors = vErrors.length;
           }
         }
@@ -3243,8 +3591,8 @@ function validate90(data, { instancePath = "", parentData, parentDataProperty, r
       }
     }
     if (data.refs_externas !== void 0) {
-      if (!validate129(data.refs_externas, { instancePath: instancePath + "/refs_externas", parentData: data, parentDataProperty: "refs_externas", rootData, dynamicAnchors })) {
-        vErrors = vErrors === null ? validate129.errors : vErrors.concat(validate129.errors);
+      if (!validate131(data.refs_externas, { instancePath: instancePath + "/refs_externas", parentData: data, parentDataProperty: "refs_externas", rootData, dynamicAnchors })) {
+        vErrors = vErrors === null ? validate131.errors : vErrors.concat(validate131.errors);
         errors = vErrors.length;
       }
     }

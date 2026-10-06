@@ -27,3 +27,10 @@ public/diseno/
 
 # Caché de resultados de Vitest 5 (se coló en el PR #3 con un `git add -A`).
 .vitest/
+
+# Respaldo y salida de scripts/demo-rojo.sh (kit v1.35.0; la plantilla del kit no lo ignora: K-S3-1)
+.demo-rojo/
+
+# Base sembrada y su build (D-S3-14): se regeneran con scripts/datos/construir-sembrada.mjs; jamás se publican.
+.sembrada/
+out-sembrada/

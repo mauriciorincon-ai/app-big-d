@@ -1,0 +1,37 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-plataforma-ejemplo-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/plataforma-ejemplo.jsonl).
+id: evi-plataforma-ejemplo-cumplimiento
+plataforma_id: plataforma-ejemplo
+criterio_id: crit-cumplimiento
+afirmacion:
+  es: Permite elegir la región donde residen los datos y cifrarlos en reposo con claves que administra el cliente.
+  en: It lets you choose the region where data resides and encrypt it at rest with customer-managed keys.
+componentes:
+  - catalogo-central
+  - capa-cruda
+madurez: disponible-general
+puntaje: 3
+justificacion_puntaje:
+  es: "3 y no 4: las copias de respaldo se guardan en una región vecina que el cliente no elige. 3 y no 2: la residencia y el cifrado están disponibles de forma general."
+  en: "3, not 4: backups are kept in a paired region the customer does not choose. 3, not 2: residency and encryption are generally available."
+esencial: true
+fuentes:
+  - url: https://example.org/plataforma-ejemplo/cumplimiento
+    titulo: Example Platform docs · Compliance (fictional)
+    tipo: oficial
+    fecha_publicacion: 2026-09-15
+    conflicto_de_interes: propio-fabricante
+    cita: Customers choose the data residency region and can encrypt data at rest with customer-managed keys; backups are stored in a paired region.
+    verificacion:
+      resultado: no-verificable
+      fecha: 2026-10-06
+      http: 404
+      sha256: 25ddf2c883e0d1958ea971d279a7e4f0fd446724ee3db7db19dadabd4a62e484
+fecha_verificacion: 2026-10-06
+limitaciones:
+  - es: Las copias de respaldo quedan en una región vecina que el cliente no elige.
+    en: Backups stay in a paired region the customer does not choose.
+origen: curador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

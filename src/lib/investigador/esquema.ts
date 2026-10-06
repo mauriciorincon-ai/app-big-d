@@ -76,8 +76,10 @@ export const esquemaVerificacion = z.strictObject({
   propuesta_sha256: z.string().regex(/^[0-9a-f]{64}$/),
   resultados: z.array(
     z.strictObject({
-      /** El id de la afirmación (A-n) o del retiro (R-n) cuya cita se verificó. */
+      /** El id de la afirmación (A-n) o del retiro (R-n) cuya cita se verificó; en una propuesta de evidencias, la evidencia (A-n). */
       afirmacion: z.string(),
+      /** En una propuesta de evidencias, cuál de sus fuentes (desde 0): cada una trae su cita. */
+      fuente: z.number().int().min(0).optional(),
       url: z.string(),
       resultado: z.enum(RESULTADOS),
       http: z.number().int().nullable(),

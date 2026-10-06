@@ -1,0 +1,13 @@
+# Capacidad de la especificación § 10.2: el nombre es el del tipo en la gramática plataformas-datos (el cargador lo exige).
+id: cap-transformacion
+nombre:
+  es: "Transformación y orquestación"
+  en: "Transformation and orchestration"
+definicion:
+  es: "Limpiar, combinar y preparar los datos en pasos repetibles, y decidir qué se ejecuta y cuándo."
+  en: "Cleaning, combining and preparing data in repeatable steps, and deciding what runs and when."
+preguntas_guia:
+  - es: "¿Cómo se definen canalizaciones declarativas?"
+    en: "How are declarative pipelines defined?"
+  - es: "¿Cómo se controlan la calidad y las dependencias?"
+    en: "How are quality and dependencies controlled?"

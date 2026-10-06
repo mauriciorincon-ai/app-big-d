@@ -5,8 +5,8 @@
 // `data-nodo` / `data-flujo`: es el oráculo con que las pruebas comparan texto y dibujo.
 import type { Gramatica, Mapa, Nodo } from "../tipos";
 import { ordenarPor } from "../util/orden";
-import { plantilla } from "../layout/escena";
-import { numerarPasos } from "../layout/nivel2";
+import { plantilla, textoCondicion } from "../layout/escena";
+import { numerarPasos, textoPapel } from "../layout/nivel2";
 import type { TextosMotor } from "../layout/tipos";
 import { escapar } from "../svg/serializar";
 import { fraseVigencia } from "../util/vigencia";
@@ -45,11 +45,14 @@ export function toText(map: Mapa, grammar: Gramatica, opciones: OpcionesTexto): 
     const m = madurez.get(n.madurez)!;
     const salen = flujos.filter((f) => f.origen === n.id);
     const entran = flujos.filter((f) => f.destino === n.id && esTransversal(f.origen));
+    // 0.5.0 (§ 3.4): la condición del flujo se lee junto a él, en sus tres formas.
+    const cond = (f: (typeof flujos)[number]) => (f.condicion ? ` (${e(textoCondicion(f.condicion, t))})` : "");
     const lineas = [
-      ...salen.map((f) => `<li data-flujo="${e(f.id)}">${e(plantilla(t.hacia, { nombre: nodo.get(f.destino)!.nombre[l]!, modo: modo.get(f.modo_id)!.nombre[l]!, que: f.que_viaja[l]! }))}</li>`),
-      ...entran.map((f) => `<li data-flujo="${e(f.id)}">${e(plantilla(t.desde, { nombre: nodo.get(f.origen)!.nombre[l]!, modo: modo.get(f.modo_id)!.nombre[l]!, que: f.que_viaja[l]! }))}</li>`),
+      ...salen.map((f) => `<li data-flujo="${e(f.id)}">${e(plantilla(t.hacia, { nombre: nodo.get(f.destino)!.nombre[l]!, modo: modo.get(f.modo_id)!.nombre[l]!, que: f.que_viaja[l]! }))}${cond(f)}</li>`),
+      ...entran.map((f) => `<li data-flujo="${e(f.id)}">${e(plantilla(t.desde, { nombre: nodo.get(f.origen)!.nombre[l]!, modo: modo.get(f.modo_id)!.nombre[l]!, que: f.que_viaja[l]! }))}${cond(f)}</li>`),
     ];
-    return `<li data-nodo="${e(n.id)}"><b>${e(n.nombre[l]!)}</b> · ${e(tipo.get(n.tipo_id)!.nombre[l]!)} · ${e(m.nombre[l]!)}. ${e(n.lider[l]!)}${vigencia(n)}${lineas.length ? `<ul>${lineas.join("")}</ul>` : ""}</li>`;
+    const papel = n.papel ? ` · ${e(textoPapel(t, n.papel))}` : "";
+    return `<li data-nodo="${e(n.id)}"><b>${e(n.nombre[l]!)}</b> · ${e(tipo.get(n.tipo_id)!.nombre[l]!)} · ${e(m.nombre[l]!)}${papel}. ${e(n.lider[l]!)}${vigencia(n)}${lineas.length ? `<ul>${lineas.join("")}</ul>` : ""}</li>`;
   };
   // Un flujo que VIENE de una franja se lista también en el nodo de capa que lo recibe (la referencia
   // de franja se dibuja en la franja, pero se lee junto al elemento con el que conecta).

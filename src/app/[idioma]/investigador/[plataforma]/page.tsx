@@ -1,18 +1,22 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CampoPlataforma } from "@/components/atlas/CampoPlataforma";
 import { Meta } from "@/components/Meta";
+import { Pestanas } from "@/components/Pestanas";
 import { MarcaVigencia } from "@/components/atlas/MarcaVigencia";
+import { RevisionEvidencias } from "@/components/investigador/RevisionEvidencias";
 import { RevisionPropuesta } from "@/components/investigador/RevisionPropuesta";
 import { SinMapa } from "@/components/investigador/SinMapa";
 import { Solicitar } from "@/components/investigador/Solicitar";
 import { plantilla, plural } from "@/lib/atlas";
+import { conocimiento } from "@/lib/caso/casos";
+import { pestanasConocimiento } from "@/lib/caso/rutas";
 import { datos, fechaDeConsulta } from "@/lib/datos";
 import { esIdioma, textos } from "@/lib/i18n";
 import { conteo, vistaInvestigador } from "@/lib/investigador/revision";
 import { urlSolicitud } from "@/lib/investigador/solicitud";
 // Estilos solo de esta pantalla: no bloquean el pintado del atlas.
+import "@/styles/secciones.css";
 import "@/styles/investigador.css";
 
 // Conocimiento · investigador de una plataforma (fiel a docs/diseno/investigador.html): la vigencia de cada
@@ -41,11 +45,14 @@ export default async function Investigador({ params }: PageProps<"/[idioma]/inve
   if (!esIdioma(idioma) || !d.plataformas.some((p) => p.id === plataforma)) notFound();
   const t = textos(idioma).investigador;
   const fecha = fechaDeConsulta();
-  const v = vistaInvestigador(d, plataforma, idioma, fecha);
+  const v = vistaInvestigador(d, plataforma, idioma, fecha, undefined, undefined, conocimiento());
   const nombre = v.plataforma.nombre[idioma];
   const gramatica = [...d.atlas.values()][0]?.gramatica;
   const ultima = v.revisiones.at(-1);
   const p = v.propuesta;
+  const ev = v.evidencias;
+  const ultimaEv = v.revisionesEvidencias.at(-1);
+  const cuentaEv = (r: string | null) => ev?.evidencias.filter((x) => x.resultado === r).length ?? 0;
 
   return (
     <>
@@ -64,20 +71,7 @@ export default async function Investigador({ params }: PageProps<"/[idioma]/inve
           nota={textos(idioma).atlas.plataforma.notaInvestigador}
         />
       </div>
-      <ul className="niveles" aria-label={t.secciones.etiqueta}>
-        <li>
-          <Link href={`/${idioma}/investigador/${plataforma}`} aria-current="page">
-            <span className="n">05</span>
-            {t.secciones.investigador}
-          </Link>
-        </li>
-        <li>
-          <span className="pend">
-            <span className="n">06</span>
-            {t.secciones.base}
-          </span>
-        </li>
-      </ul>
+      <Pestanas etiqueta={textos(idioma).secciones.etiqueta} pestanas={pestanasConocimiento(textos(idioma).secciones, idioma, `/${idioma}/investigador/${plataforma}`, "investigador")} />
 
       {v.bandas ? (
         <section className="seccion" aria-labelledby="vig-t">
@@ -165,6 +159,80 @@ export default async function Investigador({ params }: PageProps<"/[idioma]/inve
               <h3>{t.propuesta.preguntas}</h3>
               <ul>
                 {p.preguntas.map((q) => (
+                  <li key={q.pregunta}>
+                    {q.pregunta} <small>{q.respondida ? t.propuesta.respondida : t.propuesta.sinFuente}</small>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </section>
+      )}
+
+      {ultimaEv && (
+        <div className="veredicto">
+          <b>
+            <MarcaVigencia estado="vigente" />
+            {t.evidencias.veredicto.titulo}
+          </b>
+          <span className="mono">{plantilla(t.evidencias.veredicto.detalle, { fecha: ultimaEv.fecha, a: ultimaEv.aprobadas.length, r: ultimaEv.rechazadas.length })}</span>
+          <span className="huella">{ultimaEv.propuesta}</span>
+        </div>
+      )}
+
+      {ev && (
+        <section className="seccion" aria-labelledby="prop-ev-t">
+          <h2 id="prop-ev-t">{t.evidencias.titulo}</h2>
+          <p className="kit-nota">{t.evidencias.nota}</p>
+          <div className="tarjeta">
+            <p className="ojo">{t.propuesta.corrida}</p>
+            <p className="huella">
+              <b>{ev.carpeta}</b>
+            </p>
+            <Meta
+              items={[
+                ev.fecha,
+                plantilla(t.propuesta.modelo, { modelo: ev.modelo }),
+                plural(t.propuesta.reintentos, ev.reintentos),
+                plural(t.propuesta.reintentosDeclarados, ev.reintentosDeclarados),
+                plural(t.propuesta.fuentes, ev.fuentes),
+                ...(ev.fechaVerificacion ? [plantilla(t.propuesta.verificadaEl, { fecha: ev.fechaVerificacion })] : []),
+              ]}
+            />
+          </div>
+          {ev.evidencias.length > 0 && (
+            <p className="conteo">
+              <span>{plural(t.evidencias.conteo.n, ev.evidencias.length)}</span>
+              <span>
+                {[
+                  plural(t.evidencias.conteo.v, cuentaEv("verificada")),
+                  plural(t.evidencias.conteo.nv, ev.evidencias.length - cuentaEv("verificada") - cuentaEv("no-encontrada")),
+                  plural(t.evidencias.conteo.ne, cuentaEv("no-encontrada")),
+                ].join(" · ")}
+              </span>
+            </p>
+          )}
+          {ev.fallas.length > 0 ? (
+            <div className="estado estado-error">
+              <p>{t.propuesta.invalida}</p>
+              <ul className="error-lista">
+                {ev.fallas.map((f) => (
+                  <li key={f}>{f}</li>
+                ))}
+              </ul>
+            </div>
+          ) : !ev.verificada ? (
+            <div className="estado">
+              <p>{t.propuesta.sinVerificar}</p>
+            </div>
+          ) : (
+            <RevisionEvidencias propuesta={ev} plataforma={plataforma} t={t} />
+          )}
+          {ev.preguntas.length > 0 && (
+            <div className="tarjeta preguntas">
+              <h3>{t.propuesta.preguntas}</h3>
+              <ul>
+                {ev.preguntas.map((q) => (
                   <li key={q.pregunta}>
                     {q.pregunta} <small>{q.respondida ? t.propuesta.respondida : t.propuesta.sinFuente}</small>
                   </li>

@@ -1,0 +1,11 @@
+# Capacidad de la especificación § 10.2: el nombre es el del tipo en la gramática plataformas-datos (el cargador lo exige).
+id: cap-ia
+nombre:
+  es: "Inteligencia artificial y agentes sobre los datos"
+  en: "AI and agents on the data"
+definicion:
+  es: "Construir modelos y agentes que trabajen sobre los datos gobernados, y evaluarlos y controlarlos como al resto."
+  en: "Building models and agents that work on the governed data, and evaluating and controlling them like everything else."
+preguntas_guia:
+  - es: "¿Cómo se construyen, evalúan y gobiernan agentes sobre datos gobernados?"
+    en: "How are agents on governed data built, evaluated and governed?"

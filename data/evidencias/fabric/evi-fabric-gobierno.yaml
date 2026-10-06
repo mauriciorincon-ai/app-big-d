@@ -1,0 +1,123 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-fabric-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/fabric.jsonl).
+id: evi-fabric-gobierno
+plataforma_id: fabric
+capacidad_id: cap-gobierno
+afirmacion:
+  es: La seguridad de OneLake define roles sobre carpetas, tablas, esquemas, filas y columnas y los hace cumplir en todos los motores de Fabric; el catálogo de OneLake reúne el descubrimiento y el gobierno, las etiquetas de confidencialidad y la auditoría están disponibles de forma general, y cada espacio de trabajo tiene su propia vista de linaje.
+  en: OneLake security defines roles over folders, tables, schemas, rows and columns and enforces them across every Fabric engine; the OneLake catalog brings discovery and governance together, sensitivity labels and auditing are generally available, and every workspace has its own lineage view.
+componentes:
+  - seguridad-onelake
+  - catalogo-onelake
+  - etiquetas-confidencialidad
+  - auditoria
+madurez: disponible-general
+puntaje: 3
+justificacion_puntaje:
+  es: "3 y no 4: el linaje muestra las relaciones entre los elementos de un espacio de trabajo y solo un nivel hacia arriba fuera de él, sin mostrar lo que depende de él en otros espacios; las reglas por fila no admiten consultas dinámicas ni de varias tablas, y los administradores, miembros y colaboradores del espacio de trabajo ven todos los datos, sin que los roles los limiten. 3 y no 2: el catálogo, los roles por fila y columna, las etiquetas y la auditoría son nativos, las etiquetas y la auditoría están disponibles de forma general, y el linaje se arma solo en cada espacio de trabajo."
+  en: "3, not 4: lineage shows the relationships among a workspace's items and only one level upstream outside it, without showing what depends on it in other workspaces; row rules do not support dynamic or multi-table queries, and workspace admins, members and contributors see all the data, unaffected by the roles. 3, not 2: the catalog, row and column roles, labels and auditing are native, labels and auditing are generally available, and lineage builds itself in every workspace."
+esencial: true
+fuentes:
+  - url: https://learn.microsoft.com/en-us/fabric/onelake/security/get-started-security
+    titulo: Data security overview - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: OneLake security provides granular role-based security for data stored in OneLake and enforces that security consistently across all compute engines in Fabric.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: ccc47cbb021e54c8f521f7cdcd292af4433e8fdf034314c72df4b79d781e3925
+  - url: https://learn.microsoft.com/en-us/fabric/onelake/security/get-started-security
+    titulo: Data security overview - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Define these roles on an item and scope them down to folders, tables, schemas, rows, and columns.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: ccc47cbb021e54c8f521f7cdcd292af4433e8fdf034314c72df4b79d781e3925
+  - url: https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview
+    titulo: OneLake, the unified data lake - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: The OneLake catalog is the single place for data professionals and business users to discover, manage, and govern the data they own and can access across OneLake.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: d2afecef66a15774ea1734b6c6c951ffd713aa3906f555cf7c269d2ba35de123
+  - url: https://learn.microsoft.com/en-us/fabric/governance/lineage
+    titulo: Lineage in Fabric - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: In lineage view, you see the lineage relationships between all the items in a workspace, as well as data sources external to the workspace one-step upstream.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 8c89051ae93753b049b362526f9fe241b38cba7ffa011ad43d66508b2e125533
+  - url: https://learn.microsoft.com/en-us/fabric/governance/lineage
+    titulo: Lineage in Fabric - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Every workspace automatically has a lineage view.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 8c89051ae93753b049b362526f9fe241b38cba7ffa011ad43d66508b2e125533
+  - url: https://learn.microsoft.com/en-us/fabric/governance/lineage
+    titulo: Lineage in Fabric - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Downstream items in different workspaces aren't shown.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 8c89051ae93753b049b362526f9fe241b38cba7ffa011ad43d66508b2e125533
+  - url: https://learn.microsoft.com/en-us/fabric/onelake/security/table-column-row-security
+    titulo: OneLake table, column, and row-level security - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: RLS roles don't support dynamic and multitable queries.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 79ef5fa110d90f8635d83e5c9ebb0717816493a346360cdbe81e993dd7176978
+  - url: https://learn.microsoft.com/en-us/fabric/onelake/security/get-started-security
+    titulo: Data security overview - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Workspace Admins, Members, and Contributors already have read and write permissions on all data in a workspace, so they're not affected by OneLake security roles.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: ccc47cbb021e54c8f521f7cdcd292af4433e8fdf034314c72df4b79d781e3925
+  - url: https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/
+    titulo: Prepare your data for AI innovation with Microsoft Fabric—now generally available | Microsoft Fabric Blog
+    tipo: oficial
+    fecha_publicacion: 2023-11-15
+    conflicto_de_interes: propio-fabricante
+    cita: Both sensitivity labels, and the audit integration are now generally available.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: b4c8a2102f12b4af83f68a6a5f365b330f2825b591106f03f4f17e77fa1566d7
+fecha_verificacion: 2026-10-06
+limitaciones:
+  - es: La vista de linaje no muestra los elementos de otros espacios de trabajo que dependen de uno dado.
+    en: The lineage view does not show items in other workspaces that depend on a given one.
+  - es: Las reglas por fila de la seguridad de OneLake no admiten consultas dinámicas ni de varias tablas.
+    en: OneLake security row rules do not support dynamic or multi-table queries.
+  - es: Los roles de seguridad de OneLake no limitan a los administradores, miembros ni colaboradores del espacio de trabajo.
+    en: OneLake security roles do not restrict workspace admins, members or contributors.
+origen: agente-investigador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

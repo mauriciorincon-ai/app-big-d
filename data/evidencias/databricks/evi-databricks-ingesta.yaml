@@ -1,0 +1,78 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-databricks-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/databricks.jsonl).
+id: evi-databricks-ingesta
+plataforma_id: databricks
+capacidad_id: cap-ingesta
+afirmacion:
+  es: "Trae los datos de bases relacionales con conectores propios: la primera vez todo y después solo lo que cambió. El conector de SQL Server está disponible de forma general; el de PostgreSQL, en vista previa. Auto Loader carga los archivos nuevos a medida que llegan a la nube."
+  en: "Built-in connectors bring in data from relational databases: everything on the first run, then only what changed. The SQL Server connector is generally available; the PostgreSQL one is in preview. Auto Loader loads new files as they land in cloud storage."
+componentes:
+  - lakeflow-connect
+  - auto-loader
+madurez: disponible-general
+puntaje: 3
+justificacion_puntaje:
+  es: "3 y no 4: no todos los orígenes están al mismo nivel: el conector de PostgreSQL sigue en vista previa pública y algunas fuentes o tablas todavía no admiten la ingesta incremental. 3 y no 2: el conector de SQL Server, la ingesta incremental y la carga de archivos nuevos son nativos y están disponibles de forma general."
+  en: "3, not 4: not every source is at the same level: the PostgreSQL connector is still in public preview, and some sources or tables do not yet support incremental ingestion. 3, not 2: the SQL Server connector, incremental ingestion and new-file loading are native and generally available."
+esencial: true
+fuentes:
+  - url: https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/
+    titulo: Lakeflow Connect connector concepts | Databricks on AWS
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Lakeflow Connect uses incremental ingestion to improve pipeline efficiency. On the first run of your pipeline, it ingests all of the selected data from the source.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: dda22316901bc04a90df79ef91ccbfc70d177b44f492eaf19217e8b853845efd
+  - url: https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/
+    titulo: Lakeflow Connect connector concepts | Databricks on AWS
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Some sources or specific tables don't support incremental ingestion at this time.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: dda22316901bc04a90df79ef91ccbfc70d177b44f492eaf19217e8b853845efd
+  - url: https://docs.databricks.com/aws/en/release-notes/product/2025/august
+    titulo: August 2025 | Databricks on AWS
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: The Microsoft SQL Server ingestion connector in Lakeflow Connect is now generally available.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 8d3522e078c6d8b3768395c9c504d9ce6869406caf0c2f761b9fde1dd0c52db9
+  - url: https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/postgresql-pipeline
+    titulo: Ingest data from PostgreSQL | Databricks on AWS
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: The PostgreSQL connector for Lakeflow Connect is in Public Preview.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: eace0b733b6b532f5e5f5c02e0f17dc5537f9717c844bbc4a7f6a404ba6e7025
+  - url: https://docs.databricks.com/aws/en/ingestion/cloud-object-storage/auto-loader/
+    titulo: What is Auto Loader? | Databricks on AWS
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Auto Loader incrementally and efficiently processes new data files as they arrive in cloud storage without any additional setup.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 4390f5f1c7fd78c00a89d92bf5f921943d614fc249c880ca271a85b6855ff86d
+fecha_verificacion: 2026-10-06
+limitaciones:
+  - es: El conector de PostgreSQL está en vista previa pública.
+    en: The PostgreSQL connector is in public preview.
+  - es: Algunas fuentes o tablas todavía no admiten la ingesta incremental.
+    en: Some sources or tables do not yet support incremental ingestion.
+origen: agente-investigador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

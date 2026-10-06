@@ -4,7 +4,7 @@
   "hooks": {
     "PreToolUse": [
       {
-        "_comment": "Bloquear secrets en LO QUE SE VA A ESCRIBIR (gitleaks stdin; B-25 de la auditoría del S1: `protect --staged` miraba el índice, no el texto nuevo)",
+        "_comment": "Bloquear secrets en LO QUE SE VA A ESCRIBIR (gitleaks stdin; B-25 de la auditoría del S1: `protect --staged` miraba el índice, no el texto nuevo). FALLA CERRADO sin gitleaks (kit v1.37.0); KIT_SIN_GITLEAKS=1 lo salta a sabiendas. Prueba: tests/unit/hook-secretos.test.ts",
         "matcher": "Write|Edit|MultiEdit|NotebookEdit",
         "hooks": [
           {

@@ -1,0 +1,56 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-databricks-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/databricks.jsonl).
+id: evi-databricks-habilidades
+plataforma_id: databricks
+criterio_id: crit-habilidades
+afirmacion:
+  es: Las canalizaciones se escriben en SQL o Python, y con cómputo serverless las cargas corren sin aprovisionar recursos en la cuenta de nube.
+  en: Pipelines are written in SQL or Python, and with serverless compute workloads run without provisioning resources in the cloud account.
+componentes:
+  - canalizaciones-lakeflow
+  - cuadernos
+madurez: disponible-general
+puntaje: 3
+justificacion_puntaje:
+  es: "3 y no 4: el cómputo serverless solo admite las API de Spark Connect, no las API RDD de Spark, así que el código escrito con ellas no corre ahí tal como está. 3 y no 2: el trabajo diario usa SQL y Python, lenguajes estándar, y con serverless no hay recursos de cómputo que aprovisionar."
+  en: "3, not 4: serverless compute only supports Spark Connect APIs, not Spark RDD APIs, so code written with them does not run there as is. 3, not 2: daily work uses SQL and Python, standard languages, and with serverless there is no compute to provision."
+esencial: true
+fuentes:
+  - url: https://docs.databricks.com/aws/en/ldp/concepts/
+    titulo: What are Lakeflow pipelines? | Databricks on AWS
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Lakeflow pipelines provide a declarative framework for building batch and streaming data pipelines in SQL and Python.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: ac1ca2692c0029d6821b8f1f3a1b6cdf6e6a93e808e88106bab67d9d4e508e9b
+  - url: https://docs.databricks.com/aws/en/compute/serverless/
+    titulo: Connect to serverless compute | Databricks on AWS
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: When you choose to use serverless compute, you can run workloads without provisioning any compute resources in your cloud account.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 756573eff4799106ad93c476201b0476d59520b6c0f058da32a277d80e70f1f5
+  - url: https://docs.databricks.com/aws/en/compute/serverless/limitations
+    titulo: Serverless compute limitations | Databricks on AWS
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Only Spark Connect APIs are supported. Spark RDD APIs are not supported.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 7ee1cf47b864b88d0730bf986c36b734edac8351cb903b9b146ea9ebbfa93503
+fecha_verificacion: 2026-10-06
+limitaciones:
+  - es: El cómputo serverless no admite las API RDD de Spark.
+    en: Serverless compute does not support Spark RDD APIs.
+origen: agente-investigador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06
