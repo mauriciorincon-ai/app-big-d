@@ -13,10 +13,14 @@
 // Con una propuesta de EVIDENCIAS (D-S3-10, `tipo: "evidencias"`) escribe, en cambio:
 //   data/evidencias/<plataforma>/<id>.yaml           cada evidencia aprobada, con la verificación de cada fuente
 //   data/revisiones/evidencias/<plataforma>.jsonl    una línea con la decisión y la huella de cada evidencia
+// Con --caso (S4, D-S4-03) aprueba el PERFIL de un caso: el borrador queda `aprobado`, con lo que la persona fijó en la pantalla
+// del perfil (pesos, rangos, restricciones, respuestas), su sello y su huella, y se agrega una línea a
+//   data/revisiones/casos/<id>.jsonl                 qué borrador (`--desde`) se aprobó y la huella del perfil aprobado
 // Antes de escribir, carga una copia de data/ con los cambios (el mismo cargador del build): si algo no
 // pasa, no escribe nada. Cada archivo se escribe entero a un temporal y se renombra (B-34).
 //
 // Uso: node scripts/aprobar.mjs propuestas/<carpeta> --aprobar A-1,A-2 --rechazar A-3 --retirar -   («-» = ninguna)
+//      node scripts/aprobar.mjs --caso <id> --desde <huella> --pesos c=n,… --rangos c=n,… --restricciones r,…|- --respuestas d=o,…
 import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, renameSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, relative } from "node:path";
@@ -124,11 +128,50 @@ async function aprobarEvidencias(inv, d, dir, carpeta, bytes, verificacion, fech
   console.log(`aprobar: evidencias de ${id} el ${fecha} (UTC) · ${revision.aprobadas.length} aprobadas · ${revision.rechazadas.length} rechazadas → data/evidencias/${id}/`);
 }
 
+/** El perfil aprobado, entero a un temporal y renombrado, y la línea de la revisión al final (B-34: entero o nada). */
+function escribirCaso(raiz, caso, revision, desdeBorrador) {
+  const cabecera = `# APROBADO por una persona el ${revision.fecha} (UTC) con scripts/aprobar.mjs --caso (sobre el borrador ${desdeBorrador.slice(0, 12)}…).\n# No se edita a mano: su huella y la de su revisión (data/revisiones/casos/${caso.id}.jsonl) deben coincidir; para cambiarlo se aprueba otro borrador.\n`;
+  escribirEntero(join(raiz, "data/casos", `${caso.id}.yaml`), cabecera + stringify(caso, { lineWidth: 0, version: "1.2" }));
+  mkdirSync(join(raiz, "data/revisiones/casos"), { recursive: true });
+  const rutaRev = join(raiz, "data/revisiones/casos", `${caso.id}.jsonl`);
+  escribirEntero(rutaRev, `${existsSync(rutaRev) ? readFileSync(rutaRev, "utf8") : ""}${JSON.stringify(revision)}\n`);
+}
+
+/** El perfil de un caso: se aprueba con lo que la persona fijó en su pantalla, contra el borrador del que partió (`--desde`). */
+async function aprobarUnCaso(inv, argv, fecha) {
+  const a = inv.leerAprobacionCaso(argv);
+  const ruta = join(RAIZ, "data/casos", `${a.caso}.yaml`);
+  if (!existsSync(ruta)) throw new Error(`no existe data/casos/${a.caso}.yaml`);
+  const { esquemaCaso } = await cargarTs("src/lib/datos/conocimiento.ts");
+  const { cargarConocimiento } = await cargarTs("src/lib/datos/cargar-conocimiento.ts");
+  const { cargarDatos } = await cargarTs("src/lib/datos/index.ts");
+  const { casosSinAprobacion } = await cargarTs("src/lib/investigador/aprobados.ts");
+  const { caso, revision } = inv.aprobarCaso(esquemaCaso.parse(leerYaml(ruta)), a.desde, a.decisiones, fecha);
+  // Ensayo: los mismos cambios sobre una copia de data/, con los cargadores del build y la huella de la revisión.
+  const ensayo = mkdtempSync(join(tmpdir(), "bigd-aprobar-"));
+  try {
+    cpSync(join(RAIZ, "data"), join(ensayo, "data"), { recursive: true });
+    escribirCaso(ensayo, caso, revision, a.desde);
+    cargarConocimiento(join(ensayo, "data"));
+    cargarDatos(join(ensayo, "data"), RAIZ_REPO);
+    const fallas = casosSinAprobacion(join(ensayo, "data"));
+    if (fallas.length) throw new Error(`el ensayo no pasa:\n${fallas.join("\n")}`);
+  } finally {
+    rmSync(ensayo, { recursive: true, force: true });
+  }
+  escribirCaso(RAIZ, caso, revision, a.desde);
+  console.log(`aprobar: perfil ${caso.id} el ${fecha} (UTC) · ${caso.criterios.length} pesos · ${caso.restricciones.length} restricciones · huella ${revision.huella.slice(0, 12)}… → data/casos/${caso.id}.yaml`);
+}
+
 try {
   const guarda = puedeAprobar({ raiz: RAIZ, repo: RAIZ_REPO, env: process.env, tty: Boolean(process.stdin.isTTY && process.stdout.isTTY) });
   if (!guarda.ok) throw new Error(`solo una persona aprueba: ${guarda.motivo}`);
   console.log(`aprobar: raíz ${RAIZ}`);
   const inv = await cargarTs("src/lib/investigador/index.ts");
+  if (process.argv.includes("--caso")) {
+    await aprobarUnCaso(inv, process.argv.slice(2), hoy("BIGD_FECHA_APROBACION"));
+    process.exit(0);
+  }
   const { cargarDatos } = await cargarTs("src/lib/datos/index.ts");
   const d = inv.leerDecisiones(process.argv.slice(2));
   const dir = carpetaPropuesta(d.carpeta);

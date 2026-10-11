@@ -126,6 +126,25 @@ export interface Textos {
     };
   };
   /** Base de conocimiento (`/[idioma]/base`, D-S3-05). Plurales [uno, varios]. */
+  /** El instrumento (C15, S4): la validación que gobierna la publicación. */
+  instrumento: {
+    titulo: string;
+    ojo: string;
+    sub: string;
+    /** «{n}» = versión de la app; el resto del encabezado es la base validada. */
+    base: string;
+    verde: string;
+    rojo: string;
+    resumen: string;
+    huellaNucleo: string;
+    referencias: { titulo: string; nota: string };
+    propiedades: { titulo: string; nota: string };
+    sembrados: { titulo: string; nota: string; detectados: string; no: string };
+    aprobaciones: { titulo: string; nota: string };
+    motores: { titulo: string; nota: string; sinHuella: string };
+    bloqueo: { ojo: string; titulo: string; salida: string; nada: string; destrabar: string; fila: string };
+    sinValidacion: { titulo: string; cuerpo: string };
+  };
   base: {
     titulo: string;
     ojo: string;
@@ -198,6 +217,26 @@ export interface Textos {
       requisitos: { titulo: string; obligatorio: string; preferente: string; criterio: string };
       aprobar: { boton: string; faltanDecisiones: readonly [string, string]; faltaInstantanea: string; comando: string };
       sello: { titulo: string; detalle: string; comparar: string };
+      /** El editor del perfil en borrador, que arma el comando de aprobación (S4). */
+      editor: {
+        titulo: string;
+        nota: string;
+        pesos: string;
+        puntos: string;
+        rangoPct: string;
+        pesoDe: string;
+        rangoDe: string;
+        pesoInvalido: string;
+        rangoInvalido: string;
+        sumaMal: string;
+        restricciones: string;
+        restriccionesNota: string;
+        decisiones: string;
+        faltan: readonly [string, string];
+        comandoTitulo: string;
+        comandoNota: string;
+        sinComando: string;
+      };
     };
     comparacion: {
       ojo: string;

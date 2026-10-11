@@ -9,6 +9,7 @@ export { comparar, racional, type Racional } from "./racional";
 export { PUESTOS_VIGILADOS, sensibilidadDe, TOTAL, totalesCon } from "./sensibilidad";
 export type * from "./tipos";
 export { diasEntre, estadoVigencia, type EstadoVigencia } from "./vigencia";
+export { contar, falladas, publicable, sembradosDetectados, type Bilingue, type Conteo, type FilaValidacion, type Validacion } from "./instrumento";
 export { CASOS_DE_REFERENCIA, correrReferencia, resumen, type CasoDeReferencia, type Resumen } from "./referencia";
 export { enteroMenorQue, sfc32, siguiente, type Sfc32 } from "./sfc32";
 export { avanzar, entradaSimulacion, enZonaGris, iniciar, muestras, N_MAX_SIMULACION, rangoEntero, resultadoDe, semiamplitud, simular, type Clase, type EntradaSimulacion, type EstadoSimulacion, type ResultadoSemilla, type ResultadoSimulacion } from "./simulacion";

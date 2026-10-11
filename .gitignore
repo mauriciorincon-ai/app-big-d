@@ -34,3 +34,6 @@ public/diseno/
 # Base sembrada y su build (D-S3-14): se regeneran con scripts/datos/construir-sembrada.mjs; jamás se publican.
 .sembrada/
 out-sembrada/
+
+# El resultado de la validación del instrumento (S4): lo escribe `pnpm build`, lo lee /instrumento; jamás se versiona.
+data/instrumento/

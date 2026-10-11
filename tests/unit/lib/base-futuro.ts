@@ -114,6 +114,11 @@ export function armarBaseFuturo(dir: string, { atlas = false, raiz = process.cwd
   mkdirSync(join(dir, "instantaneas"));
   writeFileSync(join(dir, "instantaneas", `${inst.version}.json`), `${JSON.stringify(inst, null, 2)}\n`);
   mkdirSync(join(dir, "casos"));
-  escribir(join(dir, "casos", "hospital-futuro.yaml"), casoFuturo(inst.version));
+  const caso = casoFuturo(inst.version);
+  escribir(join(dir, "casos", "hospital-futuro.yaml"), caso);
+  // La revisión del perfil, como la escribe el comando de aprobación (S4): sin ella el perfil aprobado no carga en el build.
+  mkdirSync(join(dir, "revisiones", "casos"), { recursive: true });
+  const sello = caso.aprobacion!;
+  writeFileSync(join(dir, "revisiones", "casos", "hospital-futuro.jsonl"), `${JSON.stringify({ fecha: sello.fecha, caso: caso.id, desde: sello.huella, huella: sello.huella })}\n`);
   return inst.version;
 }

@@ -40,6 +40,15 @@ jobs:
       - name: CSP en lo que se publica (Big-D, S2-AUD-32)
         run: node scripts/csp/verificar-salida.mjs .vercel/output/static out
       - run: pnpm audit --audit-level high
+      # kit v2.0.0 — regla 17 (cero enlaces) es un gate de CI, no una casilla manual: los archivos versionados (git grep)
+      # y el campo `homepage` del repo en GitHub. Los dominios salen de cero-enlaces.json (los 8 del kit; el host de
+      # Vercel de esta app ya está cubierto). Demo en rojo: tests/unit/cero-enlaces.test.ts.
+      - name: Cero enlaces — árbol y homepage del repo (regla 17, kit v2.0.0)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          HOMEPAGE="$(gh api "repos/${GITHUB_REPOSITORY}" --jq '.homepage // ""')"
+          node scripts/cero-enlaces.mjs --homepage "$HOMEPAGE"
 
   e2e:
     runs-on: ubuntu-latest
@@ -82,6 +91,10 @@ jobs:
         # UNA corrida NO es una medicion (kit v1.26.0): el servidor recien levantado dio un
         # falso rojo reproducible en hoja-de-vida S7 y casi se paga con optimizacion a ciegas.
         # Tres corridas por URL y se asevera sobre la MEDIANA (median-run), nunca la optimista.
+        # S4 (decision del usuario, 2026-10-11): el kit v2.0.0 pide UNA corrida; aqui se mantienen tres (desviacion
+        # declarada en el cierre, enmienda propuesta al kit). Con una, el TBT en el runner compartido cayo en rojo en
+        # una URL distinta cada vez con los mismos bytes (/es 815 y 554 ms; con calentamiento,
+        # /es/atlas/plataforma-ejemplo 1119 ms; tope 300). El presupuesto no cambia.
         # B-20 de la auditoría del S1: versión fijada (como toda herramienta del CI) y el arranque del
         # servidor esperado por su línea real, no «a ciegas» con el tiempo por defecto.
         run: |

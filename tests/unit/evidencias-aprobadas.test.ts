@@ -10,7 +10,7 @@ import { join } from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { cargarConocimiento } from "@/lib/datos/cargar-conocimiento";
 import { huellaDe } from "@/lib/datos/instantanea";
-import { evidenciasSinAprobacion, instantaneasSinAprobacion } from "@/lib/investigador/aprobados";
+import { casosSinAprobacion, evidenciasSinAprobacion, instantaneasSinAprobacion } from "@/lib/investigador/aprobados";
 import { PLATAFORMA } from "./investigador/lib/muestra";
 import { raizDeEvidencias } from "./investigador/lib/muestra-evidencias";
 
@@ -30,6 +30,9 @@ beforeAll(() => {
 describe("las evidencias de la base son las aprobadas", () => {
   it("las de data/ del repo coinciden con su revisión", () => {
     expect(evidenciasSinAprobacion("data")).toEqual([]);
+  });
+  it("los perfiles de caso de data/ del repo: el aprobado coincide con su revisión y el borrador no la necesita (S4)", () => {
+    expect(casosSinAprobacion("data")).toEqual([]);
   });
   it("recién aprobadas, todas coinciden", () => {
     expect(evidenciasSinAprobacion(datos)).toEqual([]);
