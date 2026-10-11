@@ -88,23 +88,21 @@ jobs:
         # DOS asserts sobre UNA sola coleccion: LHCI declara `budgetsFile` mutuamente excluyente
         # con `assertions` — y la casilla ">=90 en las 4 categorias" del /deploy-check no la
         # medía nadie hasta v1.12.0 (el budget mide tiempos y pesos, que es otra cosa).
-        # kit v2.0.0 (estándares v3): UNA corrida por URL, contra el presupuesto y las categorías; el margen del 10 %
-        # es aviso (abajo). Un rojo de vitrina antes de H-4 se reporta y entra al lote del hito.
+        # UNA corrida NO es una medicion (kit v1.26.0): el servidor recien levantado dio un
+        # falso rojo reproducible en hoja-de-vida S7 y casi se paga con optimizacion a ciegas.
+        # Tres corridas por URL y se asevera sobre la MEDIANA (median-run), nunca la optimista.
+        # S4 (decision del usuario, 2026-10-11): el kit v2.0.0 pide UNA corrida; aqui se mantienen tres (desviacion
+        # declarada en el cierre, enmienda propuesta al kit). Con una, el TBT en el runner compartido cayo en rojo en
+        # una URL distinta cada vez con los mismos bytes (/es 815 y 554 ms; con calentamiento,
+        # /es/atlas/plataforma-ejemplo 1119 ms; tope 300). El presupuesto no cambia.
         # B-20 de la auditoría del S1: versión fijada (como toda herramienta del CI) y el arranque del
         # servidor esperado por su línea real, no «a ciegas» con el tiempo por defecto.
-        # S4: con una corrida, la PRIMERA URL se mide con servidor y Chrome en frío (TBT de /es 815 y 554 ms con
-        # los mismos bytes que /en, que pasa; el falso rojo de hoja-de-vida S7). Una corrida de calentamiento
-        # que se descarta, sobre el mismo servidor; después, una corrida medida por URL, como pide el kit.
         run: |
           npm i -g @lhci/cli@0.15.1
           URLS=$(node -e "console.log(require('./lighthouse-urls.json').map(u=>'--url=http://localhost:3000'+u).join(' '))")
-          pnpm start > "$RUNNER_TEMP/serve.log" 2>&1 &
-          for i in $(seq 1 60); do grep -q "Accepting connections" "$RUNNER_TEMP/serve.log" && break; sleep 1; done
-          lhci collect --numberOfRuns=1 --url=http://localhost:3000/es
-          rm -rf .lighthouseci
-          lhci collect --numberOfRuns=1 $URLS
-          lhci assert --budgetsFile=./perf-budget.json
-          lhci assert --config=./lighthouse-categorias.json
+          lhci collect --startServerCommand="pnpm start" --startServerReadyPattern="Accepting connections" --numberOfRuns=3 $URLS
+          lhci assert --budgetsFile=./perf-budget.json --aggregationMethod=median-run
+          lhci assert --config=./lighthouse-categorias.json --aggregationMethod=median-run
       # kit v1.37.0: el margen de cada metrica contra su presupuesto (avisa bajo el 10 %, no falla: es la
       # lectura que dice cuanto falta para el rojo; la decision vive en decisions/lcp-budget-by-profile.md).
       - name: Margen contra el presupuesto (kit v1.37.0)
