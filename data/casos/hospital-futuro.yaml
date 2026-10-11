@@ -1,6 +1,7 @@
-# Perfil del caso hospitalario (especificación § 10.4). BORRADOR: lo propuso el agente de construcción a partir de la
-# descripción del caso; cada peso, rango, restricción y decisión implícita lo decide la persona en la parada de
-# DECISIÓN del S3 (D-S3-12), con la pantalla del perfil abierta. Hasta que se apruebe no se evalúa (RF-03.5). Ficticio.
+# Perfil del caso hospitalario (especificación § 10.4). Ficticio. Lo redactó el agente de construcción a partir del
+# contexto del caso, por delegación expresa del usuario el 2026-10-11 («el caso no es relevante para mí; acomódalo de
+# la mejor manera»): cada peso, rango y respuesta se justifica abajo con el elemento del contexto que lo origina, nunca
+# con el resultado. Sigue en BORRADOR hasta que una persona corra el comando que arma su pantalla (RF-03.5).
 id: hospital-futuro
 nombre:
   es: "Hospital Ficticio del Futuro"
@@ -41,6 +42,9 @@ requisitos:
   - descripcion: { es: "Proteger los datos clínicos con filtros por fila y enmascaramiento por columna.", en: "Protect clinical data with row filters and column masking." }
     criterio_id: crit-gobierno
     tipo: obligatorio
+  - descripcion: { es: "Registrar quién consulta cada dato clínico, para poder auditarlo.", en: "Record who queries each piece of clinical data, so it can be audited." }
+    criterio_id: crit-cumplimiento
+    tipo: obligatorio
   - descripcion: { es: "Usar el directorio de identidad que administra el grupo.", en: "Use the identity directory the group manages." }
     criterio_id: crit-ecosistema
     tipo: obligatorio
@@ -59,20 +63,31 @@ requisitos:
   - descripcion: { es: "Que el equipo actual pueda operarla sin contratar ingeniería de plataformas.", en: "The current team can run it without hiring platform engineering." }
     criterio_id: crit-habilidades
     tipo: preferente
-# Pesos en centésimas (suman 10 000 = 100 puntos), propuestos por el agente: el dato clínico manda (gobierno y
-# cumplimiento, esenciales), luego el costo, el equipo pequeño y la identidad del grupo. Rango ±20 % para todos.
+# Pesos en centésimas (suman 10 000 = 100 puntos). El rango relativo dice cuánto podría moverse cada peso: estrecho
+# donde el caso lo fija sin duda, ancho donde depende de algo que el hospital no controla o que está a dos años.
+# - gobierno 18 ±10, esencial: el dato clínico manda (filtros por fila y enmascaramiento, requisito obligatorio).
+# - cumplimiento 12 ±10, esencial: datos sensibles de pacientes y auditoría de cada consulta (obligatorio).
+# - costo 12 ±25: presupuesto restringido y sujeto al grupo (obligatorio); cuánto pesa depende de la aprobación del grupo.
+# - habilidades 12 ±20: equipo muy pequeño, sin ingeniería de plataformas; por eso el servicio es gestionado.
+# - ecosistema 10 ±15: la identidad la administra el grupo (obligatorio) y los tableros son los del grupo.
+# - ia 8 ±40: es el objetivo declarado del caso, pero a dos años; de ahí el rango más ancho.
+# - consumo 7 ±20: seguir publicando en la herramienta de tableros del grupo (preferente).
+# - ingesta 7 ±20: traer los cambios de la base relacional sin cargas completas (preferente).
+# - dependencia 5 ±40: con una sola plataforma, salir de ella es la decisión de una vía; incierto a qué plazo importa.
+# - transformacion 5 ±25: el equipo es de inteligencia de negocio; necesita pasos repetibles, no un taller de ingeniería.
+# - almacenamiento 4 ±30: un formato abierto abarata coexistir durante la transición y una salida futura.
 criterios:
-  - { criterio_id: crit-gobierno, peso_centesimas: 2000, rango_relativo_pct: 20, origen: propuesto-por-agente, esencial: true }
-  - { criterio_id: crit-cumplimiento, peso_centesimas: 1200, rango_relativo_pct: 20, origen: propuesto-por-agente, esencial: true }
-  - { criterio_id: crit-costo, peso_centesimas: 1200, rango_relativo_pct: 20, origen: propuesto-por-agente, esencial: false }
+  - { criterio_id: crit-gobierno, peso_centesimas: 1800, rango_relativo_pct: 10, origen: propuesto-por-agente, esencial: true }
+  - { criterio_id: crit-cumplimiento, peso_centesimas: 1200, rango_relativo_pct: 10, origen: propuesto-por-agente, esencial: true }
+  - { criterio_id: crit-costo, peso_centesimas: 1200, rango_relativo_pct: 25, origen: propuesto-por-agente, esencial: false }
   - { criterio_id: crit-habilidades, peso_centesimas: 1200, rango_relativo_pct: 20, origen: propuesto-por-agente, esencial: false }
-  - { criterio_id: crit-ecosistema, peso_centesimas: 1000, rango_relativo_pct: 20, origen: propuesto-por-agente, esencial: false }
-  - { criterio_id: crit-consumo, peso_centesimas: 800, rango_relativo_pct: 20, origen: propuesto-por-agente, esencial: false }
-  - { criterio_id: crit-ingesta, peso_centesimas: 800, rango_relativo_pct: 20, origen: propuesto-por-agente, esencial: false }
-  - { criterio_id: crit-transformacion, peso_centesimas: 600, rango_relativo_pct: 20, origen: propuesto-por-agente, esencial: false }
-  - { criterio_id: crit-almacenamiento, peso_centesimas: 500, rango_relativo_pct: 20, origen: propuesto-por-agente, esencial: false }
-  - { criterio_id: crit-ia, peso_centesimas: 500, rango_relativo_pct: 20, origen: propuesto-por-agente, esencial: false }
-  - { criterio_id: crit-dependencia, peso_centesimas: 200, rango_relativo_pct: 20, origen: propuesto-por-agente, esencial: false }
+  - { criterio_id: crit-ecosistema, peso_centesimas: 1000, rango_relativo_pct: 15, origen: propuesto-por-agente, esencial: false }
+  - { criterio_id: crit-ia, peso_centesimas: 800, rango_relativo_pct: 40, origen: propuesto-por-agente, esencial: false }
+  - { criterio_id: crit-consumo, peso_centesimas: 700, rango_relativo_pct: 20, origen: propuesto-por-agente, esencial: false }
+  - { criterio_id: crit-ingesta, peso_centesimas: 700, rango_relativo_pct: 20, origen: propuesto-por-agente, esencial: false }
+  - { criterio_id: crit-dependencia, peso_centesimas: 500, rango_relativo_pct: 40, origen: propuesto-por-agente, esencial: false }
+  - { criterio_id: crit-transformacion, peso_centesimas: 500, rango_relativo_pct: 25, origen: propuesto-por-agente, esencial: false }
+  - { criterio_id: crit-almacenamiento, peso_centesimas: 400, rango_relativo_pct: 30, origen: propuesto-por-agente, esencial: false }
 restricciones:
   - id: res-plataforma-real
     descripcion: { es: "La plataforma existe en el mercado: una ficticia no se puede recomendar.", en: "The platform exists on the market: a fictional one cannot be recommended." }
@@ -84,10 +99,9 @@ restricciones:
     descripcion: { es: "La identidad se gestiona con el directorio corporativo del grupo.", en: "Identity is managed with the group's corporate directory." }
     criterio_id: crit-ecosistema
     elimina: []
-# Respuestas de una-o-combinacion, quien-opera y migrar-o-coexistir: las decidió el agente con la razón del caso
-# (equipo muy pequeño, poca ingeniería de plataformas, transición con menos riesgo), por delegación expresa del
-# usuario el 2026-10-11 («el caso no es relevante para mí; acomódalo de la mejor manera»). El perfil sigue en
-# borrador: solo una persona lo aprueba con el comando de su pantalla.
+# Respuestas (por la misma delegación): «una», porque un equipo muy pequeño no puede sostener la integración de dos;
+# «gestionado», porque no tiene ingeniería de plataformas; «coexistir», porque los tableros del grupo siguen vivos y
+# migrar todo de una vez concentra el riesgo en la fecha de corte.
 decisiones_implicitas:
   - id: una-o-combinacion
     pregunta: { es: "¿Una plataforma o una combinación?", en: "One platform or a combination?" }
@@ -104,16 +118,20 @@ decisiones_implicitas:
     opciones:
       - id: gestionado
         texto: { es: "Un servicio gestionado por el fabricante", en: "A vendor-managed service" }
+        nota: { es: "El fabricante opera la infraestructura; el equipo se ocupa de los datos.", en: "The vendor runs the infrastructure; the team looks after the data." }
       - id: propio
         texto: { es: "El equipo propio", en: "The in-house team" }
+        nota: { es: "Más control, pero exige ingeniería de plataformas que el equipo no tiene.", en: "More control, but it needs platform engineering the team lacks." }
     respuesta: gestionado
   - id: migrar-o-coexistir
     pregunta: { es: "¿Migrar o coexistir con el repositorio analítico actual?", en: "Migrate from the current analytics repository or coexist with it?" }
     opciones:
       - id: migrar
         texto: { es: "Migrar todo a la plataforma nueva", en: "Migrate everything to the new platform" }
+        nota: { es: "Un solo sistema antes, pero todo el riesgo cae en la fecha de corte.", en: "One system sooner, but all the risk lands on the cutover date." }
       - id: coexistir
         texto: { es: "Coexistir durante la transición", en: "Coexist during the transition" }
+        nota: { es: "Dos sistemas un tiempo, con un costo doble acotado; se migra por partes.", en: "Two systems for a while, at a bounded double cost; migration goes piece by piece." }
     respuesta: coexistir
 acepta_vista_previa: false
 fecha_evaluacion: "2026-10-06"

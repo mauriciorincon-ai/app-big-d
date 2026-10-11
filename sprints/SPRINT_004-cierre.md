@@ -29,6 +29,6 @@ pr: ver el PR de la rama
   - B8 `tests/e2e/instrumento.spec.ts` · axe solo critical/serious, como el resto del repo.
 - **Demos en rojo** (mutación temporal, restaurada): (a) `aprobados.ts:115` → «editado a mano»; (b) `aprobar-caso.ts:35` (`--desde`) → «que cambió desde el comando»; (c) `conocimiento.ts:210` (suma) → «detectados 6 de 7 · no se publica», sin `out/`.
 - **Desviaciones:** D-S4-08 rojo con mutación real, no con `demo-rojo.sh` (M2); B1 `.vercel/output` no se borra; CV Viva pasa de 8 a 12 funcionalidades; Lighthouse calienta servidor y Chrome con una corrida descartada (la primera URL, `/es`, daba TBT 815 y 554 ms en frío).
-- **DECISIÓN del perfil (cerrada):** el usuario delegó el caso el 2026-10-11; P4–P6 = `una`, `gestionado`, `coexistir`, con su procedencia en `data/casos/hospital-futuro.yaml:87`. El asistente no corrió `aprobar.mjs`; el perfil sigue en borrador.
+- **DECISIÓN del perfil (cerrada):** el usuario delegó el caso el 2026-10-11 y pidió calidad, no mínimos. Se rehízo con la razón de cada peso y rango en `data/casos/hospital-futuro.yaml`: IA 5→8 (es el objetivo), dependencia 2→5 (una sola plataforma), rangos de ±10 a ±40 según certeza, requisito de auditoría y notas en cada opción; P4–P6 = `una`, `gestionado`, `coexistir`. Resultado: empate técnico (Databricks 73,25 · Fabric 73,00 · Snowflake 70,75 de 100). El asistente no corrió `aprobar.mjs`; el perfil sigue en borrador.
 
 Para mergear: squash y borrar la rama; después corre `/cierre-sprint big-d`.
