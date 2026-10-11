@@ -819,6 +819,10 @@ del caso fue su único ajuste).
   - `pnpm build`: 52 páginas con CSP.
   - `E2E_PUERTO=3147 pnpm test:e2e`: 894 en verde, 9 saltadas y 2 en rojo (el «sin instantáneas» de
     `caso.spec.ts`, arriba). Después del ajuste, `caso.spec.ts`: 12 en verde.
+- **CI del push de `0e8fefc`** (corrida 37410471669, leída con `gh pr checks 8` el 2026-10-05; el primer `--watch`
+  arrancó antes de que GitHub registrara los checks y salió con «no checks reported», así que se repitió): `quality`
+  2m51s · `diagramador` ubuntu 1m49s y macOS 1m33s · `e2e` 10m15s · `lighthouse` 12m24s · Vercel. Los cinco checks con
+  conclusión propia `success`.
 
 ## Desviación del plan
 
