@@ -1,0 +1,248 @@
+{
+  "_schema": {
+    "_lee_esto_primero": "Este bloque documenta el formato y no es dato de la app. Se conserva en cada export para que el esquema viaje con el archivo: quien lo consuma no necesita buscar otro documento. Las apps que adopten este formato copian este bloque tal cual y rellenan el resto.",
+    "_origen": "Definido por app-dash-agent-ai en su entrega de brochure (2026-08-19). Es el PRIMER export del portafolio; las demás apps lo adoptan.",
+    "_consumidor": "La vitrina de hoja-de-vida. Renderiza la ficha de cada app sin abrir su repositorio.",
+    "_regla_madre": "Toda cifra de `metricas[]` lleva su etiqueta de `fuente`. Es la regla dura 3 de Dash Agent AI aplicada a su propia ficha: una app que exige procedencia a cada número de su pantalla no puede publicar cifras sueltas sobre sí misma. Se recomienda al resto del portafolio.",
+    "schema_version": "semver del FORMATO, no de la app. Cambio mayor = campo eliminado o con significado distinto; menor = campo nuevo opcional; parche = documentación.",
+    "app.estado": "\"inicial\" mientras el brochure describe la construcción cerrada; \"sellado\" cuando el gate de pruebas del usuario terminó. `sellado_en` es null hasta entonces.",
+    "funcionalidades.total": "El número que el brochure declara en su pie. `fuente_del_conteo` dice contra qué documento se cuadró — sin eso, el total es una afirmación.",
+    "funcionalidades.descartadas": "Las que se construyeron o se planearon y NO existen. Van aquí con su razón y su fecha para que nadie las cuente como pendientes ni como entregadas.",
+    "metricas[].fuente": "Una de cuatro: \"medido\" (salió de un contador o un comando), \"calculada\" (medido operado con una tarifa o una regla, y se dice cuál), \"declarado\" (lo fijó una persona), \"estimacion\" (deducido). Una cifra sin fuente no entra.",
+    "enlaces.produccion": "null cuando la app no tiene URL pública. `razon` explica por qué, y es lo que la vitrina muestra en lugar del enlace. Nunca se rellena con un enlace de repositorio ni con una promesa."
+  },
+  "schema_version": "1.0.0",
+  "actualizado": "2026-10-11",
+  "app": {
+    "slug": "big-d",
+    "nombre": "Big-D",
+    "ciclo": "H1",
+    "estado": "inicial",
+    "sellado_en": null,
+    "sprints_cerrados": 3,
+    "version_repo": "0.1.0"
+  },
+  "promesa": {
+    "tagline": "Elige tu plataforma de datos con evidencia fechada, robustez visible y un plan para no arrepentirte — y entiende todas con el mismo mapa.",
+    "intro": "Un planeador abierto y reproducible para decidir entre plataformas de datos: hoy Databricks, Microsoft Fabric y Snowflake, mañana las que agregues. Primero te muestra cada plataforma de punta a punta con una sola gramática visual: la visión de un líder, el detalle de un experto y el recorrido de un dato, lado a lado. Después toma tu caso —pesos, restricciones, lo que no negocias— y te dice quién gana, por cuánto, qué tan seguro es y con qué peso cambiaría; y convierte esa comparación en decisiones clasificadas por reversibilidad, riesgos con prioridad de acción, supuestos que probar y un plan de alistamiento. Todo sale de un núcleo determinista que cualquiera puede repetir y verificar; la única IA es un investigador que trabaja cuando tú lo llamas y cuyas propuestas tú apruebas. Todo en español e inglés.",
+    "para_quien": "Para el planificador de datos que hoy elige plataforma por costumbre, por presión comercial o por lo que ya conoce el equipo, sin una comparación neutral que pueda mostrar y defender; y para quien, en una entrevista o una reunión, quiere entender en cinco minutos cómo funciona una plataforma que no ha usado.",
+    "diferencial": "No es «otro comparador»: es el único donde puedes ver el cálculo, repetirlo, mover los pesos y descubrir en qué punto cambiarías de opinión, con cada puntaje amarrado a una evidencia fechada; y el único atlas que explica a las plataformas con el mismo mapa, en dos idiomas, sin un logo de fabricante."
+  },
+  "funcionalidades": {
+    "total": 8,
+    "fuente_del_conteo": "docs/MANUAL-DE-USO.md",
+    "descartadas": [],
+    "grupos": [
+      {
+        "orden": 1,
+        "estrella": true,
+        "nombre": "El mismo mapa para todas",
+        "linea": "Cada plataforma de datos de punta a punta, con las mismas capas, colores y símbolos, y todas lado a lado.",
+        "features": [
+          {
+            "id": "F1",
+            "nombre": "Visión general (nivel 1)",
+            "que_hace": "Muestra la plataforma entera para líderes, de izquierda a derecha como el camino que recorre un dato: cada capa responde una pregunta y cada bloque se abre en una ventana con sus componentes. El encabezado dice qué tan al día está el mapa.",
+            "seccion_manual": "1. Visión general (nivel 1)"
+          },
+          {
+            "id": "F2",
+            "nombre": "Componentes (nivel 2)",
+            "que_hace": "El mismo mapa, un nivel adentro, para expertos: cada componente con su tipo (color, símbolo y etiqueta), su madurez y una ficha con qué hace, por qué importa, sus términos y sus fuentes con fecha.",
+            "seccion_manual": "2. Componentes (nivel 2)"
+          },
+          {
+            "id": "F3",
+            "nombre": "Recorrido de un dato (nivel 3)",
+            "que_hace": "Sigue un dato de ejemplo desde que nace hasta que alguien lo usa, paso a paso sobre el mismo mapa, con anterior y siguiente; se reproduce solo si lo pides, y con «reducir movimiento» no se anima.",
+            "seccion_manual": "3. Recorrido de un dato (nivel 3)"
+          },
+          {
+            "id": "F5",
+            "nombre": "Varias plataformas con el mismo mapa",
+            "que_hace": "Big-D está hecho para cualquier número de plataformas: hoy tienen mapa Databricks, Microsoft Fabric y Snowflake, más la Plataforma Ejemplo, ficticia. Al cambiar de plataforma te quedas en el mismo nivel de lectura.",
+            "seccion_manual": "5. Varias plataformas con el mismo mapa"
+          },
+          {
+            "id": "F7",
+            "nombre": "Lado a lado",
+            "que_hace": "Todas las plataformas en el mismo mapa, una por fila, con cada banda en la misma columna para todas: tres a la vez en pantalla ancha, con páginas si hay más, y una banda a la vez en el teléfono. «Desplegar todo» abre los componentes sin mover las columnas.",
+            "seccion_manual": "7. Lado a lado"
+          }
+        ]
+      },
+      {
+        "orden": 2,
+        "estrella": false,
+        "nombre": "Conocimiento con cita y con firma",
+        "linea": "Lo propone una IA con citas que el código comprueba y lo aprueba una persona; cada versión aprobada queda guardada.",
+        "features": [
+          {
+            "id": "F6",
+            "nombre": "El investigador",
+            "que_hace": "Una inteligencia artificial propone el conocimiento de cada plataforma, con una cita textual de la documentación del fabricante por afirmación, que el código comprueba; una persona lo aprueba con un comando que la IA no puede correr. La app nunca usa IA mientras la miras.",
+            "seccion_manual": "6. El investigador: cómo entra el conocimiento"
+          },
+          {
+            "id": "F8",
+            "nombre": "Versiones del mapa",
+            "que_hace": "Muestra qué cambió entre una versión aprobada del mapa y la siguiente: nuevo, retirado, renombrado y madurez, cada marca con símbolo y palabra. Lo que cambió sin cambiar el dibujo (textos y fuentes) se cuenta aparte.",
+            "seccion_manual": "8. Versiones del mapa"
+          }
+        ]
+      },
+      {
+        "orden": 3,
+        "estrella": false,
+        "nombre": "Transversales",
+        "linea": "Lo que acompaña a todo el atlas, no a una pantalla.",
+        "features": [
+          {
+            "id": "F4",
+            "nombre": "Lectura en texto y teclado",
+            "que_hace": "Todo lo que dice un mapa también está escrito, como una lista de capas, bloques, componentes, conexiones y pasos; el mapa se recorre con Tab y se abre con Enter o Espacio.",
+            "seccion_manual": "4. Lectura en texto y teclado"
+          }
+        ]
+      }
+    ]
+  },
+  "metricas": [
+    {
+      "clave": "funcionalidades",
+      "etiqueta": "Funcionalidades documentadas",
+      "valor": 8,
+      "unidad": "funcionalidades",
+      "fuente": "medido",
+      "detalle": "Las funciones numeradas del manual (docs/MANUAL-DE-USO.md), construidas en los sprints 1 y 2. Lo que trajo el sprint 3 (la base de conocimiento, el perfil del caso, la comparación y el modo evidencias del investigador) ya está en la app, pero no se cuenta hasta que el manual lo documente. Lo recuenta tests/unit/brochure-export.test.ts."
+    },
+    {
+      "clave": "plataformas_en_el_atlas",
+      "etiqueta": "Plataformas reales en el atlas",
+      "valor": 3,
+      "unidad": "plataformas",
+      "fuente": "medido",
+      "detalle": "Databricks, Microsoft Fabric y Snowflake, cada una con su mapa aprobado por una persona (data/mapas/). El atlas muestra además la Plataforma Ejemplo, ficticia, que no se cuenta. Agregar una plataforma es agregar archivos de datos, nunca código. Lo recuenta tests/unit/brochure-export.test.ts."
+    },
+    {
+      "clave": "evidencias_fechadas",
+      "etiqueta": "Evidencias fechadas y aprobadas",
+      "valor": 33,
+      "unidad": "evidencias",
+      "fuente": "medido",
+      "detalle": "Once por plataforma real (data/evidencias/), cada una con su fuente, su fecha de verificación y su cita, aprobadas por una persona y congeladas en la instantánea 2026-10-06.1 con su huella SHA-256. No cuenta las 11 de la Plataforma Ejemplo, un ensayo con fuentes example.org. Lo recuenta tests/unit/brochure-export.test.ts."
+    },
+    {
+      "clave": "componentes_en_el_atlas",
+      "etiqueta": "Componentes en los mapas reales",
+      "valor": 63,
+      "unidad": "componentes",
+      "fuente": "medido",
+      "detalle": "Los nodos de los mapas aprobados de Databricks, Microsoft Fabric y Snowflake (21 cada uno), cada uno con tipo, madurez y fuentes con fecha. Lo recuenta tests/unit/brochure-export.test.ts."
+    },
+    {
+      "clave": "pruebas_automaticas",
+      "etiqueta": "Pruebas automáticas",
+      "valor": 2613,
+      "unidad": "pruebas",
+      "fuente": "medido",
+      "detalle": "1697 pruebas unitarias y de integración (Vitest, 88 archivos, incluidas las del diagramador), 907 ejecuciones de pruebas de navegador (Playwright en Chromium de escritorio y de teléfono, Firefox, WebKit y la base sembrada) y 9 de determinismo (3 pruebas en 3 navegadores). Contadas el 2026-10-11 con `pnpm test` y `playwright test --list`."
+    },
+    {
+      "clave": "cobertura_lineas",
+      "etiqueta": "Cobertura de líneas",
+      "valor": 98.55,
+      "unidad": "%",
+      "fuente": "medido",
+      "detalle": "v8 sobre src/engine, src/lib, src/components y packages/diagramador/src: 4290 de 4353 líneas (salida de `pnpm test` del 2026-10-11). Los motores y lib llevan umbral propio del 80 %."
+    },
+    {
+      "clave": "motores_con_la_misma_huella",
+      "etiqueta": "Motores que producen los mismos bytes",
+      "valor": 4,
+      "unidad": "motores",
+      "fuente": "medido",
+      "detalle": "Node, Chromium, Firefox y WebKit producen la misma huella SHA-256 para cada dibujo del diagramador y, desde el sprint 3, para el resultado del núcleo comparativo; el job `diagramador` de la CI lo comprueba en Ubuntu y en macOS en cada PR."
+    },
+    {
+      "clave": "decisiones_registradas",
+      "etiqueta": "Decisiones de arquitectura registradas",
+      "valor": 13,
+      "unidad": "ADR",
+      "fuente": "medido",
+      "detalle": "Archivos de decisions/, sin contar la plantilla. Lo recuenta tests/unit/brochure-export.test.ts."
+    },
+    {
+      "clave": "dependencias_runtime",
+      "etiqueta": "Dependencias en tiempo de ejecución",
+      "valor": 6,
+      "unidad": "paquetes",
+      "fuente": "medido",
+      "detalle": "next, react, react-dom, zod, @sentry/nextjs y diagramador (el reusable de la casa, que vive en este mismo repo). Lo recuenta tests/unit/brochure-export.test.ts contra package.json."
+    },
+    {
+      "clave": "ia_en_tiempo_de_ejecucion",
+      "etiqueta": "Llamadas a modelos de lenguaje mientras la app corre",
+      "valor": 0,
+      "unidad": "llamadas",
+      "fuente": "declarado",
+      "detalle": "Regla dura del producto: el núcleo jamás invoca un modelo de lenguaje y la narrativa sale de plantillas. ESLint prohíbe importar los SDK de proveedores de modelos y tests/unit/planea-no-opera.test.ts falla si el código nombra sus dominios. La única IA es el investigador, que se corre a demanda fuera de la app."
+    },
+    {
+      "clave": "costo_operacion_mensual",
+      "etiqueta": "Costo de operación mensual",
+      "valor": 0,
+      "unidad": "USD",
+      "fuente": "calculada",
+      "detalle": "Suma de los planes en uso: Vercel Hobby (US$0, sirve el export estático con protección de acceso), GitHub con repositorio público (US$0) y Sentry inerte sin DSN (US$0). El investigador corre a demanda con la suscripción de Claude Code que la persona ya tiene: sin claves de API ni costo por uso. No hay servidor ni base de datos que facturar."
+    }
+  ],
+  "stack": [
+    {
+      "nombre": "Next.js + TypeScript",
+      "papel": "la app, exportada como sitio estático: un HTML por ruta, sin servidor, en español e inglés"
+    },
+    {
+      "nombre": "Diagramador",
+      "papel": "el reusable de la casa que dibuja cada mapa desde datos aprobados con una sola gramática visual y su propio serializador SVG; esta app es su piloto"
+    },
+    {
+      "nombre": "Núcleo determinista",
+      "papel": "puntaje, sensibilidad y simulación en TypeScript puro, con aritmética entera y semilla; la simulación corre en un Web Worker"
+    },
+    {
+      "nombre": "YAML + Zod",
+      "papel": "la base de conocimiento: un archivo por entidad, validado al cargar; una base incompleta no se publica"
+    },
+    {
+      "nombre": "Claude Code (skill /investigar)",
+      "papel": "el investigador: propone conocimiento con citas que el código comprueba, a demanda y fuera de la app; aprueba una persona"
+    },
+    {
+      "nombre": "Vitest y Playwright",
+      "papel": "las pruebas, incluidas las de huella en tres navegadores y las de accesibilidad con axe"
+    },
+    {
+      "nombre": "Vercel",
+      "papel": "sirve el export estático, con protección de acceso en producción y en previews"
+    },
+    {
+      "nombre": "Sentry",
+      "papel": "observabilidad client-only de metadatos, inerte sin DSN"
+    }
+  ],
+  "privacidad": {
+    "local_only": false,
+    "red_saliente": false,
+    "usa_ia": false,
+    "detalle": "Big-D es una web estática: no hay servidor, ni cuentas, ni base de datos, y solo muestra contenido público por diseño (documentación pública de los fabricantes y un hospital ficticio). Cada página lleva una política de seguridad que solo le permite conectarse con el propio sitio; Sentry viene cableado pero inerte sin DSN, y solo sumaría su origen a esa política si el build trajera una. La app no usa IA mientras corre: la única IA es el investigador, que se corre a demanda fuera del producto y cuyas propuestas aprueba una persona."
+  },
+  "enlaces": {
+    "produccion": null,
+    "razon": "La app privada no se publica: vive detrás de la protección de acceso. Es la regla de cero enlaces del portafolio: la producción se muestra, jamás se entrega.",
+    "repositorio": null,
+    "razon_repositorio": "Ningún enlace de acceso viaja en este export: es la regla de cero enlaces del portafolio, no una cuestión de visibilidad del repositorio.",
+    "brochure_archivo": "docs/BROCHURE.html",
+    "brochure_ruta_local": "/conoce"
+  }
+}
