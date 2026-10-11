@@ -6,6 +6,7 @@ export { evaluar } from "./evaluar";
 export { prosContras } from "./pros-contras";
 export { celda, descartes, limitantes, ordenar, topeDe, veredicto } from "./puntaje";
 export { comparar, racional, type Racional } from "./racional";
+export { comparacionDe, planDe, type AlertaDelPlan, type Comparacion, type DecisionCalculada, type DecisionDelPlan, type EntradaPlan, type ModoDelPlan, type ResultadoPlan, type RiesgoCalculado, type RiesgoResidual, type SupuestoDelPlan, type TipoAlerta } from "./plan";
 export { PUESTOS_VIGILADOS, sensibilidadDe, TOTAL, totalesCon } from "./sensibilidad";
 export type * from "./tipos";
 export { diasEntre, estadoVigencia, type EstadoVigencia } from "./vigencia";

@@ -57,7 +57,7 @@ describe("la validación de la base real", () => {
   it("pasa: referencias, propiedades, siete sembrados detectados y lo aprobado es lo que aprobó una persona", () => {
     expect(falladas(v)).toEqual([]);
     expect(publicable(v)).toBe(true);
-    expect([v.referencias.length, v.propiedades.length, v.sembrados.length, v.aprobaciones.length]).toEqual([9, 7, 7, 6]);
+    expect([v.referencias.length, v.propiedades.length, v.sembrados.length, v.aprobaciones.length]).toEqual([9, 7, 7, 7]);
     expect(sembradosDetectados(v)).toEqual({ ok: 7, total: 7 });
     expect(v.huellaNucleo).toMatch(/^[0-9a-f]{64}$/);
   });

@@ -134,7 +134,7 @@ function cargarPlan(dir: string, caso: Caso, b: BaseDelPlan, fallas: string[]): 
   const supuestos = entidades<Supuesto>(join(raiz, "supuestos"), `${rel}/supuestos`, esquemaSupuesto, fallas);
 
   const eliminadas = new Set(caso.restricciones.flatMap((r) => r.elimina.map((e) => e.plataforma_id)));
-  const evaluables = b.plataformas.filter((p) => !p.ficticia && !eliminadas.has(p.id)).map((p) => p.id);
+  const evaluables = b.plataformas.filter((p) => !eliminadas.has(p.id)).map((p) => p.id);
   const aprobadas = new Map(b.evidencias.filter((e) => e.estado_aprobacion === "aprobada").map((e) => [e.id, e]));
   const caps = new Set(b.capacidades.map((c) => c.id));
   const crits = new Set(b.criterios.map((c) => c.id));

@@ -85,7 +85,7 @@ export default async function Perfil({ params }: PageProps<"/[idioma]/casos/[cas
           )}
         </div>
       </div>
-      <Pestanas etiqueta={T.secciones.etiqueta} pestanas={pestanasCaso(T.secciones, idioma, caso.id, "perfil")} />
+      <Pestanas etiqueta={T.secciones.etiqueta} pestanas={pestanasCaso(T.secciones, idioma, caso.id, "perfil", k.planes.some((p) => p.caso_id === caso.id))} />
 
       {aprobado && caso.aprobacion && huella && (
         <div className="veredicto">

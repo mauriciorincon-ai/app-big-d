@@ -1,6 +1,6 @@
 # Plan del caso Hospital Ficticio del Futuro (S5, C16–C18): las siete decisiones candidatas (especificación § 10.5), sus
-# riesgos y los supuestos que hay que probar. BORRADOR hasta que una persona corra el comando de aprobación que arma la
-# pantalla de decisiones.
+# riesgos y los supuestos que hay que probar. Su estado y su sello van al final: solo una persona lo aprueba, con el
+# comando que arma la pantalla de decisiones.
 #
 # De dónde sale cada cosa:
 # - Cómo resuelve cada plataforma una decisión: SOLO lo que dice una evidencia APROBADA de esa plataforma, que cada opción

@@ -83,6 +83,78 @@ export function casoFuturo(version: string): Caso {
 }
 
 /**
+ * El PLAN del caso sembrado (S5, D-S5-10): un borrador con los tres estados que el plan real no tiene y que la pantalla
+ * debe mostrar: un CICLO (el catálogo pide la protección y la protección pide el catálogo, y lo que cuelga del catálogo
+ * queda sin onda), una ACCIÓN ALTA SIN MITIGACIÓN (bloquea la aprobación) y SUPUESTOS CRÍTICOS SIN PROBAR. Cada opción cita
+ * la evidencia aprobada de su plataforma en la base sembrada. Las plataformas que el caso evalúa son las que su restricción
+ * no elimina (Ejemplo, Norte y Sur).
+ */
+export function escribirPlanFuturo(dir: string): void {
+  const raiz = join(dir, "casos", "hospital-futuro", "plan");
+  for (const d of ["decisiones", "modos-de-falla", "supuestos"]) mkdirSync(join(raiz, d), { recursive: true });
+  const evaluables = ["norte", "plataforma-ejemplo", "sur"];
+  const opciones = (crit: string) =>
+    evaluables.map((p) => ({
+      plataforma_id: p,
+      texto: t(`${NOMBRES[p]![0]} resuelve «${crit}» como lo describe su documentación ficticia.`, `${NOMBRES[p]![1]} covers “${crit}” as its fictional documentation describes.`),
+      citas: [{ evidencia_id: `evi-${p}-${crit}` }],
+    }));
+  const decision = (id: string, pregunta: [string, string], crit: string, reversibilidad: string, depende_de: string[], implicita: boolean, estado: string) =>
+    escribir(join(raiz, "decisiones", `${id}.yaml`), {
+      id,
+      pregunta: t(...pregunta),
+      ...(CAPACIDAD[`crit-${crit}`] ? {} : { criterio_id: `crit-${crit}` }),
+      ...(CAPACIDAD[`crit-${crit}`] ? { capacidad_id: CAPACIDAD[`crit-${crit}`] } : {}),
+      reversibilidad,
+      razon_reversibilidad: t("Revertirla obliga a rehacer lo que depende de ella.", "Reversing it means redoing what depends on it."),
+      depende_de,
+      implicita,
+      estado,
+      opciones_por_plataforma: opciones(crit),
+    });
+  decision("dec-identidad", ["¿Cómo se relaciona con el directorio del grupo?", "How does it relate to the group directory?"], "ecosistema", "una_via", [], true, "esperando-prueba");
+  decision("dec-catalogo", ["¿Cómo se organiza el catálogo?", "How is the catalog organised?"], "gobierno", "una_via", ["dec-proteccion"], false, "pendiente");
+  decision("dec-proteccion", ["¿Cómo se protegen los datos clínicos?", "How is clinical data protected?"], "gobierno", "una_via", ["dec-catalogo"], false, "pendiente");
+  decision("dec-ingesta", ["¿Cómo se traen los cambios del origen?", "How are changes brought in from the source?"], "ingesta", "costosa", ["dec-identidad"], false, "esperando-prueba");
+  decision("dec-consumo", ["¿Se sigue con la herramienta de tableros del grupo?", "Does it stay with the group's dashboard tool?"], "consumo", "costosa", ["dec-catalogo"], true, "pendiente");
+  const modo = (id: string, decision_id: string, s: number, o: number, d: number, mitigaciones: unknown[], extra: Record<string, unknown> = {}) =>
+    escribir(join(raiz, "modos-de-falla", `${id}.yaml`), {
+      id,
+      decision_id,
+      modo: t("Algo sale mal con esta decisión", "Something goes wrong with this decision"),
+      efecto: t("Retrabajo de meses.", "Months of rework."),
+      causa: t("Se decidió sin probarla.", "It was decided without testing it."),
+      severidad: s,
+      ocurrencia: o,
+      deteccion: d,
+      ...extra,
+      origen: "propuesto-por-agente",
+      razon: t("Los números de la base sembrada son de prueba.", "The seeded base numbers are for testing."),
+      mitigaciones,
+    });
+  // Alta (S9 O4 D6, control legal) y SIN mitigación: bloquea la aprobación.
+  modo("rie-fuga", "dec-proteccion", 9, 4, 6, [], { control_legal: true });
+  modo("rie-ingesta", "dec-ingesta", 7, 5, 5, [{ accion: t("Conciliar cada carga contra el origen.", "Reconcile every load against the source."), responsable: t("Equipo de datos", "Data team"), momento: "durante", efecto: { deteccion: 2 } }]);
+  const supuesto = (id: string, crit: string, estado: string, decisiones: string[], vence?: string) =>
+    escribir(join(raiz, "supuestos", `${id}.yaml`), {
+      id,
+      enunciado: t(`El supuesto ${id} se cumple.`, `Assumption ${id} holds.`),
+      criticidad: crit,
+      prueba_barata: t("Probarlo una vez con datos ficticios.", "Test it once with fictitious data."),
+      responsable: t("Equipo del caso", "Case team"),
+      costo_prueba: "gratis",
+      estado,
+      ...(vence ? { vence } : {}),
+      decisiones,
+      origen: "propuesto-por-agente",
+    });
+  supuesto("sup-directorio", "alta", "sin_probar", ["dec-identidad"], "2026-10-15");
+  supuesto("sup-origen", "alta", "sin_probar", ["dec-ingesta"], "2026-09-20");
+  supuesto("sup-tableros", "media", "confirmado", ["dec-consumo"]);
+  escribir(join(raiz, "plan.yaml"), { caso_id: "hospital-futuro", estado_aprobacion: "borrador" });
+}
+
+/**
  * Arma la base en `dir` (vacío) y devuelve la versión de su instantánea. Con `atlas`, el árbol sirve también para
  * construir el sitio (BIGD_DATOS): la Plataforma Ejemplo queda publicada con su mapa y sus versiones archivadas de
  * data/mapas, y las demás ficticias, «próximamente».
@@ -120,5 +192,6 @@ export function armarBaseFuturo(dir: string, { atlas = false, raiz = process.cwd
   mkdirSync(join(dir, "revisiones", "casos"), { recursive: true });
   const sello = caso.aprobacion!;
   writeFileSync(join(dir, "revisiones", "casos", "hospital-futuro.jsonl"), `${JSON.stringify({ fecha: sello.fecha, caso: caso.id, desde: sello.huella, huella: sello.huella })}\n`);
+  escribirPlanFuturo(dir);
   return inst.version;
 }

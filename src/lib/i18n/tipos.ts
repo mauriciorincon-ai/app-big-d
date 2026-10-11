@@ -200,6 +200,71 @@ export interface Textos {
     numeros: readonly string[];
     y: string;
     vigencia: { vigente: string; revisar: string; vencido: string };
+    /** La pantalla de decisiones y riesgos del caso (S5, C16–C18; maqueta `decisiones.html`). */
+    decisiones: {
+      ojo: string;
+      sub: string;
+      planBorrador: string;
+      planAprobado: string;
+      evaluacion: string;
+      meta: { decisiones: readonly [string, string]; unaVia: string; implicitas: readonly [string, string]; riesgos: readonly [string, string]; altos: string; supuestos: readonly [string, string]; sinProbar: string };
+      vistas: { etiqueta: string; decisiones: string; riesgos: string; supuestos: string };
+      ondas: { titulo: string; nota: string; onda: string; primera: string; siguiente: string; sinOnda: string; sinOndaSub: string; aria: string; ariaCiclo: string; indice: string; ondaN: string; lienzo: string; pista: string; saltar: string; lectura: string; dependeDe: string; cicloDe: string };
+      leyenda: { grueso: string; discontinuo: string; fino: string; implicita: string };
+      reversibilidad: { una_via: string; costosa: string; dos_vias: string };
+      estado: { pendiente: string; "esperando-prueba": string; decidida: string };
+      tarjeta: { implicita: string; sinProbar: string; enCiclo: string; sinOnda: string; ariaImplicita: string; ariaCiclo: string; ariaSinProbar: string };
+      ficha: {
+        titulo: string;
+        cerrar: string;
+        dependeDe: string;
+        noDepende: string;
+        implicita: string;
+        opciones: string;
+        fuera: string;
+        sinFuente: string;
+        evidencia: string;
+        recomendada: string;
+        paraEmpate: string;
+        paraGanadora: string;
+        sinComparacion: string;
+        motivos: { "perfil-en-borrador": string; "sin-evidencia": string; "todas-descartadas": string; otro: string };
+        supuestos: string;
+        riesgos: string;
+        prueba: string;
+        prioridad: string;
+        sinMitigacion: string;
+      };
+      ciclo: { titulo: string; alerta: string; calculo: string; nota: string };
+      riesgos: {
+        titulo: string;
+        nota: string;
+        columnas: { riesgo: string; decision: string; prioridad: string; mitigacion: string; residual: string };
+        prioridad: { alta: string; media: string; baja: string };
+        sinMitigacion: string;
+        controlLegal: string;
+        bajo: string;
+        igual: string;
+        orden: string;
+        tabla: { titulo: string; nota: string; severidad: string; ocurrencia: string; deteccion: string; fila: string };
+        origen: string;
+        razon: string;
+        alertaTitulo: string;
+        alertaCuerpo: string;
+        momento: { antes: string; durante: string; despues: string };
+      };
+      supuestos: { titulo: string; estados: { sin_probar: string; confirmado: string; refutado: string }; criticidad: string; niveles: { alta: string; media: string; baja: string }; pruebaBarata: string; tareaPara: string; vence: string; costo: string; costos: { gratis: string; bajo: string; medio: string }; sostiene: string; alertaCritico: string; refutado: string; vencido: string; nota: string };
+      alertas: { titulo: string; tipos: { "supuesto-critico-sin-probar": string; "supuesto-vencido": string; "supuesto-refutado": string; "decision-implicita": string; "opcion-sin-fuente": string } };
+      aprobar: {
+        titulo: string;
+        nota: string;
+        bloqueado: string;
+        bloqueantes: { ciclo: string; dependencia_desconocida: string; prioridad_alta_sin_mitigacion: string; supuesto_critico_sin_prueba: string };
+        comandoTitulo: string;
+        comandoNota: string;
+        sello: { titulo: string; detalle: string };
+      };
+    };
     perfil: {
       ojo: string;
       sub: string;

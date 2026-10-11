@@ -3,8 +3,10 @@
 // y los tres navegadores (nucleo.spec.ts) evalúan las mismas y comparan la huella SHA-256 del texto canónico con
 // tests/determinismo/NUCLEO.SHA256SUMS. Sin fast-check: el generador es un xorshift entero propio, el mismo en todos.
 // La simulación entra también: la del caso de la maqueta entera (4 semillas × 10 000) y la de cinco bases aleatorias.
-import { CASOS_DE_REFERENCIA, canonicoEstricto, entradaSimulacion, evaluar, simular, type Entrada } from "../../src/engine";
+// El plan del caso (S5: ondas, prioridad de acción, residual, recomendación y alertas) entra con seis variantes.
+import { CASOS_DE_REFERENCIA, canonicoEstricto, entradaSimulacion, evaluar, planDe, simular, type Entrada } from "../../src/engine";
 import { futuro } from "../unit/nucleo/lib/futuro";
+import { planCon, VARIANTES_PLAN } from "../unit/nucleo/lib/plan";
 
 function xorshift(semilla: number) {
   let x = semilla >>> 0 || 1;
@@ -67,5 +69,6 @@ export function casosNucleo(): { caso: string; texto: string }[] {
   };
   simulada("simulacion-futuro", futuro());
   for (const s of [2, 4, 6, 10, 17]) simulada(`simulacion-aleatoria-${s}`, aleatoria(s * 7_919), 2_000);
+  for (const [nombre, cambio] of VARIANTES_PLAN) out.push({ caso: nombre, texto: canonicoEstricto(planDe(planCon(cambio))) });
   return out;
 }
