@@ -378,13 +378,13 @@
 
   <section class="bloque">
     <div class="bloque-cabeza"><span class="letra">L</span><h2>El perfil del caso</h2></div>
-    <p class="meta-bloque chica suave"><strong>Empieza en:</strong> <code>/es/casos/hospital-futuro</code> · ~12 min, más la ⭐⭐ de este bloque · el caso del hospital ficticio: el perfil está en borrador hoy, y una persona lo puede aprobar</p>
+    <p class="meta-bloque chica suave"><strong>Empieza en:</strong> <code>/es/casos/hospital-futuro</code> · ~12 min, más la ⭐⭐ de este bloque · el caso del hospital ficticio: mientras el perfil esté en borrador, una persona lo puede aprobar</p>
     <ul class="pasos">
       <li data-origen="nuevo"><input type="checkbox" id="l1"><label for="l1">Entra a <strong>Caso</strong>. Esperado: en el encabezado, <strong>«Perfil en borrador»</strong>; las decisiones con su respuesta por defecto y su razón; el botón <strong>«Aprobar perfil»</strong> deshabilitado, y debajo el comando armado por la página, con su botón para copiarlo.
         <span class="origen origen-nuevo">Nuevo · S3</span></label></li>
       <li data-origen="nuevo"><input type="checkbox" id="l2"><label for="l2">Cambia un peso de un criterio, o pon uno que no sume 100. Esperado: la suma se ve con dos decimales; si no da <strong>100,00</strong>, la página lo dice y el comando deja de armarse; al volver a 100,00 vuelve. En <strong>«¿una o combinación?»</strong>, si no respondes, la página bloquea el comando.
         <span class="origen origen-nuevo">Nuevo · S4</span></label></li>
-      <li data-origen="nuevo" data-minimo data-corto><input type="checkbox" id="l3"><label for="l3">Aprueba el perfil <strong>tú</strong>: copia el comando con el botón de la página y pégalo en una Terminal abierta en la carpeta del proyecto, con <strong>Cmd+V</strong> y <strong>Enter</strong>. Esperado: la Terminal dice que quedó aprobado; en el repo cambian <code>data/casos/hospital-futuro.yaml</code> (estado aprobado) y <code>data/revisiones/casos/hospital-futuro.jsonl</code> (una línea nueva). Recarga la página: aparece el sello <strong>«Perfil aprobado»</strong> y el editor desaparece. Si cambiaste algo y no lo quieres, vuelve a la página antes de copiar: el comando sale de lo que marcaste.
+      <li data-origen="nuevo" data-minimo data-corto><input type="checkbox" id="l3"><label for="l3">Aprueba el perfil <strong>tú</strong>: copia el comando con el botón de la página y pégalo en una Terminal abierta en la carpeta del proyecto, con <strong>Cmd+V</strong> y <strong>Enter</strong>. Esperado: la Terminal dice que quedó aprobado; en el repo cambian <code>data/casos/hospital-futuro.yaml</code> (estado aprobado) y <code>data/revisiones/casos/hospital-futuro.jsonl</code> (una línea nueva). Vuelve a construir la app con <code>pnpm build</code> y abre la página: aparece el sello <strong>«Perfil aprobado»</strong> y el editor desaparece. Si cambiaste algo y no lo quieres, vuelve a la página antes de copiar: el comando sale de lo que marcaste.
         <span class="origen origen-nuevo">Nuevo · S4</span>
         <span class="minimo">⭐ mínimo</span>
         <span class="minimo">⭐⭐ Parada 7 de 8</span></label></li>
@@ -429,7 +429,7 @@
         <li><strong>S4 · 2026-10-11:</strong> 62 pruebas en 14 bloques (A–N). Las 52 del S2 siguen: las 16 que el S2
           tenía como «Nuevo» o «Mejorado» pasan a heredadas, «S2» (regresión), porque el S4 no cambió su superficie.
           10 nuevas: la barra y la base (K), el perfil del caso (L), la comparación (M) y el instrumento (N). El perfil
-          y la comparación se ven en su estado de hoy, borrador; la aprobación (L3) la hace una persona. ⭐ 10 · ⭐⭐ 8.
+          y la comparación se ven en el estado en que estén al correr la guía; la aprobación (L3) la hace una persona. ⭐ 10 · ⭐⭐ 8.
           Ninguna eliminada.</li>
         <li><strong>S1 · 2026-09-29:</strong> nace la guía con 38 pruebas en 7 bloques (A–G): portada, idioma y
           tema; visión general con la ventana de un bloque; componentes; recorrido; Plataforma Ejemplo;

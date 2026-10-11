@@ -43,6 +43,7 @@ export const RUTAS = IDIOMAS.flatMap((i) => [
   ...PUBLICADAS.map((p) => `/${i}/atlas/${p}/versiones`),
   ...plataformas.map((p) => `/${i}/investigador/${p.id}`),
   `/${i}/base`,
+  `/${i}/instrumento`,
   ...CASOS.flatMap((c) => [`/${i}/casos/${c}`, `/${i}/casos/${c}/comparacion`]),
 ]);
 /** ¿La ruta dibuja un lienzo? Toda vista del atlas, salvo las versiones de un mapa que tiene una sola. */

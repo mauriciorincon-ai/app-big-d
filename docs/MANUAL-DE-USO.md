@@ -210,9 +210,9 @@ a ninguna ni pide cuentas.
 - **Cómo se usa:**
   1. En la barra, abre «Caso» y luego «Perfil del caso».
   2. Mientras el perfil está en **borrador**, cada peso dice quién lo propuso. Puedes cambiar los pesos (en puntos, con dos decimales), sus rangos, marcar las restricciones que aplicas y responder cada decisión implícita.
-  3. La pantalla suma los pesos mientras escribes. El botón de aprobar se activa solo cuando la suma es 100,00 y todas las decisiones tienen respuesta.
+  3. La pantalla suma los pesos mientras escribes. El comando aparece solo cuando la suma es 100,00 y todas las decisiones tienen respuesta; el botón «Aprobar perfil» queda deshabilitado, porque la vía es el comando.
   4. Entonces la pantalla arma un comando con tus respuestas. Cópialo con su botón, abre Terminal tú mismo en la carpeta del proyecto, pégalo con Cmd+V y pulsa Enter. Solo una persona lo ejecuta: la app no aprueba nada.
-  5. Recarga la página. El perfil aparece con el sello «aprobado» y en solo lectura.
+  5. Vuelve a construir la app con `pnpm build` y abre la página. El perfil aparece con el sello «aprobado» y en solo lectura.
 - **Limitaciones:**
   - El comando sale de la pantalla, y solo de ella: no lo copies de este manual ni de otro lugar. Si el perfil cambió después de armarlo, el comando se niega y hay que copiar el nuevo desde la pantalla.
   - Un perfil aprobado que alguien edita a mano se rechaza al cargar.
@@ -244,7 +244,7 @@ a ninguna ni pide cuentas.
 
 ### Preguntas frecuentes
 
-- **¿Big-D recomienda una plataforma?** No decide por ti. Compara con tus pesos y tu evidencia, muestra la sensibilidad del resultado a esos pesos y deja la decisión a quien pregunta. Hoy el caso de ejemplo sigue en borrador: su comparación no se calcula hasta que una persona apruebe el perfil (sección 10).
+- **¿Big-D recomienda una plataforma?** No decide por ti. Compara con tus pesos y tu evidencia, muestra la sensibilidad del resultado a esos pesos y deja la decisión a quien pregunta. Mientras el perfil del caso de ejemplo esté en borrador, su comparación no se calcula: hace falta que una persona apruebe el perfil (sección 10).
 
 - **¿Por qué no hay logos?** Para no favorecer a ningún fabricante. El color del mapa dice qué capacidad es, nunca
   de quién. Los nombres comerciales se usan solo para identificar productos.
@@ -258,6 +258,8 @@ a ninguna ni pide cuentas.
 | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | S1 (2026-09-29) | 1 Visión general, con la ventana de un bloque · 2 Componentes · 3 Recorrido de un dato · 4 Lectura en texto y teclado · 5 Varias plataformas con el mismo mapa · 6 El investigador |
 | S2 (2026-10-04) | 5 al día: Databricks, Fabric y Snowflake con mapa · 6 la versión anterior se guarda al aprobar · 7 Lado a lado · 8 Versiones del mapa                                              |
+| S3 (2026-10-10) | 9 La base de conocimiento · 11 La comparación (no puntúa mientras el perfil esté en borrador)                                                                                      |
+| S4 (2026-10-11) | 10 El perfil del caso (se aprueba desde su pantalla) · 12 El instrumento (validación antes de publicar)                                                                            |
 
 ---
 
@@ -455,9 +457,9 @@ manages and controls; it never operates a platform**: it connects to none and as
 - **How to use it:**
   1. In the top bar, open **“Case”**, then **“Case profile”**.
   2. While the profile is a **draft**, each weight says who proposed it. You can change the weights (in points, to two decimals), their ranges, tick the constraints that apply, and answer each implicit decision.
-  3. The page adds up the weights as you type. The approve button turns on only when the sum is 100.00 and every decision has an answer.
+  3. The page adds up the weights as you type. The command appears only when the sum is 100.00 and every decision has an answer; the “Approve profile” button stays disabled, because the command is the way.
   4. Then the page builds a command with your answers. Copy it with its button, open Terminal yourself in the project folder, paste it with Cmd+V and press Enter. Only a person runs it: the app approves nothing.
-  5. Reload the page. The profile shows the **“approved”** seal and is read-only.
+  5. Build the app again with `pnpm build` and open the page. The profile shows the **“approved”** seal and is read-only.
 - **Limitations:**
   - The command comes from the page, and only from it: do not copy it from this manual or anywhere else. If the profile changed after the command was built, the command is refused and you need to copy the new one from the page.
   - An approved profile that someone edits by hand is rejected when it loads.
@@ -489,7 +491,7 @@ manages and controls; it never operates a platform**: it connects to none and as
 
 ### Frequently asked questions
 
-- **Does Big-D recommend a platform?** No, it does not decide for you. It compares with your weights and your evidence, shows how sensitive the result is to those weights, and leaves the decision to whoever asks. Today the example case is still a draft: its comparison is not calculated until a person approves the profile (section 10).
+- **Does Big-D recommend a platform?** No, it does not decide for you. It compares with your weights and your evidence, shows how sensitive the result is to those weights, and leaves the decision to whoever asks. While the example case's profile is a draft, its comparison is not calculated: a person has to approve the profile (section 10).
 
 - **Why are there no logos?** So no vendor is favoured. On the map, colour says which capability something is,
   never whose it is. Trade names are used only to identify products.
@@ -502,3 +504,5 @@ manages and controls; it never operates a platform**: it connects to none and as
 | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | S1 (2026-09-29) | 1 Overview, with the block window · 2 Components · 3 A datum's journey · 4 Reading in text and the keyboard · 5 Many platforms, one map · 6 The researcher |
 | S2 (2026-10-04) | 5 updated: Databricks, Fabric and Snowflake have maps · 6 the previous version is kept on approval · 7 Side by side · 8 Map versions                       |
+| S3 (2026-10-10) | 9 The knowledge base · 11 The comparison (does not score while the profile is a draft)                                                                     |
+| S4 (2026-10-11) | 10 The case profile (approved from its page) · 12 The instrument (validation before publishing)                                                            |
