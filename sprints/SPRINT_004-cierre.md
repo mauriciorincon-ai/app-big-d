@@ -29,7 +29,7 @@ pr: ver el PR de la rama
   - B7 `src/app/[idioma]/casos/[caso]/page.tsx:209` · «faltan N decisiones» arriba, editor abajo.
   - B8 `tests/e2e/instrumento.spec.ts` · axe solo critical/serious, como el resto del repo.
 - **Demos en rojo** (mutación temporal, restaurada): (a) `aprobados.ts:115` → «editado a mano»; (b) `aprobar-caso.ts:35` (`--desde`) → «que cambió desde el comando»; (c) `conocimiento.ts:210` (suma) → «detectados 6 de 7 · no se publica», sin `out/`.
-- **Desviaciones:** D-S4-08 rojo con mutación real, no con `demo-rojo.sh` (M2); B1 `.vercel/output` no se borra; CV Viva pasa de 8 a 12 funcionalidades.
+- **Desviaciones:** D-S4-08 rojo con mutación real, no con `demo-rojo.sh` (M2); B1 `.vercel/output` no se borra; CV Viva pasa de 8 a 12 funcionalidades; Lighthouse calienta servidor y Chrome con una corrida descartada (la primera URL, `/es`, daba TBT 815 y 554 ms en frío).
 - **DECISIÓN del perfil:** P4–P6 (`una`, `gestionado`, `coexistir`) son las propuestas; el asistente no corrió `aprobar.mjs`. Confirma que las respondiste tú (M1); si no, vuelven a `null`.
 
 Para mergear: squash y borrar la rama; después corre `/cierre-sprint big-d`.
