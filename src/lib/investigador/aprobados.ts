@@ -2,6 +2,9 @@ import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { parse } from "yaml";
 import type { Datos } from "@/lib/datos";
+import { esquemaCaso } from "@/lib/datos/conocimiento";
+import { huellaCaso } from "@/lib/datos/instantanea";
+import { esquemaRevisionCaso } from "./aprobar-caso";
 import { esquemaRevision } from "./esquema";
 import { esquemaRevisionEvidencias } from "./evidencias";
 import { huella } from "./huella";
@@ -99,6 +102,33 @@ export function instantaneasSinAprobacion(dir: string): string[] {
     (inst.contenido?.evidencias ?? []).forEach((e, i) => {
       if (!aprobadas.has(`${e.id} ${huella(e)}`)) fallas.push(`data/instantaneas/${f} · contenido.evidencias[${i}] · ${e.id} · no es una versión que aprobó una persona: una instantánea congela solo lo aprobado`);
     });
+  }
+  return fallas;
+}
+
+/**
+ * ¿Cada perfil `aprobado` es el que aprobó una persona (S4, AU-S3-01 aplicado al caso)? El cargador ya comprueba que el
+ * sello del YAML sea la huella de su contenido; pero quien edita el perfil a mano y recalcula el sello pasaría. Aquí el sello
+ * tiene que ser, además, el de la ÚLTIMA línea de data/revisiones/casos/<id>.jsonl, que solo escribe el comando de
+ * aprobación. `dir` = la carpeta de datos. Un borrador no necesita revisión. Devuelve las fallas.
+ */
+export function casosSinAprobacion(dir: string): string[] {
+  const fallas: string[] = [];
+  const dirCasos = join(dir, "casos");
+  for (const f of existsSync(dirCasos) ? readdirSync(dirCasos).filter((x) => x.endsWith(".yaml")).sort() : []) {
+    const caso = esquemaCaso.parse(parse(readFileSync(join(dirCasos, f), "utf8")));
+    if (caso.estado_aprobacion !== "aprobado" || !caso.aprobacion) continue;
+    const donde = `data/casos/${f}`;
+    const ruta = join(dir, "revisiones", "casos", `${caso.id}.jsonl`);
+    if (!existsSync(ruta)) {
+      fallas.push(`${donde} · no hay revisión que lo apruebe (data/revisiones/casos/${caso.id}.jsonl): un perfil aprobado lo aprueba una persona con su comando`);
+      continue;
+    }
+    const lineas = readFileSync(ruta, "utf8").split("\n").filter(Boolean);
+    const ultima = esquemaRevisionCaso.parse(JSON.parse(lineas[lineas.length - 1]!));
+    if (huellaCaso(caso) !== ultima.huella || caso.aprobacion.huella !== ultima.huella)
+      fallas.push(`${donde} · su huella no es la que aprobó una persona el ${ultima.fecha}: un perfil aprobado no se edita a mano, se vuelve a aprobar`);
+    if (caso.aprobacion.fecha !== ultima.fecha) fallas.push(`${donde} · su sello dice ${caso.aprobacion.fecha} y la revisión ${ultima.fecha}`);
   }
   return fallas;
 }

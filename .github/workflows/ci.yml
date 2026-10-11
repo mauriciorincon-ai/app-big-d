@@ -40,6 +40,15 @@ jobs:
       - name: CSP en lo que se publica (Big-D, S2-AUD-32)
         run: node scripts/csp/verificar-salida.mjs .vercel/output/static out
       - run: pnpm audit --audit-level high
+      # kit v2.0.0 — regla 17 (cero enlaces) es un gate de CI, no una casilla manual: los archivos versionados (git grep)
+      # y el campo `homepage` del repo en GitHub. Los dominios salen de cero-enlaces.json (los 8 del kit; el host de
+      # Vercel de esta app ya está cubierto). Demo en rojo: tests/unit/cero-enlaces.test.ts.
+      - name: Cero enlaces — árbol y homepage del repo (regla 17, kit v2.0.0)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          HOMEPAGE="$(gh api "repos/${GITHUB_REPOSITORY}" --jq '.homepage // ""')"
+          node scripts/cero-enlaces.mjs --homepage "$HOMEPAGE"
 
   e2e:
     runs-on: ubuntu-latest
@@ -79,17 +88,16 @@ jobs:
         # DOS asserts sobre UNA sola coleccion: LHCI declara `budgetsFile` mutuamente excluyente
         # con `assertions` — y la casilla ">=90 en las 4 categorias" del /deploy-check no la
         # medía nadie hasta v1.12.0 (el budget mide tiempos y pesos, que es otra cosa).
-        # UNA corrida NO es una medicion (kit v1.26.0): el servidor recien levantado dio un
-        # falso rojo reproducible en hoja-de-vida S7 y casi se paga con optimizacion a ciegas.
-        # Tres corridas por URL y se asevera sobre la MEDIANA (median-run), nunca la optimista.
+        # kit v2.0.0 (estándares v3): UNA corrida por URL, contra el presupuesto y las categorías; el margen del 10 %
+        # es aviso (abajo). Un rojo de vitrina antes de H-4 se reporta y entra al lote del hito.
         # B-20 de la auditoría del S1: versión fijada (como toda herramienta del CI) y el arranque del
         # servidor esperado por su línea real, no «a ciegas» con el tiempo por defecto.
         run: |
           npm i -g @lhci/cli@0.15.1
           URLS=$(node -e "console.log(require('./lighthouse-urls.json').map(u=>'--url=http://localhost:3000'+u).join(' '))")
-          lhci collect --startServerCommand="pnpm start" --startServerReadyPattern="Accepting connections" --numberOfRuns=3 $URLS
-          lhci assert --budgetsFile=./perf-budget.json --aggregationMethod=median-run
-          lhci assert --config=./lighthouse-categorias.json --aggregationMethod=median-run
+          lhci collect --startServerCommand="pnpm start" --startServerReadyPattern="Accepting connections" --numberOfRuns=1 $URLS
+          lhci assert --budgetsFile=./perf-budget.json
+          lhci assert --config=./lighthouse-categorias.json
       # kit v1.37.0: el margen de cada metrica contra su presupuesto (avisa bajo el 10 %, no falla: es la
       # lectura que dice cuanto falta para el rojo; la decision vive en decisions/lcp-budget-by-profile.md).
       - name: Margen contra el presupuesto (kit v1.37.0)

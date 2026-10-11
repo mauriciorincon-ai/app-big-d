@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BarraPeso } from "@/components/caso/Barras";
+import { EditorPerfil } from "@/components/caso/EditorPerfil";
 import { Alerta, Anillo, Aspa, Circulo, Estrella, Ok, Pendiente } from "@/components/caso/Iconos";
 import { Meta } from "@/components/Meta";
 import { Pestanas } from "@/components/Pestanas";
@@ -9,15 +10,17 @@ import { rangoEntero } from "@/engine";
 import { plantilla, plural } from "@/lib/atlas/plantilla";
 import { conocimiento, congeladaDe } from "@/lib/caso/casos";
 import { huellaCorta, lista, peso } from "@/lib/caso/formato";
+import { huellaCaso } from "@/lib/datos/instantanea";
 import { pestanasCaso, rutaComparacion } from "@/lib/caso/rutas";
 import { esIdioma, textos } from "@/lib/i18n";
 import "@/styles/secciones.css";
 import "@/styles/caso.css";
+import "@/styles/investigador.css";
 
 // 07 Perfil del caso (maqueta perfil.html; D-S3-12): pesos y rangos con su origen, restricciones eliminatorias, las
 // decisiones implícitas (la opción elegida con un anillo lleno, no con un radio deshabilitado que apenas se ve) y el
-// estado del perfil. Solo lectura: el perfil se decide en la parada de DECISIÓN y lo aprueba
-// una persona con su comando; nada se edita ni se aprueba desde esta página.
+// estado del perfil. El perfil aprobado es de solo lectura. El borrador se ajusta en el editor de abajo (S4, D-S4-04), que ARMA
+// el comando de aprobación con lo que la persona fijó; lo corre ella en su terminal: nada se guarda ni se aprueba desde aquí.
 export const dynamicParams = false;
 
 export function generateStaticParams() {
@@ -206,6 +209,20 @@ export default async function Perfil({ params }: PageProps<"/[idioma]/casos/[cas
             {sinResponder ? plural(t.aprobar.faltanDecisiones, sinResponder) : caso.instantanea === null ? t.aprobar.faltaInstantanea : t.aprobar.comando}
           </span>
         </div>
+      )}
+
+      {!aprobado && (
+        <EditorPerfil
+          datos={{
+            idioma,
+            desde: huellaCaso(caso),
+            perfil: caso,
+            criterios: caso.criterios.map((c) => ({ id: c.criterio_id, nombre: nombreCriterio.get(c.criterio_id) ?? c.criterio_id, esencial: c.esencial })),
+            restricciones: caso.restricciones.map((r) => ({ id: r.id, texto: r.descripcion[idioma] })),
+            decisiones: caso.decisiones_implicitas.map((d) => ({ id: d.id, pregunta: d.pregunta[idioma], opciones: d.opciones.map((o) => ({ id: o.id, texto: o.texto[idioma] })) })),
+          }}
+          t={{ ...t.editor, suma: t.pesos.suma, sumaBien: t.pesos.sumaBien, copiar: T.investigador.comando.copiar, copiado: T.investigador.comando.copiado, sinResponder: t.decisiones.sinResponder }}
+        />
       )}
 
       <details className="lectura-seccion contexto">

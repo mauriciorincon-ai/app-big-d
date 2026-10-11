@@ -198,6 +198,26 @@ export interface Textos {
       requisitos: { titulo: string; obligatorio: string; preferente: string; criterio: string };
       aprobar: { boton: string; faltanDecisiones: readonly [string, string]; faltaInstantanea: string; comando: string };
       sello: { titulo: string; detalle: string; comparar: string };
+      /** El editor del perfil en borrador, que arma el comando de aprobación (S4). */
+      editor: {
+        titulo: string;
+        nota: string;
+        pesos: string;
+        puntos: string;
+        rangoPct: string;
+        pesoDe: string;
+        rangoDe: string;
+        pesoInvalido: string;
+        rangoInvalido: string;
+        sumaMal: string;
+        restricciones: string;
+        restriccionesNota: string;
+        decisiones: string;
+        faltan: readonly [string, string];
+        comandoTitulo: string;
+        comandoNota: string;
+        sinComando: string;
+      };
     };
     comparacion: {
       ojo: string;
