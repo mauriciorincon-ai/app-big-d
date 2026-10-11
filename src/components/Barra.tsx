@@ -11,7 +11,7 @@ import { SignoMarca } from "./Marca";
 
 /**
  * Barra de la app (maqueta: `.barra`): las cuatro secciones de la maqueta (D-S3-16). Conocimiento lleva al investigador
- * y a la base; Caso, al primer caso por id (ninguno tiene trato especial); Instrumento queda pendiente hasta que exista.
+ * y a la base; Caso, al primer caso por id (ninguno tiene trato especial); Instrumento lleva a su pantalla.
  */
 export function Barra({ idioma }: { idioma: Idioma }) {
   const t = textos(idioma).barra;
@@ -25,10 +25,26 @@ export function Barra({ idioma }: { idioma: Idioma }) {
       <NavSecciones
         etiqueta={t.secciones}
         secciones={[
-          { ruta: rutaAtlas(datos(), idioma), texto: t.atlas, prefijos: [`/${idioma}/atlas`, rutaLado(idioma)] },
-          { ruta: rutaInvestigador(datos(), idioma), texto: t.conocimiento, prefijos: [`/${idioma}/investigador`, rutaBase(idioma)] },
-          { ruta: caso ? rutaCaso(idioma, caso) : undefined, texto: t.caso, prefijos: [`/${idioma}/casos/`] },
-          { ruta: rutaInstrumento(idioma), texto: t.instrumento, prefijos: [`/${idioma}/instrumento`] },
+          {
+            ruta: rutaAtlas(datos(), idioma),
+            texto: t.atlas,
+            prefijos: [`/${idioma}/atlas`, rutaLado(idioma)],
+          },
+          {
+            ruta: rutaInvestigador(datos(), idioma),
+            texto: t.conocimiento,
+            prefijos: [`/${idioma}/investigador`, rutaBase(idioma)],
+          },
+          {
+            ruta: caso ? rutaCaso(idioma, caso) : undefined,
+            texto: t.caso,
+            prefijos: [`/${idioma}/casos/`],
+          },
+          {
+            ruta: rutaInstrumento(idioma),
+            texto: t.instrumento,
+            prefijos: [`/${idioma}/instrumento`],
+          },
         ]}
       />
       <div className="ajustes">

@@ -8,7 +8,7 @@
   GUÍA DE PRUEBA VIVA Y ACUMULATIVA de Big-D (regla 11 del CLAUDE.md; plantilla del kit v1.6.0; referencia
   app-habla/docs/GUIA-DE-PRUEBA.html). Autocontenida: cero CDNs, cero fetch; se abre con doble clic.
   Bola de nieve: cada sprint hereda ENTERAS las pruebas del anterior; lo «Nuevo · S1» pasa a «S1» (regresión)
-  en el S2 salvo que el S2 lo toque («Mejorado en S2»). Prefijo de localStorage versionado: «bigd-s1-» (cambia
+  en el S2 salvo que el S2 lo toque («Mejorado en S2»). Prefijo de localStorage versionado: «bigd-s4-» (cambia
   en cada versión). ⭐ = lo que ninguna automatización verifica; ⭐⭐ = el subconjunto que solo un humano juzga,
   caminable en el orden del documento. Sin URL de despliegue escrita (regla 17): el campo se llena en uso.
 -->
@@ -107,21 +107,22 @@
 <body>
 <div class="pagina">
   <header>
-    <p class="eyebrow">Big-D · Guía de prueba viva y acumulativa · Sprint 2 · 2026-10-04</p>
+    <p class="eyebrow">Big-D · Guía de prueba viva y acumulativa · Sprint 4 · 2026-10-11</p>
     <h1>Guía de prueba</h1>
     <p class="suave">Todas las pruebas vigentes de la app: el atlas (visión general, componentes, recorrido de un
-      dato), el lado a lado, las versiones de un mapa, el investigador y la base. Cada prueba dice su origen: «Nuevo ·
-      S2», «Mejorado en S2» (hay que volver a mirarla) o «S1» (heredada sin cambios: es la regresión). Las casillas se
+      dato), el lado a lado, las versiones de un mapa, el investigador, la base, el perfil del caso, la comparación y
+      el instrumento. Cada prueba dice su origen: «Nuevo · S4» o «Nuevo · S3» (hay que mirarla), o «S2» / «S1»
+      (heredada sin cambios: es la regresión). Las casillas se
       guardan solas en este navegador.</p>
-    <p class="chica"><strong>Gate corto ⭐⭐: 6 paradas · ~20 min — es el que el cierre del ciclo exige.</strong> Solo
-      lo que únicamente una persona puede juzgar. Deja fuera 1 prueba ⭐, y sigue entera en el filtro ⭐: VoiceOver
+    <p class="chica"><strong>Gate corto ⭐⭐: 8 paradas · ~25 min — es el que el cierre del ciclo exige.</strong> Solo
+      lo que únicamente una persona puede juzgar. Deja fuera 2 pruebas ⭐, y siguen enteras en el filtro ⭐: VoiceOver
       (b8), porque la lectura en texto la verifica el código por otro camino (equivale al mapa nodo a nodo y pasa axe
-      en los dos temas). Para caber en ~20 min, h6 se hace con la misma persona de b1, y h7 con el mismo teléfono de
-      b11, en la misma sentada.</p>
-    <p class="chica"><strong>Gate mínimo ⭐: 7 pruebas · ~50 min — DIFERIDO al gate acumulado del S4</strong> (cierre del
-      ciclo H1): las 4 del S1 y 3 del S2. Es lo que ninguna automatización puede verificar: una persona que explica
-      las capas o compara una banda, tu paleta en tu pantalla, tu teléfono de verdad, VoiceOver y si se entienden las
-      versiones del mapa. Se ofrece: puedes correrlas antes.</p>
+      en los dos temas); y N2, porque el desbordamiento a 380 px lo verifica el e2e en los dos temas. Para caber en
+      ~25 min, h6 se hace con la misma persona de b1, y h7 con el mismo teléfono de b11, en la misma sentada.</p>
+    <p class="chica"><strong>Gate mínimo ⭐: 10 pruebas · ~65 min (estimado) — se ofrece con el cierre de S4, acumulado de S1 a S4.</strong>
+      Es lo que ninguna automatización puede verificar: una persona que explica las capas o compara una banda, tu
+      paleta en tu pantalla, tu teléfono de verdad, VoiceOver, si se entienden las versiones del mapa, el perfil que
+      apruebas tú y la comparación que resulta. Se ofrece: puedes correrlas antes.</p>
     <div class="ya"><strong>Ya aprobado en el S2 (no se repite aquí):</strong>
       <ul>
         <li>La forma de «en el mismo diagrama»: un solo botón, arriba a la derecha (mirada M1, 2026-10-02).</li>
@@ -138,7 +139,7 @@
     </div>
     <div class="url-caja">
       <p class="eyebrow" style="margin:0 0 6px">Dónde probar</p>
-      <p style="margin:0"><strong>En el preview del PR #5</strong>, con tu sesión (la dirección está en el PR y en la
+      <p style="margin:0"><strong>En el preview del PR de este sprint</strong>, con tu sesión (la dirección está en el PR y en la
         planeadora; aquí no se escribe). <strong>O en local:</strong> en una terminal abierta en la carpeta del
         proyecto, <code>pnpm build &amp;&amp; pnpm start</code> y abre <code>http://localhost:3000</code> (si el 3000 está
         ocupado, <code>PORT=3150 pnpm start</code> y <code>http://localhost:3150</code>).</p>
@@ -154,7 +155,7 @@
     </div>
     <div class="filtros" role="group" aria-label="Filtrar pruebas por origen">
       <button type="button" data-filtro="todo" class="activo">Todo</button>
-      <button type="button" data-filtro="cambios">Lo que cambió en S2</button>
+      <button type="button" data-filtro="cambios">Lo que cambió desde S2</button>
       <button type="button" data-filtro="minimo">Gate mínimo ⭐</button>
       <button type="button" data-filtro="corto">Gate corto ⭐⭐</button>
     </div>
@@ -164,8 +165,8 @@
     <div class="bloque-cabeza"><span class="letra">A</span><h2>Entrar, idioma y tema</h2></div>
     <p class="meta-bloque chica suave"><strong>Empieza en:</strong> <code>/</code> · ~5 min · la portada, los dos idiomas, los dos temas y el primer foco</p>
     <ul class="pasos">
-      <li data-origen="mejorado"><input type="checkbox" id="a1"><label for="a1">Abre la raíz: te lleva directo a la portada en español (<code>/es</code>), sin pantalla de elegir idioma. Esperado: el título <strong>«Todas las plataformas de datos, con el mismo mapa»</strong> y el campo «Plataforma» con las <strong>cuatro</strong> en orden alfabético: Databricks, Microsoft Fabric, Plataforma Ejemplo (ficticia) y Snowflake. Todas tienen mapa y se eligen; una sin mapa diría «pronto» y no se elegiría.
-        <span class="origen origen-mejorado">Mejorado en S2</span></label></li>
+      <li data-origen="heredada"><input type="checkbox" id="a1"><label for="a1">Abre la raíz: te lleva directo a la portada en español (<code>/es</code>), sin pantalla de elegir idioma. Esperado: el título <strong>«Todas las plataformas de datos, con el mismo mapa»</strong> y el campo «Plataforma» con las <strong>cuatro</strong> en orden alfabético: Databricks, Microsoft Fabric, Plataforma Ejemplo (ficticia) y Snowflake. Todas tienen mapa y se eligen; una sin mapa diría «pronto» y no se elegiría.
+        <span class="origen origen-heredada">S2</span></label></li>
       <li data-origen="heredada"><input type="checkbox" id="a2"><label for="a2">Toca <strong>ES / EN</strong> (arriba a la derecha). Esperado: la <strong>misma página</strong> en el otro idioma; la dirección pasa de <code>/es/…</code> a <code>/en/…</code> y cambia todo el texto, también el del diagrama cuando lo hay.
         <span class="origen origen-heredada">S1</span></label></li>
       <li data-origen="heredada"><input type="checkbox" id="a3"><label for="a3">Toca <strong>Oscuro / Claro</strong> y recarga la página. Esperado: se queda el tema que elegiste. En una ventana privada, sin elegir nada, <strong>manda el tema de tu sistema</strong>.
@@ -185,11 +186,11 @@
       <li data-origen="heredada" data-minimo data-corto><input type="checkbox" id="b1"><label for="b1">Muéstrale el nivel 1 a <strong>una persona sin formación técnica</strong>, sin explicarle nada, y pídele que te cuente qué hace cada capa de Fabric. Esperado: la cuenta <strong>de izquierda a derecha, como el camino de un dato</strong>, apoyada en la pregunta de cada capa. Anota toda palabra en la que se trabe.
         <span class="origen origen-heredada">S1</span>
         <span class="minimo">⭐ mínimo</span>
-        <span class="minimo">⭐⭐ Parada 1 de 6</span></label></li>
+        <span class="minimo">⭐⭐ Parada 1 de 8</span></label></li>
       <li data-origen="heredada"><input type="checkbox" id="b2"><label for="b2">Mira el mapa. Esperado: se lee de izquierda a derecha; cada capa lleva su número, su nombre y <strong>su pregunta</strong>; las franjas transversales van abajo y abarcan todas las capas.
         <span class="origen origen-heredada">S1</span></label></li>
-      <li data-origen="mejorado"><input type="checkbox" id="b3"><label for="b3">Mira el encabezado del mapa y un bloque. Esperado: el encabezado dice la vigencia con <strong>símbolo y texto</strong> («vigente · verificado hace N días»), la versión del mapa y el enlace «ver versiones»; el bloque dice cuántos componentes tiene y <strong>no lleva insignia mientras está vigente</strong>. Para ver un mapa envejecido sin esperar un mes, en una terminal en la carpeta del proyecto: <code>BIGD_FECHA_CONSULTA=2026-11-03 pnpm build &amp;&amp; pnpm start</code> (los mapas de las tres plataformas reales se verificaron el 2026-10-04). Esperado: cada bloque y cada componente lleva su insignia (símbolo y «30 d»), <strong>nada se sale del mapa</strong> y, en «Componentes», los nombres de una fila de referencias llena se abrevian con «…» (el nombre entero sigue en la ficha).
-        <span class="origen origen-mejorado">Mejorado en S2</span></label></li>
+      <li data-origen="heredada"><input type="checkbox" id="b3"><label for="b3">Mira el encabezado del mapa y un bloque. Esperado: el encabezado dice la vigencia con <strong>símbolo y texto</strong> («vigente · verificado hace N días»), la versión del mapa y el enlace «ver versiones»; el bloque dice cuántos componentes tiene y <strong>no lleva insignia mientras está vigente</strong>. Para ver un mapa envejecido sin esperar un mes, en una terminal en la carpeta del proyecto: <code>BIGD_FECHA_CONSULTA=2026-11-03 pnpm build &amp;&amp; pnpm start</code> (los mapas de las tres plataformas reales se verificaron el 2026-10-04). Esperado: cada bloque y cada componente lleva su insignia (símbolo y «30 d»), <strong>nada se sale del mapa</strong> y, en «Componentes», los nombres de una fila de referencias llena se abrevian con «…» (el nombre entero sigue en la ficha).
+        <span class="origen origen-heredada">S2</span></label></li>
       <li data-origen="heredada"><input type="checkbox" id="b4"><label for="b4">Busca una conexión con más de un modo. Esperado: <strong>línea gruesa con una etiqueta</strong> que dice cuáles, en orden; la leyenda explica cada trazo.
         <span class="origen origen-heredada">S1</span></label></li>
       <li data-origen="heredada"><input type="checkbox" id="b5"><label for="b5">Toca un bloque, por ejemplo <strong>«Entrada de datos»</strong> o <strong>«Informes»</strong>. Esperado: se abre la ventana <strong>«Dentro del bloque»</strong> (a la derecha en pantalla ancha, desde abajo en teléfono) con sus componentes <strong>dibujados como en «Componentes»</strong>; si se conectan, la línea que los une; si no, sueltos. Debajo, <strong>una tarjeta por componente</strong> con su tipo, su madurez, su frase y todas sus conexiones (las que salen y las que entran, cada una con su trazo). Al final, el paso a «Componentes».
@@ -204,13 +205,13 @@
       <li data-origen="heredada" data-minimo data-corto><input type="checkbox" id="b9"><label for="b9">Mira el mapa <strong>en tu pantalla, en Oscuro y en Claro</strong>. Esperado: cada tipo de componente se distingue por su color, <strong>su glifo y su etiqueta</strong>; ningún color te cuesta; el claro está tan cuidado como el oscuro.
         <span class="origen origen-heredada">S1</span>
         <span class="minimo">⭐ mínimo</span>
-        <span class="minimo">⭐⭐ Parada 2 de 6</span></label></li>
+        <span class="minimo">⭐⭐ Parada 2 de 8</span></label></li>
       <li data-origen="heredada"><input type="checkbox" id="b10"><label for="b10">Baja a la leyenda. Esperado: tipos de componente (color, glifo y etiqueta), cómo viaja el dato (trazo), madurez y vigencia; y la <strong>nota de marcas</strong>: los nombres comerciales solo identifican productos; sin logos ni colores de marca.
         <span class="origen origen-heredada">S1</span></label></li>
       <li data-origen="heredada" data-minimo data-corto><input type="checkbox" id="b11"><label for="b11">En <strong>tu teléfono</strong> (en el preview, con tu sesión) abre el nivel 1. Esperado: la página no se mueve de lado; <strong>el mapa sí, con el dedo</strong>; «Ir a una capa» lleva a cada capa; las sombras de los bordes avisan que hay más; la pista dice cuántas capas hay. Toca un bloque: la ventana sube desde abajo y <strong>cabe sin deslizar de lado</strong>.
         <span class="origen origen-heredada">S1</span>
         <span class="minimo">⭐ mínimo</span>
-        <span class="minimo">⭐⭐ Parada 3 de 6</span></label></li>
+        <span class="minimo">⭐⭐ Parada 3 de 8</span></label></li>
     </ul>
     <div class="tabla-scroll"><table>
       <tr><th>Qué mirar</th><th>Valor / comportamiento correcto</th></tr>
@@ -231,10 +232,10 @@
         <span class="origen origen-heredada">S1</span></label></li>
       <li data-origen="heredada"><input type="checkbox" id="c3"><label for="c3">En pantalla ancha y en teléfono. Esperado: en ancho la ficha es un <strong>panel a la derecha</strong> y la página sigue usable; en teléfono es una <strong>hoja abajo</strong> de la que el foco no sale; Esc o «Cerrar» devuelven el foco al componente.
         <span class="origen origen-heredada">S1</span></label></li>
-      <li data-origen="mejorado"><input type="checkbox" id="c4"><label for="c4">Cambia de plataforma en el campo <strong>«Plataforma»</strong>. Esperado: bajo el campo, una nota avisa <strong>«Al elegir otra plataforma se abre su atlas.»</strong>; elegir te lleva a la misma vista de la otra plataforma. Hoy las cuatro tienen mapa y se eligen.
-        <span class="origen origen-mejorado">Mejorado en S2</span></label></li>
-      <li data-origen="mejorado"><input type="checkbox" id="c5"><label for="c5">Mira las pestañas «Nivel de lectura». Esperado: 01 Visión general, 02 Componentes y 03 Recorrido llevan a su vista; <strong>04 Lado a lado lleva al lado a lado</strong> (bloque H).
-        <span class="origen origen-mejorado">Mejorado en S2</span></label></li>
+      <li data-origen="heredada"><input type="checkbox" id="c4"><label for="c4">Cambia de plataforma en el campo <strong>«Plataforma»</strong>. Esperado: bajo el campo, una nota avisa <strong>«Al elegir otra plataforma se abre su atlas.»</strong>; elegir te lleva a la misma vista de la otra plataforma. Hoy las cuatro tienen mapa y se eligen.
+        <span class="origen origen-heredada">S2</span></label></li>
+      <li data-origen="heredada"><input type="checkbox" id="c5"><label for="c5">Mira las pestañas «Nivel de lectura». Esperado: 01 Visión general, 02 Componentes y 03 Recorrido llevan a su vista; <strong>04 Lado a lado lleva al lado a lado</strong> (bloque H).
+        <span class="origen origen-heredada">S2</span></label></li>
     </ul>
   </section>
 
@@ -274,10 +275,10 @@
     <div class="bloque-cabeza"><span class="letra">F</span><h2>El investigador, y una base incompleta que no se publica</h2></div>
     <p class="meta-bloque chica suave"><strong>Empieza en:</strong> <code>/es/investigador/fabric</code> · ~12 min · el mapa aprobado, el estado vacío y la revisión de una propuesta (con el kit)</p>
     <ul class="pasos">
-      <li data-origen="mejorado"><input type="checkbox" id="f1"><label for="f1">Mira la página de Fabric. Esperado: «mapa aprobado v0.3.0», el veredicto <strong>«Aprobada por una persona»</strong> con fecha (2026-10-04), 102 aprobadas y 0 rechazadas, «3 revisiones en el historial», y la <strong>vigencia por capa</strong> con semáforo (símbolo, texto y días).
-        <span class="origen origen-mejorado">Mejorado en S2</span></label></li>
-      <li data-origen="mejorado"><input type="checkbox" id="f2"><label for="f2">Las plataformas reales ya tienen mapa: el estado vacío se ve con el <strong>kit</strong>. Después de copiar la propuesta de muestra (f3), abre <code>/es/investigador/plataforma-norte</code>. Esperado: arriba, «Todavía no hay mapa de Plataforma Norte (ficticia).» y el botón <strong>«Solicitar investigación»</strong>; al tocarlo se abre GitHub en otra pestaña con la tarea ya escrita («Investigar Plataforma Norte (ficticia)», etiqueta «investigacion»). No hace falta confirmarla: basta ver que llega escrita. La página no menciona Claude Code.
-        <span class="origen origen-mejorado">Mejorado en S2</span></label></li>
+      <li data-origen="heredada"><input type="checkbox" id="f1"><label for="f1">Mira la página de Fabric. Esperado: «mapa aprobado v0.3.0», el veredicto <strong>«Aprobada por una persona»</strong> con fecha (2026-10-04), 102 aprobadas y 0 rechazadas, «3 revisiones en el historial», y la <strong>vigencia por capa</strong> con semáforo (símbolo, texto y días).
+        <span class="origen origen-heredada">S2</span></label></li>
+      <li data-origen="heredada"><input type="checkbox" id="f2"><label for="f2">Las plataformas reales ya tienen mapa: el estado vacío se ve con el <strong>kit</strong>. Después de copiar la propuesta de muestra (f3), abre <code>/es/investigador/plataforma-norte</code>. Esperado: arriba, «Todavía no hay mapa de Plataforma Norte (ficticia).» y el botón <strong>«Solicitar investigación»</strong>; al tocarlo se abre GitHub en otra pestaña con la tarea ya escrita («Investigar Plataforma Norte (ficticia)», etiqueta «investigacion»). No hace falta confirmarla: basta ver que llega escrita. La página no menciona Claude Code.
+        <span class="origen origen-heredada">S2</span></label></li>
       <li data-origen="heredada"><input type="checkbox" id="f3"><label for="f3">Con el <strong>kit</strong>, copia la propuesta de muestra, compila y abre <code>/es/investigador/plataforma-norte</code>. Esperado: tres grupos, <strong>1 por decidir</strong> (el código no pudo verificar la cita), <strong>26 verificadas</strong> (aprobadas de entrada) y <strong>1 rechazada por el código</strong>; cada afirmación dice <strong>de qué habla</strong> (el componente, o «origen → destino» si es un flujo), con su cita, su fuente y lo que dijo la verificación.
         <span class="origen origen-heredada">S1</span></label></li>
       <li data-origen="heredada"><input type="checkbox" id="f4"><label for="f4">Decide la que falta con «Aprobar» o «Rechazar». Esperado: el aviso «Falta 1 afirmación por decidir» desaparece y el comando de <strong>«Aprobar lo marcado»</strong> cambia con tu decisión; «Copiar» lo copia. <strong>No lo corras con la muestra.</strong>
@@ -306,24 +307,24 @@
     <div class="bloque-cabeza"><span class="letra">H</span><h2>Lado a lado</h2></div>
     <p class="meta-bloque chica suave"><strong>Empieza en:</strong> <code>/es/comparar</code> · ~12 min, más las dos ⭐ de este bloque · todas las plataformas con el mismo mapa, una por fila</p>
     <ul class="pasos">
-      <li data-origen="nuevo"><input type="checkbox" id="h1"><label for="h1">Entra desde <strong>Atlas → 04 Lado a lado</strong>. Esperado: el título <strong>«Cuatro plataformas, el mismo mapa»</strong>; en la página 1, las filas de Databricks, Microsoft Fabric y la Plataforma Ejemplo (ficticia), cada una con su versión y su vigencia; con <strong>«Siguiente»</strong>, Snowflake en la página 2. Cada banda cae en la misma columna para todas. Abajo, en la leyenda, la <strong>nota de marcas</strong> nombra a Databricks, Microsoft Fabric y Snowflake, y no a la ficticia.
-        <span class="origen origen-nuevo">Nuevo · S2</span></label></li>
-      <li data-origen="nuevo"><input type="checkbox" id="h2"><label for="h2">Abre <strong>«Plataformas: 4 de 4»</strong> y desmarca dos. Esperado: quedan solo las elegidas, sin recargar; la dirección cambia (<code>?plataformas=…</code>) y al recargar sigue igual. La última elegida no se puede desmarcar.
-        <span class="origen origen-nuevo">Nuevo · S2</span></label></li>
-      <li data-origen="nuevo"><input type="checkbox" id="h3"><label for="h3">Toca <strong>«Desplegar todo»</strong>, arriba a la derecha del recuadro del mapa. Esperado: los componentes de todas las bandas aparecen <strong>en el mismo dibujo</strong> y las columnas no se mueven; el botón pasa a <strong>«Contraer todo»</strong> y vuelve a los bloques.
-        <span class="origen origen-nuevo">Nuevo · S2</span></label></li>
-      <li data-origen="nuevo"><input type="checkbox" id="h4"><label for="h4">Toca un bloque. Esperado: su ventana, con la banda y la plataforma arriba (por ejemplo «Ingesta · Databricks»; Snowflake está en la página 2). Con todo desplegado, toca un componente: su ficha. Esc cierra y el foco vuelve a lo que tocaste.
-        <span class="origen origen-nuevo">Nuevo · S2</span></label></li>
-      <li data-origen="nuevo"><input type="checkbox" id="h5"><label for="h5">Con dos plataformas elegidas, toca <strong>ES / EN</strong>. Esperado: la misma página en inglés, con <strong>la misma selección</strong> y la misma página.
-        <span class="origen origen-nuevo">Nuevo · S2</span></label></li>
-      <li data-origen="nuevo" data-minimo data-corto><input type="checkbox" id="h6"><label for="h6">Pídele a <strong>una persona sin formación técnica</strong> que compare dos plataformas en el lado a lado, sin explicarle nada, y que te diga <strong>en qué capa difieren</strong>. Esperado: lo lee <strong>por columnas</strong> (una banda, todas las plataformas) y nombra al menos una banda donde difieren y qué trae cada una ahí. Anota dónde se traba.
-        <span class="origen origen-nuevo">Nuevo · S2</span>
+      <li data-origen="heredada"><input type="checkbox" id="h1"><label for="h1">Entra desde <strong>Atlas → 04 Lado a lado</strong>. Esperado: el título <strong>«Cuatro plataformas, el mismo mapa»</strong>; en la página 1, las filas de Databricks, Microsoft Fabric y la Plataforma Ejemplo (ficticia), cada una con su versión y su vigencia; con <strong>«Siguiente»</strong>, Snowflake en la página 2. Cada banda cae en la misma columna para todas. Abajo, en la leyenda, la <strong>nota de marcas</strong> nombra a Databricks, Microsoft Fabric y Snowflake, y no a la ficticia.
+        <span class="origen origen-heredada">S2</span></label></li>
+      <li data-origen="heredada"><input type="checkbox" id="h2"><label for="h2">Abre <strong>«Plataformas: 4 de 4»</strong> y desmarca dos. Esperado: quedan solo las elegidas, sin recargar; la dirección cambia (<code>?plataformas=…</code>) y al recargar sigue igual. La última elegida no se puede desmarcar.
+        <span class="origen origen-heredada">S2</span></label></li>
+      <li data-origen="heredada"><input type="checkbox" id="h3"><label for="h3">Toca <strong>«Desplegar todo»</strong>, arriba a la derecha del recuadro del mapa. Esperado: los componentes de todas las bandas aparecen <strong>en el mismo dibujo</strong> y las columnas no se mueven; el botón pasa a <strong>«Contraer todo»</strong> y vuelve a los bloques.
+        <span class="origen origen-heredada">S2</span></label></li>
+      <li data-origen="heredada"><input type="checkbox" id="h4"><label for="h4">Toca un bloque. Esperado: su ventana, con la banda y la plataforma arriba (por ejemplo «Ingesta · Databricks»; Snowflake está en la página 2). Con todo desplegado, toca un componente: su ficha. Esc cierra y el foco vuelve a lo que tocaste.
+        <span class="origen origen-heredada">S2</span></label></li>
+      <li data-origen="heredada"><input type="checkbox" id="h5"><label for="h5">Con dos plataformas elegidas, toca <strong>ES / EN</strong>. Esperado: la misma página en inglés, con <strong>la misma selección</strong> y la misma página.
+        <span class="origen origen-heredada">S2</span></label></li>
+      <li data-origen="heredada" data-minimo data-corto><input type="checkbox" id="h6"><label for="h6">Pídele a <strong>una persona sin formación técnica</strong> que compare dos plataformas en el lado a lado, sin explicarle nada, y que te diga <strong>en qué capa difieren</strong>. Esperado: lo lee <strong>por columnas</strong> (una banda, todas las plataformas) y nombra al menos una banda donde difieren y qué trae cada una ahí. Anota dónde se traba.
+        <span class="origen origen-heredada">S2</span>
         <span class="minimo">⭐ mínimo</span>
-        <span class="minimo">⭐⭐ Parada 4 de 6</span></label></li>
-      <li data-origen="nuevo" data-minimo data-corto><input type="checkbox" id="h7"><label for="h7">En <strong>tu teléfono</strong> (en el preview, con tu sesión) abre <code>/es/comparar</code>. Esperado: una banda a la vez, elegida en las pestañas de arriba; cada plataforma con sus bloques, y cada bloque se abre en sus componentes; «Desplegar todo» los abre todos; la página no se desliza de lado.
-        <span class="origen origen-nuevo">Nuevo · S2</span>
+        <span class="minimo">⭐⭐ Parada 4 de 8</span></label></li>
+      <li data-origen="heredada" data-minimo data-corto><input type="checkbox" id="h7"><label for="h7">En <strong>tu teléfono</strong> (en el preview, con tu sesión) abre <code>/es/comparar</code>. Esperado: una banda a la vez, elegida en las pestañas de arriba; cada plataforma con sus bloques, y cada bloque se abre en sus componentes; «Desplegar todo» los abre todos; la página no se desliza de lado.
+        <span class="origen origen-heredada">S2</span>
         <span class="minimo">⭐ mínimo</span>
-        <span class="minimo">⭐⭐ Parada 5 de 6</span></label></li>
+        <span class="minimo">⭐⭐ Parada 5 de 8</span></label></li>
     </ul>
     <div class="reportame"><p><strong>Repórtame sí o sí:</strong> una columna que se mueve al desplegar, una fila que aparece y desaparece al cargar, o una selección que se pierde al recargar o al cambiar de idioma.</p></div>
   </section>
@@ -332,10 +333,10 @@
     <div class="bloque-cabeza"><span class="letra">I</span><h2>Los mapas de Databricks y Snowflake</h2></div>
     <p class="meta-bloque chica suave"><strong>Empieza en:</strong> <code>/es/atlas/databricks</code> · ~8 min · los dos mapas nuevos, aprobados en el S2</p>
     <ul class="pasos">
-      <li data-origen="nuevo"><input type="checkbox" id="i1"><label for="i1">Recorre Databricks y Snowflake en sus tres niveles (cambia en «Plataforma»). Esperado: la <strong>misma gramática</strong> que Fabric; ningún texto se sale de su caja; en «Recorrido de un dato», Databricks tiene 8 pasos y se divide en 6a / 6b, y Snowflake tiene 9 y se divide en 5a / 5b.
-        <span class="origen origen-nuevo">Nuevo · S2</span></label></li>
-      <li data-origen="nuevo"><input type="checkbox" id="i2"><label for="i2">Abre <code>/es/investigador/databricks</code> y <code>/es/investigador/snowflake</code>. Esperado: <strong>«Aprobada por una persona»</strong> con fecha y 0 rechazadas; Databricks dice «mapa aprobado v0.2.0», «2 revisiones en el historial» y 131 aprobadas; Snowflake, «mapa aprobado v0.1.0» y 143 aprobadas.
-        <span class="origen origen-nuevo">Nuevo · S2</span></label></li>
+      <li data-origen="heredada"><input type="checkbox" id="i1"><label for="i1">Recorre Databricks y Snowflake en sus tres niveles (cambia en «Plataforma»). Esperado: la <strong>misma gramática</strong> que Fabric; ningún texto se sale de su caja; en «Recorrido de un dato», Databricks tiene 8 pasos y se divide en 6a / 6b, y Snowflake tiene 9 y se divide en 5a / 5b.
+        <span class="origen origen-heredada">S2</span></label></li>
+      <li data-origen="heredada"><input type="checkbox" id="i2"><label for="i2">Abre <code>/es/investigador/databricks</code> y <code>/es/investigador/snowflake</code>. Esperado: <strong>«Aprobada por una persona»</strong> con fecha y 0 rechazadas; Databricks dice «mapa aprobado v0.2.0», «2 revisiones en el historial» y 131 aprobadas; Snowflake, «mapa aprobado v0.1.0» y 143 aprobadas.
+        <span class="origen origen-heredada">S2</span></label></li>
     </ul>
   </section>
 
@@ -343,23 +344,80 @@
     <div class="bloque-cabeza"><span class="letra">J</span><h2>Versiones del mapa</h2></div>
     <p class="meta-bloque chica suave"><strong>Empieza en:</strong> <code>/es/atlas/fabric</code> · ~10 min, más la ⭐ de este bloque · qué cambió entre una versión aprobada y la siguiente (con el kit para ver las cuatro marcas)</p>
     <ul class="pasos">
-      <li data-origen="nuevo"><input type="checkbox" id="j1"><label for="j1">En el encabezado de Fabric toca <strong>«ver versiones»</strong>. Esperado: «Microsoft Fabric: versiones del mapa» y «vigente: v0.3.0 · 2 versiones anteriores». Primero <strong>«De v0.2.0 a v0.3.0»</strong>: dos filas (arriba la anterior), la marca <strong>«+ nuevo»</strong> en el bloque de «Gobierno y seguridad» de la fila de abajo, y la lista nombra Auditoría en Microsoft Purview y Catálogo de OneLake, más «Además, 4 cambios en flujos o pasos.»; en «Lo que dicen los componentes», el texto de 2 componentes y las fuentes de 2. Debajo, <strong>«De v0.1.0 a v0.2.0»</strong>: <strong>«Sin cambios en el dibujo: los mismos componentes…»</strong>, el texto de 6 componentes (los nombra) y las fuentes de 9.
-        <span class="origen origen-nuevo">Nuevo · S2</span></label></li>
-      <li data-origen="nuevo"><input type="checkbox" id="j2"><label for="j2">En «De v0.2.0 a v0.3.0», toca el bloque de «Gobierno y seguridad» de la <strong>fila de arriba</strong>. Esperado: su ventana dice «… · versión 0.2.0» y muestra los componentes de entonces, <strong>sin</strong> Auditoría ni Catálogo y <strong>sin</strong> el paso a «Componentes». Ciérrala y toca el mismo bloque en la fila de abajo: dice «versión 0.3.0», trae los dos nuevos y sí trae el paso.
-        <span class="origen origen-nuevo">Nuevo · S2</span></label></li>
-      <li data-origen="nuevo"><input type="checkbox" id="j3"><label for="j3">Abre <code>/es/atlas/snowflake/versiones</code>. Esperado: <strong>«El mapa de Snowflake tiene una sola versión.»</strong>, sin dibujo, y el enlace para volver a su atlas.
-        <span class="origen origen-nuevo">Nuevo · S2</span></label></li>
-      <li data-origen="nuevo"><input type="checkbox" id="j4"><label for="j4">Con el <strong>kit</strong>, copia la versión anterior de muestra, compila y abre <code>/es/atlas/plataforma-ejemplo/versiones</code>. Esperado: «De v0.0.9 a v0.1.0» con las cuatro marcas, cada una con símbolo y palabra: <strong>«+ nuevo»</strong> (Filtros por fila y enmascaramiento), <strong>«− retirado»</strong> (Cuadernos interactivos, en la fila de arriba), <strong>«→ renombrado»</strong> (antes «Conector JDBC») y <strong>«madurez»</strong> (el agente, de beta a vista previa pública); la lista de abajo explica las cuatro. Al terminar, el comando de limpieza del README del kit.
-        <span class="origen origen-nuevo">Nuevo · S2</span></label></li>
-      <li data-origen="nuevo" data-minimo data-corto><input type="checkbox" id="j5"><label for="j5">Lee las dos páginas de versiones, la de Fabric y la de la muestra (j4), <strong>sin explicación</strong>. Esperado: entiendes qué cambió y qué no; «Sin cambios en el dibujo» y «Lo que dicen los componentes» no se contradicen; cada marca se entiende sin mirar el color. Es la mirada de texto que quedó «maquetado, no visto» en el S2.
-        <span class="origen origen-nuevo">Nuevo · S2</span>
+      <li data-origen="heredada"><input type="checkbox" id="j1"><label for="j1">En el encabezado de Fabric toca <strong>«ver versiones»</strong>. Esperado: «Microsoft Fabric: versiones del mapa» y «vigente: v0.3.0 · 2 versiones anteriores». Primero <strong>«De v0.2.0 a v0.3.0»</strong>: dos filas (arriba la anterior), la marca <strong>«+ nuevo»</strong> en el bloque de «Gobierno y seguridad» de la fila de abajo, y la lista nombra Auditoría en Microsoft Purview y Catálogo de OneLake, más «Además, 4 cambios en flujos o pasos.»; en «Lo que dicen los componentes», el texto de 2 componentes y las fuentes de 2. Debajo, <strong>«De v0.1.0 a v0.2.0»</strong>: <strong>«Sin cambios en el dibujo: los mismos componentes…»</strong>, el texto de 6 componentes (los nombra) y las fuentes de 9.
+        <span class="origen origen-heredada">S2</span></label></li>
+      <li data-origen="heredada"><input type="checkbox" id="j2"><label for="j2">En «De v0.2.0 a v0.3.0», toca el bloque de «Gobierno y seguridad» de la <strong>fila de arriba</strong>. Esperado: su ventana dice «… · versión 0.2.0» y muestra los componentes de entonces, <strong>sin</strong> Auditoría ni Catálogo y <strong>sin</strong> el paso a «Componentes». Ciérrala y toca el mismo bloque en la fila de abajo: dice «versión 0.3.0», trae los dos nuevos y sí trae el paso.
+        <span class="origen origen-heredada">S2</span></label></li>
+      <li data-origen="heredada"><input type="checkbox" id="j3"><label for="j3">Abre <code>/es/atlas/snowflake/versiones</code>. Esperado: <strong>«El mapa de Snowflake tiene una sola versión.»</strong>, sin dibujo, y el enlace para volver a su atlas.
+        <span class="origen origen-heredada">S2</span></label></li>
+      <li data-origen="heredada"><input type="checkbox" id="j4"><label for="j4">Con el <strong>kit</strong>, copia la versión anterior de muestra, compila y abre <code>/es/atlas/plataforma-ejemplo/versiones</code>. Esperado: «De v0.0.9 a v0.1.0» con las cuatro marcas, cada una con símbolo y palabra: <strong>«+ nuevo»</strong> (Filtros por fila y enmascaramiento), <strong>«− retirado»</strong> (Cuadernos interactivos, en la fila de arriba), <strong>«→ renombrado»</strong> (antes «Conector JDBC») y <strong>«madurez»</strong> (el agente, de beta a vista previa pública); la lista de abajo explica las cuatro. Al terminar, el comando de limpieza del README del kit.
+        <span class="origen origen-heredada">S2</span></label></li>
+      <li data-origen="heredada" data-minimo data-corto><input type="checkbox" id="j5"><label for="j5">Lee las dos páginas de versiones, la de Fabric y la de la muestra (j4), <strong>sin explicación</strong>. Esperado: entiendes qué cambió y qué no; «Sin cambios en el dibujo» y «Lo que dicen los componentes» no se contradicen; cada marca se entiende sin mirar el color. Es la mirada de texto que quedó «maquetado, no visto» en el S2.
+        <span class="origen origen-heredada">S2</span>
         <span class="minimo">⭐ mínimo</span>
-        <span class="minimo">⭐⭐ Parada 6 de 6</span></label></li>
+        <span class="minimo">⭐⭐ Parada 6 de 8</span></label></li>
     </ul>
     <div class="kit"><p><strong>Kit de prueba:</strong> la <strong>versión anterior de muestra</strong> (j4) está en <code>docs/kit-de-prueba/README.md</code>, sección 4, con su comando y el de limpieza. Es inventada: la Plataforma Ejemplo es ficticia.</p></div>
     <div class="reportame"><p><strong>Repórtame sí o sí:</strong> una marca que solo se distingue por el color, una diferencia del dibujo que la lista no explica, o una ventana de la versión vieja que lleva a «Componentes».</p></div>
   </section>
 
+
+  <section class="bloque">
+    <div class="bloque-cabeza"><span class="letra">K</span><h2>La barra y la base de conocimiento</h2></div>
+    <p class="meta-bloque chica suave"><strong>Empieza en:</strong> <code>/es</code> · ~8 min · la barra de cuatro secciones y la base de la que sale el caso</p>
+    <ul class="pasos">
+      <li data-origen="nuevo"><input type="checkbox" id="k1"><label for="k1">Mira la barra de arriba. Esperado: cuatro secciones, <strong>Atlas, Conocimiento, Caso e Instrumento</strong>; ninguna dice «pendiente». Toca <strong>Caso</strong> e <strong>Instrumento</strong>: llevan a su pantalla. <strong>Conocimiento</strong> lleva al investigador.
+        <span class="origen origen-nuevo">Nuevo · S4</span></label></li>
+      <li data-origen="nuevo"><input type="checkbox" id="k2"><label for="k2">Entra a <strong>Conocimiento → Base</strong>. Esperado: las evidencias aprobadas (33 al cerrar el S4), cada una con su criterio; la escala de cinco niveles; la convención del empate («5 puntos»); y la tabla de instantáneas, con «vigente» en la primera fila.
+        <span class="origen origen-nuevo">Nuevo · S3</span></label></li>
+      <li data-origen="nuevo"><input type="checkbox" id="k3"><label for="k3">Desde el investigador, el enlace <strong>Base</strong> lleva a la base; desde la base, <strong>Investigador</strong> vuelve. Esperado: la sección que ves queda marcada en la barra.
+        <span class="origen origen-nuevo">Nuevo · S3</span></label></li>
+    </ul>
+    <div class="reportame"><p><strong>Repórtame sí o sí:</strong> una sección de la barra que dice «pendiente», o una evidencia sin su criterio, o una instantánea sin fecha.</p></div>
+  </section>
+
+  <section class="bloque">
+    <div class="bloque-cabeza"><span class="letra">L</span><h2>El perfil del caso</h2></div>
+    <p class="meta-bloque chica suave"><strong>Empieza en:</strong> <code>/es/casos/hospital-futuro</code> · ~12 min, más la ⭐⭐ de este bloque · el caso del hospital ficticio: el perfil está en borrador hoy, y una persona lo puede aprobar</p>
+    <ul class="pasos">
+      <li data-origen="nuevo"><input type="checkbox" id="l1"><label for="l1">Entra a <strong>Caso</strong>. Esperado: en el encabezado, <strong>«Perfil en borrador»</strong>; las decisiones con su respuesta por defecto y su razón; el botón <strong>«Aprobar perfil»</strong> deshabilitado, y debajo el comando armado por la página, con su botón para copiarlo.
+        <span class="origen origen-nuevo">Nuevo · S3</span></label></li>
+      <li data-origen="nuevo"><input type="checkbox" id="l2"><label for="l2">Cambia un peso de un criterio, o pon uno que no sume 100. Esperado: la suma se ve con dos decimales; si no da <strong>100,00</strong>, la página lo dice y el comando deja de armarse; al volver a 100,00 vuelve. En <strong>«¿una o combinación?»</strong>, si no respondes, la página bloquea el comando.
+        <span class="origen origen-nuevo">Nuevo · S4</span></label></li>
+      <li data-origen="nuevo" data-minimo data-corto><input type="checkbox" id="l3"><label for="l3">Aprueba el perfil <strong>tú</strong>: copia el comando con el botón de la página y pégalo en una Terminal abierta en la carpeta del proyecto, con <strong>Cmd+V</strong> y <strong>Enter</strong>. Esperado: la Terminal dice que quedó aprobado; en el repo cambian <code>data/casos/hospital-futuro.yaml</code> (estado aprobado) y <code>data/revisiones/casos/hospital-futuro.jsonl</code> (una línea nueva). Recarga la página: aparece el sello <strong>«Perfil aprobado»</strong> y el editor desaparece. Si cambiaste algo y no lo quieres, vuelve a la página antes de copiar: el comando sale de lo que marcaste.
+        <span class="origen origen-nuevo">Nuevo · S4</span>
+        <span class="minimo">⭐ mínimo</span>
+        <span class="minimo">⭐⭐ Parada 7 de 8</span></label></li>
+    </ul>
+    <div class="reportame"><p><strong>Repórtame sí o sí:</strong> un comando que no cambia lo que dice la página, o un perfil aprobado que todavía muestra el editor.</p></div>
+  </section>
+
+  <section class="bloque">
+    <div class="bloque-cabeza"><span class="letra">M</span><h2>La comparación</h2></div>
+    <p class="meta-bloque chica suave"><strong>Empieza en:</strong> <code>/es/casos/hospital-futuro/comparacion</code> · ~8 min, más la ⭐⭐ de este bloque · la comparación del caso, con su estado honesto</p>
+    <ul class="pasos">
+      <li data-origen="nuevo"><input type="checkbox" id="m1"><label for="m1">Antes de aprobar el perfil, abre la comparación. Esperado: <strong>«No evaluable»</strong> con el motivo «el perfil está en borrador» y el enlace <strong>«Ver la base»</strong>; no aparecen totales ni matriz. Ese enlace lleva a la base.
+        <span class="origen origen-nuevo">Nuevo · S3</span></label></li>
+      <li data-origen="nuevo" data-minimo data-corto><input type="checkbox" id="m2"><label for="m2">Después de aprobar el perfil (L3), vuelve a la comparación. Esperado: los totales, la matriz por criterio, la sensibilidad y la robustez; si hay empate, lo dice con sus puntos; si gana una, lo dice con la diferencia. Léela sin explicación: ¿entiendes qué gana y por qué?
+        <span class="origen origen-nuevo">Nuevo · S4</span>
+        <span class="minimo">⭐ mínimo</span>
+        <span class="minimo">⭐⭐ Parada 8 de 8</span></label></li>
+    </ul>
+    <div class="reportame"><p><strong>Repórtame sí o sí:</strong> una comparación que puntúa sin perfil aprobado, o un empate presentado como ganador.</p></div>
+  </section>
+
+  <section class="bloque">
+    <div class="bloque-cabeza"><span class="letra">N</span><h2>El instrumento</h2></div>
+    <p class="meta-bloque chica suave"><strong>Empieza en:</strong> <code>/es/instrumento</code> · ~6 min, más la ⭐ de este bloque · la herramienta comprueba sus propios errores antes de publicar</p>
+    <ul class="pasos">
+      <li data-origen="nuevo"><input type="checkbox" id="n1"><label for="n1">Entra desde la barra, <strong>Instrumento</strong>. Esperado: el estado <strong>«verde»</strong>; cada fila de validación en verde (casos de referencia, propiedades, sembrados y aprobaciones); <strong>sin bloqueo de publicación</strong>; y en Sembrados, <strong>«7 de 7 detectados»</strong>.
+        <span class="origen origen-nuevo">Nuevo · S4</span></label></li>
+      <li data-origen="nuevo" data-minimo><input type="checkbox" id="n2"><label for="n2">En el teléfono (o con la ventana estrecha, unos 380 px), abre la misma página. Esperado: no se desliza de lado, y cada fila se lee sin cortar sus letras.
+        <span class="origen origen-nuevo">Nuevo · S4</span>
+        <span class="minimo">⭐ mínimo</span></label></li>
+    </ul>
+    <div class="reportame"><p><strong>Repórtame sí o sí:</strong> un estado que no es verde sin que la página diga por qué, o un sembrado que aparece como detectado sin estar detectado.</p></div>
+  </section>
 
   <footer>
     <p class="chica suave">Guía <strong>viva y acumulativa</strong>: contiene todas las pruebas vigentes de la app
@@ -368,6 +426,11 @@
     <details class="chica">
       <summary>Historial de la guía</summary>
       <ul>
+        <li><strong>S4 · 2026-10-11:</strong> 62 pruebas en 14 bloques (A–N). Las 52 del S2 siguen: las 16 que el S2
+          tenía como «Nuevo» o «Mejorado» pasan a heredadas, «S2» (regresión), porque el S4 no cambió su superficie.
+          10 nuevas: la barra y la base (K), el perfil del caso (L), la comparación (M) y el instrumento (N). El perfil
+          y la comparación se ven en su estado de hoy, borrador; la aprobación (L3) la hace una persona. ⭐ 10 · ⭐⭐ 8.
+          Ninguna eliminada.</li>
         <li><strong>S1 · 2026-09-29:</strong> nace la guía con 38 pruebas en 7 bloques (A–G): portada, idioma y
           tema; visión general con la ventana de un bloque; componentes; recorrido; Plataforma Ejemplo;
           investigador con el kit de prueba (propuesta de muestra y base incompleta); la maqueta de referencia.
@@ -406,7 +469,7 @@
   (function () {
     // NS VERSIONADO POR SPRINT (regla dura): al publicar la guía de un sprint nuevo se cambia
     // s1 → s2 en el sprint siguiente — así una regresión sin correr no aparece marcada por el sprint anterior.
-    var NS = "bigd-s2-";
+    var NS = "bigd-s4-";
     var casillas = Array.prototype.slice.call(document.querySelectorAll('input[type="checkbox"]'));
     var barra = document.getElementById("barra-avance");
     var contador = document.getElementById("contador");

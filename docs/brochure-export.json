@@ -29,7 +29,7 @@
     "diferencial": "No es «otro comparador»: es el único donde puedes ver el cálculo, repetirlo, mover los pesos y descubrir en qué punto cambiarías de opinión, con cada puntaje amarrado a una evidencia fechada; y el único atlas que explica a las plataformas con el mismo mapa, en dos idiomas, sin un logo de fabricante. Y no termina en un puntaje: convierte la comparación en decisiones clasificadas por reversibilidad, riesgos con prioridad de acción, supuestos que probar y un plan de alistamiento. Todo sale de un núcleo determinista que cualquiera puede repetir y verificar, y el atlas muestra cada plataforma —hoy tres, mañana las que agregues— con la visión de un líder, el detalle de un experto y el recorrido de un dato, lado a lado."
   },
   "funcionalidades": {
-    "total": 8,
+    "total": 12,
     "fuente_del_conteo": "docs/MANUAL-DE-USO.md",
     "descartadas": [],
     "grupos": [
@@ -88,6 +88,12 @@
             "nombre": "Versiones del mapa",
             "que_hace": "Muestra qué cambió entre una versión aprobada del mapa y la siguiente: nuevo, retirado, renombrado y madurez, cada marca con símbolo y palabra. Lo que cambió sin cambiar el dibujo (textos y fuentes) se cuenta aparte.",
             "seccion_manual": "8. Versiones del mapa"
+          },
+          {
+            "id": "F9",
+            "nombre": "Base de conocimiento",
+            "que_hace": "Muestra lo que Big-D sabe en archivos legibles y con huella: criterios, evidencias con su fuente y su cita, la escala de madurez y cada instantánea. Solo entra a la comparación la evidencia que una persona aprobó; una evidencia pasa a «por revisar» a los 30 días de su verificación y a «vencida» a los 60.",
+            "seccion_manual": "9. La base de conocimiento"
           }
         ]
       },
@@ -104,6 +110,32 @@
             "seccion_manual": "4. Lectura en texto y teclado"
           }
         ]
+      },
+      {
+        "orden": 4,
+        "estrella": false,
+        "nombre": "Caso, comparación e instrumento",
+        "linea": "Lo que decide un caso y lo que prueba que la herramienta se puede confiar.",
+        "features": [
+          {
+            "id": "F10",
+            "nombre": "Perfil del caso",
+            "que_hace": "Un caso de decisión con sus pesos (que suman 100), sus rangos de incertidumbre, sus restricciones y sus decisiones implícitas. La pantalla arma el comando que una persona ejecuta para aprobar el perfil; la app no aprueba nada.",
+            "seccion_manual": "10. El perfil del caso"
+          },
+          {
+            "id": "F11",
+            "nombre": "Comparación",
+            "que_hace": "Compara las plataformas con el perfil aprobado y la evidencia aprobada: totales, sensibilidad, robustez y pros y contras, con su fecha de evaluación e instantánea. Con el perfil en borrador no puntúa y dice por qué. No recomienda una plataforma: muestra el resultado con sus supuestos.",
+            "seccion_manual": "11. La comparación"
+          },
+          {
+            "id": "F12",
+            "nombre": "Instrumento",
+            "que_hace": "Dice si la herramienta se puede confiar antes de publicar: casos con respuesta conocida, propiedades matemáticas, siete errores sembrados y la comprobación de que lo aprobado no se editó a mano. Si algo falla, la app no se publica.",
+            "seccion_manual": "12. El instrumento"
+          }
+        ]
       }
     ]
   },
@@ -111,10 +143,10 @@
     {
       "clave": "funcionalidades",
       "etiqueta": "Funcionalidades documentadas",
-      "valor": 8,
+      "valor": 12,
       "unidad": "funcionalidades",
       "fuente": "medido",
-      "detalle": "Las funciones numeradas del manual (docs/MANUAL-DE-USO.md), construidas en los sprints 1 y 2. Lo que trajo el sprint 3 (la base de conocimiento, el perfil del caso, la comparación y el modo evidencias del investigador) ya está en la app, pero no se cuenta hasta que el manual lo documente. Lo recuenta tests/unit/brochure-export.test.ts."
+      "detalle": "Las funciones numeradas del manual (docs/MANUAL-DE-USO.md), construidas en los sprints 1 a 4. Las de los sprints 3 y 4 (la base de conocimiento, el perfil del caso, la comparación y el instrumento) se cuentan desde que el manual las documenta. Lo recuenta tests/unit/brochure-export.test.ts."
     },
     {
       "clave": "plataformas_en_el_atlas",

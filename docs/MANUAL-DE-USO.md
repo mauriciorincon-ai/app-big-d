@@ -141,7 +141,7 @@ a ninguna ni pide cuentas.
   - Las preguntas guía sin fuente quedan abiertas: no se inventan respuestas.
   - Una base con un dato incompleto (por ejemplo, un componente sin fecha de verificación) **no se publica**: el
     build se detiene y dice qué falta y dónde.
-  - La pestaña «Base de conocimiento» llega en un próximo sprint.
+  - La base de conocimiento tiene su propia pantalla: ver la sección 9.
 
 #### 7. Lado a lado · desde el Sprint 2
 
@@ -191,11 +191,61 @@ a ninguna ni pide cuentas.
   - Si un bloque cambia de nombre, la página lo marca como «renombrado» y dice su nombre anterior (desde el sprint 3).
     Le pasa a Databricks, cuyo bloque «Tableros» se llama «Tableros y aplicaciones» desde la v0.2.0.
 
+#### 9. La base de conocimiento · desde el Sprint 3
+
+- **Qué hace:** muestra lo que Big-D sabe, en archivos legibles y con huella: criterios, evidencias, la escala de madurez y cada instantánea de la base.
+- **Cómo se usa:**
+  1. En la barra, abre «Conocimiento» y elige «Base de conocimiento».
+  2. **Evidencias:** cada una muestra su puntaje, su madurez, su fuente y la cita que la respalda. Solo entran a la comparación las que una persona aprobó.
+  3. **Escala y convenciones:** la escala tiene cinco niveles, de 0 a 4, y la pantalla dice qué pasa en un empate.
+  4. **Instantáneas:** una tabla con la versión, la fecha y la huella. La primera dice «vigente».
+  5. **Vigencia:** una evidencia pasa a «por revisar» a los 30 días de su verificación y a «vencida» a los 60.
+- **Limitaciones:**
+  - La base no se edita desde la app. Sus datos son archivos en la carpeta `data/`, y cada aprobación queda registrada.
+  - Si un dato está incompleto (por ejemplo, una evidencia sin fecha de verificación), la base no carga: la pantalla dice qué falta y dónde.
+
+#### 10. El perfil del caso · desde el Sprint 3
+
+- **Qué hace:** el perfil de un caso de decisión: los pesos de cada criterio (que suman 100), su rango de incertidumbre, las restricciones que eliminan plataformas y las decisiones que suelen quedar sin discutir. El caso de ejemplo es un hospital ficticio.
+- **Cómo se usa:**
+  1. En la barra, abre «Caso» y luego «Perfil del caso».
+  2. Mientras el perfil está en **borrador**, cada peso dice quién lo propuso. Puedes cambiar los pesos (en puntos, con dos decimales), sus rangos, marcar las restricciones que aplicas y responder cada decisión implícita.
+  3. La pantalla suma los pesos mientras escribes. El botón de aprobar se activa solo cuando la suma es 100,00 y todas las decisiones tienen respuesta.
+  4. Entonces la pantalla arma un comando con tus respuestas. Cópialo con su botón, abre Terminal tú mismo en la carpeta del proyecto, pégalo con Cmd+V y pulsa Enter. Solo una persona lo ejecuta: la app no aprueba nada.
+  5. Recarga la página. El perfil aparece con el sello «aprobado» y en solo lectura.
+- **Limitaciones:**
+  - El comando sale de la pantalla, y solo de ella: no lo copies de este manual ni de otro lugar. Si el perfil cambió después de armarlo, el comando se niega y hay que copiar el nuevo desde la pantalla.
+  - Un perfil aprobado que alguien edita a mano se rechaza al cargar.
+
+#### 11. La comparación · desde el Sprint 3
+
+- **Qué hace:** compara las plataformas del caso con su perfil aprobado y con la evidencia aprobada. Si el perfil no está aprobado, no puntúa y dice por qué.
+- **Cómo se usa:**
+  1. En el caso, abre «Comparación».
+  2. **Con el perfil en borrador:** la pantalla dice «La comparación no se calcula» y el motivo: el perfil está en borrador. Un enlace lleva a la base de conocimiento.
+  3. **Con el perfil aprobado:** cada plataforma aparece con su puntaje, su fecha de evaluación y la instantánea que usó. Eliges la vista: Totales, Sensibilidad, Robustez o Pros y contras.
+  4. Las plataformas que una restricción elimina aparecen como eliminadas, con la razón.
+  5. Las alertas de vigencia se calculan contra la fecha de evaluación del perfil, no contra la de hoy.
+- **Limitaciones:**
+  - Big-D no recomienda una plataforma: muestra el resultado con sus supuestos, y la decisión es de quien pregunta.
+  - Quien repita el cálculo con el mismo perfil y la misma base obtiene los mismos bytes.
+
+#### 12. El instrumento · desde el Sprint 4
+
+- **Qué hace:** dice si puedes confiar en la herramienta antes de publicar. Corre casos con respuesta conocida, propiedades matemáticas, siete errores sembrados y la comprobación de que lo aprobado no se editó a mano. Si algo falla, no se publica nada.
+- **Cómo se usa:**
+  1. En la barra, abre «Instrumento».
+  2. Lee el estado: «Validación en verde: se puede publicar» o «Validación en rojo». Cada fila dice si pasó.
+  3. En **errores sembrados** ves cuántos de los siete errores deliberados detectó la herramienta. Debe decir «7 de 7 detectados».
+  4. Para publicar, corre `pnpm build` en la carpeta del proyecto. Si la validación falla, el build se detiene, no queda nada que publicar y la pantalla dice «No se publica» con lo que hay que corregir.
+- **Limitaciones:**
+  - La validación corre sobre la base que se va a publicar. Si abres la app sin haber corrido `pnpm build`, la pantalla dice que no hay validación y te pide correrlo.
+  - Las propiedades son las mismas que prueba la suite de pruebas: no hay dos versiones de la verdad.
+
 ### Preguntas frecuentes
 
-- **¿Big-D recomienda una plataforma?** Todavía no. Hasta ahora Big-D construyó el mapa común: el atlas de cada
-  plataforma, el lado a lado y las versiones de cada mapa. La comparación con evidencia, pesos y riesgos llega en los
-  próximos sprints de este ciclo.
+- **¿Big-D recomienda una plataforma?** No decide por ti. Compara con tus pesos y tu evidencia, muestra la sensibilidad del resultado a esos pesos y deja la decisión a quien pregunta. Hoy el caso de ejemplo sigue en borrador: su comparación no se calcula hasta que una persona apruebe el perfil (sección 10).
+
 - **¿Por qué no hay logos?** Para no favorecer a ningún fabricante. El color del mapa dice qué capacidad es, nunca
   de quién. Los nombres comerciales se usan solo para identificar productos.
 - **¿Quién escribió lo que dice el mapa?** Lo propuso el investigador, con citas comprobadas por código, y una
@@ -207,7 +257,7 @@ a ninguna ni pide cuentas.
 | Sprint          | Funciones añadidas a este manual                                                                                                                                                   |
 | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | S1 (2026-09-29) | 1 Visión general, con la ventana de un bloque · 2 Componentes · 3 Recorrido de un dato · 4 Lectura en texto y teclado · 5 Varias plataformas con el mismo mapa · 6 El investigador |
-| S2 (2026-10-04) | 5 al día: Databricks, Fabric y Snowflake con mapa · 6 la versión anterior se guarda al aprobar · 7 Lado a lado · 8 Versiones del mapa |
+| S2 (2026-10-04) | 5 al día: Databricks, Fabric y Snowflake con mapa · 6 la versión anterior se guarda al aprobar · 7 Lado a lado · 8 Versiones del mapa                                              |
 
 ---
 
@@ -337,7 +387,7 @@ manages and controls; it never operates a platform**: it connects to none and as
   - Guiding questions without a source stay open; no answer is made up.
   - A base with an incomplete record (say, a component with no verification date) **is not published**: the build
     stops and says what is missing and where.
-  - The “Knowledge base” tab arrives in a coming sprint.
+  - The knowledge base has its own screen: see section 9.
 
 #### 7. Side by side · since Sprint 2
 
@@ -386,11 +436,61 @@ manages and controls; it never operates a platform**: it connects to none and as
   - If a block is renamed, the page marks it as “renamed” and gives its former name (since sprint 3). It happens to
     Databricks, whose “Dashboards” block is called “Dashboards and apps” since v0.2.0.
 
+#### 9. The knowledge base · since Sprint 3
+
+- **What it does:** shows what Big-D knows, in readable files with a fingerprint: criteria, evidence, the maturity scale and every snapshot of the base.
+- **How to use it:**
+  1. In the top bar, open **“Knowledge”** and choose **“Knowledge base”**.
+  2. **Evidence:** each one shows its score, its maturity, its source and the quote that backs it. Only the ones a person approved enter the comparison.
+  3. **Scale and conventions:** the scale has five levels, 0 to 4, and the page says what happens in a tie.
+  4. **Snapshots:** a table with the version, the date and the fingerprint. The first one says **“current”**.
+  5. **Validity:** an evidence goes to **“to review”** 30 days after its verification, and to **“expired”** after 60.
+- **Limitations:**
+  - The base is not edited from the app. Its data are files in the `data/` folder, and every approval is recorded.
+  - If a record is incomplete (say, evidence with no verification date), the base does not load: the page says what is missing and where.
+
+#### 10. The case profile · since Sprint 3
+
+- **What it does:** the profile of a decision case: the weight of each criterion (they add up to 100), its uncertainty range, the constraints that rule platforms out, and the implicit decisions that usually go undiscussed. The example case is a fictional hospital.
+- **How to use it:**
+  1. In the top bar, open **“Case”**, then **“Case profile”**.
+  2. While the profile is a **draft**, each weight says who proposed it. You can change the weights (in points, to two decimals), their ranges, tick the constraints that apply, and answer each implicit decision.
+  3. The page adds up the weights as you type. The approve button turns on only when the sum is 100.00 and every decision has an answer.
+  4. Then the page builds a command with your answers. Copy it with its button, open Terminal yourself in the project folder, paste it with Cmd+V and press Enter. Only a person runs it: the app approves nothing.
+  5. Reload the page. The profile shows the **“approved”** seal and is read-only.
+- **Limitations:**
+  - The command comes from the page, and only from it: do not copy it from this manual or anywhere else. If the profile changed after the command was built, the command is refused and you need to copy the new one from the page.
+  - An approved profile that someone edits by hand is rejected when it loads.
+
+#### 11. The comparison · since Sprint 3
+
+- **What it does:** compares the case's platforms with its approved profile and the approved evidence. If the profile is not approved, it does not score and says why.
+- **How to use it:**
+  1. In the case, open **“Comparison”**.
+  2. **With the profile in draft:** the page says **“The comparison is not calculated”** and gives the reason: the profile is a draft. A link leads to the knowledge base.
+  3. **With the profile approved:** each platform shows its score, its evaluation date and the snapshot it used. You choose the view: Totals, Sensitivity, Robustness, or Pros and cons.
+  4. Platforms that a constraint rules out appear as eliminated, with the reason.
+  5. Validity alerts are calculated against the profile's evaluation date, not today's.
+- **Limitations:**
+  - Big-D does not recommend a platform: it shows the result with its assumptions, and the decision belongs to whoever asks.
+  - Anyone who repeats the calculation with the same profile and the same base gets the same bytes.
+
+#### 12. The instrument · since Sprint 4
+
+- **What it does:** tells you whether the tool can be trusted before anything is published. It runs cases with a known answer, mathematical properties, seven seeded errors and a check that approved records were not edited by hand. If something fails, nothing is published.
+- **How to use it:**
+  1. In the top bar, open **“Instrument”**.
+  2. Read the status: green means it can be published, red means something failed. Each row says whether it passed.
+  3. Under **seeded errors** you see how many of the seven deliberate errors the tool caught. It should read 7 of 7.
+  4. To publish, run `pnpm build` in the project folder. If validation fails, the build stops, there is nothing to publish, and the page says it is not published and what to fix.
+- **Limitations:**
+  - Validation runs on the base that will be published. If you open the app without having run `pnpm build`, the page says there is no validation yet and asks you to run it.
+  - The properties are the same ones the test suite checks: there are not two versions of the truth.
+
 ### Frequently asked questions
 
-- **Does Big-D recommend a platform?** Not yet. So far Big-D has built the shared map: each platform's atlas, side by
-  side and the versions of each map. The comparison with evidence, weights and risks comes in the next sprints of this
-  cycle.
+- **Does Big-D recommend a platform?** No, it does not decide for you. It compares with your weights and your evidence, shows how sensitive the result is to those weights, and leaves the decision to whoever asks. Today the example case is still a draft: its comparison is not calculated until a person approves the profile (section 10).
+
 - **Why are there no logos?** So no vendor is favoured. On the map, colour says which capability something is,
   never whose it is. Trade names are used only to identify products.
 - **Who wrote what the map says?** The researcher proposed it, with quotes the code checked, and a person approved
@@ -401,4 +501,4 @@ manages and controls; it never operates a platform**: it connects to none and as
 | Sprint          | Features added to this manual                                                                                                                              |
 | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | S1 (2026-09-29) | 1 Overview, with the block window · 2 Components · 3 A datum's journey · 4 Reading in text and the keyboard · 5 Many platforms, one map · 6 The researcher |
-| S2 (2026-10-04) | 5 updated: Databricks, Fabric and Snowflake have maps · 6 the previous version is kept on approval · 7 Side by side · 8 Map versions |
+| S2 (2026-10-04) | 5 updated: Databricks, Fabric and Snowflake have maps · 6 the previous version is kept on approval · 7 Side by side · 8 Map versions                       |
