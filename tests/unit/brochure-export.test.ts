@@ -133,4 +133,52 @@ describe("docs/brochure-export.json", () => {
   it("no lleva ningún enlace (cero enlaces publicados)", () => {
     expect(TEXTO).not.toMatch(/:\/\/|www\./);
   });
+
+  // CV Viva arma la ficha técnica de Big-D con este export (app-hoja-de-vida, src/lib/vitrina/ficha-tecnica/armar.ts)
+  // y la valida con su contrato «Ficha técnica» v1.3.1 (docs/contrato-ficha-tecnica/ficha-tecnica.schema.json): un
+  // campo que no cabe rompe su build, y allá no se edita. Aquí van los límites de cada campo que la ficha copia.
+  it("cabe en la ficha técnica de CV Viva (contrato v1.3.1)", () => {
+    const e = JSON.parse(TEXTO) as {
+      app: { nombre: string };
+      promesa: { tagline: string; intro: string; para_quien: string };
+      stack: { nombre: string; papel: string }[];
+      metricas: {
+        clave: string;
+        etiqueta: string;
+        unidad: string;
+        detalle: string;
+      }[];
+      funcionalidades: { grupos: { nombre: string; linea: string }[] };
+    };
+    const fuera: string[] = [];
+    const cabe = (campo: string, texto: string, max: number, min = 1) => {
+      if (texto.length < min || texto.length > max)
+        fuera.push(`${campo} mide ${texto.length} (admite ${min}–${max})`);
+    };
+    cabe("app.nombre", e.app.nombre, 60);
+    cabe("promesa.tagline", e.promesa.tagline, 80);
+    cabe("promesa.intro", e.promesa.intro, 400);
+    cabe("promesa.para_quien", e.promesa.para_quien, 400);
+    if (e.stack.length < 1 || e.stack.length > 8)
+      fuera.push(`stack trae ${e.stack.length} piezas (admite 1–8)`);
+    for (const s of e.stack) {
+      cabe(`stack «${s.nombre}».nombre`, s.nombre, 40);
+      cabe(`stack «${s.nombre}».papel`, s.papel, 160);
+    }
+    // Cualquier métrica puede ser cifra destacada del complemento: todas caben.
+    for (const m of e.metricas) {
+      cabe(`metricas «${m.clave}».clave`, m.clave, 60);
+      cabe(`metricas «${m.clave}».etiqueta`, m.etiqueta, 60);
+      cabe(`metricas «${m.clave}».unidad`, m.unidad, 40, 0);
+      cabe(`metricas «${m.clave}».detalle`, m.detalle, 400);
+    }
+    const grupos = e.funcionalidades.grupos;
+    if (grupos.length < 2 || grupos.length > 10)
+      fuera.push(`grupos trae ${grupos.length} (la ficha admite 2–10 bloques)`);
+    for (const g of grupos) {
+      cabe(`grupo «${g.nombre}».nombre`, g.nombre, 40);
+      cabe(`grupo «${g.nombre}».linea`, g.linea, 120);
+    }
+    expect(fuera).toEqual([]);
+  });
 });
