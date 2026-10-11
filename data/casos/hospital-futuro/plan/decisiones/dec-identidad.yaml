@@ -1,0 +1,31 @@
+id: dec-identidad
+pregunta:
+  es: "¿Cómo se relaciona la plataforma con el directorio de identidad que administra el grupo?"
+  en: "How does the platform relate to the identity directory the group manages?"
+criterio_id: crit-ecosistema
+reversibilidad: una_via
+razon_reversibilidad:
+  es: "Cambiarla después obliga a rehacer cómo llegan los usuarios y los grupos y, con ellos, todos los permisos sobre datos clínicos."
+  en: "Changing it later means redoing how users and groups arrive and, with them, every permission over clinical data."
+depende_de: []
+implicita: true
+estado: esperando-prueba
+opciones_por_plataforma:
+  - plataforma_id: databricks
+    texto:
+      es: "Toma usuarios y grupos del proveedor de identidad de la organización con SCIM, un estándar abierto, o de forma automática desde Microsoft Entra ID."
+      en: "Takes users and groups from the organisation's identity provider with SCIM, an open standard, or automatically from Microsoft Entra ID."
+    citas:
+      - evidencia_id: evi-databricks-ecosistema
+  - plataforma_id: fabric
+    texto:
+      es: "Corre dentro de un inquilino de Microsoft Entra y se autentica con Entra ID: la decisión es si el directorio del grupo es ese inquilino."
+      en: "Runs inside a Microsoft Entra tenant and authenticates with Entra ID: the decision is whether the group's directory is that tenant."
+    citas:
+      - evidencia_id: evi-fabric-ecosistema
+  - plataforma_id: snowflake
+    texto:
+      es: "Los usuarios y grupos llegan de Okta o de Microsoft Entra ID por SCIM, un estándar de aprovisionamiento."
+      en: "Users and groups arrive from Okta or Microsoft Entra ID through SCIM, a provisioning standard."
+    citas:
+      - evidencia_id: evi-snowflake-ecosistema

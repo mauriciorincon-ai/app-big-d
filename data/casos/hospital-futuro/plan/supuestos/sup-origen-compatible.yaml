@@ -1,0 +1,16 @@
+id: sup-origen-compatible
+enunciado:
+  es: "La base relacional de origen es de una versión y de un tipo que el mecanismo de captura de cambios elegido admite."
+  en: "The source relational database is of a version and type the chosen change-capture mechanism supports."
+criticidad: alta
+prueba_barata:
+  es: "Anotar la versión exacta de la base de origen y compararla con la lista de fuentes que documenta cada mecanismo de captura."
+  en: "Note the exact version of the source database and compare it with the list of sources each capture mechanism documents."
+responsable:
+  es: "Administrador de la base de datos del hospital"
+  en: "Hospital database administrator"
+costo_prueba: gratis
+estado: sin_probar
+vence: "2026-11-06"
+decisiones: [dec-ingesta-cambios]
+origen: propuesto-por-agente

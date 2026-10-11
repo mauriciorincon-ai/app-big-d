@@ -1,0 +1,29 @@
+id: rie-identidad-no-sincroniza
+decision_id: dec-identidad
+modo:
+  es: "Los usuarios y grupos del directorio del grupo no llegan a la plataforma, o llegan tarde"
+  en: "The group directory's users and groups do not reach the platform, or arrive late"
+efecto:
+  es: "Personas sin acceso a lo que necesitan, o con acceso de más a datos clínicos mientras se corrige a mano."
+  en: "People without access to what they need, or with too much access to clinical data while it is fixed by hand."
+causa:
+  es: "El hospital no administra el directorio: lo administra el grupo, y la conexión depende de lo que el grupo permita y de a quién se lo pida."
+  en: "The hospital does not manage the directory: the group does, and the connection depends on what the group allows and whom it is asked of."
+severidad: 8
+ocurrencia: 5
+deteccion: 5
+origen: propuesto-por-agente
+razon:
+  es: "Severidad 8: riesgo regulatorio por acceso de más y retrabajo de permisos (ancla 7–8). Ocurrencia 5: posible, porque la conexión no está en manos del hospital. Detección 5: se nota cuando alguien pide acceso o cuando una auditoría compara grupos, a veces tarde."
+  en: "Severity 8: regulatory risk from excess access and permission rework (anchor 7–8). Occurrence 5: possible, because the connection is not in the hospital's hands. Detection 5: noticed when someone asks for access or an audit compares groups, sometimes late."
+mitigaciones:
+  - accion:
+      es: "Antes de elegir, pedir al administrador del directorio del grupo qué protocolos de aprovisionamiento ofrece y probarlo con un grupo de prueba de punta a punta."
+      en: "Before choosing, ask the group's directory administrator which provisioning protocols it offers and test one end to end with a pilot group."
+    responsable:
+      es: "Administrador del directorio del grupo"
+      en: "Group directory administrator"
+    momento: antes
+    efecto:
+      ocurrencia: 3
+      deteccion: 3

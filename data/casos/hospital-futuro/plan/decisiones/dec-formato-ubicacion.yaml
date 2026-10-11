@@ -1,0 +1,35 @@
+id: dec-formato-ubicacion
+pregunta:
+  es: "¿En qué formato abierto y en qué lugar físico se guardan los datos?"
+  en: "In which open format and physical location is the data stored?"
+capacidad_id: cap-almacenamiento
+reversibilidad: una_via
+razon_reversibilidad:
+  es: "Mover los datos de un formato o de un lugar a otro exige copiarlos todos y reconstruir los permisos y el consumo que dependen de ellos."
+  en: "Moving data from one format or place to another means copying all of it and rebuilding the permissions and consumption that depend on it."
+depende_de: []
+implicita: false
+estado: pendiente
+opciones_por_plataforma:
+  - plataforma_id: databricks
+    texto:
+      es: "Toda tabla es de Delta Lake, un formato abierto, salvo que se pida otra cosa; también admite tablas Iceberg gestionadas. Los clientes Iceberg solo leen las tablas Delta."
+      en: "Every table is Delta Lake, an open format, unless another is requested; it also supports managed Iceberg tables. Iceberg clients can only read Delta tables."
+    citas:
+      - evidencia_id: evi-databricks-almacenamiento
+  - plataforma_id: fabric
+    texto:
+      es: "Todos los motores guardan sus tablas en OneLake en Delta Parquet, un formato abierto, al que otras aplicaciones llegan por las API de Azure Data Lake Storage Gen2; las tablas del almacén de datos solo se modifican desde el almacén."
+      en: "Every engine keeps its tables in OneLake in Delta Parquet, an open format that other applications reach through the Azure Data Lake Storage Gen2 APIs; warehouse tables can only be modified from the warehouse."
+    citas:
+      - evidencia_id: evi-fabric-almacenamiento
+        componentes: [onelake]
+      - evidencia_id: evi-fabric-dependencia
+  - plataforma_id: snowflake
+    texto:
+      es: "Por defecto guarda los datos en un formato interno y salir exige exportarlos a archivos; solo las tablas Apache Iceberg guardan una copia en formato abierto, que otros motores leen y escriben por Horizon Catalog."
+      en: "By default it keeps data in an internal format and leaving means exporting it to files; only Apache Iceberg tables keep one copy in an open format, which other engines read and write through Horizon Catalog."
+    citas:
+      - evidencia_id: evi-snowflake-almacenamiento
+        componentes: [tablas-iceberg]
+      - evidencia_id: evi-snowflake-dependencia

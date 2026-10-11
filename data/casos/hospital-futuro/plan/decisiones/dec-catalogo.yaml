@@ -1,0 +1,34 @@
+id: dec-catalogo
+pregunta:
+  es: "¿Cómo se organiza el catálogo: por ambiente, por dominio o una combinación?"
+  en: "How is the catalog organised: by environment, by domain or a combination?"
+capacidad_id: cap-gobierno
+reversibilidad: una_via
+razon_reversibilidad:
+  es: "Reorganizarlo después obliga a mover objetos, permisos y linaje, y a rehacer lo que se construyó encima."
+  en: "Reorganising it later means moving objects, permissions and lineage, and redoing what was built on top."
+depende_de: [dec-identidad]
+implicita: false
+estado: pendiente
+opciones_por_plataforma:
+  - plataforma_id: databricks
+    texto:
+      es: "Unity Catalog controla el acceso con privilegios y políticas por atributos, y sigue el linaje de forma automática, hasta el nivel de columna cuando es posible."
+      en: "Unity Catalog controls access with privileges and attribute-based policies, and tracks lineage automatically, down to the column level where possible."
+    citas:
+      - evidencia_id: evi-databricks-gobierno
+        componentes: [unity-catalog]
+  - plataforma_id: fabric
+    texto:
+      es: "El catálogo de OneLake reúne el descubrimiento y el gobierno; cada espacio de trabajo tiene su propia vista de linaje, que no muestra lo que depende de él en otros espacios."
+      en: "The OneLake catalog brings discovery and governance together; each workspace has its own lineage view, which does not show what depends on it in other workspaces."
+    citas:
+      - evidencia_id: evi-fabric-gobierno
+        componentes: [catalogo-onelake]
+  - plataforma_id: snowflake
+    texto:
+      es: "Horizon Catalog reúne los datos de dentro y fuera de Snowflake y aplica etiquetas y políticas a medida que cambian las tablas; el linaje se registra solo y exige la edición Enterprise o superior."
+      en: "Horizon Catalog brings together data inside and outside Snowflake and applies tags and policies as tables change; lineage is recorded on its own and needs the Enterprise edition or higher."
+    citas:
+      - evidencia_id: evi-snowflake-gobierno
+        componentes: [horizon-catalog]

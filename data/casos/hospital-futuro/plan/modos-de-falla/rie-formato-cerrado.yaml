@@ -1,0 +1,29 @@
+id: rie-formato-cerrado
+decision_id: dec-formato-ubicacion
+modo:
+  es: "Los datos quedan en un formato que solo lee la plataforma elegida"
+  en: "The data ends up in a format only the chosen platform reads"
+efecto:
+  es: "Salir de la plataforma o abrir los datos a otro motor exige exportarlo todo: dependencia del proveedor y meses de retrabajo."
+  en: "Leaving the platform or opening the data to another engine means exporting everything: vendor dependence and months of rework."
+causa:
+  es: "Se aceptó el formato por defecto sin comprobar que sea abierto, o se usaron tablas que otros motores solo pueden leer."
+  en: "The default format was accepted without checking that it is open, or tables were used that other engines can only read."
+severidad: 7
+ocurrencia: 4
+deteccion: 7
+origen: propuesto-por-agente
+razon:
+  es: "Severidad 7: retrabajo de meses y sobrecosto alto (ancla 7–8). Ocurrencia 4: improbable si se elige formato abierto desde la primera carga, pero una plataforma guarda por defecto en formato interno. Detección 7: difícil de detectar antes de producción; se descubre cuando se intenta salir."
+  en: "Severity 7: months of rework and high overrun (anchor 7–8). Occurrence 4: unlikely if an open format is chosen from the first load, but one platform stores in an internal format by default. Detection 7: hard to detect before production; it is discovered when trying to leave."
+mitigaciones:
+  - accion:
+      es: "Elegir tablas en formato abierto desde la primera carga y comprobar, con un motor ajeno a la plataforma, que las lee."
+      en: "Choose open-format tables from the first load and check, with an engine outside the platform, that it reads them."
+    responsable:
+      es: "Equipo de datos del hospital"
+      en: "Hospital data team"
+    momento: antes
+    efecto:
+      ocurrencia: 2
+      deteccion: 3

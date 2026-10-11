@@ -207,10 +207,10 @@
     {
       "clave": "dependencias_runtime",
       "etiqueta": "Dependencias en tiempo de ejecución",
-      "valor": 6,
+      "valor": 7,
       "unidad": "paquetes",
       "fuente": "medido",
-      "detalle": "next, react, react-dom, zod, @sentry/nextjs y diagramador (el reusable de la casa, que vive en este mismo repo). Lo recuenta tests/unit/brochure-export.test.ts contra package.json."
+      "detalle": "next, react, react-dom, zod, @sentry/nextjs, diagramador e instrumentos-de-plan (los dos reusables de la casa, que viven en este mismo repo). Lo recuenta tests/unit/brochure-export.test.ts contra package.json."
     },
     {
       "clave": "ia_en_tiempo_de_ejecucion",

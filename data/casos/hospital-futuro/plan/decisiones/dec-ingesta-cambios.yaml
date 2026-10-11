@@ -1,0 +1,34 @@
+id: dec-ingesta-cambios
+pregunta:
+  es: "¿Cómo se traen los cambios de la base relacional de origen: captura de cambios nativa o una herramienta externa?"
+  en: "How are changes brought in from the source relational database: native change capture or an external tool?"
+capacidad_id: cap-ingesta
+reversibilidad: costosa
+razon_reversibilidad:
+  es: "Cambiar de mecanismo obliga a reconstruir las cargas y a volver a comprobar que lo que llega es lo que salió, pero no mueve los datos ya guardados."
+  en: "Switching mechanisms means rebuilding the loads and checking again that what arrives is what left, but it does not move the data already stored."
+depende_de: [dec-formato-ubicacion]
+implicita: false
+estado: esperando-prueba
+opciones_por_plataforma:
+  - plataforma_id: databricks
+    texto:
+      es: "Conectores propios traen los datos de bases relacionales: la primera vez todo y después solo lo que cambió; el de SQL Server está disponible de forma general, el de PostgreSQL en vista previa, y algunas fuentes o tablas todavía no admiten la carga incremental."
+      en: "Native connectors bring in data from relational databases: everything the first time and only what changed afterwards; the SQL Server one is generally available, the PostgreSQL one is in preview, and some sources or tables do not yet support incremental loading."
+    citas:
+      - evidencia_id: evi-databricks-ingesta
+        componentes: [lakeflow-connect]
+  - plataforma_id: fabric
+    texto:
+      es: "El espejado mantiene en OneLake una réplica de la base que recibe los cambios hasta cada 15 segundos, pero necesita una capacidad encendida: si se pausa o se elimina, no se replica ningún dato."
+      en: "Mirroring keeps a replica of the database in OneLake that receives changes as often as every 15 seconds, but it needs a running capacity: if it is paused or deleted, no data is replicated."
+    citas:
+      - evidencia_id: evi-fabric-ingesta
+        componentes: [espejo]
+  - plataforma_id: snowflake
+    texto:
+      es: "Openflow, disponible de forma general, trae los datos de bases relacionales con captura de cambios: primero copia todo y después sigue los cambios, casi en tiempo real o por horario; en PostgreSQL, una tabla sin clave de identidad solo replica inserciones."
+      en: "Openflow, generally available, brings in data from relational databases with change capture: it copies everything first and then follows the changes, near real time or on a schedule; in PostgreSQL, a table without an identity key only replicates inserts."
+    citas:
+      - evidencia_id: evi-snowflake-ingesta
+        componentes: [openflow]

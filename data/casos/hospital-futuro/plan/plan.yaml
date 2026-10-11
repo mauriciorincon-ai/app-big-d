@@ -1,0 +1,13 @@
+# Plan del caso Hospital Ficticio del Futuro (S5, C16–C18): las siete decisiones candidatas (especificación § 10.5), sus
+# riesgos y los supuestos que hay que probar. BORRADOR hasta que una persona corra el comando de aprobación que arma la
+# pantalla de decisiones.
+#
+# De dónde sale cada cosa:
+# - Cómo resuelve cada plataforma una decisión: SOLO lo que dice una evidencia APROBADA de esa plataforma, que cada opción
+#   cita por id (y por los componentes de esa evidencia). Lo que la base no sostiene se marca `sin_fuente: true`.
+# - Reversibilidad, severidad, ocurrencia, detección, criticidad de un supuesto y las mitigaciones son JUICIO, no evidencia:
+#   llevan `origen: propuesto-por-agente` y su razón (con la escala anclada del contrato, instrumentos-de-plan § 3.1).
+#   El caso lo delegó el usuario el 2026-10-11 («el caso no es relevante para mí; acomódalo de la mejor manera»).
+# - La prueba barata de un supuesto es una TAREA para el equipo del caso (E-23): la app no la ejecuta ni toca ninguna plataforma.
+caso_id: hospital-futuro
+estado_aprobacion: borrador

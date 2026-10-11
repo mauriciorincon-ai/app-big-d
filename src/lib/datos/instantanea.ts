@@ -3,6 +3,7 @@ import { canonicoEstricto, type Entrada } from "@/engine";
 import type { Caso, ContenidoInstantanea, Evidencia, Instantanea } from "./conocimiento";
 import { VERSION_INSTANTANEA } from "./conocimiento";
 import type { Plataforma } from "./esquemas";
+import type { Plan } from "./plan";
 
 // Instantáneas de conocimiento (RF-01.4, D-S3-13) y la huella del caso. Una instantánea CONGELA la base aprobada en
 // un archivo que se basta solo: el caso la evalúa a ella, no a la base viva, y cualquiera reproduce el cálculo. La
@@ -70,6 +71,14 @@ export function huellaCaso(c: Caso): string {
   void _a;
   void _e;
   return huellaDe(perfil);
+}
+
+/** La huella del plan del caso, sin su sello ni su estado: la que el comando de aprobación escribe y el cargador comprueba. */
+export function huellaPlan(p: Plan): string {
+  const { aprobacion: _a, estado_aprobacion: _e, ...contenido } = p;
+  void _a;
+  void _e;
+  return huellaDe(contenido);
 }
 
 /** Lo que el núcleo evalúa: una instantánea, o la base viva de un borrador que aún no tiene (versión «base-viva»). */
