@@ -10,6 +10,11 @@
 // (un `<Link>` de Next), React inserta el `<style>` de la página nueva bajo la política de la primera (S2, fase 2:
 // las reglas de los pasos del recorrido quedaban bloqueadas al llegar desde el nivel 1). Los scripts no: React no
 // ejecuta un `<script>` en línea que inserta en el cliente.
+// Una sola excepción de atributo, y no es nuestra: WebKit 27.2 (el de Playwright 1.64) escribe `text-overflow:inherit`
+// como atributo `style` dentro de cada `<select>` nativo, en su propio árbol interno, y la CSP estricta lo bloquea
+// (`style-src-attr`). `style-src-attr 'unsafe-hashes'` con la huella de ESE valor lo permite y nada más: cualquier
+// otro `style` en línea sigue bloqueado, y el paso sigue negándose a publicar un `style=` de la página (ADR
+// `csp-static-export`, § 6).
 // En Vercel, Next 16 compila con el adapter de Vercel (`NEXT_ENABLE_ADAPTER=1`): dentro de `next build` copia cada
 // página a `.next/output/static/`, y Vercel publica ESA copia, no `out/` (S2-AUD-32: el preview del PR #5 servía las
 // páginas sin su meta). Por eso se inyecta en cada carpeta que se publica: `out/` y, si el adapter corrió (deja
@@ -28,6 +33,9 @@ const SCRIPT_EN_LINEA = /<script(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/g;
 const ESTILO_EN_LINEA = /<style[^>]*>([\s\S]*?)<\/style>/g;
 
 const huella = (texto) => `'sha256-${createHash("sha256").update(texto, "utf8").digest("base64")}'`;
+
+/** Los únicos valores de `style` en línea que se permiten: los que el navegador escribe en sus propios controles. */
+export const ESTILOS_DEL_NAVEGADOR = ["text-overflow:inherit"];
 const unicas = (xs) => [...new Set(xs)].sort();
 
 /**
@@ -39,6 +47,7 @@ export function politica({ scripts, estilos, conectar = [] }) {
     "default-src 'self'",
     ["script-src 'self'", ...scripts].join(" "),
     ["style-src 'self'", ...estilos].join(" "),
+    ["style-src-attr 'unsafe-hashes'", ...ESTILOS_DEL_NAVEGADOR.map(huella)].join(" "),
     "img-src 'self' data:",
     "font-src 'self'",
     ["connect-src 'self'", ...conectar].join(" "),
