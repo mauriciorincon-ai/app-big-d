@@ -1,14 +1,16 @@
 // @vitest-environment node
 // scripts/instantanea.mjs de punta a punta (D-S3-13) sobre una raíz temporal (BIGD_RAIZ) con la base sembrada: congela
-// lo aprobado con la fecha dada, no congela otra si nada cambió, y no escribe nada si la copia de ensayo no carga.
-// data/ del repo no se toca.
+// lo aprobado con la fecha dada, no congela otra si nada cambió, no congela una evidencia editada que nadie aprobó
+// (AU-S3-01) y no escribe nada si la copia de ensayo no carga. data/ del repo no se toca.
 import { spawnSync } from "node:child_process";
-import { existsSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { appendFileSync, existsSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { parse, stringify } from "yaml";
 import { cargarConocimiento } from "@/lib/datos/cargar-conocimiento";
+import { huellaDe } from "@/lib/datos/instantanea";
+import { huella } from "@/lib/investigador/huella";
 import { armarBaseFuturo, FECHA_INSTANTANEA } from "./lib/base-futuro";
 
 const raices: string[] = [];
@@ -22,10 +24,13 @@ function raiz() {
 const correr = (r: string, ...args: string[]) => spawnSync("node", ["scripts/instantanea.mjs", ...args], { encoding: "utf8", env: { ...process.env, BIGD_RAIZ: r } });
 const versiones = (r: string) => readdirSync(join(r, "data/instantaneas")).sort();
 const EVI = "data/evidencias/norte/evi-norte-ingesta.yaml";
-const editar = (r: string, cambio: (e: Record<string, unknown>) => void) => {
+/** Edita la evidencia y, salvo `sinAprobar`, deja la línea de revisión que escribiría su aprobación (su huella nueva). */
+const editar = (r: string, cambio: (e: Record<string, unknown>) => void, { sinAprobar = false } = {}) => {
   const e = parse(readFileSync(join(r, EVI), "utf8")) as Record<string, unknown>;
   cambio(e);
   writeFileSync(join(r, EVI), stringify(e));
+  const linea = { fecha: "2026-09-29", propuesta: "propuestas/2026-09-29-norte-evidencias", aprobadas: ["A-1"], rechazadas: [], evidencias: [{ id: e.id, huella: huella(parse(readFileSync(join(r, EVI), "utf8"))) }] };
+  if (!sinAprobar) appendFileSync(join(r, "data/revisiones/evidencias/norte.jsonl"), `${JSON.stringify(linea)}\n`);
 };
 
 describe("scripts/instantanea.mjs", () => {
@@ -66,6 +71,30 @@ describe("scripts/instantanea.mjs", () => {
     expect(x.status).toBe(1);
     expect(x.stderr).toMatch(/2026-09-30\.1\.json:\d+:\d+ · 2026-09-30\.1 · contenido\.evidencias\[\d+\]\.fecha_aprobacion · es posterior a la instantánea \(2026-09-30\)/);
     expect(existsSync(join(r, "data/instantaneas/2026-09-30.1.json"))).toBe(false);
+  });
+
+  it("no congela una evidencia editada que nadie aprobó (AU-S3-01)", () => {
+    const r = raiz();
+    editar(r, (e) => void (e.puntaje = 1), { sinAprobar: true });
+    const x = correr(r, "2026-09-30");
+    expect(x.status).toBe(1);
+    expect(x.stderr).toContain("la base tiene evidencias que no aprobó una persona; no se congelan");
+    expect(x.stderr).toContain("evi-norte-ingesta.yaml · su huella no es la que aprobó una persona");
+    expect(versiones(r)).toEqual([`${FECHA_INSTANTANEA}.1.json`]);
+  });
+
+  it("una instantánea anterior manipulada (con su huella recalculada) detiene la nueva en el ensayo", () => {
+    const r = raiz();
+    const ruta = join(r, "data/instantaneas", `${FECHA_INSTANTANEA}.1.json`);
+    const inst = JSON.parse(readFileSync(ruta, "utf8"));
+    inst.contenido.evidencias[0].puntaje = inst.contenido.evidencias[0].puntaje === 4 ? 3 : 4;
+    inst.huella = huellaDe(inst.contenido);
+    writeFileSync(ruta, JSON.stringify(inst, null, 2));
+    editar(r, (e) => void (e.puntaje = 2));
+    const x = correr(r, "2026-09-30");
+    expect(x.status).toBe(1);
+    expect(x.stderr).toContain(`el ensayo no pasa:\ndata/instantaneas/${FECHA_INSTANTANEA}.1.json · contenido.evidencias[0]`);
+    expect(versiones(r)).toEqual([`${FECHA_INSTANTANEA}.1.json`]);
   });
 
   it("una fecha anterior a la última instantánea no se congela", () => {

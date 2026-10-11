@@ -1,8 +1,10 @@
 // Congela la base aprobada en data/instantaneas/<AAAA-MM-DD.N>.json (D-S3-13, RF-01.4). Es una DERIVACIÓN de lo que
 // una persona ya aprobó, no una aprobación: no decide nada, solo calcula la huella (SHA-256 del JSON canónico,
 // RFC 8785) del contenido aprobado y sus cambios frente a la instantánea anterior. La fecha es un argumento: nada
-// lee el reloj. Antes de escribir, carga una copia de data/ con la instantánea nueva (el mismo cargador del build):
-// si algo no pasa, no escribe nada. Si nada cambió desde la última, no congela otra.
+// lee el reloj. Solo congela si cada evidencia aprobada de la base tiene la huella que guardó su revisión (AU-S3-01:
+// una edición a mano no entra a la instantánea). Antes de escribir, carga una copia de data/ con la instantánea nueva
+// (el mismo cargador del build) y comprueba que todo lo congelado se aprobó: si algo no pasa, no escribe nada. Si nada
+// cambió desde la última, no congela otra.
 //
 // Uso: node scripts/instantanea.mjs AAAA-MM-DD
 import { cpSync, mkdirSync, mkdtempSync, renameSync, rmSync, writeFileSync } from "node:fs";
@@ -18,7 +20,10 @@ try {
   if (!CIVIL.test(fecha) || new Date(`${fecha}T00:00:00Z`).toISOString().slice(0, 10) !== fecha) throw new Error(`la fecha va como argumento, AAAA-MM-DD (llegó «${fecha}»)`);
   const { cargarConocimiento } = await cargarTs("src/lib/datos/cargar-conocimiento.ts");
   const { nuevaInstantanea } = await cargarTs("src/lib/datos/instantanea.ts");
+  const { evidenciasSinAprobacion, instantaneasSinAprobacion } = await cargarTs("src/lib/investigador/aprobados.ts");
   const datos = join(RAIZ, "data");
+  const sinAprobar = evidenciasSinAprobacion(datos);
+  if (sinAprobar.length) throw new Error(`la base tiene evidencias que no aprobó una persona; no se congelan:\n${sinAprobar.join("\n")}`);
   const k = cargarConocimiento(datos);
   const inst = nuevaInstantanea(k, fecha, k.instantaneas);
   const ultima = k.instantaneas.at(-1);
@@ -32,6 +37,8 @@ try {
     mkdirSync(join(ensayo, "data/instantaneas"), { recursive: true });
     writeFileSync(join(ensayo, "data/instantaneas", `${inst.version}.json`), texto);
     cargarConocimiento(join(ensayo, "data"));
+    const fuera = instantaneasSinAprobacion(join(ensayo, "data"));
+    if (fuera.length) throw new Error(`el ensayo no pasa:\n${fuera.join("\n")}`);
   } finally {
     rmSync(ensayo, { recursive: true, force: true });
   }

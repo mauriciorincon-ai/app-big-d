@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { MarcaVigencia } from "@/components/atlas/MarcaVigencia";
 import type { ItemProsContras, Motivo, PesoCaso, Resultado } from "@/engine";
+import { POR_PAGINA } from "@/lib/atlas/estado-lado";
 import { plantilla, plural } from "@/lib/atlas/plantilla";
 import { brecha, decimasDe, lista, peso, puntos } from "@/lib/caso/formato";
 import type { Idioma, Textos } from "@/lib/i18n";
@@ -248,7 +249,7 @@ export function ProsContrasVista({ r, t, nombres, max, anclas }: { r: Evaluado; 
   const porId = new Map(r.pros_contras.map((p) => [p.plataforma_id, p]));
   return (
     <>
-      <div className={`kit-grid${r.orden.length >= 3 ? " tres" : ""}`}>
+      <div className={`kit-grid${r.orden.length >= POR_PAGINA ? " tres" : ""}`}>
         {r.orden.map(({ plataforma_id }) => {
           const pc = porId.get(plataforma_id)!;
           return (

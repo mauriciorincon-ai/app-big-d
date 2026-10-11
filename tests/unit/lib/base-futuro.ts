@@ -2,12 +2,13 @@
 // Este), una evidencia aprobada por plataforma y criterio con los puntajes de la maqueta, la instantánea que las congela
 // y el caso del Hospital Ficticio del Futuro aprobado con su sello. Toma de data/ lo que es común (gramática,
 // capacidades, criterios, escala, convenciones) para no copiarlo a mano. Fuentes example.org (regla 12).
-import { cpSync, mkdirSync, readdirSync, writeFileSync } from "node:fs";
+import { cpSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { stringify } from "yaml";
+import { parse, stringify } from "yaml";
 import { cargarConocimiento } from "@/lib/datos/cargar-conocimiento";
 import type { Caso } from "@/lib/datos/conocimiento";
 import { huellaCaso, nuevaInstantanea } from "@/lib/datos/instantanea";
+import { huella } from "@/lib/investigador/huella";
 import { CRITERIOS, PESOS, PUNTAJES } from "../nucleo/lib/futuro";
 
 const NOMBRES: Record<string, [string, string]> = {
@@ -98,6 +99,16 @@ export function armarBaseFuturo(dir: string, { atlas = false, raiz = process.cwd
   for (const [p, ss] of Object.entries(PUNTAJES)) {
     mkdirSync(join(dir, "evidencias", p), { recursive: true });
     CRITERIOS.forEach((c, i) => escribir(join(dir, "evidencias", p, `evi-${p}-${c.slice(5)}.yaml`), evidenciaFicticia(p, c, ss[i]!)));
+  }
+  // La revisión de cada plataforma: la huella de cada evidencia, como la escribe la aprobación (D-S3-10, AU-S3-01).
+  mkdirSync(join(dir, "revisiones", "evidencias"), { recursive: true });
+  for (const p of Object.keys(PUNTAJES)) {
+    const evidencias = readdirSync(join(dir, "evidencias", p))
+      .sort()
+      .map((f) => parse(readFileSync(join(dir, "evidencias", p, f), "utf8")) as { id: string })
+      .map((e) => ({ id: e.id, huella: huella(e) }));
+    const linea = { fecha: "2026-09-21", propuesta: `propuestas/2026-09-20-${p}-evidencias`, aprobadas: evidencias.map((_, i) => `A-${i + 1}`), rechazadas: [], evidencias };
+    writeFileSync(join(dir, "revisiones", "evidencias", `${p}.jsonl`), `${JSON.stringify(linea)}\n`);
   }
   const inst = nuevaInstantanea(cargarConocimiento(dir), FECHA_INSTANTANEA, []);
   mkdirSync(join(dir, "instantaneas"));

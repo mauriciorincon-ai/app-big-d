@@ -4,10 +4,13 @@
 // mano, una evidencia que nadie aprobó o una aprobada que falta lo rompen. La base de ensayo se aprueba con los scripts
 // reales sobre una raíz temporal.
 import { spawnSync } from "node:child_process";
-import { readFileSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { evidenciasSinAprobacion } from "@/lib/investigador/aprobados";
+import { cargarConocimiento } from "@/lib/datos/cargar-conocimiento";
+import { huellaDe } from "@/lib/datos/instantanea";
+import { evidenciasSinAprobacion, instantaneasSinAprobacion } from "@/lib/investigador/aprobados";
 import { PLATAFORMA } from "./investigador/lib/muestra";
 import { raizDeEvidencias } from "./investigador/lib/muestra-evidencias";
 
@@ -54,6 +57,32 @@ describe("las evidencias de la base son las aprobadas", () => {
     } finally {
       rmSync(archivo("ingesta-2"), { force: true });
       writeFileSync(ruta, antes);
+    }
+  });
+});
+
+// AU-S3-01: el caso evalúa la instantánea. Su huella solo prueba que no cambió después de congelarse; esta comprobación
+// prueba que lo congelado es lo que aprobó una persona.
+describe("las instantáneas congelan solo lo aprobado", () => {
+  it("las de data/ del repo: cada evidencia congelada tiene la huella de una revisión", () => {
+    expect(readdirSync("data/instantaneas").filter((f) => f.endsWith(".json")).length).toBeGreaterThan(0);
+    expect(instantaneasSinAprobacion("data")).toEqual([]);
+  });
+  it("un puntaje cambiado en la instantánea, con su huella recalculada, pasa el cargador y no esta comprobación", () => {
+    const copia = mkdtempSync(join(tmpdir(), "bigd-inst-aprob-"));
+    try {
+      cpSync("data", join(copia, "data"), { recursive: true });
+      const [f] = readdirSync(join(copia, "data/instantaneas")).filter((x) => x.endsWith(".json")).sort();
+      const ruta = join(copia, "data/instantaneas", f!);
+      const inst = JSON.parse(readFileSync(ruta, "utf8"));
+      const e = inst.contenido.evidencias[0];
+      e.puntaje = e.puntaje === 4 ? 3 : e.puntaje + 1;
+      inst.huella = huellaDe(inst.contenido);
+      writeFileSync(ruta, `${JSON.stringify(inst, null, 2)}\n`);
+      expect(() => cargarConocimiento(join(copia, "data"))).not.toThrow();
+      expect(instantaneasSinAprobacion(join(copia, "data"))).toEqual([expect.stringContaining(`data/instantaneas/${f} · contenido.evidencias[0] · ${e.id} · no es una versión que aprobó una persona`)]);
+    } finally {
+      rmSync(copia, { recursive: true, force: true });
     }
   });
 });

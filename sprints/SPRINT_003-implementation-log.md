@@ -824,6 +824,26 @@ del caso fue su único ajuste).
   2m51s · `diagramador` ubuntu 1m49s y macOS 1m33s · `e2e` 10m15s · `lighthouse` 12m24s · Vercel. Los cinco checks con
   conclusión propia `success`.
 
+## Cierre mínimo (directiva del usuario 2026-10-06, aplicada el 2026-10-10)
+
+- **La orden.** El usuario, el 2026-10-10: «Las fases 1–3 están completas y la CI del último push está en verde.
+  Aplica la directiva 2026-10-06 de la orden (sin fase 4, cierre en modo mínimo): auditoría de una pasada, críticos y
+  altos pagados, resumen ≤ 40 líneas, PR normal». La directiva está en la cabecera de la orden (planeadora).
+- **Lo que queda abierto de la fase 3.** La parada de DECISIÓN del perfil no ocurrió: se hizo la pregunta 1 (pesos) el
+  2026-10-05 y no hubo respuesta. El perfil sigue en borrador y el script de aprobación no tiene modo caso. El summary
+  lo declara en «Qué no».
+- **Fase 0.** Se hizo el 2026-10-04, antes de la directiva, y se queda en la rama.
+- **Auditoría** (`sprints/SPRINT_003-auditoria.md`). Una pasada, con un subagente independiente y solo lectura, sobre
+  el diff `origin/main...HEAD`. Resultado: 0 críticos, 2 altos (pagados), 2 medios y 7 bajos (deuda con su sitio).
+  - Al escribir el informe, el candado bloqueó el comando porque citaba una variante del nombre del script. Se anotó
+    junto a AU-S3-03.
+- **Corridas tras los pagos (2026-10-10, locales).**
+  - `pnpm typecheck` y `pnpm lint` limpios.
+  - `pnpm test`: 87 archivos, 1690 pruebas en verde.
+  - `pnpm build`: 52 páginas con CSP.
+  - `E2E_PUERTO=3147 pnpm test:e2e`: 898 en verde y 9 saltadas.
+  - Los tres rojos de AU-S3-01 están en la auditoría.
+
 ## Desviación del plan
 
 Los hechos 1–10 y las decisiones D-S3-01…18 del plan aprobado (`Reglas del motor` incluidas) son la desviación de

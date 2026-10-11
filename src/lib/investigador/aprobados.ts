@@ -77,3 +77,28 @@ export function evidenciasSinAprobacion(dir: string): string[] {
   }
   return fallas;
 }
+
+/**
+ * ¿Cada evidencia congelada en una instantánea es una versión que aprobó una persona (AU-S3-01)? El caso evalúa la
+ * instantánea, no la base viva, y la huella de la instantánea solo prueba que su contenido no cambió después de
+ * congelarse: no que lo congelado se aprobó. Cada evidencia de cada instantánea tiene que tener la huella que guardó
+ * alguna línea de data/revisiones/evidencias/ (cualquiera: una instantánea vieja congela una versión ya reemplazada).
+ * `dir` = la carpeta de datos. Devuelve las fallas.
+ */
+export function instantaneasSinAprobacion(dir: string): string[] {
+  const aprobadas = new Set<string>();
+  const dirRev = join(dir, "revisiones", "evidencias");
+  if (existsSync(dirRev))
+    for (const f of readdirSync(dirRev).filter((x) => x.endsWith(".jsonl")))
+      for (const l of readFileSync(join(dirRev, f), "utf8").split("\n").filter(Boolean))
+        for (const e of esquemaRevisionEvidencias.parse(JSON.parse(l)).evidencias) aprobadas.add(`${e.id} ${e.huella}`);
+  const fallas: string[] = [];
+  const dirInst = join(dir, "instantaneas");
+  for (const f of existsSync(dirInst) ? readdirSync(dirInst).filter((x) => x.endsWith(".json")).sort() : []) {
+    const inst = JSON.parse(readFileSync(join(dirInst, f), "utf8")) as { contenido?: { evidencias?: { id: string }[] } };
+    (inst.contenido?.evidencias ?? []).forEach((e, i) => {
+      if (!aprobadas.has(`${e.id} ${huella(e)}`)) fallas.push(`data/instantaneas/${f} · contenido.evidencias[${i}] · ${e.id} · no es una versión que aprobó una persona: una instantánea congela solo lo aprobado`);
+    });
+  }
+  return fallas;
+}
