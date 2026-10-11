@@ -15,8 +15,11 @@
 // Con --maqueta, además fotografía docs/diseno/<pantalla>.html en los mismos encuadres y compone cada par
 // lado a lado (producto | maqueta) para el gate de FIDELIDAD. Las capturas van a --salida, fuera del repo.
 //
+// Con --arbol out-sembrada fotografía el sitio de la base sembrada (D-S3-14; scripts/datos/construir-sembrada.mjs): los
+// estados que el dato real aún no tiene. Solo esos dos árboles del repo; el arnés declara cuál sirve al arrancar.
+//
 // Uso: node scripts/capturar-producto.mjs --salida <dir> [--rutas /es/atlas/x,/en] [--anchos 380,1280]
-//      [--temas oscuro,claro] [--maqueta] [--solo-medir]
+//      [--temas oscuro,claro] [--maqueta] [--solo-medir] [--arbol out|out-sembrada]
 import { spawn } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { createServer } from "node:net";
@@ -25,11 +28,16 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { chromium } from "@playwright/test";
 
 const raiz = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const arbol = join(raiz, "out");
 const arg = (n, def) => {
   const i = process.argv.indexOf(`--${n}`);
   return i < 0 ? def : process.argv[i + 1];
 };
+const nombreArbol = arg("arbol", "out");
+if (!["out", "out-sembrada"].includes(nombreArbol)) {
+  console.error(`capturar-producto: --arbol ${nombreArbol} no es un árbol del producto (out u out-sembrada). Aborto.`);
+  process.exit(1);
+}
+const arbol = join(raiz, nombreArbol);
 const bandera = (n) => process.argv.includes(`--${n}`);
 
 const salida = arg("salida");
@@ -70,6 +78,10 @@ const MAQUETA = [
   [/^\/(es|en)\/comparar$/, "lado-a-lado"],
   // Las versiones de un mapa: el estado «diferencias entre versiones» de la misma maqueta (D-S2-08).
   [/^\/(es|en)\/atlas\/[^/]+\/versiones$/, "lado-a-lado"],
+  // S3: la base, el perfil y la comparación del caso.
+  [/^\/(es|en)\/base$/, "base"],
+  [/^\/(es|en)\/casos\/[^/]+$/, "perfil"],
+  [/^\/(es|en)\/casos\/[^/]+\/comparacion$/, "comparacion"],
 ];
 
 // Puerto libre y servidor propio: jamás se reusa un servidor que ya estuviera escuchando.
@@ -442,14 +454,76 @@ async function interactuar(pagina, ruta, tema, ancho, clave) {
     cambio(pagina.url().endsWith(destino), `${sel} no llevó a ${destino}`);
   }
 
-  // Lectura plegada: el resumen la abre.
-  const resumen = pagina.locator("details.lectura-seccion > summary");
-  if (await resumen.count()) {
-    await marcar(resumen);
-    const abierta = async () => pagina.locator("details.lectura-seccion").evaluate((d) => d.open);
+  // Lecturas plegadas (una o varias: el perfil trae el contexto y los requisitos): cada resumen abre la suya.
+  const resumenes = pagina.locator("details.lectura-seccion > summary");
+  await marcar(resumenes);
+  for (let i = 0; i < (await resumenes.count()); i++) {
+    const r = resumenes.nth(i);
+    const abierta = () => r.evaluate((s) => s.parentElement.open);
     const antes = await abierta();
-    await resumen.click();
-    cambio((await abierta()) !== antes, "el resumen de la lectura no la abrió");
+    await r.click();
+    cambio((await abierta()) !== antes, `el resumen «${(await r.textContent())?.trim()}» no abrió su lectura`);
+  }
+
+  // Marcos de tabla (S3): una tabla ancha se desliza dentro de su marco, que recibe el foco.
+  const marcos = pagina.locator('.tabla-marco[tabindex="0"]').filter({ visible: true });
+  await marcar(marcos);
+  for (let i = 0; i < (await marcos.count()); i++) {
+    const m = marcos.nth(i);
+    await m.focus();
+    cambio(await m.evaluate((e) => e === document.activeElement), `el marco de tabla ${i + 1} no recibe el foco`);
+  }
+
+  // Filtros (S3): cada lista desplegable de `.filtros` cambia lo que muestra la página (la base oculta evidencias; la
+  // comparación cambia el criterio que se mueve y lo guarda en la URL).
+  const filtros = pagina.locator(".filtros select");
+  await marcar(filtros);
+  for (let i = 0; i < (await filtros.count()); i++) {
+    const f = filtros.nth(i);
+    const n = await f.evaluate((s) => s.options.length);
+    if (n < 2) continue;
+    // Una opción puede no cambiar nada con este dato (todas aprobadas: «Solo aprobadas»); alguna otra tiene que hacerlo.
+    const vista = () => pagina.locator("main").evaluate((m) => m.innerText + location.search);
+    const antes = await vista();
+    const actual = await f.evaluate((s) => s.selectedIndex);
+    let cambiado = false;
+    for (let k = 0; k < n && !cambiado; k++) {
+      if (k === actual) continue;
+      await f.selectOption({ index: k });
+      await pagina.waitForTimeout(80);
+      cambiado = (await vista()) !== antes;
+    }
+    cambio(cambiado, `ninguna opción del filtro ${i + 1} cambió nada`);
+  }
+
+  // El peso que se mueve (S3): la flecha cambia el peso mostrado y, al soltar, la URL; la simulación del peso explorado
+  // corre en el Worker y se puede cancelar (si todavía corre cuando se mira).
+  const control = pagina.locator("#peso-explorado");
+  if (await control.count()) {
+    await marcar(control);
+    const salida = pagina.locator("output[for=peso-explorado]");
+    const antes = await salida.textContent();
+    await control.focus();
+    await pagina.keyboard.press("ArrowLeft");
+    cambio((await salida.textContent()) !== antes, "la flecha no movió el peso explorado");
+    await pagina.waitForURL((u) => /[?&]t=\d+/.test(u.search), { timeout: 3000 }).catch(() => {});
+    cambio(/[?&]t=\d+/.test(new URL(pagina.url()).search), "mover el peso no lo guardó en la URL");
+    await pagina.locator('[data-simulacion="curso"], [data-simulacion="lista"]').first().waitFor({ timeout: 10_000 }).catch(() => {});
+    const cancelar = pagina.locator('[data-simulacion="curso"] button');
+    if (await cancelar.isVisible()) {
+      await marcar(cancelar);
+      await cancelar.click();
+      cambio(await pagina.locator("#rob .campo-aviso[role=status]").isVisible(), "«Cancelar» no detuvo la simulación");
+    } else cambio(await pagina.locator('[data-simulacion="lista"]').isVisible(), "la simulación del peso explorado no pintó la robustez");
+  }
+
+  // «Aprobar perfil» deshabilitado (un perfil en borrador) dice por qué, a su lado.
+  const deshabilitados = pagina.locator(".aprobar-perfil button:disabled");
+  await marcar(deshabilitados);
+  for (let i = 0; i < (await deshabilitados.count()); i++) {
+    const b = deshabilitados.nth(i);
+    const razon = await b.evaluate((e) => e.parentElement?.querySelector(".campo-aviso")?.textContent?.trim() ?? "");
+    cambio(razon.length > 0, `«${(await b.textContent())?.trim()}» está deshabilitado sin decir por qué`);
   }
 
   // Al final de los clics (la hoja modal tapa el resto en teléfono): una ficha abierta para la captura de

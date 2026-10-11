@@ -1,0 +1,99 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-fabric-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/fabric.jsonl).
+id: evi-fabric-ia
+plataforma_id: fabric
+capacidad_id: cap-ia
+afirmacion:
+  es: "El agente de datos de Fabric, disponible de forma general, responde preguntas en lenguaje natural con las credenciales y los permisos de quien pregunta, y solo lee: sus conexiones a las fuentes son de solo lectura."
+  en: "The Fabric data agent, generally available, answers plain-language questions with the asker's credentials and permissions, and only reads: its connections to the sources are read-only."
+componentes:
+  - agente-datos
+madurez: disponible-general
+puntaje: 2
+justificacion_puntaje:
+  es: "2 y no 3: el agente no admite por ahora idiomas distintos del inglés, una limitación importante para un hospital que pregunta en español; además, cada respuesta trae como máximo 25 filas y 25 columnas, y si la capacidad está fuera de la Unión Europea y de Estados Unidos, usarlo exige permitir que los datos enviados a Azure OpenAI se procesen fuera de su región. 2 y no 1: el agente es nativo, sin herramientas de terceros, está disponible de forma general y respeta los permisos de cada persona."
+  en: "2, not 3: the agent does not support languages other than English for now, a major limitation for a hospital that asks in Spanish; also, each answer returns at most 25 rows and 25 columns, and if the capacity is outside the EU and the US, using it requires allowing data sent to Azure OpenAI to be processed outside its region. 2, not 1: the agent is native, with no third-party tools, generally available, and honors each person's permissions."
+esencial: true
+fuentes:
+  - url: https://learn.microsoft.com/en-us/fabric/data-science/concept-data-agent
+    titulo: Fabric data agent creation - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Data agent in Microsoft Fabric is a generally available feature that enables you to build your own conversational
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: e9d5d64c614d5b5aca657a5a6be03b88748e534062d96e8428af4fcaf2041229
+  - url: https://learn.microsoft.com/en-us/fabric/data-science/concept-data-agent
+    titulo: Fabric data agent creation - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: It uses the requesting user's credentials and permissions to enforce least-privilege access, ensuring that each interaction only reaches data the user is authorized to view.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: e9d5d64c614d5b5aca657a5a6be03b88748e534062d96e8428af4fcaf2041229
+  - url: https://learn.microsoft.com/en-us/fabric/data-science/concept-data-agent
+    titulo: Fabric data agent creation - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: The Fabric data agent strictly enforces read-only access, maintaining read-only data connections to all data sources.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: e9d5d64c614d5b5aca657a5a6be03b88748e534062d96e8428af4fcaf2041229
+  - url: https://learn.microsoft.com/en-us/fabric/data-science/concept-data-agent
+    titulo: Fabric data agent creation - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: The Fabric data agent doesn't currently support non-English languages.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: e9d5d64c614d5b5aca657a5a6be03b88748e534062d96e8428af4fcaf2041229
+  - url: https://learn.microsoft.com/en-us/fabric/data-science/concept-data-agent
+    titulo: Fabric data agent creation - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: At present, responses are capped at a maximum of 25 rows and 25 columns.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: e9d5d64c614d5b5aca657a5a6be03b88748e534062d96e8428af4fcaf2041229
+  - url: https://learn.microsoft.com/en-us/fabric/data-science/data-agent-tenant-settings
+    titulo: Configure Fabric data agent tenant settings - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Data sent to Azure OpenAI can be processed outside your capacity's geographic region, compliance boundary, or national cloud instance
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 171e8dd252b4e253f2cc2b3102306bdd125518e8fdd77bc8bda880fe4c25e8b4
+  - url: https://learn.microsoft.com/en-us/fabric/data-science/data-agent-tenant-settings
+    titulo: Configure Fabric data agent tenant settings - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Required for customers using Fabric data agent whose capacity's geographic region is outside of the EU data boundary and the US.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 171e8dd252b4e253f2cc2b3102306bdd125518e8fdd77bc8bda880fe4c25e8b4
+fecha_verificacion: 2026-10-06
+limitaciones:
+  - es: El agente no admite por ahora idiomas distintos del inglés.
+    en: The agent does not support languages other than English for now.
+  - es: Cada respuesta trae como máximo 25 filas y 25 columnas.
+    en: Each answer returns at most 25 rows and 25 columns.
+  - es: Con la capacidad fuera de la Unión Europea y de Estados Unidos, hay que permitir que los datos enviados a Azure OpenAI se procesen fuera de su región.
+    en: With the capacity outside the EU and the US, data sent to Azure OpenAI has to be allowed to be processed outside its region.
+origen: agente-investigador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

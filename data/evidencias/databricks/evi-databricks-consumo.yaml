@@ -1,0 +1,79 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-databricks-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/databricks.jsonl).
+id: evi-databricks-consumo
+plataforma_id: databricks
+capacidad_id: cap-consumo
+afirmacion:
+  es: Las vistas de métricas definen cada indicador una sola vez para tableros, consultas y agentes; los tableros AI/BI se comparten aun con quien no entra al espacio de trabajo, y Power BI se conecta a los SQL warehouses.
+  en: Metric views define each indicator once for dashboards, queries and agents; AI/BI dashboards can be shared even with people outside the workspace, and Power BI connects to SQL warehouses.
+componentes:
+  - vistas-metricas
+  - tableros-aibi
+  - herramientas-bi
+  - sql-warehouse
+madurez: disponible-general
+puntaje: 3
+justificacion_puntaje:
+  es: "3 y no 4: Microsoft retiró del conector de Power BI la opción que leía las vistas de métricas, así que leer los indicadores definidos desde Power BI exige otro camino. 3 y no 2: la capa semántica, los tableros y el conector están disponibles de forma general."
+  en: "3, not 4: Microsoft removed the Power BI connector option that read metric views, so reading the defined indicators from Power BI takes another route. 3, not 2: the semantic layer, the dashboards and the connector are generally available."
+esencial: true
+fuentes:
+  - url: https://docs.databricks.com/aws/en/metric-views/
+    titulo: Unity Catalog metric views | Databricks on AWS
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: They provide a centralized way to define and manage business metrics by separating measure definitions from the fields (also called dimensions) used to group, filter, and aggregate them, so you can define metrics once and query them at runtime.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 09a12ab0ac16b361f332efcf3d14c49e5e332102a031f08d198dc7c6e2baeef8
+  - url: https://www.databricks.com/blog/redefining-semantics-data-layer-future-bi-and-ai
+    titulo: Announcing General Availability and Open Sourcing of Unity Catalog Business Semantics | Databricks Blog
+    tipo: oficial
+    fecha_publicacion: 2026-04-02
+    conflicto_de_interes: propio-fabricante
+    cita: Define governed metrics, dimensions, and rules once at the data layer so every dashboard, SQL query, notebook, and AI agent works from the same trusted definitions.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: cae24a882d3dd030afbeda246393ca15e8123e2111edaaa5e0525a11c798b996
+  - url: https://docs.databricks.com/aws/en/dashboards/
+    titulo: Dashboards | Databricks on AWS
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: When published, your dashboards can be shared with anyone registered to your Databricks account, even if they don't have access to the workspace.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: f07fa6aeec23a22f365dc4a7285e607f5e38962c61aaa7dc677566f6265256c8
+  - url: https://docs.databricks.com/aws/en/partners/bi/power-bi/
+    titulo: Power BI with Databricks | Databricks on AWS
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Connect Power BI Desktop to Databricks clusters and SQL warehouses using Partner Connect or manual configuration.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 14d315c470b1128fbf27ed45689487a059550bf69dc775fee6cbf271c30e69aa
+  - url: https://docs.databricks.com/aws/en/partners/bi/power-bi/
+    titulo: Power BI with Databricks | Databricks on AWS
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Microsoft has removed the Metric View BI Compatibility Mode option from the Databricks connector for Power BI.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 14d315c470b1128fbf27ed45689487a059550bf69dc775fee6cbf271c30e69aa
+fecha_verificacion: 2026-10-06
+limitaciones:
+  - es: Microsoft retiró del conector de Power BI la opción de compatibilidad con las vistas de métricas.
+    en: Microsoft removed the metric view compatibility option from the Power BI connector.
+origen: agente-investigador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

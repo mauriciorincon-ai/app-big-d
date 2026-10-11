@@ -44,6 +44,10 @@ function mensaje(e: ErrorEsquema): string {
       return `fuera de rango (${e.keyword === "minimum" ? "mínimo" : "máximo"} ${String(p.limit)})`;
     case "uniqueItems":
       return `tiene elementos repetidos`;
+    case "const":
+      return `debe ser ${JSON.stringify(p.allowedValue)}`;
+    case "anyOf":
+      return `no cumple ninguna de las formas admitidas`;
     default:
       return `${e.keyword}: ${e.message ?? "no cumple el esquema"}`;
   }
@@ -99,9 +103,31 @@ function reglaGramatica(s: string[], gramatica: Registro): { regla: string; id: 
   return { regla, id: (regla === "G2" ? idEn(gramatica[raiz], i) : undefined) ?? propio };
 }
 
+/**
+ * Las formas alternativas (`anyOf`, 0.5.0: `fuente` url | código, `condicion` en tres formas): Ajv con `allErrors`
+ * reporta el `anyOf` y los errores de CADA forma, y una fuente sin título daba cinco entradas. Se queda la forma más
+ * cercana —la de menos errores; empate, la primera declarada— y se descartan las demás y el `anyOf` mismo.
+ */
+export function formaMasCercana(errores: ErrorEsquema[]): ErrorEsquema[] {
+  let lista = errores;
+  for (const alt of errores.filter((e) => e.keyword === "anyOf")) {
+    const prefijo = `${alt.schemaPath}/`;
+    const deRama = (e: ErrorEsquema) => (e.schemaPath.startsWith(prefijo) && e.instancePath.startsWith(alt.instancePath) ? Number(e.schemaPath.slice(prefijo.length).split("/")[0]) : -1);
+    const porRama = new Map<number, number>();
+    for (const e of lista) {
+      const r = deRama(e);
+      if (r >= 0) porRama.set(r, (porRama.get(r) ?? 0) + 1);
+    }
+    if (porRama.size === 0) continue;
+    const elegida = [...porRama.entries()].sort((a, b) => a[1] - b[1] || a[0] - b[0])[0]![0];
+    lista = lista.filter((e) => e !== alt && (deRama(e) < 0 || deRama(e) === elegida));
+  }
+  return lista;
+}
+
 function traducir(errores: ErrorEsquema[] | null | undefined, doc: "gramatica" | "mapa", datos: unknown): Entrada[] {
   const registro = (typeof datos === "object" && datos !== null ? datos : {}) as Registro;
-  return (errores ?? []).map((e) => {
+  return formaMasCercana(errores ?? []).map((e) => {
     const s = rutaDelError(e);
     const { regla, id } = doc === "mapa" ? reglaMapa(s, e, registro) : reglaGramatica(s, registro);
     return { doc, fase: 1, regla, ruta: rutaDe(...s), id, mensaje: mensaje(e) };

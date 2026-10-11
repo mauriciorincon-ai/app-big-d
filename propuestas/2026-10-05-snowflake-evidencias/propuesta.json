@@ -1,0 +1,951 @@
+{
+  "version": 1,
+  "tipo": "evidencias",
+  "plataforma": "snowflake",
+  "fecha": "2026-10-05",
+  "origen": "agente-investigador",
+  "ejecucion": {
+    "herramienta": "claude-code",
+    "modelo": "claude-opus-5-5",
+    "reintentos": 1
+  },
+  "evidencias": [
+    {
+      "id": "A-1",
+      "evidencia": {
+        "id": "evi-snowflake-ingesta",
+        "plataforma_id": "snowflake",
+        "capacidad_id": "cap-ingesta",
+        "afirmacion": {
+          "es": "Openflow, disponible de forma general, trae los datos de bases relacionales con captura de cambios: primero copia todo y después sigue los cambios, casi en tiempo real o por horario. Snowpipe carga los archivos nuevos en minutos y Snowpipe Streaming deja los registros listos para consultar desde unos 5 segundos.",
+          "en": "Openflow, generally available, brings in data from relational databases with change data capture: it copies everything first and then follows the changes, in near real time or on a schedule. Snowpipe loads new files within minutes, and Snowpipe Streaming makes records queryable in as little as about 5 seconds."
+        },
+        "componentes": ["openflow", "snowpipe", "snowpipe-streaming"],
+        "madurez": "disponible-general",
+        "puntaje": 3,
+        "justificacion_puntaje": {
+          "es": "3 y no 4: la réplica tiene bordes documentados: en PostgreSQL, una tabla sin clave de identidad solo replica inserciones (actualizar y borrar exige esa clave), y el conector solo se autentica con usuario y contraseña. 3 y no 2: Openflow, la captura de cambios de SQL Server, la carga continua de archivos y la ingesta en segundos son nativas y están disponibles de forma general.",
+          "en": "3, not 4: replication has documented edges: in PostgreSQL, a table without an identity key only replicates inserts (updates and deletes need that key), and the connector only authenticates with a username and password. 3, not 2: Openflow, SQL Server change capture, continuous file loading and ingestion within seconds are native and generally available."
+        },
+        "esencial": true,
+        "fuentes": [
+          {
+            "url": "https://docs.snowflake.com/en/release-notes/2025/other/2025-05-30-openflow",
+            "titulo": "May 30, 2025: Snowflake Openflow (General availability) | Snowflake Documentation",
+            "tipo": "oficial",
+            "fecha_publicacion": "2025-05-30",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "With this release, we are pleased to announce the general availability of Snowflake Openflow."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/data-integration/openflow/connectors/sql-server-cdc/about",
+            "titulo": "About Openflow Connector for SQL Server (CDC) | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "The Openflow Connector for SQL Server (CDC) connects a SQL Server database instance to Snowflake and replicates data from selected tables in near real-time or on a schedule."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/release-notes/2026/other/2026-08-05-openflow-sql-server-cdc-ga",
+            "titulo": "Aug 5, 2026: Openflow Connector for SQL Server (CDC) (General availability) | Snowflake Documentation",
+            "tipo": "oficial",
+            "fecha_publicacion": "2026-08-05",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Openflow Connector for SQL Server (CDC) (General availability)"
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/data-integration/openflow/connectors/postgres/about",
+            "titulo": "About Openflow Connector for PostgreSQL | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "The connector copies all data available in the source table into the destination table."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/data-integration/openflow/connectors/postgres/about",
+            "titulo": "About Openflow Connector for PostgreSQL | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Tables with no supported identity key configuration can replicate INSERT operations only."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/data-integration/openflow/connectors/postgres/about",
+            "titulo": "About Openflow Connector for PostgreSQL | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "The connector supports only username and password authentication with PostgreSQL."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/data-load-snowpipe-intro",
+            "titulo": "Snowpipe | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "This means you can load data from files in micro-batches, making it available to users within minutes"
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/snowpipe-streaming/data-load-snowpipe-streaming-overview",
+            "titulo": "Snowpipe Streaming | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "As low as 5 seconds ingest-to-queryable latency"
+          }
+        ],
+        "limitaciones": [
+          {
+            "es": "En PostgreSQL, una tabla sin clave de identidad solo replica inserciones; actualizar y borrar exige esa clave.",
+            "en": "In PostgreSQL, a table without an identity key only replicates inserts; updates and deletes need that key."
+          },
+          {
+            "es": "El conector de PostgreSQL solo admite autenticación con usuario y contraseña.",
+            "en": "The PostgreSQL connector only supports username and password authentication."
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-2",
+      "evidencia": {
+        "id": "evi-snowflake-almacenamiento",
+        "plataforma_id": "snowflake",
+        "capacidad_id": "cap-almacenamiento",
+        "afirmacion": {
+          "es": "Por defecto, Snowflake guarda los datos en su propio formato interno. Las tablas Apache Iceberg, disponibles de forma general, guardan una sola copia en formato abierto, y otros motores la leen y la escriben a través de Horizon Catalog.",
+          "en": "By default, Snowflake stores data in its own internal format. Apache Iceberg tables, generally available, keep a single copy in an open format, and other engines read and write it through Horizon Catalog."
+        },
+        "componentes": [
+          "tablas-snowflake",
+          "tablas-iceberg",
+          "horizon-catalog"
+        ],
+        "madurez": "disponible-general",
+        "puntaje": 3,
+        "justificacion_puntaje": {
+          "es": "3 y no 4: el formato abierto no es el predeterminado: las tablas de Snowflake guardan los datos en un formato interno y el formato abierto hay que elegirlo; además, desde un motor externo no se puede crear una tabla a partir de una consulta (CTAS). 3 y no 2: las tablas Iceberg están disponibles de forma general y otros motores las leen y escriben sin copiarlas, por una interfaz abierta y sin herramientas de terceros.",
+          "en": "3, not 4: the open format is not the default: Snowflake tables keep data in an internal format, and the open format has to be chosen; also, an external engine cannot create a table from a query (CTAS). 3, not 2: Iceberg tables are generally available, and other engines read and write them without copying, through an open interface and with no third-party tools."
+        },
+        "esencial": true,
+        "fuentes": [
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/intro-key-concepts",
+            "titulo": "Snowflake key concepts and architecture | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "reorganizes that data into its internally optimized, compressed, columnar format"
+          },
+          {
+            "url": "https://docs.snowflake.com/en/release-notes/2024/other/2024-06-10-iceberg-tables",
+            "titulo": "June 10, 2024 - Apache Iceberg tables - General Availability | Snowflake Documentation",
+            "tipo": "oficial",
+            "fecha_publicacion": "2024-06-10",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "We are pleased to announce the general availability of Apache Iceberg"
+          },
+          {
+            "url": "https://docs.snowflake.com/en/release-notes/2024/other/2024-06-10-iceberg-tables",
+            "titulo": "June 10, 2024 - Apache Iceberg tables - General Availability | Snowflake Documentation",
+            "tipo": "oficial",
+            "fecha_publicacion": "2024-06-10",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "They are ideal for maintaining a single copy of data with interoperability across a variety of compute engines."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/tables-iceberg-access-using-external-query-engine-snowflake-horizon",
+            "titulo": "Access Apache Iceberg tables with an external engine through Snowflake Horizon Catalog | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "You can use Horizon Catalog, which is available in all your existing Snowflake accounts, to read and write to Snowflake-managed Iceberg tables with external query engines."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/tables-iceberg-access-using-external-query-engine-snowflake-horizon",
+            "titulo": "Access Apache Iceberg tables with an external engine through Snowflake Horizon Catalog | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "CREATE TABLE AS SELECT (CTAS) from an external engine is not supported"
+          }
+        ],
+        "limitaciones": [
+          {
+            "es": "Las tablas de Snowflake guardan los datos en un formato interno; solo las tablas Iceberg usan formato abierto.",
+            "en": "Snowflake tables keep data in an internal format; only Iceberg tables use an open format."
+          },
+          {
+            "es": "Desde un motor externo no se admite crear una tabla a partir de una consulta (CTAS).",
+            "en": "Creating a table from a query (CTAS) is not supported from an external engine."
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-3",
+      "evidencia": {
+        "id": "evi-snowflake-transformacion",
+        "plataforma_id": "snowflake",
+        "capacidad_id": "cap-transformacion",
+        "afirmacion": {
+          "es": "Las tablas dinámicas mantienen al día el resultado de una consulta y se actualizan en el orden de sus dependencias; las tareas reintentan las ejecuciones que fallan, y las funciones de métricas de datos miden la calidad y reportan lo que no cumple.",
+          "en": "Dynamic tables keep a query's result up to date and refresh in dependency order; tasks retry failed runs, and data metric functions measure quality and report what fails."
+        },
+        "componentes": ["tablas-dinamicas", "tareas"],
+        "madurez": "disponible-general",
+        "puntaje": 3,
+        "justificacion_puntaje": {
+          "es": "3 y no 4: las reglas de calidad miden y reportan las violaciones para que alguien actúe, y el monitoreo de calidad exige la edición Enterprise; además, las tablas dinámicas no sirven si los datos deben estar frescos en menos de 60 segundos. 3 y no 2: las tablas dinámicas, las tareas con reintento y las funciones de métricas de datos son nativas y están disponibles de forma general.",
+          "en": "3, not 4: quality rules measure and report violations so that someone acts on them, and quality monitoring requires Enterprise Edition; also, dynamic tables do not suit data that must be fresher than 60 seconds. 3, not 2: dynamic tables, tasks with retries and data metric functions are native and generally available."
+        },
+        "esencial": true,
+        "fuentes": [
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/dynamic-tables/overview",
+            "titulo": "Dynamic tables | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "A dynamic table materializes the results of a SELECT query and keeps them up to date."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/dynamic-tables/overview",
+            "titulo": "Dynamic tables | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Snowflake refreshes tables in dependency order so that downstream tables always see a consistent view of their upstream inputs."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/dynamic-tables/overview",
+            "titulo": "Dynamic tables | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Require data fresher than 60 seconds (the minimum target lag) or strictly guaranteed refresh timing."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/release-notes/2024/other/2024-04-29-dynamic-tables",
+            "titulo": "April 29, 2024 - Dynamic Tables - General Availability | Snowflake Documentation",
+            "tipo": "oficial",
+            "fecha_publicacion": "2024-04-29",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "With this release, we are pleased to announce the general availability of dynamic tables, which are a new table type for continuous processing pipelines."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/tasks-intro",
+            "titulo": "Introduction to tasks | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "If any task completes in a FAILED state, Snowflake can automatically retry the task."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/data-quality-intro",
+            "titulo": "Introduction to data quality and data metric functions | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Return values that fail the check are reported as expectation violations so you can take appropriate action."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/data-quality-intro",
+            "titulo": "Introduction to data quality and data metric functions | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Data Quality Monitoring requires Enterprise Edition."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/release-notes/2024/8_28",
+            "titulo": "July 29-August 01, 2024 - 8.28 Release Notes | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "With this release, Snowflake is pleased to announce the general availability of Data Quality Monitoring with data metric functions (DMFs)."
+          }
+        ],
+        "limitaciones": [
+          {
+            "es": "Las tablas dinámicas no sirven si los datos deben estar frescos en menos de 60 segundos, su retraso objetivo mínimo.",
+            "en": "Dynamic tables do not suit data that must be fresher than 60 seconds, their minimum target lag."
+          },
+          {
+            "es": "El monitoreo de calidad con funciones de métricas de datos exige la edición Enterprise.",
+            "en": "Quality monitoring with data metric functions requires Enterprise Edition."
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-4",
+      "evidencia": {
+        "id": "evi-snowflake-consumo",
+        "plataforma_id": "snowflake",
+        "capacidad_id": "cap-consumo",
+        "afirmacion": {
+          "es": "Las vistas semánticas guardan en la base de datos los conceptos de negocio y ya se consultan de forma general; Cortex Analyst responde preguntas de negocio con un modelo semántico, y Power BI se conecta con las credenciales del proveedor de identidad. Los tableros de Snowsight se retiraron: la vía nativa son las aplicaciones Streamlit.",
+          "en": "Semantic views keep business concepts in the database and can be queried in general availability; Cortex Analyst answers business questions with a semantic model, and Power BI connects with the identity provider's credentials. Snowsight dashboards were retired: the native path is Streamlit apps."
+        },
+        "componentes": ["vistas-semanticas", "streamlit", "virtual-warehouses"],
+        "madurez": "disponible-general",
+        "puntaje": 3,
+        "justificacion_puntaje": {
+          "es": "3 y no 4: Snowflake retiró sus tableros de Snowsight y ofrece convertirlos en aplicaciones Streamlit, que construyen desarrolladores, así que los tableros nativos dependen ahora de quien programa. 3 y no 2: la capa semántica está disponible de forma general, Cortex Analyst responde con ella y Power BI se conecta con el inicio de sesión de la organización, sin herramientas de terceros.",
+          "en": "3, not 4: Snowflake retired its Snowsight dashboards and offers to convert them into Streamlit apps, which developers build, so native dashboards now depend on someone who codes. 3, not 2: the semantic layer is generally available, Cortex Analyst answers with it, and Power BI connects with the organization's sign-in, with no third-party tools."
+        },
+        "esencial": true,
+        "fuentes": [
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/views-semantic/overview",
+            "titulo": "Overview of semantic views | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "You can store semantic business concepts directly in the database"
+          },
+          {
+            "url": "https://docs.snowflake.com/en/release-notes/2025/9_25",
+            "titulo": "9.25 Release notes: Aug 25, 2025-Aug 28, 2025 | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "The ability to query semantic views is now generally available"
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-analyst",
+            "titulo": "Cortex Analyst | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Cortex Analyst overcomes this limitation by using a semantic model to bridge the gap between business users and databases."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/oauth-powerbi",
+            "titulo": "Power BI SSO to Snowflake | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Snowflake allows Microsoft Power BI users to connect to Snowflake using Identity Provider credentials"
+          },
+          {
+            "url": "https://docs.snowflake.com/en/release-notes/bcr-bundles/un-bundled/bcr-2260",
+            "titulo": "Deprecation of Legacy Worksheets and Dashboards | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Snowflake provides a Dashboard-to-Streamlit conversion tool to migrate existing dashboards to Streamlit apps running natively on Snowflake."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/developer-guide/streamlit/about-streamlit",
+            "titulo": "About Streamlit in Snowflake | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Streamlit in Snowflake helps developers securely build, deploy, and share Streamlit apps"
+          }
+        ],
+        "limitaciones": [
+          {
+            "es": "Los tableros de Snowsight se retiraron; la vía nativa son las aplicaciones Streamlit.",
+            "en": "Snowsight dashboards were retired; the native path is Streamlit apps."
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-5",
+      "evidencia": {
+        "id": "evi-snowflake-gobierno",
+        "plataforma_id": "snowflake",
+        "capacidad_id": "cap-gobierno",
+        "afirmacion": {
+          "es": "Horizon Catalog reúne los datos de dentro y fuera de Snowflake y aplica etiquetas y políticas a medida que cambian las tablas; las políticas por fila y las máscaras deciden qué ve cada persona, y el linaje se registra solo, hasta el nivel de columna.",
+          "en": "Horizon Catalog brings together data inside and outside Snowflake and applies tags and policies as tables change; row policies and masks decide what each person sees, and lineage is recorded automatically, down to the column level."
+        },
+        "componentes": ["horizon-catalog", "politicas-acceso"],
+        "madurez": "disponible-general",
+        "puntaje": 3,
+        "justificacion_puntaje": {
+          "es": "3 y no 4: el linaje no sigue los datos que se mueven con consultas separadas e inconexas, una misma columna no puede estar a la vez en la firma de una política por fila y en la de una máscara, y el linaje exige la edición Enterprise o superior. 3 y no 2: el catálogo, las políticas por fila, las máscaras y el linaje son nativos, y el linaje está disponible de forma general.",
+          "en": "3, not 4: lineage does not follow data moved by separate, disjointed queries, a single column cannot sit in both a row access policy signature and a masking policy signature, and lineage requires Enterprise Edition or higher. 3, not 2: the catalog, row policies, masks and lineage are native, and lineage is generally available."
+        },
+        "esencial": true,
+        "fuentes": [
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/snowflake-horizon",
+            "titulo": "Snowflake Horizon Catalog | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Horizon Catalog is the agentic catalog for all your data, whether it is inside or outside of Snowflake."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/snowflake-horizon",
+            "titulo": "Snowflake Horizon Catalog | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Snowflake applies tags and policies without manual intervention as schemas evolve."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/security-row-intro",
+            "titulo": "Understanding row access policies | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Snowflake supports row-level security through the use of row access policies to determine which rows to return in the query result."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/security-column-ddm-intro",
+            "titulo": "Understanding Dynamic Data Masking | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Dynamic Data Masking is a Column-level Security feature that uses masking policies to selectively mask plain-text data in table and view columns at query time."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/release-notes/2025/9_03",
+            "titulo": "9.3 Release notes: Feb 18, 2025-Feb 21, 2025 | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Data lineage automatically tracks the flow of data between Snowflake objects in real-time, for example, from a table to a view."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/ui-snowsight-lineage",
+            "titulo": "Data Lineage | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "You can use Snowsight to trace the relationship between columns in a source object and columns in a target object."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/ui-snowsight-lineage",
+            "titulo": "Data Lineage | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Lineage cannot track the movement of data that results from separate, disjointed queries"
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/ui-snowsight-lineage",
+            "titulo": "Data Lineage | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "This feature requires Enterprise Edition (or higher)."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/security-row-intro",
+            "titulo": "Understanding row access policies | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "A given table or view column can be specified in either a row access policy signature or a masking policy signature."
+          }
+        ],
+        "limitaciones": [
+          {
+            "es": "El linaje no sigue los datos que se mueven con consultas separadas e inconexas.",
+            "en": "Lineage does not follow data moved by separate, disjointed queries."
+          },
+          {
+            "es": "Una misma columna no puede estar a la vez en la firma de una política por fila y en la de una máscara.",
+            "en": "A single column cannot be in both a row access policy signature and a masking policy signature."
+          },
+          {
+            "es": "El linaje exige la edición Enterprise o superior.",
+            "en": "Lineage requires Enterprise Edition or higher."
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-6",
+      "evidencia": {
+        "id": "evi-snowflake-ia",
+        "plataforma_id": "snowflake",
+        "capacidad_id": "cap-ia",
+        "afirmacion": {
+          "es": "Cortex Agents, disponible de forma general, toma los permisos de la sesión del rol predeterminado de quien pregunta, y Cortex Analyst respeta los controles de acceso por rol; los agentes se evalúan con modelos jueces que corren con inferencia entre regiones.",
+          "en": "Cortex Agents, generally available, takes session permissions from the asker's default role, and Cortex Analyst honors role-based access controls; agents are evaluated with judge models that run on cross-region inference."
+        },
+        "componentes": [
+          "cortex-agents",
+          "snowflake-cowork",
+          "vistas-semanticas"
+        ],
+        "madurez": "disponible-general",
+        "puntaje": 3,
+        "justificacion_puntaje": {
+          "es": "3 y no 4: no se puede evaluar un agente cuyas consultas dependen de atributos de sesión usados en una política de acceso por fila, y con la inferencia entre regiones la pregunta y la respuesta viajan de forma transitoria a otra región, algo que con datos de pacientes hay que revisar antes. 3 y no 2: los agentes, sus permisos por rol y las evaluaciones son nativos, sin herramientas de terceros, y Cortex Agents está disponible de forma general.",
+          "en": "3, not 4: an agent whose queries depend on session attributes used in a row access policy cannot be evaluated, and with cross-region inference the prompt and the response travel transiently to another region, something to review first with patient data. 3, not 2: the agents, their role-based permissions and the evaluations are native, with no third-party tools, and Cortex Agents is generally available."
+        },
+        "esencial": true,
+        "fuentes": [
+          {
+            "url": "https://docs.snowflake.com/en/release-notes/2025/other/2025-11-04-cortex-agents",
+            "titulo": "Nov 04, 2025: Cortex Agents (General availability) | Snowflake Documentation",
+            "tipo": "oficial",
+            "fecha_publicacion": "2025-11-04",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "With this release, we are pleased to announce the general availability of Cortex Agents, which was previously available as a preview feature."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-agents",
+            "titulo": "Cortex Agents | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Cortex Agents determines session permissions from the querying user's default role."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-analyst",
+            "titulo": "Cortex Analyst | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Cortex Analyst fully integrates with Snowflake's role-based access control (RBAC) policies, ensuring that SQL queries generated and executed adhere to all established access controls."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-agents-evaluations",
+            "titulo": "Cortex Agent evaluations | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Agent Evaluations compute metrics with LLM judges, using"
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-agents-evaluations",
+            "titulo": "Cortex Agent evaluations | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "You can't currently evaluate an agent whose queries depend on"
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-agents-evaluations",
+            "titulo": "Cortex Agent evaluations | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "including agents that use those values with a row access policy."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/snowflake-cortex/cross-region-inference",
+            "titulo": "Cross-region inference | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "is transmitted transiently to the processing region for the duration of processing"
+          }
+        ],
+        "limitaciones": [
+          {
+            "es": "No se puede evaluar un agente cuyas consultas dependen de atributos o variables de sesión, incluidos los que se usan en una política de acceso por fila.",
+            "en": "An agent whose queries depend on session attributes or variables, including those used in a row access policy, cannot be evaluated."
+          },
+          {
+            "es": "Con la inferencia entre regiones, la pregunta y la respuesta viajan de forma transitoria a la región que las procesa.",
+            "en": "With cross-region inference, the prompt and the response travel transiently to the processing region."
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-7",
+      "evidencia": {
+        "id": "evi-snowflake-costo",
+        "plataforma_id": "snowflake",
+        "criterio_id": "crit-costo",
+        "afirmacion": {
+          "es": "Los warehouses se cobran por segundo, con un mínimo de 60 segundos cada vez que arrancan; los monitores de recursos pueden suspenderlos al llegar a una cuota, pero solo cubren warehouses, y los presupuestos avisan cuando se proyecta pasar el límite del mes, con cifras que se actualizan hasta cada 6,5 horas por defecto.",
+          "en": "Warehouses are billed per second, with a 60-second minimum each time they start; resource monitors can suspend them when a quota is reached, but they only cover warehouses, and budgets alert when the monthly limit is projected to be exceeded, with figures that refresh up to every 6.5 hours by default."
+        },
+        "componentes": [
+          "virtual-warehouses",
+          "monitores-recursos",
+          "presupuestos"
+        ],
+        "madurez": "disponible-general",
+        "puntaje": 2,
+        "justificacion_puntaje": {
+          "es": "2 y no 3: el tope que frena el gasto solo existe para los warehouses: el gasto de las funciones serverless y de los servicios de IA no se vigila con monitores de recursos; los presupuestos avisan sobre una proyección con cifras de hasta 6,5 horas y solo actúan con procedimientos que alguien escribe, y aun al llegar a la cuota los warehouses pueden tardar en suspenderse. 2 y no 1: medir el gasto, avisar y suspender warehouses al llegar a una cuota se hace sin herramientas de terceros.",
+          "en": "2, not 3: the cap that stops spending only exists for warehouses: spending on serverless features and AI services is not tracked by resource monitors; budgets alert on a projection with figures up to 6.5 hours old and only act through procedures someone writes, and even at the quota warehouses may take time to suspend. 2, not 1: measuring spend, alerting and suspending warehouses at a quota need no third-party tools."
+        },
+        "esencial": true,
+        "fuentes": [
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/warehouses-overview",
+            "titulo": "Overview of warehouses | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Snowflake utilizes per-second billing (with a 60-second minimum each time the warehouse starts)"
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/resource-monitors",
+            "titulo": "Working with resource monitors | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "A resource monitor can help control costs and avoid unexpected credit usage caused by running warehouses."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/resource-monitors",
+            "titulo": "Working with resource monitors | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Resource monitors work for warehouses only. You can't use a resource monitor to track spending associated with serverless features and AI services."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/resource-monitors",
+            "titulo": "Working with resource monitors | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "suspend all assigned standard warehouses immediately, which cancels any statements being executed by the warehouses at the time"
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/resource-monitors",
+            "titulo": "Working with resource monitors | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "the assigned warehouses may take some time to suspend or disable"
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/budgets",
+            "titulo": "Monitor credit usage with budgets | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "When the spending limit is projected to be exceeded, a notification is sent."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/budgets",
+            "titulo": "Monitor credit usage with budgets | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "By default, the budget refresh interval is up to 6.5 hours."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/budgets",
+            "titulo": "Monitor credit usage with budgets | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "You can configure a budget to automatically call user-defined stored procedures at key points during a budget cycle."
+          }
+        ],
+        "limitaciones": [
+          {
+            "es": "Los monitores de recursos solo cubren warehouses; no vigilan el gasto de funciones serverless ni de servicios de IA.",
+            "en": "Resource monitors only cover warehouses; they do not track spending on serverless features or AI services."
+          },
+          {
+            "es": "Al llegar a la cuota, los warehouses pueden tardar en suspenderse.",
+            "en": "When the quota is reached, warehouses may take time to suspend."
+          },
+          {
+            "es": "Las cifras de los presupuestos se actualizan hasta cada 6,5 horas por defecto.",
+            "en": "Budget figures refresh up to every 6.5 hours by default."
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-8",
+      "evidencia": {
+        "id": "evi-snowflake-cumplimiento",
+        "plataforma_id": "snowflake",
+        "criterio_id": "crit-cumplimiento",
+        "afirmacion": {
+          "es": "Para los datos de pacientes que cubre la ley estadounidense HIPAA, Snowflake ofrece la edición Business Critical y exige un acuerdo de socio comercial (BAA) firmado antes de guardarlos; las máscaras ocultan valores al consultar y el historial de accesos registra qué datos lee y escribe cada consulta.",
+          "en": "For patient data covered by the US HIPAA law, Snowflake offers Business Critical Edition and requires a signed business associate agreement (BAA) before storing it; masks hide values at query time and access history records which data each query reads and writes."
+        },
+        "componentes": ["politicas-acceso", "horizon-catalog"],
+        "madurez": "disponible-general",
+        "puntaje": 3,
+        "justificacion_puntaje": {
+          "es": "3 y no 4: los controles para datos de salud tienen condiciones: la edición pensada para esos datos es Business Critical, hace falta un BAA firmado antes de guardar un solo dato de pacientes y el historial de accesos exige la edición Enterprise o superior. 3 y no 2: el enmascaramiento, las políticas por fila y el historial de accesos son nativos y están documentados.",
+          "en": "3, not 4: health-data controls come with conditions: the edition meant for that data is Business Critical, a signed BAA is needed before storing any patient data, and access history requires Enterprise Edition or higher. 3, not 2: masking, row policies and access history are native and documented."
+        },
+        "esencial": true,
+        "fuentes": [
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/intro-editions",
+            "titulo": "Snowflake editions | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "particularly PHI data that must comply with HIPAA and HITRUST CSF regulations"
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/intro-editions",
+            "titulo": "Snowflake editions | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "a signed business associate agreement (BAA) must be in place between your agency/organization and Snowflake Inc."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/access-history",
+            "titulo": "Access History | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Access History in Snowflake refers to when the user query reads data and when the SQL statement performs a data write operation"
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/access-history",
+            "titulo": "Access History | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Access History requires Enterprise Edition (or higher)"
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/security-column-ddm-intro",
+            "titulo": "Understanding Dynamic Data Masking | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Dynamic Data Masking is a Column-level Security feature that uses masking policies to selectively mask plain-text data in table and view columns at query time."
+          }
+        ],
+        "limitaciones": [
+          {
+            "es": "Hace falta un acuerdo de socio comercial (BAA) firmado antes de guardar datos de pacientes.",
+            "en": "A signed business associate agreement (BAA) is needed before storing patient data."
+          },
+          {
+            "es": "El historial de accesos exige la edición Enterprise o superior.",
+            "en": "Access history requires Enterprise Edition or higher."
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-9",
+      "evidencia": {
+        "id": "evi-snowflake-habilidades",
+        "plataforma_id": "snowflake",
+        "criterio_id": "crit-habilidades",
+        "afirmacion": {
+          "es": "No hay hardware que elegir ni administrar: el mantenimiento, las actualizaciones y el ajuste los hace Snowflake. Las tablas dinámicas se declaran con una consulta SQL y Snowpark admite Python, Java y Scala.",
+          "en": "There is no hardware to choose or manage: maintenance, upgrades and tuning are handled by Snowflake. Dynamic tables are declared with a SQL query, and Snowpark supports Python, Java and Scala."
+        },
+        "componentes": ["tablas-dinamicas", "snowpark", "virtual-warehouses"],
+        "madurez": "disponible-general",
+        "puntaje": 3,
+        "justificacion_puntaje": {
+          "es": "3 y no 4: elegir el tamaño de un warehouse no tiene una fórmula: la documentación pide experimentar con distintas consultas y tamaños, y cada talla duplica los créditos de la anterior, así que el equipo aprende a dimensionar probando. 3 y no 2: el trabajo diario usa SQL y Python, lenguajes estándar, y no hay infraestructura que instalar ni mantener.",
+          "en": "3, not 4: choosing a warehouse size has no formula: the documentation asks you to experiment with different queries and sizes, and each size doubles the credits of the previous one, so the team learns sizing by trial. 3, not 2: daily work uses SQL and Python, standard languages, and there is no infrastructure to install or maintain."
+        },
+        "esencial": true,
+        "fuentes": [
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/intro-key-concepts",
+            "titulo": "Snowflake key concepts and architecture | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "There is no hardware (virtual or physical) for you to select, install, configure, or manage."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/intro-key-concepts",
+            "titulo": "Snowflake key concepts and architecture | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Ongoing maintenance, management, upgrades, and tuning are handled by Snowflake."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/dynamic-tables/overview",
+            "titulo": "Dynamic tables | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Prefer a declarative approach where you define the desired result and let Snowflake handle scheduling."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/developer-guide/snowpark/index",
+            "titulo": "Snowpark API | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Snowflake currently provides Snowpark libraries for three languages: Java, Python, and Scala."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/warehouses-considerations",
+            "titulo": "Warehouse considerations | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Experiment with different types of queries and different warehouse sizes to determine the combinations that best meet your specific query needs and workload."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/warehouses-overview",
+            "titulo": "Overview of warehouses | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "there is a doubling of credit usage as you increase in size to the next larger warehouse size"
+          }
+        ],
+        "limitaciones": [
+          {
+            "es": "El tamaño de cada warehouse se elige experimentando; la documentación no da cifras fijas.",
+            "en": "Each warehouse size is chosen by experimenting; the documentation gives no fixed figures."
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-10",
+      "evidencia": {
+        "id": "evi-snowflake-dependencia",
+        "plataforma_id": "snowflake",
+        "criterio_id": "crit-dependencia",
+        "afirmacion": {
+          "es": "En las tablas de Snowflake los datos quedan en un formato interno y salen exportándolos a archivos; en las tablas Apache Iceberg quedan en formato abierto, en el almacenamiento en la nube que administra el cliente, y otros motores las leen y escriben por Horizon Catalog, que expone la API REST de Iceberg.",
+          "en": "In Snowflake tables, data is kept in an internal format and leaves by exporting it to files; in Apache Iceberg tables it stays in an open format, in cloud storage the customer manages, and other engines read and write it through Horizon Catalog, which exposes the Iceberg REST API."
+        },
+        "componentes": [
+          "tablas-snowflake",
+          "tablas-iceberg",
+          "horizon-catalog"
+        ],
+        "madurez": "disponible-general",
+        "puntaje": 2,
+        "justificacion_puntaje": {
+          "es": "2 y no 3: en el camino del mapa los datos se guardan en tablas de Snowflake, cuyo formato es interno: salir de ellas exige exportarlos a archivos, y el formato abierto hay que elegirlo tabla por tabla desde el principio. 2 y no 1: la exportación es nativa, y las tablas Iceberg, disponibles de forma general, guardan una sola copia en formato abierto que otros motores leen y escriben sin herramientas de terceros.",
+          "en": "2, not 3: on the map's path, data is stored in Snowflake tables, whose format is internal: leaving them requires exporting the data to files, and the open format has to be chosen table by table from the start. 2, not 1: export is native, and Iceberg tables, generally available, keep a single open-format copy that other engines read and write with no third-party tools."
+        },
+        "esencial": true,
+        "fuentes": [
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/intro-key-concepts",
+            "titulo": "Snowflake key concepts and architecture | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "reorganizes that data into its internally optimized, compressed, columnar format"
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/data-unload-overview",
+            "titulo": "Overview of data unloading | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Snowflake supports bulk export (i.e. unload) of data from a database table into flat, delimited text files."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/release-notes/2024/other/2024-06-10-iceberg-tables",
+            "titulo": "June 10, 2024 - Apache Iceberg tables - General Availability | Snowflake Documentation",
+            "tipo": "oficial",
+            "fecha_publicacion": "2024-06-10",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Iceberg tables for Snowflake combine the performance and query semantics of regular Snowflake tables with external cloud storage that you manage."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/tables-iceberg-access-using-external-query-engine-snowflake-horizon",
+            "titulo": "Access Apache Iceberg tables with an external engine through Snowflake Horizon Catalog | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "You can use Horizon Catalog, which is available in all your existing Snowflake accounts, to read and write to Snowflake-managed Iceberg tables with external query engines."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/tables-iceberg-access-using-external-query-engine-snowflake-horizon",
+            "titulo": "Access Apache Iceberg tables with an external engine through Snowflake Horizon Catalog | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "In addition, Horizon Catalog exposes the Apache Iceberg"
+          }
+        ],
+        "limitaciones": [
+          {
+            "es": "Las tablas de Snowflake guardan los datos en un formato interno; salir de ellas exige exportarlos a archivos.",
+            "en": "Snowflake tables keep data in an internal format; leaving them requires exporting the data to files."
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-11",
+      "evidencia": {
+        "id": "evi-snowflake-ecosistema",
+        "plataforma_id": "snowflake",
+        "criterio_id": "crit-ecosistema",
+        "afirmacion": {
+          "es": "Una cuenta de Snowflake puede alojarse en AWS, Google Cloud o Microsoft Azure; los usuarios y grupos llegan de Okta o de Microsoft Entra ID (antes Azure AD) por SCIM, un estándar de aprovisionamiento, y Power BI se conecta con las credenciales del proveedor de identidad.",
+          "en": "A Snowflake account can be hosted on AWS, Google Cloud or Microsoft Azure; users and groups come from Okta or Microsoft Entra ID (formerly Azure AD) through SCIM, a provisioning standard, and Power BI connects with the identity provider's credentials."
+        },
+        "componentes": ["virtual-warehouses", "openflow"],
+        "madurez": "disponible-general",
+        "puntaje": 3,
+        "justificacion_puntaje": {
+          "es": "3 y no 4: no todo es igual en cada nube: algunos servicios no están disponibles o lo están de forma limitada según la nube, y Openflow en la nube propia del cliente solo existe en AWS; además, sin la puerta de enlace de Power BI no hay conectividad privada con Snowflake. 3 y no 2: las tres nubes, SCIM con Okta y Entra ID y el inicio de sesión único desde Power BI son nativos y están documentados.",
+          "en": "3, not 4: not everything is the same on every cloud: some services are unavailable or limited depending on the cloud, and Openflow in the customer's own cloud is only available on AWS; also, without the Power BI gateway there is no private connectivity to Snowflake. 3, not 2: the three clouds, SCIM with Okta and Entra ID, and single sign-on from Power BI are native and documented."
+        },
+        "esencial": true,
+        "fuentes": [
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/intro-cloud-platforms",
+            "titulo": "Supported cloud platforms | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "A Snowflake account can be hosted on any of the following cloud platforms"
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/intro-cloud-platforms",
+            "titulo": "Supported cloud platforms | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "some services and features are currently unavailable (or have limited availability)"
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/scim-intro",
+            "titulo": "CREATE SECURITY INTEGRATION (SCIM) overview | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "lets you integrate Snowflake with Okta and Microsoft Azure AD as identity providers"
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/oauth-powerbi",
+            "titulo": "Power BI SSO to Snowflake | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Snowflake allows Microsoft Power BI users to connect to Snowflake using Identity Provider credentials"
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/oauth-powerbi",
+            "titulo": "Power BI SSO to Snowflake | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Private connectivity to the Snowflake service is not supported."
+          },
+          {
+            "url": "https://docs.snowflake.com/en/user-guide/data-integration/openflow/about",
+            "titulo": "About Openflow | Snowflake Documentation",
+            "tipo": "oficial",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Openflow BYOC deployments are available to all accounts in AWS"
+          }
+        ],
+        "limitaciones": [
+          {
+            "es": "Algunos servicios y funciones no están disponibles, o lo están de forma limitada, según la nube.",
+            "en": "Some services and features are unavailable, or have limited availability, depending on the cloud."
+          },
+          {
+            "es": "Openflow en la nube propia del cliente (BYOC) solo está disponible en AWS.",
+            "en": "Openflow in the customer's own cloud (BYOC) is only available on AWS."
+          },
+          {
+            "es": "Sin la puerta de enlace de Power BI, la conectividad privada con Snowflake no está admitida.",
+            "en": "Without the Power BI gateway, private connectivity to Snowflake is not supported."
+          }
+        ]
+      }
+    }
+  ],
+  "preguntas_guia": [
+    {
+      "pregunta": {
+        "es": "¿Qué edición contrataría el hospital? Las políticas por fila, las máscaras, el linaje, el historial de accesos y el monitoreo de calidad exigen la edición Enterprise o superior, y la edición pensada para datos de pacientes es Business Critical: eso cambia el costo y la documentación no da cifras para el caso.",
+        "en": "Which edition would the hospital buy? Row policies, masks, lineage, access history and quality monitoring require Enterprise Edition or higher, and the edition meant for patient data is Business Critical: that changes the cost, and the documentation gives no figures for the case."
+      },
+      "respondida": false
+    },
+    {
+      "pregunta": {
+        "es": "¿Qué parte del gasto del caso iría a funciones serverless y servicios de IA, que los monitores de recursos no cubren? La documentación no da una cifra para un hospital.",
+        "en": "What share of the case's spending would go to serverless features and AI services, which resource monitors do not cover? The documentation gives no figure for a hospital."
+      },
+      "respondida": false
+    },
+    {
+      "pregunta": {
+        "es": "¿Guardaría el hospital sus tablas como Apache Iceberg desde el principio? El puntaje de dependencia se calculó con el camino del mapa (tablas de Snowflake) y podría cambiar con esa decisión.",
+        "en": "Would the hospital store its tables as Apache Iceberg from the start? The lock-in score was set for the map's path (Snowflake tables) and could change with that decision."
+      },
+      "respondida": false
+    },
+    {
+      "pregunta": {
+        "es": "¿Qué conectores de Openflow necesitan los sistemas del hospital, y en qué estado está cada uno? La nota de disponibilidad general de Openflow dice que algunos conectores siguen en vista previa.",
+        "en": "Which Openflow connectors do the hospital's systems need, and what is the status of each one? The Openflow general availability note says some connectors remain in preview."
+      },
+      "respondida": false
+    },
+    {
+      "pregunta": {
+        "es": "¿Puede Power BI leer directamente las métricas de las vistas semánticas? La documentación revisada no lo dice.",
+        "en": "Can Power BI read semantic view metrics directly? The documentation reviewed does not say."
+      },
+      "respondida": false
+    },
+    {
+      "pregunta": {
+        "es": "¿A qué regiones permite el hospital que viajen las preguntas con datos de pacientes en la inferencia entre regiones, y qué funciones de Cortex quedan cubiertas por el BAA? La documentación revisada no lo responde para el caso.",
+        "en": "To which regions does the hospital allow questions with patient data to travel under cross-region inference, and which Cortex features are covered by the BAA? The documentation reviewed does not answer it for the case."
+      },
+      "respondida": false
+    },
+    {
+      "pregunta": {
+        "es": "¿Qué lenguajes domina hoy el equipo del hospital (SQL, Python, Java, Scala)? El puntaje de habilidades depende de eso y la documentación no puede responderlo.",
+        "en": "Which languages does the hospital's team already know (SQL, Python, Java, Scala)? The skills score depends on it, and the documentation cannot answer that."
+      },
+      "respondida": false
+    }
+  ]
+}

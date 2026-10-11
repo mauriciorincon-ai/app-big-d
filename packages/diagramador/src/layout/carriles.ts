@@ -59,7 +59,7 @@ export function carriles(ctx: Contexto, nivel: 1 | 2, conRecorrido?: string | tr
       for (const [id, nodos] of grupos) {
         const s = ranuraDe.get(nodos[0]!.id)!;
         const bloque = ctx.mapa.bloques.find((x) => x.id === id);
-        const nombre = porIdioma(ctx, (l, t) => (bloque ? bloque.nombre[l]! : nodos.length === 1 ? nodos[0]!.nombre[l]! : plural(t.componentes, nodos.length)));
+        const nombre = porIdioma(ctx, (l, t) => (bloque ? bloque.nombre[l]! : nodos.length === 1 ? nodos[0]!.nombre[l]! : plural(t.componentes, nodos.length, l)));
         piezas.set(id, { id, carril: j, ranura: s, caja: { x: xRanura(s), y, w: COLUMNA, h: alto }, nodos, fantasma: !bloque, nombre });
         for (const n of nodos) dueno.set(n.id, id);
       }

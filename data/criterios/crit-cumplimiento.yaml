@@ -1,0 +1,10 @@
+# Criterio de la especificación § 10.3 (transversal: se alimenta de evidencias del propio criterio).
+id: crit-cumplimiento
+nombre:
+  es: "Soporte a cumplimiento regulatorio"
+  en: "Regulatory compliance support"
+que_evalua:
+  es: "Qué controles ofrece para datos sensibles y para la auditoría."
+  en: "Which controls it offers for sensitive data and for auditing."
+tipo: transversal
+escala_id: esc-evidencia

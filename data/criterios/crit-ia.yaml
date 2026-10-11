@@ -1,0 +1,11 @@
+# Criterio de la especificación § 10.2 (se alimenta de las evidencias de su capacidad).
+id: crit-ia
+nombre:
+  es: "Inteligencia artificial"
+  en: "Artificial intelligence"
+que_evalua:
+  es: "Qué tan bien permite construir y gobernar modelos y agentes sobre los datos."
+  en: "How well it lets you build and govern models and agents on the data."
+tipo: capacidad
+capacidad_id: cap-ia
+escala_id: esc-evidencia

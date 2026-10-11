@@ -152,7 +152,7 @@ describe("cambios contra un mapa aprobado", () => {
   prop.flujos.push({ id: "f-nuevo", origen: "tablero", destino: "agente-datos", modo_id: "a-demanda", que_viaja: { es: "Consultas", en: "Queries" }, lider: { es: "El agente lee el tablero.", en: "The agent reads the dashboard." } });
   const coi = { es: "fabricante", en: "vendor" };
   let k = 0;
-  const cita = (n: string) => ({ url: prop.nodos.find((x) => x.id === n)!.fuentes[0]!.url, texto: "Una cita cualquiera de la fuente, con el largo que pide el esquema.", titulo: "t", tipo: "oficial" as const, conflicto_de_interes: coi });
+  const cita = (n: string) => ({ url: (prop.nodos.find((x) => x.id === n)!.fuentes[0] as { url: string }).url, texto: "Una cita cualquiera de la fuente, con el largo que pide el esquema.", titulo: "t", tipo: "oficial" as const, conflicto_de_interes: coi });
   const afirmaciones = [
     ...prop.nodos.map((n) => ({ id: `A-${++k}`, sobre: { entidad: "nodo" as const, id: n.id }, enunciado: { es: n.id, en: n.id }, cita: cita(n.id) })),
     ...prop.flujos.map((f) => ({ id: `A-${++k}`, sobre: { entidad: "flujo" as const, id: f.id }, enunciado: { es: f.id, en: f.id }, cita: cita(f.origen) })),

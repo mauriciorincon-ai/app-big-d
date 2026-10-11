@@ -1,0 +1,87 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-snowflake-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/snowflake.jsonl).
+id: evi-snowflake-consumo
+plataforma_id: snowflake
+capacidad_id: cap-consumo
+afirmacion:
+  es: "Las vistas semánticas guardan en la base de datos los conceptos de negocio y ya se consultan de forma general; Cortex Analyst responde preguntas de negocio con un modelo semántico, y Power BI se conecta con las credenciales del proveedor de identidad. Los tableros de Snowsight se retiraron: la vía nativa son las aplicaciones Streamlit."
+  en: "Semantic views keep business concepts in the database and can be queried in general availability; Cortex Analyst answers business questions with a semantic model, and Power BI connects with the identity provider's credentials. Snowsight dashboards were retired: the native path is Streamlit apps."
+componentes:
+  - vistas-semanticas
+  - streamlit
+  - virtual-warehouses
+madurez: disponible-general
+puntaje: 3
+justificacion_puntaje:
+  es: "3 y no 4: Snowflake retiró sus tableros de Snowsight y ofrece convertirlos en aplicaciones Streamlit, que construyen desarrolladores, así que los tableros nativos dependen ahora de quien programa. 3 y no 2: la capa semántica está disponible de forma general, Cortex Analyst responde con ella y Power BI se conecta con el inicio de sesión de la organización, sin herramientas de terceros."
+  en: "3, not 4: Snowflake retired its Snowsight dashboards and offers to convert them into Streamlit apps, which developers build, so native dashboards now depend on someone who codes. 3, not 2: the semantic layer is generally available, Cortex Analyst answers with it, and Power BI connects with the organization's sign-in, with no third-party tools."
+esencial: true
+fuentes:
+  - url: https://docs.snowflake.com/en/user-guide/views-semantic/overview
+    titulo: Overview of semantic views | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: You can store semantic business concepts directly in the database
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 0c670d0658712753b00c60735469d19c1027835743ecfda2d6f128375f3b58c1
+  - url: https://docs.snowflake.com/en/release-notes/2025/9_25
+    titulo: "9.25 Release notes: Aug 25, 2025-Aug 28, 2025 | Snowflake Documentation"
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: The ability to query semantic views is now generally available
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 0f4b51f3a70075aa8718a53411c69fe5b5e9701792ccb4605695935b4316c66c
+  - url: https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-analyst
+    titulo: Cortex Analyst | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Cortex Analyst overcomes this limitation by using a semantic model to bridge the gap between business users and databases.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 6674c5aa30329a580e4ce99cfcfdd622e55559f4f5a98da4a5e2aef0c923c94d
+  - url: https://docs.snowflake.com/en/user-guide/oauth-powerbi
+    titulo: Power BI SSO to Snowflake | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Snowflake allows Microsoft Power BI users to connect to Snowflake using Identity Provider credentials
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 777c244b3b9bd395a0bcf155726b92686facd0e18ab810609986a52459c0373b
+  - url: https://docs.snowflake.com/en/release-notes/bcr-bundles/un-bundled/bcr-2260
+    titulo: Deprecation of Legacy Worksheets and Dashboards | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Snowflake provides a Dashboard-to-Streamlit conversion tool to migrate existing dashboards to Streamlit apps running natively on Snowflake.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: a879f9fdf4064448398ef8d4deab708c7b0c5b919822781e22634eed15529752
+  - url: https://docs.snowflake.com/en/developer-guide/streamlit/about-streamlit
+    titulo: About Streamlit in Snowflake | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Streamlit in Snowflake helps developers securely build, deploy, and share Streamlit apps
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 4de740237db182f3a743b8622251a112fdf91484080ec0849938333603086cbc
+fecha_verificacion: 2026-10-06
+limitaciones:
+  - es: Los tableros de Snowsight se retiraron; la vía nativa son las aplicaciones Streamlit.
+    en: Snowsight dashboards were retired; the native path is Streamlit apps.
+origen: agente-investigador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

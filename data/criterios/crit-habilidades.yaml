@@ -1,0 +1,10 @@
+# Criterio de la especificación § 10.3 (transversal: se alimenta de evidencias del propio criterio).
+id: crit-habilidades
+nombre:
+  es: "Curva de aprendizaje del equipo"
+  en: "Team learning curve"
+que_evalua:
+  es: "Cuánto esfuerzo le toma al equipo actual operar la plataforma (más puntaje: menos esfuerzo)."
+  en: "How much effort it takes the current team to run the platform (higher score: less effort)."
+tipo: transversal
+escala_id: esc-evidencia

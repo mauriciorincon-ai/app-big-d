@@ -1,0 +1,111 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-snowflake-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/snowflake.jsonl).
+id: evi-snowflake-ingesta
+plataforma_id: snowflake
+capacidad_id: cap-ingesta
+afirmacion:
+  es: "Openflow, disponible de forma general, trae los datos de bases relacionales con captura de cambios: primero copia todo y después sigue los cambios, casi en tiempo real o por horario. Snowpipe carga los archivos nuevos en minutos y Snowpipe Streaming deja los registros listos para consultar desde unos 5 segundos."
+  en: "Openflow, generally available, brings in data from relational databases with change data capture: it copies everything first and then follows the changes, in near real time or on a schedule. Snowpipe loads new files within minutes, and Snowpipe Streaming makes records queryable in as little as about 5 seconds."
+componentes:
+  - openflow
+  - snowpipe
+  - snowpipe-streaming
+madurez: disponible-general
+puntaje: 3
+justificacion_puntaje:
+  es: "3 y no 4: la réplica tiene bordes documentados: en PostgreSQL, una tabla sin clave de identidad solo replica inserciones (actualizar y borrar exige esa clave), y el conector solo se autentica con usuario y contraseña. 3 y no 2: Openflow, la captura de cambios de SQL Server, la carga continua de archivos y la ingesta en segundos son nativas y están disponibles de forma general."
+  en: "3, not 4: replication has documented edges: in PostgreSQL, a table without an identity key only replicates inserts (updates and deletes need that key), and the connector only authenticates with a username and password. 3, not 2: Openflow, SQL Server change capture, continuous file loading and ingestion within seconds are native and generally available."
+esencial: true
+fuentes:
+  - url: https://docs.snowflake.com/en/release-notes/2025/other/2025-05-30-openflow
+    titulo: "May 30, 2025: Snowflake Openflow (General availability) | Snowflake Documentation"
+    tipo: oficial
+    fecha_publicacion: 2025-05-30
+    conflicto_de_interes: propio-fabricante
+    cita: With this release, we are pleased to announce the general availability of Snowflake Openflow.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: b58d9b27ea31157cc0c5a0b55a310c0b7285803a9525ca20c5b42d2ed89032c8
+  - url: https://docs.snowflake.com/en/user-guide/data-integration/openflow/connectors/sql-server-cdc/about
+    titulo: About Openflow Connector for SQL Server (CDC) | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: The Openflow Connector for SQL Server (CDC) connects a SQL Server database instance to Snowflake and replicates data from selected tables in near real-time or on a schedule.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 2f0c0b9db421a928eef1ce6c8921ee8c46ee8c9351f08d47d72ed9f59a394374
+  - url: https://docs.snowflake.com/en/release-notes/2026/other/2026-08-05-openflow-sql-server-cdc-ga
+    titulo: "Aug 5, 2026: Openflow Connector for SQL Server (CDC) (General availability) | Snowflake Documentation"
+    tipo: oficial
+    fecha_publicacion: 2026-08-05
+    conflicto_de_interes: propio-fabricante
+    cita: Openflow Connector for SQL Server (CDC) (General availability)
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 14d8d62353704953f9b408403108976f301c546f4127500e0198949782eda792
+  - url: https://docs.snowflake.com/en/user-guide/data-integration/openflow/connectors/postgres/about
+    titulo: About Openflow Connector for PostgreSQL | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: The connector copies all data available in the source table into the destination table.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: fee0c491160a931e09319d314e81c8d563185b626fe1300e1548e68a6971dd99
+  - url: https://docs.snowflake.com/en/user-guide/data-integration/openflow/connectors/postgres/about
+    titulo: About Openflow Connector for PostgreSQL | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Tables with no supported identity key configuration can replicate INSERT operations only.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: fee0c491160a931e09319d314e81c8d563185b626fe1300e1548e68a6971dd99
+  - url: https://docs.snowflake.com/en/user-guide/data-integration/openflow/connectors/postgres/about
+    titulo: About Openflow Connector for PostgreSQL | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: The connector supports only username and password authentication with PostgreSQL.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: fee0c491160a931e09319d314e81c8d563185b626fe1300e1548e68a6971dd99
+  - url: https://docs.snowflake.com/en/user-guide/data-load-snowpipe-intro
+    titulo: Snowpipe | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: This means you can load data from files in micro-batches, making it available to users within minutes
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 696c29d06903b37723b3938f0bded9bbe9e7b9b27db3ec275dc49f797c481df7
+  - url: https://docs.snowflake.com/en/user-guide/snowpipe-streaming/data-load-snowpipe-streaming-overview
+    titulo: Snowpipe Streaming | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: As low as 5 seconds ingest-to-queryable latency
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: b5830d3d6e9861fc3b2572506c4fb0b5f88485b0fa38b1d6cce79f7bdece1e36
+fecha_verificacion: 2026-10-06
+limitaciones:
+  - es: En PostgreSQL, una tabla sin clave de identidad solo replica inserciones; actualizar y borrar exige esa clave.
+    en: In PostgreSQL, a table without an identity key only replicates inserts; updates and deletes need that key.
+  - es: El conector de PostgreSQL solo admite autenticación con usuario y contraseña.
+    en: The PostgreSQL connector only supports username and password authentication.
+origen: agente-investigador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

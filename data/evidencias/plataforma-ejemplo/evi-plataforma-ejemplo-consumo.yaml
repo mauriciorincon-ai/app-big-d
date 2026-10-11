@@ -1,0 +1,37 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-plataforma-ejemplo-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/plataforma-ejemplo.jsonl).
+id: evi-plataforma-ejemplo-consumo
+plataforma_id: plataforma-ejemplo
+capacidad_id: cap-consumo
+afirmacion:
+  es: Un modelo semántico lee las tablas limpias en su lugar y alimenta los tableros.
+  en: A semantic model reads the clean tables in place and feeds the dashboards.
+componentes:
+  - modelo-semantico
+  - tablero
+madurez: disponible-general
+puntaje: 3
+justificacion_puntaje:
+  es: "3 y no 4: los tableros se actualizan como mínimo cada 15 minutos, una limitación documentada. 3 y no 2: está disponible de forma general."
+  en: "3, not 4: dashboards refresh at most every 15 minutes, a documented limitation. 3, not 2: it is generally available."
+esencial: true
+fuentes:
+  - url: https://example.org/plataforma-ejemplo/consumo
+    titulo: Example Platform docs · Semantic model (fictional)
+    tipo: oficial
+    fecha_publicacion: 2026-09-15
+    conflicto_de_interes: propio-fabricante
+    cita: The semantic model reads curated tables in place; dashboards built on it refresh at most every 15 minutes.
+    verificacion:
+      resultado: no-verificable
+      fecha: 2026-10-06
+      http: 404
+      sha256: 25ddf2c883e0d1958ea971d279a7e4f0fd446724ee3db7db19dadabd4a62e484
+fecha_verificacion: 2026-10-06
+limitaciones:
+  - es: Los tableros se actualizan como mínimo cada 15 minutos.
+    en: Dashboards refresh at most every 15 minutes.
+origen: curador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

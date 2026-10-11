@@ -1,6 +1,6 @@
 # GENERADO por scripts/datos/desde-contrato.mjs desde packages/diagramador/gramaticas/plataformas-datos.json
 # (copia fijada del contrato del diagramador). No se edita a mano: el cambio va al contrato.
-contrato_version: 0.4.0
+contrato_version: 0.6.0
 id: plataformas-datos
 version: 0.2.0
 nombre:

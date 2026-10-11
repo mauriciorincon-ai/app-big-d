@@ -1,0 +1,80 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-databricks-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/databricks.jsonl).
+id: evi-databricks-costo
+plataforma_id: databricks
+criterio_id: crit-costo
+afirmacion:
+  es: Se paga por consumo, sin costos iniciales; los presupuestos avisan cuando el gasto pasa el límite, pero con hasta 24 horas de retraso, sin contar descuentos, y solo bloquean lo que pasa por Unity Gateway.
+  en: It is pay-as-you-go, with no up-front costs; budgets alert when spending passes the limit, but up to 24 hours late, without counting discounts, and they only block what goes through Unity Gateway.
+componentes:
+  - uso-facturable
+  - presupuestos
+madurez: disponible-general
+puntaje: 2
+justificacion_puntaje:
+  es: "2 y no 3: el cobro crece con el consumo y ninguna herramienta nativa frena a tiempo el gasto total: los presupuestos solo bloquean lo que pasa por Unity Gateway, avisan con hasta 24 horas de retraso y no cuentan créditos ni descuentos. 2 y no 1: medir el gasto, avisar y poner un tope de consumo por hora a cada recurso de cómputo se hace sin herramientas de terceros."
+  en: "2, not 3: charges grow with usage and no native tool stops total spending in time: budgets only block what goes through Unity Gateway, alert up to 24 hours late and ignore credits and discounts. 2, not 1: measuring spend, alerting and putting an hourly usage cap on each compute resource need no third-party tools."
+esencial: true
+fuentes:
+  - url: https://www.databricks.com/product/pricing
+    titulo: Pricing | Databricks
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Databricks offers you a pay-as-you-go approach with no up-front costs.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: b48564494b13e6853a6c450534b6965473aad2aa62cea76d0ba87b1cac86e6a2
+  - url: https://docs.databricks.com/aws/en/admin/account-settings/budgets
+    titulo: Create and monitor budgets | Databricks on AWS
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Block usage to prevent users from making further requests through Unity Gateway when the threshold is reached.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 2445fa3cbfe74ec988d10023e63b692e2b22d9a05e099627fdee4bb4595f7551
+  - url: https://docs.databricks.com/aws/en/admin/account-settings/budgets
+    titulo: Create and monitor budgets | Databricks on AWS
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: There could be up to a 24-hour delay between usage occurring and an email notification being sent.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 2445fa3cbfe74ec988d10023e63b692e2b22d9a05e099627fdee4bb4595f7551
+  - url: https://docs.databricks.com/aws/en/admin/account-settings/budgets
+    titulo: Create and monitor budgets | Databricks on AWS
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Budgets do not factor in any billing credits or negotiated discounts your account might have.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 2445fa3cbfe74ec988d10023e63b692e2b22d9a05e099627fdee4bb4595f7551
+  - url: https://docs.databricks.com/aws/en/admin/clusters/policy-definition
+    titulo: Compute policy reference | Databricks on AWS
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Calculated attribute representing the maximum DBUs a resource can use on an hourly basis including the driver node. This metric is a direct way to control cost at the individual compute level.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 216a330cb740d7197935245f6b4d02181329aa85c409d49f2ddf28500827572b
+fecha_verificacion: 2026-10-06
+limitaciones:
+  - es: El aviso de un presupuesto puede llegar hasta 24 horas después del consumo.
+    en: A budget alert can arrive up to 24 hours after the usage.
+  - es: Los presupuestos no cuentan créditos ni descuentos negociados.
+    en: Budgets ignore credits and negotiated discounts.
+  - es: El bloqueo al llegar al límite solo aplica a las solicitudes que pasan por Unity Gateway.
+    en: Blocking at the limit only applies to requests that go through Unity Gateway.
+origen: agente-investigador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

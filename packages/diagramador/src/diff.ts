@@ -1,7 +1,8 @@
 // `diff(mapA, mapB)` (§ 4.7): qué cambió entre dos versiones de un mapa. Nodos nuevos (+), retirados (−),
-// renombrados (→, por id o por `nombres_anteriores`) y con madurez cambiada (▮); flujos y pasos nuevos,
-// retirados o cambiados. Dato puro, ordenado por id: la app lo dibuja con glifo + palabra (G7).
-import type { Flujo, Mapa, Nodo, Paso, TextoIdioma } from "./tipos";
+// renombrados (→, por id o por `nombres_anteriores`) y con madurez cambiada (▮); bloques por id, con su nombre
+// (0.6.0, F-030: el renombre de un bloque no se veía); flujos y pasos nuevos, retirados o cambiados. Dato puro,
+// ordenado por id: la app lo dibuja con glifo + palabra (G7). No compara textos, fuentes ni fechas (§ 4.7).
+import type { Bloque, Flujo, Mapa, Nodo, Paso, TextoIdioma } from "./tipos";
 import { compararCodigo } from "./util/orden";
 
 export interface Diferencias {
@@ -11,6 +12,8 @@ export interface Diferencias {
     renombrados: { id: string; antes: TextoIdioma; ahora: TextoIdioma; idAnterior?: string }[];
     madurez: { id: string; antes: string; ahora: string }[];
   };
+  /** 0.6.0 (F-030): bloques por `id`, con su nombre. */
+  bloques: { nuevos: string[]; retirados: string[]; renombrados: { id: string; antes: TextoIdioma; ahora: TextoIdioma }[] };
   flujos: { nuevos: string[]; retirados: string[]; cambiados: string[] };
   pasos: { nuevos: string[]; retirados: string[]; cambiados: string[] };
 }
@@ -69,6 +72,16 @@ export function diff(mapA: Mapa, mapB: Mapa): Diferencias {
   const flujo = (x: Flujo, y: Flujo) => !igual(x, y);
   const paso = (x: Paso, y: Paso) => !igual(x, y);
   const pasosDe = (m: Mapa) => m.recorridos.flatMap((r) => r.pasos.map((p) => ({ ...p, id: `${r.id}/${p.id}` })));
+  const BA = porId<Bloque>(mapA.bloques);
+  const BB = porId<Bloque>(mapB.bloques);
+  const bloques: Diferencias["bloques"] = {
+    nuevos: ordenados([...BB.keys()].filter((id) => !BA.has(id))),
+    retirados: ordenados([...BA.keys()].filter((id) => !BB.has(id))),
+    renombrados: [...BB.values()]
+      .filter((b) => BA.has(b.id) && !iguales(BA.get(b.id)!.nombre, b.nombre))
+      .map((b) => ({ id: b.id, antes: BA.get(b.id)!.nombre, ahora: b.nombre }))
+      .sort((x, y) => compararCodigo(x.id, y.id)),
+  };
   return {
     nodos: {
       nuevos: ordenados(nuevos),
@@ -76,6 +89,7 @@ export function diff(mapA: Mapa, mapB: Mapa): Diferencias {
       renombrados: renombrados.sort((x, y) => compararCodigo(x.id, y.id)),
       madurez: madurez.sort((x, y) => compararCodigo(x.id, y.id)),
     },
+    bloques,
     flujos: colecciones(mapA.flujos, mapB.flujos, flujo),
     pasos: colecciones(pasosDe(mapA), pasosDe(mapB), paso),
   };

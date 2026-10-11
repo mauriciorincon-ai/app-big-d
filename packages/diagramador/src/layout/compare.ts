@@ -286,7 +286,7 @@ function bloqueCompacto(
   // 52 u y a 118 u rozaba «comp.»; ajuste del boceto M1). Si las dos no caben, manda la madurez.
   const yr = y + h - 80 - 140;
   const cuenta = unaLinea(ctx, (l) =>
-    plural(ctx.textos[l]!.lado.comp, e.nodos.length),
+    plural(ctx.textos[l]!.lado.comp, e.nodos.length, l),
   );
   const peor = peorMadurez(ctx, e.nodos);
   const conMadurez = peor !== undefined && !peor.disponible;
@@ -330,7 +330,7 @@ function bloqueCompacto(
   hijos.push(...pildoras(ctx, caja, clases, e.id, rotulos));
   cajas.push({ id: e.id, clase: "bloque", caja });
   const aria = porIdioma(ctx, (l, t) => {
-    const base = `${nombre[l] || e.banda.nombre[l]}: ${plural(t.componentes, e.nodos.length)}${conMadurez ? `, ${peor.nombre[l]!.toLowerCase()}` : ""}. ${t.componentesDe}: ${e.nodos.map((n) => n.nombre[l]).join(", ")}.`;
+    const base = `${nombre[l] || e.banda.nombre[l]}: ${plural(t.componentes, e.nodos.length, l)}${conMadurez ? `, ${peor.nombre[l]!.toLowerCase()}` : ""}. ${t.componentesDe}: ${e.nodos.map((n) => n.nombre[l]).join(", ")}.`;
     const vig =
       estado === "vigente"
         ? ""
@@ -418,7 +418,9 @@ function apilar(ctx: Contexto, x: Decimas, w: Decimas, h: Decimas, clases: reado
 /** La celda de una banda en una fila: sus elementos del nivel 1 en bloques compactos, o desplegados en sus nodos. */
 function celda(ctx: Contexto, b: Banda, nivel: 1 | 2, col: Decimas, k: number, marks: Diferencias | undefined, cajas: CajaPropia[], rotulos: Geometria["rotulos"]): Celda {
   const es = elementosDe(ctx, b);
-  const clasesElem = (e: Elem) => [...new Set(e.nodos.flatMap((n) => clasesDe(marks, k, n.id)))];
+  // 0.6.0 (F-030): el bloque renombrado lleva su píldora «renombrado» en la fila nueva, aunque sus nodos no cambien.
+  const bloqueRenombrado = (e: Elem): Clase[] => (k === 1 && !e.fantasma && marks?.bloques.renombrados.some((r) => r.id === e.id) ? ["renombrado"] : []);
+  const clasesElem = (e: Elem) => [...new Set<Clase>([...e.nodos.flatMap((n) => clasesDe(marks, k, n.id)), ...bloqueRenombrado(e)])];
   if (nivel === 1) {
     if (!es.length) return { alto: BLOQUE_H, dibujar: (x, y) => [vacia(ctx, b, { x, y, w: col, h: BLOQUE_H })] };
     const pila = apilar(ctx, 0, col, BLOQUE_H, es.map(clasesElem));
@@ -577,10 +579,10 @@ export function compare(
     const dias = diasDe(ctx, m.nodos);
     const estado = vigenciaDe(ctx, dias);
     vigencias.push({ id: pre, dias, estado });
-    const meta = porIdioma(ctx, (_l, t) =>
+    const meta = porIdioma(ctx, (l, t) =>
       plantilla(
         estado === "vigente"
-          ? plural(t.lado.fila, dias)
+          ? plural(t.lado.fila, dias, l)
           : estado === "revisar"
             ? t.lado.filaRevisar
             : t.lado.filaVencido,

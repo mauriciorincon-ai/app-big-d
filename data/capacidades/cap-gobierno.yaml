@@ -1,0 +1,15 @@
+# Capacidad de la especificación § 10.2: el nombre es el del tipo en la gramática plataformas-datos (el cargador lo exige).
+id: cap-gobierno
+nombre:
+  es: "Gobierno, seguridad y linaje"
+  en: "Governance, security and lineage"
+definicion:
+  es: "Decidir quién puede ver qué dato, proteger lo sensible y saber de dónde viene cada cifra."
+  en: "Deciding who can see which data, protecting what is sensitive and knowing where each figure comes from."
+preguntas_guia:
+  - es: "¿Dónde vive el catálogo?"
+    en: "Where does the catalog live?"
+  - es: "¿Soporta filtros por fila y enmascaramiento por columna?"
+    en: "Does it support row filters and column masking?"
+  - es: "¿Registra linaje automáticamente?"
+    en: "Does it record lineage automatically?"

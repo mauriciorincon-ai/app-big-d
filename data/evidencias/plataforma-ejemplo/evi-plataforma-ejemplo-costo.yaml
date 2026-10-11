@@ -1,0 +1,33 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-plataforma-ejemplo-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/plataforma-ejemplo.jsonl).
+id: evi-plataforma-ejemplo-costo
+plataforma_id: plataforma-ejemplo
+criterio_id: crit-costo
+afirmacion:
+  es: Cobra por capacidad reservada, con un tope mensual por área y alertas al llegar al 80 %.
+  en: It charges for reserved capacity, with a monthly cap per area and alerts at 80 percent.
+componentes:
+  - monitor-capacidad
+madurez: disponible-general
+puntaje: 3
+justificacion_puntaje:
+  es: "3 y no 4: lo que pase del tope se cobra por uso, más difícil de anticipar. 3 y no 2: el tope y las alertas son nativos."
+  en: "3, not 4: anything above the cap is billed by usage, which is harder to anticipate. 3, not 2: the cap and the alerts are native."
+esencial: true
+fuentes:
+  - url: https://example.org/plataforma-ejemplo/costo
+    titulo: Example Platform docs · Pricing (fictional)
+    tipo: oficial
+    fecha_publicacion: 2026-09-15
+    conflicto_de_interes: propio-fabricante
+    cita: Reserved capacity is billed monthly per workspace with budget alerts at 80 percent; usage beyond the cap is billed at pay-as-you-go rates.
+    verificacion:
+      resultado: no-verificable
+      fecha: 2026-10-06
+      http: 404
+      sha256: 25ddf2c883e0d1958ea971d279a7e4f0fd446724ee3db7db19dadabd4a62e484
+fecha_verificacion: 2026-10-06
+origen: curador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

@@ -1,0 +1,98 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-fabric-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/fabric.jsonl).
+id: evi-fabric-cumplimiento
+plataforma_id: fabric
+criterio_id: crit-cumplimiento
+afirmacion:
+  es: Microsoft Fabric tiene el acuerdo de socio comercial de HIPAA (BAA) y certificaciones ISO/IEC 27001, 27017, 27018 y 27701; el BAA de Microsoft viene por defecto en su anexo de protección de datos, la auditoría de Purview registra las actividades en Fabric y los datos se pueden cifrar con claves propias.
+  en: Microsoft Fabric has the HIPAA business associate agreement (BAA) and ISO/IEC 27001, 27017, 27018 and 27701 certifications; Microsoft's BAA comes by default in its data protection addendum, Purview Audit records activity in Fabric, and data can be encrypted with customer-owned keys.
+componentes:
+  - auditoria
+  - etiquetas-confidencialidad
+  - onelake
+madurez: disponible-general
+puntaje: 3
+justificacion_puntaje:
+  es: "3 y no 4: parte de los controles para datos sensibles se paga aparte: las etiquetas de confidencialidad y la prevención de pérdida de datos (DLP) exigen licencias adicionales de Microsoft Purview. 3 y no 2: el BAA sin contrato aparte, las certificaciones, la auditoría y el cifrado con claves propias son nativos y están documentados, y la auditoría está disponible de forma general."
+  en: "3, not 4: part of the controls for sensitive data is paid separately: sensitivity labels and data loss prevention (DLP) require additional Microsoft Purview licences. 3, not 2: the BAA with no separate contract, the certifications, auditing and encryption with customer-owned keys are native and documented, and auditing is generally available."
+esencial: true
+fuentes:
+  - url: https://learn.microsoft.com/en-us/fabric/governance/governance-compliance-overview
+    titulo: Governance and compliance in Microsoft Fabric - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Microsoft Fabric has HIPAA BAA, ISO/IEC 27017, ISO/IEC 27018, ISO/IEC 27001, and ISO/IEC 27701 compliance certifications.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: d5ab2a5e40542213f9e6f4be01721e05b7814282d0a2292e35bb7f237b7cb6b8
+  - url: https://learn.microsoft.com/en-us/compliance/regulatory/offering-hipaa-hitech
+    titulo: Health Insurance Portability and Accountability Act (HIPAA) & Health Information Technology for Economic and Clinical Health (HITECH) Act - Microsoft Compliance | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: is available through the Microsoft Online Services Data Protection Addendum by default to all customers who are covered entities or business associates under HIPAA.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 8ba1838218e6452091f69190720b4cb958d5f8f3dab4dce6d9df90f1f85e4703
+  - url: https://learn.microsoft.com/en-us/fabric/governance/governance-compliance-overview
+    titulo: Governance and compliance in Microsoft Fabric - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Purview Audit then captures audit trails on activities performed in Fabric.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: d5ab2a5e40542213f9e6f4be01721e05b7814282d0a2292e35bb7f237b7cb6b8
+  - url: https://learn.microsoft.com/en-us/fabric/onelake/security/get-started-security
+    titulo: Data security overview - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: You can use encryption at rest by using customer-managed keys to add another layer of protection by using keys you own and control.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: ccc47cbb021e54c8f521f7cdcd292af4433e8fdf034314c72df4b79d781e3925
+  - url: https://learn.microsoft.com/en-us/fabric/governance/governance-compliance-overview
+    titulo: Governance and compliance in Microsoft Fabric - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Information protection in Fabric requires additional licensing from Microsoft Purview.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: d5ab2a5e40542213f9e6f4be01721e05b7814282d0a2292e35bb7f237b7cb6b8
+  - url: https://learn.microsoft.com/en-us/fabric/governance/governance-compliance-overview
+    titulo: Governance and compliance in Microsoft Fabric - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Purview Data Loss Prevention (DLP) requires additional licensing from Microsoft Purview.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: d5ab2a5e40542213f9e6f4be01721e05b7814282d0a2292e35bb7f237b7cb6b8
+  - url: https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/
+    titulo: Prepare your data for AI innovation with Microsoft Fabric—now generally available | Microsoft Fabric Blog
+    tipo: oficial
+    fecha_publicacion: 2023-11-15
+    conflicto_de_interes: propio-fabricante
+    cita: Both sensitivity labels, and the audit integration are now generally available.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: b4c8a2102f12b4af83f68a6a5f365b330f2825b591106f03f4f17e77fa1566d7
+fecha_verificacion: 2026-10-06
+limitaciones:
+  - es: Las etiquetas de confidencialidad y la prevención de pérdida de datos exigen licencias adicionales de Microsoft Purview.
+    en: Sensitivity labels and data loss prevention require additional Microsoft Purview licences.
+origen: agente-investigador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

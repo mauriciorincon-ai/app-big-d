@@ -29,4 +29,11 @@ describe("la skill /investigar dice las reglas que el código aplica", () => {
     expect(skill).toContain("cuatro edades");
     expect(skill).toContain("lado a lado");
   });
+  it("D-S3-10: el modo evidencias dice su forma y sus reglas (una por criterio, puntaje contra el ancla, madurez con cita)", () => {
+    expect(skill).toContain("argument-hint: <plataforma> [capa | evidencias]");
+    expect(skill).toContain('"tipo": "evidencias"');
+    expect(skill).toContain("-evidencias/propuesta.json");
+    expect(skill.replace(/\s+/g, " ")).toContain("por qué ese nivel y no el de al lado");
+    expect(skill).toContain("El tope por madurez lo aplica el motor");
+  });
 });

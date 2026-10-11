@@ -1,4 +1,4 @@
-// Modelo de datos del contrato v0.4.0 (§ 3). Escrito a mano desde los JSON Schema de `esquema/`, que son
+// Modelo de datos del contrato v0.6.0 (§ 3). Escrito a mano desde los JSON Schema de `esquema/`, que son
 // la fuente normativa: el esquema valida la forma y estos tipos solo describen lo que ya pasó por él.
 
 /** Mapa de idioma: una cadena por idioma declarado en la gramática (§ 3.0). */
@@ -7,7 +7,7 @@ export type TextoIdioma = Record<string, string>;
 export type DiccionarioIdioma = Record<string, Record<string, string>>;
 
 export type ClaseBanda = "capa" | "carril" | "transversal";
-export type Glifo = "circulo" | "cuadrado" | "rombo" | "triangulo" | "escudo" | "estrella" | "anillo" | "barras";
+export type Glifo = "circulo" | "cuadrado" | "rombo" | "triangulo" | "escudo" | "estrella" | "anillo" | "barras" | "hexagono";
 export type EstiloLinea = "continua" | "discontinua" | "punteada" | "doble";
 export type Marcador = "cuadros" | "onda" | "ida-y-vuelta" | "enlace" | "ninguno";
 
@@ -63,12 +63,24 @@ export interface Gramatica {
   terminos_a_explicar?: Record<string, string[]>;
 }
 
-export interface Fuente {
+/** Fuente publicada: una URL `https` de la documentación (oficial) o de un tercero. */
+export interface FuenteUrl {
   url: string;
   titulo: TextoIdioma;
   fecha: string;
   tipo: "oficial" | "tercero";
 }
+
+/** Fuente de código (0.5.0, § 3.3): el archivo y las líneas del repositorio; se escribe `ruta:lineas`, jamás como enlace. */
+export interface FuenteCodigo {
+  ruta: string;
+  lineas?: string;
+  titulo: TextoIdioma;
+  fecha: string;
+  tipo: "codigo";
+}
+
+export type Fuente = FuenteUrl | FuenteCodigo;
 
 export interface Bloque {
   id: string;
@@ -93,13 +105,26 @@ export interface Nodo {
   fuentes: Fuente[];
   fecha_verificacion: string;
   refs_externas?: string[];
+  /** 0.5.0 (§ 3.3): nodo terminal de un grafo; el motor dibuja el marcador de entrada o salida junto a la tarjeta. */
+  papel?: "inicio" | "fin";
 }
 
-export interface Condicion {
+/** Condición de un flujo en sus tres formas (0.5.0, § 3.4). */
+export interface CondicionTripleta {
   senal: string;
   operador: "<" | "<=" | "=" | "!=" | ">=" | ">";
   valor: number | string | boolean;
 }
+/** Una función nombrada del plan con las señales que lee; el motor la escribe `f(entradas)` y no la evalúa. */
+export interface CondicionFuncion {
+  funcion: string;
+  entradas: string[];
+}
+/** La rama «si no» de un enrutador: a lo sumo una por nodo de origen (V17). */
+export interface CondicionPorDefecto {
+  por_defecto: true;
+}
+export type Condicion = CondicionTripleta | CondicionFuncion | CondicionPorDefecto;
 
 export interface Flujo {
   id: string;

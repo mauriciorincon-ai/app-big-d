@@ -41,10 +41,23 @@ export function versiones(ejemplo: Mapa): { antes: Mapa; despues: Mapa } {
   return { antes, despues };
 }
 
+/**
+ * La versión nueva con un bloque renombrado (0.6.0, F-030): «Tableros» pasa a «Tableros y aplicaciones», como en
+ * Databricks v0.2.0. Sus nodos no cambian: la píldora «renombrado» la pone el bloque mismo.
+ */
+export function conBloqueRenombrado(despues: Mapa): Mapa {
+  const m = structuredClone(despues);
+  m.bloques = m.bloques.map((b) => (b.id === "consumo-bi" ? { ...b, nombre: { es: "Tableros y aplicaciones", en: "Dashboards and apps" } } : b));
+  return m;
+}
+
 /** Todas las bandas en 2: el estado «Desplegar todo» del producto (mirada M1). */
 export const todasEn2 = (g: Gramatica): Record<string, 2> => Object.fromEntries(g.bandas.map((b) => [b.id, 2 as const]));
 
-/** Los golden del lado a lado: bloques, página 2, rejilla de componentes contraída, una banda, todas, y diferencias. */
+/**
+ * Los golden del lado a lado: bloques, página 2, rejilla de componentes contraída, una banda, todas, diferencias y
+ * (0.6.0) el renombre de un bloque.
+ */
 export function salidasLado(g: Gramatica, lado: Mapa[], antes: Mapa, despues: Mapa): { archivo: string; geo: () => Geometria; svg: (idioma: string) => string }[] {
   const base = { texts: TEXTOS, queryDate: FECHA_LADO };
   const marks = diff(antes, despues);
@@ -56,6 +69,7 @@ export function salidasLado(g: Gramatica, lado: Mapa[], antes: Mapa, despues: Ma
     ["desplegado", () => compare(lado, g, { ...base, n: N_LADO, levelByBand: todasEn2(g) })],
     ["diferencias", () => compare([antes, despues], g, { ...base, marks })],
     ["diferencias-desplegado", () => compare([antes, despues], g, { ...base, marks, levelByBand: todasEn2(g) })],
+    ["diferencias-bloque", () => compare([antes, conBloqueRenombrado(despues)], g, { ...base, marks: diff(antes, conBloqueRenombrado(despues)) })],
   ];
   return casos.map(([nombre, geo]) => ({ archivo: `lado.${nombre}`, geo, svg: (idioma: string) => toSVG(geo(), { language: idioma }) }));
 }

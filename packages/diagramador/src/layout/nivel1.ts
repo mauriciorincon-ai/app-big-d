@@ -57,7 +57,7 @@ export function elementosDe(ctx: Contexto, b: Banda): Elem[] {
 export function nombreElem(ctx: Contexto, e: Elem, l: string, ficha = false): string {
   if (e.bloque) return e.bloque.nombre[l]!;
   if (e.nodos.length === 1) return e.nodos[0]!.nombre[l]!;
-  return ficha ? plural(ctx.textos[l]!.componentes, e.nodos.length) : "";
+  return ficha ? plural(ctx.textos[l]!.componentes, e.nodos.length, l) : "";
 }
 
 /** Nombre en una referencia de franja: una caja sin bloque de varios nodos se nombra por su banda. */
@@ -103,7 +103,7 @@ export function tarjetaBloque(ctx: Contexto, e: Elem, caja: Caja, rotulos: Geome
   const madurez = conMadurez ? Object.fromEntries(ctx.idiomas.map((l) => [l, partir(ctx, rotuloMadurez(peor, l), 13, 400, anchoMadurez, `madurez de ${e.id}`, l)])) : {};
   const dosLineas = conMadurez && ctx.idiomas.some((l) => madurez[l]!.length > 1);
   const fila = 180;
-  const cuenta = unaLinea(ctx, (l) => plural(ctx.textos[l]!.componentes, e.nodos.length));
+  const cuenta = unaLinea(ctx, (l) => plural(ctx.textos[l]!.componentes, e.nodos.length, l));
   if (!dosLineas) {
     const yc = y + h - 140 - fila - (conMadurez ? fila : 0);
     hijos.push(texto("dg-t-meta", x + 180, ctx.sans.base(yc, 13, 18), fila, cuenta));
@@ -137,7 +137,7 @@ function fichaFranja(ctx: Contexto, e: Elem, caja: Caja, rotulos: Geometria["rot
   const lineas = Math.max(...ctx.idiomas.map((l) => nombre[l]!.length));
   const arriba = y + mitad(h - (lineas * 170 + 160));
   hijos.push(texto("dg-t-nombre dg-t-nombre-compacto", x + 400, ctx.sans.base(arriba, 14, 17), 170, nombre));
-  const sub = unaLinea(ctx, (l) => (e.fantasma ? ctx.textos[l]!.sinBloque : plural(ctx.textos[l]!.componentes, e.nodos.length)));
+  const sub = unaLinea(ctx, (l) => (e.fantasma ? ctx.textos[l]!.sinBloque : plural(ctx.textos[l]!.componentes, e.nodos.length, l)));
   hijos.push(texto("dg-t-meta dg-t-meta-compacta", x + 400, ctx.sans.base(arriba + lineas * 170, 12, 16), 160, sub));
   const dias = diasDe(ctx, e.nodos);
   const estado = vigenciaDe(ctx, dias);

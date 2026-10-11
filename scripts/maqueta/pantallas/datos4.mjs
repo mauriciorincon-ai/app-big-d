@@ -1,4 +1,4 @@
-// Datos de la mirada 4 (100 % ficticios): decisiones del caso del Hospital Ficticio de la Sabana (§ 10.5
+// Datos de la mirada 4 (100 % ficticios): decisiones del caso del Hospital Ficticio del Futuro (§ 10.5
 // de la especificación), riesgos con prioridad de acción, supuestos con prueba barata y hoja de ruta.
 // Las ondas, el ciclo, la prioridad de acción y el orden se CALCULAN aquí, no se escriben.
 

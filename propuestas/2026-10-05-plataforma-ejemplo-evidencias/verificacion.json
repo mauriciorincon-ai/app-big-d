@@ -1,0 +1,106 @@
+{
+  "version": 1,
+  "fecha": "2026-10-06",
+  "propuesta_sha256": "13e17162a5a07fbf1438fa50001b6432adb5b8dbc2bd14688f2c551ee486d148",
+  "resultados": [
+    {
+      "afirmacion": "A-1",
+      "fuente": 0,
+      "url": "https://example.org/plataforma-ejemplo/almacenamiento",
+      "resultado": "no-verificable",
+      "http": 404,
+      "sha256": "25ddf2c883e0d1958ea971d279a7e4f0fd446724ee3db7db19dadabd4a62e484",
+      "motivo": "HTTP 404"
+    },
+    {
+      "afirmacion": "A-2",
+      "fuente": 0,
+      "url": "https://example.org/plataforma-ejemplo/consumo",
+      "resultado": "no-verificable",
+      "http": 404,
+      "sha256": "25ddf2c883e0d1958ea971d279a7e4f0fd446724ee3db7db19dadabd4a62e484",
+      "motivo": "HTTP 404"
+    },
+    {
+      "afirmacion": "A-3",
+      "fuente": 0,
+      "url": "https://example.org/plataforma-ejemplo/gobierno",
+      "resultado": "no-verificable",
+      "http": 404,
+      "sha256": "25ddf2c883e0d1958ea971d279a7e4f0fd446724ee3db7db19dadabd4a62e484",
+      "motivo": "HTTP 404"
+    },
+    {
+      "afirmacion": "A-4",
+      "fuente": 0,
+      "url": "https://example.org/plataforma-ejemplo/ia",
+      "resultado": "no-verificable",
+      "http": 404,
+      "sha256": "25ddf2c883e0d1958ea971d279a7e4f0fd446724ee3db7db19dadabd4a62e484",
+      "motivo": "HTTP 404"
+    },
+    {
+      "afirmacion": "A-5",
+      "fuente": 0,
+      "url": "https://example.org/plataforma-ejemplo/ingesta",
+      "resultado": "no-verificable",
+      "http": 404,
+      "sha256": "25ddf2c883e0d1958ea971d279a7e4f0fd446724ee3db7db19dadabd4a62e484",
+      "motivo": "HTTP 404"
+    },
+    {
+      "afirmacion": "A-6",
+      "fuente": 0,
+      "url": "https://example.org/plataforma-ejemplo/transformacion",
+      "resultado": "no-verificable",
+      "http": 404,
+      "sha256": "25ddf2c883e0d1958ea971d279a7e4f0fd446724ee3db7db19dadabd4a62e484",
+      "motivo": "HTTP 404"
+    },
+    {
+      "afirmacion": "A-7",
+      "fuente": 0,
+      "url": "https://example.org/plataforma-ejemplo/costo",
+      "resultado": "no-verificable",
+      "http": 404,
+      "sha256": "25ddf2c883e0d1958ea971d279a7e4f0fd446724ee3db7db19dadabd4a62e484",
+      "motivo": "HTTP 404"
+    },
+    {
+      "afirmacion": "A-8",
+      "fuente": 0,
+      "url": "https://example.org/plataforma-ejemplo/cumplimiento",
+      "resultado": "no-verificable",
+      "http": 404,
+      "sha256": "25ddf2c883e0d1958ea971d279a7e4f0fd446724ee3db7db19dadabd4a62e484",
+      "motivo": "HTTP 404"
+    },
+    {
+      "afirmacion": "A-9",
+      "fuente": 0,
+      "url": "https://example.org/plataforma-ejemplo/habilidades",
+      "resultado": "no-verificable",
+      "http": 404,
+      "sha256": "25ddf2c883e0d1958ea971d279a7e4f0fd446724ee3db7db19dadabd4a62e484",
+      "motivo": "HTTP 404"
+    },
+    {
+      "afirmacion": "A-10",
+      "fuente": 0,
+      "url": "https://example.org/plataforma-ejemplo/dependencia",
+      "resultado": "no-verificable",
+      "http": 404,
+      "sha256": "25ddf2c883e0d1958ea971d279a7e4f0fd446724ee3db7db19dadabd4a62e484",
+      "motivo": "HTTP 404"
+    },
+    {
+      "afirmacion": "A-11",
+      "fuente": 0,
+      "url": "https://example.org/plataforma-ejemplo/ecosistema",
+      "resultado": "no-verificable",
+      "http": 404,
+      "sha256": "25ddf2c883e0d1958ea971d279a7e4f0fd446724ee3db7db19dadabd4a62e484",
+      "motivo": "HTTP 404"
+    }
+  ]
+}

@@ -1,0 +1,120 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-snowflake-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/snowflake.jsonl).
+id: evi-snowflake-gobierno
+plataforma_id: snowflake
+capacidad_id: cap-gobierno
+afirmacion:
+  es: Horizon Catalog reúne los datos de dentro y fuera de Snowflake y aplica etiquetas y políticas a medida que cambian las tablas; las políticas por fila y las máscaras deciden qué ve cada persona, y el linaje se registra solo, hasta el nivel de columna.
+  en: Horizon Catalog brings together data inside and outside Snowflake and applies tags and policies as tables change; row policies and masks decide what each person sees, and lineage is recorded automatically, down to the column level.
+componentes:
+  - horizon-catalog
+  - politicas-acceso
+madurez: disponible-general
+puntaje: 3
+justificacion_puntaje:
+  es: "3 y no 4: el linaje no sigue los datos que se mueven con consultas separadas e inconexas, una misma columna no puede estar a la vez en la firma de una política por fila y en la de una máscara, y el linaje exige la edición Enterprise o superior. 3 y no 2: el catálogo, las políticas por fila, las máscaras y el linaje son nativos, y el linaje está disponible de forma general."
+  en: "3, not 4: lineage does not follow data moved by separate, disjointed queries, a single column cannot sit in both a row access policy signature and a masking policy signature, and lineage requires Enterprise Edition or higher. 3, not 2: the catalog, row policies, masks and lineage are native, and lineage is generally available."
+esencial: true
+fuentes:
+  - url: https://docs.snowflake.com/en/user-guide/snowflake-horizon
+    titulo: Snowflake Horizon Catalog | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Horizon Catalog is the agentic catalog for all your data, whether it is inside or outside of Snowflake.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 9c2b55385400c03e69960e2657dc8901aa2d3fc082bdec79d86a9ea4513d6d2f
+  - url: https://docs.snowflake.com/en/user-guide/snowflake-horizon
+    titulo: Snowflake Horizon Catalog | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Snowflake applies tags and policies without manual intervention as schemas evolve.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 9c2b55385400c03e69960e2657dc8901aa2d3fc082bdec79d86a9ea4513d6d2f
+  - url: https://docs.snowflake.com/en/user-guide/security-row-intro
+    titulo: Understanding row access policies | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Snowflake supports row-level security through the use of row access policies to determine which rows to return in the query result.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 0fa3bf0031477b7dc3908186740793d658a33d8c611adda6789f3a4d1ca096d5
+  - url: https://docs.snowflake.com/en/user-guide/security-column-ddm-intro
+    titulo: Understanding Dynamic Data Masking | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Dynamic Data Masking is a Column-level Security feature that uses masking policies to selectively mask plain-text data in table and view columns at query time.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: cea3df399f3e07bb5d73f2aa8226c73982dc2d2926dfb2f690c7f3404d0df024
+  - url: https://docs.snowflake.com/en/release-notes/2025/9_03
+    titulo: "9.3 Release notes: Feb 18, 2025-Feb 21, 2025 | Snowflake Documentation"
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Data lineage automatically tracks the flow of data between Snowflake objects in real-time, for example, from a table to a view.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 3dadfa055068cb9bfcd2a2c68c004438023efedd391ae4c7e05550b0a56d4083
+  - url: https://docs.snowflake.com/en/user-guide/ui-snowsight-lineage
+    titulo: Data Lineage | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: You can use Snowsight to trace the relationship between columns in a source object and columns in a target object.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 4a0d98dba1ba0cb3c4192ce71495252c9cdb0a784bfd1cdafaebfe4e5517af2b
+  - url: https://docs.snowflake.com/en/user-guide/ui-snowsight-lineage
+    titulo: Data Lineage | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Lineage cannot track the movement of data that results from separate, disjointed queries
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 4a0d98dba1ba0cb3c4192ce71495252c9cdb0a784bfd1cdafaebfe4e5517af2b
+  - url: https://docs.snowflake.com/en/user-guide/ui-snowsight-lineage
+    titulo: Data Lineage | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: This feature requires Enterprise Edition (or higher).
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 4a0d98dba1ba0cb3c4192ce71495252c9cdb0a784bfd1cdafaebfe4e5517af2b
+  - url: https://docs.snowflake.com/en/user-guide/security-row-intro
+    titulo: Understanding row access policies | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: A given table or view column can be specified in either a row access policy signature or a masking policy signature.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 0fa3bf0031477b7dc3908186740793d658a33d8c611adda6789f3a4d1ca096d5
+fecha_verificacion: 2026-10-06
+limitaciones:
+  - es: El linaje no sigue los datos que se mueven con consultas separadas e inconexas.
+    en: Lineage does not follow data moved by separate, disjointed queries.
+  - es: Una misma columna no puede estar a la vez en la firma de una política por fila y en la de una máscara.
+    en: A single column cannot be in both a row access policy signature and a masking policy signature.
+  - es: El linaje exige la edición Enterprise o superior.
+    en: Lineage requires Enterprise Edition or higher.
+origen: agente-investigador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

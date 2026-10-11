@@ -1,0 +1,81 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-snowflake-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/snowflake.jsonl).
+id: evi-snowflake-almacenamiento
+plataforma_id: snowflake
+capacidad_id: cap-almacenamiento
+afirmacion:
+  es: Por defecto, Snowflake guarda los datos en su propio formato interno. Las tablas Apache Iceberg, disponibles de forma general, guardan una sola copia en formato abierto, y otros motores la leen y la escriben a través de Horizon Catalog.
+  en: By default, Snowflake stores data in its own internal format. Apache Iceberg tables, generally available, keep a single copy in an open format, and other engines read and write it through Horizon Catalog.
+componentes:
+  - tablas-snowflake
+  - tablas-iceberg
+  - horizon-catalog
+madurez: disponible-general
+puntaje: 3
+justificacion_puntaje:
+  es: "3 y no 4: el formato abierto no es el predeterminado: las tablas de Snowflake guardan los datos en un formato interno y el formato abierto hay que elegirlo; además, desde un motor externo no se puede crear una tabla a partir de una consulta (CTAS). 3 y no 2: las tablas Iceberg están disponibles de forma general y otros motores las leen y escriben sin copiarlas, por una interfaz abierta y sin herramientas de terceros."
+  en: "3, not 4: the open format is not the default: Snowflake tables keep data in an internal format, and the open format has to be chosen; also, an external engine cannot create a table from a query (CTAS). 3, not 2: Iceberg tables are generally available, and other engines read and write them without copying, through an open interface and with no third-party tools."
+esencial: true
+fuentes:
+  - url: https://docs.snowflake.com/en/user-guide/intro-key-concepts
+    titulo: Snowflake key concepts and architecture | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: reorganizes that data into its internally optimized, compressed, columnar format
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: f9cdae674d5e8678de7f051929c26037e935327585d15f36e2e92b1c747c33ab
+  - url: https://docs.snowflake.com/en/release-notes/2024/other/2024-06-10-iceberg-tables
+    titulo: June 10, 2024 - Apache Iceberg tables - General Availability | Snowflake Documentation
+    tipo: oficial
+    fecha_publicacion: 2024-06-10
+    conflicto_de_interes: propio-fabricante
+    cita: We are pleased to announce the general availability of Apache Iceberg
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: ddd947329644c1862b66b8425af32dc8e9b02b4b75497de81bc82ba4ac1c9882
+  - url: https://docs.snowflake.com/en/release-notes/2024/other/2024-06-10-iceberg-tables
+    titulo: June 10, 2024 - Apache Iceberg tables - General Availability | Snowflake Documentation
+    tipo: oficial
+    fecha_publicacion: 2024-06-10
+    conflicto_de_interes: propio-fabricante
+    cita: They are ideal for maintaining a single copy of data with interoperability across a variety of compute engines.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: ddd947329644c1862b66b8425af32dc8e9b02b4b75497de81bc82ba4ac1c9882
+  - url: https://docs.snowflake.com/en/user-guide/tables-iceberg-access-using-external-query-engine-snowflake-horizon
+    titulo: Access Apache Iceberg tables with an external engine through Snowflake Horizon Catalog | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: You can use Horizon Catalog, which is available in all your existing Snowflake accounts, to read and write to Snowflake-managed Iceberg tables with external query engines.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: d26b1a3d45c230d72660fe7132ef3c20598e37fdd42137eab7c80107c5c0b084
+  - url: https://docs.snowflake.com/en/user-guide/tables-iceberg-access-using-external-query-engine-snowflake-horizon
+    titulo: Access Apache Iceberg tables with an external engine through Snowflake Horizon Catalog | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: CREATE TABLE AS SELECT (CTAS) from an external engine is not supported
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: d26b1a3d45c230d72660fe7132ef3c20598e37fdd42137eab7c80107c5c0b084
+fecha_verificacion: 2026-10-06
+limitaciones:
+  - es: Las tablas de Snowflake guardan los datos en un formato interno; solo las tablas Iceberg usan formato abierto.
+    en: Snowflake tables keep data in an internal format; only Iceberg tables use an open format.
+  - es: Desde un motor externo no se admite crear una tabla a partir de una consulta (CTAS).
+    en: Creating a table from a query (CTAS) is not supported from an external engine.
+origen: agente-investigador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

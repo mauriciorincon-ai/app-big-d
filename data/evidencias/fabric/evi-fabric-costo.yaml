@@ -1,0 +1,142 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-fabric-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/fabric.jsonl).
+id: evi-fabric-costo
+plataforma_id: fabric
+criterio_id: crit-costo
+afirmacion:
+  es: El cómputo se paga por el tamaño de la capacidad, por segundo y sin compromiso, con reserva anual opcional; si la carga pasa de ese tamaño, la capacidad retrasa y después rechaza operaciones, salvo que se active el cobro de excedentes. El almacenamiento de OneLake se cobra aparte, por GB.
+  en: Compute is paid by capacity size, per second with no commitment, with an optional yearly reservation; if the workload outgrows that size, the capacity delays and then rejects operations, unless overage billing is turned on. OneLake storage is billed separately, per GB.
+componentes:
+  - capacidad
+  - onelake
+madurez: disponible-general
+puntaje: 3
+justificacion_puntaje:
+  es: "3 y no 4: el gasto fijo se paga con rendimiento: al agotarse la capacidad, Fabric retrasa y luego rechaza operaciones, y evitarlo exige subir de tamaño o activar el cobro de excedentes, que cuesta el triple de la tarifa normal; además, el almacenamiento se cobra aparte por GB, en capacidades menores que F64 cada persona que ve informes de Power BI necesita una licencia Pro, y las tarifas de consumo pueden cambiar en cualquier momento (desde el 15 de octubre de 2026 se empiezan a contar operaciones de Spark sobre OneLake que antes no se reportaban). 3 y no 2: el cómputo se paga por el tamaño de la capacidad y no por cada consulta, por segundo y sin compromiso, y se pueden configurar alertas por correo al pasar umbrales, todo sin herramientas de terceros."
+  en: "3, not 4: the fixed spend is paid for in performance: when the capacity runs out, Fabric delays and then rejects operations, and avoiding that means scaling up or turning on overage billing, which costs three times the normal rate; also, storage is billed separately per GB, on capacities smaller than F64 every Power BI report viewer needs a Pro licence, and consumption rates can change at any time (from 15 October 2026, some Spark operations on OneLake that went unreported start to count). 3, not 2: compute is paid by capacity size rather than per query, per second with no commitment, and email alerts can be set when thresholds are crossed, all with no third-party tools."
+esencial: true
+fuentes:
+  - url: https://learn.microsoft.com/en-us/fabric/enterprise/licenses
+    titulo: Understand Microsoft Fabric licenses and capacity - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: You purchase F capacities through Azure, and Azure bills you per second with no commitment, with the option of a yearly capacity reservation to save costs.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 67966a8602820ff6590c18a931c4a45a358ac54dca97c68b82fa0e674b988485
+  - url: https://learn.microsoft.com/en-us/fabric/enterprise/licenses
+    titulo: Understand Microsoft Fabric licenses and capacity - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Each capacity in a tenant is a distinct resource pool for Microsoft Fabric. The size of the capacity determines the amount of computation power available.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 67966a8602820ff6590c18a931c4a45a358ac54dca97c68b82fa0e674b988485
+  - url: https://learn.microsoft.com/en-us/fabric/enterprise/throttling
+    titulo: Understand capacity throttling and smoothing - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Throttling occurs when operations consume more capacity unit (CU) seconds than the capacity SKU allows.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: e020d9469a64b9bc50889fd1295cd2ccddd61d35a1c5e39495612ae6b700e6e9
+  - url: https://learn.microsoft.com/en-us/fabric/enterprise/throttling
+    titulo: Understand capacity throttling and smoothing - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: The first phase of throttling applies 20-second delays to new interactive operations.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: e020d9469a64b9bc50889fd1295cd2ccddd61d35a1c5e39495612ae6b700e6e9
+  - url: https://learn.microsoft.com/en-us/fabric/enterprise/throttling
+    titulo: Understand capacity throttling and smoothing - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: The third phase of throttling rejects all new requests, interactive and background, when the capacity uses up all its available CU resources for the next 24 hours.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: e020d9469a64b9bc50889fd1295cd2ccddd61d35a1c5e39495612ae6b700e6e9
+  - url: https://learn.microsoft.com/en-us/fabric/enterprise/throttling
+    titulo: Understand capacity throttling and smoothing - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Capacity overage billing can also stop throttling from occurring; however, it costs three times the normal capacity rate.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: e020d9469a64b9bc50889fd1295cd2ccddd61d35a1c5e39495612ae6b700e6e9
+  - url: https://learn.microsoft.com/en-us/fabric/enterprise/throttling
+    titulo: Understand capacity throttling and smoothing - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Capacity admins can set up email alerts for capacity thresholds by using Capacity Overview Events.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: e020d9469a64b9bc50889fd1295cd2ccddd61d35a1c5e39495612ae6b700e6e9
+  - url: https://learn.microsoft.com/en-us/fabric/onelake/onelake-consumption
+    titulo: OneLake consumption - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: OneLake storage is billed at a pay-as-you-go rate per GB of data used and doesn't consume Fabric Capacity Units (CUs).
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 45d1e10ede1daf768867d9b5e6c5b461c552e9c2f2204c98517b73598f353f90
+  - url: https://learn.microsoft.com/en-us/fabric/onelake/onelake-consumption
+    titulo: OneLake consumption - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Beginning October 15, 2026, Fabric will correct this reporting so that these operations are included in OneLake CU consumption.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 45d1e10ede1daf768867d9b5e6c5b461c552e9c2f2204c98517b73598f353f90
+  - url: https://learn.microsoft.com/en-us/fabric/onelake/onelake-consumption
+    titulo: OneLake consumption - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Consumption rates are subject to change at any time.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 45d1e10ede1daf768867d9b5e6c5b461c552e9c2f2204c98517b73598f353f90
+  - url: https://learn.microsoft.com/en-us/fabric/enterprise/licenses
+    titulo: Understand Microsoft Fabric licenses and capacity - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: On F SKUs smaller than F64, each user viewing Power BI content must have Pro, PPU, or an individual trial.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 67966a8602820ff6590c18a931c4a45a358ac54dca97c68b82fa0e674b988485
+fecha_verificacion: 2026-10-06
+limitaciones:
+  - es: Al agotarse la capacidad, Fabric retrasa y luego rechaza operaciones; el cobro de excedentes que lo evita cuesta el triple de la tarifa normal.
+    en: When the capacity runs out, Fabric delays and then rejects operations; the overage billing that avoids it costs three times the normal rate.
+  - es: El almacenamiento de OneLake se cobra aparte, por GB.
+    en: OneLake storage is billed separately, per GB.
+  - es: En capacidades menores que F64, cada persona que ve informes de Power BI necesita una licencia Pro, PPU o de prueba.
+    en: On capacities smaller than F64, every Power BI report viewer needs a Pro, PPU or trial licence.
+  - es: Las tarifas de consumo pueden cambiar en cualquier momento; desde el 15 de octubre de 2026 se cuentan operaciones de Spark sobre OneLake que antes no se reportaban.
+    en: Consumption rates can change at any time; from 15 October 2026, some Spark operations on OneLake that went unreported are counted.
+origen: agente-investigador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

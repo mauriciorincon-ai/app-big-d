@@ -1,0 +1,109 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-snowflake-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/snowflake.jsonl).
+id: evi-snowflake-transformacion
+plataforma_id: snowflake
+capacidad_id: cap-transformacion
+afirmacion:
+  es: Las tablas dinámicas mantienen al día el resultado de una consulta y se actualizan en el orden de sus dependencias; las tareas reintentan las ejecuciones que fallan, y las funciones de métricas de datos miden la calidad y reportan lo que no cumple.
+  en: Dynamic tables keep a query's result up to date and refresh in dependency order; tasks retry failed runs, and data metric functions measure quality and report what fails.
+componentes:
+  - tablas-dinamicas
+  - tareas
+madurez: disponible-general
+puntaje: 3
+justificacion_puntaje:
+  es: "3 y no 4: las reglas de calidad miden y reportan las violaciones para que alguien actúe, y el monitoreo de calidad exige la edición Enterprise; además, las tablas dinámicas no sirven si los datos deben estar frescos en menos de 60 segundos. 3 y no 2: las tablas dinámicas, las tareas con reintento y las funciones de métricas de datos son nativas y están disponibles de forma general."
+  en: "3, not 4: quality rules measure and report violations so that someone acts on them, and quality monitoring requires Enterprise Edition; also, dynamic tables do not suit data that must be fresher than 60 seconds. 3, not 2: dynamic tables, tasks with retries and data metric functions are native and generally available."
+esencial: true
+fuentes:
+  - url: https://docs.snowflake.com/en/user-guide/dynamic-tables/overview
+    titulo: Dynamic tables | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: A dynamic table materializes the results of a SELECT query and keeps them up to date.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: c4a10834e6a7a065ae6ead985dfb8df1fc57a5f641c1f933f95570f02bf1e3e4
+  - url: https://docs.snowflake.com/en/user-guide/dynamic-tables/overview
+    titulo: Dynamic tables | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Snowflake refreshes tables in dependency order so that downstream tables always see a consistent view of their upstream inputs.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: c4a10834e6a7a065ae6ead985dfb8df1fc57a5f641c1f933f95570f02bf1e3e4
+  - url: https://docs.snowflake.com/en/user-guide/dynamic-tables/overview
+    titulo: Dynamic tables | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Require data fresher than 60 seconds (the minimum target lag) or strictly guaranteed refresh timing.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: c4a10834e6a7a065ae6ead985dfb8df1fc57a5f641c1f933f95570f02bf1e3e4
+  - url: https://docs.snowflake.com/en/release-notes/2024/other/2024-04-29-dynamic-tables
+    titulo: April 29, 2024 - Dynamic Tables - General Availability | Snowflake Documentation
+    tipo: oficial
+    fecha_publicacion: 2024-04-29
+    conflicto_de_interes: propio-fabricante
+    cita: With this release, we are pleased to announce the general availability of dynamic tables, which are a new table type for continuous processing pipelines.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 877c16c443dfec1a27976b5c81d45596361c14c32d24168c28e1333901a34256
+  - url: https://docs.snowflake.com/en/user-guide/tasks-intro
+    titulo: Introduction to tasks | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: If any task completes in a FAILED state, Snowflake can automatically retry the task.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 33a4def260b90b25a183c4ee06f0740ec8eee2f709e214aaac190a60729d7cc7
+  - url: https://docs.snowflake.com/en/user-guide/data-quality-intro
+    titulo: Introduction to data quality and data metric functions | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Return values that fail the check are reported as expectation violations so you can take appropriate action.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: b18f2a01e7f39f6b4786fe9a248865d4563a0c81293a27fc59dbb80802bbb199
+  - url: https://docs.snowflake.com/en/user-guide/data-quality-intro
+    titulo: Introduction to data quality and data metric functions | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Data Quality Monitoring requires Enterprise Edition.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: b18f2a01e7f39f6b4786fe9a248865d4563a0c81293a27fc59dbb80802bbb199
+  - url: https://docs.snowflake.com/en/release-notes/2024/8_28
+    titulo: July 29-August 01, 2024 - 8.28 Release Notes | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: With this release, Snowflake is pleased to announce the general availability of Data Quality Monitoring with data metric functions (DMFs).
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: e3bd0b54b79099ac21e7544e9bce0f50bcf0047f7cb2f149bd282077088d9eb8
+fecha_verificacion: 2026-10-06
+limitaciones:
+  - es: Las tablas dinámicas no sirven si los datos deben estar frescos en menos de 60 segundos, su retraso objetivo mínimo.
+    en: Dynamic tables do not suit data that must be fresher than 60 seconds, their minimum target lag.
+  - es: El monitoreo de calidad con funciones de métricas de datos exige la edición Enterprise.
+    en: Quality monitoring with data metric functions requires Enterprise Edition.
+origen: agente-investigador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

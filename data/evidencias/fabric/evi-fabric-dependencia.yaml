@@ -1,0 +1,79 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-fabric-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/fabric.jsonl).
+id: evi-fabric-dependencia
+plataforma_id: fabric
+criterio_id: crit-dependencia
+afirmacion:
+  es: Los datos de todos los motores quedan en OneLake en Delta Parquet, un formato abierto, y se alcanzan por las API estándar de Azure Data Lake Storage Gen2; las tablas Delta también se pueden leer como Iceberg desde servicios como Snowflake.
+  en: Data from every engine stays in OneLake as Delta Parquet, an open format, and can be reached through the standard Azure Data Lake Storage Gen2 APIs; Delta tables can also be read as Iceberg by services such as Snowflake.
+componentes:
+  - onelake
+  - lakehouse
+  - warehouse
+madurez: disponible-general
+puntaje: 3
+justificacion_puntaje:
+  es: "3 y no 4: no todo sale igual de fácil: las tablas del almacén de datos solo se modifican desde el almacén, así que otro motor puede leerlas pero no seguir escribiéndolas, y la lectura como Iceberg exige tablas con menos de 5.000 transacciones. 3 y no 2: los datos ya están en un formato abierto y se leen con API estándar, sin exportarlos ni usar herramientas de terceros."
+  en: "3, not 4: not everything leaves as easily: warehouse tables can only be changed from the warehouse, so another engine can read them but not keep writing them, and reading as Iceberg requires tables with fewer than 5,000 transactions. 3, not 2: the data is already in an open format and is read through standard APIs, with no export and no third-party tools."
+esencial: true
+fuentes:
+  - url: https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview
+    titulo: OneLake, the unified data lake - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: The Fabric analytical engines (T-SQL, Apache Spark, Analysis Services, and others) all store data in OneLake in the open Delta Parquet format.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: d2afecef66a15774ea1734b6c6c951ffd713aa3906f555cf7c269d2ba35de123
+  - url: https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview
+    titulo: OneLake, the unified data lake - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: OneLake supports Azure Data Lake Storage (ADLS) Gen2 APIs and SDKs, so you can use existing ADLS Gen2 applications.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: d2afecef66a15774ea1734b6c6c951ffd713aa3906f555cf7c269d2ba35de123
+  - url: https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview
+    titulo: OneLake, the unified data lake - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Similarly, any Delta Lake table in OneLake can be accessed by Iceberg-compatible services like Snowflake.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: d2afecef66a15774ea1734b6c6c951ffd713aa3906f555cf7c269d2ba35de123
+  - url: https://learn.microsoft.com/en-us/fabric/data-warehouse/query-delta-lake-logs
+    titulo: Delta Lake Logs in Warehouse - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: All inserts, updates, and deletes to the data in the tables must be executed through the Warehouse.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 424d3296e7d7e344082123f6e5de791cf0f1cff6f1ae844948d505715888364f
+  - url: https://learn.microsoft.com/en-us/fabric/onelake/onelake-iceberg-tables
+    titulo: Use Iceberg tables with OneLake - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Source tables must have fewer than 5,000 transactions or commits for the table format conversion to take place.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: f8321a6fc0ba9eb417be2f418effe8fea5323c0d61b7e323e66fa3ac0eaf2c7d
+fecha_verificacion: 2026-10-06
+limitaciones:
+  - es: Las tablas del almacén de datos solo se modifican desde el almacén.
+    en: Warehouse tables can only be changed from the warehouse.
+  - es: Para leerse como Iceberg, una tabla necesita menos de 5.000 transacciones.
+    en: To be read as Iceberg, a table needs fewer than 5,000 transactions.
+origen: agente-investigador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

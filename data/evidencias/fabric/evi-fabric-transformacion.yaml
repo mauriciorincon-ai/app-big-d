@@ -1,0 +1,123 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-fabric-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/fabric.jsonl).
+id: evi-fabric-transformacion
+plataforma_id: fabric
+capacidad_id: cap-transformacion
+afirmacion:
+  es: Las canalizaciones de Data Factory encadenan pasos según terminen bien o mal, reintentan las actividades que fallan y se disparan por horario o por eventos; las vistas materializadas del lakehouse se definen en SQL, se refrescan en el orden de sus dependencias y aplican reglas de calidad.
+  en: Data Factory pipelines chain steps depending on success or failure, retry failed activities and run on a schedule or on events; lakehouse materialized views are defined in SQL, refresh in dependency order and enforce quality rules.
+componentes:
+  - canalizaciones
+  - notebooks-spark
+  - dataflow-gen2
+  - lakehouse
+madurez: disponible-general
+puntaje: 3
+justificacion_puntaje:
+  es: "3 y no 4: las reglas de calidad declarativas viven en las vistas materializadas, cuya madurez la documentación revisada no declara en un pasaje citable; con la acción predeterminada, una regla incumplida detiene el refresco, las vistas escritas en PySpark solo se refrescan completas y el refresco incremental exige activar el registro de cambios (CDF) en las tablas de origen. 3 y no 2: las canalizaciones, sus reintentos y sus disparadores son nativos y forman parte de la plataforma disponible de forma general, y los flujos de datos (Dataflow Gen2) preparan datos sin código."
+  en: "3, not 4: the declarative quality rules live in materialized views, whose maturity the documentation reviewed does not state in a citable passage; with the default action, a failed rule stops the refresh, PySpark-authored views only refresh in full, and incremental refresh requires turning on change data feed (CDF) on the source tables. 3, not 2: pipelines, their retries and their triggers are native and part of the generally available platform, and Dataflow Gen2 prepares data without code."
+esencial: true
+fuentes:
+  - url: https://learn.microsoft.com/en-us/fabric/data-factory/pipeline-overview
+    titulo: Pipeline Overview - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: You can chain activities together to create complex workflows. When one activity completes, it can trigger the next activity based on success, failure, or completion status.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 49402612316cbf06705ac0ea52e862aa96a0a6a0e3c89b1d923c38358c395ed4
+  - url: https://learn.microsoft.com/en-us/fabric/data-factory/activity-overview
+    titulo: Activity overview - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: When an activity fails during pipeline execution, you can configure it to automatically retry before marking the run as failed.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 55c3228fd5115076544b07813cb2a80a4516c6e6faa61281d381dc9224bc7f85
+  - url: https://learn.microsoft.com/en-us/fabric/data-factory/pipeline-overview
+    titulo: Pipeline Overview - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Use event triggers to start your pipeline when specific events occur, such as new files arriving in a data lake or changes in a database.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 49402612316cbf06705ac0ea52e862aa96a0a6a0e3c89b1d923c38358c395ed4
+  - url: https://learn.microsoft.com/en-us/fabric/data-engineering/materialized-lake-views/overview-materialized-lake-view
+    titulo: Overview of Materialized Lake Views - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Fabric tracks dependencies between MLVs, orchestrates refreshes in the correct order, and enforces data quality constraints at every stage.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 0099f7cbfef9bc527912bea71698a331ab580c3d01c6a7ddda6313267678689c
+  - url: https://learn.microsoft.com/en-us/fabric/data-engineering/materialized-lake-views/data-quality
+    titulo: Data Quality in Materialized Lake Views in a Lakehouse in Microsoft Fabric - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Stops MLV refresh at the first constraint violation. This is the default behavior
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 0914aa2f42379d35da547d30a4b2d2aa89ddc0b017a032371e8430409cc809d5
+  - url: https://learn.microsoft.com/en-us/fabric/data-engineering/materialized-lake-views/overview-materialized-lake-view
+    titulo: Overview of Materialized Lake Views - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Without CDF enabled, the decision engine chooses between skip refresh and full refresh only.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 0099f7cbfef9bc527912bea71698a331ab580c3d01c6a7ddda6313267678689c
+  - url: https://learn.microsoft.com/en-us/fabric/data-engineering/materialized-lake-views/overview-materialized-lake-view
+    titulo: Overview of Materialized Lake Views - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: PySpark-authored views currently perform full refresh only.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 0099f7cbfef9bc527912bea71698a331ab580c3d01c6a7ddda6313267678689c
+  - url: https://learn.microsoft.com/en-us/fabric/data-factory/dataflows-gen2-overview
+    titulo: Differences between Dataflow Gen1 and Dataflow Gen2 - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Dataflows are a cloud-based tool that helps you prepare and transform data without writing code.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 18176e40f1c8bb30457b8a8fc4ac610bcc9359446d8efc09d8a8be96f5153d38
+  - url: https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/
+    titulo: Prepare your data for AI innovation with Microsoft Fabric—now generally available | Microsoft Fabric Blog
+    tipo: oficial
+    fecha_publicacion: 2023-11-15
+    conflicto_de_interes: propio-fabricante
+    cita: We are thrilled to announce Microsoft Fabric is now generally available for purchase
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: b4c8a2102f12b4af83f68a6a5f365b330f2825b591106f03f4f17e77fa1566d7
+fecha_verificacion: 2026-10-06
+limitaciones:
+  - es: Con la acción predeterminada, la primera fila que incumple una regla de calidad detiene el refresco de la vista materializada.
+    en: With the default action, the first row that breaks a quality rule stops the materialized view refresh.
+  - es: Las vistas materializadas escritas en PySpark solo se refrescan completas.
+    en: PySpark-authored materialized views only refresh in full.
+  - es: Sin el registro de cambios (CDF) activado en las tablas de origen, no hay refresco incremental.
+    en: Without change data feed (CDF) turned on in the source tables, there is no incremental refresh.
+origen: agente-investigador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

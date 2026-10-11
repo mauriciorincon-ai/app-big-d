@@ -21,10 +21,25 @@ const CABECERA = `// GENERADO por scripts/diagramador/compilar-esquemas.mjs desd
 /* eslint-disable */
 `;
 
+/**
+ * El esquema sin sus anotaciones (`title` y `description` de texto): el validador no las usa, y su prosa nombra
+ * ejemplos del contrato (la 0.6.0 cita la gramática `agentes-ia` en el `enum` de glifos), que G3 prohíbe en el
+ * código del paquete (S3, fase 0). Una propiedad llamada así sería un objeto, no un texto: no se toca.
+ */
+export function sinAnotaciones(nodo) {
+  if (Array.isArray(nodo)) return nodo.map(sinAnotaciones);
+  if (nodo === null || typeof nodo !== "object") return nodo;
+  return Object.fromEntries(
+    Object.entries(nodo)
+      .filter(([k, v]) => !((k === "description" || k === "title") && typeof v === "string"))
+      .map(([k, v]) => [k, sinAnotaciones(v)]),
+  );
+}
+
 export async function generar() {
   const ajv = new Ajv2020({ code: { source: true, esm: true }, allErrors: true, strict: true, inlineRefs: false });
   for (const nombre of ["gramatica", "mapa"]) {
-    ajv.addSchema(JSON.parse(readFileSync(join(PAQUETE, `esquema/${nombre}.schema.json`), "utf8")));
+    ajv.addSchema(sinAnotaciones(JSON.parse(readFileSync(join(PAQUETE, `esquema/${nombre}.schema.json`), "utf8"))));
   }
   const fuente = standaloneCode(ajv, {
     validarGramaticaEsquema: "diagramador/gramatica.schema.json",

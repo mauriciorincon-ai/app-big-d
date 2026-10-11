@@ -1,0 +1,11 @@
+# Criterio de la especificación § 10.2 (se alimenta de las evidencias de su capacidad).
+id: crit-ingesta
+nombre:
+  es: "Ingesta"
+  en: "Ingestion"
+que_evalua:
+  es: "Qué tan bien trae los datos de los sistemas del caso, con sus cambios y sus incrementos."
+  en: "How well it brings in data from the case's systems, with their changes and increments."
+tipo: capacidad
+capacidad_id: cap-ingesta
+escala_id: esc-evidencia

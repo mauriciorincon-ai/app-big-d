@@ -1,0 +1,11 @@
+# Criterio de la especificación § 10.2 (se alimenta de las evidencias de su capacidad).
+id: crit-consumo
+nombre:
+  es: "Consumo"
+  en: "Consumption"
+que_evalua:
+  es: "Qué tan bien lleva los datos a tableros y reportes con definiciones compartidas."
+  en: "How well it gets data to dashboards and reports with shared definitions."
+tipo: capacidad
+capacidad_id: cap-consumo
+escala_id: esc-evidencia

@@ -1,0 +1,100 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-snowflake-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/snowflake.jsonl).
+id: evi-snowflake-ia
+plataforma_id: snowflake
+capacidad_id: cap-ia
+afirmacion:
+  es: Cortex Agents, disponible de forma general, toma los permisos de la sesión del rol predeterminado de quien pregunta, y Cortex Analyst respeta los controles de acceso por rol; los agentes se evalúan con modelos jueces que corren con inferencia entre regiones.
+  en: Cortex Agents, generally available, takes session permissions from the asker's default role, and Cortex Analyst honors role-based access controls; agents are evaluated with judge models that run on cross-region inference.
+componentes:
+  - cortex-agents
+  - snowflake-cowork
+  - vistas-semanticas
+madurez: disponible-general
+puntaje: 3
+justificacion_puntaje:
+  es: "3 y no 4: no se puede evaluar un agente cuyas consultas dependen de atributos de sesión usados en una política de acceso por fila, y con la inferencia entre regiones la pregunta y la respuesta viajan de forma transitoria a otra región, algo que con datos de pacientes hay que revisar antes. 3 y no 2: los agentes, sus permisos por rol y las evaluaciones son nativos, sin herramientas de terceros, y Cortex Agents está disponible de forma general."
+  en: "3, not 4: an agent whose queries depend on session attributes used in a row access policy cannot be evaluated, and with cross-region inference the prompt and the response travel transiently to another region, something to review first with patient data. 3, not 2: the agents, their role-based permissions and the evaluations are native, with no third-party tools, and Cortex Agents is generally available."
+esencial: true
+fuentes:
+  - url: https://docs.snowflake.com/en/release-notes/2025/other/2025-11-04-cortex-agents
+    titulo: "Nov 04, 2025: Cortex Agents (General availability) | Snowflake Documentation"
+    tipo: oficial
+    fecha_publicacion: 2025-11-04
+    conflicto_de_interes: propio-fabricante
+    cita: With this release, we are pleased to announce the general availability of Cortex Agents, which was previously available as a preview feature.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 1ea7433c2e2b5ffe230e6b82b44672db0da6636a278413420aaccf82e2007672
+  - url: https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-agents
+    titulo: Cortex Agents | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Cortex Agents determines session permissions from the querying user's default role.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 28a20c6f888e7d1297e93fe306b97e2d435c8c8005efc44e8de2db4d7384ce5a
+  - url: https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-analyst
+    titulo: Cortex Analyst | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Cortex Analyst fully integrates with Snowflake's role-based access control (RBAC) policies, ensuring that SQL queries generated and executed adhere to all established access controls.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 6674c5aa30329a580e4ce99cfcfdd622e55559f4f5a98da4a5e2aef0c923c94d
+  - url: https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-agents-evaluations
+    titulo: Cortex Agent evaluations | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Agent Evaluations compute metrics with LLM judges, using
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: a193ae31edca319b848822be06cb96bc3ebc711456c4576767fbfedb9b52bf72
+  - url: https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-agents-evaluations
+    titulo: Cortex Agent evaluations | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: You can't currently evaluate an agent whose queries depend on
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: a193ae31edca319b848822be06cb96bc3ebc711456c4576767fbfedb9b52bf72
+  - url: https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-agents-evaluations
+    titulo: Cortex Agent evaluations | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: including agents that use those values with a row access policy.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: a193ae31edca319b848822be06cb96bc3ebc711456c4576767fbfedb9b52bf72
+  - url: https://docs.snowflake.com/en/user-guide/snowflake-cortex/cross-region-inference
+    titulo: Cross-region inference | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: is transmitted transiently to the processing region for the duration of processing
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 332fb856a892e3a0ea88049243105ed28f924eecd8c400358eb05e3a134c20d4
+fecha_verificacion: 2026-10-06
+limitaciones:
+  - es: No se puede evaluar un agente cuyas consultas dependen de atributos o variables de sesión, incluidos los que se usan en una política de acceso por fila.
+    en: An agent whose queries depend on session attributes or variables, including those used in a row access policy, cannot be evaluated.
+  - es: Con la inferencia entre regiones, la pregunta y la respuesta viajan de forma transitoria a la región que las procesa.
+    en: With cross-region inference, the prompt and the response travel transiently to the processing region.
+origen: agente-investigador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

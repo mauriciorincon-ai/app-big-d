@@ -3,7 +3,8 @@
 // para sus ids (D8, D12) y sin sellos de versión (las versiones van en el manifiesto).
 import type { Geometria } from "../layout/tipos";
 import { fmt } from "../util/numeros";
-import { DIFERENCIAS, GLIFOS, MARCADORES, MARCAS } from "./glifos";
+import type { Elemento } from "../layout/tipos";
+import { DIFERENCIAS, GLIFOS, MARCADORES, MARCAS, OPCIONALES, PAPELES } from "./glifos";
 import { atributos, elemento, escapar, type Serializacion } from "./serializar";
 
 const CORTA = { nivel1: "n1", nivel2: "n2", recorrido: "rec", bloque: "bl", compare: "lado" } as const;
@@ -18,9 +19,19 @@ export interface OpcionesSVG {
   hintId?: string;
 }
 
-function defs(s: Serializacion, lado: boolean): string {
+/** Los ids de `<defs>` que la escena referencia con `<use href="#…">`. */
+function referidos(escena: readonly Elemento[], out = new Set<string>()): Set<string> {
+  for (const e of escena) {
+    const href = e.attrs.href;
+    if (e.el === "use" && typeof href === "string" && href.startsWith("#")) out.add(href.slice(1));
+    if (e.hijos) referidos(e.hijos, out);
+  }
+  return out;
+}
+
+function defs(s: Serializacion, lado: boolean, usados: ReadonlySet<string>): string {
   let out = "<defs>";
-  for (const [nombre, gl] of Object.entries(GLIFOS))
+  for (const [nombre, gl] of Object.entries(GLIFOS).filter(([n]) => !OPCIONALES.has(`g-${n}`)))
     out += gl.trazo
       ? `<path${atributos("path", { id: `g-${nombre}`, d: gl.d, fill: "none", stroke: "currentColor", "stroke-width": gl.trazo }, s)}/>`
       : `<path${atributos("path", { id: `g-${nombre}`, d: gl.d, fill: "currentColor" }, s)}/>`;
@@ -33,6 +44,11 @@ function defs(s: Serializacion, lado: boolean): string {
   if (lado)
     for (const [nombre, k] of Object.entries(DIFERENCIAS))
       out += `<path${atributos("path", { id: `d-${nombre}`, d: k.d, fill: "none", stroke: "currentColor", "stroke-width": k.trazo, "stroke-linecap": "round", "stroke-linejoin": "round" }, s)}/>`;
+  // Lo opcional, al final y solo si se usa: los SVG que no lo usan conservan sus bytes.
+  for (const [nombre, gl] of Object.entries(GLIFOS).filter(([n]) => OPCIONALES.has(`g-${n}`) && usados.has(`g-${n}`)))
+    out += `<path${atributos("path", { id: `g-${nombre}`, d: gl.d, fill: "currentColor" }, s)}/>`;
+  for (const [nombre, p] of Object.entries(PAPELES).filter(([n]) => usados.has(`p-${n}`)))
+    out += `<path${atributos("path", { id: `p-${nombre}`, d: p.d, fill: "currentColor" }, s)}/>`;
   return `${out}</defs>`;
 }
 
@@ -66,7 +82,7 @@ export function toSVG(geo: Geometria, opciones: OpcionesSVG): string {
     `<svg${raiz}>`,
     `<title${atributos("title", { id: "titulo" }, s)}>${escapar(geo.titulo[idioma]!)}</title>`,
     `<desc${atributos("desc", { id: "desc" }, s)}>${escapar(geo.descripcion[idioma]!)}</desc>`,
-    defs(s, geo.vista === "compare"),
+    defs(s, geo.vista === "compare", referidos(geo.escena)),
     ...geo.escena.map((e) => elemento(e, s)).filter(Boolean),
     "</svg>",
   ];

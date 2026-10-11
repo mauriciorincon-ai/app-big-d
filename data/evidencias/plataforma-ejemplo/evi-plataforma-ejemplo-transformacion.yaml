@@ -1,0 +1,35 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-plataforma-ejemplo-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/plataforma-ejemplo.jsonl).
+id: evi-plataforma-ejemplo-transformacion
+plataforma_id: plataforma-ejemplo
+capacidad_id: cap-transformacion
+afirmacion:
+  es: Limpia y combina los datos con un motor distribuido y canalizaciones declarativas con reglas de calidad, que un programador de tareas ordena.
+  en: It cleans and combines data with a distributed engine and declarative pipelines with quality rules, ordered by a task scheduler.
+componentes:
+  - motor-transformacion
+  - canalizacion-declarativa
+  - programador-tareas
+madurez: disponible-general
+puntaje: 3
+justificacion_puntaje:
+  es: "3 y no 4: una regla de calidad que falla detiene la carga, pero avisar a alguien exige configurar alertas aparte. 3 y no 2: está disponible de forma general."
+  en: "3, not 4: a failing quality rule stops the load, but telling someone requires setting up alerts separately. 3, not 2: it is generally available."
+esencial: true
+fuentes:
+  - url: https://example.org/plataforma-ejemplo/transformacion
+    titulo: Example Platform docs · Pipelines (fictional)
+    tipo: oficial
+    fecha_publicacion: 2026-09-15
+    conflicto_de_interes: propio-fabricante
+    cita: Declarative pipelines define dependencies and quality rules; a failing rule stops the load, and alerts are configured separately.
+    verificacion:
+      resultado: no-verificable
+      fecha: 2026-10-06
+      http: 404
+      sha256: 25ddf2c883e0d1958ea971d279a7e4f0fd446724ee3db7db19dadabd4a62e484
+fecha_verificacion: 2026-10-06
+origen: curador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

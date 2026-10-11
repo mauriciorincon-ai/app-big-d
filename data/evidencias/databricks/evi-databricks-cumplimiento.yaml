@@ -1,0 +1,67 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-databricks-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/databricks.jsonl).
+id: evi-databricks-cumplimiento
+plataforma_id: databricks
+criterio_id: crit-cumplimiento
+afirmacion:
+  es: Para datos de salud ofrece un perfil de seguridad de cumplimiento, con imagen de cómputo endurecida y monitoreo, y Unity Catalog guarda un registro de cada acceso a los datos.
+  en: For health data it offers a compliance security profile, with a hardened compute image and monitoring, and Unity Catalog keeps a record of every data access.
+componentes:
+  - unity-catalog
+madurez: disponible-general
+puntaje: 3
+justificacion_puntaje:
+  es: "3 y no 4: los controles para datos de salud exigen activar el perfil de seguridad de cumplimiento, que se cobra como complemento aparte, y en HIPAA sobre AWS las funciones en vista previa no se admiten para procesar datos de pacientes, salvo las que la documentación lista. 3 y no 2: el perfil y el registro de auditoría son nativos y están documentados."
+  en: "3, not 4: health-data controls require turning on the compliance security profile, billed as a separate add-on, and under HIPAA on AWS preview features are not supported for processing patient data, except those the documentation lists. 3, not 2: the profile and the audit log are native and documented."
+esencial: true
+fuentes:
+  - url: https://docs.databricks.com/aws/en/security/privacy/hipaa
+    titulo: HIPAA compliance features | Databricks on AWS
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: HIPAA compliance controls require enabling the compliance security profile, which adds monitoring agents, provides a hardened compute image, and more.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: d5e3082c94985ecad0b520e1973fea7853b52e8494a7334050ab21dca735ddfe
+  - url: https://docs.databricks.com/aws/en/security/privacy/hipaa
+    titulo: HIPAA compliance features | Databricks on AWS
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Databricks does not support the use of preview features for the processing of PHI on the HIPAA on AWS platform, with the exception of the features listed in
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: d5e3082c94985ecad0b520e1973fea7853b52e8494a7334050ab21dca735ddfe
+  - url: https://docs.databricks.com/aws/en/security/privacy/security-profile
+    titulo: Compliance security profile | Databricks on AWS
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: If you enable this feature on any workspace, you are charged for the Enhanced Security and Compliance add-on
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: d1cd6dcc21c13299645c38c2578ae38d67b0b670625b6c65230047d65e720fdd
+  - url: https://docs.databricks.com/aws/en/data-governance/unity-catalog/
+    titulo: What is Unity Catalog? | Databricks on AWS
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Maintain a complete record of all data access and system activity using the audit log system table.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: e9c2e083103f400ad2edafb6e00b8b794a29788c29d3be3d97833b7970c8ffe6
+fecha_verificacion: 2026-10-06
+limitaciones:
+  - es: El perfil de seguridad de cumplimiento se cobra como complemento aparte.
+    en: The compliance security profile is billed as a separate add-on.
+  - es: En HIPAA sobre AWS, las funciones en vista previa no se admiten para procesar datos de pacientes, salvo las listadas.
+    en: Under HIPAA on AWS, preview features are not supported for processing patient data, except those listed.
+origen: agente-investigador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

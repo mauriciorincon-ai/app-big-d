@@ -1,0 +1,133 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-fabric-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/fabric.jsonl).
+id: evi-fabric-ingesta
+plataforma_id: fabric
+capacidad_id: cap-ingesta
+afirmacion:
+  es: El espejado (mirroring) mantiene en OneLake una réplica de bases como SQL Server, que recibe los cambios hasta cada 15 segundos; el trabajo de copia trae todo la primera vez y después solo lo nuevo o cambiado, y las canalizaciones pueden arrancar cuando llegan archivos nuevos.
+  en: Mirroring keeps a replica of databases such as SQL Server in OneLake, receiving changes as often as every 15 seconds; Copy job brings everything on the first run and then only new or changed data, and pipelines can start when new files arrive.
+componentes:
+  - espejo
+  - trabajo-copia
+  - canalizaciones
+madurez: disponible-general
+puntaje: 3
+justificacion_puntaje:
+  es: "3 y no 4: el espejado se detiene si la capacidad se pausa o se elimina, y no todos los orígenes están al mismo nivel: el espejado de Azure Database for MySQL sigue en vista previa; además, si un trabajo de copia mezcla tablas con y sin captura de cambios, las copia todas por columna incremental (watermark). 3 y no 2: el espejado de SQL Server, que usa su captura de cambios, y el trabajo de copia incremental son nativos y están disponibles de forma general, y las canalizaciones arrancan solas cuando llegan archivos."
+  en: "3, not 4: mirroring stops if the capacity is paused or deleted, and not every source is at the same level: Azure Database for MySQL mirroring is still in preview; also, when a copy job mixes tables with and without change capture, it copies all of them by watermark column. 3, not 2: SQL Server mirroring, which uses its change data capture, and incremental Copy job are native and generally available, and pipelines start on their own when files arrive."
+esencial: true
+fuentes:
+  - url: https://learn.microsoft.com/en-us/fabric/mirroring/overview
+    titulo: Mirroring - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: You can continuously replicate your existing data estate directly into Fabric's OneLake from various Azure databases and external data sources.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 4e526196b29fb934afb0b5a3e7965f589872172aeab278891828be4bc6045e90
+  - url: https://learn.microsoft.com/en-us/fabric/mirroring/overview
+    titulo: Mirroring - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Fabric immediately merges incoming changes into the target delta table. Changes can be published as fast as every 15 seconds.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 4e526196b29fb934afb0b5a3e7965f589872172aeab278891828be4bc6045e90
+  - url: https://learn.microsoft.com/en-us/fabric/mirroring/overview
+    titulo: Mirroring - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: A running Microsoft Fabric capacity is required for mirroring. A paused or deleted capacity affects mirroring and no data is replicated.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 4e526196b29fb934afb0b5a3e7965f589872172aeab278891828be4bc6045e90
+  - url: https://learn.microsoft.com/en-us/fabric/mirroring/sql-server
+    titulo: Microsoft Fabric Mirrored Databases From SQL Server - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Mirroring for SQL Server 2016 - 2022 uses the Change Data Capture (CDC) feature.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 9146ff960e96fe33760474bc9c4a0537f00c2d3351e7783fba340f9f3ce5c97e
+  - url: https://azure.microsoft.com/en-us/blog/microsoft-databases-and-microsoft-fabric-your-unified-and-ai-powered-data-estate/
+    titulo: "Microsoft Databases and Microsoft Fabric: Your unified and AI-powered data estate | Microsoft Azure Blog"
+    tipo: oficial
+    fecha_publicacion: 2025-11-18
+    conflicto_de_interes: propio-fabricante
+    cita: the general availability of mirroring for Azure Database for PostgreSQL, Azure Cosmos DB, and SQL Server versions 2016–2022 and 2025
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: e05b027af2469d24292eec7e0085d925c6f4eab7771cec0d3db71f3b80bf6374
+  - url: https://learn.microsoft.com/en-us/fabric/mirroring/azure-database-mysql
+    titulo: Microsoft Fabric Mirrored Databases from Azure Database for MySQL (Preview) - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Microsoft Fabric Mirrored Databases from Azure Database for MySQL (Preview)
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: c8ad06b2430ce5123338e0360288be535bc4feeb8b9ac8605660e3258a374c78
+  - url: https://learn.microsoft.com/en-us/fabric/data-factory/what-is-copy-job
+    titulo: What is Copy job in Data Factory - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: The first run copies everything, and subsequent runs only move new or changed data since the last run.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 341b9900425214e700a051b16493d126c5a1761f7a98f9f13c5a372b5fe36075
+  - url: https://www.microsoft.com/en-us/microsoft-fabric/blog/2025/03/31/fabcon-2025-fueling-tomorrows-ai-with-new-agentic-capabilities-and-security-innovations-in-fabric/
+    titulo: "FabCon 2025: Fueling tomorrow's AI with new agentic capabilities and security innovations in Fabric | Microsoft Fabric Blog"
+    tipo: oficial
+    fecha_publicacion: 2025-03-31
+    conflicto_de_interes: propio-fabricante
+    cita: The general availability of the Copy job introduces a new simplified experience for customers who need to move data between different data sources and destinations
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: f3d6ea6a29159f0ae95a8064891732c2b2c024e93c0d4042b266ebbc6cd9e42a
+  - url: https://learn.microsoft.com/en-us/fabric/data-factory/cdc-copy-job
+    titulo: Change data capture (CDC) in Copy Job - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: When both CDC-enabled and non-CDC-enabled source tables are selected in a copy job, it treats all tables as watermark-based incremental copy.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 4a07e5e48f748ab878110d833edaa940fdab16585682b499c8484c0486c5e141
+  - url: https://learn.microsoft.com/en-us/fabric/data-factory/pipeline-overview
+    titulo: Pipeline Overview - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Use event triggers to start your pipeline when specific events occur, such as new files arriving in a data lake or changes in a database.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 49402612316cbf06705ac0ea52e862aa96a0a6a0e3c89b1d923c38358c395ed4
+fecha_verificacion: 2026-10-06
+limitaciones:
+  - es: "El espejado necesita una capacidad encendida: si se pausa o se elimina, no se replica ningún dato."
+    en: "Mirroring needs a running capacity: if it is paused or deleted, no data is replicated."
+  - es: El espejado de Azure Database for MySQL está en vista previa.
+    en: Azure Database for MySQL mirroring is in preview.
+  - es: Si un trabajo de copia mezcla tablas con y sin captura de cambios, las copia todas por columna incremental.
+    en: When a copy job mixes tables with and without change capture, it copies all of them by watermark column.
+origen: agente-investigador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

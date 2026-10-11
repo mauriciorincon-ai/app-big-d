@@ -1,0 +1,10 @@
+# Criterio de la especificación § 10.3 (transversal: se alimenta de evidencias del propio criterio).
+id: crit-costo
+nombre:
+  es: "Previsibilidad del costo"
+  en: "Cost predictability"
+que_evalua:
+  es: "Qué tan fácil es anticipar y controlar el gasto al crecer la carga."
+  en: "How easy it is to anticipate and control spending as the workload grows."
+tipo: transversal
+escala_id: esc-evidencia

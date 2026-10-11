@@ -1,0 +1,13 @@
+# Capacidad de la especificación § 10.2: el nombre es el del tipo en la gramática plataformas-datos (el cargador lo exige).
+id: cap-almacenamiento
+nombre:
+  es: "Almacenamiento y formato abierto"
+  en: "Storage and open formats"
+definicion:
+  es: "Guardar los datos en un formato que la organización controla y que otras herramientas pueden leer sin copiarlos."
+  en: "Keeping data in a format the organization controls and that other tools can read without copying it."
+preguntas_guia:
+  - es: "¿Qué formato de tabla abierto usa por defecto?"
+    en: "Which open table format does it use by default?"
+  - es: "¿Otros motores pueden leer y escribir sin copiar datos?"
+    en: "Can other engines read and write without copying data?"

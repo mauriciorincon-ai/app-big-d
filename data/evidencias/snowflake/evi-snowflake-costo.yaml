@@ -1,0 +1,111 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-snowflake-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/snowflake.jsonl).
+id: evi-snowflake-costo
+plataforma_id: snowflake
+criterio_id: crit-costo
+afirmacion:
+  es: Los warehouses se cobran por segundo, con un mínimo de 60 segundos cada vez que arrancan; los monitores de recursos pueden suspenderlos al llegar a una cuota, pero solo cubren warehouses, y los presupuestos avisan cuando se proyecta pasar el límite del mes, con cifras que se actualizan hasta cada 6,5 horas por defecto.
+  en: Warehouses are billed per second, with a 60-second minimum each time they start; resource monitors can suspend them when a quota is reached, but they only cover warehouses, and budgets alert when the monthly limit is projected to be exceeded, with figures that refresh up to every 6.5 hours by default.
+componentes:
+  - virtual-warehouses
+  - monitores-recursos
+  - presupuestos
+madurez: disponible-general
+puntaje: 2
+justificacion_puntaje:
+  es: "2 y no 3: el tope que frena el gasto solo existe para los warehouses: el gasto de las funciones serverless y de los servicios de IA no se vigila con monitores de recursos; los presupuestos avisan sobre una proyección con cifras de hasta 6,5 horas y solo actúan con procedimientos que alguien escribe, y aun al llegar a la cuota los warehouses pueden tardar en suspenderse. 2 y no 1: medir el gasto, avisar y suspender warehouses al llegar a una cuota se hace sin herramientas de terceros."
+  en: "2, not 3: the cap that stops spending only exists for warehouses: spending on serverless features and AI services is not tracked by resource monitors; budgets alert on a projection with figures up to 6.5 hours old and only act through procedures someone writes, and even at the quota warehouses may take time to suspend. 2, not 1: measuring spend, alerting and suspending warehouses at a quota need no third-party tools."
+esencial: true
+fuentes:
+  - url: https://docs.snowflake.com/en/user-guide/warehouses-overview
+    titulo: Overview of warehouses | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Snowflake utilizes per-second billing (with a 60-second minimum each time the warehouse starts)
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: c86561118d1916a11e33e075471fe12d075fa6933f8b49c7b2f9df63540199e9
+  - url: https://docs.snowflake.com/en/user-guide/resource-monitors
+    titulo: Working with resource monitors | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: A resource monitor can help control costs and avoid unexpected credit usage caused by running warehouses.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 2331e6b0adaebe60ce512ea82577d71662c76bb512683f149bb3d08ce3f6e175
+  - url: https://docs.snowflake.com/en/user-guide/resource-monitors
+    titulo: Working with resource monitors | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Resource monitors work for warehouses only. You can't use a resource monitor to track spending associated with serverless features and AI services.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 2331e6b0adaebe60ce512ea82577d71662c76bb512683f149bb3d08ce3f6e175
+  - url: https://docs.snowflake.com/en/user-guide/resource-monitors
+    titulo: Working with resource monitors | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: suspend all assigned standard warehouses immediately, which cancels any statements being executed by the warehouses at the time
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 2331e6b0adaebe60ce512ea82577d71662c76bb512683f149bb3d08ce3f6e175
+  - url: https://docs.snowflake.com/en/user-guide/resource-monitors
+    titulo: Working with resource monitors | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: the assigned warehouses may take some time to suspend or disable
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 2331e6b0adaebe60ce512ea82577d71662c76bb512683f149bb3d08ce3f6e175
+  - url: https://docs.snowflake.com/en/user-guide/budgets
+    titulo: Monitor credit usage with budgets | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: When the spending limit is projected to be exceeded, a notification is sent.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 0a4d52481bd42e5871b4951cdf6f87a997f1cad9fa886a52a4ff8426f1f2e7b4
+  - url: https://docs.snowflake.com/en/user-guide/budgets
+    titulo: Monitor credit usage with budgets | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: By default, the budget refresh interval is up to 6.5 hours.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 0a4d52481bd42e5871b4951cdf6f87a997f1cad9fa886a52a4ff8426f1f2e7b4
+  - url: https://docs.snowflake.com/en/user-guide/budgets
+    titulo: Monitor credit usage with budgets | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: You can configure a budget to automatically call user-defined stored procedures at key points during a budget cycle.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 0a4d52481bd42e5871b4951cdf6f87a997f1cad9fa886a52a4ff8426f1f2e7b4
+fecha_verificacion: 2026-10-06
+limitaciones:
+  - es: Los monitores de recursos solo cubren warehouses; no vigilan el gasto de funciones serverless ni de servicios de IA.
+    en: Resource monitors only cover warehouses; they do not track spending on serverless features or AI services.
+  - es: Al llegar a la cuota, los warehouses pueden tardar en suspenderse.
+    en: When the quota is reached, warehouses may take time to suspend.
+  - es: Las cifras de los presupuestos se actualizan hasta cada 6,5 horas por defecto.
+    en: Budget figures refresh up to every 6.5 hours by default.
+origen: agente-investigador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

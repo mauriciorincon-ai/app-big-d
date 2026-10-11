@@ -1,0 +1,409 @@
+{
+  "version": 1,
+  "tipo": "evidencias",
+  "plataforma": "plataforma-ejemplo",
+  "fecha": "2026-10-05",
+  "origen": "curador",
+  "ejecucion": {
+    "herramienta": "claude-code",
+    "modelo": "claude-opus-5-5",
+    "reintentos": 0
+  },
+  "evidencias": [
+    {
+      "id": "A-1",
+      "evidencia": {
+        "id": "evi-plataforma-ejemplo-almacenamiento",
+        "plataforma_id": "plataforma-ejemplo",
+        "capacidad_id": "cap-almacenamiento",
+        "afirmacion": {
+          "es": "Guarda los datos crudos y los limpios en tablas de formato abierto, con historial de versiones, que otras herramientas leen sin copiarlas.",
+          "en": "It keeps raw and clean data in open-format tables with version history, which other tools read without copying them."
+        },
+        "componentes": [
+          "capa-cruda",
+          "almacen-tablas-abiertas"
+        ],
+        "madurez": "disponible-general",
+        "puntaje": 4,
+        "justificacion_puntaje": {
+          "es": "4 y no 3: la documentación no declara límites que afecten a un hospital y el formato abierto es nativo, sin herramientas aparte.",
+          "en": "4, not 3: the documentation states no limits that would affect a hospital, and the open format is native, with no separate tools."
+        },
+        "esencial": true,
+        "fuentes": [
+          {
+            "url": "https://example.org/plataforma-ejemplo/almacenamiento",
+            "titulo": "Example Platform docs · Storage (fictional)",
+            "tipo": "oficial",
+            "fecha_publicacion": "2026-09-15",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Raw and curated tables are stored in an open table format with versioned history, readable in place by external engines through the catalog."
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-2",
+      "evidencia": {
+        "id": "evi-plataforma-ejemplo-consumo",
+        "plataforma_id": "plataforma-ejemplo",
+        "capacidad_id": "cap-consumo",
+        "afirmacion": {
+          "es": "Un modelo semántico lee las tablas limpias en su lugar y alimenta los tableros.",
+          "en": "A semantic model reads the clean tables in place and feeds the dashboards."
+        },
+        "componentes": [
+          "modelo-semantico",
+          "tablero"
+        ],
+        "madurez": "disponible-general",
+        "puntaje": 3,
+        "justificacion_puntaje": {
+          "es": "3 y no 4: los tableros se actualizan como mínimo cada 15 minutos, una limitación documentada. 3 y no 2: está disponible de forma general.",
+          "en": "3, not 4: dashboards refresh at most every 15 minutes, a documented limitation. 3, not 2: it is generally available."
+        },
+        "esencial": true,
+        "fuentes": [
+          {
+            "url": "https://example.org/plataforma-ejemplo/consumo",
+            "titulo": "Example Platform docs · Semantic model (fictional)",
+            "tipo": "oficial",
+            "fecha_publicacion": "2026-09-15",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "The semantic model reads curated tables in place; dashboards built on it refresh at most every 15 minutes."
+          }
+        ],
+        "limitaciones": [
+          {
+            "es": "Los tableros se actualizan como mínimo cada 15 minutos.",
+            "en": "Dashboards refresh at most every 15 minutes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-3",
+      "evidencia": {
+        "id": "evi-plataforma-ejemplo-gobierno",
+        "plataforma_id": "plataforma-ejemplo",
+        "capacidad_id": "cap-gobierno",
+        "afirmacion": {
+          "es": "Los permisos, los filtros por fila y el enmascaramiento de columnas se definen una vez en el catálogo central.",
+          "en": "Permissions, row filters and column masking are defined once in the central catalog."
+        },
+        "componentes": [
+          "catalogo-central",
+          "filtros-filas"
+        ],
+        "madurez": "disponible-general",
+        "puntaje": 3,
+        "justificacion_puntaje": {
+          "es": "3 y no 4: el registro de accesos se guarda 90 días, menos de lo que suele pedir una auditoría clínica. 3 y no 2: es nativo y está disponible de forma general.",
+          "en": "3, not 4: the access log is kept for 90 days, less than a clinical audit usually asks for. 3, not 2: it is native and generally available."
+        },
+        "esencial": true,
+        "fuentes": [
+          {
+            "url": "https://example.org/plataforma-ejemplo/gobierno",
+            "titulo": "Example Platform docs · Governance (fictional)",
+            "tipo": "oficial",
+            "fecha_publicacion": "2026-09-15",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Row filters and column masks are defined once in the central catalog; access logs are retained for 90 days."
+          }
+        ],
+        "limitaciones": [
+          {
+            "es": "El registro de accesos se guarda 90 días.",
+            "en": "The access log is kept for 90 days."
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-4",
+      "evidencia": {
+        "id": "evi-plataforma-ejemplo-ia",
+        "plataforma_id": "plataforma-ejemplo",
+        "capacidad_id": "cap-ia",
+        "afirmacion": {
+          "es": "Un agente responde preguntas en lenguaje natural sobre las tablas del catálogo, con los permisos de quien pregunta.",
+          "en": "An agent answers plain-language questions about the catalog tables, with the permissions of whoever asks."
+        },
+        "componentes": [
+          "agente-datos"
+        ],
+        "madurez": "vista-previa-publica",
+        "puntaje": 3,
+        "justificacion_puntaje": {
+          "es": "3 y no 4: responde, pero no muestra de qué tablas sacó cada cifra. 3 y no 2: funciona sin herramientas de terceros. La vista previa la descuenta el tope, no este puntaje.",
+          "en": "3, not 4: it answers, but it does not show which tables each figure came from. 3, not 2: it works without third-party tools. The preview is discounted by the cap, not by this score."
+        },
+        "esencial": true,
+        "fuentes": [
+          {
+            "url": "https://example.org/plataforma-ejemplo/ia",
+            "titulo": "Example Platform docs · Data agent (fictional)",
+            "tipo": "oficial",
+            "fecha_publicacion": "2026-09-15",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "The data agent, in public preview, answers natural-language questions over catalog tables using the permissions of the user who asks."
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-5",
+      "evidencia": {
+        "id": "evi-plataforma-ejemplo-ingesta",
+        "plataforma_id": "plataforma-ejemplo",
+        "capacidad_id": "cap-ingesta",
+        "afirmacion": {
+          "es": "Copia tablas completas por horario y trae los cambios casi en tiempo real con la captura de cambios.",
+          "en": "It copies whole tables on a schedule and brings changes in near real time with change capture."
+        },
+        "componentes": [
+          "conector-relacional",
+          "captura-cambios"
+        ],
+        "madurez": "disponible-general",
+        "puntaje": 3,
+        "justificacion_puntaje": {
+          "es": "3 y no 4: la captura de cambios admite hasta 500 tablas por conector, un límite documentado. 3 y no 2: está disponible de forma general.",
+          "en": "3, not 4: change capture supports up to 500 tables per connector, a documented limit. 3, not 2: it is generally available."
+        },
+        "esencial": true,
+        "fuentes": [
+          {
+            "url": "https://example.org/plataforma-ejemplo/ingesta",
+            "titulo": "Example Platform docs · Connectors (fictional)",
+            "tipo": "oficial",
+            "fecha_publicacion": "2026-09-15",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Change data capture is generally available for common relational databases, with up to 500 tables per connector."
+          }
+        ],
+        "limitaciones": [
+          {
+            "es": "Hasta 500 tablas por conector.",
+            "en": "Up to 500 tables per connector."
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-6",
+      "evidencia": {
+        "id": "evi-plataforma-ejemplo-transformacion",
+        "plataforma_id": "plataforma-ejemplo",
+        "capacidad_id": "cap-transformacion",
+        "afirmacion": {
+          "es": "Limpia y combina los datos con un motor distribuido y canalizaciones declarativas con reglas de calidad, que un programador de tareas ordena.",
+          "en": "It cleans and combines data with a distributed engine and declarative pipelines with quality rules, ordered by a task scheduler."
+        },
+        "componentes": [
+          "motor-transformacion",
+          "canalizacion-declarativa",
+          "programador-tareas"
+        ],
+        "madurez": "disponible-general",
+        "puntaje": 3,
+        "justificacion_puntaje": {
+          "es": "3 y no 4: una regla de calidad que falla detiene la carga, pero avisar a alguien exige configurar alertas aparte. 3 y no 2: está disponible de forma general.",
+          "en": "3, not 4: a failing quality rule stops the load, but telling someone requires setting up alerts separately. 3, not 2: it is generally available."
+        },
+        "esencial": true,
+        "fuentes": [
+          {
+            "url": "https://example.org/plataforma-ejemplo/transformacion",
+            "titulo": "Example Platform docs · Pipelines (fictional)",
+            "tipo": "oficial",
+            "fecha_publicacion": "2026-09-15",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Declarative pipelines define dependencies and quality rules; a failing rule stops the load, and alerts are configured separately."
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-7",
+      "evidencia": {
+        "id": "evi-plataforma-ejemplo-costo",
+        "plataforma_id": "plataforma-ejemplo",
+        "criterio_id": "crit-costo",
+        "afirmacion": {
+          "es": "Cobra por capacidad reservada, con un tope mensual por área y alertas al llegar al 80 %.",
+          "en": "It charges for reserved capacity, with a monthly cap per area and alerts at 80 percent."
+        },
+        "componentes": [
+          "monitor-capacidad"
+        ],
+        "madurez": "disponible-general",
+        "puntaje": 3,
+        "justificacion_puntaje": {
+          "es": "3 y no 4: lo que pase del tope se cobra por uso, más difícil de anticipar. 3 y no 2: el tope y las alertas son nativos.",
+          "en": "3, not 4: anything above the cap is billed by usage, which is harder to anticipate. 3, not 2: the cap and the alerts are native."
+        },
+        "esencial": true,
+        "fuentes": [
+          {
+            "url": "https://example.org/plataforma-ejemplo/costo",
+            "titulo": "Example Platform docs · Pricing (fictional)",
+            "tipo": "oficial",
+            "fecha_publicacion": "2026-09-15",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Reserved capacity is billed monthly per workspace with budget alerts at 80 percent; usage beyond the cap is billed at pay-as-you-go rates."
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-8",
+      "evidencia": {
+        "id": "evi-plataforma-ejemplo-cumplimiento",
+        "plataforma_id": "plataforma-ejemplo",
+        "criterio_id": "crit-cumplimiento",
+        "afirmacion": {
+          "es": "Permite elegir la región donde residen los datos y cifrarlos en reposo con claves que administra el cliente.",
+          "en": "It lets you choose the region where data resides and encrypt it at rest with customer-managed keys."
+        },
+        "componentes": [
+          "catalogo-central",
+          "capa-cruda"
+        ],
+        "madurez": "disponible-general",
+        "puntaje": 3,
+        "justificacion_puntaje": {
+          "es": "3 y no 4: las copias de respaldo se guardan en una región vecina que el cliente no elige. 3 y no 2: la residencia y el cifrado están disponibles de forma general.",
+          "en": "3, not 4: backups are kept in a paired region the customer does not choose. 3, not 2: residency and encryption are generally available."
+        },
+        "esencial": true,
+        "fuentes": [
+          {
+            "url": "https://example.org/plataforma-ejemplo/cumplimiento",
+            "titulo": "Example Platform docs · Compliance (fictional)",
+            "tipo": "oficial",
+            "fecha_publicacion": "2026-09-15",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Customers choose the data residency region and can encrypt data at rest with customer-managed keys; backups are stored in a paired region."
+          }
+        ],
+        "limitaciones": [
+          {
+            "es": "Las copias de respaldo quedan en una región vecina que el cliente no elige.",
+            "en": "Backups stay in a paired region the customer does not choose."
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-9",
+      "evidencia": {
+        "id": "evi-plataforma-ejemplo-habilidades",
+        "plataforma_id": "plataforma-ejemplo",
+        "criterio_id": "crit-habilidades",
+        "afirmacion": {
+          "es": "Se programa en SQL y en Python, pero las canalizaciones declarativas usan un lenguaje propio de la plataforma.",
+          "en": "It is programmed in SQL and Python, but the declarative pipelines use the platform's own language."
+        },
+        "componentes": [
+          "canalizacion-declarativa",
+          "motor-transformacion"
+        ],
+        "madurez": "disponible-general",
+        "puntaje": 2,
+        "justificacion_puntaje": {
+          "es": "2 y no 3: el equipo tendría que aprender el lenguaje propio de las canalizaciones, que no sirve fuera de la plataforma. 2 y no 1: lo demás usa SQL y Python estándar.",
+          "en": "2, not 3: the team would have to learn the pipelines' own language, which is of no use outside the platform. 2, not 1: everything else uses standard SQL and Python."
+        },
+        "esencial": true,
+        "fuentes": [
+          {
+            "url": "https://example.org/plataforma-ejemplo/habilidades",
+            "titulo": "Example Platform docs · Languages (fictional)",
+            "tipo": "oficial",
+            "fecha_publicacion": "2026-09-15",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "Transformations can be written in SQL or Python; declarative pipelines use the platform's own pipeline language."
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-10",
+      "evidencia": {
+        "id": "evi-plataforma-ejemplo-dependencia",
+        "plataforma_id": "plataforma-ejemplo",
+        "criterio_id": "crit-dependencia",
+        "afirmacion": {
+          "es": "Los datos quedan en formato abierto y el catálogo se puede exportar: salir no exige reescribirlos.",
+          "en": "Data stays in an open format and the catalog can be exported: leaving does not require rewriting it."
+        },
+        "componentes": [
+          "almacen-tablas-abiertas",
+          "catalogo-central"
+        ],
+        "madurez": "disponible-general",
+        "puntaje": 4,
+        "justificacion_puntaje": {
+          "es": "4 y no 3: el formato y el catálogo son abiertos y están documentados, sin limitaciones relevantes para salir.",
+          "en": "4, not 3: the format and the catalog are open and documented, with no limitations that matter for leaving."
+        },
+        "esencial": true,
+        "fuentes": [
+          {
+            "url": "https://example.org/plataforma-ejemplo/dependencia",
+            "titulo": "Example Platform docs · Open formats (fictional)",
+            "tipo": "oficial",
+            "fecha_publicacion": "2026-09-15",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "All tables use an open format and the catalog can be exported, so other engines can read the data without conversion."
+          }
+        ]
+      }
+    },
+    {
+      "id": "A-11",
+      "evidencia": {
+        "id": "evi-plataforma-ejemplo-ecosistema",
+        "plataforma_id": "plataforma-ejemplo",
+        "criterio_id": "crit-ecosistema",
+        "afirmacion": {
+          "es": "Se conecta con directorios de identidad corporativos y con herramientas de tableros externas por conectores estándar.",
+          "en": "It connects to corporate identity directories and to external dashboard tools through standard connectors."
+        },
+        "componentes": [
+          "catalogo-central",
+          "modelo-semantico"
+        ],
+        "madurez": "disponible-general",
+        "puntaje": 3,
+        "justificacion_puntaje": {
+          "es": "3 y no 4: la sincronización con el directorio de identidad se configura a mano. 3 y no 2: los conectores están disponibles de forma general.",
+          "en": "3, not 4: syncing with the identity directory is configured by hand. 3, not 2: the connectors are generally available."
+        },
+        "esencial": true,
+        "fuentes": [
+          {
+            "url": "https://example.org/plataforma-ejemplo/ecosistema",
+            "titulo": "Example Platform docs · Integrations (fictional)",
+            "tipo": "oficial",
+            "fecha_publicacion": "2026-09-15",
+            "conflicto_de_interes": "propio-fabricante",
+            "cita": "The platform integrates with enterprise identity directories and external BI tools through standard connectors; directory sync is configured manually."
+          }
+        ]
+      }
+    }
+  ],
+  "preguntas_guia": [
+    {
+      "pregunta": {
+        "es": "¿Cuánto cuesta la capacidad reservada mínima? La documentación ficticia no lo dice.",
+        "en": "How much does the minimum reserved capacity cost? The fictional documentation does not say."
+      },
+      "respondida": false
+    }
+  ]
+}

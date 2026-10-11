@@ -1,0 +1,87 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-snowflake-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/snowflake.jsonl).
+id: evi-snowflake-habilidades
+plataforma_id: snowflake
+criterio_id: crit-habilidades
+afirmacion:
+  es: "No hay hardware que elegir ni administrar: el mantenimiento, las actualizaciones y el ajuste los hace Snowflake. Las tablas dinámicas se declaran con una consulta SQL y Snowpark admite Python, Java y Scala."
+  en: "There is no hardware to choose or manage: maintenance, upgrades and tuning are handled by Snowflake. Dynamic tables are declared with a SQL query, and Snowpark supports Python, Java and Scala."
+componentes:
+  - tablas-dinamicas
+  - snowpark
+  - virtual-warehouses
+madurez: disponible-general
+puntaje: 3
+justificacion_puntaje:
+  es: "3 y no 4: elegir el tamaño de un warehouse no tiene una fórmula: la documentación pide experimentar con distintas consultas y tamaños, y cada talla duplica los créditos de la anterior, así que el equipo aprende a dimensionar probando. 3 y no 2: el trabajo diario usa SQL y Python, lenguajes estándar, y no hay infraestructura que instalar ni mantener."
+  en: "3, not 4: choosing a warehouse size has no formula: the documentation asks you to experiment with different queries and sizes, and each size doubles the credits of the previous one, so the team learns sizing by trial. 3, not 2: daily work uses SQL and Python, standard languages, and there is no infrastructure to install or maintain."
+esencial: true
+fuentes:
+  - url: https://docs.snowflake.com/en/user-guide/intro-key-concepts
+    titulo: Snowflake key concepts and architecture | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: There is no hardware (virtual or physical) for you to select, install, configure, or manage.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: f9cdae674d5e8678de7f051929c26037e935327585d15f36e2e92b1c747c33ab
+  - url: https://docs.snowflake.com/en/user-guide/intro-key-concepts
+    titulo: Snowflake key concepts and architecture | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Ongoing maintenance, management, upgrades, and tuning are handled by Snowflake.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: f9cdae674d5e8678de7f051929c26037e935327585d15f36e2e92b1c747c33ab
+  - url: https://docs.snowflake.com/en/user-guide/dynamic-tables/overview
+    titulo: Dynamic tables | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Prefer a declarative approach where you define the desired result and let Snowflake handle scheduling.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: c4a10834e6a7a065ae6ead985dfb8df1fc57a5f641c1f933f95570f02bf1e3e4
+  - url: https://docs.snowflake.com/en/developer-guide/snowpark/index
+    titulo: Snowpark API | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: "Snowflake currently provides Snowpark libraries for three languages: Java, Python, and Scala."
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: b65e2c859013b48a1665e5b2ac18daf6a1190b68e1e9a6f946705c48a4a98d25
+  - url: https://docs.snowflake.com/en/user-guide/warehouses-considerations
+    titulo: Warehouse considerations | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Experiment with different types of queries and different warehouse sizes to determine the combinations that best meet your specific query needs and workload.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 3faba133c9d5882add5098f5fa6b150d19d8edb19cff240d29ce887973698849
+  - url: https://docs.snowflake.com/en/user-guide/warehouses-overview
+    titulo: Overview of warehouses | Snowflake Documentation
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: there is a doubling of credit usage as you increase in size to the next larger warehouse size
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: c86561118d1916a11e33e075471fe12d075fa6933f8b49c7b2f9df63540199e9
+fecha_verificacion: 2026-10-06
+limitaciones:
+  - es: El tamaño de cada warehouse se elige experimentando; la documentación no da cifras fijas.
+    en: Each warehouse size is chosen by experimenting; the documentation gives no fixed figures.
+origen: agente-investigador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

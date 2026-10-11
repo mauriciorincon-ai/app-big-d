@@ -24,6 +24,8 @@ export const TEXTOS: Record<string, TextosMotor> = {
       compare: "{mapas} plataformas alineadas por banda: las {capas} capas y las {franjas} franjas en columnas, una plataforma por fila.",
     },
     paso: "Paso {numero}: {que}",
+    papel: { inicio: "inicio", fin: "fin" },
+    condicion: { si: "si {condicion}", porDefecto: "si no" },
     hacia: "Hacia {nombre}, {modo}: {que}",
     desde: "Desde {nombre}, {modo}: {que}",
     recorridoDe: "Recorrido: {titulo}",
@@ -37,7 +39,7 @@ export const TEXTOS: Record<string, TextosMotor> = {
       fuentes: "Fuentes",
       verificado: "verificado {fecha}",
       consultado: "consultado {fecha}",
-      tipoFuente: { oficial: "oficial", tercero: "tercero" },
+      tipoFuente: { oficial: "oficial", tercero: "tercero", codigo: "código" },
     },
     lado: {
       fila: { one: "v{version} · verificado hace {n} día", other: "v{version} · verificado hace {n} días" },
@@ -53,6 +55,7 @@ export const TEXTOS: Record<string, TextosMotor> = {
         madurez: "Madurez: de {antes} a {ahora}.",
         otros: { one: "Además, {n} cambio en flujos o pasos.", other: "Además, {n} cambios en flujos o pasos." },
         ninguna: "Sin diferencias entre las dos versiones.",
+        bloque: { nuevo: "Bloque nuevo en {banda}.", retirado: "Bloque retirado.", renombrado: "Bloque; antes «{antes}»." },
       },
     },
     leyenda: {
@@ -89,6 +92,8 @@ export const TEXTOS: Record<string, TextosMotor> = {
       compare: "{mapas} platforms aligned by band: the {capas} layers and the {franjas} bands as columns, one platform per row.",
     },
     paso: "Step {numero}: {que}",
+    papel: { inicio: "start", fin: "end" },
+    condicion: { si: "if {condicion}", porDefecto: "otherwise" },
     hacia: "To {nombre}, {modo}: {que}",
     desde: "From {nombre}, {modo}: {que}",
     recorridoDe: "Journey: {titulo}",
@@ -102,7 +107,7 @@ export const TEXTOS: Record<string, TextosMotor> = {
       fuentes: "Sources",
       verificado: "verified {fecha}",
       consultado: "checked {fecha}",
-      tipoFuente: { oficial: "official", tercero: "third party" },
+      tipoFuente: { oficial: "official", tercero: "third party", codigo: "code" },
     },
     lado: {
       fila: { one: "v{version} · verified {n} day ago", other: "v{version} · verified {n} days ago" },
@@ -118,6 +123,7 @@ export const TEXTOS: Record<string, TextosMotor> = {
         madurez: "Maturity: from {antes} to {ahora}.",
         otros: { one: "Also, {n} change in flows or steps.", other: "Also, {n} changes in flows or steps." },
         ninguna: "No differences between the two versions.",
+        bloque: { nuevo: "New block in {banda}.", retirado: "Block removed.", renombrado: "Block; formerly “{antes}”." },
       },
     },
     leyenda: {

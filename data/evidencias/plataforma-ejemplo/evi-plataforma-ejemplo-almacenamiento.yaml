@@ -1,0 +1,34 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-plataforma-ejemplo-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/plataforma-ejemplo.jsonl).
+id: evi-plataforma-ejemplo-almacenamiento
+plataforma_id: plataforma-ejemplo
+capacidad_id: cap-almacenamiento
+afirmacion:
+  es: Guarda los datos crudos y los limpios en tablas de formato abierto, con historial de versiones, que otras herramientas leen sin copiarlas.
+  en: It keeps raw and clean data in open-format tables with version history, which other tools read without copying them.
+componentes:
+  - capa-cruda
+  - almacen-tablas-abiertas
+madurez: disponible-general
+puntaje: 4
+justificacion_puntaje:
+  es: "4 y no 3: la documentación no declara límites que afecten a un hospital y el formato abierto es nativo, sin herramientas aparte."
+  en: "4, not 3: the documentation states no limits that would affect a hospital, and the open format is native, with no separate tools."
+esencial: true
+fuentes:
+  - url: https://example.org/plataforma-ejemplo/almacenamiento
+    titulo: Example Platform docs · Storage (fictional)
+    tipo: oficial
+    fecha_publicacion: 2026-09-15
+    conflicto_de_interes: propio-fabricante
+    cita: Raw and curated tables are stored in an open table format with versioned history, readable in place by external engines through the catalog.
+    verificacion:
+      resultado: no-verificable
+      fecha: 2026-10-06
+      http: 404
+      sha256: 25ddf2c883e0d1958ea971d279a7e4f0fd446724ee3db7db19dadabd4a62e484
+fecha_verificacion: 2026-10-06
+origen: curador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

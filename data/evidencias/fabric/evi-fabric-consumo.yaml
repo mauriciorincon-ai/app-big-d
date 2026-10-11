@@ -1,0 +1,109 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-fabric-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/fabric.jsonl).
+id: evi-fabric-consumo
+plataforma_id: fabric
+capacidad_id: cap-consumo
+afirmacion:
+  es: Los modelos semánticos de Power BI dejan los datos listos para informes; en modo Direct Lake leen las tablas Delta de OneLake y su actualización copia solo metadatos, y el panel de Copilot de cada informe, disponible de forma general, responde preguntas usando el modelo semántico.
+  en: Power BI semantic models make data ready for reports; in Direct Lake mode they read OneLake Delta tables and their refresh copies only metadata, and each report's Copilot pane, generally available, answers questions using the semantic model.
+componentes:
+  - modelo-semantico
+  - informe-power-bi
+madurez: disponible-general
+puntaje: 3
+justificacion_puntaje:
+  es: "3 y no 4: Copilot no admite oficialmente preguntas en otros idiomas que el inglés, una limitación para un hospital que pregunta en español, y con Direct Lake sobre OneLake, si una tabla supera los límites de la capacidad, la actualización falla y el modelo no se puede consultar hasta optimizar las tablas. 3 y no 2: el modelo semántico, Direct Lake y el panel de Copilot son nativos y están disponibles de forma general."
+  en: "3, not 4: Copilot does not officially support questions in languages other than English, a limitation for a hospital that asks in Spanish, and with Direct Lake on OneLake, if a table exceeds the capacity's limits, refresh fails and the model cannot be queried until the tables are optimized. 3, not 2: the semantic model, Direct Lake and the Copilot pane are native and generally available."
+esencial: true
+fuentes:
+  - url: https://learn.microsoft.com/en-us/power-bi/connect-data/service-datasets-understand
+    titulo: Semantic Models in the Power BI Service - Power BI | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Power BI semantic models represent a source of data that's ready for reporting and visualization.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 94bbde66f8126408cf7435c75546476dc5baeb180c0cc6692ad964284ebecd25
+  - url: https://learn.microsoft.com/en-us/fabric/fundamentals/direct-lake-overview
+    titulo: Direct Lake overview - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Direct Lake is a Power BI semantic model table storage mode option available in Microsoft Fabric.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 3838fd8716fc88cbe8a25dd6599da10f9179ab373fbf999eb0285f07c9d21a6b
+  - url: https://learn.microsoft.com/en-us/fabric/fundamentals/direct-lake-overview
+    titulo: Direct Lake overview - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Import mode replicates the data and creates an entire cached copy of the data for the semantic model, whereas a Direct Lake refresh copies only metadata
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 3838fd8716fc88cbe8a25dd6599da10f9179ab373fbf999eb0285f07c9d21a6b
+  - url: https://learn.microsoft.com/en-us/fabric/fundamentals/direct-lake-overview
+    titulo: Direct Lake overview - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Similar to Import mode, refresh fails and the model cannot be queried until the Delta tables are optimized to fall within guardrail limits.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 3838fd8716fc88cbe8a25dd6599da10f9179ab373fbf999eb0285f07c9d21a6b
+  - url: https://www.microsoft.com/en-us/microsoft-fabric/blog/2023/11/15/prepare-your-data-for-ai-innovation-with-microsoft-fabric-now-generally-available/
+    titulo: Prepare your data for AI innovation with Microsoft Fabric—now generally available | Microsoft Fabric Blog
+    tipo: oficial
+    fecha_publicacion: 2023-11-15
+    conflicto_de_interes: propio-fabricante
+    cita: In May 2023, we announced Direct Lake mode in Power BI, now generally available, which provides a blazing fast, real-time connection to your data
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: b4c8a2102f12b4af83f68a6a5f365b330f2825b591106f03f4f17e77fa1566d7
+  - url: https://learn.microsoft.com/en-us/power-bi/create-reports/copilot-introduction
+    titulo: Copilot for Power BI overview - Power BI | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: The report agent Copilot pane available on the right side of reports is generally available.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 2f5ff184a7975b4b2b98246b1f2b9b17869d1415a8b6ce10a2db4bd5af3eddb9
+  - url: https://learn.microsoft.com/en-us/power-bi/create-reports/copilot-introduction
+    titulo: Copilot for Power BI overview - Power BI | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: When a question is related to data in the semantic model, Copilot uses the semantic model to answer the question.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 2f5ff184a7975b4b2b98246b1f2b9b17869d1415a8b6ce10a2db4bd5af3eddb9
+  - url: https://learn.microsoft.com/en-us/power-bi/create-reports/copilot-introduction
+    titulo: Copilot for Power BI overview - Power BI | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: While prompts submitted in languages other than English might occasionally return relevant responses, multilingual use isn't officially supported at this time.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 2f5ff184a7975b4b2b98246b1f2b9b17869d1415a8b6ce10a2db4bd5af3eddb9
+fecha_verificacion: 2026-10-06
+limitaciones:
+  - es: Copilot no admite oficialmente preguntas en otros idiomas que el inglés.
+    en: Copilot does not officially support questions in languages other than English.
+  - es: Con Direct Lake sobre OneLake, si una tabla supera los límites de la capacidad, la actualización falla y el modelo no se puede consultar hasta optimizar las tablas.
+    en: With Direct Lake on OneLake, if a table exceeds the capacity's limits, refresh fails and the model cannot be queried until the tables are optimized.
+origen: agente-investigador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

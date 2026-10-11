@@ -1,0 +1,68 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-databricks-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/databricks.jsonl).
+id: evi-databricks-ecosistema
+plataforma_id: databricks
+criterio_id: crit-ecosistema
+afirmacion:
+  es: Toma usuarios y grupos del proveedor de identidad de la organización con SCIM, un estándar abierto, o de forma automática desde Microsoft Entra ID, y Power BI se conecta a sus SQL warehouses.
+  en: It takes users and groups from the organization's identity provider through SCIM, an open standard, or automatically from Microsoft Entra ID, and Power BI connects to its SQL warehouses.
+componentes:
+  - unity-catalog
+  - herramientas-bi
+  - sql-warehouse
+madurez: disponible-general
+puntaje: 3
+justificacion_puntaje:
+  es: "3 y no 4: la conexión con Power BI tiene un tropiezo documentado: Microsoft retiró la opción del conector que leía las vistas de métricas. 3 y no 2: la gestión automática de identidades con Microsoft Entra ID y el conector de Power BI están disponibles de forma general, y SCIM sirve con cualquier proveedor de identidad que lo admita."
+  en: "3, not 4: the Power BI connection has a documented snag: Microsoft removed the connector option that read metric views. 3, not 2: automatic identity management with Microsoft Entra ID and the Power BI connector are generally available, and SCIM works with any identity provider that supports it."
+esencial: true
+fuentes:
+  - url: https://docs.databricks.com/aws/en/release-notes/product/2026/may
+    titulo: May 2026 | Databricks on AWS
+    tipo: oficial
+    fecha_publicacion: 2026-05-26
+    conflicto_de_interes: propio-fabricante
+    cita: Automatic identity management with Microsoft Entra ID is now generally available.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 17eee4b6b46bcca89ae978a5ed001f550619b9e4fe7bba59ad384269856e4f16
+  - url: https://docs.databricks.com/aws/en/admin/users-groups/scim/
+    titulo: Sync users and groups from your identity provider using SCIM | Databricks on AWS
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: System for Cross-domain Identity Management, an open standard that allows you to automate user provisioning
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: b4443b36a5211f00ccdf6aaf45e28ddd068571b8b2a242be1f72b04c151bf1a0
+  - url: https://docs.databricks.com/aws/en/partners/bi/power-bi/
+    titulo: Power BI with Databricks | Databricks on AWS
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Connect Power BI Desktop to Databricks clusters and SQL warehouses using Partner Connect or manual configuration.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 14d315c470b1128fbf27ed45689487a059550bf69dc775fee6cbf271c30e69aa
+  - url: https://docs.databricks.com/aws/en/partners/bi/power-bi/
+    titulo: Power BI with Databricks | Databricks on AWS
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Microsoft has removed the Metric View BI Compatibility Mode option from the Databricks connector for Power BI.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 14d315c470b1128fbf27ed45689487a059550bf69dc775fee6cbf271c30e69aa
+fecha_verificacion: 2026-10-06
+limitaciones:
+  - es: Microsoft retiró del conector de Power BI la opción de compatibilidad con las vistas de métricas.
+    en: Microsoft removed the metric view compatibility option from the Power BI connector.
+origen: agente-investigador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

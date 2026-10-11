@@ -1,0 +1,36 @@
+# Convenciones del método comparativo: todo número que el núcleo usa y que no sale de la evidencia ni del caso. Entran
+# a la huella de cada instantánea y se muestran en pantalla y en el informe (E-7: son convención, no ley).
+id: metodo
+gramatica_id: plataformas-datos
+# RF-04.1: con varias evidencias en una celda cuenta el mínimo de las esenciales (no se premian funciones accesorias).
+agregacion: minimo-de-esenciales
+# RF-04.4: empate técnico por debajo de 5 puntos (en centésimas de punto).
+umbral_empate_centesimas: 500
+# RF-04.7: robusta si la ganadora gana al menos el 70 % de las simulaciones (y ninguna inversión cae dentro del rango);
+# frágil por debajo del 50 %.
+robustez:
+  robusta_pct: 70
+  fragil_pct: 50
+# RF-01.5: por revisar desde los 30 días de la verificación; vencida desde los 60.
+vigencia:
+  revisar_dias: 30
+  vencido_dias: 60
+# RF-04.8 (E-15): se destaca desde 4/4 (o la única con el mejor puntaje); se queda corta hasta 2/4.
+pros_contras:
+  ancla_destaca: 4
+  ancla_corta: 2
+  max_por_lista: 3
+# La pantalla de la sensibilidad muestra cada evento en décimas de punto.
+sensibilidad:
+  paso_centesimas: 10
+# RF-04.6: 10 000 combinaciones aceptadas con semilla declarada; tres semillas más miden la estabilidad de la clase; el
+# tope de intentos falla cerrado; z = 1,96 para el intervalo del 95 %.
+simulacion:
+  semilla: 20261004
+  semillas_estabilidad: [20261005, 20261006, 20261007]
+  aceptadas: 10000
+  tope_intentos: 5000000
+  z_centesimas: 196
+declaracion:
+  es: "Los umbrales (70 % para robusta, 50 % para frágil y 5 puntos para el empate técnico) son una convención del método, no una ley: no tienen base en la literatura. Se muestran para que cualquiera los discuta."
+  en: "The thresholds (70 % for robust, 50 % for fragile and 5 points for a technical tie) are a convention of the method, not a law: they have no basis in the literature. They are shown so anyone can question them."

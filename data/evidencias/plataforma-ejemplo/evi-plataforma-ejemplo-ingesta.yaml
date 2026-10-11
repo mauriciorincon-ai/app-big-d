@@ -1,0 +1,37 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-plataforma-ejemplo-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/plataforma-ejemplo.jsonl).
+id: evi-plataforma-ejemplo-ingesta
+plataforma_id: plataforma-ejemplo
+capacidad_id: cap-ingesta
+afirmacion:
+  es: Copia tablas completas por horario y trae los cambios casi en tiempo real con la captura de cambios.
+  en: It copies whole tables on a schedule and brings changes in near real time with change capture.
+componentes:
+  - conector-relacional
+  - captura-cambios
+madurez: disponible-general
+puntaje: 3
+justificacion_puntaje:
+  es: "3 y no 4: la captura de cambios admite hasta 500 tablas por conector, un límite documentado. 3 y no 2: está disponible de forma general."
+  en: "3, not 4: change capture supports up to 500 tables per connector, a documented limit. 3, not 2: it is generally available."
+esencial: true
+fuentes:
+  - url: https://example.org/plataforma-ejemplo/ingesta
+    titulo: Example Platform docs · Connectors (fictional)
+    tipo: oficial
+    fecha_publicacion: 2026-09-15
+    conflicto_de_interes: propio-fabricante
+    cita: Change data capture is generally available for common relational databases, with up to 500 tables per connector.
+    verificacion:
+      resultado: no-verificable
+      fecha: 2026-10-06
+      http: 404
+      sha256: 25ddf2c883e0d1958ea971d279a7e4f0fd446724ee3db7db19dadabd4a62e484
+fecha_verificacion: 2026-10-06
+limitaciones:
+  - es: Hasta 500 tablas por conector.
+    en: Up to 500 tables per connector.
+origen: curador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

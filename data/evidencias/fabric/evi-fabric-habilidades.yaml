@@ -1,0 +1,76 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-fabric-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/fabric.jsonl).
+id: evi-fabric-habilidades
+plataforma_id: fabric
+criterio_id: crit-habilidades
+afirmacion:
+  es: Fabric se usa sin entender ni administrar infraestructura de nube; los flujos de datos preparan datos sin código con Power Query, el mismo de Excel y Power BI, y el almacén de datos trabaja con tablas, vistas y procedimientos de T-SQL.
+  en: Fabric is used without having to understand or manage cloud infrastructure; dataflows prepare data without code using Power Query, the same as in Excel and Power BI, and the warehouse works with T-SQL tables, views and procedures.
+componentes:
+  - dataflow-gen2
+  - warehouse
+madurez: disponible-general
+puntaje: 3
+justificacion_puntaje:
+  es: "3 y no 4: el almacén de datos no admite todo el T-SQL: la documentación lista comandos que no se deben usar porque, aunque parezcan funcionar, pueden causar problemas, así que un equipo que ya escribe T-SQL tiene que revisar su código antes de llevarlo. 3 y no 2: no hay infraestructura que administrar, y el trabajo diario usa herramientas conocidas, como Power Query y T-SQL."
+  en: "3, not 4: the warehouse does not support all of T-SQL: the documentation lists commands that should not be used because, even if they appear to work, they can cause problems, so a team that already writes T-SQL has to review its code before moving it. 3, not 2: there is no infrastructure to manage, and daily work uses familiar tools such as Power Query and T-SQL."
+esencial: true
+fuentes:
+  - url: https://learn.microsoft.com/en-us/fabric/fundamentals/microsoft-fabric-overview
+    titulo: What is Microsoft Fabric - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: It simplifies the user experience by removing the need to understand complex infrastructure details like resource groups, RBAC, Azure Resource Manager, redundancy, or regions.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 4974a4c30ac55bc2ac41f4ce8bfb582a1ead404587e988cf0677329c5b4cfb74
+  - url: https://learn.microsoft.com/en-us/fabric/data-factory/dataflows-gen2-overview
+    titulo: Differences between Dataflow Gen1 and Dataflow Gen2 - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Dataflows are a cloud-based tool that helps you prepare and transform data without writing code.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 18176e40f1c8bb30457b8a8fc4ac610bcc9359446d8efc09d8a8be96f5153d38
+  - url: https://learn.microsoft.com/en-us/fabric/data-factory/dataflows-gen2-overview
+    titulo: Differences between Dataflow Gen1 and Dataflow Gen2 - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: experience that's available across several Microsoft products and services such as Excel, Power BI, Power Platform, and Dynamics 365
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 18176e40f1c8bb30457b8a8fc4ac610bcc9359446d8efc09d8a8be96f5153d38
+  - url: https://learn.microsoft.com/en-us/fabric/data-warehouse/tsql-surface-area
+    titulo: T-SQL Surface Area in Fabric Data Warehouse - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Fabric Data Warehouse supports T-SQL tables, views, stored procedures, functions, permissions, and security roles.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 2b901e1619004121f93506418e1e653b77b7b5f6f742b3a8e5176ef4ba837ea0
+  - url: https://learn.microsoft.com/en-us/fabric/data-warehouse/tsql-surface-area
+    titulo: T-SQL Surface Area in Fabric Data Warehouse - Microsoft Fabric | Microsoft Learn
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Currently, the following commands aren't supported. Don't try to use these commands. Even if they appear to succeed, they might cause problems for your warehouse.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 2b901e1619004121f93506418e1e653b77b7b5f6f742b3a8e5176ef4ba837ea0
+fecha_verificacion: 2026-10-06
+limitaciones:
+  - es: El almacén de datos no admite todos los comandos de T-SQL; la documentación lista los que no se deben usar.
+    en: The warehouse does not support every T-SQL command; the documentation lists the ones that should not be used.
+origen: agente-investigador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

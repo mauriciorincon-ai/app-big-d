@@ -37,10 +37,13 @@ export interface Contexto {
 }
 
 export function contexto(mapa: Mapa, gramatica: Gramatica, opciones: OpcionesLayout, vista: VistaGeometria): Contexto {
-  const tabla = opciones.metricas ?? METRICAS_PILOTO;
+  if (opciones.fuente_metricas && opciones.metricas && opciones.fuente_metricas !== opciones.metricas)
+    throw new Error("layout: llegaron `fuente_metricas` y `metricas` con tablas distintas; usa solo `fuente_metricas`");
+  const tabla = opciones.fuente_metricas ?? opciones.metricas ?? METRICAS_PILOTO;
   const sans = tabla.fuentes[opciones.fuente ?? "space-grotesk"];
   const mono = tabla.fuentes[opciones.fuenteMono ?? "jetbrains-mono"];
-  if (!sans || !mono) throw new Error("layout: la tabla de métricas no tiene las fuentes pedidas");
+  if (!sans || !mono)
+    throw new Error(`layout: la tabla de métricas no tiene las fuentes pedidas («${opciones.fuente ?? "space-grotesk"}», «${opciones.fuenteMono ?? "jetbrains-mono"}»); trae: ${Object.keys(tabla.fuentes).join(", ")}`);
   for (const idioma of gramatica.idiomas)
     if (!opciones.texts[idioma]) throw new Error(`layout: faltan las cadenas de interfaz en «${idioma}» (options.texts)`);
   const porClase = (c: Banda["clase"]) => ordenarPor(gramatica.bandas.filter((b) => b.clase === c), (b) => b.orden, (b) => b.id);
@@ -112,8 +115,26 @@ export function porIdioma(ctx: Contexto, f: (idioma: string, t: TextosMotor) => 
   return Object.fromEntries(ctx.idiomas.map((l) => [l, f(l, ctx.textos[l]!)]));
 }
 
-/** Plural de interfaz (§ 8): `one` para n = 1, `other` para lo demás (español e inglés). */
-export const plural = (formas: Plural, n: number): string => (n === 1 ? formas.one : formas.other).replace("{n}", String(n));
+/**
+ * Regla de plural por idioma (§ 8, 0.6.0: `n === 1` fijo es incorrecto en idiomas que pluralizan distinto). Tabla
+ * propia, de las categorías `one`/`other` de CLDR para enteros no negativos (G2 prohíbe `Intl`): en español, inglés,
+ * alemán e italiano `one` es exactamente 1; en francés y portugués, 0 y 1. Un idioma sin regla es un error claro.
+ */
+const REGLAS_PLURAL: Readonly<Record<string, (n: number) => "one" | "other">> = {
+  es: (n) => (n === 1 ? "one" : "other"),
+  en: (n) => (n === 1 ? "one" : "other"),
+  de: (n) => (n === 1 ? "one" : "other"),
+  it: (n) => (n === 1 ? "one" : "other"),
+  fr: (n) => (n === 0 || n === 1 ? "one" : "other"),
+  pt: (n) => (n === 0 || n === 1 ? "one" : "other"),
+};
+
+/** Plural de interfaz (§ 8): la forma la elige la regla del idioma. */
+export function plural(formas: Plural, n: number, idioma: string): string {
+  const regla = REGLAS_PLURAL[idioma];
+  if (!regla) throw new Error(`plural: no hay regla de plural para el idioma «${idioma}»`);
+  return formas[regla(n)].replace("{n}", String(n));
+}
 
 export const colX = (i: number): number => M + i * (COL + CANAL);
 export const anchoLienzo = (n: number): number => 2 * M + n * COL + (n - 1) * CANAL;

@@ -4,6 +4,68 @@ Versionado semántico del **contrato** (no de la implementación): MAJOR invalid
 existentes · MINOR agrega un campo opcional, una vista o una regla que no rechaza nada válido ·
 PATCH aclara. Editar el contrato pasa por G-Metodo.
 
+## [0.6.0] — 2026-10-04 · las 25 enmiendas y 12 fallas del S2 del piloto (`compare`, `diff` real, lado a lado; G-Metodo aprobado «apruebo el batch»)
+
+**MINOR de API.** Ningún mapa ni gramática 0.5.0 deja de ser válido; cambian la API y las reglas de dibujo. Fuente:
+`app-big-d/sprints/SPRINT_002-summary.md` § «Enmiendas al contrato del diagramador» y § «Registro de fallas»; retro
+en `portafolio/big-d/sprints/SPRINT_002.md`.
+
+- **§ 4.4 `compare`:** opciones `n`, `page`, `part: "all" | "header" | "rows"` (filas independientes), `marks`,
+  `texts.lado`; precondiciones con error claro (F-031, F-033); banda vacía rotulada como vacía (F-032); avisos con
+  prefijo de fila (F-034); `Geometria.variante` (`n1`/`n2`); **se retira `toCompareCSS`** (dos SVG por fila y una
+  regla CSS del consumidor). El piloto usa dos estados (ninguna banda o todas) con un solo control.
+- **§ 4.7 `diff`:** declara qué compara (nodos por nombre y madurez; bloques por nombre, F-030 → motor en S3) y qué
+  no ve (textos, fuentes); **`diffToText`** con orden total (F-035); una píldora por clase, «retirado» en la fila
+  anterior (F-028).
+- **§ 4.8 y G7:** el lado a lado **no lleva insignias de vigencia**; el estado va en palabras en el rótulo de la fila
+  (F-026: 44/75/22/30 avisos de la matriz).
+- **§ 5.4:** paths de las marcas de diferencia (+ − → ▮), solo en el `<defs>` del lado a lado.
+- **§ 5.6:** avisos nuevos `texto:` y `pistas:`; prefijo `<fila>/` en `compare`.
+- **P13 cerrada (F-027):** reparación mínima de las pistas a menos de 9 u que tapan una punta de llegada; la punta
+  mide 9 u.
+- **§ 7:** V16 dibuja también el lado a lado a cada edad y **falla cerrado sin `texts`** en publicación (F-036); G7
+  recorre `etiqueta_corta` (F-037). Carnadas: **A1 pasa a modo privado** (su dibujo no es lo que prueba; gap del
+  rótulo de banda sin bloque declarado) y **C10 declara sus cuatro alertas V3** en `secundarios`.
+- **§ 8:** `agingDates` exportada; `toSVG(geometry, { language })` sin `texts`; plurales elegidos por la regla del
+  idioma; **§ 4.5 alineada con § 8** (`texts`/`queryDate`; eran `textos`/`fechaConsulta`); el lock registra el
+  **commit de origen** (`origen: <sha>`) y la deriva frente a una versión publicada durante el sprint es «esperada».
+- **§ 10/§ 11:** `compare` implementado; v1.0.0 al cierre del S3 del piloto.
+- **§ 12:** afirmaciones sobre nodo o flujo (bloques y pasos editoriales, sin cita); «sin novedades» no renueva un
+  nodo con afirmaciones «no verificables»; `conflicto_de_interes` solo en las citas de la propuesta; **el comando de
+  aprobación sale de la pantalla de revisión** (S2-AUD-08).
+- **G15:** el recorte a la cobertura ya está hecho; el recorte profundo solo por ADR.
+- **Artefactos:** todos declaran `contrato_version` 0.6.0 (la 0.5.0 dejó 44 en 0.4.0); títulos de los esquemas al
+  día; validación con `validar-artefactos.mjs` (Ajv 2020 estricto; el generador 0.3.0 → 0.4.0 queda retirado).
+- **Fallas:** F-026…F-037 cerradas (pagadas en el piloto; F-030 con motor pendiente en el S3).
+- **Pendiente del piloto (big-d S3):** renovar el lock a 0.6.0; `diff` de bloques; design system v0.6 con las 9
+  extensiones del ADR `design-system-s2-extensions`; lo pendiente de la 0.5.0 (`papel`, condiciones, `fuente codigo`,
+  `hexagono`, tabla de Inter).
+
+## [0.5.0] — 2026-10-04 · las seis enmiendas de planlang S2 (segundo consumidor; estado `piloto`; G-Metodo aprobado «apruebo el batch»)
+
+**MINOR de datos.** Todo mapa y gramática 0.4.0 válido sigue siéndolo: todas las adiciones son opcionales o
+alternativas nuevas. Fuente: `app-planlang/packages/diagramador/CONTRATO.lock` → `enmiendas_propuestas` y
+`decisions/010-conversion-grafo-a-mapa.md`; retro en `portafolio/planlang/sprints/SPRINT_002.md`.
+
+- **`nodo.papel`** (`inicio` · `fin`): nodos terminales de un grafo (`__start__`/`__end__`) como dato; el motor
+  dibuja el marcador junto a la tarjeta (antes se dibujaban fuera del mapa).
+- **`condicion` en tres formas** (§ 3.4): tripleta `{senal, operador, valor}` · **función nombrada**
+  `{funcion, entradas}` (`texas_y_no_aprobar`) · **rama por defecto** `{por_defecto: true}`; **V17**: a lo sumo una
+  por defecto por origen. Se retiran las convenciones `senal: "texas-y-no-aprobar"` y `senal: "rama-por-defecto"`.
+- **`fuente.tipo: "codigo"`** con `ruta` + `lineas` (sin URL): un nodo de un agente cita el archivo y las líneas que
+  lo implementan; el motor lo escribe como `ruta:lineas`, nunca como enlace (regla 17 de cero enlaces).
+- **Glifo `hexagono` vuelve** (path en § 5.4) para «regla» de `agentes-ia` (design system 1.0.0 de planlang): a 16 u
+  con etiqueta corta; cada gramática elige entre `escudo` y `hexagono`. Gramática `agentes-ia` → **1.2.0**.
+- **G15: una tabla de métricas por fuente** (Space Grotesk · Inter) y `options.fuente_metricas` en el consumidor;
+  el lock fija la huella de la tabla que usa. La geometría es determinista por tabla.
+- **Validación:** esquemas, 6 gramáticas y 6 ejemplos en verde con Ajv 2020, más seis pruebas de las formas nuevas (dos
+  aceptan, una `condicion` incompleta, una `fuente codigo` con URL y un `papel` inválido se rechazan). El validador del
+  spike de big-d (`scripts/node.mjs`, lógica 0.3.0) marcaba «FALLA · 0 alertas» en 5 ejemplos YA con el 0.4.0: está
+  obsoleto frente al motor real del piloto, no es regresión del 0.5.0.
+- **Pendiente del piloto (big-d):** implementar `papel`, las dos condiciones nuevas, `fuente.tipo: codigo`, el
+  glifo y la tabla de Inter en el motor; planlang sigue con su conversor propio (`core/visor`) hasta entonces y
+  actualiza su lock a 0.5.0 en el S3.
+
 ## [0.4.0] — 2026-10-01 · cierre del S1 del piloto: la primera implementación y el primer mapa real (estado `piloto`; G-Metodo aprobado)
 
 **MINOR de datos.** Ningún mapa o gramática 0.3.0 válido deja de serlo, salvo los que tuvieran un paso que se

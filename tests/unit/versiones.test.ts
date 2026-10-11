@@ -109,6 +109,18 @@ describe("versiones de un mapa", () => {
     expect(lago!.fuentes).toBe(9);
   });
 
+  it("Databricks: de v0.1.0 a v0.2.0 el bloque «Tableros» se renombró y la página lo dice (0.6.0, F-030)", () => {
+    for (const [idioma, antes] of [
+      ["es", "Bloque; antes «Tableros»."],
+      ["en", "Block; formerly “Dashboards”."],
+    ] as const) {
+      const v = vistaVersiones(d, "databricks", idioma, FECHA, {});
+      const par = v.pares.find((p) => p.antes === "0.1.0" && p.despues === "0.2.0")!;
+      expect(par.diferencias).toContain(antes);
+      expect(par.svg).toContain('data-marca="renombrado"');
+    }
+  });
+
   it("un par con una versión histórica no se dibuja: solo dice cuál es (ADR map-versioning, decisión 6)", () => {
     const [v1, v2, v3] = cadena();
     const datos = conCadena(d, EJEMPLO, [v2!, v3!]);

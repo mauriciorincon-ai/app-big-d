@@ -50,7 +50,7 @@ export function validarPropuesta(dato: unknown, gramatica: Gramatica, rangos: re
       continue;
     }
     const fuentes = nodo ? nodo.fuentes : mapa.nodos.filter((n) => n.id === flujo!.origen || n.id === flujo!.destino).flatMap((n) => n.fuentes);
-    if (!fuentes.some((f) => f.url === a.cita.url)) fallas.push(`afirmaciones · ${a.id} cita ${a.cita.url}, que no es fuente de ${a.sobre.entidad === "nodo" ? "ese componente" : "ninguno de los extremos del flujo"}`);
+    if (!fuentes.some((f) => "url" in f && f.url === a.cita.url)) fallas.push(`afirmaciones · ${a.id} cita ${a.cita.url}, que no es fuente de ${a.sobre.entidad === "nodo" ? "ese componente" : "ninguno de los extremos del flujo"}`);
   }
   // También en «sin novedades»: la exigencia de cita no se apaga con una bandera del modelo (A-3).
   for (const x of sinAfirmacion(mapa, p.afirmaciones)) fallas.push(`afirmaciones · ${x} no tiene ninguna afirmación que lo respalde`);

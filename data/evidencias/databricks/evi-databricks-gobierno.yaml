@@ -1,0 +1,66 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-databricks-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/databricks.jsonl).
+id: evi-databricks-gobierno
+plataforma_id: databricks
+capacidad_id: cap-gobierno
+afirmacion:
+  es: Unity Catalog controla el acceso con privilegios, políticas por atributos y filtros por fila y columna, y sigue el linaje de forma automática, hasta el nivel de columna cuando es posible.
+  en: Unity Catalog controls access with privileges, attribute-based policies and row and column filters, and tracks lineage automatically, down to the column level where possible.
+componentes:
+  - unity-catalog
+  - filtros-mascaras
+madurez: disponible-general
+puntaje: 3
+justificacion_puntaje:
+  es: "3 y no 4: los filtros de fila y las máscaras de columna no se pueden aplicar a una vista, solo a tablas, así que la protección se pone en cada tabla. 3 y no 2: el catálogo, los permisos, los filtros y el linaje son nativos y están disponibles de forma general."
+  en: "3, not 4: row filters and column masks cannot be applied to a view, only to tables, so protection goes on each table. 3, not 2: the catalog, permissions, filters and lineage are native and generally available."
+esencial: true
+fuentes:
+  - url: https://docs.databricks.com/aws/en/data-governance/unity-catalog/
+    titulo: What is Unity Catalog? | Databricks on AWS
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Manage who can access what using privileges, attribute-based policies, row and column filters, and workspace bindings.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: e9c2e083103f400ad2edafb6e00b8b794a29788c29d3be3d97833b7970c8ffe6
+  - url: https://docs.databricks.com/aws/en/data-governance/unity-catalog/
+    titulo: What is Unity Catalog? | Databricks on AWS
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Automatically track how data and AI assets flow and connect, from source data through to models, services, and dashboards.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: e9c2e083103f400ad2edafb6e00b8b794a29788c29d3be3d97833b7970c8ffe6
+  - url: https://docs.databricks.com/aws/en/data-governance/unity-catalog/data-lineage
+    titulo: Lineage in Unity Catalog | Databricks on AWS
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Unity Catalog captures lineage to the column level as much as possible.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 5ff404df2bcf817276c76bb48bedeaed7dad40649df4a6f0776b5b33c7b67bb1
+  - url: https://docs.databricks.com/aws/en/tables/row-and-column-filters
+    titulo: Row filters and column masks | Databricks on AWS
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: You cannot apply row-level security or column masks to a view.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: da7c94bf1fd12fb280bb7330d9e1c8c7e704b6b5435029f942deb003d2501510
+fecha_verificacion: 2026-10-06
+limitaciones:
+  - es: Los filtros de fila y las máscaras de columna no se aplican a vistas.
+    en: Row filters and column masks cannot be applied to views.
+origen: agente-investigador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

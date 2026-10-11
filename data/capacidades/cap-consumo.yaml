@@ -1,0 +1,15 @@
+# Capacidad de la especificación § 10.2: el nombre es el del tipo en la gramática plataformas-datos (el cargador lo exige).
+id: cap-consumo
+nombre:
+  es: "Consumo analítico e inteligencia de negocio"
+  en: "Analytics and business intelligence"
+definicion:
+  es: "Llevar los datos a tableros, reportes y preguntas de negocio con las mismas definiciones para todos."
+  en: "Getting data to dashboards, reports and business questions with the same definitions for everyone."
+preguntas_guia:
+  - es: "¿Cómo se conecta con herramientas de tableros?"
+    en: "How does it connect to dashboard tools?"
+  - es: "¿Existe capa semántica?"
+    en: "Is there a semantic layer?"
+  - es: "¿Permite preguntas en lenguaje natural sobre los datos?"
+    en: "Can people ask questions about the data in natural language?"

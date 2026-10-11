@@ -3,8 +3,9 @@
 Bundle publicable del design system (la regla del CLAUDE.md «el bundle publicable del design system es un artefacto
 del repo»). La jerarquía es fija:
 
-1. **`design-system.md`** es la fuente de verdad, más las extensiones del S1 por ADR
-   (`decisions/design-system-s1-extensions.md`) y del S2 (`decisions/design-system-s2-extensions.md`).
+1. **`design-system.md`** es la fuente de verdad. La v0.6.0 (S3, 2026-10-04) ya funde las extensiones del S1
+   (`decisions/design-system-s1-extensions.md`) y del S2 (`decisions/design-system-s2-extensions.md`); las del S3
+   en adelante van por ADR hasta la versión siguiente.
 2. **`design-sync/`** es este bundle. Deriva de lo anterior y del producto; jamás lo contradice.
 3. **El proyecto en Claude Design** es la vitrina. Se escribe desde aquí y **nunca se edita allá**.
 

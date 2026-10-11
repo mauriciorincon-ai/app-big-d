@@ -5,8 +5,8 @@ arquetipo: harness
 elemento_tipo: contrato
 rigor: completo
 capa: producto
-version: 0.4.0
-fecha: 2026-10-01
+version: 0.6.0
+fecha: 2026-10-04
 estado: aprobado
 objetivo: Fijar qué garantiza el motor de diagramas, con qué modelo de datos trabaja, qué vistas produce, con qué reglas dibuja y valida, con qué gramática visual, y cómo lo consume una app
 depende_de: [reusables/README.md, "corpus/raw/[APP Bigdata Planeador] - Requerimientos v1.1.md"]
@@ -14,8 +14,26 @@ relacionado_con: [reusables/diagramador/REGISTRO-DE-FALLAS.md, reusables/diagram
 tags: [reusables, diagramador, contrato, determinismo, accesibilidad, bilingue]
 ---
 
-# Diagramador — contrato v0.4.0
+# Diagramador — contrato v0.6.0
 
+> **v0.6.0, cierre del S2 del piloto (2026-10-04, G-Metodo aprobado «apruebo el batch»).** El S2 de Big-D
+> construyó **`compare`** (la última vista sin código), el primer **`diff` real** (Fabric v0.1.0 → v0.2.0 →
+> v0.3.0) y puso cuatro plataformas lado a lado; devolvió 25 enmiendas y 12 fallas (F-026 a F-037). Esta versión
+> las absorbe: **§ 4.4** `compare` con `n`/`page`/`part`/`marks`, precondiciones, banda vacía, `Geometria.variante`
+> y sin `toCompareCSS`; **§ 4.7** `diff` declara qué compara y nace `diffToText`; **§ 4.8/G7** el lado a lado sin
+> insignias; **§ 5.4** paths de las marcas de diferencia; **§ 5.6** avisos `texto:` y `pistas:` con prefijo de fila;
+> **P13 cerrada** en su forma mínima (9 u); **V16** dibuja el lado a lado y falla cerrado sin `texts`; **G7**
+> recorre `etiqueta_corta`; **§ 8** `agingDates`, `toSVG` sin `texts`, plurales por idioma, § 4.5 alineada con § 8
+> y el lock con **commit de origen**; **§ 12** entidades con cita, «sin novedades» y `conflicto_de_interes`
+> aclarados, comando de aprobación desde la pantalla; carnadas A1 (privado) y C10 (`secundarios` V3). **MINOR de
+> API**: ningún mapa ni gramática 0.5.0 deja de ser válido; todos los artefactos declaran `contrato_version`
+> 0.6.0 y se validan con `validar-artefactos.mjs` (el generador `convertir-0.3.0.mjs` queda retirado). La **v1.0.0**
+> se sella al cierre del S3 del piloto.
+>
+> **v0.5.0, cierre de planlang S2 (2026-10-04).** Seis enmiendas del segundo consumidor: `nodo.papel`,
+> `condicion` en tres formas (V17), `fuente.tipo: codigo`, el glifo `hexagono` de vuelta y G15 con una tabla de
+> métricas por fuente. Detalle en el CHANGELOG.
+>
 > **v0.4.0, cierre del S1 del piloto (2026-10-01, G-Metodo aprobado).** La primera implementación
 > (`app-big-d/packages/diagramador/`, 31/31 casos, 30 golden files idénticos en Node + 3 navegadores × 2
 > sistemas) y el **primer mapa real** (Fabric: 19 nodos, 19 flujos, 7 pistas en un canal) devolvieron 44
@@ -45,9 +63,11 @@ tags: [reusables, diagramador, contrato, determinismo, accesibilidad, bilingue]
 >   gramática, 3 de aceptación, 3 del piloto —P1 mapa denso que se dibuja sin avisos; P2 y P3 de V5— y 2
 >   mapas reales; C03, C06 y C07 declaran sus `secundarios` legítimos).
 >
-> **Cómo se generaron:** `portafolio/big-d/investigacion/spike-diagramador/scripts/convertir-0.3.0.mjs`
-> (script de la planeadora; valida todo con Ajv 2020 contra los esquemas de aquí; P1 se copia del paquete
-> piloto). Nada se editó a mano.
+> **Cómo se mantienen (0.6.0):** desde la 0.5.0 los artefactos se editan directamente y se validan con
+> `portafolio/big-d/investigacion/spike-diagramador/scripts/validar-artefactos.mjs` (Ajv 2020 estricto: 6
+> gramáticas y 6 ejemplos válidos, carnadas de fase 1 rechazadas por el esquema, `contrato_version` uniforme).
+> El generador `convertir-0.3.0.mjs` (0.3.0 → 0.4.0) queda retirado: regeneraría la forma 0.4.0 y borraría
+> `papel`, las condiciones nuevas y `fuente codigo`.
 
 ## 0. Qué es y qué no es
 
@@ -86,7 +106,7 @@ está mal, se corrige el dato o la regla, nunca el SVG.
 | **Registro** | Cada una de las dos voces con que se explica un nodo: **líder** (lenguaje llano) y **experto** (detalle riguroso) |
 | **Geometría** | Resultado puro de la disposición: cajas de bandas y nodos, trazados de flujos, posición de etiquetas y referencias. Se prueba sin mirar el SVG y **no depende del idioma** |
 | **Manifiesto** | Archivo junto al SVG con las versiones del motor, el contrato, la gramática, el idioma y las métricas de texto. El SVG no lleva sellos de versión |
-| **Tabla de métricas** | Avances (y kerning, cuando exista) de la fuente de licencia abierta con la que el motor mide el texto (G15). En el piloto: Space Grotesk y JetBrains Mono, subconjunto latino |
+| **Tabla de métricas** | Avances (y kerning, cuando exista) de la fuente de licencia abierta con la que el motor mide el texto (G15). **Una tabla por fuente** (0.5.0): el piloto mide con Space Grotesk y JetBrains Mono; planlang, con Inter y JetBrains Mono. El consumidor declara en `options.fuente_metricas` cuál usa y su `CONTRATO.lock` fija la huella de ESA tabla |
 | **Cobertura** | Conjunto de puntos de código que la tabla de métricas cubre. Todo carácter de todo texto debe estar en ella (V15) |
 
 ## 2. Garantías
@@ -100,17 +120,17 @@ lo que ya se midió (spike F1 en Node + 3 navegadores, macOS; referencia de la E
 | **G2** | **Sin reloj, sin azar, sin funciones inexactas.** La fecha de consulta es una **entrada**. Un lint prohíbe en el paquete: `Date.now`, `new Date()` sin argumento, `Math.random`, `performance.now`, `crypto.getRandomValues`, `Math.sin/cos/tan/asin/acos/atan/atan2/exp/expm1/log*/pow/cbrt/hypot/sinh/cosh/tanh`, el operador `**`, `localeCompare`, `Intl.*`, `toLocaleString`, las API de medición del DOM (`getBBox`, `getComputedTextLength`, `measureText`) y cualquier formato de número fuera de la función canónica | Lint en CI con su carnada: un archivo con `Math.cos` debe hacerlo fallar | ✓ el spike respetó la regla a propósito; lint pendiente del piloto |
 | **G3** | **Neutralidad de dominio.** El motor no contiene ningún nombre de dominio, plataforma o producto | Lint que busca en el paquete los nombres de todas las gramáticas y mapas registrados: cero coincidencias | pendiente del piloto |
 | **G4** | **Gramática cerrada.** Un mapa no declara bandas, tipos ni modos: los toma de su gramática. Una «capa inventada» es imposible por esquema | Carnada C03 | ✓ |
-| **G5** | **Mapas comparables.** La posición de cada banda sobre el eje del flujo sale **solo** de la gramática; en el nivel 1 la altura de cada fila también. Dos mapas de la misma gramática ponen cada capa en la misma columna y cada franja en la misma fila, y el lado a lado alinea sin cálculo adicional. En el nivel 2 la alineación es **por banda** (la fila crece con el mapa más denso, las columnas no se mueven) | Prueba: tres mapas de una gramática con coordenadas de banda idénticas; `compare` con un nivel por banda sin desplazar columnas | ✓ rejilla · ✗ ELK (3 capas se desplazan) · ✗ dagre (desordena las capas) |
+| **G5** | **Mapas comparables.** La posición de cada banda sobre el eje del flujo sale **solo** de la gramática; en el nivel 1 la altura de cada fila también. Dos mapas de la misma gramática ponen cada capa en la misma columna y cada franja en la misma fila, y el lado a lado alinea sin cálculo adicional. En el nivel 2 la alineación es **por banda** (la fila crece con el mapa más denso, las columnas no se mueven) | Prueba: tres mapas de una gramática con coordenadas de banda idénticas; `compare` con un nivel por banda sin desplazar columnas | ✓ rejilla · ✗ ELK (3 capas se desplazan) · ✗ dagre (desordena las capas) · ✓ **piloto S2: `compare` con fast-check (G5 entre N mapas, invariancia al orden, el nivel por banda no mueve columnas, fila independiente = fila trasladada) y 44 golden files en Node + 3 navegadores × 2 sistemas** |
 | **G6** | **Localidad del cambio.** (a) Cambiar un atributo de un nodo (que no sea `banda_id`, `orden` ni `bloque_id`) cambia solo los elementos de ese nodo. (b) Agregar, quitar o reordenar un nodo cambia solo los nodos de su banda con posición igual o posterior, los flujos que los tocan y los flujos cuyo trazado atravesaría su caja. (c) Agregar o quitar un flujo cambia ese flujo, la etiqueta del flujo agregado al que pertenece **y los flujos que comparten con él un extremo, un canal o una fila de referencias** (los puertos se reparten `y + alto × i / (k + 1)`, D-S1-25). (d) Nada más cambia, salvo el tamaño del lienzo y la descripción del documento. Convención de datos: `orden` espaciado (10, 20, 30…) para insertar sin correr a los demás | Prueba de propiedades (fast-check): mapas válidos + una edición aleatoria; los ids cambiados deben estar dentro del conjunto permitido | ✓ rejilla (6 cambios, 0 fuera) · ✗ ELK (42 cambios, 31 fuera) |
-| **G7** | **El color nunca va solo** (el usuario tiene daltonismo leve): tipo = matiz + glifo + etiqueta; modo de flujo = estilo de línea + marcador; semáforo = marca dibujada + texto + días (sin matiz: peso y relleno de la tinta); madurez = medidor + palabra. **El texto va siempre en tinta**, nunca sobre un relleno tintado (D14) | Capturas en escala de grises y con deuteranopía, protanopía, tritanopía y acromatopsia (severidad 0,6 y 1,0); la información debe sobrevivir. Paleta medida contra el umbral de § 5.2 | ✓ referencia medida bajo las 7 vistas |
+| **G7** | **El color nunca va solo** (el usuario tiene daltonismo leve): tipo = matiz + glifo + etiqueta; modo de flujo = estilo de línea + marcador; semáforo = marca dibujada + texto + días (sin matiz: peso y relleno de la tinta); madurez = medidor + palabra. **El lado a lado no lleva insignias de vigencia (0.6.0, F-026):** a 118 u la insignia montada no cabe y pisa el nombre en el nivel 2; el estado de cada fila va **en palabras** en su rótulo («v0.1.0 · por revisar · 34 días»), sin matiz. **El texto va siempre en tinta**, nunca sobre un relleno tintado (D14) | Capturas en escala de grises y con deuteranopía, protanopía, tritanopía y acromatopsia (severidad 0,6 y 1,0); la información debe sobrevivir. Paleta medida contra el umbral de § 5.2 | ✓ referencia medida bajo las 7 vistas |
 | **G8** | **Dos registros por nodo.** El de líder omite detalle pero jamás contradice al de experto | V3 (existencia) + gate ⭐ humano (no contradicción) | — |
 | **G9** | **Tres niveles de lectura** sobre el mismo mapa: visión general, componentes y recorrido (§ 4) | Pruebas por vista | ✓ las tres vistas |
 | **G10** | **Texto equivalente.** Cada diagrama tiene una versión en HTML (`<ol>` anidada banda → bloque → nodo → flujos; referencias de franja incluidas; recorridos como lista ordenada con sus ramas), **enlazada desde la raíz del SVG**, y cada vista lleva un enlace **«Saltar el diagrama»** a esa lectura | Prueba: todo nodo, flujo y referencia del SVG aparece en el texto y al revés, en cada idioma | ✓ 5/5 mapas |
 | **G11** | **Legible a 380 px con una sola disposición.** Hay **una** disposición determinista, horizontal, **a escala 1** en cualquier ancho: la letra mínima mide 12 px en pantalla siempre y **jamás se escala por debajo**. Si el lienzo no cabe en su contenedor, **el lienzo se desliza de lado** dentro de un contenedor propio con índice de bandas, sombras de borde y pista escrita; **la página jamás desborda**. **Ningún texto sale del lienzo ni queda encima de una caja que no es la suya** (F-002, F-004), **a cualquier edad del mapa** (§ 5.6: matriz de envejecimiento, F-017). *(La disposición angosta de la v0.2.0 se retiró: F-007.)* | e2e a 380 px: `scrollWidth ≤ clientWidth` de la página + desplazamiento propio del contenedor + medición de cada texto con `getBBox` en la prueba (nunca en el motor), en los dos idiomas y los tres navegadores | ✓ referencia: 0 desbordes de página, 0 textos fuera, 0 textos encima (Chromium, 2 idiomas × 2 temas × 2 anchos × 5 estados) |
 | **G12** | **Movimiento opcional.** El recorrido se lee paso a paso sin animación. La animación vive en una hoja CSS aparte cargada con `media="(prefers-reduced-motion: no-preference)"`; el controlador solo cambia un atributo del contenedor; el SVG no cambia y el árbol del DOM no depende de la preferencia | e2e con `reducedMotion: "reduce"`: `document.getAnimations()` vacío en todos los pasos y el hash del SVG sin cambios | ✓ referencia |
 | **G13** | **Un solo SVG para los dos temas.** Los colores se referencian por variable CSS; los valores por tema viven en una hoja aparte. Contraste: trazos y glifos ≥ 3:1 sobre el lienzo y sobre la tarjeta, texto ≥ 4,5:1 frente a su fondo real, también en colores forzados | Prueba propia de contraste de tokens (axe no mide texto SVG) + axe en los dos temas | ✓ referencia (piloto: tinta sobre tarjeta 13,6:1 y 17,3:1) |
-| **G14** | **Sin dato válido no hay dibujo.** Un mapa que no pasa la validación falla al cargar con la regla, el campo y el id que fallaron, y nunca se completa por inferencia | Carnadas (§ 6) | ✓ 24/24 en 0.2.0; 31 casos en 0.3.0 |
-| **G15** | **Las métricas de texto son un dato.** Los anchos salen de una tabla de avances (y kerning, cuando exista) de una fuente de licencia abierta, versionada en el paquete y con huella en `CONTRATO.lock`; el sitio sirve esa misma fuente. Jamás se mide el texto en el navegador para disponer. **Todo carácter de todo texto está en la cobertura de la tabla (V15):** un carácter fuera cae a la fuente del sistema, cambia de ancho entre navegadores y rompe G1 (F-006). **El consumidor dibuja el texto con `text-rendering: geometricPrecision`** (sin él, Chromium/Linux redondea a píxel entero y el texto excede la tabla: F-013) | Diferencia máxima tabla vs. navegador en 3 motores × 2 sistemas, con textos de todos los idiomas declarados (tildes, «ñ», «¿»); margen de seguridad fijado; carnada C19 | ✓ **piloto: la tabla sin kerning + 3 % es cota superior en 3 motores × 2 sistemas (el más ajustado, 97,1 %)** (P12 respondida) |
+| **G14** | **Sin dato válido no hay dibujo.** Un mapa que no pasa la validación falla al cargar con la regla, el campo y el id que fallaron, y nunca se completa por inferencia | Carnadas (§ 6) | ✓ 24/24 en 0.2.0; 31 casos en 0.3.0; **34/34 en el piloto S2 (0.4.0, con `secundarios`)** |
+| **G15** | **Las métricas de texto son un dato.** Los anchos salen de una tabla de avances (y kerning, cuando exista) de una fuente de licencia abierta, versionada en el paquete y con huella en `CONTRATO.lock`; el sitio sirve esa misma fuente. **0.5.0: el paquete puede traer una tabla por fuente** (Space Grotesk para el piloto, Inter para planlang) y el consumidor declara cuál usa en `options.fuente_metricas`; la geometría de un mapa es determinista POR tabla. Jamás se mide el texto en el navegador para disponer. **Todo carácter de todo texto está en la cobertura de la tabla (V15):** un carácter fuera cae a la fuente del sistema, cambia de ancho entre navegadores y rompe G1 (F-006). **El consumidor dibuja el texto con `text-rendering: geometricPrecision`** (sin él, Chromium/Linux redondea a píxel entero y el texto excede la tabla: F-013). **(0.6.0)** El recorte de las woff2 **a la cobertura** ya está hecho en el piloto (los cmap son exactamente los rangos de `cobertura.json`); recortar más —glifos alternos, rasgos GSUB/GPOS, ejes— toca la maqueta y la cadena de métricas, y solo se hace por ADR del consumidor | Diferencia máxima tabla vs. navegador en 3 motores × 2 sistemas, con textos de todos los idiomas declarados (tildes, «ñ», «¿»); margen de seguridad fijado; carnada C19 | ✓ **piloto: la tabla sin kerning + 3 % es cota superior en 3 motores × 2 sistemas (el más ajustado, 97,1 %)** (P12 respondida) |
 
 ## 3. Modelo de datos
 
@@ -155,16 +175,27 @@ referencias entre documentos y dentro del mapa se validan en código (§ 6). Lo 
 
 ### 3.3 Nodo
 - Ubicación: `banda_id`, `tipo_id`, `bloque_id` (opcional) y `orden`.
+- **`papel`** (opcional, 0.5.0 — planlang ADR-010): `inicio` · `fin`. Marca los nodos terminales de un grafo
+  (`__start__` / `__end__` de un agente) para que el motor dibuje el marcador de entrada o salida junto a la
+  tarjeta; no es un tipo de la gramática y no cambia la geometría de la banda. Antes, los terminales se dibujaban
+  fuera del mapa, sin dato.
 - Nombre: `nombre` y `nombres_anteriores`.
 - Registros: `lider` (máx. `frases_lider_max` frases en cada idioma), `experto`, `por_que_importa` y
   `terminos` (por idioma).
-- Estado y evidencia: `madurez`, `fuentes` (al menos una; `https`, título por idioma, fecha y tipo),
-  `fecha_verificacion` y `refs_externas`.
+- Estado y evidencia: `madurez`, `fuentes` (al menos una; título por idioma, fecha y tipo; con `url` `https` si
+  el tipo es `oficial` o `tercero`, o **`ruta` + `lineas` del repositorio si el tipo es `codigo`** — 0.5.0,
+  planlang: un nodo de un agente cita el archivo y las líneas que lo implementan sin una URL pública; el motor lo
+  escribe como `ruta:lineas`, nunca como enlace), `fecha_verificacion` y `refs_externas`.
 
 ### 3.4 Flujo
-`origen` · `destino` · `modo_id` · `que_viaja` · `lider` · **`condicion`** (opcional: `{ senal, operador,
-valor }` con `operador` ∈ `< <= = != >= >`; **obligatoria si el modo declara `exige_condicion`**, V13).
-Pedido de planlang: en el grafo de un agente, una arista condicional sin su señal es un dato incompleto.
+`origen` · `destino` · `modo_id` · `que_viaja` · `lider` · **`condicion`** (opcional; **obligatoria si el modo
+declara `exige_condicion`**, V13). Tres formas (0.5.0, planlang ADR-010; antes solo la primera):
+- `{ senal, operador, valor }` con `operador` ∈ `< <= = != >= >` — la tripleta del plan;
+- `{ funcion, entradas: [señal…] }` — una **función nombrada** del plan (`texas_y_no_aprobar`) con las señales que
+  lee; el motor la dibuja como etiqueta `f(entradas)` y no la evalúa;
+- `{ por_defecto: true }` — la **rama «si no»** de un enrutador; a lo sumo una por nodo de origen (V17).
+Pedido de planlang: en el grafo de un agente, una arista condicional sin su señal es un dato incompleto; y una
+condición que no cabe en la tripleta tampoco se disfraza de señal (`senal: "rama-por-defecto"`).
 
 ### 3.5 Recorrido
 `titulo` y `pasos`. Cada paso tiene:
@@ -225,26 +256,53 @@ opcional y nunca ocurre con movimiento reducido (G12).
 
 ### 4.4 Lado a lado (`compare`)
 - N mapas de la **misma** gramática, alineados por banda (G5). **N es una constante de la vista que el
-  consumidor declara** (tres a la vez en ancho en el piloto, con paginación más allá; una banda a la vez
-  con todas las plataformas apiladas en angosto); **jamás un número cableado en el motor**.
+  consumidor declara** (tres a la vez en ancho en el piloto, con paginación más allá; **una banda a la vez
+  con todas las plataformas apiladas** en angosto); **jamás un número cableado en el motor**.
 - Acepta **el nivel 2 alineado por banda** (no por nodo) y **un nivel por banda en el mismo SVG**: una
   banda desplegada a nivel 2 en todas las plataformas y las demás a nivel 1; la fila desplegada crece
-  sin mover las columnas (G5). Decisión del usuario en las miradas 2–4 del G-Diseño.
-- Expone los nodos de cada bloque agregado (G10 también aquí).
+  sin mover las columnas (G5). Decisión del usuario en las miradas 2–4 del G-Diseño; **en el piloto (M1 del
+  S2) el consumidor usa dos estados —ninguna banda o todas— con un solo control «Desplegar todo / Contraer
+  todo»**; `levelByBand` sigue siendo por banda.
+- **Opciones (0.6.0, § 8):** `n` y `page` (el consumidor pagina; el motor no conoce el total de la vista),
+  `part: "all" | "header" | "rows"` (**filas independientes**: una cabecera de bandas y una fila por mapa,
+  para que el consumidor componga; una fila independiente es idéntica a la misma fila trasladada), `marks`
+  (marcas de diferencia entre **exactamente dos** mapas sin paginar, § 4.7) y `texts.lado` (las cadenas del
+  lado a lado: rótulo de fila, banda vacía, «N componentes»).
+- **La geometría declara su variante** (`Geometria.variante`: `n1` · `n2`) para que las dos variantes de una
+  misma fila —el consumidor las prerenderiza y alterna con una regla CSS— no choquen en ids. **No existe
+  `toCompareCSS`**: el motor no genera CSS (ADR `compare-in-the-engine` del piloto).
+- **Precondiciones con error claro (F-031, F-033):** al menos un mapa; `sujeto_id` distintos; todos de la
+  misma gramática (si no, error de validación); `marks` exige dos mapas y ninguna paginación. Nada se
+  completa por inferencia (G14).
+- **Una banda sin componentes en un mapa se rotula como vacía** con el texto de `texts` (F-032), nunca con
+  el rótulo del grupo sin bloque.
+- Expone los nodos de cada bloque agregado (G10 también aquí). **Los avisos de geometría llevan el prefijo de
+  su fila** (`<fila>/<id>`, F-034) para que los de distintas filas no se fundan.
 - Orden de los mapas por `sujeto_id`, el mismo en todos los idiomas.
-- Comparar mapas de gramáticas distintas es un error de validación.
+- **El lado a lado no lleva insignias de vigencia** (§ 4.8, G7, F-026): el estado va en palabras en el
+  rótulo de la fila.
 
 ### 4.5 Ficha de nodo
 Qué es, qué hace, por qué importa, términos (los del nodo más el glosario, en el idioma de la vista),
-madurez, fuentes con fecha y fecha de verificación, y la vigencia calculada. **El motor la entrega con `toCard(map, grammar, nodeId, { language, textos, fechaConsulta })`** (§ 8); el panel es de la app.
+madurez, fuentes con fecha y fecha de verificación, y la vigencia calculada. **El motor la entrega con `toCard(map, grammar, nodeId, { language, texts, queryDate })`** (§ 8); el panel es de la app.
 
 ### 4.6 Versión en texto
 HTML equivalente (G10), por idioma. Sirve a lectores de pantalla y como oráculo de las pruebas.
 
 ### 4.7 Diferencias entre versiones (`diff`)
 Nodos nuevos (+), retirados (−), renombrados (→, por `nombres_anteriores`) y con madurez cambiada (▮),
-marcados siempre con glifo dibujado + palabra, y una lista explicativa debajo. **La comparación se hace sobre JSON
-canónico (claves ordenadas)**: el orden de las claves no es un cambio (F-023).
+marcados siempre con glifo dibujado + palabra (paths en § 5.4), y una lista explicativa debajo. **La
+comparación se hace sobre JSON canónico (claves ordenadas)**: el orden de las claves no es un cambio (F-023).
+- **`diff` declara qué compara (0.6.0, F-029):** nodos por `id`, con nombre (y `nombres_anteriores`) y
+  `madurez`; **bloques por `id`, con nombre** (renombre de bloque, F-030: regla aquí, motor en el S3 del
+  piloto). **No ve** textos (líder, experto, por qué importa, términos), fuentes ni fechas: un mapa con seis
+  textos y nueve fuentes cambiados da «sin cambios en el dibujo», y el consumidor lo cuenta aparte («lo que
+  dicen los componentes», piloto `/versiones`). Lo que `diff` no compara se dice en la página, no se calla.
+- **`diffToText(diffResult, grammar, { language, texts })`** (0.6.0): lista explicativa con glifo y
+  palabra por clase, con flujos y pasos contados; **orden total** por clase de banda (capa · carril · franja),
+  luego por posición y por id (F-035).
+- Las marcas se dibujan en el lado a lado de dos mapas (`compare` con `marks`): una píldora por clase presente
+  en cada tarjeta, nunca dos en una fila de 118 u (F-028); «retirado» va en la fila de la versión anterior.
 
 ### 4.8 Semáforo de vigencia
 - **vigente** por debajo del primer umbral; **por revisar** desde el primero; **vencido** desde el segundo.
@@ -260,6 +318,9 @@ canónico (claves ordenadas)**: el orden de las claves no es un cambio (F-023).
   nombres con «…» (el nombre entero queda en `aria-label`). La **geometría expone la vigencia** del mapa y de
   cada elemento activable para que la app no repita la regla de los umbrales, y **`toText` recibe la fecha de
   consulta** para escribir «por revisar · N días» también en la lectura.
+- **El lado a lado no lleva insignias (0.6.0, F-026):** con N filas de 118 u la insignia montada no cabe (la
+  matriz de envejecimiento dio 44/75/22/30 avisos según la variante). Cada fila escribe su estado en el
+  rótulo («v0.1.0 · por revisar · 34 días»): palabra + días, sin matiz, también en la lectura en texto.
 - **La marca de «por revisar» es un triángulo de precaución con «!»** (pedido del usuario al mirar el atlas
   envejecido, 2026-09-30; § 5.4).
 
@@ -343,8 +404,9 @@ en (0, 0); marcadores y marcas en caja de 12.
 | `estrella` | lleno | `M0.0,-8.2 L2.1,-2.8 L7.8,-2.5 L3.3,1.1 L4.8,6.6 L0.0,3.5 L-4.8,6.6 L-3.3,1.1 L-7.8,-2.5 L-2.1,-2.8 Z` |
 | `anillo` | trazo 2,6 u | `M0,-6 A6,6 0 1 1 0,6 A6,6 0 1 1 0,-6 Z` |
 | `barras` | lleno | `M-7.5,2 H-4 V7.5 H-7.5 Z M-1.75,-2.5 H1.75 V7.5 H-1.75 Z M4,-7.5 H7.5 V7.5 H4 Z` |
+| `hexagono` | lleno | `M0,-8 L6.9,-4 L6.9,4 L0,8 L-6.9,4 L-6.9,-4 Z` |
 
-*(0.3.0: salen `hexagono` y `pentagono` —a 12 px se confundían con el círculo, F-009— y entran `escudo` y `barras`.)*
+*(0.3.0: salen `hexagono` y `pentagono` —a 12 px se confundían con el círculo, F-009— y entran `escudo` y `barras`. **0.5.0: vuelve `hexagono`** para la gramática `agentes-ia` —«regla»—, sellado en el design system 1.0.0 de planlang: se dibuja a 16 u con etiqueta corta, nunca a 12 solo; cada gramática elige entre `escudo` y `hexagono`.)*
 
 | Modo (estilo de línea) | Trazo | Marcador | Path |
 |---|---|---|---|
@@ -367,6 +429,16 @@ El periodo del patrón cabe al menos 3 veces en el tramo más corto.
 | recibe (referencia ←) | `M5,0 H-4 M-1,-3.5 L-4.5,0 L-1,3.5` |
 | bifurcación | marca de rama dibujada junto a la insignia del paso |
 
+**Marcas de diferencia (§ 4.7; 0.6.0, de la maqueta aprobada del piloto; caja 12, `currentColor`; solo en el
+`<defs>` del lado a lado para que el de las demás vistas no cambie):**
+
+| Marca de diferencia | Trazo | Path (caja 12) |
+|---|---|---|
+| nuevo (+) | 2 u | `M0,-4.5 V4.5 M-4.5,0 H4.5` |
+| retirado (−) | 2 u | `M-4.5,0 H4.5` |
+| renombrado (→) | 1,8 u | `M-5,0 H4 M1,-3.5 L4.5,0 L1,3.5` |
+| madurez (▮) | 2 u | `M-3.5,4.5 V-1 M0,4.5 V-4.5 M3.5,4.5 V1.5` |
+
 **Madurez = medidor:** rectángulo de 7 × 11 que se llena según `nivel`: −1 vacío y tachado (retirado) ·
 0 vacío con contorno discontinuo (anunciado) · 1 un cuarto · 2 la mitad · 3 tres cuartos · 4 lleno.
 Siempre con la palabra al lado. Es el reemplazo del `glifo` textual de la 0.2.0 (F-006).
@@ -382,7 +454,9 @@ Otro consumidor puede elegir otra fuente de licencia abierta: cambia la tabla, n
 `layout` devuelve, además de la geometría, una lista de **avisos** con forma fija (`{ vista, tipo, id,
 mensaje }`): `D11: <flujo> atraviesa la caja de <caja>` · `pistas: <flujo> corre a N u del borde de <caja>`
 (< 5 u) · `fuera-del-lienzo: <elemento>` · `encima: <texto> sobre <caja>` · `etiqueta: <flujo> a N u de su
-trazo` (> 30 u) · `bloque-vacio: <bloque>` · `canal: más de 10 pistas` · `carriles: pista fuera del canal`. Un
+trazo` (> 30 u) · `bloque-vacio: <bloque>` · `canal: más de 10 pistas` · `carriles: pista fuera del canal` · **(0.6.0)** `texto: <qué> de <caja>: N líneas; caben M`
+(también «palabra que no cabe» y «cabecera de franja más alta que su fila») · `pistas: <flujo> corre bajo la punta de
+<flujo>` (P13). **En `compare` el `id` lleva el prefijo de su fila** (`<fila>/<id>`, F-034). Un
 consumidor que publica aborta ante cualquier aviso. **Matriz de envejecimiento:** todo mapa del contrato y
 todo mapa publicado se dibuja en **cuatro edades** (hoy, el día del primer umbral, el día del segundo, +100
 días) en todas sus vistas, con 0 avisos y 0 cruces; la app además construye cada atlas en cada fecha en que
@@ -438,7 +512,7 @@ lo declara como aviso.
 | G4 | No mezclar capas y carriles (v0.x) |
 | G5 | Las bandas del recorrido de referencia existen |
 | G6 | Umbrales crecientes, `bloques_min ≤ bloques_max`, al menos un nivel de madurez disponible |
-| **G7** | `idioma_base` está en `idiomas`; todo mapa de idioma y todo diccionario de la gramática trae exactamente los idiomas declarados |
+| **G7** | `idioma_base` está en `idiomas`; todo mapa de idioma y todo diccionario de la gramática trae exactamente los idiomas declarados — **incluida `escala_madurez[].etiqueta_corta`** (0.6.0, F-037) |
 
 **Mapa**
 
@@ -459,7 +533,7 @@ lo declara como aviso.
 | **V13** | Todo flujo cuyo modo declara `exige_condicion` trae `condicion` (planlang) |
 | **V14** | Todo mapa de idioma y todo diccionario del mapa trae exactamente los idiomas de la gramática |
 | **V15** | Todo carácter de todo texto está en la cobertura de la tabla de métricas (G15, D13) |
-| **V16** | **«El mapa se dibuja» (modo publicación, 0.4.0):** ninguna regla V1–V15 mira si los textos caben; en modo `publicacion` el validador dibuja las vistas del mapa (§ 5.6, a cuatro edades) y **cualquier aviso de geometría es error**. En modo privado, los avisos se informan sin rechazar |
+| **V16** | **«El mapa se dibuja» (modo publicación, 0.4.0):** ninguna regla V1–V15 mira si los textos caben; en modo `publicacion` el validador dibuja las vistas del mapa (§ 5.6, a cuatro edades) y **cualquier aviso de geometría es error**. En modo privado, los avisos se informan sin rechazar. **(0.6.0)** Dibuja también la fila del lado a lado, contraída y desplegada, a cada edad; **sin `texts` no puede dibujar: en privado lo informa como aviso, en publicación es ERROR** (falla cerrado, F-036) |
 
 **Carnadas** ([`carnadas/`](carnadas/), con `esperado.json`; cada caso dice regla, id y **fase**)
 - **C01–C17:** errores de mapa heredados de la 0.2.0 (convertidos). Incluyen los tres del RF-09.6 (C03,
@@ -469,13 +543,15 @@ lo declara como aviso.
 - **GC1–GC5:** errores de gramática; GC5 (nueva) idioma base no declarado (G7).
 - **A1–A3:** casos límite válidos que **deben aceptarse** (5 y 8 bloques; **un flujo agregado con los
   cuatro modos entre dos bloques**, que además debe dibujarse con la etiqueta completa a 380 px sin
-  avisos de geometría).
+  avisos de geometría). **A1 se valida en modo privado (0.6.0):** prueba el mínimo de bloques, no el dibujo; al
+  quitar el bloque de la banda `ia`, el rótulo de la banda sin bloque («Inteligencia artificial») ocupa 3 líneas
+  donde caben 2 en el nivel 1 y V16 lo rechazaría en publicación (gap declarado abajo).
 - **P1–P3 (del piloto, 0.4.0):** **P1 mapa denso** (la forma del primer mapa real con nombres neutrales) **debe aceptarse y dibujarse** con 0 avisos, D11 = 0 y toda etiqueta a ≤ 30 u de su trazo, en nivel 1, 2, recorrido y cada ventana, a cuatro edades; **P2** paso que se sigue a sí mismo y **P3** paso que sigue a uno posterior: exactamente un V5 en su paso.
-- **Secundarios legítimos:** C03 reporta además V3 (su bloque quedó anclado en otra banda), C06 además V5 (sin ese flujo nada une los pasos 6 → 7) y C07 además V12 (p5 sigue declarando «paralela» con una rama); `esperado.json` los lista en `secundarios`.
+- **Secundarios legítimos:** C03 reporta además V3 (su bloque quedó anclado en otra banda), C06 además V5 (sin ese flujo nada une los pasos 6 → 7), C07 además V12 (p5 sigue declarando «paralela» con una rama) **y C10 además la alerta V3 en sus cuatro bloques sin componentes (`extra-1`…`extra-4`; 0.6.0)**; `esperado.json` los lista en `secundarios`.
 - **Mapas reales:** la Plataforma Ejemplo y el Agente Ejemplo deben aceptarse sin errores ni alertas.
 
 Cada carnada debe fallar **por su regla y con su id**. El resultado se reporta como «detectó *k* de *n*».
-**Medido:** 24/24 en el spike (0.2.0); **31/31 en el piloto (0.3.0, S1 de Big-D)** más P1–P3; **34 casos** consistentes con los esquemas 0.4.0 (fase 1 verificada con Ajv al generarlos).
+**Medido:** 24/24 en el spike (0.2.0); **31/31 en el piloto (0.3.0, S1 de Big-D)** más P1–P3; **34 casos** consistentes con los esquemas (fase 1 verificada con Ajv); **34/34 en el piloto (S2, 0.4.0, con `secundarios`)**.
 
 ## 8. Cómo lo consume una app
 
@@ -489,15 +565,21 @@ Cada carnada debe fallar **por su regla y con su id**. El resultado se reporta c
     carriles · bloque` (esta última con `options.group`); la geometría **expone la vigencia** del mapa y de
     cada activable, y declara como API los campos que el consumidor usa (`gramatica`, `filas[].banda/y/alto`,
     `rotulos`, `cruces`, `avisos`, `vigencia`);
-  - `toSVG(geometry, { language, texts, … })` → SVG del idioma pedido;
+  - `toSVG(geometry, { language })` → SVG del idioma pedido (**0.6.0:** no recibe `texts`; títulos y cadenas
+    llegan hechos en la geometría desde `layout`);
   - `toText(map, grammar, { language, texts, queryDate })` → HTML (la fecha permite «por revisar · N días»);
   - `toCard(map, grammar, nodeId, { language, texts, queryDate? })` → contenido de la ficha (§ 4.5) y
     `toBlockCards(map, grammar, group, opts)` → tarjetas de la vista «bloque» (§ 4.10);
   - `toLegend(grammar, { language, texts })` → leyenda (§ 4.9);
-  - `compare(maps, grammar, { levelByBand?, … })` y `diff(mapA, mapB)` (JSON canónico).
+  - `compare(maps, grammar, { language, texts, queryDate, levelByBand?, n?, page?, part?, marks? })` → geometría
+    del lado a lado con `variante` y avisos con prefijo de fila (§ 4.4); `diff(mapA, mapB)` (JSON canónico) y
+    **`diffToText(diffResult, grammar, { language, texts })`** (§ 4.7);
+  - **`agingDates(map, grammar, queryDate)`** (0.6.0) → las fechas de la matriz de envejecimiento del mapa, para
+    que el consumidor construya su matriz sin repetir la regla de los umbrales.
   - **Las cadenas de interfaz del motor** («N componentes», «N fuentes», títulos de la ficha, «por revisar»,
     la regla del haz…) **llegan en `options.texts`** como mapas de idioma: el motor no trae copy propio.
-    **Plurales como dato por idioma** (`{ one, other }`), no `[singular, plural]` con `n === 1`.
+    **Plurales como dato por idioma** (`{ one, other }`), no `[singular, plural]` con `n === 1`; **la forma se elige con la
+    regla de plural del idioma** (0.6.0: `n === 1` fijo es incorrecto en idiomas que pluralizan distinto).
   - **Los nombres de la API van en inglés** (`group`, `texts`, `queryDate`); los del DATO siguen en español.
   - Un idioma que la gramática no declara da un **error claro** en todas las salidas (F-025).
   - Otro destino de salida (p. ej., exportar a Mermaid) es otra función.
@@ -506,8 +588,11 @@ Cada carnada debe fallar **por su regla y con su id**. El resultado se reporta c
 - **SVG en el build, interacción en el cliente:** la capa interactiva (foco, ficha, pasos, animación,
   lienzo deslizable) se engancha a los ids estables. Todo control dibujado tiene su script cargado y
   una prueba que lo activa (regla del kit). El sitio es estático y no cuesta nada por visita.
-- **Copia fijada:** `packages/diagramador/CONTRATO.lock` guarda la versión y las huellas SHA-256 de este
-  contrato, los esquemas, las gramáticas y la tabla de métricas. `/cierre-sprint` las compara con esta casa.
+- **Copia fijada:** `packages/diagramador/CONTRATO.lock` guarda la versión, **el commit de origen de esta casa
+  (`origen: <sha>`, 0.6.0)** y las huellas SHA-256 de este contrato, los esquemas, las gramáticas y la tabla de
+  métricas. `/cierre-sprint` las compara con esta casa **en ese commit**; si esta casa publicó una versión posterior
+  durante el sprint (planlang S2 publicó la 0.5.0 a mitad del S2 de Big-D), la deriva frente a HEAD es **esperada**
+  y la renueva la orden siguiente.
 - **Enmiendas:** el builder las propone en su summary (sección «Enmiendas al contrato del diagramador»)
   con la falla que las motiva. Se aplican en el cierre, con aprobación.
 
@@ -529,8 +614,8 @@ uno en 0.3.0 (condición en el flujo, pedido por el segundo consumidor).
 Sigue [reusables/README.md](../README.md): `semilla` → `piloto` → `probado` → `kit`. El registro de
 fallas es el motor del cambio y G-Metodo es el gate. **Estado: `piloto`** (2026-10-01): la implementación
 existe en `app-big-d/packages/diagramador/`, pasa todos los casos y dibuja un mapa real aprobado; `probado`
-llega cuando el segundo consumidor (planlang) la use desde su propio repo. La v1.0.0 del contrato se sella
-cuando `compare` (S2 del piloto) cierre la última vista sin implementar.
+llega cuando el segundo consumidor (planlang) la use desde su propio repo. `compare` quedó implementado en el S2 del piloto (2026-10-04); la **v1.0.0** se sella al cierre del S3, cuando
+el piloto adopte esta versión (lock 0.6.0) y planlang (S3) use el motor desde su repo.
 
 ## 11. Preguntas
 
@@ -548,13 +633,15 @@ cuando `compare` (S2 del piloto) cierre la última vista sin implementar.
 | P10 | Densidad máxima por banda | **Respondida (estimada):** `nodos_por_banda_max: 6` en el piloto, con carnada C18; el piloto la mide con Fabric y la ajusta por enmienda si hace falta |
 | P11 | Fuente de licencia abierta para G15 | **Respondida por el usuario:** Space Grotesk + JetBrains Mono (§ 5.5) |
 | P12 | Kerning en la tabla de métricas | **Respondida en el S1:** la tabla sin kerning + 3 % es cota superior en 3 motores × 2 sistemas (97,1 %) con `geometricPrecision`; no hace falta kerning |
-| P13 | Orden de las pistas por destino | Abierta para el S2: la punta de una flecha de llegada (8 u) cruza las pistas que corren entre la suya y la tarjeta; asignar primero, junto a cada columna, las pistas de los flujos que entran a ella |
+| P13 | Orden de las pistas por destino | **Respondida en el S2, en su forma mínima (F-027):** asignar siempre junto a la columna de destino movía casi todo el dibujo aprobado; se reparan solo las pistas a menos de **9 u** de una tarjeta que tapan una punta de llegada (la punta mide **9 u**, no 8). Antes: 4 puntas tapadas (P1 y Fabric); después: 0, con los golden idénticos. Aviso `pistas: <x> corre bajo la punta de <y>` |
 
 ## Gaps
 
-- **`compare` sin implementar:** el lado a lado (§ 4.4) es la única vista del contrato sin código; la
-  construye el S2 del piloto y ahí se fija su golden file y la alineación por banda en el nivel 2.
-- **Orden de las pistas por destino (P13):** abierta.
+- **Rótulo de una banda sin bloque en el nivel 1 (A1):** «Inteligencia artificial» / «Artificial intelligence»
+  ocupa 3 líneas donde caben 2 a 118 u; A1 se valida en privado hasta que el nivel 1 resuelva el rótulo (0.6.0).
+- **`diff` no compara bloques (F-030):** regla en 0.6.0, motor en el S3 del piloto.
+- **Recorte profundo de las woff2:** solo por ADR del consumidor (toca la maqueta y G15).
+- *(Cerrados en el S2: `compare` · P13 · `diff` real entre versiones.)*
 - **Más de un elemento por banda en el nivel 1 con franjas de varios elementos:** P1 lo ejercita en el nivel 2;
   el nivel 1 con varios bloques por banda todavía no tiene mapa del contrato.
 - *(Cerrados en el S1: G1 en Linux · calidad del trazado en un mapa real · G11 y G15 en Firefox y WebKit ·
@@ -564,8 +651,9 @@ cuando `compare` (S2 del piloto) cierre la última vista sin implementar.
 
 El motor no propone contenido, pero el piloto definió cómo llega un mapa propuesto a la aprobación humana, y
 ese esquema sirve de base a cualquier consumidor que necesite el mismo flujo (planlang, por ejemplo):
-- **La propuesta es una lista de afirmaciones**, cada una sobre **una entidad** (`{ entidad, id }`: nodo,
-  flujo, bloque, paso) con **una cita literal** de una fuente verificada por código (el texto citado debe
+- **La propuesta es una lista de afirmaciones**, cada una sobre **una entidad** (`{ entidad, id }`: **nodo o
+  flujo**; **0.6.0:** bloques y pasos son agrupación y narración editoriales, sin cita propia —heredan las de sus
+  nodos—, que es lo que el piloto hace) con **una cita literal** de una fuente verificada por código (el texto citado debe
   encontrarse en la página cruda, en el idioma de la fuente). No hay afirmaciones sin cita.
 - **Aprobar y rechazar es por afirmación.** Rechazar una afirmación saca su entidad del mapa **en cascada**
   (los flujos y pasos que la tocan salen con ella) y el motivo queda registrado.
@@ -573,7 +661,14 @@ ese esquema sirve de base a cualquier consumidor que necesite el mismo flujo (pl
   verificada**, salvo el flujo que sale por arrastre de su nodo; «ningún retiro sin argumento» es decisión
   del usuario (D-S1-56).
 - **«Sin novedades»** no esquiva la cita ni el rechazo: renueva la fecha de verificación solo de las
-  afirmaciones que vuelven a verificarse, nunca de todo el mapa.
+  afirmaciones que vuelven a verificarse, nunca de todo el mapa **y nunca la de un nodo cuyas afirmaciones
+  quedaron «no verificables»** (0.6.0).
+- **`conflicto_de_interes` vive en las citas de la propuesta**, no en las fuentes del mapa (el esquema del mapa no
+  lo lleva; 0.6.0 lo aclara).
+- **El comando de aprobación sale solo de la pantalla de revisión** (0.6.0, S2-AUD-08): la pantalla lo arma con
+  los ids de lo marcado, el constructor no lo redacta ni lo deja copiado; si lo extrae del HTML compilado, verifica
+  que los ids coinciden con la propuesta y avisa que no se pegue si la persona desmarcó algo. Sin eso, la
+  aprobación «afirmación por afirmación» no deja evidencia de lectura.
 - El resultado se **valida en modo publicación** (V1–V16, con cobertura) y se dibuja a cuatro edades antes
   de pedir la aprobación; la aprobación la ejecuta una persona en su terminal y deja registro
   (`data/revisiones/<sujeto>.jsonl` en el piloto).

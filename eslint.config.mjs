@@ -82,6 +82,9 @@ const eslintConfig = defineConfig([
     // Salida de `vercel build` sin conexión (diagnóstico de A-04; .vercel/ está ignorado en git).
     ".vercel/**",
     "coverage/**",
+    // Sitio y base de la base sembrada (D-S3-14): derivados de scripts/datos/construir-sembrada.mjs, ignorados en git.
+    "out-sembrada/**",
+    ".sembrada/**",
   ]),
 ]);
 

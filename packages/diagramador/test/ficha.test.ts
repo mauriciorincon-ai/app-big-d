@@ -25,7 +25,7 @@ describe("la ficha dice lo que dice el mapa", () => {
           expect(html).toContain(`class="dg-c-${tipo.token_color}"`);
           expect(html).toContain("dg-madurez-caja");
           expect(html).toContain(`<span>${madurez.nombre[l]!.replace(/&/g, "&amp;")}</span>`);
-          for (const s of n.fuentes) expect(html).toContain(`href="${s.url.replace(/&/g, "&amp;")}"`);
+          for (const s of n.fuentes) expect(html).toContain("url" in s ? `href="${s.url.replace(/&/g, "&amp;")}"` : s.ruta);
           expect(html).toContain(`verif`); // «verificado» / «verified»
         }
   });

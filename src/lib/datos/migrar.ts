@@ -11,6 +11,10 @@ const COMPATIBLES: Readonly<Record<string, string>> = {
   // [0.4.0] «MINOR de dato: ningún mapa ni gramática válidos de 0.3.0 se vuelven inválidos», salvo los pasos
   // que se siguen a sí mismos o a uno posterior y los flujos de un nodo a sí mismo, que V4 y V5 rechazan.
   "0.3": "0.4",
+  // [0.5.0] «MINOR de datos. Todo mapa y gramática 0.4.0 válido sigue siéndolo: todas las adiciones son opcionales».
+  "0.4": "0.5",
+  // [0.6.0] «MINOR de API. Ningún mapa ni gramática 0.5.0 deja de ser válido».
+  "0.5": "0.6",
 };
 
 const menor = (v: string) => v.split(".").slice(0, 2).join(".");

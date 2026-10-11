@@ -1,0 +1,78 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-databricks-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/databricks.jsonl).
+id: evi-databricks-dependencia
+plataforma_id: databricks
+criterio_id: crit-dependencia
+afirmacion:
+  es: Los datos quedan en Delta Lake, de código abierto; Unity Catalog tiene una implementación de código abierto compatible con la API de catálogo REST de Iceberg, y Databricks donó las canalizaciones declarativas a Apache Spark.
+  en: Data stays in Delta Lake, which is open source; Unity Catalog has an open-source implementation compatible with Iceberg's REST catalog API, and Databricks donated declarative pipelines to Apache Spark.
+componentes:
+  - tablas-streaming
+  - unity-catalog
+  - canalizaciones-lakeflow
+madurez: disponible-general
+puntaje: 3
+justificacion_puntaje:
+  es: "3 y no 4: no todo sale igual de fácil: los clientes Iceberg externos no pueden acceder a las vistas, así que la lógica guardada en vistas habría que rehacerla en otro motor. 3 y no 2: los datos, el catálogo y las canalizaciones declarativas tienen versiones abiertas documentadas, y salir no exige convertir los datos."
+  en: "3, not 4: not everything leaves as easily: external Iceberg clients cannot access views, so logic kept in views would have to be rebuilt on another engine. 3, not 2: the data, the catalog and the declarative pipelines have documented open versions, and leaving does not require converting the data."
+esencial: true
+fuentes:
+  - url: https://docs.databricks.com/aws/en/delta/
+    titulo: What is Delta Lake in Databricks? | Databricks on AWS
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Delta Lake is open source software that extends Parquet data files with a file-based transaction log for ACID transactions
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: bc908212433c7668e04e7615aaa51fcde9a39563181770d50c6634adaf52dad8
+  - url: https://www.databricks.com/blog/open-sourcing-unity-catalog
+    titulo: Open sourcing Unity Catalog | Databricks Blog
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: built on OpenAPI spec and an open source server implementation under Apache 2.0 license
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: cfe575106cbd674811771fd9ce7bf6a307716344b54ee6151c79107e5c7971f3
+  - url: https://www.databricks.com/blog/open-sourcing-unity-catalog
+    titulo: Open sourcing Unity Catalog | Databricks Blog
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: It is also compatible with Apache Hive's metastore API and Apache Iceberg's REST catalog API.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: cfe575106cbd674811771fd9ce7bf6a307716344b54ee6151c79107e5c7971f3
+  - url: https://www.databricks.com/blog/bringing-declarative-pipelines-apache-spark-open-source-project
+    titulo: Bringing Declarative Pipelines to the Apache Spark Open Source Project | Databricks Blog
+    tipo: oficial
+    fecha_publicacion: 2025-06-12
+    conflicto_de_interes: propio-fabricante
+    cita: donating Declarative Pipelines - a proven declarative API for building robust data pipelines with a fraction of the work - to Apache Spark
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 348a2972ca24c25c213dad86a3e73496ee2e04c5aeb2613ac607a20b0d55a6fb
+  - url: https://docs.databricks.com/aws/en/external-access/iceberg
+    titulo: Access Databricks tables from Apache Iceberg clients | Databricks on AWS
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: External Iceberg clients can't access views.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 807c75b8693476b81004314f6d23b73b905070d00da5786c4c009f2063a13d74
+fecha_verificacion: 2026-10-06
+limitaciones:
+  - es: Los clientes Iceberg externos no pueden acceder a las vistas.
+    en: External Iceberg clients cannot access views.
+origen: agente-investigador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

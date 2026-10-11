@@ -1,0 +1,77 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-databricks-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/databricks.jsonl).
+id: evi-databricks-almacenamiento
+plataforma_id: databricks
+capacidad_id: cap-almacenamiento
+afirmacion:
+  es: Toda tabla es de Delta Lake, un formato abierto de código abierto, salvo que se pida otra cosa; también admite tablas Iceberg gestionadas, y otros motores leen y escriben las tablas del catálogo por una interfaz abierta.
+  en: Every table is a Delta Lake table, an open-source open format, unless otherwise specified; it also supports managed Iceberg tables, and other engines read and write catalog tables through an open interface.
+componentes:
+  - tablas-streaming
+  - vistas-materializadas
+madurez: disponible-general
+puntaje: 3
+justificacion_puntaje:
+  es: "3 y no 4: la apertura tiene un borde documentado: los clientes Iceberg solo pueden leer las tablas Delta, no escribirlas. 3 y no 2: el formato abierto es el predeterminado, otros motores leen y escriben las tablas del catálogo por una interfaz documentada y las tablas Iceberg gestionadas están disponibles de forma general."
+  en: "3, not 4: the openness has a documented edge: Iceberg clients can only read Delta tables, not write them. 3, not 2: the open format is the default, other engines read and write catalog tables through a documented interface, and managed Iceberg tables are generally available."
+esencial: true
+fuentes:
+  - url: https://docs.databricks.com/aws/en/delta/
+    titulo: What is Delta Lake in Databricks? | Databricks on AWS
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Delta Lake is the default format for all operations on Databricks
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: bc908212433c7668e04e7615aaa51fcde9a39563181770d50c6634adaf52dad8
+  - url: https://docs.databricks.com/aws/en/delta/
+    titulo: What is Delta Lake in Databricks? | Databricks on AWS
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Delta Lake is open source software that extends Parquet data files with a file-based transaction log for ACID transactions
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: bc908212433c7668e04e7615aaa51fcde9a39563181770d50c6634adaf52dad8
+  - url: https://docs.databricks.com/aws/en/external-access/
+    titulo: Access Databricks data using external systems | Databricks on AWS
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Use the Unity REST API to read, write to, and create Unity Catalog managed and external tables backed by Delta Lake from supported Delta clients.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: aa6aa497c63f2ab7759b420de2d8443bd1470de49b8cae3cb099d77c1c001f79
+  - url: https://docs.databricks.com/aws/en/release-notes/product/2026/may
+    titulo: May 2026 | Databricks on AWS
+    tipo: oficial
+    fecha_publicacion: 2026-05-21
+    conflicto_de_interes: propio-fabricante
+    cita: Unity Catalog managed Apache Iceberg tables, foreign Apache Iceberg tables, and Apache Iceberg v3 features are generally available
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: 17eee4b6b46bcca89ae978a5ed001f550619b9e4fe7bba59ad384269856e4f16
+  - url: https://docs.databricks.com/aws/en/delta/uniform
+    titulo: Read Delta tables with Iceberg clients | Databricks on AWS
+    tipo: oficial
+    conflicto_de_interes: propio-fabricante
+    cita: Iceberg client support is read-only. Writes are not supported.
+    verificacion:
+      resultado: verificada
+      fecha: 2026-10-06
+      http: 200
+      sha256: b26ad07efe10ed9a3665b1d89ce53338d724a758fb1aefc7fa4726a8b7f0f6d4
+fecha_verificacion: 2026-10-06
+limitaciones:
+  - es: Los clientes Iceberg solo leen las tablas Delta; no pueden escribirlas.
+    en: Iceberg clients can only read Delta tables; they cannot write to them.
+origen: agente-investigador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

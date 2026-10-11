@@ -1,0 +1,33 @@
+# APROBADA por una persona el 2026-10-06 (UTC) desde propuestas/2026-10-05-plataforma-ejemplo-evidencias.
+# No se edita a mano: se vuelve a investigar (su huella está en data/revisiones/evidencias/plataforma-ejemplo.jsonl).
+id: evi-plataforma-ejemplo-ia
+plataforma_id: plataforma-ejemplo
+capacidad_id: cap-ia
+afirmacion:
+  es: Un agente responde preguntas en lenguaje natural sobre las tablas del catálogo, con los permisos de quien pregunta.
+  en: An agent answers plain-language questions about the catalog tables, with the permissions of whoever asks.
+componentes:
+  - agente-datos
+madurez: vista-previa-publica
+puntaje: 3
+justificacion_puntaje:
+  es: "3 y no 4: responde, pero no muestra de qué tablas sacó cada cifra. 3 y no 2: funciona sin herramientas de terceros. La vista previa la descuenta el tope, no este puntaje."
+  en: "3, not 4: it answers, but it does not show which tables each figure came from. 3, not 2: it works without third-party tools. The preview is discounted by the cap, not by this score."
+esencial: true
+fuentes:
+  - url: https://example.org/plataforma-ejemplo/ia
+    titulo: Example Platform docs · Data agent (fictional)
+    tipo: oficial
+    fecha_publicacion: 2026-09-15
+    conflicto_de_interes: propio-fabricante
+    cita: The data agent, in public preview, answers natural-language questions over catalog tables using the permissions of the user who asks.
+    verificacion:
+      resultado: no-verificable
+      fecha: 2026-10-06
+      http: 404
+      sha256: 25ddf2c883e0d1958ea971d279a7e4f0fd446724ee3db7db19dadabd4a62e484
+fecha_verificacion: 2026-10-06
+origen: curador
+estado_aprobacion: aprobada
+aprobada_por: autor
+fecha_aprobacion: 2026-10-06

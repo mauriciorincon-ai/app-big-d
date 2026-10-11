@@ -1,8 +1,9 @@
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { parse } from "yaml";
 import type { Datos } from "@/lib/datos";
 import { esquemaRevision } from "./esquema";
+import { esquemaRevisionEvidencias } from "./evidencias";
 import { huella } from "./huella";
 
 /**
@@ -37,6 +38,67 @@ export function mapasSinAprobacion(d: Datos, dir: string): string[] {
     for (const version of new Set(revisiones.map((r) => r.mapa_version)))
       if (version !== mapa.version && !archivadas.some((v) => v.version === version))
         fallas.push(`data/mapas/versiones/${id}-${version}.mapa.yaml · falta: la versión ${version} se aprobó y no está archivada`);
+  }
+  return fallas;
+}
+
+/**
+ * ¿Cada evidencia aprobada de la base es la que aprobó una persona (D-S3-10)? Su huella es la que guardó la última
+ * línea de data/revisiones/evidencias/<plataforma>.jsonl que la nombra, y ninguna evidencia aprobada falta de
+ * data/evidencias/. Vale para todas las plataformas, también la ficticia del ensayo: sus evidencias pasan por la misma
+ * aprobación. `dir` = la carpeta de datos. Devuelve las fallas.
+ */
+export function evidenciasSinAprobacion(dir: string): string[] {
+  const fallas: string[] = [];
+  const dirEv = join(dir, "evidencias");
+  const dirRev = join(dir, "revisiones", "evidencias");
+  const plataformas = new Set([
+    ...(existsSync(dirEv) ? readdirSync(dirEv).filter((x) => !x.startsWith(".")) : []),
+    ...(existsSync(dirRev) ? readdirSync(dirRev).filter((x) => x.endsWith(".jsonl")).map((x) => x.slice(0, -".jsonl".length)) : []),
+  ]);
+  for (const p of [...plataformas].sort()) {
+    const rutaRev = join(dirRev, `${p}.jsonl`);
+    const aprobadas = new Map<string, { huella: string; fecha: string }>();
+    if (existsSync(rutaRev))
+      for (const l of readFileSync(rutaRev, "utf8").split("\n").filter(Boolean)) {
+        const r = esquemaRevisionEvidencias.parse(JSON.parse(l));
+        for (const e of r.evidencias) aprobadas.set(e.id, { huella: e.huella, fecha: r.fecha });
+      }
+    const carpeta = join(dirEv, p);
+    const archivos = existsSync(carpeta) ? readdirSync(carpeta).filter((f) => f.endsWith(".yaml")).sort() : [];
+    for (const f of archivos) {
+      const dato = parse(readFileSync(join(carpeta, f), "utf8")) as { id?: string; estado_aprobacion?: string };
+      if (dato.estado_aprobacion !== "aprobada") continue;
+      const r = aprobadas.get(String(dato.id));
+      if (!r) fallas.push(`data/evidencias/${p}/${f} · ninguna revisión la aprueba (data/revisiones/evidencias/${p}.jsonl): una evidencia entra solo con la aprobación de una persona`);
+      else if (huella(dato) !== r.huella) fallas.push(`data/evidencias/${p}/${f} · su huella no es la que aprobó una persona el ${r.fecha}: no se edita a mano, se vuelve a investigar`);
+    }
+    for (const id of aprobadas.keys()) if (!archivos.includes(`${id}.yaml`)) fallas.push(`data/evidencias/${p}/${id}.yaml · falta: se aprobó y no está en la base`);
+  }
+  return fallas;
+}
+
+/**
+ * ¿Cada evidencia congelada en una instantánea es una versión que aprobó una persona (AU-S3-01)? El caso evalúa la
+ * instantánea, no la base viva, y la huella de la instantánea solo prueba que su contenido no cambió después de
+ * congelarse: no que lo congelado se aprobó. Cada evidencia de cada instantánea tiene que tener la huella que guardó
+ * alguna línea de data/revisiones/evidencias/ (cualquiera: una instantánea vieja congela una versión ya reemplazada).
+ * `dir` = la carpeta de datos. Devuelve las fallas.
+ */
+export function instantaneasSinAprobacion(dir: string): string[] {
+  const aprobadas = new Set<string>();
+  const dirRev = join(dir, "revisiones", "evidencias");
+  if (existsSync(dirRev))
+    for (const f of readdirSync(dirRev).filter((x) => x.endsWith(".jsonl")))
+      for (const l of readFileSync(join(dirRev, f), "utf8").split("\n").filter(Boolean))
+        for (const e of esquemaRevisionEvidencias.parse(JSON.parse(l)).evidencias) aprobadas.add(`${e.id} ${e.huella}`);
+  const fallas: string[] = [];
+  const dirInst = join(dir, "instantaneas");
+  for (const f of existsSync(dirInst) ? readdirSync(dirInst).filter((x) => x.endsWith(".json")).sort() : []) {
+    const inst = JSON.parse(readFileSync(join(dirInst, f), "utf8")) as { contenido?: { evidencias?: { id: string }[] } };
+    (inst.contenido?.evidencias ?? []).forEach((e, i) => {
+      if (!aprobadas.has(`${e.id} ${huella(e)}`)) fallas.push(`data/instantaneas/${f} · contenido.evidencias[${i}] · ${e.id} · no es una versión que aprobó una persona: una instantánea congela solo lo aprobado`);
+    });
   }
   return fallas;
 }
