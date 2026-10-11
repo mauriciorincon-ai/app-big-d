@@ -5,6 +5,7 @@ import type { Textos } from "@/lib/i18n";
 // muestra pendiente, sin enlace (jamás un control que no hace nada).
 
 export const rutaBase = (idioma: string) => `/${idioma}/base`;
+export const rutaInstrumento = (idioma: string) => `/${idioma}/instrumento`;
 export const rutaCaso = (idioma: string, caso: string) => `/${idioma}/casos/${caso}`;
 export const rutaComparacion = (idioma: string, caso: string) => `${rutaCaso(idioma, caso)}/comparacion`;
 

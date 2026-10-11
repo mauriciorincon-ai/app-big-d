@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { rutaLado } from "@/lib/atlas";
 import { idsDeCasos } from "@/lib/caso/casos";
-import { rutaBase, rutaCaso } from "@/lib/caso/rutas";
+import { rutaBase, rutaCaso, rutaInstrumento } from "@/lib/caso/rutas";
 import { datos, rutaAtlas, rutaInvestigador } from "@/lib/datos";
 import { textos, type Idioma } from "@/lib/i18n";
 import { ConmutadorIdioma } from "./ConmutadorIdioma";
@@ -28,7 +28,7 @@ export function Barra({ idioma }: { idioma: Idioma }) {
           { ruta: rutaAtlas(datos(), idioma), texto: t.atlas, prefijos: [`/${idioma}/atlas`, rutaLado(idioma)] },
           { ruta: rutaInvestigador(datos(), idioma), texto: t.conocimiento, prefijos: [`/${idioma}/investigador`, rutaBase(idioma)] },
           { ruta: caso ? rutaCaso(idioma, caso) : undefined, texto: t.caso, prefijos: [`/${idioma}/casos/`] },
-          { texto: t.instrumento, prefijos: [] },
+          { ruta: rutaInstrumento(idioma), texto: t.instrumento, prefijos: [`/${idioma}/instrumento`] },
         ]}
       />
       <div className="ajustes">

@@ -1,0 +1,8 @@
+/* Big-D — INSTRUMENTO (S4), portado de la maqueta aprobada (docs/diseno/assets/bigd.css, «instrumento»): filas de validación, la
+   fila fallida (borde discontinuo + aspa: el color nunca va solo), el conteo en falla y el bloqueo de publicación. Sin `style=`. */
+.val-lista li { grid-template-columns: 20px 1fr; }
+.val-falla { border: 1.5px dashed var(--tinta-1); border-radius: 6px; padding: 8px; }
+.conteo-falla { color: var(--tinta-1); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.veredicto-alerta { border-width: 2px; border-style: dashed; }
+.bloqueo { border: 2px solid var(--tinta-1); border-radius: 6px; padding: 18px 20px; margin: 16px 0; background: var(--sup-1); }
+.bloqueo h2 { display: flex; align-items: center; gap: 10px; font-size: 22px; margin: 16px 0 10px; }

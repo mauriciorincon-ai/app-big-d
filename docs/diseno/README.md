@@ -102,3 +102,13 @@ con línea por modo, orquestación como capa) y la hoja base del producto es `as
 | **Notas del usuario**        | La portada no le convence: tarjetas que se ven desordenadas y poco atractivas. Se rediseñó (D81) y el usuario la aprobó: «Ahora sí, espectacular». La decisión de grises (D79) se da por aprobada con el «lo abrí y apruebo» (D83) |
 
 **Sin este registro lleno, G-Diseño no está aprobado y ninguna orden de construcción se ejecuta.**
+
+## Después de G-Diseño
+
+Decisiones de pantalla que la maqueta aprobada no dibuja. Van aquí (el `design-system.md` no se toca en un sprint de producto) y las
+miradas de FORMA y de TEXTO se registran «maquetada, no vista» hasta el gate humano del hito.
+
+| Fecha      | Pantalla | Decisión | Mirada |
+| ---------- | -------- | -------- | ------ |
+| 2026-10-11 | `/[idioma]/casos/[caso]`, con el perfil en borrador (S4) | Un editor bajo el perfil: pesos en puntos con dos decimales, rango por criterio, casillas de restricciones y una opción por decisión implícita. **Arma** el comando de aprobación (la persona lo corre en su terminal); no guarda ni aprueba nada. Usa campos nativos y la caja de comando de la revisión del investigador; el perfil aprobado sigue siendo solo lectura | FORMA: maquetada, no vista (2026-10-11); va al gate humano del hito |
+| 2026-10-11 | `/[idioma]/instrumento` (S4) | Fiel a `instrumento.html`: veredicto, casos de referencia, propiedades, errores sembrados y «lo aprobado es lo que aprobó una persona». «Mismos bytes en todos los motores» muestra la huella del conjunto de referencia sin una marca verde por motor: esta página no los mide (los compara la integración continua) y un ✓ que nadie midió sería una promesa. El rojo y el bloqueo existen en el componente y no se publican nunca | FORMA y TEXTO: maquetadas, no vistas (2026-10-11) |
