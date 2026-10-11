@@ -6,7 +6,7 @@ import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "nod
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { carpetasDeSalida, conCSP, estilosEnLinea, inyectar, origenSentry, politica } from "../../scripts/csp/inyectar.mjs";
+import { carpetasDeSalida, conCSP, ESTILOS_DEL_NAVEGADOR, estilosEnLinea, inyectar, origenSentry, politica } from "../../scripts/csp/inyectar.mjs";
 import { fallasDeSalida } from "../../scripts/csp/verificar-salida.mjs";
 
 const h = (s: string) => `'sha256-${createHash("sha256").update(s, "utf8").digest("base64")}'`;
@@ -46,6 +46,16 @@ describe("CSP del export estático", () => {
     const c = meta(conCSP(PAGINA, { estilosDelSitio: delSitio }).html);
     expect(c).toContain(`style-src 'self' ${[h(".x{fill:red}"), h('#rec[data-paso="1"] .p{opacity:1}')].sort().join(" ")};`);
     expect(c.match(new RegExp(h(".x{fill:red}").replace(/[+/]/g, "\\$&"), "g"))).toHaveLength(1);
+  });
+  it("permite como atributo solo el `text-overflow:inherit` que WebKit escribe dentro de un <select>, por su huella", () => {
+    // WebKit 27.2 lo escribe en el árbol interno de cada <select> nativo; sin esta huella, la CSP lo bloquea y la
+    // página reporta `style-src-attr` (PR #10, Playwright 1.64). Es la huella de ESE valor y de ninguno más.
+    expect(ESTILOS_DEL_NAVEGADOR).toEqual(["text-overflow:inherit"]);
+    const c = meta(conCSP(PAGINA).html);
+    expect(c).toContain(`style-src-attr 'unsafe-hashes' ${h("text-overflow:inherit")};`);
+    expect(h("text-overflow:inherit")).toBe("'sha256-3oFxofzq3N//6J8H86e9ul4WT2OkJrtonB66gn/TLJw='");
+    expect(c.match(/style-src-attr [^;]*/)?.[0].split(" ")).toHaveLength(3);
+    expect(() => conCSP(PAGINA.replace("<svg>", '<svg style="text-overflow:inherit">'))).toThrow(/«style=»/);
   });
   it("con la DSN de Sentry suma su origen a connect-src; sin DSN, nada", () => {
     expect(origenSentry(undefined)).toEqual([]);

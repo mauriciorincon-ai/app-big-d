@@ -44,6 +44,20 @@ list in `vercel.json` cannot work either: Vercel reads it before the build, and 
    meta. The person caught it by saving the preview page. The step now injects into `out/` and, when the adapter
    ran (it leaves `.next/output/config.json`), into `.next/output/static/` too, each with its own hashes. The two
    copies come out byte-identical.
+6. **One browser-written attribute value is allowed by hash (2026-10-11).** WebKit 27.2, the WebKit in Playwright
+   1.64, writes `style="text-overflow:inherit"` inside the internal tree of every native `<select>`. The strict policy
+   blocked it, and every page with a `<select>` reported `style-src-attr` in WebKit: 44 routes of `csp.spec.ts` in
+   dependabot PR #10. This was isolated locally:
+   - Next 16.4.0 was not the cause: the same failure appeared with Next 16.3.8 and only Playwright 1.64.
+   - A bare page holding only a `<select>` reproduced it. An `<input>` or a `<button>` did not.
+   - `'report-sample'` named the value.
+
+   The policy now carries `style-src-attr 'unsafe-hashes' 'sha256-…'` with the hash of exactly that value
+   (`ESTILOS_DEL_NAVEGADOR` in `scripts/csp/inyectar.mjs`). Any other inline `style` stays blocked: checked in
+   WebKit with a `<p style="color:red">` next to the `<select>`. The step still refuses to publish a page that
+   authors a `style=` itself, including that same value: the allowance is for the browser, not for the page.
+   Browsers without `style-src-attr` fall back to `style-src`, as before. The control renders the same size with or
+   without the policy, so the only change is that the browser's own rule applies and the console stays clean.
 
 ## Gates
 
@@ -58,6 +72,10 @@ list in `vercel.json` cannot work either: Vercel reads it before the build, and 
     violations. It was seen red with the injector without the site's style hashes: four routes named
     `style-src-elem · inline` (implementation log, phase 2, «La CSP bloqueaba los estilos al cambiar de nivel sin
     recargar»).
+- `tests/unit/csp.test.ts` pins the browser allowance. The list must be exactly `text-overflow:inherit`, with
+  its known hash, as the only source of `style-src-attr`. The page itself still cannot author that value. The
+  browser-level check is `csp.spec.ts` in WebKit. Under Playwright 1.64 it was red on the 44 routes without the
+  hash (PR #10). It turns green with the hash once that PR is rebased on this change.
 - `tests/unit/servidor-config.test.ts` checks that the mockup's header CSP is the same in both servers.
 - The `quality` job builds the way Vercel does: an offline `vercel build` (pinned CLI, project settings
   declared in the job, no token) with `NEXT_ENABLE_ADAPTER=1`. Then `scripts/csp/verificar-salida.mjs` checks
