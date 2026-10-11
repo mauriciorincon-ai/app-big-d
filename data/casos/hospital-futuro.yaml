@@ -84,6 +84,10 @@ restricciones:
     descripcion: { es: "La identidad se gestiona con el directorio corporativo del grupo.", en: "Identity is managed with the group's corporate directory." }
     criterio_id: crit-ecosistema
     elimina: []
+# Respuestas de una-o-combinacion, quien-opera y migrar-o-coexistir: las decidió el agente con la razón del caso
+# (equipo muy pequeño, poca ingeniería de plataformas, transición con menos riesgo), por delegación expresa del
+# usuario el 2026-10-11 («el caso no es relevante para mí; acomódalo de la mejor manera»). El perfil sigue en
+# borrador: solo una persona lo aprueba con el comando de su pantalla.
 decisiones_implicitas:
   - id: una-o-combinacion
     pregunta: { es: "¿Una plataforma o una combinación?", en: "One platform or a combination?" }
