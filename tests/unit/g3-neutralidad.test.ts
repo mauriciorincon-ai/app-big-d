@@ -3,11 +3,11 @@ import { describe, expect, it } from "vitest";
 import { parse } from "yaml";
 import { archivosDeCodigo, leer } from "./lib/codigo";
 
-// G3 (CONTRATO del diagramador § 2 y regla del reusable): el paquete no contiene el nombre de ninguna
+// G3 (CONTRATO del diagramador § 2 y regla del reusable): ningún paquete reusable contiene el nombre de ninguna
 // gramática, mapa ni plataforma registrados. Se buscan los ids y los nombres (en todos sus idiomas,
 // sin la aclaración entre paréntesis) en el código fuente del paquete. Los JSON copiados del contrato
 // (gramáticas, ejemplos, carnadas) llevan esos nombres por diseño y quedan fuera.
-const PAQUETE_SRC = "packages/diagramador/src";
+const PAQUETES_SRC = ["packages/diagramador/src", "packages/instrumentos-de-plan/src"];
 // Plataformas reales del portafolio: fijas aquí además de en data/, para que el gate muerda desde el
 // día en que no hay datos (S1, fase 0).
 const PLATAFORMAS = ["Databricks", "Microsoft Fabric", "Fabric", "Snowflake"];
@@ -37,13 +37,14 @@ function registrados(): string[] {
 
 const escapar = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
-describe("G3 — el diagramador no nombra ningún dominio", () => {
+describe("G3 — los reusables no nombran ningún dominio", () => {
   const nombres = registrados();
-  const archivos = archivosDeCodigo(PAQUETE_SRC);
+  const archivos = PAQUETES_SRC.flatMap((p) => archivosDeCodigo(p));
 
   it("hay nombres registrados y código que revisar (el gate puede fallar)", () => {
     expect(nombres.length).toBeGreaterThan(10);
     expect(archivos.length).toBeGreaterThan(0);
+    for (const p of PAQUETES_SRC) expect(archivosDeCodigo(p).length, p).toBeGreaterThan(0);
   });
 
   it("ningún archivo del paquete contiene un nombre registrado", () => {

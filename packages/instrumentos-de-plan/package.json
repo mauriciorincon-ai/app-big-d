@@ -1,0 +1,11 @@
+{
+  "name": "instrumentos-de-plan",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Instrumentos de plan de la casa: decisiones por ondas, modos de falla con prioridad de acción y supuestos con prueba barata (CONTRATO v0.2.0). Funciones puras, sin I/O, sin reloj, sin azar.",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts"
+  }
+}

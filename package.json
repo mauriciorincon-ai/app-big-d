@@ -21,6 +21,7 @@
   "dependencies": {
     "@sentry/nextjs": "^11.5.0",
     "diagramador": "workspace:*",
+    "instrumentos-de-plan": "workspace:*",
     "next": "16.4.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",

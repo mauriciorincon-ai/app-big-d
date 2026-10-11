@@ -1,0 +1,1 @@
+{"id": "C03", "descripcion": "S8·O6·D2 → prioridad alta con RPN 96 (contrato v0.2.0, F-001: la tabla AIAG-VDA se verificó celda a celda en planlang).", "modo": {"id": "M", "severidad": 8, "ocurrencia": 6, "deteccion": 2, "mitigaciones": []}, "esperado": {"prioridad_de_accion": "alta", "rpn": 96}}
