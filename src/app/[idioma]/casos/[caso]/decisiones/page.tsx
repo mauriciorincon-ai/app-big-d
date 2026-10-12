@@ -25,6 +25,7 @@ import { vistaDecisiones } from "@/lib/plan/vista";
 import "@/styles/secciones.css";
 import "@/styles/caso.css";
 import "@/styles/decisiones.css";
+import "@/styles/investigador.css";
 
 // 09 Decisiones y riesgos (maqueta decisiones.html; C16–C18): el plan del caso. Las decisiones por ondas con las de una
 // vía primero, la ficha de cada una con lo que dice la base aprobada de cada plataforma, los riesgos por prioridad de
@@ -72,7 +73,10 @@ export default async function Decisiones({
   ).length;
   const implicitas = plan.decisiones.filter((d) => d.implicita).length;
   const bloqueos = r.informe.bloqueantes.map((b) =>
-    plantilla(t.aprobar.bloqueantes[b.tipo], { ids: lista(b.ids, T.caso.y) }),
+    // El camino de un ciclo cierra en su primer nodo (a → b → a): sin repetidos, cada decisión se nombra una vez.
+    plantilla(t.aprobar.bloqueantes[b.tipo], {
+      ids: lista([...new Set(b.ids)], T.caso.y),
+    }),
   );
   const alta = r.riesgos.filter((x) => x.bloqueante);
   const comando =
