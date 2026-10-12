@@ -6,7 +6,7 @@ import fc from "fast-check";
 import { describe, expect, it } from "vitest";
 import { CASOS_DE_REFERENCIA, canonicoEstricto, comparacionDe, evaluar, planDe } from "@/engine";
 import { cargarConocimiento } from "@/lib/datos/cargar-conocimiento";
-import { planCon, planEjemplo } from "./../nucleo/lib/plan";
+import { conPlataformas, planCon, planEjemplo } from "./../nucleo/lib/plan";
 
 const referencia = (id: string) => CASOS_DE_REFERENCIA.find((c) => c.id === id)!;
 
@@ -124,6 +124,34 @@ describe("alertas", () => {
   });
 });
 
+describe("S5-M-8: N plataformas, nunca tres", () => {
+  const nombres = ["plat-a", "plat-b", "plat-c", "plat-d", "plat-e"];
+  const con = (n: number) => planDe(planCon(conPlataformas(nombres.slice(0, n), { tipo: "empate-tecnico", plataformas: nombres.slice(0, n).toReversed() })));
+
+  it("con 2, 3, 4 y 5 plataformas se planifican TODAS las empatadas, ordenadas, en cada decisión", () => {
+    for (const n of [2, 3, 4, 5]) {
+      const r = con(n);
+      for (const d of r.decisiones) expect(d.planificadas, `n=${n}`).toEqual(nombres.slice(0, n));
+      expect(r.comparacion).toEqual({ tipo: "empate-tecnico", plataformas: nombres.slice(0, n) });
+    }
+  });
+  it("el número de plataformas no mueve ondas, riesgos, prioridades ni aprobación (propiedad sobre 2 a 5)", () => {
+    const base = con(3);
+    const forma = (r: typeof base) => canonicoEstricto({ ondas: r.informe.ondas, riesgos: r.riesgos, aprobable: r.aprobable, una_via: r.decisiones.map((d) => [d.id, d.onda, d.una_via]) });
+    fc.assert(
+      fc.property(fc.integer({ min: 2, max: 5 }), (n) => {
+        expect(forma(con(n))).toBe(forma(base));
+      }),
+      { seed: 20_261_012, numRuns: 20 },
+    );
+  });
+  it("la alerta de opción sin fuente sigue a la plataforma, no a una cuenta: aparece solo si la plataforma sin fuente está", () => {
+    const alertas = (n: number) => con(n).alertas.filter((a) => a.tipo === "opcion-sin-fuente").map((a) => a.id);
+    expect(alertas(2)).toEqual([]);
+    expect(alertas(4)).toEqual(["dec-c/plat-c"]);
+  });
+});
+
 describe("determinismo y neutralidad", () => {
   it("la misma entrada da los mismos bytes, cien veces", () => {
     const una = canonicoEstricto(planDe(planEjemplo()));
@@ -192,5 +220,28 @@ describe("el plan real del caso, a través del núcleo", () => {
     expect(real.alertas.filter((a) => a.tipo === "supuesto-critico-sin-probar")).toHaveLength(4);
     expect(real.alertas.filter((a) => a.tipo === "supuesto-vencido")).toEqual([]);
     expect(real.alertas.filter((a) => a.tipo === "opcion-sin-fuente")).toEqual([]);
+  });
+
+  // S5-M-5: matriz de envejecimiento (regla 23). Un supuesto sin probar vence el día DESPUÉS de su fecha; se construye la
+  // evaluación en cada fecha en que algo cambia (cada `vence` y el día siguiente) sobre el plan real, sin reloj.
+  it("S5-M-5: cada fecha de vencimiento y el día siguiente: el supuesto vence el día después, ni antes ni después", () => {
+    const sig = (f: string) => new Date(Date.parse(`${f}T00:00:00Z`) + 86_400_000).toISOString().slice(0, 10);
+    const alertasEn = (fecha: string) =>
+      planDe({ decisiones: plan.decisiones, modos_de_falla: plan.modos_de_falla, supuestos: plan.supuestos, fecha_evaluacion: fecha, comparacion: { tipo: "sin-comparacion", motivo: "perfil-en-borrador" } })
+        .alertas.filter((a) => a.tipo === "supuesto-vencido")
+        .map((a) => a.id)
+        .sort();
+    const sinProbar = plan.supuestos.filter((s) => s.estado === "sin_probar" && s.vence !== undefined);
+    expect(sinProbar.length).toBeGreaterThan(0);
+    const fechas = [...new Set(sinProbar.map((s) => s.vence!))].sort();
+    for (const f of fechas) {
+      const vencidosAl = (g: string) => sinProbar.filter((s) => s.vence! < g).map((s) => s.id).sort();
+      expect(alertasEn(f), `el día ${f}`).toEqual(vencidosAl(f));
+      expect(alertasEn(sig(f)), `el día ${sig(f)}`).toEqual(vencidosAl(sig(f)));
+      expect(alertasEn(sig(f)).length, `el día ${sig(f)}`).toBeGreaterThan(alertasEn(f).length);
+    }
+    // Antes de la primera fecha no vence ninguno; después de la última, todos.
+    expect(alertasEn("2000-01-01")).toEqual([]);
+    expect(alertasEn("2099-12-31")).toEqual(sinProbar.map((s) => s.id).sort());
   });
 });
