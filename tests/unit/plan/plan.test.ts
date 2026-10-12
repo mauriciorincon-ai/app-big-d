@@ -216,8 +216,8 @@ describe("el plan real del caso, a través del núcleo", () => {
     expect(fuga.prioridad_de_accion).toBe("alta");
     expect(fuga.residual).toMatchObject({ prioridad_de_accion: "alta", prioridad_de_tabla: "baja" });
   });
-  it("los cuatro supuestos críticos sin probar son alertas; ninguno vence todavía contra la fecha de evaluación", () => {
-    expect(real.alertas.filter((a) => a.tipo === "supuesto-critico-sin-probar")).toHaveLength(4);
+  it("los supuestos críticos sin probar son alertas; ninguno vence todavía contra la fecha de evaluación", () => {
+    expect(real.alertas.filter((a) => a.tipo === "supuesto-critico-sin-probar")).toHaveLength(plan.supuestos.filter((s) => s.estado === "sin_probar" && s.criticidad === "alta").length);
     expect(real.alertas.filter((a) => a.tipo === "supuesto-vencido")).toEqual([]);
     expect(real.alertas.filter((a) => a.tipo === "opcion-sin-fuente")).toEqual([]);
   });

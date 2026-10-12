@@ -235,6 +235,7 @@ export interface Textos {
         prioridad: string;
         sinMitigacion: string;
       };
+      origenes: { "propuesto-por-agente": string; "declarado-por-usuario": string };
       ciclo: { titulo: string; alerta: string; sinOndas: string; conOndas: string; nota: string };
       riesgos: {
         titulo: string;
@@ -247,6 +248,8 @@ export interface Textos {
         igual: string;
         orden: string;
         desliza: string;
+        causa: string;
+        origenDe: string;
         tabla: { titulo: string; nota: string; severidad: string; ocurrencia: string; deteccion: string; fila: string };
         origen: string;
         razon: string;
@@ -254,7 +257,7 @@ export interface Textos {
         alertaCuerpo: string;
         momento: { antes: string; durante: string; despues: string };
       };
-      supuestos: { titulo: string; estados: { sin_probar: string; confirmado: string; refutado: string }; criticidad: string; niveles: { alta: string; media: string; baja: string }; pruebaBarata: string; tareaPara: string; vence: string; costo: string; costos: { gratis: string; bajo: string; medio: string }; sostiene: string; alertaCritico: string; refutado: string; vencido: string; nota: string };
+      supuestos: { titulo: string; estados: { sin_probar: string; confirmado: string; refutado: string }; criticidad: string; niveles: { alta: string; media: string; baja: string }; pruebaBarata: string; tareaPara: string; vence: string; costo: string; costos: { gratis: string; bajo: string; medio: string }; sostiene: string; origenDe: string; alertaCritico: string; refutado: string; vencido: string; nota: string };
       alertas: { titulo: string; tipos: { "supuesto-critico-sin-probar": string; "supuesto-vencido": string; "supuesto-refutado": string; "decision-implicita": string; "opcion-sin-fuente": string } };
       aprobar: {
         titulo: string;

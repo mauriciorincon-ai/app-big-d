@@ -27,11 +27,11 @@ describe("el plan real, dibujado", () => {
   for (const idioma of ["es", "en"] as const) {
     const v = vistaDecisiones(real, casoReal, planReal, idioma);
 
-    it(`${idioma} · siete tarjetas, tres de borde grueso, cero líneas sobre una tarjeta ajena y accesible por teclado`, () => {
-      expect(veces(v.ondas.svg, /data-decision="/g)).toBe(7);
-      expect(veces(v.ondas.svg, /class="db-elem db-nodo dd-dec dd-una_via/g)).toBe(3);
+    it(`${idioma} · una tarjeta por decisión, las de una vía con borde grueso, cero líneas sobre una tarjeta ajena y accesible por teclado`, () => {
+      expect(veces(v.ondas.svg, /data-decision="/g)).toBe(planReal.decisiones.length);
+      expect(veces(v.ondas.svg, /class="db-elem db-nodo dd-dec dd-una_via/g)).toBe(planReal.decisiones.filter((d) => d.reversibilidad === "una_via").length);
       expect(v.ondas.cruces).toBe(0);
-      expect(veces(v.ondas.svg, /tabindex="0"/g)).toBe(7);
+      expect(veces(v.ondas.svg, /tabindex="0"/g)).toBe(planReal.decisiones.length);
       expect(v.ondas.svg).toMatch(/role="graphics-document document" aria-label="/);
       expect(v.ondas.svg).not.toMatch(/style=/); // sin estilos en línea (CSP)
       expect(v.ondas.svg).toContain(`lang="${idioma}"`);
@@ -54,7 +54,7 @@ describe("el plan real, dibujado", () => {
       expect(v.fichas["dec-catalogo"]).toMatch(idioma === "es" ? /Todavía sin comparación/ : /No comparison yet/);
     });
     it(`${idioma} · la lectura en texto lista cada decisión con su onda`, () => {
-      expect(v.lectura.flatMap((f) => f.items)).toHaveLength(7);
+      expect(v.lectura.flatMap((f) => f.items)).toHaveLength(planReal.decisiones.length);
       expect(v.lectura[0]!.etiqueta).toBe(idioma === "es" ? "Onda 1" : "Wave 1");
     });
     it(`${idioma} · las fichas escapan el HTML: ningún texto del plan inyecta marcado`, () => {

@@ -383,6 +383,7 @@ export const en: Textos = {
         prioridad: "priority {p}",
         sinMitigacion: "no mitigation",
       },
+      origenes: { "propuesto-por-agente": "proposed by the agent", "declarado-por-usuario": "declared by whoever approved the profile" },
       ciclo: {
         titulo: "Dependency cycle",
         alerta: "Cycle detected: cannot be ordered",
@@ -401,6 +402,8 @@ export const en: Textos = {
         igual: "no category change",
         orden: "Order: action priority → severity → RPN (RPN only orders within a priority).",
         desliza: "Slide the table sideways to see every column.",
+        causa: "Cause: {texto}",
+        origenDe: "Where the numbers come from: {origen}.",
         tabla: {
           titulo: "Action priority table (AIAG-VDA 2019)",
           nota: "Read by rows: severity and occurrence give the row; detection gives the column. Severity first. The table ships as data inside the house package; the RPN (S × O × D) only orders and never decides the action.",
@@ -426,6 +429,7 @@ export const en: Textos = {
         costo: "cost {c}",
         costos: { gratis: "free", bajo: "low", medio: "medium" },
         sostiene: "Supports",
+        origenDe: "Origin",
         alertaCritico: "Critical untested assumption: it appears in the plan alerts.",
         refutado: "Refuted: review the decision it supports.",
         vencido: "It expired against the evaluation date and is still untested.",

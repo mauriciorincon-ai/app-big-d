@@ -29,12 +29,16 @@ const fallas = [];
 if (!origen) fallas.push("CONTRATO.lock sin `origen:` (el commit de la planeadora del que sale la copia)");
 const conPlaneadora = origen !== null && hayCommit(origen);
 const copia = huellasDeLaCopia(o);
+// S5-B-4: cuántos archivos se compararon de verdad contra cada fuente (no todos se comparan con todas).
+let conLaMaqueta = 0;
+let conElOrigen = 0;
 
 for (const [ruta, h] of copia) {
   if (bloqueadas.get(ruta) !== h) fallas.push(`${ruta}: la copia no coincide con CONTRATO.lock`);
   // Lo congelado (implementación copiada de otra app) solo se compara con el lock; lo de la maqueta, con la maqueta.
   if (o.deLaMaqueta.some((e) => ruta === e || ruta.startsWith(`${e}/`))) {
     const maqueta = join(FUENTES_MAQUETA, ruta.replace(/^metricas\//, ""));
+    conLaMaqueta++;
     if (!existsSync(maqueta)) fallas.push(`${ruta}: no existe en la maqueta (${maqueta})`);
     else if (sha256(maqueta) !== h) fallas.push(`${ruta}: DERIVA contra la maqueta`);
   }
@@ -44,6 +48,7 @@ if (conPlaneadora) {
   const enCommit = archivosEnCommit(origen, o);
   const enCopia = new Set(copia.map(([r]) => r));
   for (const r of enCommit) {
+    if (enCopia.has(r)) conElOrigen++;
     if (!enCopia.has(r)) fallas.push(`${r}: está en ${origen.slice(0, 7)} y falta en la copia`);
     else if (sha256DeBytes(bytesEnCommit(origen, r, o)) !== copia.find(([x]) => x === r)[1]) fallas.push(`${r}: DERIVA contra ${origen.slice(0, 7)}`);
   }
@@ -60,6 +65,7 @@ if (fallas.length) {
   console.error(`✗ verificar-contrato (v${version}): ${fallas.length} problema(s)\n  - ${fallas.join("\n  - ")}`);
   process.exit(1);
 }
-console.log(`✓ verificar-contrato: v${version}, ${bloqueadas.size} archivos idénticos a su origen${conPlaneadora ? ` (${origen.slice(0, 7)})` : ""}`);
+const contraOrigen = conPlaneadora ? `${conElOrigen} contra el origen ${origen.slice(0, 7)}` : "0 contra el origen (sin la planeadora)";
+console.log(`✓ verificar-contrato: v${version}, ${bloqueadas.size} archivos iguales a su lock · ${contraOrigen} · ${conLaMaqueta} contra la maqueta`);
 if (enHead?.cambiados.length) console.log(`  deriva esperada frente al HEAD de la planeadora (${enHead.head.slice(0, 7)}): ${enHead.cambiados.length} archivo(s) de ${OBJETO} cambiaron después del origen; se renuevan en el sprint que adopte esa versión`);
 else if (enHead) console.log(`  el HEAD de la planeadora (${enHead.head.slice(0, 7)}) no cambió ${OBJETO} desde el origen`);

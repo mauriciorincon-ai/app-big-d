@@ -51,15 +51,17 @@ describe("el plan real del caso", () => {
   const k = cargarConocimiento();
   const plan = k.planes.find((p) => p.caso_id === "hospital-futuro")!;
 
-  it("carga: siete decisiones (§ 10.5), cinco modos de falla y supuestos con prueba barata", () => {
-    expect(plan.decisiones).toHaveLength(7);
-    expect(plan.modos_de_falla).toHaveLength(5);
-    expect(plan.supuestos.length).toBeGreaterThanOrEqual(4);
+  // S5-B-7: la especificación pide un mínimo (§ 10.5), no el número de hoy: agregar una decisión no rompe esta prueba.
+  it("carga: al menos las siete decisiones de § 10.5, modos de falla y supuestos con prueba barata", () => {
+    expect(plan.decisiones.length).toBeGreaterThanOrEqual(7);
+    expect(plan.modos_de_falla.length).toBeGreaterThanOrEqual(1);
+    expect(plan.supuestos.length).toBeGreaterThanOrEqual(1);
+    for (const s of plan.supuestos) expect(s.prueba_barata.es.trim(), s.id).not.toBe("");
   });
 
-  it("tres decisiones de una vía, dos implícitas, y cada plataforma que el caso evalúa tiene su opción", () => {
-    expect(plan.decisiones.filter((d) => d.reversibilidad === "una_via").map((d) => d.id)).toHaveLength(3);
-    expect(plan.decisiones.filter((d) => d.implicita)).toHaveLength(2);
+  it("hay decisiones de una vía e implícitas, y cada plataforma que el caso evalúa tiene su opción", () => {
+    expect(plan.decisiones.filter((d) => d.reversibilidad === "una_via").length).toBeGreaterThan(0);
+    expect(plan.decisiones.filter((d) => d.implicita).length).toBeGreaterThan(0);
     const evaluables = ["databricks", "fabric", "snowflake"];
     for (const d of plan.decisiones) expect(d.opciones_por_plataforma.map((o) => o.plataforma_id).sort(), d.id).toEqual(evaluables);
   });

@@ -248,7 +248,7 @@ a ninguna ni pide cuentas.
 - **Cómo se usa:**
   1. En el caso, abre «Decisiones y riesgos».
   2. Lee el diagrama: cada decisión es una tarjeta. Las de borde grueso son de una sola vía y se deciden primero; las de borde discontinuo son costosas de revertir; las de borde fino se pueden revertir. Toca una tarjeta para abrir su ficha.
-  3. En la ficha, cada plataforma tiene su opción y la evidencia que la sostiene. «Opción recomendada» aparece cuando el perfil del caso está aprobado; mientras no, la pantalla dice por qué no hay recomendación.
+  3. En la ficha, cada plataforma tiene su opción y la evidencia que la sostiene. Bajo «Opción recomendada» (el encabezado siempre está) aparece la plataforma que se planifica —o todas las empatadas, si hay empate técnico— cuando el perfil del caso está aprobado y la comparación puntúa; mientras no, la pantalla dice por qué no hay recomendación.
   4. En «Riesgos», la tabla ordena por prioridad de acción (alta, media, baja) y después por severidad. Una acción alta sin mitigación queda marcada y bloquea la aprobación del plan.
   5. Si hay un ciclo de dependencias, la pantalla lo muestra con su camino («a → b → a») en lugar de esconderlo. Para resolverlo hay que quitar una de sus flechas.
   6. Para aprobar el plan, la pantalla arma un comando solo si no hay bloqueos. Cópialo y córrelo tú, en la carpeta del proyecto. Solo una persona lo ejecuta: la app no aprueba nada.
@@ -529,7 +529,7 @@ manages and controls; it never operates a platform**: it connects to none and as
 - **How to use it:**
   1. In the case, open **“Decisions and risks”**.
   2. Read the diagram: each decision is a card. Thick border means one-way and decided first; dashed border means costly to reverse; thin border means reversible. Tap a card to open its sheet.
-  3. On the sheet, each platform has its option and the evidence behind it. **“Recommended option”** appears when the case profile is approved; until then the page says why there is no recommendation.
+  3. On the sheet, each platform has its option and the evidence behind it. Under **“Recommended option”** (the heading is always there) the page lists the platform that gets planned — or every tied platform, on a technical tie — once the case profile is approved and the comparison scores; until then the page says why there is no recommendation.
   4. Under **Risks**, the table sorts by action priority (high, medium, low) and then by severity. A high action without a mitigation is marked and blocks approving the plan.
   5. If there is a dependency cycle, the page shows it with its path (“a → b → a”) instead of hiding it. To resolve it, remove one of its arrows.
   6. To approve the plan, the page builds a command only when there are no blockers. Copy it and run it yourself, in the project folder. Only a person runs it: the app approves nothing.

@@ -383,6 +383,7 @@ export const es: Textos = {
         prioridad: "prioridad {p}",
         sinMitigacion: "sin mitigación",
       },
+      origenes: { "propuesto-por-agente": "propuesto por el agente", "declarado-por-usuario": "declarado por quien aprobó el perfil" },
       ciclo: {
         titulo: "Ciclo de dependencias",
         alerta: "Ciclo detectado: no se puede ordenar",
@@ -401,6 +402,8 @@ export const es: Textos = {
         igual: "sin cambio de categoría",
         orden: "Orden: prioridad de acción → severidad → RPN (el RPN solo ordena dentro de una prioridad).",
         desliza: "Desliza la tabla de lado para ver todas las columnas.",
+        causa: "Causa: {texto}",
+        origenDe: "Origen de los números: {origen}.",
         tabla: {
           titulo: "Tabla de prioridad de acción (AIAG-VDA 2019)",
           nota: "Se lee por filas: la severidad y la ocurrencia dicen la fila; la detección, la columna. Severidad primero. La tabla viaja como dato dentro del paquete de la casa; el RPN (S × O × D) solo ordena y jamás decide la acción.",
@@ -426,6 +429,7 @@ export const es: Textos = {
         costo: "costo {c}",
         costos: { gratis: "gratis", bajo: "bajo", medio: "medio" },
         sostiene: "Sostiene",
+        origenDe: "Origen",
         alertaCritico: "Supuesto crítico sin probar: aparece en las alertas del plan.",
         refutado: "Refutado: revisa la decisión que sostiene.",
         vencido: "Venció contra la fecha de evaluación y sigue sin probar.",

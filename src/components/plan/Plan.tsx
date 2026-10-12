@@ -176,9 +176,13 @@ export function TablaRiesgos({
                   <span className="cod">{r.id}</span> <b>{m.modo[idioma]}</b>
                   <br />
                   <small>{m.efecto[idioma]}</small>
+                  <br />
+                  <small>{plantilla(t.riesgos.causa, { texto: m.causa[idioma] })}</small>
                   <details className="razon">
                     <summary>{t.riesgos.razon}</summary>
                     <small>{m.razon[idioma]}</small>
+                    <br />
+                    <small>{plantilla(t.riesgos.origenDe, { origen: t.origenes[m.origen] })}</small>
                   </details>
                 </td>
                 <td>{nombre[r.decision_id] ?? r.decision_id}</td>
@@ -369,6 +373,10 @@ export function TarjetasSupuestos({
             <div>
               <dt>{t.supuestos.sostiene}</dt>
               <dd>{q.decisiones.map((d) => nombre[d] ?? d).join(" · ")}</dd>
+            </div>
+            <div>
+              <dt>{t.supuestos.origenDe}</dt>
+              <dd>{t.origenes[q.origen]}</dd>
             </div>
           </dl>
           {q.estado === "sin_probar" && q.criticidad === "alta" && (

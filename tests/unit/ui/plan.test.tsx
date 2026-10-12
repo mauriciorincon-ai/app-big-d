@@ -23,6 +23,9 @@ const t = T.caso.decisiones;
 const real = cargarConocimiento();
 const planReal = real.planes[0]!;
 const vReal = vistaDecisiones(real, real.casos.find((c) => c.id === planReal.caso_id)!, planReal, "es");
+// S5-B-7: los conteos salen del dato del plan, no de un número escrito a mano.
+const CRITICOS_SIN_PROBAR = planReal.supuestos.filter((s) => s.estado === "sin_probar" && s.criticidad === "alta").length;
+const IMPLICITAS = planReal.decisiones.filter((d) => d.implicita && d.estado !== "decidida").length;
 
 const dirSembrada = mkdtempSync(join(tmpdir(), "bigd-plan-ui-"));
 armarBaseFuturo(dirSembrada);
@@ -36,10 +39,10 @@ describe("la tabla de riesgos", () => {
   it("va en el orden prioridad → severidad → RPN, con mitigación, residual y la razón de cada número", () => {
     render(<TablaRiesgos riesgos={vReal.resultado.riesgos} plan={planReal} nombre={vReal.nombre} idioma="es" t={t} />);
     const filas = screen.getAllByRole("row").slice(1);
-    expect(filas).toHaveLength(5);
+    expect(filas).toHaveLength(planReal.modos_de_falla.length);
     expect(within(filas[0]!).getByText("rie-fuga-datos-clinicos")).toBeTruthy();
     expect(within(filas[0]!).getAllByText("alta").length).toBeGreaterThan(0);
-    expect(screen.getAllByText(t.riesgos.razon)).toHaveLength(5);
+    expect(screen.getAllByText(t.riesgos.razon)).toHaveLength(planReal.modos_de_falla.length);
     // Control legal: la efectiva sigue alta aunque la tabla del residual dé baja, y lo dice.
     expect(screen.getAllByText(/control legal: sigue alta aunque la tabla dé baja/).length).toBe(1);
   });
@@ -58,6 +61,21 @@ describe("la tabla de prioridad de acción se dibuja desde el dato del paquete",
     expect(container.querySelectorAll("tbody td")).toHaveLength(100);
     expect(container.querySelectorAll(".prio-alta").length).toBeGreaterThan(0);
     for (const td of container.querySelectorAll("tbody td")) expect(td.textContent).toMatch(/alta|media|baja/);
+  });
+});
+
+describe("S5-B-5: la causa y el origen de cada riesgo y supuesto se ven en pantalla (trazabilidad, regla 9)", () => {
+  it("cada riesgo trae su causa y de dónde salen sus números", () => {
+    const { container } = render(<TablaRiesgos riesgos={vReal.resultado.riesgos} plan={planReal} nombre={vReal.nombre} idioma="es" t={t} />);
+    for (const m of planReal.modos_de_falla) {
+      expect(container.textContent, m.id).toContain(plantilla(t.riesgos.causa, { texto: m.causa.es }));
+      expect(container.textContent, m.id).toContain(plantilla(t.riesgos.origenDe, { origen: T.caso.decisiones.origenes[m.origen] }));
+    }
+  });
+  it("cada supuesto dice quién lo propuso", () => {
+    const { container } = render(<TarjetasSupuestos supuestos={planReal.supuestos} nombre={vReal.nombre} alertas={vReal.resultado.alertas} idioma="es" t={t} />);
+    expect(screen.getAllByText(t.supuestos.origenDe)).toHaveLength(planReal.supuestos.length);
+    for (const q of planReal.supuestos) expect(container.querySelector(`#s-${q.id}`)!.textContent).toContain(t.origenes[q.origen]);
   });
 });
 
@@ -81,7 +99,7 @@ describe("supuestos y alertas", () => {
   it("cada supuesto trae su prueba barata como tarea del equipo, con responsable, costo y la decisión que sostiene", () => {
     render(<TarjetasSupuestos supuestos={planReal.supuestos} nombre={vReal.nombre} alertas={vReal.resultado.alertas} idioma="es" t={t} />);
     expect(screen.getAllByText(t.supuestos.pruebaBarata)).toHaveLength(planReal.supuestos.length);
-    expect(screen.getAllByText(t.supuestos.alertaCritico)).toHaveLength(4);
+    expect(screen.getAllByText(t.supuestos.alertaCritico)).toHaveLength(CRITICOS_SIN_PROBAR);
     expect(screen.getAllByText(t.supuestos.estados.sin_probar).length).toBe(planReal.supuestos.length);
   });
   it("un supuesto que venció contra la fecha de evaluación lo dice", () => {
@@ -90,9 +108,9 @@ describe("supuestos y alertas", () => {
   });
   it("las alertas nombran lo que señalan, no solo su id", () => {
     render(<Alertas alertas={vReal.resultado.alertas} nombre={vReal.nombre} nombrePlataforma={vReal.nombrePlataforma} supuestos={planReal.supuestos} idioma="es" t={t} />);
-    expect(screen.getAllByText(t.alertas.tipos["supuesto-critico-sin-probar"]).length).toBe(4);
+    expect(screen.getAllByText(t.alertas.tipos["supuesto-critico-sin-probar"]).length).toBe(CRITICOS_SIN_PROBAR);
     expect(screen.getByText(/El directorio de identidad del grupo se puede conectar/)).toBeTruthy();
-    expect(screen.getAllByText(t.alertas.tipos["decision-implicita"]).length).toBe(2);
+    expect(screen.getAllByText(t.alertas.tipos["decision-implicita"]).length).toBe(IMPLICITAS);
   });
   it("sin alertas no pinta nada", () => {
     const { container } = render(<Alertas alertas={[]} nombre={{}} nombrePlataforma={{}} supuestos={[]} idioma="es" t={t} />);
