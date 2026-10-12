@@ -258,6 +258,22 @@ a ninguna ni pide cuentas.
   - Una opción sin fuente aparece marcada con «Sin fuente en la base» y la pantalla no afirma nada de ella; no se inventa un respaldo.
   - Un plan aprobado que alguien edita a mano se rechaza al cargar.
 
+#### 14. El informe del caso · desde el Sprint 6
+
+- **Qué hace:** reúne el caso entero en una página: la hoja de ruta por fases, con cada ítem, su origen y el criterio para darlo por cumplido; la lista de alistamiento por categoría; y el informe de catorce secciones en español e inglés, con las mismas cifras en los dos. Se puede imprimir: el papel sale sin menús, pestañas ni botones.
+- **Cómo se usa:**
+  1. En el caso, abre la pestaña «Hoja de ruta e informe».
+  2. Si el perfil o el plan siguen en borrador, una banda arriba dice por qué. Con el perfil en borrador la comparación no puntúa, y la sección 3 del informe lo dice.
+  3. La hoja de ruta reparte el trabajo en fases. La fase 0 son las pruebas baratas de los supuestos que sostienen una decisión de una sola vía; después, una fase por onda de decisiones. Cada ítem dice «viene de» una decisión, una mitigación o un supuesto: toca ese enlace para ir a su explicación.
+  4. Un ciclo de dependencias deja a las decisiones sin fase, con su camino, hasta que se resuelva.
+  5. El resumen (sección 1) cuenta las decisiones de una sola vía y los riesgos de prioridad alta, con cifras y en pocas palabras.
+  6. Para imprimir, toca «Imprimir» y elige la impresora o «Guardar como PDF» en el diálogo del navegador.
+- **Limitaciones:**
+  - El informe no decide ni recomienda por sí solo. Su texto sale de plantillas revisadas y de los datos aprobados, nunca de un modelo de lenguaje.
+  - La hoja de ruta no trae semanas ni fechas: el plan no las tiene y la app no las inventa.
+  - El relato de fracaso generado es una plantilla y va marcado como generado. Un relato humano aparece solo si alguien lo escribe en el archivo del caso.
+  - La prueba barata de un supuesto sigue siendo una tarea del equipo: el informe la registra, pero no la ejecuta.
+
 ### Preguntas frecuentes
 
 - **¿Big-D recomienda una plataforma?** No decide por ti. Compara con tus pesos y tu evidencia, muestra la sensibilidad del resultado a esos pesos y deja la decisión a quien pregunta. Mientras el perfil del caso de ejemplo esté en borrador, su comparación no se calcula: hace falta que una persona apruebe el perfil (sección 10).
@@ -276,7 +292,8 @@ a ninguna ni pide cuentas.
 | S2 (2026-10-04) | 5 al día: Databricks, Fabric y Snowflake con mapa · 6 la versión anterior se guarda al aprobar · 7 Lado a lado · 8 Versiones del mapa                                              |
 | S3 (2026-10-10) | 9 La base de conocimiento · 11 La comparación (no puntúa mientras el perfil esté en borrador)                                                                                      |
 | S4 (2026-10-11) | 10 El perfil del caso (se aprueba desde su pantalla) · 12 El instrumento (validación antes de publicar)                                                                            |
-| S5 (2026-10-11) | 13 Las decisiones del caso: ondas, fichas con evidencia, riesgos por prioridad y supuestos (se aprueba el plan desde su pantalla) |
+| S5 (2026-10-11) | 13 Las decisiones del caso: ondas, fichas con evidencia, riesgos por prioridad y supuestos (se aprueba el plan desde su pantalla)                                                  |
+| S6 (2026-10-11) | 14 El informe del caso: hoja de ruta por fases con su origen, alistamiento, informe de catorce secciones en dos idiomas e impresión                                                |
 
 ---
 
@@ -522,6 +539,22 @@ manages and controls; it never operates a platform**: it connects to none and as
   - An option with no source is marked “No source in the base”, and the page claims nothing about it; no backing is invented for it.
   - An approved plan that someone edits by hand is rejected when it loads.
 
+#### 14. The case report · since Sprint 6
+
+- **What it does:** gathers the whole case on one page: the roadmap by phases, with each item, its origin and the criterion for calling it done; the readiness checklist by category; and the report of fourteen sections in Spanish and English, with the same figures in both. It can be printed: the paper comes out without menus, tabs or buttons.
+- **How to use it:**
+  1. In the case, open the **“Roadmap and report”** tab.
+  2. If the profile or the plan is still a draft, a band at the top says why. With a draft profile the comparison does not score, and section 3 of the report says so.
+  3. The roadmap spreads the work over phases. Phase 0 holds the cheap tests of the assumptions that back a one-way decision; after that, one phase per wave of decisions. Each item says “comes from” a decision, a mitigation or an assumption: follow that link to see where it is explained.
+  4. A dependency cycle leaves the decisions without a phase, with its path, until it is resolved.
+  5. The summary (section 1) counts the one-way decisions and the high-priority risks, with figures and in few words.
+  6. To print, tap **“Print”** and choose the printer or “Save as PDF” in the browser's dialog.
+- **Limitations:**
+  - The report does not decide or recommend anything on its own. Its text comes from reviewed templates and approved data, never from a language model.
+  - The roadmap carries no weeks or dates: the plan does not have them and the app does not invent them.
+  - The generated failure story is a template and is marked as generated. A human account appears only if someone writes it in the case file.
+  - An assumption's cheap test is still a task for the case team: the report records it, but does not run it.
+
 ### Frequently asked questions
 
 - **Does Big-D recommend a platform?** No, it does not decide for you. It compares with your weights and your evidence, shows how sensitive the result is to those weights, and leaves the decision to whoever asks. While the example case's profile is a draft, its comparison is not calculated: a person has to approve the profile (section 10).
@@ -539,4 +572,5 @@ manages and controls; it never operates a platform**: it connects to none and as
 | S2 (2026-10-04) | 5 updated: Databricks, Fabric and Snowflake have maps · 6 the previous version is kept on approval · 7 Side by side · 8 Map versions                       |
 | S3 (2026-10-10) | 9 The knowledge base · 11 The comparison (does not score while the profile is a draft)                                                                     |
 | S4 (2026-10-11) | 10 The case profile (approved from its page) · 12 The instrument (validation before publishing)                                                            |
-| S5 (2026-10-11) | 13 The case's decisions: waves, sheets with evidence, risks by priority and assumptions (the plan is approved from its page) |
+| S5 (2026-10-11) | 13 The case's decisions: waves, sheets with evidence, risks by priority and assumptions (the plan is approved from its page)                               |
+| S6 (2026-10-11) | 14 The case report: the roadmap by phases with its origin, the readiness checklist, a fourteen-section report in two languages, and printing               |

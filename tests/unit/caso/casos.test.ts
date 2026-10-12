@@ -5,7 +5,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterAll, describe, expect, it } from "vitest";
 import { conocimiento, congeladaDe, evaluacionDe, idsDeCasos } from "@/lib/caso/casos";
-import { pestanasCaso, pestanasConocimiento, rutaBase, rutaCaso, rutaComparacion, rutaDecisiones } from "@/lib/caso/rutas";
+import { pestanasCaso, pestanasConocimiento, rutaBase, rutaCaso, rutaComparacion, rutaDecisiones, rutaInforme } from "@/lib/caso/rutas";
 import { cargarConocimiento } from "@/lib/datos/cargar-conocimiento";
 import { textos } from "@/lib/i18n";
 import { armarBaseFuturo } from "../lib/base-futuro";
@@ -68,9 +68,9 @@ describe("el caso de la base sembrada (aprobado)", () => {
 describe("rutas y pestañas de las secciones Conocimiento y Caso", () => {
   const t = textos("es").secciones;
   it("las rutas", () => {
-    expect([rutaBase("es"), rutaCaso("en", "x"), rutaComparacion("es", "x"), rutaDecisiones("en", "x")]).toEqual(["/es/base", "/en/casos/x", "/es/casos/x/comparacion", "/en/casos/x/decisiones"]);
+    expect([rutaBase("es"), rutaCaso("en", "x"), rutaComparacion("es", "x"), rutaDecisiones("en", "x"), rutaInforme("es", "x")]).toEqual(["/es/base", "/en/casos/x", "/es/casos/x/comparacion", "/en/casos/x/decisiones", "/es/casos/x/informe"]);
   });
-  it("05–06 con la actual marcada; 07–09 con ruta si el caso tiene plan, y 09 pendiente si no; 10 siempre pendiente", () => {
+  it("05–06 con la actual marcada; 07–08 siempre con ruta; 09 y 10 con ruta si el caso tiene plan, y pendientes si no", () => {
     expect(pestanasConocimiento(t, "es", "/es/investigador/fabric", "base").map((p) => [p.n, p.ruta, !!p.actual])).toEqual([
       ["05", "/es/investigador/fabric", false],
       ["06", "/es/base", true],
@@ -79,15 +79,21 @@ describe("rutas y pestañas de las secciones Conocimiento y Caso", () => {
       ["07", "/es/casos/x", false],
       ["08", "/es/casos/x/comparacion", true],
       ["09", "/es/casos/x/decisiones", false],
-      ["10", null, false],
+      ["10", "/es/casos/x/informe", false],
     ]);
     expect(pestanasCaso(t, "en", "x", "decisiones").map((p) => [p.n, p.ruta ?? null, !!p.actual])).toEqual([
       ["07", "/en/casos/x", false],
       ["08", "/en/casos/x/comparacion", false],
       ["09", "/en/casos/x/decisiones", true],
-      ["10", null, false],
+      ["10", "/en/casos/x/informe", false],
     ]);
-    // Un caso sin plan no tiene la pantalla 09: la pestaña queda pendiente, sin enlace.
+    expect(pestanasCaso(t, "es", "x", "informe").map((p) => [p.n, p.ruta ?? null, !!p.actual])).toEqual([
+      ["07", "/es/casos/x", false],
+      ["08", "/es/casos/x/comparacion", false],
+      ["09", "/es/casos/x/decisiones", false],
+      ["10", "/es/casos/x/informe", true],
+    ]);
+    // Un caso sin plan no tiene las pantallas 09 ni 10: las pestañas quedan pendientes, sin enlace.
     expect(pestanasCaso(t, "es", "x", "perfil", false).map((p) => [p.n, p.ruta ?? null])).toEqual([
       ["07", "/es/casos/x"],
       ["08", "/es/casos/x/comparacion"],

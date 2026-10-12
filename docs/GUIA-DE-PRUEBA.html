@@ -8,7 +8,7 @@
   GUÍA DE PRUEBA VIVA Y ACUMULATIVA de Big-D (regla 11 del CLAUDE.md; plantilla del kit v1.6.0; referencia
   app-habla/docs/GUIA-DE-PRUEBA.html). Autocontenida: cero CDNs, cero fetch; se abre con doble clic.
   Bola de nieve: cada sprint hereda ENTERAS las pruebas del anterior; lo «Nuevo · S1» pasa a «S1» (regresión)
-  en el S2 salvo que el S2 lo toque («Mejorado en S2»). Prefijo de localStorage versionado: «bigd-s5-» (cambia
+  en el S2 salvo que el S2 lo toque («Mejorado en S2»). Prefijo de localStorage versionado: «bigd-s6-» (cambia
   en cada versión). ⭐ = lo que ninguna automatización verifica; ⭐⭐ = el subconjunto que solo un humano juzga,
   caminable en el orden del documento. Sin URL de despliegue escrita (regla 17): el campo se llena en uso.
 -->
@@ -107,11 +107,11 @@
 <body>
 <div class="pagina">
   <header>
-    <p class="eyebrow">Big-D · Guía de prueba viva y acumulativa · Sprint 5 · 2026-10-11</p>
+    <p class="eyebrow">Big-D · Guía de prueba viva y acumulativa · Sprint 6 · 2026-10-11</p>
     <h1>Guía de prueba</h1>
     <p class="suave">Todas las pruebas vigentes de la app: el atlas (visión general, componentes, recorrido de un
       dato), el lado a lado, las versiones de un mapa, el investigador, la base, el perfil del caso, la comparación y
-      el instrumento. Cada prueba dice su origen: «Nuevo · S4» o «Nuevo · S3» (hay que mirarla), o «S2» / «S1»
+      el instrumento, las decisiones del caso y el informe. Cada prueba dice su origen: «Nuevo · S4» o «Nuevo · S3» (hay que mirarla), o «S2» / «S1»
       (heredada sin cambios: es la regresión). Las casillas se
       guardan solas en este navegador.</p>
     <p class="chica"><strong>Gate corto ⭐⭐: 8 paradas · ~25 min — es el que el cierre del ciclo exige.</strong> Solo
@@ -435,6 +435,22 @@
     <div class="reportame"><p><strong>Repórtame sí o sí:</strong> una ficha con una evidencia que no está en la base, o un plan que se puede aprobar con una acción alta sin mitigación.</p></div>
   </section>
 
+  <section class="bloque">
+    <div class="bloque-cabeza"><span class="letra">P</span><h2>El informe del caso</h2></div>
+    <p class="meta-bloque chica suave"><strong>Empieza en:</strong> <code>/es/casos/hospital-futuro/informe</code> · ~8 min · la hoja de ruta, el alistamiento y el informe de catorce secciones; con el perfil o el plan en borrador, el informe lo dice y no aprueba nada</p>
+    <ul class="pasos">
+      <li data-origen="nuevo"><input type="checkbox" id="p1"><label for="p1">Entra desde la barra, <strong>Caso</strong>, y abre <strong>Hoja de ruta e informe</strong>. Esperado: una banda dice que el perfil y el plan están <strong>en borrador</strong> y por qué; la hoja de ruta tiene cinco fases (de la 0 a la 4) y 19 ítems, y cada ítem dice su criterio para darse por cumplido.
+        <span class="origen origen-nuevo">Nuevo · S6</span></label></li>
+      <li data-origen="nuevo"><input type="checkbox" id="p2"><label for="p2">Toca el enlace «viene de» de un ítem. Esperado: la página salta a la decisión, la mitigación o el supuesto de donde sale, con su explicación. Ningún ítem queda sin ese enlace.
+        <span class="origen origen-nuevo">Nuevo · S6</span></label></li>
+      <li data-origen="nuevo"><input type="checkbox" id="p3"><label for="p3">Baja al informe y lee la sección <strong>Resumen</strong>. Esperado: un párrafo corto con cifras (decisiones de una sola vía, riesgos de prioridad alta) y, debajo, esas decisiones y esos riesgos con su nombre.
+        <span class="origen origen-nuevo">Nuevo · S6</span></label></li>
+      <li data-origen="nuevo"><input type="checkbox" id="p4"><label for="p4">En un teléfono (unos 380 px), abre la página y toca <strong>Imprimir</strong>. Esperado: nada se desliza de lado; en la vista de impresión solo queda el informe, sin menús, pestañas ni botones.
+        <span class="origen origen-nuevo">Nuevo · S6</span></label></li>
+    </ul>
+    <div class="reportame"><p><strong>Repórtame sí o sí:</strong> un ítem sin «viene de», o un resumen que se sale del presupuesto de lectura.</p></div>
+  </section>
+
   <footer>
     <p class="chica suave">Guía <strong>viva y acumulativa</strong>: contiene todas las pruebas vigentes de la app
       con su origen visible; una prueba solo se elimina cuando su feature dejó de existir, y queda declarado abajo.
@@ -442,6 +458,7 @@
     <details class="chica">
       <summary>Historial de la guía</summary>
       <ul>
+        <li><strong>S6 · 2026-10-11:</strong> 70 pruebas en 16 bloques (A–P). Las 66 del S5 siguen, con sus chips. Prefijo de las casillas «bigd-s6-»: las marcas del S5 no se heredan. Nuevas: el bloque P, el informe del caso (la hoja de ruta, el alistamiento y el informe de catorce secciones); cuatro pruebas, sin ⭐ porque el informe se juzga con el perfil y el plan aprobados. La introducción ahora nombra también las decisiones del caso (bloque O), que faltaban. Ninguna eliminada.</li>
         <li><strong>S5 · 2026-10-11:</strong> 66 pruebas en 15 bloques (A–O). Las 62 del S4 siguen, con sus chips: S5 no reclasifica las «Nuevo» de S3 y S4 (eso va al lote del hito). Nuevas: el bloque O, el plan del caso (decisiones, riesgos y supuestos); cuatro pruebas, sin ⭐ porque el gate humano del plan se hace con el dato aprobado. Ninguna eliminada.</li>
         <li><strong>S4 · 2026-10-11:</strong> 62 pruebas en 14 bloques (A–N). Las 52 del S2 siguen: las 16 que el S2
           tenía como «Nuevo» o «Mejorado» pasan a heredadas, «S2» (regresión), porque el S4 no cambió su superficie.
@@ -486,7 +503,7 @@
   (function () {
     // NS VERSIONADO POR SPRINT (regla dura): al publicar la guía de un sprint nuevo se cambia
     // s1 → s2 en el sprint siguiente — así una regresión sin correr no aparece marcada por el sprint anterior.
-    var NS = "bigd-s5-";
+    var NS = "bigd-s6-";
     var casillas = Array.prototype.slice.call(document.querySelectorAll('input[type="checkbox"]'));
     var barra = document.getElementById("barra-avance");
     var contador = document.getElementById("contador");

@@ -151,6 +151,7 @@ export function TablaRiesgos({
             return (
               <tr
                 key={r.id}
+                id={`r-${r.id}`}
                 className={r.bloqueante ? "prioridad-alta-sin" : undefined}
               >
                 <td>
@@ -304,7 +305,7 @@ export function TarjetasSupuestos({
   return (
     <div className="kit-grid">
       {supuestos.map((q) => (
-        <article key={q.id} className={`tarjeta supuesto supuesto-${q.estado}`}>
+        <article key={q.id} id={`s-${q.id}`} className={`tarjeta supuesto supuesto-${q.estado}`}>
           <header className="kit-fila">
             <span className="cod mono">{q.id}</span>
             <span

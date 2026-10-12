@@ -5,7 +5,7 @@ arrepentirte, y entiende todas con el mismo mapa. Big-D es un planeador abierto 
 atlas que dibuja cada plataforma con una sola gramática visual y un núcleo determinista que compara,
 mide la robustez y convierte la comparación en decisiones, riesgos y un plan. Planea, gestiona y
 controla; jamás opera una plataforma. La única IA es una skill de Claude Code que propone
-conocimiento con citas comprobadas; una persona lo aprueba. **Hoy:** el atlas, el investigador, la base de conocimiento, el perfil del caso con su comparación, el plan del caso (decisiones por ondas, riesgos por prioridad de acción y supuestos) y el instrumento que valida la herramienta. La comparación se calcula cuando una persona aprueba el perfil.
+conocimiento con citas comprobadas; una persona lo aprueba. **Hoy:** el atlas, el investigador, la base de conocimiento, el perfil del caso con su comparación, el plan del caso (decisiones por ondas, riesgos por prioridad de acción y supuestos), el informe del caso (hoja de ruta por fases con su origen, alistamiento y un informe de catorce secciones en dos idiomas, imprimible) y el instrumento que valida la herramienta. La comparación se calcula cuando una persona aprueba el perfil.
 
 **EN** · Choose your data platform with dated evidence, visible robustness and a plan you won't
 regret, and understand every platform with the same map. Big-D is an open, reproducible planner: an
