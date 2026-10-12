@@ -143,6 +143,7 @@ export function EditorPerfil({
 
   return (
     <section
+      id="editor-perfil"
       className="seccion editor-perfil"
       aria-labelledby={`${uid}-t`}
       data-editor-perfil

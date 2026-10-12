@@ -38,6 +38,10 @@ demo mutates the real detector instead (`scripts/demo-rojo.sh` weakens the weigh
 `src/lib/datos/conocimiento.ts`), which proves more and keeps test-only code out of the product. Result of that run
 (2026-10-11): red naming "detected 6 of 7", no `out/`; green after restoring.
 
+The repeatable version (S7, S4-M2) is `tests/unit/gates-en-rojo.test.ts`: it breaks a **copy** of the base (the case weights no longer
+sum to 100 points), runs `scripts/instrumento/validar.mjs` against it and demands exit ≠ 0, "no se publica" in the output and no
+`out/` left behind; the clean copy passes. Nothing in the repo is mutated, so it runs in every `pnpm test`.
+
 ## Consequences
 
 - Every job that builds (`quality`, `e2e`, `lighthouse`, the seeded build) validates first: about one second.

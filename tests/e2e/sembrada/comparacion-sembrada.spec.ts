@@ -128,12 +128,12 @@ for (const [esquema, tema] of [
   test.describe(`axe en ${tema}`, () => {
     test.use({ colorScheme: esquema });
     for (const ruta of PAGINAS)
-      test(`${ruta} sin violaciones serias (${tema})`, async ({ page }) => {
+      test(`${ruta} sin violaciones de axe (${tema})`, async ({ page }) => {
         await page.goto(ruta);
         await listo(page);
         const scan = await new AxeBuilder({ page }).analyze();
-        const serias = scan.violations.filter((v) => v.impact === "critical" || v.impact === "serious");
-        expect(serias, JSON.stringify(serias.map((v) => [v.id, v.nodes.map((n) => n.target)]))).toEqual([]);
+        const violaciones = scan.violations;
+        expect(violaciones, JSON.stringify(violaciones.map((v) => [v.id, v.nodes.map((n) => n.target)]))).toEqual([]);
       });
   });
 

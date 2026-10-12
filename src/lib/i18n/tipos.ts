@@ -178,10 +178,11 @@ export interface Textos {
       ficticias: string;
     };
     criterios: { titulo: string; nota: string; capacidad: string; transversal: string };
-    escala: { titulo: string; nota: string; madurez: string; tope: string; topeVistaPrevia: string; sinTope: string };
+    escala: { titulo: string; tabla: string; nota: string; madurez: string; tope: string; topeVistaPrevia: string; sinTope: string };
     convenciones: { titulo: string; nota: string; empate: string; robustez: string; vigencia: string; prosContras: string; sensibilidad: string; simulacion: string };
     instantaneas: {
       titulo: string;
+      tabla: string;
       nota: string;
       version: string;
       huella: string;
@@ -248,6 +249,7 @@ export interface Textos {
         igual: string;
         orden: string;
         desliza: string;
+        etiquetaTabla: string;
         causa: string;
         origenDe: string;
         tabla: { titulo: string; nota: string; severidad: string; ocurrencia: string; deteccion: string; fila: string };
@@ -341,7 +343,7 @@ export interface Textos {
       decisiones: { titulo: string; nota: string; sinResponder: string; respondida: string; elegida: string };
       contexto: string;
       requisitos: { titulo: string; obligatorio: string; preferente: string; criterio: string };
-      aprobar: { boton: string; faltanDecisiones: readonly [string, string]; faltaInstantanea: string; comando: string };
+      aprobar: { boton: string; faltanDecisiones: readonly [string, string]; faltaInstantanea: string; comando: string; irAlEditor: string };
       sello: { titulo: string; detalle: string; comparar: string };
       /** El editor del perfil en borrador, que arma el comando de aprobación (S4). */
       editor: {
@@ -404,7 +406,7 @@ export interface Textos {
         esencial: string;
         barra: string;
       };
-      matriz: { titulo: string; nota: string; criterio: string; peso: string; total: string; mejor: string; limitante: string; formula: string; tope: string; escala: string; topeNota: string; alertas: string; alerta: string; alertaMadurez: string };
+      matriz: { titulo: string; tabla: string; nota: string; criterio: string; peso: string; total: string; mejor: string; limitante: string; formula: string; tope: string; escala: string; topeNota: string; alertas: string; alerta: string; alertaMadurez: string };
       sensibilidad: {
         titulo: string;
         nota: string;
@@ -440,6 +442,7 @@ export interface Textos {
       };
       robustez: {
         titulo: string;
+        tabla: string;
         nota: string;
         plataforma: string;
         puesto: string;

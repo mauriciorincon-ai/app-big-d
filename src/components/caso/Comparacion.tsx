@@ -151,7 +151,7 @@ export function Matriz({ r, pesos, idioma, t, tEsencial, nombres, max, niveles, 
   return (
     <>
       <p className="kit-nota">{plantilla(t.nota, { max })}</p>
-      <MarcoTabla etiqueta={t.titulo} id="matriz">
+      <MarcoTabla etiqueta={t.tabla} id="matriz">
         <table className="tabla matriz">
           <thead>
             <tr>

@@ -282,6 +282,7 @@ export const es: Textos = {
     },
     escala: {
       titulo: "Escala y topes por madurez",
+      tabla: "Tabla de topes por madurez",
       nota: "Cada nivel con una descripción observable. Lo que no está disponible de forma general aporta como máximo su tope; si el caso acepta vista previa, el tope sube.",
       madurez: "Madurez",
       tope: "Tope",
@@ -300,6 +301,7 @@ export const es: Textos = {
     },
     instantaneas: {
       titulo: "Instantáneas",
+      tabla: "Tabla de instantáneas",
       nota: "Huella SHA-256 sobre el JSON canónico (RFC 8785) de toda la base aprobada; la carga la recalcula y se niega si no coincide. El caso cita la instantánea con la que se calculó.",
       version: "Versión",
       huella: "Huella",
@@ -402,6 +404,7 @@ export const es: Textos = {
         igual: "sin cambio de categoría",
         orden: "Orden: prioridad de acción → severidad → RPN (el RPN solo ordena dentro de una prioridad).",
         desliza: "Desliza la tabla de lado para ver todas las columnas.",
+        etiquetaTabla: "Tabla de riesgos",
         causa: "Causa: {texto}",
         origenDe: "Origen de los números: {origen}.",
         tabla: {
@@ -686,6 +689,7 @@ export const es: Textos = {
         faltanDecisiones: ["falta {n} decisión implícita por responder", "faltan {n} decisiones implícitas por responder"],
         faltaInstantanea: "falta la instantánea de la base contra la que se evalúa",
         comando: "listo para aprobar: lo aprueba una persona con su comando, en su terminal",
+        irAlEditor: "Ir al editor, abajo",
       },
       sello: { titulo: "Perfil aprobado", detalle: "{fecha} · sha256 {inicio}…{fin}", comparar: "Comparar" },
       editor: {
@@ -749,6 +753,7 @@ export const es: Textos = {
       },
       matriz: {
         titulo: "Puntajes por criterio",
+        tabla: "Tabla de puntajes por criterio",
         nota: "0–{max} con tope por madurez antes del mínimo; cada puntaje se remonta a una evidencia aprobada de la instantánea.",
         criterio: "Criterio",
         peso: "Peso",
@@ -798,6 +803,7 @@ export const es: Textos = {
       },
       robustez: {
         titulo: "Robustez por simulación",
+        tabla: "Tabla de aceptabilidad por puesto",
         nota: "{K} combinaciones de pesos dentro de los rangos del perfil, con semilla: en qué porcentaje queda cada plataforma en cada puesto y qué tan robusta es la recomendación. Los umbrales están declarados, no escondidos.",
         plataforma: "Plataforma",
         puesto: "{k}",

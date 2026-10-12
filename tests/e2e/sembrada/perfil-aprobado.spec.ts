@@ -1,5 +1,5 @@
 // El perfil APROBADO contra la base sembrada (S4, F3): el caso con su sello, sin editor, con cada decisión elegida, a 380 px sin
-// desbordar y sin violaciones serias de axe en los dos temas. El dato real sigue en borrador hasta que una persona apruebe su
+// desbordar y sin violaciones de axe en los dos temas. El dato real sigue en borrador hasta que una persona apruebe su
 // comando; aquí la base sembrada lo tiene aprobado para probar la pantalla del aprobado.
 import { readFileSync } from "node:fs";
 import AxeBuilder from "@axe-core/playwright";
@@ -59,17 +59,15 @@ for (const [esquema, tema] of [
   test.describe(`axe en ${tema}`, () => {
     test.use({ colorScheme: esquema });
     for (const ruta of PAGINAS)
-      test(`${ruta} sin violaciones serias (${tema})`, async ({ page }) => {
+      test(`${ruta} sin violaciones de axe (${tema})`, async ({ page }) => {
         await page.goto(ruta);
         await listo(page);
         const scan = await new AxeBuilder({ page }).analyze();
-        const serias = scan.violations.filter(
-          (v) => v.impact === "critical" || v.impact === "serious",
-        );
+        const violaciones = scan.violations;
         expect(
-          serias,
+          violaciones,
           JSON.stringify(
-            serias.map((v) => [v.id, v.nodes.map((n) => n.target)]),
+            violaciones.map((v) => [v.id, v.nodes.map((n) => n.target)]),
           ),
         ).toEqual([]);
       });

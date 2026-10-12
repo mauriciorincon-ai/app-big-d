@@ -408,7 +408,7 @@ function VistaRobustez({ m, idioma, t, resultado, nombres, base, umbral, s, peso
     <div className="dos" data-simulacion="lista">
       <div>
         <p className="kit-nota">{plantilla(r.pesosDe, { pesos: m.etiqueta })}</p>
-        <MarcoTabla etiqueta={r.titulo}>
+        <MarcoTabla etiqueta={r.tabla}>
           <table className="tabla acept">
             <thead>
               <tr>

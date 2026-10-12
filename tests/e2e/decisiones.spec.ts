@@ -108,9 +108,9 @@ test.describe("ES · el plan real del caso", () => {
     await expect(aviso).toBeVisible();
     await expect(aviso).toHaveText(T.riesgos.desliza);
     // El marco de la tabla (la sección también es una región con ese nombre): se alcanza con el teclado y se desliza.
-    const marco = page.locator("#riesgos div.tabla-marco");
+    const marco = page.locator("#riesgos div.tabla-marco").first();
     await expect(marco).toHaveAttribute("role", "region");
-    await expect(marco).toHaveAttribute("aria-label", T.riesgos.titulo);
+    await expect(marco).toHaveAttribute("aria-label", T.riesgos.etiquetaTabla);
     await expect(marco).toHaveAttribute("tabindex", "0");
     expect(await marco.evaluate((el) => el.scrollWidth > el.clientWidth)).toBe(
       true,
@@ -123,17 +123,15 @@ test.describe("ES · el plan real del caso", () => {
   ] as const)
     test.describe(`axe en ${tema}`, () => {
       test.use({ colorScheme: esquema });
-      test(`${RUTA} sin violaciones serias (${tema})`, async ({ page }) => {
+      test(`${RUTA} sin violaciones de axe (${tema})`, async ({ page }) => {
         await page.goto(RUTA);
         await listo(page);
         const scan = await new AxeBuilder({ page }).analyze();
-        const serias = scan.violations.filter(
-          (v) => v.impact === "critical" || v.impact === "serious",
-        );
+        const violaciones = scan.violations;
         expect(
-          serias,
+          violaciones,
           JSON.stringify(
-            serias.map((v) => [v.id, v.nodes.map((n) => n.target)]),
+            violaciones.map((v) => [v.id, v.nodes.map((n) => n.target)]),
           ),
         ).toEqual([]);
       });

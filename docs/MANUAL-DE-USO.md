@@ -232,11 +232,11 @@ a ninguna ni pide cuentas.
 
 #### 12. El instrumento · desde el Sprint 4
 
-- **Qué hace:** dice si puedes confiar en la herramienta antes de publicar. Corre casos con respuesta conocida, propiedades matemáticas, siete errores sembrados y la comprobación de que lo aprobado no se editó a mano. Si algo falla, no se publica nada.
+- **Qué hace:** dice si puedes confiar en la herramienta antes de publicar. Corre casos con respuesta conocida, propiedades matemáticas, errores sembrados a propósito y la comprobación de que lo aprobado no se editó a mano. Si algo falla, no se publica nada.
 - **Cómo se usa:**
   1. En la barra, abre «Instrumento».
   2. Lee el estado: «Validación en verde: se puede publicar» o «Validación en rojo». Cada fila dice si pasó.
-  3. En **errores sembrados** ves cuántos de los siete errores deliberados detectó la herramienta. Debe decir «7 de 7 detectados».
+  3. En **errores sembrados** ves cuántos de los errores deliberados detectó la herramienta. Debe detectarlos todos: «N de N detectados» (hoy, 7 de 7; el número crece cuando se agrega un error sembrado).
   4. Para publicar, corre `pnpm build` en la carpeta del proyecto. Si la validación falla, el build se detiene, no queda nada que publicar y la pantalla dice «No se publica» con lo que hay que corregir.
 - **Limitaciones:**
   - La validación corre sobre la base que se va a publicar. Si abres la app sin haber corrido `pnpm build`, la pantalla dice que no hay validación y te pide correrlo.
@@ -513,11 +513,11 @@ manages and controls; it never operates a platform**: it connects to none and as
 
 #### 12. The instrument · since Sprint 4
 
-- **What it does:** tells you whether the tool can be trusted before anything is published. It runs cases with a known answer, mathematical properties, seven seeded errors and a check that approved records were not edited by hand. If something fails, nothing is published.
+- **What it does:** tells you whether the tool can be trusted before anything is published. It runs cases with a known answer, mathematical properties, errors seeded on purpose and a check that approved records were not edited by hand. If something fails, nothing is published.
 - **How to use it:**
   1. In the top bar, open **“Instrument”**.
   2. Read the status: green means it can be published, red means something failed. Each row says whether it passed.
-  3. Under **seeded errors** you see how many of the seven deliberate errors the tool caught. It should read 7 of 7.
+  3. Under **seeded errors** you see how many of the deliberate errors the tool caught. It must catch them all: “N of N detected” (today, 7 of 7; the number grows when a seeded error is added).
   4. To publish, run `pnpm build` in the project folder. If validation fails, the build stops, there is nothing to publish, and the page says it is not published and what to fix.
 - **Limitations:**
   - Validation runs on the base that will be published. If you open the app without having run `pnpm build`, the page says there is no validation yet and asks you to run it.

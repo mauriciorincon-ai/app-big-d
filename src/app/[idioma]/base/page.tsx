@@ -169,7 +169,7 @@ export default async function Base({ params }: PageProps<"/[idioma]/base">) {
             </li>
           ))}
         </ul>
-        <MarcoTabla etiqueta={t.escala.titulo}>
+        <MarcoTabla etiqueta={t.escala.tabla}>
           <table className="tabla">
             <thead>
               <tr>
@@ -220,7 +220,7 @@ export default async function Base({ params }: PageProps<"/[idioma]/base">) {
             {t.instantaneas.vacio}
           </p>
         ) : (
-          <MarcoTabla etiqueta={t.instantaneas.titulo}>
+          <MarcoTabla etiqueta={t.instantaneas.tabla}>
             <table className="tabla">
               <thead>
                 <tr>

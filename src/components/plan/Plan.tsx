@@ -148,7 +148,7 @@ export function TablaRiesgos({
   return (
     <>
       <p className="pista-tabla">{t.riesgos.desliza}</p>
-      <MarcoTabla etiqueta={t.riesgos.titulo}>
+      <MarcoTabla etiqueta={t.riesgos.etiquetaTabla}>
       <table className="tabla tabla-riesgos">
         <thead>
           <tr>

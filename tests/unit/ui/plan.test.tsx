@@ -90,7 +90,9 @@ describe("S5 observado: las tablas anchas se deslizan y lo dicen", () => {
     expect(container.querySelectorAll(".pista-tabla")).toHaveLength(2);
     for (const el of container.querySelectorAll(".pista-tabla")) expect(el.textContent).toBe(t.riesgos.desliza);
     const regiones = screen.getAllByRole("region");
-    expect(regiones.map((r) => r.getAttribute("aria-label"))).toEqual([t.riesgos.titulo, t.riesgos.tabla.titulo]);
+    // Cada región lleva un nombre propio (axe landmark-unique): el de la tabla no repite el de su sección.
+    expect(regiones.map((r) => r.getAttribute("aria-label"))).toEqual([t.riesgos.etiquetaTabla, t.riesgos.tabla.titulo]);
+    expect(t.riesgos.etiquetaTabla).not.toBe(t.riesgos.titulo);
     for (const r of regiones) expect(r.getAttribute("tabindex")).toBe("0");
   });
 });

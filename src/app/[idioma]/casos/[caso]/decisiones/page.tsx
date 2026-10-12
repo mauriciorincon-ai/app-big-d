@@ -137,7 +137,7 @@ export default async function Decisiones({
         )}
         {v.cicloNombres && <p className="kit-nota">{t.ciclo.nota}</p>}
         <Leyenda t={t} />
-        <section className="mapa" id="mapa" aria-label={t.ondas.titulo}>
+        <section className="mapa" id="mapa">
           <ul className="indice" aria-label={t.ondas.indice}>
             {v.ondas.columnas.map((c, i) => (
               <li key={c.id}>

@@ -282,6 +282,7 @@ export const en: Textos = {
     },
     escala: {
       titulo: "Scale and maturity caps",
+      tabla: "Maturity caps table",
       nota: "Every level with an observable description. Anything not generally available contributes at most its cap; if the case accepts previews, the cap goes up.",
       madurez: "Maturity",
       tope: "Cap",
@@ -300,6 +301,7 @@ export const en: Textos = {
     },
     instantaneas: {
       titulo: "Snapshots",
+      tabla: "Snapshots table",
       nota: "SHA-256 fingerprint over the canonical JSON (RFC 8785) of the whole approved base; loading recomputes it and refuses a mismatch. The case cites the snapshot it was computed with.",
       version: "Version",
       huella: "Fingerprint",
@@ -402,6 +404,7 @@ export const en: Textos = {
         igual: "no category change",
         orden: "Order: action priority → severity → RPN (RPN only orders within a priority).",
         desliza: "Slide the table sideways to see every column.",
+        etiquetaTabla: "Risk table",
         causa: "Cause: {texto}",
         origenDe: "Where the numbers come from: {origen}.",
         tabla: {
@@ -686,6 +689,7 @@ export const en: Textos = {
         faltanDecisiones: ["{n} implicit decision still unanswered", "{n} implicit decisions still unanswered"],
         faltaInstantanea: "the base snapshot it is evaluated against is missing",
         comando: "ready to approve: a person approves it with their command, in their terminal",
+        irAlEditor: "Go to the editor, below",
       },
       sello: { titulo: "Profile approved", detalle: "{fecha} · sha256 {inicio}…{fin}", comparar: "Compare" },
       editor: {
@@ -749,6 +753,7 @@ export const en: Textos = {
       },
       matriz: {
         titulo: "Scores per criterion",
+        tabla: "Scores per criterion table",
         nota: "0–{max}, capped by maturity before the minimum; every score traces back to approved evidence in the snapshot.",
         criterio: "Criterion",
         peso: "Weight",
@@ -798,6 +803,7 @@ export const en: Textos = {
       },
       robustez: {
         titulo: "Robustness by simulation",
+        tabla: "Acceptability by place table",
         nota: "{K} weight combinations within the profile's ranges, seeded: how often each platform lands in each place and how robust the recommendation is. The thresholds are declared, not hidden.",
         plataforma: "Platform",
         puesto: "{k}",

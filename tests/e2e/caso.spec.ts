@@ -73,6 +73,10 @@ for (const idioma of IDIOMAS) {
         T.caso.perfil.aprobar.comando,
       );
       await expect(page.locator("[data-editor-perfil]")).toBeVisible();
+      // S4-B7: el aviso de arriba lleva al editor de abajo.
+      const ir = page.getByRole("link", { name: T.caso.perfil.aprobar.irAlEditor });
+      await expect(ir).toHaveAttribute("href", "#editor-perfil");
+      await expect(page.locator("#editor-perfil[data-editor-perfil]")).toHaveCount(1);
       await expect(page.locator("[data-sin-comando]")).toHaveCount(0);
     });
 

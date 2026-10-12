@@ -22,11 +22,11 @@ for (const [esquema, tema] of [["dark", "oscuro"], ["light", "claro"]] as const)
     });
 
     for (const ruta of ["/es", "/en"]) {
-      test(`${ruta} sin violaciones serias de accesibilidad (${tema})`, async ({ page }) => {
+      test(`${ruta} sin violaciones de axe (${tema})`, async ({ page }) => {
         await page.goto(ruta);
         const scan = await new AxeBuilder({ page }).analyze();
-        const serias = scan.violations.filter((v) => v.impact === "critical" || v.impact === "serious");
-        expect(serias, JSON.stringify(serias.map((v) => v.id))).toEqual([]);
+        const violaciones = scan.violations;
+        expect(violaciones, JSON.stringify(violaciones.map((v) => v.id))).toEqual([]);
       });
     }
   });

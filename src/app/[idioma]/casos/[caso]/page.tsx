@@ -206,6 +206,10 @@ export default async function Perfil({ params }: PageProps<"/[idioma]/casos/[cas
             <Alerta />
             {sinResponder ? plural(t.aprobar.faltanDecisiones, sinResponder) : caso.instantanea === null ? t.aprobar.faltaInstantanea : t.aprobar.comando}
           </span>
+          {/* S4-B7: el aviso va arriba y el editor que lo resuelve, abajo: el enlace lo lleva. */}
+          <a className="enlace-boton" href="#editor-perfil">
+            {t.aprobar.irAlEditor}
+          </a>
         </div>
       )}
 
