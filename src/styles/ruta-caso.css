@@ -1,0 +1,7 @@
+@import "./secciones.css";
+@import "./caso.css";
+@import "./investigador.css";
+
+/* Hoja de entrada de la ruta «caso» (S7, D-S7-04): reúne en UNA hoja las que la pantalla usa, en el mismo orden en que se
+   importaban una a una. Cada hoja CSS bloqueante extra suma ~150 ms al LCP simulado de Lighthouse; con una sola por ruta el
+   margen frente al presupuesto (que no cambia) supera el 10 %. Una pantalla nueva importa su hoja de entrada, no las sueltas. */

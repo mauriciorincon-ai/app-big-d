@@ -21,10 +21,7 @@ import { lista } from "@/lib/caso/formato";
 import { pestanasCaso } from "@/lib/caso/rutas";
 import { esIdioma, textos } from "@/lib/i18n";
 import { aprobacionDelPlan, vistaDecisiones } from "@/lib/plan/vista";
-import "@/styles/secciones.css";
-import "@/styles/caso.css";
-import "@/styles/decisiones.css";
-import "@/styles/investigador.css";
+import "@/styles/ruta-decisiones.css";
 
 // 09 Decisiones y riesgos (maqueta decisiones.html; C16–C18): el plan del caso. Las decisiones por ondas con las de una
 // vía primero, la ficha de cada una con lo que dice la base aprobada de cada plataforma, los riesgos por prioridad de

@@ -13,9 +13,7 @@ import { huellaCorta, lista, peso } from "@/lib/caso/formato";
 import { huellaCaso } from "@/lib/datos/instantanea";
 import { pestanasCaso, rutaComparacion } from "@/lib/caso/rutas";
 import { esIdioma, textos } from "@/lib/i18n";
-import "@/styles/secciones.css";
-import "@/styles/caso.css";
-import "@/styles/investigador.css";
+import "@/styles/ruta-caso.css";
 
 // 07 Perfil del caso (maqueta perfil.html; D-S3-12): pesos y rangos con su origen, restricciones eliminatorias, las
 // decisiones implícitas (la opción elegida con un anillo lleno, no con un radio deshabilitado que apenas se ve) y el

@@ -16,8 +16,7 @@ import { esIdioma, textos } from "@/lib/i18n";
 import { conteo, vistaInvestigador } from "@/lib/investigador/revision";
 import { urlSolicitud } from "@/lib/investigador/solicitud";
 // Estilos solo de esta pantalla: no bloquean el pintado del atlas.
-import "@/styles/secciones.css";
-import "@/styles/investigador.css";
+import "@/styles/ruta-investigador.css";
 
 // Conocimiento · investigador de una plataforma (fiel a docs/diseno/investigador.html): la vigencia de cada
 // capa, o el estado vacío si la plataforma aún no tiene mapa (A-27); donde hace falta investigar, el botón que
