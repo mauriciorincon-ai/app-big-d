@@ -371,7 +371,6 @@ export default async function InformePagina({
                 plan={plan}
                 nombres={nombres}
                 opcionDe={opcionDe}
-
                 t={t}
                 td={tD}
               />
