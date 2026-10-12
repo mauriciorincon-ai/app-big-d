@@ -12,9 +12,9 @@
 //
 // Uso: node scripts/datos/copia-aprobada.mjs [--destino <carpeta fuera del repo>] [--fecha AAAA-MM-DD] [--solo perfil|plan]
 // Salida: la ruta de la copia (última línea de stdout).
-import { cpSync, mkdtempSync, realpathSync } from "node:fs";
+import { cpSync, existsSync, mkdtempSync, realpathSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { join, relative, resolve, sep } from "node:path";
+import { basename, dirname, join, relative, resolve, sep } from "node:path";
 import { cargarTs, RAIZ_REPO } from "../lib/cargar-ts.mjs";
 import { escribirCaso, escribirPlan } from "../lib/escribir-aprobado.mjs";
 
@@ -25,9 +25,20 @@ const arg = (nombre) => {
   return i > 0 ? process.argv[i + 1] : undefined;
 };
 
+/** Ruta real de `ruta`, aunque no exista todavía: se resuelve el ancestro que sí existe (un enlace simbólico no lo disfraza). */
+const rutaReal = (ruta) => {
+  let p = resolve(ruta);
+  const resto = [];
+  while (!existsSync(p) && dirname(p) !== p) {
+    resto.unshift(basename(p));
+    p = dirname(p);
+  }
+  return join(realpathSync(p), ...resto);
+};
+
 /** ¿Está `ruta` dentro del repo (o es el repo)? Compara rutas reales, para que un enlace simbólico no lo disfrace. */
 const dentroDelRepo = (ruta) => {
-  const rel = relative(realpathSync(RAIZ_REPO), resolve(ruta));
+  const rel = relative(realpathSync(RAIZ_REPO), rutaReal(ruta));
   return rel === "" || (!rel.startsWith("..") && !rel.startsWith(sep));
 };
 
