@@ -1,4 +1,5 @@
 import { METRICAS_PILOTO } from "diagramador";
+import { esc } from "@/lib/html";
 
 // El diagrama de ondas del plan (maqueta `decisiones.html`, scripts/maqueta/pantallas/m4-comun.mjs `svgOndas`): una
 // columna por onda de Kahn, una tarjeta por decisión, una línea por «depende de» con ruteo ortogonal por los huecos entre
@@ -119,12 +120,6 @@ const base = (arriba: number, tamano: number, lh: number) =>
   arriba + (lh - 1.3 * tamano) / 2 + 0.984 * tamano;
 
 const r1 = (n: number) => Math.round(n * 10) / 10;
-const esc = (t: string) =>
-  t
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
 
 /** Línea con esquinas redondeadas (los tramos son ortogonales: el largo es la suma de lo recorrido en cada eje). */
 function camino(pts: P[], r = 6): string {
@@ -297,7 +292,7 @@ export function svgOndas(e: EntradaOndas): SalidaOndas {
     clase: string,
   ) => texto([s], x, arribaT, tamano, lh, clase);
 
-  let s = `<svg class="dir-svg dir-b" data-lienzo="${e.id}" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="graphics-document document" aria-label="${esc(e.aria)}">`;
+  let s = `<svg class="dir-svg dir-b" data-lienzo="${esc(e.id)}" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="graphics-document document" aria-label="${esc(e.aria)}">`;
   s += `<defs><path id="dd-impl" d="${IMPL_D}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>${(Object.entries(REV_D) as [Reversibilidad, string][]).map(([k, d]) => `<path id="dd-rev-${k}" d="${d}" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>`).join("")}<path id="dd-sup" d="${SUP_D}" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></defs>`;
   cols.forEach((c, i) => {
     const x = colX(i);
@@ -310,7 +305,7 @@ export function svgOndas(e: EntradaOndas): SalidaOndas {
   const dibuja = (pts: P[], a: Arista) => {
     tramos.push({ a, pts });
     const { p, tri } = conFlecha(pts);
-    return `<g class="dd-dep${a.ciclo ? " dd-dep-ciclo" : ""}" data-dep="${a.u}>${a.v}"><path d="${camino(p)}" class="db-linea"/><path d="${tri}" class="db-punta"/></g>`;
+    return `<g class="dd-dep${a.ciclo ? " dd-dep-ciclo" : ""}" data-dep="${esc(a.u)}>${esc(a.v)}"><path d="${camino(p)}" class="db-linea"/><path d="${tri}" class="db-punta"/></g>`;
   };
   for (const a of aristas) {
     const pu = pos[a.u]!;
@@ -395,8 +390,8 @@ export function svgOndas(e: EntradaOndas): SalidaOndas {
     const p = pos[id]!;
     const cic = enCiclo.has(id);
     const bloq = bloqueadas.has(id) && !cic;
-    s += `<g class="db-elem db-nodo dd-dec dd-${d.reversibilidad}${cic ? " dd-en-ciclo" : ""}${bloq ? " dd-bloq" : ""}" role="graphics-symbol img" tabindex="0" data-dueno="${id}" data-decision="${id}" aria-label="${esc(d.aria)}">`;
-    s += `<rect data-caja="${id}" class="db-card dd-caja" x="${p.x}" y="${p.y}" width="${p.w}" height="${p.h}" rx="6"/>`;
+    s += `<g class="db-elem db-nodo dd-dec dd-${d.reversibilidad}${cic ? " dd-en-ciclo" : ""}${bloq ? " dd-bloq" : ""}" role="graphics-symbol img" tabindex="0" data-dueno="${esc(id)}" data-decision="${esc(id)}" aria-label="${esc(d.aria)}">`;
+    s += `<rect data-caja="${esc(id)}" class="db-card dd-caja" x="${p.x}" y="${p.y}" width="${p.w}" height="${p.h}" rx="6"/>`;
     s += `<use href="#dd-rev-${d.reversibilidad}" x="${p.x + G.pad + 7}" y="${p.y + 17}" class="db-marca"/>`;
     s += texto1(
       e.etiquetas.reversibilidad[d.reversibilidad],

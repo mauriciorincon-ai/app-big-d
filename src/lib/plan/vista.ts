@@ -3,6 +3,7 @@ import { comparacionDe, planDe, type ResultadoPlan } from "@/engine";
 import { plantilla } from "@/lib/atlas/plantilla";
 import { evaluacionDe } from "@/lib/caso/casos";
 import { lista } from "@/lib/caso/formato";
+import { esc } from "@/lib/html";
 import type { Conocimiento } from "@/lib/datos/cargar-conocimiento";
 import type { Caso } from "@/lib/datos/conocimiento";
 import type { Decision, Plan } from "@/lib/datos/plan";
@@ -14,12 +15,6 @@ import { svgOndas, type NodoOndas, type SalidaOndas } from "./ondas-svg";
 // ondas y se generan las fichas del panel lateral (HTML escapado, sin datos del visitante). Nada se inventa: cada opción
 // por plataforma sale del dato del plan, que solo cita evidencia aprobada.
 
-const esc = (t: string) =>
-  t
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
 const SVG = (cuerpo: string) => `<svg viewBox="-8 -8 16 16" width="14" height="14" aria-hidden="true" focusable="false">${cuerpo}</svg>`;
 const ICONO_ALERTA = SVG('<circle r="7" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M0,-5 V1.5 M0,4.2 V4.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>');
 const ICONO_PENDIENTE = SVG('<circle r="7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2.5 2"/>');
@@ -134,6 +129,9 @@ export function vistaDecisiones(
           ondas: informe.ondas.length,
         }),
   });
+  // S5-B-11: como el atlas (D11), un diagrama con una línea que atraviesa una tarjeta ajena no se publica.
+  if (ondas.cruces > 0)
+    throw new Error(`decisiones · diagrama de ondas · ${ondas.cruces} línea(s) atraviesan una tarjeta ajena (D11): el diagrama no se publica`);
 
   // --- lectura en texto (G10) ---
   const linea = (id: string) => {

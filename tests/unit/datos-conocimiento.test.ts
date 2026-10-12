@@ -145,6 +145,12 @@ describe("una base rota no carga y dice dónde (RF-01.2)", () => {
     ["una decisión del plan cuya capacidad no tiene categoría", (d) => yaml(d, "convenciones/informe.yaml", (c) => void delete (c.categorias as Record<string, string>)["cap-gobierno"]), /dec-catalogo\.yaml:\d+:\d+ · dec-catalogo · capacidad_id · «cap-gobierno» no tiene categoría de alistamiento en data\/convenciones\/informe\.yaml$/],
     ["un término del glosario sin su inglés", (d) => yaml(d, "convenciones/informe.yaml", (c) => void (((c.glosario as Record<string, unknown>[])[0]!.termino as Record<string, string>).en = "")), /informe\.yaml:\d+:\d+ · informe · glosario\[0\]\.termino\.en · /],
     ["un término del glosario que no está entre sus formas", (d) => yaml(d, "convenciones/informe.yaml", (c) => void (((c.glosario as Record<string, unknown>[])[0]!.formas as Record<string, string[]>).es = ["otra cosa"])), /informe\.yaml:\d+:\d+ · informe · glosario\[0\]\.formas\.es · incluye el propio término «empate técnico»$/],
+    // El plan del caso (S5-B-3).
+    ["un plan sin decisiones", (d) => {
+      const dir = join(d, "casos/hospital-futuro/plan/decisiones");
+      rmSync(dir, { recursive: true, force: true });
+      mkdirSync(dir);
+    }, /data\/casos\/hospital-futuro\/plan\/decisiones · hospital-futuro · decisiones · un plan tiene al menos una decisión$/],
     // Criterios y capacidades.
     ["un criterio de capacidad sin capacidad", (d) => yaml(d, "criterios/crit-ia.yaml", (c) => void delete c.capacidad_id), /crit-ia\.yaml:\d+:\d+ · crit-ia · capacidad_id · obligatorio en un criterio de tipo capacidad$/],
     ["un criterio transversal con capacidad", (d) => yaml(d, "criterios/crit-costo.yaml", (c) => void (c.capacidad_id = "cap-ia")), /crit-costo\.yaml:\d+:\d+ · crit-costo · capacidad_id · un criterio transversal no tiene capacidad$/],

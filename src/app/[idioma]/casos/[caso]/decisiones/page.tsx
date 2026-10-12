@@ -117,7 +117,7 @@ export default async function Decisiones({
       </div>
       <Pestanas
         etiqueta={T.secciones.etiqueta}
-        pestanas={pestanasCaso(T.secciones, idioma, caso.id, "decisiones")}
+        pestanas={pestanasCaso(T.secciones, idioma, caso.id, "decisiones", true)}
       />
 
       <ul className="niveles kit-niveles" aria-label={t.vistas.etiqueta}>

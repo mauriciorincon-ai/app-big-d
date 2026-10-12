@@ -14,16 +14,16 @@ export type Respuesta =
 
 /** Los mensajes que responde una petición de simulación: el progreso tras cada paso y, al final, el resultado. */
 export function* atender(p: Extract<Peticion, { tipo: "simular" }>): Generator<Respuesta> {
-  let s;
+  // AU-S3-06: cualquier fallo del núcleo (al iniciar, al avanzar o al armar el resultado) sale como un mensaje de error;
+  // antes solo se atrapaba el de `iniciar` y un `avanzar` que lanzaba dejaba la robustez «en curso» para siempre.
   try {
-    s = iniciar(p.entrada);
+    const s = iniciar(p.entrada);
+    while (!s.fin) {
+      avanzar(s, p.paso);
+      if (!s.fin) yield { tipo: "progreso", id: p.id, semilla: p.entrada.semillas[s.indice]!, indice: s.indice, semillas: p.entrada.semillas.length, aceptadas: s.aceptadas, objetivo: p.entrada.aceptadas, intentos: s.intentos };
+    }
+    yield { tipo: "resultado", id: p.id, resultado: resultadoDe(s) };
   } catch (e) {
-    yield { tipo: "error", id: p.id, mensaje: (e as Error).message };
-    return;
+    yield { tipo: "error", id: p.id, mensaje: e instanceof Error ? e.message : String(e) };
   }
-  while (!s.fin) {
-    avanzar(s, p.paso);
-    if (!s.fin) yield { tipo: "progreso", id: p.id, semilla: p.entrada.semillas[s.indice]!, indice: s.indice, semillas: p.entrada.semillas.length, aceptadas: s.aceptadas, objetivo: p.entrada.aceptadas, intentos: s.intentos };
-  }
-  yield { tipo: "resultado", id: p.id, resultado: resultadoDe(s) };
 }

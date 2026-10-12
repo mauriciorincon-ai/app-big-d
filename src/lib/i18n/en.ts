@@ -219,7 +219,7 @@ export const en: Textos = {
     resumen: "{referencias} references · {propiedades} properties · {sembrados} seeded · {aprobaciones} approvals",
     huellaNucleo: "core fingerprint",
     referencias: { titulo: "Reference cases", nota: "The right answer is evident by construction." },
-    propiedades: { titulo: "Properties", nota: "Seeded property tests; monotonicity is the corrected one (the leader's position never worsens). They are the very ones in the test suite." },
+    propiedades: { titulo: "Properties", nota: "Seeded property tests; monotonicity is the corrected one (the leader's position never worsens). They are the very ones in the test suite.", corridas: "{corridas} runs · seed {semilla}" },
     sembrados: { titulo: "Seeded errors", nota: "Cases with a deliberate error: the tool must catch them all. Reported as how many out of how many.", detectados: "{ok} of {total} detected", no: "not detected" },
     aprobaciones: { titulo: "What is approved is what a person approved", nota: "Evidence, snapshots, profiles, plans and maps: none was edited by hand after its approval. And each report summary, which reads within the reading budget in Spanish and in English." },
     motores: { titulo: "Same bytes on every engine", nota: "The same input produces the same fingerprint; continuous integration compares it on Node, Chromium, Firefox and WebKit, on Linux and macOS. Here, the fingerprint of the reference set.", sinHuella: "no fingerprint set in this base" },
@@ -823,6 +823,7 @@ export const en: Textos = {
         cancelada: "You cancelled the simulation for {pesos}; showing the one for {anteriores}.",
         tope: "The simulation hit the cap of {tope} attempts before completing the combinations: it fails closed, with no robustness result.",
         error: "The simulation could not run: {mensaje}",
+        errorWorker: "the simulation program could not be loaded or sent something unreadable",
         noAplica: "With a single platform there is no robustness to measure.",
       },
       pros: {

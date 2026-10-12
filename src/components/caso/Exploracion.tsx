@@ -143,6 +143,15 @@ export function Exploracion({ idioma, t, entrada, resultado, simulacion, nombres
           vigente.current = null;
         }
       };
+      // AU-S3-06: si el chunk del Worker no carga o un mensaje no se puede leer, la robustez dice que falló, no se queda «en curso».
+      const fallo = (mensaje: string) => {
+        const v = vigente.current;
+        if (!v) return;
+        setRob({ clave: v.clave, estado: "error", mensaje });
+        vigente.current = null;
+      };
+      nuevo.onerror = (ev: ErrorEvent) => fallo(ev.message || t.r.errorWorker);
+      nuevo.onmessageerror = () => fallo(t.r.errorWorker);
       trabajador.current = nuevo;
     }
     const id = ++contador.current;

@@ -138,7 +138,7 @@ export interface Textos {
     resumen: string;
     huellaNucleo: string;
     referencias: { titulo: string; nota: string };
-    propiedades: { titulo: string; nota: string };
+    propiedades: { titulo: string; nota: string; corridas: string };
     sembrados: { titulo: string; nota: string; detectados: string; no: string };
     aprobaciones: { titulo: string; nota: string };
     motores: { titulo: string; nota: string; sinHuella: string };
@@ -469,6 +469,8 @@ export interface Textos {
         cancelada: string;
         tope: string;
         error: string;
+        /** El Worker no cargó o un mensaje suyo no se pudo leer (AU-S3-06). */
+        errorWorker: string;
         noAplica: string;
       };
       pros: { titulo: string; destaca: string; corta: string; item: string; mejor: string; esencial: string; tope: string; nadaDestaca: string; nadaCorta: string; nota: string };

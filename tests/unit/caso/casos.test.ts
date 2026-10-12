@@ -4,8 +4,21 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterAll, describe, expect, it } from "vitest";
-import { conocimiento, congeladaDe, evaluacionDe, idsDeCasos } from "@/lib/caso/casos";
-import { pestanasCaso, pestanasConocimiento, rutaBase, rutaCaso, rutaComparacion, rutaDecisiones, rutaInforme } from "@/lib/caso/rutas";
+import {
+  conocimiento,
+  congeladaDe,
+  evaluacionDe,
+  idsDeCasos,
+} from "@/lib/caso/casos";
+import {
+  pestanasCaso,
+  pestanasConocimiento,
+  rutaBase,
+  rutaCaso,
+  rutaComparacion,
+  rutaDecisiones,
+  rutaInforme,
+} from "@/lib/caso/rutas";
 import { cargarConocimiento } from "@/lib/datos/cargar-conocimiento";
 import { textos } from "@/lib/i18n";
 import { armarBaseFuturo } from "../lib/base-futuro";
@@ -31,18 +44,37 @@ describe("el caso del repo (borrador)", () => {
     expect(congelada.version).toBe(caso.instantanea ?? "base-viva");
     const e = evaluacionDe(k, caso);
     expect(e.simulacion).toBeNull();
-    if (e.resultado.tipo !== "no-evaluable") throw new Error("el borrador no debía evaluarse");
+    if (e.resultado.tipo !== "no-evaluable")
+      throw new Error("el borrador no debía evaluarse");
     // Ejemplo sale por su restricción: quedan las reales, y de cada una los criterios del caso sin una evidencia
     // aprobada. Se cuenta aquí desde el dato (no con el motor), para que la prueba siga a cada aprobación.
-    const criterioDe = (e: (typeof k.evidencias)[number]) => e.criterio_id ?? k.criterios.find((c) => c.capacidad_id === e.capacidad_id)?.id;
-    const cubiertas = new Set(congelada.contenido.evidencias.filter((e) => e.estado_aprobacion === "aprobada").map((e) => `${e.plataforma_id} ${criterioDe(e)}`));
+    const criterioDe = (e: (typeof k.evidencias)[number]) =>
+      e.criterio_id ??
+      k.criterios.find((c) => c.capacidad_id === e.capacidad_id)?.id;
+    const cubiertas = new Set(
+      congelada.contenido.evidencias
+        .filter((e) => e.estado_aprobacion === "aprobada")
+        .map((e) => `${e.plataforma_id} ${criterioDe(e)}`),
+    );
     const esperadas = k.plataformas
       .filter((p) => !p.ficticia)
-      .flatMap((p) => caso.criterios.filter((c) => !cubiertas.has(`${p.id} ${c.criterio_id}`)).map((c) => `${p.id} ${c.criterio_id}`));
+      .flatMap((p) =>
+        caso.criterios
+          .filter((c) => !cubiertas.has(`${p.id} ${c.criterio_id}`))
+          .map((c) => `${p.id} ${c.criterio_id}`),
+      );
     // Con las 33 evidencias reales aprobadas (S3, P1–P3) y congeladas no falta ninguna: el único motivo es el borrador.
-    expect(e.resultado.motivos.map((m) => m.motivo)).toEqual(["perfil-en-borrador", ...(esperadas.length ? ["falta-evidencia"] : [])]);
-    const falta = e.resultado.motivos.find((m) => m.motivo === "falta-evidencia");
-    const faltantes = falta && "faltantes" in falta ? falta.faltantes.map((f) => `${f.plataforma_id} ${f.criterio_id}`) : [];
+    expect(e.resultado.motivos.map((m) => m.motivo)).toEqual([
+      "perfil-en-borrador",
+      ...(esperadas.length ? ["falta-evidencia"] : []),
+    ]);
+    const falta = e.resultado.motivos.find(
+      (m) => m.motivo === "falta-evidencia",
+    );
+    const faltantes =
+      falta && "faltantes" in falta
+        ? falta.faltantes.map((f) => `${f.plataforma_id} ${f.criterio_id}`)
+        : [];
     expect(faltantes.toSorted()).toEqual(esperadas.toSorted());
   });
 
@@ -63,38 +95,88 @@ describe("el caso de la base sembrada (aprobado)", () => {
     expect(e.simulacion?.ganadora).toBe("norte");
     expect(e.simulacion?.clase).toBe("robusta");
   });
+  it("S5-B-6: la evaluación de un caso se hace una vez por base (la simulación no se repite en cada pantalla), y otra base no la comparte", () => {
+    const k = cargarConocimiento(dir);
+    const caso = k.casos[0]!;
+    expect(evaluacionDe(k, caso)).toBe(evaluacionDe(k, caso));
+    const otra = cargarConocimiento(dir);
+    expect(evaluacionDe(otra, otra.casos[0]!)).not.toBe(evaluacionDe(k, caso));
+    // Pero da lo mismo: la memoria no cambia el resultado.
+    expect(evaluacionDe(otra, otra.casos[0]!).simulacion).toEqual(
+      evaluacionDe(k, caso).simulacion,
+    );
+  });
 });
 
 describe("rutas y pestañas de las secciones Conocimiento y Caso", () => {
   const t = textos("es").secciones;
   it("las rutas", () => {
-    expect([rutaBase("es"), rutaCaso("en", "x"), rutaComparacion("es", "x"), rutaDecisiones("en", "x"), rutaInforme("es", "x")]).toEqual(["/es/base", "/en/casos/x", "/es/casos/x/comparacion", "/en/casos/x/decisiones", "/es/casos/x/informe"]);
+    expect([
+      rutaBase("es"),
+      rutaCaso("en", "x"),
+      rutaComparacion("es", "x"),
+      rutaDecisiones("en", "x"),
+      rutaInforme("es", "x"),
+    ]).toEqual([
+      "/es/base",
+      "/en/casos/x",
+      "/es/casos/x/comparacion",
+      "/en/casos/x/decisiones",
+      "/es/casos/x/informe",
+    ]);
   });
   it("05–06 con la actual marcada; 07–08 siempre con ruta; 09 y 10 con ruta si el caso tiene plan, y pendientes si no", () => {
-    expect(pestanasConocimiento(t, "es", "/es/investigador/fabric", "base").map((p) => [p.n, p.ruta, !!p.actual])).toEqual([
+    expect(
+      pestanasConocimiento(t, "es", "/es/investigador/fabric", "base").map(
+        (p) => [p.n, p.ruta, !!p.actual],
+      ),
+    ).toEqual([
       ["05", "/es/investigador/fabric", false],
       ["06", "/es/base", true],
     ]);
-    expect(pestanasCaso(t, "es", "x", "comparacion").map((p) => [p.n, p.ruta ?? null, !!p.actual])).toEqual([
+    expect(
+      pestanasCaso(t, "es", "x", "comparacion", true).map((p) => [
+        p.n,
+        p.ruta ?? null,
+        !!p.actual,
+      ]),
+    ).toEqual([
       ["07", "/es/casos/x", false],
       ["08", "/es/casos/x/comparacion", true],
       ["09", "/es/casos/x/decisiones", false],
       ["10", "/es/casos/x/informe", false],
     ]);
-    expect(pestanasCaso(t, "en", "x", "decisiones").map((p) => [p.n, p.ruta ?? null, !!p.actual])).toEqual([
+    expect(
+      pestanasCaso(t, "en", "x", "decisiones", true).map((p) => [
+        p.n,
+        p.ruta ?? null,
+        !!p.actual,
+      ]),
+    ).toEqual([
       ["07", "/en/casos/x", false],
       ["08", "/en/casos/x/comparacion", false],
       ["09", "/en/casos/x/decisiones", true],
       ["10", "/en/casos/x/informe", false],
     ]);
-    expect(pestanasCaso(t, "es", "x", "informe").map((p) => [p.n, p.ruta ?? null, !!p.actual])).toEqual([
+    expect(
+      pestanasCaso(t, "es", "x", "informe", true).map((p) => [
+        p.n,
+        p.ruta ?? null,
+        !!p.actual,
+      ]),
+    ).toEqual([
       ["07", "/es/casos/x", false],
       ["08", "/es/casos/x/comparacion", false],
       ["09", "/es/casos/x/decisiones", false],
       ["10", "/es/casos/x/informe", true],
     ]);
     // Un caso sin plan no tiene las pantallas 09 ni 10: las pestañas quedan pendientes, sin enlace.
-    expect(pestanasCaso(t, "es", "x", "perfil", false).map((p) => [p.n, p.ruta ?? null])).toEqual([
+    expect(
+      pestanasCaso(t, "es", "x", "perfil", false).map((p) => [
+        p.n,
+        p.ruta ?? null,
+      ]),
+    ).toEqual([
       ["07", "/es/casos/x"],
       ["08", "/es/casos/x/comparacion"],
       ["09", null],

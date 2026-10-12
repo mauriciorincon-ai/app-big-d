@@ -25,7 +25,7 @@ export function pestanasConocimiento(t: Textos["secciones"], idioma: string, inv
   ];
 }
 
-export function pestanasCaso(t: Textos["secciones"], idioma: string, caso: string, actual: "perfil" | "comparacion" | "decisiones" | "informe", conDecisiones = true): Pestana[] {
+export function pestanasCaso(t: Textos["secciones"], idioma: string, caso: string, actual: "perfil" | "comparacion" | "decisiones" | "informe", conDecisiones: boolean): Pestana[] {
   return [
     { n: "07", texto: t.perfil, ruta: rutaCaso(idioma, caso), actual: actual === "perfil" },
     { n: "08", texto: t.comparacion, ruta: rutaComparacion(idioma, caso), actual: actual === "comparacion" },

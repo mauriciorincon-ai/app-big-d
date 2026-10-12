@@ -219,7 +219,7 @@ export const es: Textos = {
     resumen: "{referencias} referencias · {propiedades} propiedades · {sembrados} sembrados · {aprobaciones} aprobaciones",
     huellaNucleo: "huella del núcleo",
     referencias: { titulo: "Casos de referencia", nota: "La respuesta correcta es evidente por construcción." },
-    propiedades: { titulo: "Propiedades", nota: "Pruebas de propiedades con semilla; la monotonía es la corregida (la posición de la líder nunca empeora). Son las mismas de la suite de pruebas." },
+    propiedades: { titulo: "Propiedades", nota: "Pruebas de propiedades con semilla; la monotonía es la corregida (la posición de la líder nunca empeora). Son las mismas de la suite de pruebas.", corridas: "{corridas} corridas · semilla {semilla}" },
     sembrados: { titulo: "Errores sembrados", nota: "Casos con un error deliberado: la herramienta debe detectarlos todos. Se reporta cuántos sobre cuántos.", detectados: "{ok} de {total} detectados", no: "no detectado" },
     aprobaciones: { titulo: "Lo aprobado es lo que aprobó una persona", nota: "Evidencias, instantáneas, perfiles, planes y mapas: ninguno se editó a mano después de su aprobación. Y el resumen de cada informe, que se lee dentro del presupuesto de lectura en español y en inglés." },
     motores: { titulo: "Mismos bytes en todos los motores", nota: "La misma entrada produce la misma huella; la integración continua la compara en Node, Chromium, Firefox y WebKit, en Linux y en macOS. Aquí, la huella del conjunto de referencia.", sinHuella: "sin conjunto de huellas en esta base" },
@@ -823,6 +823,7 @@ export const es: Textos = {
         cancelada: "Cancelaste la simulación de {pesos}; se muestra la de {anteriores}.",
         tope: "La simulación llegó al tope de {tope} intentos sin completar las combinaciones: falla cerrada, sin resultado de robustez.",
         error: "La simulación no pudo correr: {mensaje}",
+        errorWorker: "el programa de la simulación no se pudo cargar o respondió algo ilegible",
         noAplica: "Con una sola plataforma no hay robustez que medir.",
       },
       pros: {

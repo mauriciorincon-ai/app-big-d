@@ -35,6 +35,8 @@ const nombres: Nombres = {
 class WorkerFalso {
   static ultimo: WorkerFalso | null = null;
   onmessage: ((ev: { data: unknown }) => void) | null = null;
+  onerror: ((ev: { message: string }) => void) | null = null;
+  onmessageerror: (() => void) | null = null;
   cancelados = new Set<number>();
   peticiones: Peticion[] = [];
   constructor() {
@@ -90,6 +92,21 @@ describe("Exploracion: sensibilidad y robustez", () => {
     expect(pedida && pedida.tipo === "simular" ? pedida.entrada.pesos.reduce((s, w) => s + w, 0) : 0).toBe(10_000);
     const fila = screen.getByText("22", { selector: "td.mono" }).closest("tr")!;
     expect(fila.getAttribute("aria-current")).toBe("true");
+  });
+
+  it("AU-S3-06: si el Worker falla (no carga o responde algo ilegible), la robustez lo dice y no se queda en curso", async () => {
+    WorkerFalso.ultimo = null;
+    exploracion();
+    fireEvent.change(screen.getByRole("slider"), { target: { value: "2600" } });
+    await waitFor(() => expect(WorkerFalso.ultimo).not.toBeNull());
+    await act(async () => WorkerFalso.ultimo!.onerror?.({ message: "el chunk no cargó" }));
+    await waitFor(() => expect(document.querySelector("#rob")!.textContent).toContain(plantilla(tc.robustez.error, { mensaje: "el chunk no cargó" })));
+    expect(document.querySelector("#rob [role=progressbar]")).toBeNull();
+    // Un mensaje ilegible del Worker también termina en error, con el texto declarado.
+    fireEvent.change(screen.getByRole("slider"), { target: { value: "2700" } });
+    await waitFor(() => expect(WorkerFalso.ultimo!.peticiones.filter((p) => p.tipo === "simular").length).toBeGreaterThan(1));
+    await act(async () => WorkerFalso.ultimo!.onmessageerror?.());
+    await waitFor(() => expect(document.querySelector("#rob")!.textContent).toContain(plantilla(tc.robustez.error, { mensaje: tc.robustez.errorWorker })));
   });
 
   it("«Cancelar» detiene la simulación en curso y deja a la vista la anterior, diciéndolo", async () => {
