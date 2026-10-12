@@ -174,8 +174,8 @@ export function vistaDecisiones(
         .map((e) => e.razon[idioma]),
     )[0];
   const motivo =
-    comparacion.tipo === "sin-comparacion"
-      ? ((t.ficha.motivos as Record<string, string>)[comparacion.motivo] ??
+    resultado.comparacion.tipo === "sin-comparacion"
+      ? ((t.ficha.motivos as Record<string, string>)[resultado.comparacion.motivo] ??
         t.ficha.motivos.otro)
       : "";
   const fichas: Record<string, string> = {};
@@ -210,14 +210,14 @@ export function vistaDecisiones(
       return `<li><b>${esc(nombrePlataforma[pid] ?? pid)}</b> ${esc(o.texto[idioma])}</li>`;
     });
     const nota =
-      comparacion.tipo === "empate-tecnico"
+      resultado.comparacion.tipo === "empate-tecnico"
         ? plantilla(t.ficha.paraEmpate, {
             plataformas: lista(
               r.planificadas.map((x) => nombrePlataforma[x] ?? x),
               y,
             ),
           })
-        : comparacion.tipo === "ganadora"
+        : resultado.comparacion.tipo === "ganadora"
           ? plantilla(t.ficha.paraGanadora, {
               plataformas: lista(
                 r.planificadas.map((x) => nombrePlataforma[x] ?? x),

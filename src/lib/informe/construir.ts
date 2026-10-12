@@ -2,8 +2,8 @@ import pkg from "../../../package.json";
 import {
   comparacionDe,
   modeloInforme,
+  origenesHuerfanos,
   type EntradaInforme,
-  type EntradaRuta,
   type HojaDeRuta,
   type ModeloInforme,
   type ResultadoPlan,
@@ -22,8 +22,8 @@ import { hojaDeRutaDe, resultadoDelPlan } from "./entrada";
 export interface Informe {
   evaluacion: Evaluacion;
   resultadoPlan: ResultadoPlan;
-  entradaRuta: EntradaRuta;
   hoja: HojaDeRuta;
+  /** La entrada del modelo: las pruebas la varían (estado final, ciclo, bloqueado) para ver cada motivo de borrador. */
   entrada: EntradaInforme;
   modelo: ModeloInforme;
   /** SHA-256 del texto canónico (RFC 8785) de lo que el informe usó: perfil, plan, método, convenciones del informe e instantánea. */
@@ -43,6 +43,11 @@ export function construirInforme(
     k.informe.categorias,
     resultadoPlan,
   );
+
+  // S6-M7: «sin origen no hay ítem» (regla dura 9) se comprueba cada vez que se construye el informe, no solo en las pruebas.
+  const huerfanos = origenesHuerfanos(hoja, entradaRuta);
+  if (huerfanos.length)
+    throw new Error(`informe · hoja de ruta · ítems sin un origen que exista en el plan: ${huerfanos.join(", ")}`);
 
   const c = congelada.contenido;
   const eliminadas = new Set(
@@ -101,7 +106,6 @@ export function construirInforme(
   return {
     evaluacion,
     resultadoPlan,
-    entradaRuta,
     hoja,
     entrada,
     modelo: modeloInforme(entrada),

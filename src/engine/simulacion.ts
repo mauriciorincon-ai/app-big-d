@@ -136,6 +136,10 @@ export function iniciar(e: EntradaSimulacion): EstadoSimulacion {
   if (n < 2) throw new Error("núcleo: la simulación compara al menos dos plataformas");
   if (n > N_MAX_SIMULACION) throw new Error(`núcleo: la simulación admite hasta ${N_MAX_SIMULACION} plataformas (el crédito L = mcm(1..N) dejaría de ser exacto)`);
   if (e.pesos.reduce((a, b) => a + b, 0) !== TOTAL) throw new Error("núcleo: los pesos de la simulación no suman 10 000");
+  // AU-S3-05: la constante de arriba vale para 10 000 aceptadas; la suma más grande (peso × L × aceptadas) también tiene que
+  // caber exacta con las que pide el dato, que el esquema admite hasta 1 000 000.
+  if (BigInt(e.aceptadas) * BigInt(mcm(n)) * BigInt(TOTAL) > BigInt(Number.MAX_SAFE_INTEGER))
+    throw new Error(`núcleo: ${e.aceptadas} combinaciones con ${n} plataformas dejarían las sumas de la simulación fuera de la precisión exacta`);
   const rangos = e.pesos.map((w, k) => rangoEntero(w, e.rangos_pct[k]!));
   const lo = rangos.map((x) => x[0]);
   const hi = rangos.map((x) => x[1]);

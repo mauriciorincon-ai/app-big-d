@@ -27,6 +27,9 @@ export const REV_D: Record<Reversibilidad, string> = {
     "M-6,-2.5 H6 M3,-5.5 L6,-2.5 L3,0.5 M6,2.5 H-6 M-3,-0.5 L-6,2.5 L-3,5.5",
 };
 export const IMPL_D = "M0,-5 V1.5 M0,4.2 V4.6";
+/** S5-B-9: las líneas de pregunta con las que se dibuja `G.cH` (la altura base de una tarjeta); cada línea de más suma `LINEA_H`. */
+const LINEAS_BASE = 3;
+const LINEA_H = 18;
 const SUP_D = "M-5,-5.5 H5 V5.5 H-5 Z M-2.5,-2 H2.5 M-2.5,1 H1";
 
 export interface NodoOndas {
@@ -193,8 +196,8 @@ export function svgOndas(e: EntradaOndas): SalidaOndas {
   const cols = e.columnas;
   // Una tarjeta crece lo que haga falta para que su pregunta quepa entera sin pisar el pie: todas con la misma altura.
   const lineasDe = (id: string) => partir(e.nodos[id]!.nombre, 14, 700, G.colW - 2 * G.pad).length;
-  const maxLineas = Math.max(3, ...cols.flatMap((c) => c.ids.map(lineasDe)));
-  const cH = G.cH + (maxLineas - 3) * 18;
+  const maxLineas = Math.max(LINEAS_BASE, ...cols.flatMap((c) => c.ids.map(lineasDe)));
+  const cH = G.cH + (maxLineas - LINEAS_BASE) * LINEA_H;
   const ancho0 = 2 * G.M + cols.length * G.colW + (cols.length - 1) * G.gap;
   const colX = (i: number) => G.M + i * (G.colW + G.gap);
   const pos: Record<string, Posicion> = {};

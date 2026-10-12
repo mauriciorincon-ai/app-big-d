@@ -89,11 +89,7 @@ export interface RobustezResumen {
   /** Cuánto de `total_unidades` queda en el primer puesto con los pesos del perfil (semilla principal). */
   primera_unidades: number;
   total_unidades: number;
-  cerca: number;
   aceptadas: number;
-  semiamplitud_centesimas: number | null;
-  estable: boolean;
-  zona_gris: boolean;
 }
 
 export interface ResumenInforme {
@@ -105,9 +101,8 @@ export interface ResumenInforme {
   /** Los riesgos principales, en el orden de prioridad de acción (hasta DESTACADOS_RESUMEN). */
   riesgos_principales: string[];
   n_altos: number;
-  /** Verificaciones de alistamiento (pruebas baratas) todavía pendientes, y cuántas van en la fase 0. */
+  /** Verificaciones de alistamiento (pruebas baratas) todavía pendientes. */
   n_supuestos_por_probar: number;
-  n_pruebas_fase_0: number;
   escala_max: number;
 }
 
@@ -164,11 +159,7 @@ function robustezDe(s: ResultadoSimulacion | null): RobustezResumen | null {
     ganadora: s.ganadora,
     primera_unidades: p0.aceptabilidad[i]![0]!,
     total_unidades: p0.aceptadas * s.L,
-    cerca: p0.cerca,
     aceptadas: p0.aceptadas,
-    semiamplitud_centesimas: p0.semiamplitud_centesimas,
-    estable: s.estable,
-    zona_gris: p0.zona_gris,
   };
 }
 
@@ -219,8 +210,6 @@ export function modeloInforme(e: EntradaInforme): ModeloInforme {
         (i) =>
           i.tipo === "verificacion_alistamiento" && i.estado === "pendiente",
       ).length,
-      n_pruebas_fase_0:
-        e.hoja.fases.find((f) => f.fase === 0)?.items.length ?? 0,
       escala_max: e.escala_max,
     },
     alertas: {

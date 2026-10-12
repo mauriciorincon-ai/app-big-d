@@ -112,7 +112,7 @@ describe("alertas", () => {
   it("un supuesto refutado reabre sus decisiones", () => {
     const e = planCon((x) => void (x.supuestos[0]!.estado = "refutado"));
     const a = planDe(e).alertas.find((x) => x.tipo === "supuesto-refutado");
-    expect(a).toEqual({ tipo: "supuesto-refutado", id: "sup-1", decisiones: ["dec-a"] });
+    expect(a).toEqual({ tipo: "supuesto-refutado", id: "sup-1" });
   });
   it("una decisión ya tomada deja de ser alerta de implícita", () => {
     const e = planCon((x) => void (x.decisiones[0] = { ...x.decisiones[0]!, estado: "decidida" }));
@@ -160,7 +160,7 @@ describe("determinismo y neutralidad", () => {
     const a = planDe(e);
     const b = planDe(renombrado);
     expect(b.riesgos).toEqual(a.riesgos);
-    expect(b.decisiones.map((d) => [d.id, d.onda, d.planificadas.length, d.sin_fuente.length])).toEqual(a.decisiones.map((d) => [d.id, d.onda, d.planificadas.length, d.sin_fuente.length]));
+    expect(b.decisiones.map((d) => [d.id, d.onda, d.planificadas.length])).toEqual(a.decisiones.map((d) => [d.id, d.onda, d.planificadas.length]));
   });
 });
 

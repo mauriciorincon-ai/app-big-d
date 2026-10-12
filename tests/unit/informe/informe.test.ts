@@ -90,7 +90,6 @@ describe("el modelo del informe", () => {
       n_una_via: 3,
       n_altos: 2,
       n_supuestos_por_probar: 5,
-      n_pruebas_fase_0: 3,
     });
     expect(m.resumen.una_via).toHaveLength(3);
     expect(m.resumen.riesgos_principales).toHaveLength(3);
