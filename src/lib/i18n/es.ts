@@ -222,7 +222,7 @@ export const es: Textos = {
     propiedades: { titulo: "Propiedades", nota: "Pruebas de propiedades con semilla; la monotonía es la corregida (la posición de la líder nunca empeora). Son las mismas de la suite de pruebas.", corridas: "{corridas} corridas · semilla {semilla}" },
     sembrados: { titulo: "Errores sembrados", nota: "Casos con un error deliberado: la herramienta debe detectarlos todos. Se reporta cuántos sobre cuántos.", detectados: "{ok} de {total} detectados", no: "no detectado" },
     aprobaciones: { titulo: "Lo aprobado es lo que aprobó una persona", nota: "Evidencias, instantáneas, perfiles, planes y mapas: ninguno se editó a mano después de su aprobación. Y el resumen de cada informe, que se lee dentro del presupuesto de lectura en español y en inglés." },
-    motores: { titulo: "Mismos bytes en todos los motores", nota: "La misma entrada produce la misma huella; la integración continua la compara en Node, Chromium, Firefox y WebKit, en Linux y en macOS. Aquí, la huella del conjunto de referencia.", sinHuella: "sin conjunto de huellas en esta base" },
+    motores: { titulo: "Mismos bytes en todos los motores", nota: "La misma entrada produce la misma huella. Aquí se muestra la huella del archivo de sumas del núcleo, tal como está en esta versión: el sitio no la recalcula. La integración continua recalcula cada caso en Node, Chromium, Firefox y WebKit, en Linux y en macOS, y se detiene si una suma cambia.", sinHuella: "sin conjunto de huellas en esta base" },
     bloqueo: {
       ojo: "Intento de publicación",
       titulo: "No se publica",

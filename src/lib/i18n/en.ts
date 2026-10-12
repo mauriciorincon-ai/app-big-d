@@ -222,7 +222,7 @@ export const en: Textos = {
     propiedades: { titulo: "Properties", nota: "Seeded property tests; monotonicity is the corrected one (the leader's position never worsens). They are the very ones in the test suite.", corridas: "{corridas} runs · seed {semilla}" },
     sembrados: { titulo: "Seeded errors", nota: "Cases with a deliberate error: the tool must catch them all. Reported as how many out of how many.", detectados: "{ok} of {total} detected", no: "not detected" },
     aprobaciones: { titulo: "What is approved is what a person approved", nota: "Evidence, snapshots, profiles, plans and maps: none was edited by hand after its approval. And each report summary, which reads within the reading budget in Spanish and in English." },
-    motores: { titulo: "Same bytes on every engine", nota: "The same input produces the same fingerprint; continuous integration compares it on Node, Chromium, Firefox and WebKit, on Linux and macOS. Here, the fingerprint of the reference set.", sinHuella: "no fingerprint set in this base" },
+    motores: { titulo: "Same bytes on every engine", nota: "The same input produces the same fingerprint. Shown here is the fingerprint of the core's sums file, as it is in this version: the site does not recompute it. Continuous integration recomputes every case on Node, Chromium, Firefox and WebKit, on Linux and macOS, and stops if a sum changes.", sinHuella: "no fingerprint set in this base" },
     bloqueo: {
       ojo: "Publication attempt",
       titulo: "Not published",

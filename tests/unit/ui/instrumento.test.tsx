@@ -55,6 +55,14 @@ describe("PanelDeValidacion", () => {
     expect((document.querySelector("[data-bloqueo]") as HTMLElement).textContent).toContain("Seeded errors · Rango abierto (en) — bad");
   });
 
+  it("S4-M4: dice qué es la huella que muestra (la del archivo de sumas) y que el sitio no la recalcula; quien la recalcula es la integración continua", () => {
+    render(<PanelDeValidacion v={verde} t={es} idioma="es" />);
+    expect(screen.getByText(/el sitio no la recalcula/)).toBeTruthy();
+    expect(screen.getByText(/La integración continua recalcula cada caso en Node, Chromium, Firefox y WebKit/)).toBeTruthy();
+    cleanup();
+    render(<PanelDeValidacion v={verde} t={en} idioma="en" />);
+    expect(screen.getByText(/the site does not recompute it/)).toBeTruthy();
+  });
   it("sin huella del núcleo lo dice en vez de inventarla", () => {
     render(<PanelDeValidacion v={{ ...verde, huellaNucleo: null }} t={es} idioma="es" />);
     expect(screen.getByText(es.motores.sinHuella)).toBeTruthy();
