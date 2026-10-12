@@ -5,7 +5,7 @@ hito: H-1 Vitrina funcional
 opened: 2026-10-11
 closed: 2026-10-11
 branch: sprint-005/decisiones
-pr: por abrir (rama sprint-005/decisiones)
+pr: 17
 ---
 
 # Sprint 005 — Las decisiones · cierre
