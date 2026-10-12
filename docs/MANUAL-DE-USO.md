@@ -210,7 +210,7 @@ a ninguna ni pide cuentas.
 - **Cómo se usa:**
   1. En la barra, abre «Caso» y luego «Perfil del caso».
   2. Mientras el perfil está en **borrador**, cada peso dice quién lo propuso. Puedes cambiar los pesos (en puntos, con dos decimales), sus rangos, marcar las restricciones que aplicas y responder cada decisión implícita.
-  3. La pantalla suma los pesos mientras escribes. El comando aparece solo cuando la suma es 100,00 y todas las decisiones tienen respuesta; el botón «Aprobar perfil» queda deshabilitado, porque la vía es el comando.
+  3. La pantalla suma los pesos mientras escribes. El comando aparece solo cuando la suma es 100,00 y todas las decisiones tienen respuesta; el botón «Aprobar perfil» queda deshabilitado, porque la vía es el comando. Junto al botón, el enlace «Ir al editor, abajo» lleva al editor.
   4. Entonces la pantalla arma un comando con tus respuestas. Cópialo con su botón, abre Terminal tú mismo en la carpeta del proyecto, pégalo con Cmd+V y pulsa Enter. Solo una persona lo ejecuta: la app no aprueba nada.
   5. Vuelve a construir la app con `pnpm build` y abre la página. El perfil aparece con el sello «aprobado» y en solo lectura.
 - **Limitaciones:**
@@ -249,7 +249,7 @@ a ninguna ni pide cuentas.
   1. En el caso, abre «Decisiones y riesgos».
   2. Lee el diagrama: cada decisión es una tarjeta. Las de borde grueso son de una sola vía y se deciden primero; las de borde discontinuo son costosas de revertir; las de borde fino se pueden revertir. Toca una tarjeta para abrir su ficha.
   3. En la ficha, cada plataforma tiene su opción y la evidencia que la sostiene. Bajo «Opción recomendada» (el encabezado siempre está) aparece la plataforma que se planifica —o todas las empatadas, si hay empate técnico— cuando el perfil del caso está aprobado y la comparación puntúa; mientras no, la pantalla dice por qué no hay recomendación.
-  4. En «Riesgos», la tabla ordena por prioridad de acción (alta, media, baja) y después por severidad. Una acción alta sin mitigación queda marcada y bloquea la aprobación del plan.
+  4. En «Riesgos», la tabla ordena por prioridad de acción (alta, media, baja) y después por severidad. Una acción alta sin mitigación queda marcada y bloquea la aprobación del plan. En teléfono, la tabla avisa que se desliza de lado y se recorre con el dedo o con el teclado.
   5. Si hay un ciclo de dependencias, la pantalla lo muestra con su camino («a → b → a») en lugar de esconderlo. Para resolverlo hay que quitar una de sus flechas.
   6. Para aprobar el plan, la pantalla arma un comando solo si no hay bloqueos. Cópialo y córrelo tú, en la carpeta del proyecto. Solo una persona lo ejecuta: la app no aprueba nada.
 - **Limitaciones:**
@@ -294,6 +294,7 @@ a ninguna ni pide cuentas.
 | S4 (2026-10-11) | 10 El perfil del caso (se aprueba desde su pantalla) · 12 El instrumento (validación antes de publicar)                                                                            |
 | S5 (2026-10-11) | 13 Las decisiones del caso: ondas, fichas con evidencia, riesgos por prioridad y supuestos (se aprueba el plan desde su pantalla)                                                  |
 | S6 (2026-10-11) | 14 El informe del caso: hoja de ruta por fases con su origen, alistamiento, informe de catorce secciones en dos idiomas e impresión                                                |
+| S7 (2026-10-12) | Sin funciones nuevas: el caso, el informe y las pantallas se prueban también en inglés, de punta a punta; la tabla de riesgos en teléfono avisa que se desliza de lado |
 
 ---
 
@@ -491,7 +492,7 @@ manages and controls; it never operates a platform**: it connects to none and as
 - **How to use it:**
   1. In the top bar, open **“Case”**, then **“Case profile”**.
   2. While the profile is a **draft**, each weight says who proposed it. You can change the weights (in points, to two decimals), their ranges, tick the constraints that apply, and answer each implicit decision.
-  3. The page adds up the weights as you type. The command appears only when the sum is 100.00 and every decision has an answer; the “Approve profile” button stays disabled, because the command is the way.
+  3. The page adds up the weights as you type. The command appears only when the sum is 100.00 and every decision has an answer; the “Approve profile” button stays disabled, because the command is the way. Next to the button, the “Go to the editor, below” link takes you to the editor.
   4. Then the page builds a command with your answers. Copy it with its button, open Terminal yourself in the project folder, paste it with Cmd+V and press Enter. Only a person runs it: the app approves nothing.
   5. Build the app again with `pnpm build` and open the page. The profile shows the **“approved”** seal and is read-only.
 - **Limitations:**
@@ -530,7 +531,7 @@ manages and controls; it never operates a platform**: it connects to none and as
   1. In the case, open **“Decisions and risks”**.
   2. Read the diagram: each decision is a card. Thick border means one-way and decided first; dashed border means costly to reverse; thin border means reversible. Tap a card to open its sheet.
   3. On the sheet, each platform has its option and the evidence behind it. Under **“Recommended option”** (the heading is always there) the page lists the platform that gets planned — or every tied platform, on a technical tie — once the case profile is approved and the comparison scores; until then the page says why there is no recommendation.
-  4. Under **Risks**, the table sorts by action priority (high, medium, low) and then by severity. A high action without a mitigation is marked and blocks approving the plan.
+  4. Under **Risks**, the table sorts by action priority (high, medium, low) and then by severity. A high action without a mitigation is marked and blocks approving the plan. On a phone, the table says it slides sideways; scroll it with your finger or the keyboard.
   5. If there is a dependency cycle, the page shows it with its path (“a → b → a”) instead of hiding it. To resolve it, remove one of its arrows.
   6. To approve the plan, the page builds a command only when there are no blockers. Copy it and run it yourself, in the project folder. Only a person runs it: the app approves nothing.
 - **Limitations:**
@@ -574,3 +575,4 @@ manages and controls; it never operates a platform**: it connects to none and as
 | S4 (2026-10-11) | 10 The case profile (approved from its page) · 12 The instrument (validation before publishing)                                                            |
 | S5 (2026-10-11) | 13 The case's decisions: waves, sheets with evidence, risks by priority and assumptions (the plan is approved from its page)                               |
 | S6 (2026-10-11) | 14 The case report: the roadmap by phases with its origin, the readiness checklist, a fourteen-section report in two languages, and printing               |
+| S7 (2026-10-12) | No new features: the case, the report and the screens are also tested end to end in English; the risk table on a phone says it slides sideways |
