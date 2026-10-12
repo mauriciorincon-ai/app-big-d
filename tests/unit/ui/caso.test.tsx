@@ -142,7 +142,8 @@ describe("las vistas estáticas de la comparación", () => {
     expect(document.querySelectorAll("td[data-limitante]")).toHaveLength(r.limitantes.length);
     const ingesta = screen.getByText("ingesta").closest("tr")!;
     expect(within(ingesta).getAllByText("4")[0]!.closest("td")!.hasAttribute("data-mejor")).toBe(true);
-    expect(screen.getByRole("region", { name: tc.matriz.titulo }).getAttribute("tabindex")).toBe("0");
+    expect(screen.getByRole("region", { name: tc.matriz.tabla }).getAttribute("tabindex")).toBe("0");
+    expect(tc.matriz.tabla).not.toBe(tc.matriz.titulo); // axe landmark-unique: la tabla no repite el nombre de su sección
     expect(screen.getByText(tc.matriz.alertas)).toBeTruthy();
   });
 
