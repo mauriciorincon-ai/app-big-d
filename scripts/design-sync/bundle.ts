@@ -271,12 +271,15 @@ export function bundle(): Record<string, string> {
   ]
     .map((f) => `<tr>${f.map((c) => `<td>${esc(c)}</td>`).join("")}</tr>`)
     .join("")}</tbody></table>`;
+  // Este archivo es .ts (sin JSX): los hijos van como prop, que la regla de React no admite pero el tipo del componente exige.
+  // eslint-disable-next-line react/no-children-prop
+  const marcoDeMuestra = estatico(createElement(MarcoTabla, { etiqueta: td.riesgos.etiquetaTabla, children: createElement("div", { dangerouslySetInnerHTML: { __html: tablaDeMuestra } }) }));
   tarjetas.push(
     [
       "componentes-s3/marco-de-tabla.html",
       "Componentes · S3",
       "Marco de tabla ancha",
-      `<div style="max-width:420px"><p class="pista-tabla" style="display:block">${esc(td.riesgos.desliza)}</p>${estatico(createElement(MarcoTabla, { etiqueta: td.riesgos.etiquetaTabla, children: createElement("div", { dangerouslySetInnerHTML: { __html: tablaDeMuestra } }) }))}</div>`,
+      `<div style="max-width:420px"><p class="pista-tabla" style="display:block">${esc(td.riesgos.desliza)}</p>${marcoDeMuestra}</div>`,
       "MarcoTabla (S3, extensión 8; S7): una región con nombre propio —distinto del de su sección— que se alcanza con el teclado y se desliza de lado; en teléfono, con el aviso de deslizar (design-system.md § 5.1).",
     ],
     [
