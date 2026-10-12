@@ -28,6 +28,18 @@ test("las catorce secciones salen en el orden de § 12, cada una con su título"
     );
 });
 
+test("S6-M2: ningún id se repite en la página (el mismo ítem sale en la hoja y en el alistamiento con otro prefijo)", async ({
+  page,
+}) => {
+  await page.goto(RUTA);
+  await listo(page);
+  const ids = await page
+    .locator("[id]")
+    .evaluateAll((els) => els.map((e) => e.id));
+  const repetidos = ids.filter((id, i) => ids.indexOf(id) !== i);
+  expect(repetidos).toEqual([]);
+});
+
 test("cada ítem de la hoja de ruta trae su origen, y cada origen llega a su ancla", async ({
   page,
 }) => {

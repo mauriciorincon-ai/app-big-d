@@ -271,7 +271,7 @@ export interface Textos {
       sub: string;
       vistas: { etiqueta: string; hoja: string; alistamiento: string; informe: string };
       meta: { items: readonly [string, string]; fases: readonly [string, string]; final: string; borrador: string; sinFase: string };
-      borrador: { titulo: string; cuerpo: string; motivos: { "perfil-borrador": string; "plan-borrador": string; ciclo: string; bloqueado: string } };
+      borrador: { titulo: string; cuerpo: string; motivos: { "perfil-borrador": string; "plan-borrador": string; "sin-comparacion": string; ciclo: string; bloqueado: string } };
       hoja: {
         titulo: string;
         nota: string;
@@ -307,7 +307,7 @@ export interface Textos {
         presupuesto: string;
         presupuestoTerminos: readonly [string, string];
         queSignifica: string;
-        recomendacion: { titulo: string; ganadora: string; empate: string; sin: string; robustez: string };
+        recomendacion: { titulo: string; ganadora: string; unica: string; empate: string; sin: string; robustez: string };
         unaVia: string;
         riesgos: string;
         sinUnaVia: string;

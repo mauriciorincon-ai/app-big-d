@@ -99,8 +99,11 @@ export function construirInforme(
   const huella_entradas = huellaDe({
     perfil: huellaCaso(caso),
     plan: huellaPlan(plan),
-    metodo: huellaDe(k.convenciones),
+    // S6-B1: las convenciones con que se calculó el informe son las de la instantánea (`conv`), no las de la base viva.
+    metodo: huellaDe(conv),
     informe: huellaDe(k.informe),
+    // S6-M4: el relato humano también es una entrada: lo muestra § 10, así que cambiarlo cambia la huella impresa.
+    relato: huellaDe(k.relatos.find((r) => r.caso_id === caso.id) ?? null),
     instantanea: congelada.huella,
   });
   return {

@@ -98,8 +98,11 @@ export function Resumen({
   const nom = (id: string) => nombres.plataforma[id] ?? id;
   const rec = t.resumen.recomendacion;
   const rb = r.robustez;
-  const riesgo = (id: string) =>
-    informe.resultadoPlan.riesgos.find((x) => x.id === id)!;
+  const riesgo = (id: string) => {
+    const x = informe.resultadoPlan.riesgos.find((r) => r.id === id);
+    if (!x) throw new Error(`informe · resumen · el riesgo «${id}» no está en el plan calculado`);
+    return x;
+  };
   return (
     <>
       <p className="inf-lider">{parrafo}</p>
@@ -121,7 +124,10 @@ export function Resumen({
       ))}
       <h3>{rec.titulo}</h3>
       <p>
-        {v.tipo === "ganadora"
+        {v.tipo === "ganadora" && v.segunda === null
+          ? // S6-M1: una sola plataforma en pie no «gana con ventaja»: no hay otra contra la que medirla.
+            plantilla(rec.unica, { plataforma: nom(v.plataforma_id) })
+          : v.tipo === "ganadora"
           ? plantilla(rec.ganadora, {
               plataforma: nom(v.plataforma_id),
               brecha: brecha(v.brecha_unidades, r.escala_max, idioma),
@@ -542,11 +548,13 @@ export function Ficha({
   informe,
   versionTexto,
   huella,
+  idioma,
   t,
 }: {
   informe: Informe;
   versionTexto: string;
   huella: string;
+  idioma: Idioma;
   t: T;
 }) {
   const f = informe.modelo.ficha;
@@ -575,7 +583,7 @@ export function Ficha({
         {fila(
           t.ficha.umbrales,
           plantilla(t.ficha.umbralesTexto, {
-            empate: u.empate_centesimas / 100,
+            empate: peso(u.empate_centesimas, idioma),
             robusta: u.robusta_pct,
             fragil: u.fragil_pct,
             revisar: u.revisar_dias,

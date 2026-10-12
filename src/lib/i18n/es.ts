@@ -465,6 +465,7 @@ export const es: Textos = {
         motivos: {
           "perfil-borrador": "aprobar el perfil del caso",
           "plan-borrador": "aprobar el plan del caso",
+          "sin-comparacion": "la comparación no puntúa con este perfil",
           ciclo: "resolver el ciclo de dependencias entre decisiones",
           bloqueado: "una mitigación para {ids}, que es una acción alta sin mitigación",
         },
@@ -559,6 +560,7 @@ export const es: Textos = {
         recomendacion: {
           titulo: "Recomendación",
           ganadora: "{plataforma}, con {brecha} puntos de ventaja.",
+          unica: "{plataforma}, la única plataforma que queda después de las restricciones.",
           empate: "Empate técnico entre {plataformas}: {brecha} puntos de diferencia.",
           sin: "Sin recomendación: {motivo}.",
           robustez: "Robustez {clase}: {plataforma} queda primera en el {pct} % de las {K} combinaciones de pesos.",

@@ -21,8 +21,10 @@ import {
 import { Imprimir } from "@/components/informe/Imprimir";
 import {
   AlertasEvidencia,
+  Ficha,
   Implicitas,
   Relato,
+  Resumen,
   Sec,
   TablaDecisiones,
 } from "@/components/informe/Informe";
@@ -243,6 +245,55 @@ describe("alertas, implícitas y la estructura de decisiones", () => {
     expect(screen.getAllByText(t.decisiones.sinOpcion)).toHaveLength(
       planR.decisiones.length,
     );
+  });
+
+  it("S6-M1: con una sola plataforma en pie, la recomendación dice «la única» y no una ventaja de 0,0", () => {
+    const unica = {
+      ...infS,
+      modelo: {
+        ...infS.modelo,
+        resumen: {
+          ...infS.modelo.resumen,
+          veredicto: { tipo: "ganadora" as const, plataforma_id: "norte", segunda: null, brecha_unidades: 0 },
+        },
+      },
+    };
+    const n = nombresDe(unica, planS, "es");
+    render(
+      <Resumen
+        parrafo="x"
+        lectura={{ palabras: 1, silabas: 1, terminos: [], cumple: true } as never}
+        informe={unica}
+        nombres={n}
+        glosario={[]}
+        nombreRiesgo={n.riesgo}
+        prioridad={T.caso.decisiones.riesgos.prioridad}
+        motivoTexto=""
+        y={T.caso.y}
+        tc={T.caso.comparacion}
+        idioma="es"
+        t={t}
+      />,
+    );
+    expect(screen.getByText(/la única plataforma que queda/)).toBeTruthy();
+    expect(screen.queryByText(/puntos de ventaja/)).toBeNull();
+  });
+
+  it("S6-B2: el umbral del empate en la ficha usa el formato del idioma (coma en español, punto en inglés)", () => {
+    const con = (idioma: "es" | "en") => {
+      const inf = {
+        ...infR,
+        modelo: {
+          ...infR.modelo,
+          ficha: { ...infR.modelo.ficha, umbrales: { ...infR.modelo.ficha.umbrales, empate_centesimas: 550 } },
+        },
+      };
+      cleanup();
+      render(<Ficha informe={inf} versionTexto="v" huella="h" idioma={idioma} t={textos(idioma).caso.informe} />);
+      return document.body.textContent ?? "";
+    };
+    expect(con("es")).toMatch(/5,5/);
+    expect(con("en")).toMatch(/5\.5/);
   });
 
   it("la cabecera de sección numera con dos cifras y enlaza por su id", () => {

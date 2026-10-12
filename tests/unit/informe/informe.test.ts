@@ -114,12 +114,23 @@ describe("el modelo del informe", () => {
   });
 
   it("final cuando perfil y plan están aprobados y nada bloquea; cada motivo de borrador aparece solo cuando es cierto", () => {
-    const base = informe(real).entrada;
+    // El plan es el real (sin ciclo ni bloqueos); la comparación es una que puntúa, la de la base sembrada: un informe «final»
+    // lleva su comparación (S6-M6).
+    const evaluada = informe(baseSembrada).entrada;
+    const base = {
+      ...informe(real).entrada,
+      resultado: evaluada.resultado,
+      simulacion: evaluada.simulacion,
+    };
     const limpio = { ...base, perfil_aprobado: true, plan_aprobado: true };
     expect(modeloInforme(limpio).estado).toEqual({
       tipo: "final",
       motivos: [],
     });
+    // S6-M6: con todo aprobado pero sin una comparación que puntúe, el informe no puede ser «final».
+    expect(
+      modeloInforme({ ...limpio, resultado: informe(real).entrada.resultado }).estado,
+    ).toEqual({ tipo: "borrador", motivos: [{ tipo: "sin-comparacion" }] });
     expect(
       modeloInforme({ ...limpio, perfil_aprobado: false }).estado.motivos,
     ).toEqual([{ tipo: "perfil-borrador" }]);
@@ -154,6 +165,43 @@ describe("el modelo del informe", () => {
     expect(informe(real).huella_entradas).toBe(informe(real).huella_entradas);
     expect(informe(real).huella_entradas).not.toBe(
       informe(baseSembrada).huella_entradas,
+    );
+  });
+
+  it("S6-M4: el relato humano es una entrada; añadirlo o cambiarlo mueve la huella que el informe imprime", () => {
+    const caso = real.casos[0]!;
+    const sin = construirInforme(real, caso, real.planes[0]!).huella_entradas;
+    const relato = (texto: string) => ({
+      caso_id: caso.id,
+      texto: { es: texto, en: texto },
+      escrito_por: "Comité",
+      fecha: "2026-10-01",
+      origen: "declarado-por-usuario" as const,
+    });
+    const con = (texto: string) =>
+      construirInforme(
+        { ...real, relatos: [relato(texto)] },
+        caso,
+        real.planes[0]!,
+      ).huella_entradas;
+    expect(con("Es marzo de 2027.")).not.toBe(sin);
+    expect(con("Es marzo de 2027.")).toBe(con("Es marzo de 2027."));
+    expect(con("Es abril de 2027.")).not.toBe(con("Es marzo de 2027."));
+  });
+
+  it("S6-B1: la huella usa las convenciones de la instantánea con que se calculó, no las de la base viva", () => {
+    const caso = real.casos[0]!;
+    const base = construirInforme(real, caso, real.planes[0]!).huella_entradas;
+    const viva = {
+      ...real,
+      convenciones: {
+        ...real.convenciones,
+        umbral_empate_centesimas:
+          real.convenciones.umbral_empate_centesimas + 1,
+      },
+    };
+    expect(construirInforme(viva, caso, real.planes[0]!).huella_entradas).toBe(
+      base,
     );
   });
 

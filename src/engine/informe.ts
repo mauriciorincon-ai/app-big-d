@@ -40,7 +40,9 @@ export type MotivoDeBorrador =
   | { tipo: "perfil-borrador" }
   | { tipo: "plan-borrador" }
   | { tipo: "ciclo" }
-  | { tipo: "bloqueado"; ids: string[] };
+  | { tipo: "bloqueado"; ids: string[] }
+  /** El perfil está aprobado pero la comparación no puntúa (S6-M6): un informe «final» sin su comparación sería engañoso. */
+  | { tipo: "sin-comparacion" };
 
 export interface EntradaInforme {
   perfil_aprobado: boolean;
@@ -188,6 +190,10 @@ export function modeloInforme(e: EntradaInforme): ModeloInforme {
     ...(e.perfil_aprobado ? [] : [{ tipo: "perfil-borrador" as const }]),
     ...(e.plan_aprobado ? [] : [{ tipo: "plan-borrador" as const }]),
     ...(e.plan.informe.ciclo ? [{ tipo: "ciclo" as const }] : []),
+    // Con el perfil en borrador el motivo ya es «aprobar el perfil»; este solo aparece cuando el perfil está aprobado.
+    ...(e.perfil_aprobado && e.resultado.tipo === "no-evaluable"
+      ? [{ tipo: "sin-comparacion" as const }]
+      : []),
     ...(bloqueantes.length
       ? [{ tipo: "bloqueado" as const, ids: bloqueantes }]
       : []),

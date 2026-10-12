@@ -271,7 +271,7 @@ a ninguna ni pide cuentas.
 - **Limitaciones:**
   - El informe no decide ni recomienda por sí solo. Su texto sale de plantillas revisadas y de los datos aprobados, nunca de un modelo de lenguaje.
   - La hoja de ruta no trae semanas ni fechas: el plan no las tiene y la app no las inventa.
-  - El relato de fracaso generado es una plantilla y va marcado como generado. Un relato humano aparece solo si alguien lo escribe en el archivo del caso.
+  - El relato de fracaso generado es una plantilla y va marcado como generado. Un relato humano aparece solo si alguien lo escribe: un archivo `data/casos/<caso>/relato-de-fracaso.yaml` con `caso_id`, `texto` (en español y en inglés), `escrito_por`, `fecha` y `origen: declarado-por-usuario`. Si el archivo no existe, la sección dice «sin relato humano».
   - La prueba barata de un supuesto sigue siendo una tarea del equipo: el informe la registra, pero no la ejecuta.
 
 ### Preguntas frecuentes
@@ -552,7 +552,7 @@ manages and controls; it never operates a platform**: it connects to none and as
 - **Limitations:**
   - The report does not decide or recommend anything on its own. Its text comes from reviewed templates and approved data, never from a language model.
   - The roadmap carries no weeks or dates: the plan does not have them and the app does not invent them.
-  - The generated failure story is a template and is marked as generated. A human account appears only if someone writes it in the case file.
+  - The generated failure story is a template and is marked as generated. A human account appears only if someone writes it: a file `data/casos/<case>/relato-de-fracaso.yaml` with `caso_id`, `texto` (in Spanish and English), `escrito_por`, `fecha` and `origen: declarado-por-usuario`. If the file does not exist, the section says “no human story”.
   - An assumption's cheap test is still a task for the case team: the report records it, but does not run it.
 
 ### Frequently asked questions

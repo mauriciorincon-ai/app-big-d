@@ -436,6 +436,7 @@ export default async function InformePagina({
                 informe={informe}
                 versionTexto={versionTexto}
                 huella={informe.huella_entradas}
+                idioma={idioma}
                 t={t}
               />
             </Sec>

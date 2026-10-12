@@ -465,6 +465,7 @@ export const en: Textos = {
         motivos: {
           "perfil-borrador": "approving the case profile",
           "plan-borrador": "approving the case plan",
+          "sin-comparacion": "the comparison does not score with this profile",
           ciclo: "resolving the dependency cycle between decisions",
           bloqueado: "a mitigation for {ids}, a high action with none",
         },
@@ -559,6 +560,7 @@ export const en: Textos = {
         recomendacion: {
           titulo: "Recommendation",
           ganadora: "{plataforma}, with a {brecha}-point lead.",
+          unica: "{plataforma}, the only platform left after the constraints.",
           empate: "Technical tie between {plataformas}: {brecha} points apart.",
           sin: "No recommendation: {motivo}.",
           robustez: "Robustness {clase}: {plataforma} comes first in {pct}% of the {K} weight combinations.",
