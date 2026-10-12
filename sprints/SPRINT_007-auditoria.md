@@ -78,3 +78,46 @@ Leyenda: **✓** hay prueba o gate · **pagado** (hueco de hoy, cerrado en el S7
 - **28 reglas del kit:** huecos **pagados** en el S7 en las reglas 5, 6, 7, 9, 15, 19, 22 y 23 · **declarados** en las 3, 12, 26 y 27 · n/a la 24 y la 28.
 - **Pagados en la F2:** `planea-no-opera` (alcance al paquete de instrumentos), `sin-plataformas-cableadas`, `sin-elk-ni-dagre`, `githooks/commit-msg`, `manual-vivo` y el arnés de capturas del producto.
 - **Lo que queda abierto se declara** en el cierre del hito con su dueño: el detector de jerga (próximo hito, lo destraba una licencia), la prueba de grises del producto (propuesta), el hook contra worktrees (la persona) y las correcciones al `CLAUDE.md` de la tabla de arriba.
+
+## Parte B · Auditoría de una pasada (F3, 2026-10-12)
+
+Auditor independiente (subagente Sonnet 5.5, solo lectura) sobre `git diff origin/main...HEAD` (144 archivos). Veredicto del auditor: **requiere ajustes**. No hubo hallazgos Críticos ni Altos. Cada medio y bajo lleva su estado: **pagado** (commit) o **declarado** (sitio y dueño; va al cierre).
+
+### Medios
+
+| # | Archivo:línea | Hallazgo | Estado |
+|---|---|---|---|
+| M1 | `src/components/caso/Exploracion.tsx:149-156` | `fallo()` deja el Worker muerto en `trabajador.current`: la siguiente exploración publica a un Worker caído y la robustez queda «en curso». | **declarado** · dueño: constructor (relevo a Sonnet 5.5). Dos intentos con Haiku fallaron por la misma causa: al decir el error, el efecto vuelve a crear un Worker y el test ve otro, no el caído (`tests/unit/ui/caso.test.tsx`). Revertido para no dejar la rama roja. Síntoma: `expected false to be true` en `terminado` tras `onerror`. |
+| M2 | `scripts/datos/copia-aprobada.mjs:29-40` | La guarda «dentro del repo» no resolvía el destino: un enlace simbólico colaba la copia en el repo. | **pagado** · `124225e` · `tests/unit/copia-aprobada.test.ts` (código de salida distinto de cero, mensaje «dentro del repo») |
+| M3 | `src/lib/informe/construir.ts:48-50` y `src/components/informe/Informe.tsx:103` | Dos errores nuevos (S6-M7 y S6-B8) sin prueba roja que lance sus mensajes. | **declarado** · dueño: próxima sesión de Big-D, antes del siguiente hito. Construir un plan con un origen roto exige un fixture propio; el error existe en el código. |
+| M4 | `sprints/SPRINT_007-lote.md`, `docs/brochure-export.json` | Cifras finales del brochure y fila S5-M-6 sin commit. | **pagado** · commit de cierre de la F3 (ver el cierre) |
+| M5 | `tests/e2e/lib/estado.ts` (9 ramas «aprobado») y `scripts/datos/copia-aprobada.mjs` | El ensayo del dato aprobado no corre en CI: una regresión del estado aprobado solo la vería una persona. | **declarado** · dueño: el usuario decide si entra al CI; fecha propuesta 2026-10-19. Hoy se corre a mano: suite con `BIGD_DATOS` sobre la copia (2185/2185 el 2026-10-12). |
+
+### Bajos
+
+| # | Archivo:línea | Hallazgo | Estado |
+|---|---|---|---|
+| B1 | `src/engine/plan.ts:99` | Comentario huérfano sobre `supuestos_sin_probar`. | **pagado** · `d0addb6` |
+| B2 | `src/engine/simulacion.ts:82,89,335` y `respuesta.ts:50`, `contrato-worker.ts:37` | Campos `frontera` y `objetivo` del resultado de simulación sin lector fuera del contrato. AU-S3-10 dice «sin lector con razón»: no se cumple en estos dos. | **declarado** · dueño: constructor; decidir entre borrarlos (cambia la huella) o anotar el test que los lee. |
+| B3 | `scripts/investigar/comun.mjs:85` | `k.startsWith("CLAUDE_CODE_")` bloquea la aprobación si una persona exporta cualquier `CLAUDE_CODE_*`. Falla en el lado seguro. | **declarado** · acotar a `CLAUDECODE` y las variables de sesión conocidas, con prueba. |
+| B4 | `tests/unit/gates-en-rojo.test.ts:42-51,87-89` | Seis lanzamientos de esbuild bajo el `testTimeout` de 20 s; frágil en CI cargada. El caso S4-M2 no nombra la fila que falló. | **declarado** · construir la copia una vez en `beforeAll`; añadir `--debe-nombrar`. |
+| B5 | `tests/unit/e2e-servidor.test.ts:15-28` | Compara posiciones de cadenas del fuente; pasaría con un script roto. | **declarado** · lo cubre el e2e; aceptarlo o añadir prueba de comportamiento. |
+| B6 | `scripts/e2e/servir.mjs:46-54` | Los oyentes `exit` se registran después de `await esperar()`: un servidor que muere en esa ventana pasa inadvertido. | **declarado** · registrar el oyente al crear cada hijo. |
+| B7 | `docs/GUIA-DE-PRUEBA.html` (o1, o2, p1, l1) | Afirmaban «en borrador» sin condicional. | **pagado** · `d0addb6` |
+| B8 | `docs/MANUAL-DE-USO.md` (fila S7, ES y EN) | Decía «Sin funciones nuevas» pese a los cambios visibles. | **pagado** · `d0addb6` (fila reescrita con los cambios verificados) |
+| B9 | `docs/diseno/README.md:108` | Frase caducada («el design-system.md no se toca en un sprint de producto»). | **pagado** · `d0addb6` |
+| B10 | `tests/unit/sin-plataformas-cableadas.test.ts:35-37` | Cubre `.length === 3` y `[a, b, c]` solo en `PLATAFORMAS_*`; un arreglo `[x, y, z]` de ids en otra variable pasa. Cobertura parcial de la regla 4. | **declarado** · se anota en la regla 4 de `SPRINT_007-auditoria.md` (parte A). |
+
+### Frases caducadas (barrido por promesa aplazada, segunda pasada)
+
+Sin coincidencias falsas en README, manual (ES y EN), guía, brochure, `es.ts`/`en.ts` ni `docs/diseno/README.md`. Las coincidencias de «borrador», «pronto» y «todavía no» son condicionales y correctas. Se corrigieron en B7, B8 y B9.
+
+### Constitución (`CLAUDE.md`), propuestas de corrección (no se edita el archivo)
+
+- Falso: «`design-system.md` v0.6». Es v0.7.0.
+- Falso: estructura de `src/app`. Faltan `casos/[caso]/decisiones` y `casos/[caso]/informe`.
+- Falso: lista de `src/engine`. Existen además `plan`, `informe`, `hoja-de-ruta`, `legibilidad`, `instrumento`, `evaluar`, `alertas-evidencias` y `racional`.
+- Falso: «pendientes de E3: decisiones.ts, riesgos.ts, hoja-de-ruta.ts, informe/, legibilidad.ts». Ya existen; `plan.ts` cubre decisiones y riesgos.
+- Falso: regla 11, «detector de jerga en ambos idiomas». No existe; ver `decisions/jargon-detector.md`.
+- Omisiones: `packages/` lista solo `diagramador` (existe `instrumentos-de-plan`); `src/lib` omite `informe`, `instrumento`, `plan` y `html.ts`; `scripts/` omite `datos`, `e2e`, `lib`, `design-sync`, `instrumento` y `hooks`.
+- Falso: «`un-pr-vivo` desde que entra a la ruleset». Ya está en la ruleset.
