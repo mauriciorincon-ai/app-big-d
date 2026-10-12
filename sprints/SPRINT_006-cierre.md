@@ -5,7 +5,7 @@ hito: H-1 Vitrina funcional
 opened: 2026-10-11
 closed: 2026-10-11
 branch: sprint-006/informe
-pr: pendiente
+pr: 19
 ---
 
 # Sprint 006 — El informe · cierre
