@@ -32,9 +32,9 @@ pr: 19
 - **Desviaciones:** núcleo plano (`src/engine/informe.ts`, no carpeta); sin semanas (el plan no trae duraciones); brochure +1 porque su test lo exige; la prueba sembrada cuenta su propio plan (5 decisiones, no 7).
 - **Decisiones:** convenciones fuera de la instantánea (D-S6-01); presupuesto de lectura en código (D-S6-02); sin semanas (D-S6-03).
 - **Auditoría:** Crítico 0 · Alto 0 · Medio 7 · Bajo 8, sin ajustes en el sprint. Deuda M1–M7 y B1–B8 en `sprints/SPRINT_006-auditoria.md`, al lote del hito; visibles M1 («0,0 puntos de ventaja») y M2 (ids duplicados).
-- **Modelo por fase:** F1 Sonnet 5.5 · F2 Sonnet 5.5 · F3 Haiku 5.5 (bastó para e2e y docs; la depuración del build fue larga) · auditoría Sonnet 5.5 (subagente).
+- **Modelo por fase:** F1 Sonnet 5.5 · F2 Sonnet 5.5 · F3 Haiku 5.5 (bastó para e2e y docs; la depuración del build fue larga) · auditoría Sonnet 5.5 (subagente) · relevo a Sonnet 5.5 para el LCP del informe, que Lighthouse dio en rojo (2955 > 2900 ms).
 - **Desvío de la regla 29:** en F3 el build de Turbopack falló cuatro veces antes del diagnóstico; superé el límite de dos intentos sobre lo mismo. Cada intento cambió una variable, pero lo declaro.
-- **Aprendizaje:** el webServer de la app y el de la sembrada hacen `pnpm build` a la vez sobre el mismo `.next`; una caché dañada sigue fallando después. `rm -rf .next` lo arregla. Local; la CI está verde.
+- **Aprendizaje:** (a) los webServers de la app y la sembrada hacen `pnpm build` a la vez sobre el mismo `.next`; una caché dañada sigue fallando: `rm -rf .next` (local, la CI está verde). (b) El LCP simulado sube ~150 ms (un RTT) por cada hoja CSS extra de la ruta: el informe cargaba 6 y ahora 1 por `@import` (2912 → 2615 ms).
 - **Huellas y locks:** `NUCLEO.SHA256SUMS` +10 líneas nuevas, ninguna existente cambió; locks 57/57 y 18/18; enmiendas al contrato: no aplican.
 - **Observación:** con un ciclo, `ordenarDecisiones` no devuelve ondas (G2); candidata a enmienda en la planeadora.
 - **Para mergear:** squash y borrar la rama; después `/cierre-sprint big-d`.

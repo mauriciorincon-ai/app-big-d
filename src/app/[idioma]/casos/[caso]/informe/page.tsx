@@ -47,10 +47,6 @@ import {
   relatoGenerado,
 } from "@/lib/informe/narrativa";
 import { motivosDeBorrador, vistaHoja } from "@/lib/informe/vista";
-import "@/styles/secciones.css";
-import "@/styles/caso.css";
-import "@/styles/decisiones.css";
-import "@/styles/investigador.css";
 import "@/styles/informe.css";
 
 // 10 Hoja de ruta e informe (maqueta informe.html; C19–C20): las fases por dependencias con cada ítem y su origen, el
@@ -373,7 +369,7 @@ export default async function InformePagina({
                 plan={plan}
                 nombres={nombres}
                 opcionDe={opcionDe}
-               
+
                 t={t}
                 td={tD}
               />

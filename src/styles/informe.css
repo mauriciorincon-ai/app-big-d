@@ -1,3 +1,8 @@
+@import "./secciones.css";
+@import "./caso.css";
+@import "./decisiones.css";
+@import "./investigador.css";
+
 /* Big-D — hoja de ruta e informe (S6), portados de la maqueta aprobada (docs/diseno/assets/bigd.css, informe.html): las fases
    con sus ítems y su origen, el informe de 14 secciones con su índice, y la impresión (papel claro, sin menús). Solo tokens
    del sistema de diseño: sin colores propios, sin `style` en línea (CSP). El estado de un ítem y la gravedad de una alerta
