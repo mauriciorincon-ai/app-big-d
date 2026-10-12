@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { MarcoTabla } from "@/components/caso/MarcoTabla";
 import { Alerta, Aspa } from "@/components/caso/Iconos";
 import type {
   AlertaEvidencia,
@@ -372,7 +373,7 @@ export function TablaDecisiones({
   const porId = new Map(plan.decisiones.map((d) => [d.id, d]));
   const c = t.decisiones.columnas;
   return (
-    <div className="tabla-marco">
+    <MarcoTabla etiqueta={t.informe.secciones.decisiones}>
       <table className="tabla">
         <thead>
           <tr>
@@ -421,7 +422,7 @@ export function TablaDecisiones({
           })}
         </tbody>
       </table>
-    </div>
+    </MarcoTabla>
   );
 }
 

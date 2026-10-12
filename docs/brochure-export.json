@@ -29,7 +29,7 @@
     "diferencial": "No es «otro comparador»: es el único donde puedes ver el cálculo, repetirlo, mover los pesos y descubrir en qué punto cambiarías de opinión, con cada puntaje amarrado a una evidencia fechada; y el único atlas que explica a las plataformas con el mismo mapa, en dos idiomas, sin un logo de fabricante. Y no termina en un puntaje: muestra en qué punto cambiaría el resultado, qué tan robusto es frente a tus pesos y qué evidencia ya está por revisar. Todo sale de un núcleo determinista que cualquiera puede repetir y verificar, y el atlas muestra cada plataforma —hoy tres, mañana las que agregues— con la visión de un líder, el detalle de un experto y el recorrido de un dato, lado a lado."
   },
   "funcionalidades": {
-    "total": 13,
+    "total": 14,
     "fuente_del_conteo": "docs/MANUAL-DE-USO.md",
     "descartadas": [],
     "grupos": [
@@ -140,6 +140,12 @@
             "nombre": "Decisiones y riesgos",
             "que_hace": "Las decisiones del caso en orden de reversibilidad: primero las de una sola vía. Cada decisión tiene su ficha con cómo la resuelve cada plataforma y con qué evidencia citada; los riesgos se ordenan por prioridad de acción; los supuestos tienen su prueba barata, que es una tarea del equipo. Un ciclo se muestra con su camino y un plan con acciones altas sin mitigación no se puede aprobar. La pantalla arma el comando de aprobación; solo una persona lo corre.",
             "seccion_manual": "13. Las decisiones del caso"
+          },
+          {
+            "id": "F14",
+            "nombre": "Hoja de ruta e informe",
+            "que_hace": "El caso entero en una página: la hoja de ruta por fases, con cada ítem, su origen y el criterio para darlo por cumplido; la lista de alistamiento; y un informe de catorce secciones en español e inglés con las mismas cifras. Con el perfil o el plan en borrador, lo dice arriba. Se puede imprimir, y el papel sale sin menús.",
+            "seccion_manual": "14. El informe del caso"
           }
         ]
       }
@@ -149,10 +155,10 @@
     {
       "clave": "funcionalidades",
       "etiqueta": "Funcionalidades documentadas",
-      "valor": 13,
+      "valor": 14,
       "unidad": "funcionalidades",
       "fuente": "medido",
-      "detalle": "Las funciones numeradas del manual (docs/MANUAL-DE-USO.md), construidas en los sprints 1 a 4. Las de los sprints 3 y 4 (la base de conocimiento, el perfil del caso, la comparación y el instrumento) se cuentan desde que el manual las documenta. Lo recuenta tests/unit/brochure-export.test.ts."
+      "detalle": "Las funciones numeradas del manual (docs/MANUAL-DE-USO.md), construidas en los sprints 1 a 6. Las de los sprints 3 y 4 (la base de conocimiento, el perfil del caso, la comparación y el instrumento) se cuentan desde que el manual las documenta. Lo recuenta tests/unit/brochure-export.test.ts."
     },
     {
       "clave": "plataformas_en_el_atlas",
