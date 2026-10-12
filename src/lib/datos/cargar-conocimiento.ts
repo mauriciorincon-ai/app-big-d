@@ -6,6 +6,7 @@ import { parse } from "yaml";
 import { ErrorDeDatos, esDominioDeEjemplo } from "./cargar";
 import { esquemaCapacidad, esquemaCaso, esquemaConvenciones, esquemaCriterio, esquemaEscala, esquemaEvidencia, esquemaInstantanea, type Capacidad, type Caso, type Convenciones, type Criterio, type Escala, type Evidencia, type Instantanea } from "./conocimiento";
 import { esquemaPlataforma, type Plataforma } from "./esquemas";
+import { esquemaConvencionesInforme, type ConvencionesInforme } from "./informe";
 import { cambiosEntre, compararInstantanea, huellaCaso, huellaDe, huellaPlan, type Base } from "./instantanea";
 import { esquemaDecision, esquemaModoDeFalla, esquemaPlanCaso, esquemaSupuesto, type Decision, type ModoDeFalla, type Plan, type PlanCaso, type Supuesto } from "./plan";
 import { dirDatos } from "./dir";
@@ -23,6 +24,8 @@ import { vocabularioVetado } from "./vocabulario";
 export interface Conocimiento extends Base {
   gramatica: Gramatica;
   convenciones: Convenciones;
+  /** S6: lo que el informe usa (lectura, categorías, glosario). No entra a la instantánea. */
+  informe: ConvencionesInforme;
   capacidades: Capacidad[];
   criterios: Criterio[];
   escalas: Escala[];
@@ -122,7 +125,7 @@ interface BaseDelPlan {
  * de su opción, toda plataforma evaluable tiene su opción, y un plan aprobado lleva la huella de su contenido y ningún
  * bloqueante. Un ciclo o una alta sin mitigación NO impiden cargar un borrador: la pantalla los muestra (C16–C17).
  */
-function cargarPlan(dir: string, caso: Caso, b: BaseDelPlan, fallas: string[]): Plan | null {
+function cargarPlan(dir: string, caso: Caso, b: BaseDelPlan, categorias: ConvencionesInforme["categorias"] | null, fallas: string[]): Plan | null {
   const raiz = join(dir, "casos", caso.id, "plan");
   if (!existsSync(raiz)) return null;
   const rel = `data/casos/${caso.id}/plan`;
@@ -144,6 +147,9 @@ function cargarPlan(dir: string, caso: Caso, b: BaseDelPlan, fallas: string[]): 
     const d = x.v;
     if (d.capacidad_id && !caps.has(d.capacidad_id)) fallas.push(linea(x.l, ["capacidad_id"], `«${d.capacidad_id}» no es una capacidad de ${b.donde}`));
     if (d.criterio_id && !crits.has(d.criterio_id)) fallas.push(linea(x.l, ["criterio_id"], `«${d.criterio_id}» no es un criterio de ${b.donde}`));
+    // S6: el alistamiento de la decisión necesita su categoría (§ 6.11): sin ella el ítem de la hoja de ruta no se puede clasificar.
+    const origen = d.capacidad_id ?? d.criterio_id;
+    if (categorias && origen && !(origen in categorias)) fallas.push(linea(x.l, [d.capacidad_id ? "capacidad_id" : "criterio_id"], `«${origen}» no tiene categoría de alistamiento en data/convenciones/informe.yaml`));
     d.depende_de.forEach((o, i) => !idsDecision.has(o) && fallas.push(linea(x.l, ["depende_de", i], `«${o}» no es una decisión del plan`)));
     d.opciones_por_plataforma.forEach((o, i) => {
       if (!evaluables.includes(o.plataforma_id)) fallas.push(linea(x.l, ["opciones_por_plataforma", i, "plataforma_id"], `«${o.plataforma_id}» no es una plataforma que el caso evalúe (${evaluables.join(", ")})`));
@@ -187,9 +193,11 @@ export function cargarConocimiento(dir = dirDatos()): Conocimiento {
   const plataformas = entidades<Plataforma>(join(dir, "plataformas"), "data/plataformas", esquemaPlataforma, fallas).map((x) => x.v);
 
   const archivosConv = yamls(join(dir, "convenciones"));
-  if (archivosConv.join() !== "metodo.yaml") fallas.push(`data/convenciones · la base trae exactamente un archivo de convenciones, metodo.yaml (hay: ${archivosConv.join(", ") || "ninguno"})`);
+  if (archivosConv.join() !== "informe.yaml,metodo.yaml") fallas.push(`data/convenciones · la base trae exactamente dos archivos de convenciones, informe.yaml y metodo.yaml (hay: ${archivosConv.join(", ") || "ninguno"})`);
   const convL = archivosConv.includes("metodo.yaml") ? leerConPosicion(join(dir, "convenciones/metodo.yaml"), "data/convenciones/metodo.yaml", fallas) : null;
   const convenciones = convL ? (validarLeido(convL, esquemaConvenciones, fallas) as Convenciones | null) : null;
+  const infL = archivosConv.includes("informe.yaml") ? leerConPosicion(join(dir, "convenciones/informe.yaml"), "data/convenciones/informe.yaml", fallas) : null;
+  const convInforme = infL ? (validarLeido(infL, esquemaConvencionesInforme, fallas) as ConvencionesInforme | null) : null;
 
   // La gramática del atlas: de ella salen las capacidades y la escala de madurez.
   let gramatica: Gramatica | null = null;
@@ -260,6 +268,13 @@ export function cargarConocimiento(dir = dirDatos()): Conocimiento {
   for (const x of criterios) vetadas(x, ["nombre", "que_evalua"], fallas);
   for (const x of evidencias) vetadas(x, ["afirmacion", "justificacion_puntaje", "limitaciones"], fallas);
 
+  // Las categorías de alistamiento nombran capacidades y criterios que existen; el glosario no usa vocabulario vetado.
+  if (infL && convInforme) {
+    const existentes = new Set([...capacidades.map((x) => x.v.id), ...criterios.map((x) => x.v.id)]);
+    for (const k of Object.keys(convInforme.categorias)) if (!existentes.has(k)) fallas.push(linea(infL, ["categorias", k], `«${k}» no es una capacidad ni un criterio de la base`));
+    vetadas({ l: infL, v: convInforme }, ["glosario"], fallas);
+  }
+
   // Instantáneas: data/instantaneas/<versión>.json. Cada una se basta sola: su huella, sus cambios y su base.
   const instantaneas: Con<Instantanea>[] = [];
   const dirInst = join(dir, "instantaneas");
@@ -319,15 +334,16 @@ export function cargarConocimiento(dir = dirDatos()): Conocimiento {
     const base: BaseDelPlan = inst
       ? { donde: `la instantánea ${inst.version}`, plataformas: inst.contenido.plataformas, capacidades: inst.contenido.capacidades, criterios: inst.contenido.criterios, evidencias: inst.contenido.evidencias }
       : { donde: "la base", plataformas, capacidades: capacidades.map((y) => y.v), criterios: criterios.map((y) => y.v), evidencias: evidencias.map((y) => y.v) };
-    const plan = cargarPlan(dir, x.v, base, fallas);
+    const plan = cargarPlan(dir, x.v, base, convInforme?.categorias ?? null, fallas);
     if (plan) planes.push(plan);
   }
 
-  if (fallas.length || !convenciones || !gramatica) throw new ErrorDeDatos(fallas.length ? fallas : ["data/convenciones · sin convenciones ni gramática no hay base"]);
+  if (fallas.length || !convenciones || !convInforme || !gramatica) throw new ErrorDeDatos(fallas.length ? fallas : ["data/convenciones · sin convenciones ni gramática no hay base"]);
   return {
     gramatica,
     plataformas,
     convenciones,
+    informe: convInforme,
     capacidades: capacidades.map((x) => x.v),
     criterios: criterios.map((x) => x.v),
     escalas: escalas.map((x) => x.v),

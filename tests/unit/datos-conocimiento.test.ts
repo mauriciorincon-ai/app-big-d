@@ -55,6 +55,12 @@ describe("la base del repo", () => {
     expect(k.escalas.map((e) => e.tope_por_madurez.map((t) => `${t.madurez}:${t.tope}/${t.tope_aceptando_vista_previa}`))).toEqual([["disponible-general:4/4", "vista-previa-publica:2/4", "vista-previa-privada:2/4", "beta:2/4", "anunciado:2/2", "retirado:2/2"]]);
     expect(k.convenciones).toMatchObject({ umbral_empate_centesimas: 500, robustez: { robusta_pct: 70, fragil_pct: 50 } });
   });
+
+  it("las convenciones del informe: el presupuesto de lectura del E-13 y una categoría para cada capacidad y cada criterio", () => {
+    const k = cargarConocimiento();
+    expect(k.informe.lectura).toEqual({ palabras_max: 50, silabas_max: 95, terminos_max: 1 });
+    expect(Object.keys(k.informe.categorias).sort()).toEqual([...k.capacidades.map((c) => c.id), ...k.criterios.map((c) => c.id)].sort());
+  });
 });
 
 describe("una base completa y ficticia", () => {
@@ -131,7 +137,14 @@ describe("una base rota no carga y dice dónde (RF-01.2)", () => {
     ["un perfil aprobado editado a mano", (d) => yaml(d, "casos/hospital-futuro.yaml", (c) => void (c.acepta_vista_previa = true)), /· aprobacion\.huella · no es la huella del perfil: un perfil aprobado no se edita a mano/],
     ["un caso que referencia una instantánea que no existe", (d) => yaml(d, "casos/hospital-futuro.yaml", (c) => void (c.instantanea = "2026-09-27.1")), /· instantanea · no existe data\/instantaneas\/2026-09-27\.1\.json$/],
     ["una restricción que elimina una plataforma que no está en la instantánea", (d) => yaml(d, "casos/hospital-futuro.yaml", (c) => void ((c.restricciones as { elimina: Record<string, unknown>[] }[])[0]!.elimina[0]!.plataforma_id = "oeste")), /· restricciones\[0\]\.elimina\[0\]\.plataforma_id · «oeste» no es una plataforma de la instantánea 2026-09-26\.1$/],
-    ["dos archivos de convenciones", (d) => writeFileSync(join(d, "convenciones/otro.yaml"), "id: metodo\n"), /^data\/convenciones · la base trae exactamente un archivo de convenciones/],
+    ["un tercer archivo de convenciones", (d) => writeFileSync(join(d, "convenciones/otro.yaml"), "id: metodo\n"), /^data\/convenciones · la base trae exactamente dos archivos de convenciones, informe\.yaml y metodo\.yaml/],
+    ["sin las convenciones del informe", (d) => rmSync(join(d, "convenciones/informe.yaml")), /^data\/convenciones · la base trae exactamente dos archivos de convenciones, informe\.yaml y metodo\.yaml \(hay: metodo\.yaml\)/],
+    ["un presupuesto de lectura en cero", (d) => yaml(d, "convenciones/informe.yaml", (c) => void ((c.lectura as Record<string, number>).palabras_max = 0)), /informe\.yaml:\d+:\d+ · informe · lectura\.palabras_max · al menos 1$/],
+    ["una categoría de alistamiento que no es una de las siete", (d) => yaml(d, "convenciones/informe.yaml", (c) => void ((c.categorias as Record<string, string>)["cap-ia"] = "otra")), /informe\.yaml:\d+:\d+ · informe · categorias\.cap-ia · /],
+    ["una categoría para algo que no es capacidad ni criterio", (d) => yaml(d, "convenciones/informe.yaml", (c) => void ((c.categorias as Record<string, string>)["cap-magia"] = "datos")), /informe\.yaml:\d+:\d+ · informe · categorias\.cap-magia · «cap-magia» no es una capacidad ni un criterio de la base$/],
+    ["una decisión del plan cuya capacidad no tiene categoría", (d) => yaml(d, "convenciones/informe.yaml", (c) => void delete (c.categorias as Record<string, string>)["cap-gobierno"]), /dec-catalogo\.yaml:\d+:\d+ · dec-catalogo · capacidad_id · «cap-gobierno» no tiene categoría de alistamiento en data\/convenciones\/informe\.yaml$/],
+    ["un término del glosario sin su inglés", (d) => yaml(d, "convenciones/informe.yaml", (c) => void (((c.glosario as Record<string, unknown>[])[0]!.termino as Record<string, string>).en = "")), /informe\.yaml:\d+:\d+ · informe · glosario\[0\]\.termino\.en · /],
+    ["un término del glosario que no está entre sus formas", (d) => yaml(d, "convenciones/informe.yaml", (c) => void (((c.glosario as Record<string, unknown>[])[0]!.formas as Record<string, string[]>).es = ["otra cosa"])), /informe\.yaml:\d+:\d+ · informe · glosario\[0\]\.formas\.es · incluye el propio término «empate técnico»$/],
     // Criterios y capacidades.
     ["un criterio de capacidad sin capacidad", (d) => yaml(d, "criterios/crit-ia.yaml", (c) => void delete c.capacidad_id), /crit-ia\.yaml:\d+:\d+ · crit-ia · capacidad_id · obligatorio en un criterio de tipo capacidad$/],
     ["un criterio transversal con capacidad", (d) => yaml(d, "criterios/crit-costo.yaml", (c) => void (c.capacidad_id = "cap-ia")), /crit-costo\.yaml:\d+:\d+ · crit-costo · capacidad_id · un criterio transversal no tiene capacidad$/],

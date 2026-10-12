@@ -1,0 +1,72 @@
+# Convenciones del informe (S6, C19–C20): lo que el informe usa y no sale de la evidencia ni del caso. NO entran a la
+# instantánea (no puntúan); sí entran a la huella de entradas de la ficha de reproducibilidad (RF-06.5).
+id: informe
+# E-13: el resumen para quien decide se lee en voz alta en menos de 20 s. Cumple si tiene hasta 50 palabras O hasta 95
+# sílabas, y a lo sumo un término a explicar (lista de la gramática más el glosario de abajo). Convención del método.
+lectura:
+  palabras_max: 50
+  silabas_max: 95
+  terminos_max: 1
+# § 6.11: la categoría de alistamiento de los ítems que nacen de las decisiones de cada capacidad o criterio. Toda
+# capacidad y todo criterio de la base tiene una; el plan de un caso no cita una que no esté aquí.
+categorias:
+  cap-almacenamiento: datos
+  cap-consumo: datos
+  cap-gobierno: gobierno
+  cap-ia: datos
+  cap-ingesta: datos
+  cap-transformacion: operacion
+  crit-almacenamiento: datos
+  crit-consumo: datos
+  crit-costo: presupuesto_y_contratos
+  crit-cumplimiento: gobierno
+  crit-dependencia: presupuesto_y_contratos
+  crit-ecosistema: identidad_y_acceso
+  crit-gobierno: gobierno
+  crit-habilidades: habilidades
+  crit-ia: datos
+  crit-ingesta: datos
+  crit-transformacion: operacion
+# Los términos del método que el informe explica. Redactados en cada idioma, no traducidos. `formas` son las palabras con
+# que cada término aparece en el texto: el detector de lectura cuenta una palabra completa, no una raíz.
+glosario:
+  - id: empate-tecnico
+    termino: { es: "empate técnico", en: "technical tie" }
+    formas:
+      es: ["empate técnico", "empates técnicos"]
+      en: ["technical tie", "technical ties"]
+    explicacion:
+      es: "Menos de 5 puntos de diferencia entre las primeras: el método no declara una ganadora. El margen de 5 puntos es una convención, no una ley."
+      en: "Less than 5 points between the top platforms: the method does not name a winner. The 5-point margin is a convention, not a law."
+  - id: robustez
+    termino: { es: "robustez", en: "robustness" }
+    formas:
+      es: ["robustez", "robusta", "robusto"]
+      en: ["robustness", "robust"]
+    explicacion:
+      es: "Qué tan estable es el resultado cuando los pesos cambian dentro de lo declarado."
+      en: "How stable the result is when the weights change within what was declared."
+  - id: decision-de-una-via
+    termino: { es: "decisión de una vía", en: "one-way decision" }
+    formas:
+      es: ["decisión de una vía", "decisiones de una vía", "una vía"]
+      en: ["one-way decision", "one-way decisions", "one-way"]
+    explicacion:
+      es: "Una decisión que, si se deshace, cuesta migrar datos, rediseñar permisos o renegociar un contrato."
+      en: "A decision that, if undone, costs a data migration, a permissions redesign or a renegotiated contract."
+  - id: prueba-barata
+    termino: { es: "prueba barata", en: "cheap test" }
+    formas:
+      es: ["prueba barata", "pruebas baratas"]
+      en: ["cheap test", "cheap tests"]
+    explicacion:
+      es: "Una comprobación pequeña que el equipo del caso hace antes de decidir. La herramienta la planifica; no la ejecuta."
+      en: "A small check the case team runs before deciding. The tool plans it; it does not run it."
+  - id: riesgo-residual
+    termino: { es: "riesgo residual", en: "residual risk" }
+    formas:
+      es: ["riesgo residual", "riesgos residuales"]
+      en: ["residual risk", "residual risks"]
+    explicacion:
+      es: "El riesgo que queda después de aplicar la mitigación."
+      en: "The risk left after the mitigation is applied."
