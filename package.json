@@ -19,7 +19,7 @@
     "tokens": "node scripts/paleta/generar-tokens.mjs"
   },
   "dependencies": {
-    "@sentry/nextjs": "^11.5.0",
+    "@sentry/nextjs": "^11.6.0",
     "diagramador": "workspace:*",
     "instrumentos-de-plan": "workspace:*",
     "next": "16.4.0",
