@@ -294,7 +294,7 @@ a ninguna ni pide cuentas.
 | S4 (2026-10-11) | 10 El perfil del caso (se aprueba desde su pantalla) · 12 El instrumento (validación antes de publicar)                                                                            |
 | S5 (2026-10-11) | 13 Las decisiones del caso: ondas, fichas con evidencia, riesgos por prioridad y supuestos (se aprueba el plan desde su pantalla)                                                  |
 | S6 (2026-10-11) | 14 El informe del caso: hoja de ruta por fases con su origen, alistamiento, informe de catorce secciones en dos idiomas e impresión                                                |
-| S7 (2026-10-12) | Sin funciones nuevas: el caso, el informe y las pantallas se prueban también en inglés, de punta a punta; la tabla de riesgos en teléfono avisa que se desliza de lado |
+| S7 (2026-10-12) | Cambios visibles: si el cálculo en segundo plano falla, la robustez lo dice y no se queda «en curso»; cada riesgo muestra su causa y de dónde salen sus números; el enlace «Ir al editor, abajo» junto al botón de aprobación; en teléfono, la tabla de riesgos avisa que se desliza de lado. El caso, el informe y las pantallas también se prueban en inglés. |
 
 ---
 
@@ -575,4 +575,4 @@ manages and controls; it never operates a platform**: it connects to none and as
 | S4 (2026-10-11) | 10 The case profile (approved from its page) · 12 The instrument (validation before publishing)                                                            |
 | S5 (2026-10-11) | 13 The case's decisions: waves, sheets with evidence, risks by priority and assumptions (the plan is approved from its page)                               |
 | S6 (2026-10-11) | 14 The case report: the roadmap by phases with its origin, the readiness checklist, a fourteen-section report in two languages, and printing               |
-| S7 (2026-10-12) | No new features: the case, the report and the screens are also tested end to end in English; the risk table on a phone says it slides sideways |
+| S7 (2026-10-12) | Visible changes: if the background calculation fails, robustness says so instead of staying «in progress»; each risk shows its cause and where its numbers come from; the “Go to the editor, below” link next to the approval button; on a phone, the risk table says it slides sideways. The case, the report and the screens are also tested in English. |

@@ -105,7 +105,7 @@ con línea por modo, orquestación como capa) y la hoja base del producto es `as
 
 ## Después de G-Diseño
 
-Decisiones de pantalla que la maqueta aprobada no dibuja. Van aquí (el `design-system.md` no se toca en un sprint de producto) y las
+Decisiones de pantalla que la maqueta aprobada no dibuja. Van aquí hasta que se funden en el design system, y las
 miradas de FORMA y de TEXTO se registran «maquetada, no vista» hasta el gate humano del hito.
 
 **Plegadas en `design-system.md` v0.7.0 (S7, 2026-10-12, cierre del hito H-1), § 5.1.** Desde esa versión el design system es la

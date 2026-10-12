@@ -96,7 +96,7 @@ export interface DecisionCalculada {
   en_ciclo: boolean;
   /** Plataformas cuya opción se planifica (la ganadora o todas las empatadas); vacía sin comparación. */
   planificadas: string[];
-  /** Plataformas de la decisión cuya opción no tiene fuente en la base. */
+  /** Supuestos de la decisión que aún no tienen su prueba barata (estado «sin_probar»). */
   supuestos_sin_probar: string[];
   riesgos: string[];
 }
