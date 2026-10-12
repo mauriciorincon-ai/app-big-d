@@ -228,7 +228,7 @@ export interface Textos {
         paraEmpate: string;
         paraGanadora: string;
         sinComparacion: string;
-        motivos: { "perfil-en-borrador": string; "sin-evidencia": string; "todas-descartadas": string; otro: string };
+        motivos: { "perfil-en-borrador": string; "falta-evidencia": string; "todas-descartadas": string; otro: string };
         supuestos: string;
         riesgos: string;
         prueba: string;

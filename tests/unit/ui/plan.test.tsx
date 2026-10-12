@@ -11,6 +11,8 @@ import { cargarConocimiento } from "@/lib/datos/cargar-conocimiento";
 import { huellaPlan } from "@/lib/datos/instantanea";
 import { textos } from "@/lib/i18n";
 import { comandoAprobarPlan } from "@/lib/investigador/comando-plan";
+import { plantilla } from "@/lib/atlas/plantilla";
+import type { Motivo } from "@/engine/tipos";
 import { vistaDecisiones } from "@/lib/plan/vista";
 import { armarBaseFuturo } from "../lib/base-futuro";
 
@@ -122,5 +124,20 @@ describe("la aprobación del plan", () => {
     expect(container.textContent).toContain("2026-10-12");
     expect(container.textContent).toContain("sha256");
     expect(container.querySelector("code")).toBeNull();
+  });
+});
+
+describe("el orden de la tabla AIAG-VDA sale del mínimo de cada banda (la 1 va primero, no al final)", () => {
+  it("la primera fila es severidad 1 y ocurrencia 1", () => {
+    const { container } = render(<TablaAccion t={t} />);
+    const primera = container.querySelector("tbody tr th")!;
+    expect(primera.textContent).toBe(plantilla(t.riesgos.tabla.fila, { s: "1", o: "1" }));
+  });
+});
+
+describe("cada motivo que el motor puede emitir tiene su texto en la ficha", () => {
+  it("el diccionario cubre todos los motivos del tipo Motivo (exhaustivo por tipo)", () => {
+    const motor: Record<Motivo["motivo"], true> = { "perfil-en-borrador": true, "todas-descartadas": true, "falta-evidencia": true };
+    for (const m of Object.keys(motor)) expect(t.ficha.motivos, m).toHaveProperty(m);
   });
 });

@@ -239,9 +239,11 @@ export function TablaRiesgos({
 
 /** La tabla AIAG-VDA completa, dibujada desde el dato del paquete: lo que se muestra es lo que se aplica. */
 export function TablaAccion({ t }: { t: T }) {
-  const S = Object.keys(TABLA_AIAG_VDA.bandas.severidad).reverse();
-  const O = Object.keys(TABLA_AIAG_VDA.bandas.ocurrencia).reverse();
-  const D = Object.keys(TABLA_AIAG_VDA.bandas.deteccion).reverse();
+  // El orden sale del mínimo de cada banda: Object.keys pone «1» (un índice entero) primero y lo dejaría al final.
+  const ordenadas = (b: Record<string, [number, number]>) => Object.keys(b).sort((x, y) => b[x]![0] - b[y]![0]);
+  const S = ordenadas(TABLA_AIAG_VDA.bandas.severidad);
+  const O = ordenadas(TABLA_AIAG_VDA.bandas.ocurrencia);
+  const D = ordenadas(TABLA_AIAG_VDA.bandas.deteccion);
   return (
     <details className="lectura-seccion">
       <summary>{t.riesgos.tabla.titulo}</summary>
