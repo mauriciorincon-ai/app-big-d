@@ -34,6 +34,8 @@ const nombres: Nombres = {
 /** Un Worker de mentira con el contrato real: recorre `atender` un mensaje por vuelta del bucle y obedece «cancelar». */
 class WorkerFalso {
   static ultimo: WorkerFalso | null = null;
+  static todos: WorkerFalso[] = [];
+  terminado = false;
   onmessage: ((ev: { data: unknown }) => void) | null = null;
   onerror: ((ev: { message: string }) => void) | null = null;
   onmessageerror: (() => void) | null = null;
@@ -41,13 +43,14 @@ class WorkerFalso {
   peticiones: Peticion[] = [];
   constructor() {
     WorkerFalso.ultimo = this;
+    WorkerFalso.todos.push(this);
   }
   postMessage(p: Peticion) {
     this.peticiones.push(p);
     if (p.tipo === "cancelar") return void this.cancelados.add(p.id);
     const gen = atender(p);
     const paso = () => {
-      if (this.cancelados.has(p.id)) return;
+      if (this.terminado || this.cancelados.has(p.id)) return;
       const n = gen.next();
       if (n.done) return;
       this.onmessage?.({ data: n.value });
@@ -55,10 +58,13 @@ class WorkerFalso {
     };
     setTimeout(paso, 5);
   }
-  terminate() {}
+  terminate() {
+    this.terminado = true;
+  }
 }
 
 beforeEach(() => {
+  WorkerFalso.todos = [];
   window.history.replaceState(null, "", "/es/casos/hospital-futuro/comparacion");
   vi.stubGlobal("Worker", WorkerFalso);
 });
@@ -94,19 +100,28 @@ describe("Exploracion: sensibilidad y robustez", () => {
     expect(fila.getAttribute("aria-current")).toBe("true");
   });
 
-  it("AU-S3-06: si el Worker falla (no carga o responde algo ilegible), la robustez lo dice y no se queda en curso", async () => {
-    WorkerFalso.ultimo = null;
+  it("AU-S3-06 y M1: si el Worker falla (no carga o responde algo ilegible), la robustez lo dice, no se queda en curso y el Worker caído no se reutiliza", async () => {
     exploracion();
-    fireEvent.change(screen.getByRole("slider"), { target: { value: "2600" } });
-    await waitFor(() => expect(WorkerFalso.ultimo).not.toBeNull());
-    await act(async () => WorkerFalso.ultimo!.onerror?.({ message: "el chunk no cargó" }));
+    const slider = () => screen.getByRole("slider");
+    const simulaciones = (w: WorkerFalso) => w.peticiones.filter((p) => p.tipo === "simular").length;
+    fireEvent.change(slider(), { target: { value: "2600" } });
+    await waitFor(() => expect(WorkerFalso.todos).toHaveLength(1));
+    const caido = WorkerFalso.todos[0];
+    await act(async () => caido.onerror?.({ message: "el chunk no cargó" }));
     await waitFor(() => expect(document.querySelector("#rob")!.textContent).toContain(plantilla(tc.robustez.error, { mensaje: "el chunk no cargó" })));
     expect(document.querySelector("#rob [role=progressbar]")).toBeNull();
-    // Un mensaje ilegible del Worker también termina en error, con el texto declarado.
-    fireEvent.change(screen.getByRole("slider"), { target: { value: "2700" } });
-    await waitFor(() => expect(WorkerFalso.ultimo!.peticiones.filter((p) => p.tipo === "simular").length).toBeGreaterThan(1));
-    await act(async () => WorkerFalso.ultimo!.onmessageerror?.());
+    // M1: el Worker que falló se termina; la siguiente exploración crea otro y no le publica al caído.
+    expect(caido.terminado).toBe(true);
+    const pedidasAlCaido = caido.peticiones.length;
+    fireEvent.change(slider(), { target: { value: "2700" } });
+    await waitFor(() => expect(WorkerFalso.todos).toHaveLength(2));
+    const nuevo = WorkerFalso.todos[1];
+    await waitFor(() => expect(simulaciones(nuevo)).toBe(1));
+    expect(caido.peticiones).toHaveLength(pedidasAlCaido);
+    // Un mensaje ilegible del Worker también termina en error, con el texto declarado, y también lo retira.
+    await act(async () => nuevo.onmessageerror?.());
     await waitFor(() => expect(document.querySelector("#rob")!.textContent).toContain(plantilla(tc.robustez.error, { mensaje: tc.robustez.errorWorker })));
+    expect(nuevo.terminado).toBe(true);
   });
 
   it("«Cancelar» detiene la simulación en curso y deja a la vista la anterior, diciéndolo", async () => {

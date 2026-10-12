@@ -144,7 +144,10 @@ export function Exploracion({ idioma, t, entrada, resultado, simulacion, nombres
         }
       };
       // AU-S3-06: si el chunk del Worker no carga o un mensaje no se puede leer, la robustez dice que falló, no se queda «en curso».
+      // Un Worker que falló no se reutiliza (M1 de la auditoría S7): se termina y la siguiente exploración crea otro.
       const fallo = (mensaje: string) => {
+        nuevo.terminate();
+        if (trabajador.current === nuevo) trabajador.current = null;
         const v = vigente.current;
         if (!v) return;
         setRob({ clave: v.clave, estado: "error", mensaje });
