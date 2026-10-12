@@ -503,6 +503,8 @@ export interface Textos {
       nota: string;
       corrida: string;
       modelo: string;
+      /** Quién propone la evidencia, tal como lo declara la propuesta (AU-S3-04). */
+      origen: string;
       /** Bloqueos que contó el hook de fin (`.reintentos`). */
       reintentos: readonly [string, string];
       /** Reintentos que declara la propia corrida (`ejecucion.reintentos`). */

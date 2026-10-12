@@ -39,6 +39,14 @@ function escribirEntero(ruta, texto) {
 }
 
 /**
+ * Perilla de PRUEBA (S4-B3): con BIGD_PRUEBA_CORTE=1 y solo sobre la raíz de trabajo temporal (nunca sobre el repo real, ni
+ * sobre la copia del ensayo), simula un corte entre la línea de revisión y el archivo que dice «aprobado».
+ */
+function cortePruebas(raiz) {
+  if (process.env.BIGD_PRUEBA_CORTE === "1" && raiz === RAIZ && RAIZ !== RAIZ_REPO) throw new Error("corte simulado entre la revisión y el archivo aprobado");
+}
+
+/**
  * Antes de sobrescribir un mapa con otra versión, la que había se archiva con sus mismos bytes (su huella es la que
  * aprobó una persona). Si el archivo ya existe con otros bytes, no se toca nada.
  */
@@ -135,10 +143,14 @@ async function aprobarEvidencias(inv, d, dir, carpeta, bytes, verificacion, fech
 /** El perfil aprobado, entero a un temporal y renombrado, y la línea de la revisión al final (B-34: entero o nada). */
 function escribirCaso(raiz, caso, revision, desdeBorrador) {
   const cabecera = `# APROBADO por una persona el ${revision.fecha} (UTC) con scripts/aprobar.mjs --caso (sobre el borrador ${desdeBorrador.slice(0, 12)}…).\n# No se edita a mano: su huella y la de su revisión (data/revisiones/casos/${caso.id}.jsonl) deben coincidir; para cambiarlo se aprueba otro borrador.\n`;
-  escribirEntero(join(raiz, "data/casos", `${caso.id}.yaml`), cabecera + stringify(caso, { lineWidth: 0, version: "1.2" }));
+  // S4-B3: la revisión va PRIMERO y el perfil al final, que es el punto de compromiso. Un corte entre las dos escrituras
+  // deja una línea de revisión sin perfil aprobado (inocua, la base carga) y no un perfil `aprobado` sin su revisión
+  // (que el cargador rechaza como editado a mano).
   mkdirSync(join(raiz, "data/revisiones/casos"), { recursive: true });
   const rutaRev = join(raiz, "data/revisiones/casos", `${caso.id}.jsonl`);
   escribirEntero(rutaRev, `${existsSync(rutaRev) ? readFileSync(rutaRev, "utf8") : ""}${JSON.stringify(revision)}\n`);
+  cortePruebas(raiz);
+  escribirEntero(join(raiz, "data/casos", `${caso.id}.yaml`), cabecera + stringify(caso, { lineWidth: 0, version: "1.2" }));
 }
 
 /** El perfil de un caso: se aprueba con lo que la persona fijó en su pantalla, contra el borrador del que partió (`--desde`). */
@@ -179,10 +191,12 @@ function escribirPlan(raiz, plan, revision, desdeBorrador) {
   const yaml = (d) => stringify(d, { lineWidth: 0, version: "1.2" });
   for (const m of plan.modos_de_falla) escribirEntero(join(base, "modos-de-falla", `${m.id}.yaml`), yaml(m));
   for (const s of plan.supuestos) escribirEntero(join(base, "supuestos", `${s.id}.yaml`), yaml(s));
-  escribirEntero(rutaCab, `${aviso}${previos.join("\n")}${previos.length ? "\n" : ""}${yaml({ caso_id: plan.caso_id, estado_aprobacion: plan.estado_aprobacion, aprobacion: plan.aprobacion })}`);
+  // S4-B3: igual que el perfil, `plan.yaml` (el que dice «aprobado») se escribe al final, después de la revisión.
   mkdirSync(join(raiz, "data/revisiones/planes"), { recursive: true });
   const rutaRev = join(raiz, "data/revisiones/planes", `${plan.caso_id}.jsonl`);
   escribirEntero(rutaRev, `${existsSync(rutaRev) ? readFileSync(rutaRev, "utf8") : ""}${JSON.stringify(revision)}\n`);
+  cortePruebas(raiz);
+  escribirEntero(rutaCab, `${aviso}${previos.join("\n")}${previos.length ? "\n" : ""}${yaml({ caso_id: plan.caso_id, estado_aprobacion: plan.estado_aprobacion, aprobacion: plan.aprobacion })}`);
 }
 
 /** El plan de un caso: se aprueba tal como lo vio la persona en su pantalla, contra el borrador del que partió (`--desde`). */

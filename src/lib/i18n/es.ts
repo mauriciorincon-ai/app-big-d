@@ -877,6 +877,7 @@ export const es: Textos = {
       nota: "El diff contra el mapa aprobado lo calcula el código por id; el modelo solo redacta. Si el modelo dijera «sin novedades» y el diff no estuviera vacío, gana el diff.",
       corrida: "Corrida",
       modelo: "modelo declarado: {modelo}",
+      origen: "origen declarado: {origen}",
       reintentos: ["validador al cerrar: {n} bloqueo", "validador al cerrar: {n} bloqueos"],
       reintentosDeclarados: ["la corrida declara {n} reintento", "la corrida declara {n} reintentos"],
       fuentes: ["{n} fuente citada", "{n} fuentes citadas"],

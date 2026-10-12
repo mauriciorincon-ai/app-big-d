@@ -33,7 +33,10 @@ function correr(contenido: string, env: Record<string, string | undefined>) {
       tool_input: { file_path: "a.ts", content: contenido },
     }),
     encoding: "utf8",
-    env: { ...env, CLAUDE_PROJECT_DIR: process.cwd() } as unknown as NodeJS.ProcessEnv,
+    env: {
+      ...env,
+      CLAUDE_PROJECT_DIR: process.cwd(),
+    } as unknown as NodeJS.ProcessEnv,
   });
 }
 
@@ -67,6 +70,20 @@ describe("hook PreToolUse de secretos (kit v1.37.0; origen planlang AU-S2-B12)",
     const r = correr("hola", { PATH: pathSinGitleaks() });
     expect(r.status).toBe(2);
     expect(r.stderr).toContain("falta gitleaks");
+  });
+
+  it("en la CI gitleaks tiene que estar instalado: sus pruebas no se saltan en silencio (regla 15, lote S4)", () => {
+    // Fuera de la CI el binario es opcional y esas pruebas se saltan; en la CI, que se salten es un rojo.
+    if (process.env.CI) expect(hayGitleaks).toBe(true);
+  });
+
+  it("AU-S3-11: con una entrada que no es JSON también falla cerrado (no hay secreto que mirar, pero tampoco se sabe)", () => {
+    const r = spawnSync("node", ["scripts/hooks/gitleaks-escritura.mjs"], {
+      input: "esto no es json",
+      encoding: "utf8",
+    });
+    expect(r.status).toBe(2);
+    expect(r.stderr).toContain("no es JSON");
   });
 
   it("KIT_SIN_GITLEAKS=1 lo salta a sabiendas", () => {

@@ -1,7 +1,7 @@
 // Utilidades comunes de los scripts del investigador: raíz de trabajo, lectura de datos, fecha, la carpeta de
 // una propuesta, los identificadores de quien investiga y la guarda de la aprobación.
 import { execFileSync } from "node:child_process";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, realpathSync } from "node:fs";
 import { homedir, hostname, userInfo } from "node:os";
 import { basename, dirname, join, resolve } from "node:path";
 import { parse } from "yaml";
@@ -63,6 +63,15 @@ export function identificadores() {
   return [...new Set(todos.map((x) => (x ?? "").trim().toLowerCase()).filter((x) => x.length >= 4))];
 }
 
+/** La ruta con sus enlaces simbólicos resueltos (AU-S3-03: `BIGD_RAIZ` hacia un enlace al repo no es una raíz temporal). */
+const real = (ruta) => {
+  try {
+    return realpathSync(resolve(ruta));
+  } catch {
+    return resolve(ruta);
+  }
+};
+
 /**
  * ¿Puede correr la aprobación aquí? Sobre el repo real, solo una persona en su terminal: no desde una sesión
  * de Claude Code (`CLAUDECODE`) ni sin terminal. El candado de Bash es la defensa contra el accidente; esta
@@ -70,8 +79,10 @@ export function identificadores() {
  * cuatro formas). Sobre una raíz temporal (las pruebas, el kit de prueba) no aplica.
  */
 export function puedeAprobar({ raiz, repo, env, tty }) {
-  if (resolve(raiz) !== resolve(repo)) return { ok: true };
-  if (env.CLAUDECODE) return { ok: false, motivo: "corre dentro de una sesión de Claude Code; ábrelo en tu propia terminal" };
+  if (real(raiz) !== real(repo)) return { ok: true };
+  // AU-S3-03: la presencia de la variable basta (un valor vacío, `CLAUDECODE=`, también marca la sesión).
+  if (Object.keys(env).some((k) => k === "CLAUDECODE" || k.startsWith("CLAUDE_CODE_")))
+    return { ok: false, motivo: "corre dentro de una sesión de Claude Code; ábrelo en tu propia terminal" };
   if (!tty) return { ok: false, motivo: "no hay una terminal interactiva; ábrelo en tu propia terminal" };
   return { ok: true };
 }

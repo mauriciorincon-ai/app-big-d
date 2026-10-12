@@ -310,6 +310,15 @@ describe("scripts/aprobar --caso, de punta a punta", () => {
       false,
     );
   });
+  it("S4-B3: un corte entre la revisión y el perfil deja la base cargable y el perfil en borrador (el aprobado se escribe al final)", () => {
+    const b = borradorEn(raiz);
+    const r = correr(comandoDe(b, decisiones(b)), { BIGD_PRUEBA_CORTE: "1" });
+    expect(r.status).not.toBe(0);
+    expect(r.stderr).toContain("corte simulado");
+    expect(leerCaso().estado_aprobacion).toBe("borrador");
+    expect(() => cargarConocimiento(join(raiz, "data"))).not.toThrow();
+    expect(casosSinAprobacion(join(raiz, "data"))).toEqual([]);
+  });
   it("con un borrador que cambió desde el comando, no escribe nada", () => {
     const b = borradorEn(raiz);
     const args = comandoDe(b, decisiones(b));

@@ -192,6 +192,16 @@ describe("el script de aprobación, sobre una raíz temporal", () => {
     expect(antes).not.toContain("APROBADO");
   });
 
+  it("S4-B3: un corte entre la revisión y plan.yaml deja la base cargable y el plan en borrador (el aprobado se escribe al final)", () => {
+    const r = correr(["--plan", CASO, "--desde", desdeActual()], {
+      BIGD_PRUEBA_CORTE: "1",
+    });
+    expect(r.status).not.toBe(0);
+    expect(r.stderr).toContain("corte simulado");
+    expect(planDe(raiz).estado_aprobacion).toBe("borrador");
+    expect(planesSinAprobacion(join(raiz, "data"))).toEqual([]);
+  });
+
   it("un `--desde` viejo se rechaza y no escribe nada", () => {
     const r = correr(["--plan", CASO, "--desde", "0".repeat(64)]);
     expect(r.status).not.toBe(0);
@@ -201,9 +211,20 @@ describe("el script de aprobación, sobre una raíz temporal", () => {
   });
 
   it("sobre el repo real, dentro de una sesión de Claude Code o sin terminal, la guarda no deja correrlo", () => {
-    expect(puedeAprobar({ raiz: REPO, repo: REPO, env: { CLAUDECODE: "1" }, tty: true }).ok).toBe(false);
-    expect(puedeAprobar({ raiz: REPO, repo: REPO, env: {}, tty: false }).ok).toBe(false);
-    expect(puedeAprobar({ raiz: REPO, repo: REPO, env: {}, tty: true }).ok).toBe(true);
+    expect(
+      puedeAprobar({
+        raiz: REPO,
+        repo: REPO,
+        env: { CLAUDECODE: "1" },
+        tty: true,
+      }).ok,
+    ).toBe(false);
+    expect(
+      puedeAprobar({ raiz: REPO, repo: REPO, env: {}, tty: false }).ok,
+    ).toBe(false);
+    expect(
+      puedeAprobar({ raiz: REPO, repo: REPO, env: {}, tty: true }).ok,
+    ).toBe(true);
   });
 
   it("un plan con un bloqueante no se escribe, aunque el comando esté bien armado", () => {
@@ -239,13 +260,31 @@ describe("planesSinAprobacion (el cinturón de la revisión)", () => {
   it("un plan aprobado editado a mano, aunque se recalcule su sello, se rechaza: no es el que aprobó una persona", () => {
     aprobado();
     const antes = planDe(raiz);
-    const editado: Plan = { ...antes, supuestos: antes.supuestos.map((x) => (x.id === "sup-equipo-opera" ? { ...x, estado: "confirmado" as const } : x)) };
-    yaml(`${PLAN}/supuestos/sup-equipo-opera.yaml`, (d) => (d.estado = "confirmado"));
+    const editado: Plan = {
+      ...antes,
+      supuestos: antes.supuestos.map((x) =>
+        x.id === "sup-equipo-opera"
+          ? { ...x, estado: "confirmado" as const }
+          : x,
+      ),
+    };
+    yaml(
+      `${PLAN}/supuestos/sup-equipo-opera.yaml`,
+      (d) => (d.estado = "confirmado"),
+    );
     // Quien edita a mano recalcula el sello para que el cargador lo acepte…
-    yaml(`${PLAN}/plan.yaml`, (d) => (d.aprobacion = { fecha: "2026-10-12", huella: huellaPlan(editado) }));
+    yaml(
+      `${PLAN}/plan.yaml`,
+      (d) =>
+        (d.aprobacion = { fecha: "2026-10-12", huella: huellaPlan(editado) }),
+    );
     expect(() => cargarConocimiento(join(raiz, "data"))).not.toThrow();
     // …pero la revisión, que solo escribe el comando, dice otra cosa.
-    expect(planesSinAprobacion(join(raiz, "data"))).toEqual([expect.stringContaining("su huella no es la que aprobó una persona el 2026-10-12")]);
+    expect(planesSinAprobacion(join(raiz, "data"))).toEqual([
+      expect.stringContaining(
+        "su huella no es la que aprobó una persona el 2026-10-12",
+      ),
+    ]);
   });
 
   it("un plan aprobado cuyo contenido cambió sin recalcular el sello ni siquiera carga", () => {

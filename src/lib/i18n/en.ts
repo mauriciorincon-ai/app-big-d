@@ -877,6 +877,7 @@ export const en: Textos = {
       nota: "The diff against the approved map is computed by code, by id; the model only writes. If the model said “no news” and the diff were not empty, the diff wins.",
       corrida: "Run",
       modelo: "declared model: {modelo}",
+      origen: "declared origin: {origen}",
       reintentos: ["validator at the end: {n} block", "validator at the end: {n} blocks"],
       reintentosDeclarados: ["the run reports {n} retry", "the run reports {n} retries"],
       fuentes: ["{n} source cited", "{n} sources cited"],
