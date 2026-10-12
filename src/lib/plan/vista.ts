@@ -3,6 +3,8 @@ import { comparacionDe, planDe, type ResultadoPlan } from "@/engine";
 import { plantilla } from "@/lib/atlas/plantilla";
 import { evaluacionDe } from "@/lib/caso/casos";
 import { lista } from "@/lib/caso/formato";
+import { huellaPlan } from "@/lib/datos/instantanea";
+import { comandoAprobarPlan } from "@/lib/investigador/comando-plan";
 import { esc } from "@/lib/html";
 import type { Conocimiento } from "@/lib/datos/cargar-conocimiento";
 import type { Caso } from "@/lib/datos/conocimiento";
@@ -257,4 +259,27 @@ export function vistaDecisiones(
     cicloNombres,
     sinOnda,
   };
+}
+
+/**
+ * Lo que dice el apartado «Aprobar el plan» (S5-M-4): los bloqueos escritos, sin repetir las decisiones de un ciclo (el camino
+ * cierra en su primer nodo: a → b → a), y el comando de aprobación solo cuando el plan se puede aprobar y todavía no lo está.
+ * Está aquí, y no en la página, para probarlo: la página solo lo pinta.
+ */
+export function aprobacionDelPlan(
+  plan: Plan,
+  r: ResultadoPlan,
+  idioma: Idioma,
+): { bloqueos: string[]; comando: string | null } {
+  const t = textos(idioma);
+  const bloqueos = r.informe.bloqueantes.map((b) =>
+    plantilla(t.caso.decisiones.aprobar.bloqueantes[b.tipo], {
+      ids: lista([...new Set(b.ids)], t.caso.y),
+    }),
+  );
+  const comando =
+    r.aprobable && plan.estado_aprobacion !== "aprobado"
+      ? comandoAprobarPlan(plan.caso_id, huellaPlan(plan))
+      : null;
+  return { bloqueos, comando };
 }

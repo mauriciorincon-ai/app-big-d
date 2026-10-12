@@ -7,7 +7,9 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterAll, describe, expect, it } from "vitest";
 import { cargarConocimiento } from "@/lib/datos/cargar-conocimiento";
-import { vistaDecisiones } from "@/lib/plan/vista";
+import { huellaPlan } from "@/lib/datos/instantanea";
+import { comandoAprobarPlan } from "@/lib/investigador/comando-plan";
+import { aprobacionDelPlan, vistaDecisiones } from "@/lib/plan/vista";
 import { armarBaseFuturo } from "../lib/base-futuro";
 
 const real = cargarConocimiento();
@@ -93,5 +95,35 @@ describe("la base sembrada: los estados que el plan real no tiene", () => {
     expect(planificadas.length).toBeGreaterThan(0);
     expect(v.fichas["dec-identidad"]).toContain('<ul class="pros"><li><b>');
     expect(v.fichas["dec-identidad"]).toMatch(/Hay empate técnico|la ganadora de la comparación/);
+  });
+});
+
+describe("S5-M-4: el apartado «Aprobar el plan» (lo que la página pinta)", () => {
+  const rReal = vistaDecisiones(real, casoReal, planReal, "es").resultado;
+  // El plan real, en el estado de borrador, con independencia de si ya lo aprobó una persona.
+  const borrador = { ...planReal, estado_aprobacion: "borrador" as const, aprobacion: undefined };
+
+  it("camino feliz: un plan aprobable y en borrador trae el comando que arma `comandoAprobarPlan` con la huella del borrador, y ningún bloqueo", () => {
+    const a = aprobacionDelPlan(borrador, rReal, "es");
+    expect(rReal.aprobable).toBe(true);
+    expect(a.bloqueos).toEqual([]);
+    expect(a.comando).toBe(comandoAprobarPlan(borrador.caso_id, huellaPlan(borrador)));
+    expect(a.comando).toMatch(/--plan hospital-futuro --desde [0-9a-f]{64}$/);
+  });
+  it("un plan ya aprobado no trae comando: no se vuelve a aprobar", () => {
+    expect(aprobacionDelPlan({ ...planReal, estado_aprobacion: "aprobado" as const }, rReal, "es").comando).toBeNull();
+  });
+  it("con un ciclo y una alta sin mitigación hay bloqueos, ninguno repite una decisión del ciclo, y no hay comando", () => {
+    const caso = k2.casos.find((c) => c.id === "hospital-futuro")!;
+    const plan = k2.planes[0]!;
+    const r = vistaDecisiones(k2, caso, plan, "es").resultado;
+    const a = aprobacionDelPlan(plan, r, "es");
+    expect(a.comando).toBeNull();
+    expect(a.bloqueos).toHaveLength(2);
+    const delCiclo = r.informe.bloqueantes.find((b) => b.tipo === "ciclo")!;
+    const ids = [...new Set(delCiclo.ids)];
+    expect(delCiclo.ids.length).toBeGreaterThan(ids.length); // el camino cierra en su primer nodo: a → b → a
+    const texto = a.bloqueos.find((b) => /ciclo/.test(b))!;
+    for (const id of ids) expect(texto.split(id).length - 1, `${id} se nombra una vez`).toBe(1);
   });
 });

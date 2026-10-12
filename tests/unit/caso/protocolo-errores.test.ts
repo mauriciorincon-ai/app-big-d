@@ -24,7 +24,6 @@ import { entradaSimulacion } from "@/engine/simulacion";
 import { futuro } from "../nucleo/lib/futuro";
 
 declare global {
-  // eslint-disable-next-line no-var
   var __FALLAR: "avanzar" | "resultado" | undefined;
 }
 

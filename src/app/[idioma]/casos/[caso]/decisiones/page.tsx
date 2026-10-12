@@ -18,10 +18,8 @@ import { plantilla, plural } from "@/lib/atlas/plantilla";
 import { conocimiento } from "@/lib/caso/casos";
 import { lista } from "@/lib/caso/formato";
 import { pestanasCaso } from "@/lib/caso/rutas";
-import { huellaPlan } from "@/lib/datos/instantanea";
 import { esIdioma, textos } from "@/lib/i18n";
-import { comandoAprobarPlan } from "@/lib/investigador/comando-plan";
-import { vistaDecisiones } from "@/lib/plan/vista";
+import { aprobacionDelPlan, vistaDecisiones } from "@/lib/plan/vista";
 import "@/styles/secciones.css";
 import "@/styles/caso.css";
 import "@/styles/decisiones.css";
@@ -72,17 +70,8 @@ export default async function Decisiones({
     (d) => d.reversibilidad === "una_via",
   ).length;
   const implicitas = plan.decisiones.filter((d) => d.implicita).length;
-  const bloqueos = r.informe.bloqueantes.map((b) =>
-    // El camino de un ciclo cierra en su primer nodo (a → b → a): sin repetidos, cada decisión se nombra una vez.
-    plantilla(t.aprobar.bloqueantes[b.tipo], {
-      ids: lista([...new Set(b.ids)], T.caso.y),
-    }),
-  );
+  const { bloqueos, comando } = aprobacionDelPlan(plan, r, idioma);
   const alta = r.riesgos.filter((x) => x.bloqueante);
-  const comando =
-    r.aprobable && !aprobado
-      ? comandoAprobarPlan(plan.caso_id, huellaPlan(plan))
-      : null;
 
   return (
     <>
