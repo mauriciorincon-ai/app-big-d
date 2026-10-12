@@ -6,6 +6,10 @@
 // la persona con `/design-sync` al cierre del ciclo (S4), y `project.json` no lo toca este generador.
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { MarcoTabla } from "@/components/caso/MarcoTabla";
+import { AlertaCiclo, Leyenda, TablaAccion } from "@/components/plan/Plan";
 import { opcionesPlataforma, plantilla, plural, vistaLado, vistaNivel1, vistaNivel2, vistaVersiones } from "@/lib/atlas";
 import { cargarDatos } from "@/lib/datos";
 import { textos } from "@/lib/i18n";
@@ -20,6 +24,10 @@ const HOJAS = [
   "src/styles/atlas.css",
   "src/styles/lado.css",
   "src/styles/versiones.css",
+  // S7 (D-S7-08): las hojas de las pantallas del caso, para las tarjetas de S3 a S6.
+  "src/styles/secciones.css",
+  "src/styles/caso.css",
+  "src/styles/decisiones.css",
 ];
 const FAMILIAS = `:root { --letra: "Space Grotesk", system-ui, sans-serif; --letra-mono: "JetBrains Mono", ui-monospace, monospace; }`;
 const PROPIAS = `.ds { padding: 24px 16px; display: grid; gap: 16px; max-width: 1280px; margin: 0 auto; }
@@ -251,6 +259,48 @@ export function bundle(): Record<string, string> {
       "Las N plataformas por id; las que no tienen mapa dicen «pronto» y no se eligen (ADR design-system-s1-extensions; parada A, 2026-09-27). La nota avisa antes del cambio de página (WCAG 3.2.2).",
     ],
   ];
+
+  // S7 (D-S7-08): tarjetas de S3 a S6. Salen de los MISMOS componentes del producto (renderToStaticMarkup), con textos del diccionario
+  // y datos de muestra que no son del dato real (la tarjeta no cambia cuando una persona aprueba el perfil o el plan).
+  const td = textos("es").caso.decisiones;
+  const estatico = (el: Parameters<typeof renderToStaticMarkup>[0]) => renderToStaticMarkup(el);
+  const tablaDeMuestra = `<table class="tabla"><thead><tr><th scope="col">Criterio</th><th scope="col">Peso</th><th scope="col">Rango</th><th scope="col">Origen</th><th scope="col">Nota</th></tr></thead><tbody>${[
+    ["Gobierno y seguridad", "18", "±10 %", "propuesto por el agente", "esencial"],
+    ["Cumplimiento regulatorio", "12", "±10 %", "propuesto por el agente", "esencial"],
+    ["Previsibilidad de costo", "12", "±25 %", "declarado por la persona", ""],
+  ]
+    .map((f) => `<tr>${f.map((c) => `<td>${esc(c)}</td>`).join("")}</tr>`)
+    .join("")}</tbody></table>`;
+  tarjetas.push(
+    [
+      "componentes-s3/marco-de-tabla.html",
+      "Componentes · S3",
+      "Marco de tabla ancha",
+      `<div style="max-width:420px"><p class="pista-tabla" style="display:block">${esc(td.riesgos.desliza)}</p>${estatico(createElement(MarcoTabla, { etiqueta: td.riesgos.etiquetaTabla, children: createElement("div", { dangerouslySetInnerHTML: { __html: tablaDeMuestra } }) }))}</div>`,
+      "MarcoTabla (S3, extensión 8; S7): una región con nombre propio —distinto del de su sección— que se alcanza con el teclado y se desliza de lado; en teléfono, con el aviso de deslizar (design-system.md § 5.1).",
+    ],
+    [
+      "componentes-s5/leyenda-de-decisiones.html",
+      "Componentes · S5",
+      "Leyenda de decisiones",
+      estatico(createElement(Leyenda, { t: td })),
+      "Reversibilidad = glifo + palabra + borde (una vía, costosa, dos vías) y la decisión implícita: el color nunca va solo.",
+    ],
+    [
+      "componentes-s5/tabla-de-prioridad-de-accion.html",
+      "Componentes · S5",
+      "Tabla de prioridad de acción (AIAG-VDA)",
+      `<div style="max-width:960px">${estatico(createElement(TablaAccion, { t: td }))}</div>`,
+      "TABLA_AIAG_VDA del paquete instrumentos-de-plan dibujada tal cual: lo que se muestra es lo que se aplica. Severidad primero; el RPN solo ordena.",
+    ],
+    [
+      "componentes-s5/alerta-de-ciclo.html",
+      "Componentes · S5",
+      "Alerta de ciclo de dependencias",
+      `<div style="max-width:720px">${estatico(createElement(AlertaCiclo, { camino: ["¿Cómo se organiza el catálogo?", "¿Cómo se protegen los datos clínicos?", "¿Cómo se organiza el catálogo?"], ondas: 0, sinOnda: 3, t: td }))}</div>`,
+      "El ciclo se muestra con su camino y con palabras; la herramienta no elige cuál dependencia romper. Con un ciclo no hay ondas.",
+    ],
+  );
 
   const archivos: Record<string, string> = { "styles.css": estilos() };
   for (const [ruta, grupo, nombre, cuerpo, nota] of tarjetas)

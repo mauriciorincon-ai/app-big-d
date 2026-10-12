@@ -3,9 +3,9 @@
 Bundle publicable del design system (la regla del CLAUDE.md «el bundle publicable del design system es un artefacto
 del repo»). La jerarquía es fija:
 
-1. **`design-system.md`** es la fuente de verdad. La v0.6.0 (S3, 2026-10-04) ya funde las extensiones del S1
-   (`decisions/design-system-s1-extensions.md`) y del S2 (`decisions/design-system-s2-extensions.md`); las del S3
-   en adelante van por ADR hasta la versión siguiente.
+1. **`design-system.md`** es la fuente de verdad. La v0.7.0 (S7, 2026-10-12, cierre del hito H-1) ya funde las extensiones del
+   S1 y del S2 (v0.6.0), las del S3 y las decisiones de pantalla de S4 a S7 (§ 5.1); los ADR
+   `decisions/design-system-s{1,2,3}-extensions.md` quedan como registro, no como fuente.
 2. **`design-sync/`** es este bundle. Deriva de lo anterior y del producto; jamás lo contradice.
 3. **El proyecto en Claude Design** es la vitrina. Se escribe desde aquí y **nunca se edita allá**.
 
@@ -13,7 +13,7 @@ del repo»). La jerarquía es fija:
 
 | Archivo | Grupo | Qué muestra |
 |---|---|---|
-| `styles.css` | — | Las hojas del producto tal cual: tokens (generados y medidos), base, diagrama, atlas, lado a lado y versiones |
+| `styles.css` | — | Las hojas del producto tal cual: tokens (generados y medidos), base, diagrama, atlas, lado a lado, versiones, secciones, caso y decisiones |
 | `components/fundamentos/color.html` | Fundamentos | Neutros y tipos de componente en los dos temas, con su uso |
 | `components/fundamentos/letra.html` | Fundamentos | Space Grotesk y JetBrains Mono en sus roles |
 | `components/diagrama/leyenda.html` | Diagrama | La leyenda del motor y la nota de marcas |
@@ -24,6 +24,10 @@ del repo»). La jerarquía es fija:
 | `components/componentes-s2/lado-a-lado.html` | Componentes · S2 | El lado a lado: la cabecera de bandas y una fila con sus bloques, con el botón «Desplegar todo» |
 | `components/componentes-s2/lado-a-lado-desplegado.html` | Componentes · S2 | La misma fila con todos sus componentes desplegados y el botón «Contraer todo» |
 | `components/componentes-s2/diferencias-entre-versiones.html` | Componentes · S2 | Dos versiones sintéticas del mapa ficticio con una marca de cada clase, la lista que las explica y lo que cambió sin cambiar el dibujo |
+| `components/componentes-s3/marco-de-tabla.html` | Componentes · S3 | El marco de una tabla ancha: región con nombre propio, alcanzable con el teclado, con el aviso de deslizar (§ 5.1, extensión 8) |
+| `components/componentes-s5/leyenda-de-decisiones.html` | Componentes · S5 | La leyenda de reversibilidad: una vía, costosa y dos vías con glifo, palabra y borde, y la decisión implícita |
+| `components/componentes-s5/tabla-de-prioridad-de-accion.html` | Componentes · S5 | La tabla AIAG-VDA completa, dibujada desde el dato del paquete de instrumentos de plan |
+| `components/componentes-s5/alerta-de-ciclo.html` | Componentes · S5 | El ciclo de dependencias con su camino y dicho con palabras |
 
 Cada tarjeta es HTML autocontenido. Su primera línea es la marca `@dsCard` con la que Claude Design la indexa, lleva
 el CSS en línea y no hace ninguna petición a la red. La tarjeta no carga fuentes: la letra se ve donde Space

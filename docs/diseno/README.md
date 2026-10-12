@@ -108,6 +108,9 @@ con línea por modo, orquestación como capa) y la hoja base del producto es `as
 Decisiones de pantalla que la maqueta aprobada no dibuja. Van aquí (el `design-system.md` no se toca en un sprint de producto) y las
 miradas de FORMA y de TEXTO se registran «maquetada, no vista» hasta el gate humano del hito.
 
+**Plegadas en `design-system.md` v0.7.0 (S7, 2026-10-12, cierre del hito H-1), § 5.1.** Desde esa versión el design system es la
+fuente; esta tabla queda como el registro de cuándo se decidió cada pantalla y cómo se vio.
+
 | Fecha      | Pantalla | Decisión | Mirada |
 | ---------- | -------- | -------- | ------ |
 | 2026-10-11 | `/[idioma]/casos/[caso]`, con el perfil en borrador (S4) | Un editor bajo el perfil: pesos en puntos con dos decimales, rango por criterio, casillas de restricciones y una opción por decisión implícita. **Arma** el comando de aprobación (la persona lo corre en su terminal); no guarda ni aprueba nada. Usa campos nativos y la caja de comando de la revisión del investigador; el perfil aprobado sigue siendo solo lectura | FORMA: maquetada, no vista (2026-10-11); va al gate humano del hito |

@@ -1,19 +1,20 @@
 ---
-version: 0.6.0
-estado: sellado en G-Diseño (2026-09-27); 0.6.0 funde las extensiones del S1 y del S2 que la persona vio o que se decidieron por ADR
-fecha: 2026-10-04
+version: 0.7.0
+estado: sellado en G-Diseño (2026-09-27); 0.7.0 cierra el hito H-1: funde las extensiones del S3 y las decisiones de pantalla de S4 a S7
+fecha: 2026-10-12
 fuente_en_codigo: docs/diseno/assets/ (tokens.css GENERADO · bigd.css · diagrama.css · fuentes.css)
 gramatica_del_diagrama: docs/diseno/diagramador-tokens.md
 ---
 
 # Big-D — design system
 
-> **Fuente de verdad visual de Big-D.** Versión 0.6.0: la de G-Diseño (el H1 entero, con la portada rehecha) más lo que el
-> producto agregó en el S1 y el S2 y ya vio la persona o decidió un ADR (`decisions/design-system-s1-extensions.md`,
-> `decisions/design-system-s2-extensions.md`), con todos los componentes canon y sus estados. La maqueta
-> (`docs/diseno/`) queda como la referencia de su tiempo: donde difiere de esta versión, manda esta. Lo
-> que toca al diagrama vive en `docs/diseno/diagramador-tokens.md`, porque es contrato del
-> reusable y no estilo de esta app. Las extensiones del S3 en adelante van por ADR hasta la versión siguiente.
+> **Fuente de verdad visual de Big-D.** Versión 0.7.0: la de G-Diseño (el H1 entero, con la portada rehecha) más lo que el
+> producto agregó de S1 a S7 y ya vio la persona o decidió un ADR o una decisión de pantalla registrada: las extensiones del S1 y
+> del S2 (v0.6.0), las del S3 y las decisiones de pantalla de S4 a S7 (§ 5.1, esta versión). La maqueta (`docs/diseno/`) queda
+> como la referencia de su tiempo: donde difiere de esta versión, manda esta. Lo que toca al diagrama vive en
+> `docs/diseno/diagramador-tokens.md`, porque es contrato del reusable y no estilo de esta app. Los ADR
+> `decisions/design-system-s{1,2,3}-extensions.md` quedan como el registro de cómo se vio cada extensión; **ya no son una fuente
+> aparte**.
 
 ## 1. Personalidad
 
@@ -208,6 +209,39 @@ hace la jerarquía.
 | **Mapa del recorrido**           | etapas como bandas (ojo «Etapa n», nombre, pregunta) con flecha entre ellas · pantallas como nodos (miniatura decorativa, número, nombre, una frase, códigos de la VISION) · transversales abajo, a todo lo ancho. En ancho las bandas comparten filas (subgrid) y quedan alineadas; debajo de 1200 px se apilan con la flecha hacia abajo                                                                                                                                                                                                                                      | ancho · apilado · teléfono                                                                                                                                                                                         | `index.html`                               |
 | **Botón**                        | principal lleno de tinta · secundario en contorno · deshabilitado al 45 %; 40 px de alto, esquina 4 px                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | normal · presionado · deshabilitado                                                                                                                                                                                | todas                                      |
 
+### 5.1 Extensiones del producto (S3 a S7)
+
+Lo que el producto agregó a la maqueta o decidió distinto, plegado desde `decisions/design-system-s3-extensions.md` y desde la
+tabla «Después de G-Diseño» de `docs/diseno/README.md`. «Visto» dice dónde lo vio la persona; «no visto» va al gate humano del
+hito (la guía, bloque del gate).
+
+| #  | Extensión                                                                                                                                                                                                                       | Desde | Visto                                  |
+| -- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- | -------------------------------------- |
+| 1  | El peso que se mueve en la sensibilidad es un `input type="range"` nativo sobre la barra dibujada (pista, rango declarado, marcas de inversión y de salida del empate); el punto es el de la maqueta                            | S3    | capturas de la fase 2                  |
+| 2  | Selector de criterio sobre la sensibilidad («Criterio que se mueve»): por omisión el de más peso (empate por id)                                                                                                                 | S3    | capturas de la fase 2                  |
+| 3  | Toda barra (pesos del perfil, totales, sensibilidad, aceptabilidad) es un SVG con posiciones como **atributos** en porcentaje, jamás `style=` (la CSP del export lo rechaza)                                                      | S3    | igual a la maqueta                     |
+| 4  | Una decisión implícita en un perfil aprobado muestra la opción elegida con anillo lleno y las otras con círculo vacío, en lista, no con radios deshabilitados                                                                     | S3    | capturas de la fase 2                  |
+| 5  | El puesto va escrito en el marcado de cada fila de totales («1 · »), y un puesto compartido repite su número                                                                                                                      | S3    | igual a la maqueta                     |
+| 6  | El progreso de la simulación es un `<progress>` nativo; el estado en curso nombra la semilla («semilla N (i de n)»)                                                                                                               | S3    | TEXTO: no visto                        |
+| 7  | La robustez dice con qué pesos se calculó («con los pesos del perfil» / «con Gobierno y seguridad en 22»), y una corrida cancelada conserva el resultado anterior con una nota                                                    | S3    | TEXTO: no visto                        |
+| 8  | **Marco de tabla ancha** (`.tabla-marco`, componente `MarcoTabla`): región con nombre, alcanzable con el teclado. Su nombre es **propio**, distinto del de su sección (axe `landmark-unique`); en teléfono y hasta 1260 px lleva encima el aviso «desliza la tabla de lado» (`.pista-tabla`) | S3, S7 | no visto (S7) |
+| 9  | `/base` trae bajo la evidencia los criterios, la escala con sus topes por madurez, las convenciones del método y la tabla de instantáneas                                                                                         | S3    | capturas de la fase 2                  |
+| 10 | El perfil trae el contexto del caso y los requisitos como dos lecturas plegadas (`.lectura-seccion`)                                                                                                                              | S3    | capturas de la fase 2                  |
+| 11 | Bajo la matriz, la evidencia que envejeció a la fecha de evaluación (por revisar, vencida, o no disponible de forma general)                                                                                                       | S3    | TEXTO: no visto                        |
+| 12 | Una sección de la barra o una pestaña del caso sin pantalla se muestra pendiente, sin enlace: jamás un control que no hace nada                                                                                                   | S3    | igual a las pestañas del atlas         |
+| 13 | Los millares llevan espacio fino sin salto en español («10 000») y coma en inglés («10,000»); sin `Intl`                                                                                                                          | S3    | igual a la maqueta                     |
+| 14 | La revisión de evidencias dibuja cada una en una regla de 0 a 4: el nivel propuesto con borde grueso, glifo y «propuesto»; los que su madurez no deja contar, rayados; el que cuenta si el tope baja, discontinuo con «cuenta». En teléfono, vertical | S3    | FORMA M1, aprobada 2026-10-05          |
+| 15 | Nada viene aprobado de entrada en la revisión de evidencias, y los botones de decisión conservan su contraste completo mientras no hay decisión (se quita el 60 % del S1, también en mapas)                                       | S3    | M1; axe                                |
+| 16 | Una evidencia nombra sus componentes por los ids del mapa aprobado, y la revisión muestra el nombre del mapa en el idioma de la página                                                                                            | S3    | igual a la maqueta                     |
+| 17 | **Editor del perfil** (S4): bajo el perfil en borrador, pesos en puntos con dos decimales, rango por criterio, casillas de restricciones y una opción por decisión implícita. **Arma** el comando de aprobación; no guarda ni aprueba. El aviso de arriba («faltan N decisiones») enlaza con el editor de abajo | S4, S7 | FORMA: no visto (S4)                   |
+| 18 | **Instrumento** (S4): fiel a `instrumento.html`. «Mismos bytes en todos los motores» muestra la huella del archivo de sumas y **dice que el sitio no la recalcula** (la recalcula la integración continua); sin marca verde por motor | S4, S7 | FORMA y TEXTO: no vistos               |
+| 19 | **Decisiones y riesgos** (S5): el diagrama de ondas (tarjeta de decisión, ruteo ortogonal, cero cruces), la tabla de riesgos con **causa** y **origen** de los números a la vista, y el apartado «Aprobar el plan» que arma su comando | S5, S7 | FORMA y TEXTO: no vistos               |
+| 20 | **Alerta de ciclo** (S5, S7): muestra el camino del ciclo nombrado y dice con palabras que mientras exista no hay ondas (jamás «ondas calculadas: 0»)                                                                              | S5, S7 | TEXTO: no visto                        |
+| 21 | **Hoja de ruta e informe** (S6): fases con ítems y su origen, alistamiento, informe de 14 secciones imprimible; la banda de borrador dice por qué; el resumen de líder lleva su presupuesto de lectura medido                      | S6    | FORMA y TEXTO: no vistos               |
+
+Reglas que salen de estas extensiones y valen para toda pantalla nueva: un marco de tabla nunca repite el nombre de su sección
+(8); todo SVG de barra usa atributos, no estilos en línea (3); lo que una pantalla no mide no lleva una marca de verde (18).
+
 ## 6. Iconografía
 
 - **Cero emojis y cero íconos de terceros.** Todo glifo es un path propio: los 8 tipos, los 4
@@ -250,6 +284,9 @@ corren con `pnpm test`: `paleta-diagramador` comprueba que de verdad no llega a 
   conserva su hueco.
 - Saltos: «Saltar al contenido» es el primer foco de cada página y cada diagrama lleva «Saltar el
   diagrama» hacia su lectura en texto (G10).
+- Regiones con nombre únicas (S7): dos regiones de una página no comparten nombre (axe `landmark-unique`, impacto moderado). Un
+  marco de tabla se llama distinto que su sección. Las pantallas de S4 a S6 fallan con una violación de axe de **cualquier**
+  gravedad, no solo grave o crítica.
 - Ficha (hoja o panel): al abrir, el foco va a su título; Esc o «Cerrar» lo devuelven al nodo de
   origen (así en la maqueta). Contrato del S1: en teléfono es un diálogo modal (`role="dialog"`,
   `aria-modal`, foco contenido); en ancho, una región complementaria no modal.
@@ -279,6 +316,9 @@ corren con `pnpm test`: `paleta-diagramador` comprueba que de verdad no llega a 
   `layout.tsx` del estampado usa Geist por `next/font/google`: el S1 lo reemplaza por Space Grotesk,
   porque la fuente del sitio debe ser la de la tabla de métricas (G15).
 - **Textos:** las cadenas ES/EN de la maqueta son la base del diccionario de la interfaz.
+- **Una hoja de entrada por ruta** (S7): cada hoja CSS bloqueante extra suma ~150 ms al LCP simulado. Una pantalla importa **una**
+  hoja (`src/styles/ruta-*.css` o la suya) que reúne las demás con `@import`, en el orden en que se importaban; lo comprueba
+  `tests/unit/estilos-de-ruta.test.ts`. El presupuesto de LCP no se toca.
 
 ## 10. Deuda de diseño
 
@@ -294,6 +334,7 @@ corren con `pnpm test`: `paleta-diagramador` comprueba que de verdad no llega a 
 
 | Versión | Fecha      | Cambio                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | ------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0.7.0   | 2026-10-12 | S7, cierre del H-1: se funden las 16 extensiones del S3 y las decisiones de pantalla de S4 a S6 (editor del perfil, instrumento, decisiones y riesgos, hoja de ruta e informe) en el nuevo § 5.1; se suman el marco de tabla con nombre propio y su aviso de deslizar, la alerta de ciclo con palabras, la regla de regiones únicas (§ 7.3) y la hoja de entrada por ruta (§ 9). `design-sync/` pasa a 15 archivos (cuatro tarjetas nuevas: marco de tabla, leyenda de decisiones, tabla de prioridad de acción, alerta de ciclo). Los ADR de S1, S2 y S3 quedan como registro, ya no como fuente |
 | 0.6.0   | 2026-10-04 | S3, fase 0: se funden las extensiones del S1 (ventana de un bloque en lugar de la ficha breve, selector de plataforma del atlas, nota de marcas al pie de la leyenda, vacío en contexto con «Solicitar investigación», «por revisar» como triángulo con «!») y del S2 (un botón «Desplegar todo» en lugar del conmutador, rejilla de componentes siempre, vigencia en palabras en el rótulo de la fila, teléfono con una banda a la vez, leyenda y lectura bajo `/comparar`, una píldora por clase, versiones de un mapa, marcas de envío y recepción horizontales). Se corrigen las tres líneas que el ADR del S2 señaló (el conmutador, el selector que no filtraba, la nota y el selector «del S1») y el frontmatter, que decía 0.5.1. |
 | 0.5.2   | 2026-09-27 | G-Diseño: la portada deja la rejilla de tarjetas iguales (antipatrón del § 8, y el usuario no la vio ordenada) y se dibuja con la gramática del atlas: cuatro etapas como bandas, nodos con miniatura de la pantalla y transversales abajo (D81). Fuera la «tarjeta de recorrido» y el estado de mirada por tarjeta: la aprobación va una sola vez, en la cabecera.                                                                                                                                                                                                                                                                                                                                                                       |
 | 0.5.1   | 2026-09-27 | Auditoría de la etapa: fuera los tokens sin uso (`tipo-N-tinte`, `tinta-3`); dos claridades del claro salen de la búsqueda sin el relleno retirado (naranja `#d27908`, rojo `#c74a4d`); espacio y radios declarados como escala objetivo del S1; h1 a 700; foco que suma al borde; saltos al contenido y al diagrama; contrato de foco de la ficha; «Reproducir» oculto por CSS con movimiento reducido; nota de marcas y selector del atlas pasan al S1; degradados funcionales declarados. La ficha del nivel 2 por fin abre (la página no cargaba su script).                                                                                                                                                                          |
