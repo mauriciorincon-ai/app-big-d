@@ -36,13 +36,18 @@ describe("el caso del repo (borrador)", () => {
     expect(idsDeCasos(join(dir, "no-existe"))).toEqual([]);
   });
 
-  it("un borrador se mira contra su instantánea (o la base viva si aún no tiene) y no puntúa: dice que es borrador y, si falta, qué evidencia", () => {
+  // D-S7-02: el caso del repo se prueba en el estado en que esté. Borrador: no puntúa y lo dice. Aprobado: se evalúa.
+  it("el caso del repo se mira contra su instantánea (o la base viva si aún no tiene): en borrador no puntúa y dice qué falta; aprobado, puntúa", () => {
     const k = conocimiento();
     const caso = k.casos.find((c) => c.id === "hospital-futuro")!;
-    expect(caso.estado_aprobacion).toBe("borrador");
     const congelada = congeladaDe(k, caso);
     expect(congelada.version).toBe(caso.instantanea ?? "base-viva");
     const e = evaluacionDe(k, caso);
+    if (caso.estado_aprobacion === "aprobado") {
+      expect(e.resultado.tipo).toBe("evaluado");
+      expect(e.simulacion).not.toBeNull();
+      return;
+    }
     expect(e.simulacion).toBeNull();
     if (e.resultado.tipo !== "no-evaluable")
       throw new Error("el borrador no debía evaluarse");

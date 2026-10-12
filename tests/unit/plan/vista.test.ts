@@ -48,10 +48,18 @@ describe("el plan real, dibujado", () => {
       // La ficticia que el caso descarta aparece tachada, con la razón de la restricción.
       expect(f).toContain("opcion-fuera");
     });
-    it(`${idioma} · con el perfil en borrador la ficha no recomienda nada y lo dice`, () => {
-      expect(v.resultado.comparacion.tipo).toBe("sin-comparacion");
-      expect(v.fichas["dec-catalogo"]).not.toContain("<ul class=\"pros\"><li><b>");
-      expect(v.fichas["dec-catalogo"]).toMatch(idioma === "es" ? /Todavía sin comparación/ : /No comparison yet/);
+    // D-S7-02: la ficha sigue al estado del perfil del repo, sea el que sea.
+    it(`${idioma} · la ficha sigue al perfil: en borrador no recomienda nada y lo dice; aprobado, planifica lo que puntúa`, () => {
+      const ficha = v.fichas["dec-catalogo"]!;
+      if (casoReal.estado_aprobacion === "borrador") {
+        expect(v.resultado.comparacion.tipo).toBe("sin-comparacion");
+        expect(ficha).not.toContain("<ul class=\"pros\"><li><b>");
+        expect(ficha).toMatch(idioma === "es" ? /Todavía sin comparación/ : /No comparison yet/);
+      } else {
+        expect(v.resultado.comparacion.tipo).not.toBe("sin-comparacion");
+        expect(ficha).not.toMatch(idioma === "es" ? /Todavía sin comparación/ : /No comparison yet/);
+        expect(ficha).toMatch(idioma === "es" ? /Para .+(la ganadora de la comparación|Hay empate técnico)/ : /For .+(the winner of the comparison|There is a technical tie)/);
+      }
     });
     it(`${idioma} · la lectura en texto lista cada decisión con su onda`, () => {
       expect(v.lectura.flatMap((f) => f.items)).toHaveLength(planReal.decisiones.length);

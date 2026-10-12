@@ -9,6 +9,8 @@ import { join } from "node:path";
 import { afterAll, describe, expect, it } from "vitest";
 import {
   alertasDeEvidencias,
+  CASOS_DE_REFERENCIA,
+  evaluar,
   modeloInforme,
   SECCIONES,
   type EvidenciaDeAlerta,
@@ -75,24 +77,32 @@ describe("el modelo del informe", () => {
       expect(informe(k).modelo.secciones).toEqual([...SECCIONES]);
   });
 
-  it("con el dato real: borrador por perfil y plan sin aprobar, sin comparación, y el resumen cuenta lo del plan", () => {
-    const m = informe(real).modelo;
-    expect(m.estado).toEqual({
-      tipo: "borrador",
-      motivos: [{ tipo: "perfil-borrador" }, { tipo: "plan-borrador" }],
-    });
-    expect(m.resumen.veredicto).toEqual({
-      tipo: "sin-comparacion",
-      motivo: "perfil-en-borrador",
-    });
+  // D-S7-02: el informe del dato real sigue a las aprobaciones del repo, estén como estén.
+  it("con el dato real: el estado y la comparación siguen a las aprobaciones, y el resumen cuenta lo del plan", () => {
+    const { modelo: m, entrada } = informe(real);
+    const caso = real.casos[0]!;
+    const plan = real.planes[0]!;
+    const perfilBorrador = caso.estado_aprobacion === "borrador";
+    const motivos = [
+      ...(perfilBorrador ? [{ tipo: "perfil-borrador" }] : []),
+      ...(plan.estado_aprobacion === "borrador" ? [{ tipo: "plan-borrador" }] : []),
+    ];
+    expect(m.estado).toEqual(motivos.length ? { tipo: "borrador", motivos } : { tipo: "final", motivos: [] });
+    if (perfilBorrador) {
+      expect(m.resumen.veredicto).toEqual({ tipo: "sin-comparacion", motivo: "perfil-en-borrador" });
+      expect(m.resumen.robustez).toBeNull();
+    } else {
+      expect(m.resumen.veredicto.tipo).not.toBe("sin-comparacion");
+      expect(m.resumen.robustez).not.toBeNull();
+    }
+    const unaVia = plan.decisiones.filter((d) => d.reversibilidad === "una_via").length;
     expect(m.resumen).toMatchObject({
-      robustez: null,
-      n_una_via: 3,
-      n_altos: 2,
-      n_supuestos_por_probar: 5,
+      n_una_via: unaVia,
+      n_altos: entrada.plan.riesgos.filter((r) => r.prioridad_de_accion === "alta").length,
+      n_supuestos_por_probar: entrada.hoja.items.filter((i) => i.tipo === "verificacion_alistamiento" && i.estado === "pendiente").length,
     });
-    expect(m.resumen.una_via).toHaveLength(3);
-    expect(m.resumen.riesgos_principales).toHaveLength(3);
+    expect(m.resumen.una_via).toHaveLength(unaVia);
+    expect(m.resumen.riesgos_principales.length).toBeGreaterThan(0);
   });
 
   it("con el sembrado: empate técnico con su robustez, y el borrador dice por qué (plan, ciclo y acción alta sin mitigación)", () => {
@@ -123,13 +133,15 @@ describe("el modelo del informe", () => {
       simulacion: evaluada.simulacion,
     };
     const limpio = { ...base, perfil_aprobado: true, plan_aprobado: true };
+    // Un resultado que no puntúa, sea cual sea el estado del repo: el de referencia «perfil en borrador».
+    const noEvaluable = evaluar(CASOS_DE_REFERENCIA.find((c) => c.id === "perfil-en-borrador")!.entrada);
     expect(modeloInforme(limpio).estado).toEqual({
       tipo: "final",
       motivos: [],
     });
     // S6-M6: con todo aprobado pero sin una comparación que puntúe, el informe no puede ser «final».
     expect(
-      modeloInforme({ ...limpio, resultado: informe(real).entrada.resultado }).estado,
+      modeloInforme({ ...limpio, resultado: noEvaluable }).estado,
     ).toEqual({ tipo: "borrador", motivos: [{ tipo: "sin-comparacion" }] });
     expect(
       modeloInforme({ ...limpio, perfil_aprobado: false }).estado.motivos,

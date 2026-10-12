@@ -143,10 +143,14 @@ describe("la lectura en texto y la leyenda", () => {
 
 describe("la aprobación del plan", () => {
   it("con un plan aprobable arma el comando con el caso y la huella del borrador, y no lo aprueba", () => {
-    const comando = comandoAprobarPlan(planReal.caso_id, huellaPlan(planReal));
-    const { container } = render(<AprobarPlan plan={planReal} comando={comando} bloqueos={[]} idioma="es" />);
+    // D-S7-02: el plan del repo como borrador, esté o no aprobado.
+    const { aprobacion: _a, ...resto } = planReal;
+    void _a;
+    const borrador = { ...resto, estado_aprobacion: "borrador" as const };
+    const comando = comandoAprobarPlan(borrador.caso_id, huellaPlan(borrador));
+    const { container } = render(<AprobarPlan plan={borrador} comando={comando} bloqueos={[]} idioma="es" />);
     expect(container.querySelector("code")!.textContent).toBe(comando);
-    expect(container.querySelector("code")!.textContent).toContain(`--plan ${planReal.caso_id} --desde ${huellaPlan(planReal)}`);
+    expect(container.querySelector("code")!.textContent).toContain(`--plan ${borrador.caso_id} --desde ${huellaPlan(borrador)}`);
     expect(screen.getByText(t.aprobar.comandoNota)).toBeTruthy();
     expect(screen.queryByRole("alert")).toBeNull();
   });

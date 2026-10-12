@@ -30,6 +30,7 @@ import {
   leerAprobacionPlan,
 } from "@/lib/investigador/comando-plan";
 import { puedeAprobar } from "../../../scripts/investigar/comun.mjs";
+import { planABorrador } from "../lib/borrador";
 
 // El script de aprobación se nombra por partes: el candado de la sesión vigila su nombre completo.
 const APROBAR = ["scripts", "apro" + "bar.mjs"].join("/");
@@ -39,6 +40,12 @@ let raiz = "";
 
 const planDe = (dir: string): Plan =>
   cargarConocimiento(join(dir, "data")).planes.find((p) => p.caso_id === CASO)!;
+/** El plan del repo como borrador, esté o no aprobado (D-S7-02): lo que se aprueba es el contenido, no su estado. */
+const borradorDelRepo = (): Plan => {
+  const { aprobacion: _a, ...resto } = planDe(REPO);
+  void _a;
+  return { ...resto, estado_aprobacion: "borrador" };
+};
 const correr = (args: string[], env: Record<string, string> = {}) =>
   spawnSync("node", [APROBAR, ...args], {
     cwd: REPO,
@@ -61,6 +68,8 @@ const PLAN = `casos/${CASO}/plan`;
 beforeEach(() => {
   raiz = mkdtempSync(join(tmpdir(), "bigd-plan-aprob-"));
   cpSync(dirDatos(), join(raiz, "data"), { recursive: true });
+  // D-S7-02: estas pruebas aprueban un borrador; lo es pase lo que pase con el plan del repo.
+  planABorrador(join(raiz, "data"));
 });
 afterEach(() => rmSync(raiz, { recursive: true, force: true }));
 
@@ -94,7 +103,7 @@ describe("el comando que arma la pantalla de decisiones", () => {
 
 describe("aprobarPlan (puro)", () => {
   it("deja el plan aprobado con su sello, su revisión, y los riesgos y supuestos declarados por la persona", () => {
-    const b = planDe(REPO);
+    const b = borradorDelRepo();
     const { plan, revision } = aprobarPlan(b, huellaPlan(b), "2026-10-12");
     expect(plan.estado_aprobacion).toBe("aprobado");
     expect(plan.aprobacion).toEqual({
@@ -120,7 +129,7 @@ describe("aprobarPlan (puro)", () => {
     expect(plan.decisiones).toEqual(b.decisiones);
   });
   it("rechaza un `--desde` que ya no es el borrador: no aprueba lo que la persona no vio", () => {
-    const b = planDe(REPO);
+    const b = borradorDelRepo();
     expect(() => aprobarPlan(b, "0".repeat(64), "2026-10-12")).toThrow(
       ErrorDeAprobacionDePlan,
     );
@@ -129,14 +138,14 @@ describe("aprobarPlan (puro)", () => {
     );
   });
   it("rechaza un plan que ya está aprobado", () => {
-    const b = planDe(REPO);
+    const b = borradorDelRepo();
     const { plan } = aprobarPlan(b, huellaPlan(b), "2026-10-12");
     expect(() => aprobarPlan(plan, huellaPlan(plan), "2026-10-13")).toThrow(
       /ya está aprobado/,
     );
   });
   it("rechaza un plan con una acción alta sin mitigación, aunque el comando se arme", () => {
-    const b = planDe(REPO);
+    const b = borradorDelRepo();
     const roto: Plan = {
       ...b,
       modos_de_falla: b.modos_de_falla.map((m) =>
@@ -148,7 +157,7 @@ describe("aprobarPlan (puro)", () => {
     );
   });
   it("rechaza un plan con un ciclo", () => {
-    const b = planDe(REPO);
+    const b = borradorDelRepo();
     const roto: Plan = {
       ...b,
       decisiones: b.decisiones.map((d) =>

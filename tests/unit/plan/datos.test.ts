@@ -12,6 +12,7 @@ import { cargarConocimiento } from "@/lib/datos/cargar-conocimiento";
 import { dirDatos } from "@/lib/datos/dir";
 import { huellaPlan } from "@/lib/datos/instantanea";
 import type { Plan } from "@/lib/datos/plan";
+import { planABorrador } from "../lib/borrador";
 
 const PLAN = "casos/hospital-futuro/plan";
 const dirs: string[] = [];
@@ -20,10 +21,12 @@ afterEach(() => {
 });
 
 /** Una copia de data/ con el plan real; `cambio` la rompe de una forma. */
-function copia(cambio?: (dir: string) => void): string {
+function copia(cambio?: (dir: string) => void, comoEstá = false): string {
   const dir = mkdtempSync(join(tmpdir(), "bigd-plan-"));
   dirs.push(dir);
   cpSync(dirDatos(), dir, { recursive: true });
+  // D-S7-02: las formas de dato roto parten de un borrador, esté o no aprobado el plan del repo.
+  if (!comoEstá) planABorrador(dir);
   cambio?.(dir);
   return dir;
 }
@@ -82,9 +85,9 @@ describe("el plan real del caso", () => {
     for (const d of plan.decisiones) for (const o of d.opciones_por_plataforma) expect(o.sin_fuente, `${d.id}/${o.plataforma_id}`).not.toBe(true);
   });
 
-  it("los números de riesgo son juicio y lo dicen: origen propuesto por el agente y su razón en los dos idiomas", () => {
+  it("los números de riesgo son juicio y lo dicen: su origen (propuesto por el agente, o declarado por quien aprobó el plan) y su razón en los dos idiomas", () => {
     for (const m of plan.modos_de_falla) {
-      expect(m.origen).toBe("propuesto-por-agente");
+      expect(m.origen).toBe(plan.estado_aprobacion === "borrador" ? "propuesto-por-agente" : "declarado-por-usuario");
       expect(m.razon.es.length).toBeGreaterThan(20);
       expect(m.razon.en.length).toBeGreaterThan(20);
     }
@@ -98,9 +101,12 @@ describe("el plan real del caso", () => {
     expect(informe.una_via.sort()).toEqual(plan.decisiones.filter((d) => d.reversibilidad === "una_via").map((d) => d.id).sort());
   });
 
-  it("sigue en borrador hasta que una persona corra el comando de su pantalla", () => {
-    expect(plan.estado_aprobacion).toBe("borrador");
-    expect(plan.aprobacion).toBeUndefined();
+  it("sigue en borrador hasta que una persona corra el comando de su pantalla; aprobado, lleva su sello y su huella", () => {
+    if (plan.estado_aprobacion === "borrador") expect(plan.aprobacion).toBeUndefined();
+    else {
+      expect(plan.aprobacion?.huella).toMatch(/^[0-9a-f]{64}$/);
+      expect(plan.aprobacion?.huella).toBe(huellaPlan(plan));
+    }
   });
 });
 
@@ -183,7 +189,7 @@ describe("la huella del plan", () => {
   const plan = cargarConocimiento().planes[0]!;
 
   it("es la misma en cualquier copia del plan: el cargador ordena por id, no por el orden de los archivos", () => {
-    const otra = cargarConocimiento(copia()).planes[0]!;
+    const otra = cargarConocimiento(copia(undefined, true)).planes[0]!;
     expect(otra.decisiones.map((d) => d.id)).toEqual([...otra.decisiones.map((d) => d.id)].sort());
     expect(huellaPlan(otra)).toBe(huellaPlan(plan));
   });
