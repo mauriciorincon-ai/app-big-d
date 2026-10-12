@@ -1,3 +1,4 @@
+import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { CONTRATO_VERSION } from "diagramador";
@@ -91,4 +92,17 @@ describe("CONTRATO.lock · instrumentos-de-plan · implementación congelada", (
     expect(rutas).not.toContain("package.json");
     expect(rutas).not.toContain("CONTRATO.lock");
   });
+});
+
+// S5-B-4: el script dice cuántos archivos comparó contra cada fuente; «idénticos a su origen» sobrestimaba (los congelados
+// solo se comparan con su lock).
+describe("verificar.mjs cuenta lo que compara", () => {
+  for (const nombre of Object.keys(OBJETOS))
+    it(`${nombre}: separa lo igual al lock de lo comparado con el origen y con la maqueta`, () => {
+      const salida = execFileSync("node", ["scripts/contrato/verificar.mjs", "--objeto", nombre], { encoding: "utf8" });
+      const { huellas } = leerLock(undefined, objetoDe(nombre)) as { huellas: Map<string, string> };
+      expect(salida).toContain(`${huellas.size} archivos iguales a su lock`);
+      expect(salida).not.toContain("idénticos a su origen");
+      expect(salida).toMatch(/(\d+ contra el origen [0-9a-f]{7}|0 contra el origen \(sin la planeadora\)) · \d+ contra la maqueta/);
+    });
 });

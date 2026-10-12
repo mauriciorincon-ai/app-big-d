@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Big-D — Blueprint de infraestructura (as-built)</title>
+<style>
+  :root {
+    --fondo: #fafaf9; --tinta: #1c1917; --tinta-suave: #57534e;
+    --borde: #d6d3d1; --tarjeta: #ffffff; --acento: #1d4ed8;
+    --acento-suave: #dbeafe; --ok: #15803d; --alerta: #b45309;
+    --futuro: #9333ea; --caja-svg: #ffffff; --bd-svg: #eff6ff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --fondo: #1c1917; --tinta: #fafaf9; --tinta-suave: #a8a29e;
+      --borde: #44403c; --tarjeta: #292524; --acento: #60a5fa;
+      --acento-suave: #1e3a5f; --ok: #4ade80; --alerta: #fbbf24;
+      --futuro: #c084fc; --caja-svg: #292524; --bd-svg: #1e3a5f;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 2rem 1rem 4rem; background: var(--fondo); color: var(--tinta);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif; line-height: 1.55;
+  }
+  main { max-width: 980px; margin: 0 auto; }
+  h1 { font-size: 1.6rem; margin: 0 0 .25rem; }
+  h2 { font-size: 1.15rem; margin: 2.2rem 0 .8rem; border-bottom: 2px solid var(--borde); padding-bottom: .35rem; }
+  .badge {
+    display: inline-block; font-size: .72rem; font-weight: 700; letter-spacing: .05em;
+    background: var(--acento-suave); color: var(--acento); border-radius: 999px;
+    padding: .15rem .6rem; vertical-align: middle; text-transform: uppercase;
+  }
+  .meta { color: var(--tinta-suave); font-size: .9rem; margin: .2rem 0 1rem; }
+  .nota {
+    background: var(--tarjeta); border: 1px solid var(--borde); border-left: 4px solid var(--acento);
+    border-radius: 8px; padding: .8rem 1rem; font-size: .88rem; color: var(--tinta-suave);
+  }
+  .diagrama { background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 12px; padding: 1rem; overflow-x: auto; }
+  .diagrama svg { display: block; min-width: 720px; width: 100%; height: auto; }
+  .caja { fill: var(--caja-svg); stroke: var(--borde); stroke-width: 1.5; rx: 10; }
+  .caja-principal { stroke: var(--acento); stroke-width: 2; }
+  .caja-bd { fill: var(--bd-svg); stroke: var(--acento); stroke-width: 1.5; }
+  .caja-futuro { fill: none; stroke: var(--futuro); stroke-width: 1.5; stroke-dasharray: 6 5; }
+  .titulo-caja { font: 700 13px system-ui, sans-serif; fill: var(--tinta); }
+  .detalle-caja { font: 400 11px system-ui, sans-serif; fill: var(--tinta-suave); }
+  .detalle-futuro { fill: var(--futuro); }
+  .flecha { stroke: var(--tinta-suave); stroke-width: 1.5; fill: none; marker-end: url(#punta); }
+  .flecha-futura { stroke: var(--futuro); stroke-dasharray: 6 5; }
+  .etiqueta-flecha { font: 600 10.5px system-ui, sans-serif; fill: var(--tinta-suave); }
+  table { width: 100%; border-collapse: collapse; font-size: .88rem; background: var(--tarjeta); border-radius: 8px; overflow: hidden; }
+  th, td { text-align: left; padding: .55rem .7rem; border: 1px solid var(--borde); vertical-align: top; }
+  th { background: var(--acento-suave); font-size: .8rem; text-transform: uppercase; letter-spacing: .04em; }
+  tr.critica td { font-weight: 700; }
+  .tabla-scroll { overflow-x: auto; }
+  details { margin: 1rem 0; font-size: .85rem; color: var(--tinta-suave); }
+  details summary { cursor: pointer; font-weight: 600; }
+  footer { margin-top: 3rem; font-size: .8rem; color: var(--tinta-suave); border-top: 1px solid var(--borde); padding-top: .8rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Big-D — Blueprint de infraestructura <span class="badge">as-built</span></h1>
+  <p class="meta">Ciclo: <strong>H-1 «El planeador completo» (E1–E3)</strong> · Cerrado: <strong>2026-10-12</strong> · Sprints del ciclo: <strong>S1–S7</strong> · Última actualización: <strong>2026-10-12</strong></p>
+  <p class="nota"><strong>Entregable del cierre del hito H-1.</strong> El mapa real de la infraestructura que soporta esta app, tomado del repositorio tal como está hoy: lo que se ve en el diagrama existe y está cableado; lo previsto y no desplegado va punteado. No contiene secretos, claves ni URLs: solo qué gestor guarda cada cosa. <code>tests/unit/blueprint.test.ts</code> comprueba que cada job de CI, cada paquete reusable y cada ADR del repositorio aparezcan aquí, para que el documento no se pudra.</p>
+
+  <h2>Diagrama</h2>
+  <div class="diagrama">
+  <svg viewBox="0 0 960 470" role="img" aria-label="Diagrama de infraestructura de Big-D: la persona que decide, el hosting estático, los datos en el repositorio, la observabilidad opcional, GitHub con su CI, el investigador y la demo prevista">
+    <defs>
+      <marker id="punta" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" opacity="0.65"/>
+      </marker>
+    </defs>
+
+    <!-- Persona -->
+    <rect class="caja" x="20" y="160" width="170" height="76" rx="10"/>
+    <text class="titulo-caja" x="105" y="190" text-anchor="middle">Persona que decide</text>
+    <text class="detalle-caja" x="105" y="208" text-anchor="middle">navegador, con sesión</text>
+    <text class="detalle-caja" x="105" y="224" text-anchor="middle">de Vercel Authentication</text>
+
+    <!-- Hosting -->
+    <rect class="caja caja-principal" x="290" y="140" width="240" height="116" rx="10"/>
+    <text class="titulo-caja" x="410" y="170" text-anchor="middle">Hosting estático</text>
+    <text class="detalle-caja" x="410" y="190" text-anchor="middle">Vercel Hobby · export out/</text>
+    <text class="detalle-caja" x="410" y="207" text-anchor="middle">Authentication en producción y previews</text>
+    <text class="detalle-caja" x="410" y="224" text-anchor="middle">Next.js 16 · sin servidor ni funciones</text>
+
+    <!-- Datos en el repo -->
+    <rect class="caja caja-bd" x="640" y="40" width="280" height="96" rx="10"/>
+    <text class="titulo-caja" x="780" y="70" text-anchor="middle">Conocimiento = archivos</text>
+    <text class="detalle-caja" x="780" y="88" text-anchor="middle">data/ en YAML 1.2 validado con Zod</text>
+    <text class="detalle-caja" x="780" y="105" text-anchor="middle">instantáneas SHA-256 (RFC 8785)</text>
+    <text class="detalle-caja" x="780" y="122" text-anchor="middle">sin base de datos · sin auth propia</text>
+
+    <!-- Observabilidad -->
+    <rect class="caja" x="640" y="170" width="280" height="86" rx="10"/>
+    <text class="titulo-caja" x="780" y="200" text-anchor="middle">Observabilidad (opcional)</text>
+    <text class="detalle-caja" x="780" y="218" text-anchor="middle">Sentry en el cliente, solo metadatos</text>
+    <text class="detalle-caja" x="780" y="235" text-anchor="middle">inerte sin NEXT_PUBLIC_SENTRY_DSN</text>
+
+    <!-- GitHub -->
+    <rect class="caja" x="290" y="330" width="240" height="96" rx="10"/>
+    <text class="titulo-caja" x="410" y="358" text-anchor="middle">GitHub · app-big-d</text>
+    <text class="detalle-caja" x="410" y="376" text-anchor="middle">público · ruleset main-protegida</text>
+    <text class="detalle-caja" x="410" y="393" text-anchor="middle">quality · e2e · lighthouse</text>
+    <text class="detalle-caja" x="410" y="410" text-anchor="middle">diagramador ×2 · un-pr-vivo</text>
+
+    <!-- Investigador -->
+    <rect class="caja" x="640" y="330" width="280" height="96" rx="10"/>
+    <text class="titulo-caja" x="780" y="358" text-anchor="middle">Investigador (skill /investigar)</text>
+    <text class="detalle-caja" x="780" y="376" text-anchor="middle">Claude Code de la persona, a demanda</text>
+    <text class="detalle-caja" x="780" y="393" text-anchor="middle">escribe solo en propuestas/</text>
+    <text class="detalle-caja" x="780" y="410" text-anchor="middle">la persona aprueba con su comando</text>
+
+    <!-- Futuro -->
+    <rect class="caja-futuro" x="20" y="330" width="230" height="96" rx="10"/>
+    <text class="titulo-caja detalle-futuro" x="135" y="358" text-anchor="middle">(futuro) demo estática</text>
+    <text class="detalle-caja detalle-futuro" x="135" y="376" text-anchor="middle">paquete con manifiesto de huellas,</text>
+    <text class="detalle-caja detalle-futuro" x="135" y="393" text-anchor="middle">a hoja-de-vida por PR de contenido</text>
+    <text class="detalle-caja detalle-futuro" x="135" y="410" text-anchor="middle">(hito H-2)</text>
+
+    <!-- Flechas -->
+    <path class="flecha" d="M 190 198 L 285 198"/>
+    <text class="etiqueta-flecha" x="237" y="190" text-anchor="middle">HTTPS</text>
+
+    <path class="flecha" d="M 530 160 L 635 100"/>
+    <text class="etiqueta-flecha" x="545" y="96" text-anchor="middle">el build lee data/</text>
+
+    <path class="flecha" d="M 530 214 L 635 214"/>
+    <text class="etiqueta-flecha" x="582" y="206" text-anchor="middle">errores</text>
+
+    <path class="flecha" d="M 410 330 L 410 261"/>
+    <text class="etiqueta-flecha" x="418" y="300">CI/CD → deploy</text>
+
+    <path class="flecha" d="M 640 378 L 535 378"/>
+    <text class="etiqueta-flecha" x="586" y="368" text-anchor="middle">aprobado → PR</text>
+
+    <path class="flecha flecha-futura" d="M 250 378 L 285 378"/>
+  </svg>
+  </div>
+
+  <h2>Tabla por pieza</h2>
+  <div class="tabla-scroll">
+  <table>
+    <thead><tr><th>Pieza</th><th>Servicio + plan</th><th>Detalle operativo</th></tr></thead>
+    <tbody>
+      <tr><td>Código / versionamiento</td><td>GitHub <code>mauriciorincon-ai/app-big-d</code> (público)</td><td>Ruleset <code>main-protegida</code>: sin push directo a <code>main</code>; checks requeridos <code>quality</code>, <code>e2e</code>, <code>lighthouse</code>, <code>diagramador (ubuntu-latest)</code>, <code>diagramador (macos-latest)</code> y <code>un-pr-vivo</code>. Un solo PR vivo por app; el merge es squash y lo hace una persona.</td></tr>
+      <tr><td>CI/CD</td><td>GitHub Actions (<code>.github/workflows/ci.yml</code> y <code>un-pr-vivo.yml</code>)</td><td>Los jobs están en la tabla «Jobs de CI». Node 22, pnpm 11, <code>--frozen-lockfile</code>.</td></tr>
+      <tr><td>Hosting / publicación</td><td>Vercel Hobby</td><td>Export estático (<code>output: "export"</code>) servido desde <code>out/</code>. <strong>Vercel Authentication</strong> en producción y en previews: la app privada no se muestra a nadie. La URL no se escribe aquí (regla 17: la producción se muestra, jamás se entrega). Plan Hobby: sin uso comercial.</td></tr>
+      <tr><td>Build</td><td><code>pnpm build</code></td><td>Valida el instrumento primero (<code>scripts/instrumento/validar.mjs</code>: sin validación en verde no hay <code>out/</code>), copia la maqueta, <code>next build</code> e inyecta la CSP por meta. La CI construye como el proveedor (<code>scripts/build-como-proveedor.mjs</code>) y comprueba que lo publicado sea idéntico a <code>out/</code>.</td></tr>
+      <tr><td>Base de datos</td><td>Ninguna — conocimiento en archivos</td><td><code>data/</code> (plataformas, capacidades, criterios, escalas, evidencias, casos, instantáneas, mapas, revisiones) en YAML 1.2, un archivo por entidad. Una base incompleta falla al cargar. Sin RLS: no hay servidor.</td></tr>
+      <tr><td>Auth</td><td>No aplica en la app</td><td>El acceso lo decide Vercel Authentication. Dentro de la app no hay cuentas, sesiones ni roles.</td></tr>
+      <tr><td>Almacenamiento de archivos</td><td>No aplica</td><td>Todo es de solo lectura en el build. La skill escribe solo en <code>propuestas/</code> (un hook bloquea cualquier otra carpeta).</td></tr>
+      <tr><td>Email / notificaciones</td><td>No aplica</td><td>—</td></tr>
+      <tr><td>IA embebida</td><td><strong>NINGUNA</strong> en tiempo de ejecución</td><td>La única IA es el investigador (<code>/investigar</code>), una skill de Claude Code que corre interactiva en la máquina de la persona, con el binario oficial, jamás en lote ni en CI. ADR <code>investigator-code-first</code> e <code>investigator-7s-compliance</code>. Sin proveedor cableado ni claves de API.</td></tr>
+      <tr><td>Observabilidad</td><td>Sentry, solo cliente</td><td>Metadata-only e inerte sin DSN (<code>instrumentation-client.ts</code>); el SDK se importa dinámicamente y no viaja si no hay DSN. Sin tracing ni replay.</td></tr>
+      <tr><td>Crons / keep-alives</td><td>Ninguno</td><td>No hay base ni servicio que mantener despierto.</td></tr>
+      <tr><td>Secretos</td><td><code>.env.local</code> (ignorado por git) y variables de entorno de Vercel</td><td>jamás el repo. gitleaks a doble cinturón: hook de escritura de Claude Code, <code>githooks/pre-commit</code> y paso fijado (versión y suma) en el job <code>quality</code>. Hoy solo hay dos variables opcionales (la DSN de Sentry y el nombre de la app) y una perilla de build, <code>BIGD_DATOS</code>, que el build rechaza dentro de Vercel.</td></tr>
+      <tr><td>Dominio</td><td>Subdominio del hosting</td><td>No hay dominio propio.</td></tr>
+      <tr class="critica"><td>Costo real / mes</td><td>US$ 0</td><td>Vercel Hobby, GitHub público y GitHub Actions dentro de sus capas gratuitas; sin base, sin correo, sin almacenamiento, sin IA de pago en el producto. Los tres jobs de navegador consumen minutos de Actions: no se ha medido el porcentaje de uso de la cuota y no se afirma aquí.</td></tr>
+      <tr class="critica"><td>Punto único de falla</td><td>El proyecto de Vercel y la cuenta de GitHub</td><td>Lo que se publica es un export estático reproducible desde el repositorio: cualquier servidor de archivos lo sirve (<code>pnpm start</code> usa <code>serve out</code>). Las huellas del núcleo (<code>NUCLEO.SHA256SUMS</code>) y los golden files permiten comprobar que otra máquina da los mismos bytes.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h2>Jobs de CI</h2>
+  <div class="tabla-scroll">
+  <table>
+    <thead><tr><th>Job</th><th>Dónde corre</th><th>Qué gatea</th></tr></thead>
+    <tbody>
+      <tr><td><code>quality</code></td><td>ubuntu-latest · <code>ci.yml</code></td><td>Regla 18 (ningún paquete por debajo de <code>main</code>), tipos, lint, pruebas con cobertura, gitleaks, build, build como el proveedor y salida publicada idéntica a <code>out/</code>, CSP de lo publicado y cero enlaces (árbol y homepage).</td></tr>
+      <tr><td><code>e2e</code></td><td>ubuntu-latest · <code>ci.yml</code> · después de <code>quality</code></td><td>Playwright (Chromium; Firefox y WebKit solo para G11 y CSP) con axe, en español, en inglés y contra la base sembrada.</td></tr>
+      <tr><td><code>lighthouse</code></td><td>ubuntu-latest · <code>ci.yml</code> · después de <code>quality</code></td><td>Presupuestos de <code>perf-budget.json</code> y categorías ≥ 0,9 (3 corridas, mediana) sobre <code>lighthouse-urls.json</code>; avisa si el margen baja de 10 %.</td></tr>
+      <tr><td><code>diagramador</code></td><td>ubuntu-latest y macos-latest · <code>ci.yml</code> · sin <code>needs</code></td><td>Pruebas de los paquetes reusables en Node (carnadas, golden files, D11, propiedades, locks del contrato, G3), el núcleo con sus huellas y los tres navegadores con la misma huella que Node.</td></tr>
+      <tr><td><code>un-pr-vivo</code></td><td>ubuntu-latest · <code>un-pr-vivo.yml</code></td><td>Falla si hay más de un PR abierto y el cuerpo de este no empieza con «complementa #N: …».</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h2>Paquetes reusables de la casa</h2>
+  <div class="tabla-scroll">
+  <table>
+    <thead><tr><th>Paquete</th><th>Contrato (lock)</th><th>Origen</th></tr></thead>
+    <tbody>
+      <tr><td><code>packages/diagramador</code></td><td>v0.6.0 · <code>CONTRATO.lock</code></td><td>Copia fijada de <code>reusables/diagramador</code> de la planeadora en el commit <code>c8d3957</code>. Esta app es su piloto, no su dueña: no se edita aquí.</td></tr>
+      <tr><td><code>packages/instrumentos-de-plan</code></td><td>v0.2.0 · <code>CONTRATO.lock</code></td><td>Contrato en el commit <code>fe9ffd1</code> de la planeadora; implementación congelada copiada de app-planlang. No se edita aquí.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h2>Decisiones de arquitectura (ADR)</h2>
+  <div class="tabla-scroll">
+  <table>
+    <thead><tr><th>Archivo</th><th>Decisión</th><th>Estado</th></tr></thead>
+    <tbody>
+      <tr><td><code>decisions/audit-exception-braces.md</code></td><td>Audit exception: braces (GHSA-vfj7-8cjw-p6xm)</td><td>accepted</td></tr>
+      <tr><td><code>decisions/compare-in-the-engine.md</code></td><td>Side by side in the engine, pre-rendered for the static export</td><td>accepted</td></tr>
+      <tr><td><code>decisions/csp-static-export.md</code></td><td>Content Security Policy for the static export</td><td>accepted</td></tr>
+      <tr><td><code>decisions/design-mockup-destination.md</code></td><td>Destination of the design mockup after G-Diseño (A-25)</td><td>accepted</td></tr>
+      <tr><td><code>decisions/design-system-s1-extensions.md</code></td><td>Design-system extensions from S1 (atlas in the product)</td><td>accepted</td></tr>
+      <tr><td><code>decisions/design-system-s2-extensions.md</code></td><td>Design-system extensions from S2 (side by side and map versions)</td><td>accepted</td></tr>
+      <tr><td><code>decisions/design-system-s3-extensions.md</code></td><td>Design-system extensions from S3 (knowledge base, case profile, comparison)</td><td>accepted</td></tr>
+      <tr><td><code>decisions/diagramador-architecture.md</code></td><td>Diagramador architecture: own band placement and channel routing, as a workspace package</td><td>accepted</td></tr>
+      <tr><td><code>decisions/investigator-7s-compliance.md</code></td><td>Investigator skill: compliance with the subscription-AI standard (7-S)</td><td>accepted</td></tr>
+      <tr><td><code>decisions/investigator-code-first.md</code></td><td>Platform investigator with generative AI: why code alone is not enough</td><td>accepted</td></tr>
+      <tr><td><code>decisions/jargon-detector.md</code></td><td>Jargon detector: not built in H-1, and why</td><td>accepted</td></tr>
+      <tr><td><code>decisions/lcp-budget-by-profile.md</code></td><td>LCP budget for an app that measures its text with a metrics table</td><td>accepted</td></tr>
+      <tr><td><code>decisions/map-versioning.md</code></td><td>Map versioning: archive the approved bytes</td><td>accepted</td></tr>
+      <tr><td><code>decisions/publication-gate.md</code></td><td>The build refuses to publish when the instrument is not green</td><td>accepted</td></tr>
+      <tr><td><code>decisions/svg-serializer-and-golden-files.md</code></td><td>SVG serializer and golden files: own canonical serializer, hashes on raw bytes</td><td>accepted</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h2>Historial del blueprint</h2>
+  <div class="tabla-scroll">
+  <table>
+    <thead><tr><th>Fecha</th><th>Ciclo</th><th>Cambios</th></tr></thead>
+    <tbody>
+      <tr><td>2026-10-12</td><td>H-1 (S1–S7)</td><td>Versión inicial</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <footer>Blueprint as-built de Big-D · pipeline AI-APPs · se actualiza en cada cierre de ciclo. Archivo del repo — sin CDNs ni dependencias externas.</footer>
+</main>
+</body>
+</html>

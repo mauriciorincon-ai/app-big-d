@@ -3,6 +3,9 @@ import { comparacionDe, planDe, type ResultadoPlan } from "@/engine";
 import { plantilla } from "@/lib/atlas/plantilla";
 import { evaluacionDe } from "@/lib/caso/casos";
 import { lista } from "@/lib/caso/formato";
+import { huellaPlan } from "@/lib/datos/instantanea";
+import { comandoAprobarPlan } from "@/lib/investigador/comando-plan";
+import { esc } from "@/lib/html";
 import type { Conocimiento } from "@/lib/datos/cargar-conocimiento";
 import type { Caso } from "@/lib/datos/conocimiento";
 import type { Decision, Plan } from "@/lib/datos/plan";
@@ -14,12 +17,6 @@ import { svgOndas, type NodoOndas, type SalidaOndas } from "./ondas-svg";
 // ondas y se generan las fichas del panel lateral (HTML escapado, sin datos del visitante). Nada se inventa: cada opción
 // por plataforma sale del dato del plan, que solo cita evidencia aprobada.
 
-const esc = (t: string) =>
-  t
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
 const SVG = (cuerpo: string) => `<svg viewBox="-8 -8 16 16" width="14" height="14" aria-hidden="true" focusable="false">${cuerpo}</svg>`;
 const ICONO_ALERTA = SVG('<circle r="7" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M0,-5 V1.5 M0,4.2 V4.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>');
 const ICONO_PENDIENTE = SVG('<circle r="7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2.5 2"/>');
@@ -134,6 +131,9 @@ export function vistaDecisiones(
           ondas: informe.ondas.length,
         }),
   });
+  // S5-B-11: como el atlas (D11), un diagrama con una línea que atraviesa una tarjeta ajena no se publica.
+  if (ondas.cruces > 0)
+    throw new Error(`decisiones · diagrama de ondas · ${ondas.cruces} línea(s) atraviesan una tarjeta ajena (D11): el diagrama no se publica`);
 
   // --- lectura en texto (G10) ---
   const linea = (id: string) => {
@@ -174,8 +174,8 @@ export function vistaDecisiones(
         .map((e) => e.razon[idioma]),
     )[0];
   const motivo =
-    comparacion.tipo === "sin-comparacion"
-      ? ((t.ficha.motivos as Record<string, string>)[comparacion.motivo] ??
+    resultado.comparacion.tipo === "sin-comparacion"
+      ? ((t.ficha.motivos as Record<string, string>)[resultado.comparacion.motivo] ??
         t.ficha.motivos.otro)
       : "";
   const fichas: Record<string, string> = {};
@@ -210,14 +210,14 @@ export function vistaDecisiones(
       return `<li><b>${esc(nombrePlataforma[pid] ?? pid)}</b> ${esc(o.texto[idioma])}</li>`;
     });
     const nota =
-      comparacion.tipo === "empate-tecnico"
+      resultado.comparacion.tipo === "empate-tecnico"
         ? plantilla(t.ficha.paraEmpate, {
             plataformas: lista(
               r.planificadas.map((x) => nombrePlataforma[x] ?? x),
               y,
             ),
           })
-        : comparacion.tipo === "ganadora"
+        : resultado.comparacion.tipo === "ganadora"
           ? plantilla(t.ficha.paraGanadora, {
               plataformas: lista(
                 r.planificadas.map((x) => nombrePlataforma[x] ?? x),
@@ -259,4 +259,27 @@ export function vistaDecisiones(
     cicloNombres,
     sinOnda,
   };
+}
+
+/**
+ * Lo que dice el apartado «Aprobar el plan» (S5-M-4): los bloqueos escritos, sin repetir las decisiones de un ciclo (el camino
+ * cierra en su primer nodo: a → b → a), y el comando de aprobación solo cuando el plan se puede aprobar y todavía no lo está.
+ * Está aquí, y no en la página, para probarlo: la página solo lo pinta.
+ */
+export function aprobacionDelPlan(
+  plan: Plan,
+  r: ResultadoPlan,
+  idioma: Idioma,
+): { bloqueos: string[]; comando: string | null } {
+  const t = textos(idioma);
+  const bloqueos = r.informe.bloqueantes.map((b) =>
+    plantilla(t.caso.decisiones.aprobar.bloqueantes[b.tipo], {
+      ids: lista([...new Set(b.ids)], t.caso.y),
+    }),
+  );
+  const comando =
+    r.aprobable && plan.estado_aprobacion !== "aprobado"
+      ? comandoAprobarPlan(plan.caso_id, huellaPlan(plan))
+      : null;
+  return { bloqueos, comando };
 }

@@ -219,10 +219,10 @@ export const es: Textos = {
     resumen: "{referencias} referencias · {propiedades} propiedades · {sembrados} sembrados · {aprobaciones} aprobaciones",
     huellaNucleo: "huella del núcleo",
     referencias: { titulo: "Casos de referencia", nota: "La respuesta correcta es evidente por construcción." },
-    propiedades: { titulo: "Propiedades", nota: "Pruebas de propiedades con semilla; la monotonía es la corregida (la posición de la líder nunca empeora). Son las mismas de la suite de pruebas." },
+    propiedades: { titulo: "Propiedades", nota: "Pruebas de propiedades con semilla; la monotonía es la corregida (la posición de la líder nunca empeora). Son las mismas de la suite de pruebas.", corridas: "{corridas} corridas · semilla {semilla}" },
     sembrados: { titulo: "Errores sembrados", nota: "Casos con un error deliberado: la herramienta debe detectarlos todos. Se reporta cuántos sobre cuántos.", detectados: "{ok} de {total} detectados", no: "no detectado" },
     aprobaciones: { titulo: "Lo aprobado es lo que aprobó una persona", nota: "Evidencias, instantáneas, perfiles, planes y mapas: ninguno se editó a mano después de su aprobación. Y el resumen de cada informe, que se lee dentro del presupuesto de lectura en español y en inglés." },
-    motores: { titulo: "Mismos bytes en todos los motores", nota: "La misma entrada produce la misma huella; la integración continua la compara en Node, Chromium, Firefox y WebKit, en Linux y en macOS. Aquí, la huella del conjunto de referencia.", sinHuella: "sin conjunto de huellas en esta base" },
+    motores: { titulo: "Mismos bytes en todos los motores", nota: "La misma entrada produce la misma huella. Aquí se muestra la huella del archivo de sumas del núcleo, tal como está en esta versión: el sitio no la recalcula. La integración continua recalcula cada caso en Node, Chromium, Firefox y WebKit, en Linux y en macOS, y se detiene si una suma cambia.", sinHuella: "sin conjunto de huellas en esta base" },
     bloqueo: {
       ojo: "Intento de publicación",
       titulo: "No se publica",
@@ -282,6 +282,7 @@ export const es: Textos = {
     },
     escala: {
       titulo: "Escala y topes por madurez",
+      tabla: "Tabla de topes por madurez",
       nota: "Cada nivel con una descripción observable. Lo que no está disponible de forma general aporta como máximo su tope; si el caso acepta vista previa, el tope sube.",
       madurez: "Madurez",
       tope: "Tope",
@@ -300,6 +301,7 @@ export const es: Textos = {
     },
     instantaneas: {
       titulo: "Instantáneas",
+      tabla: "Tabla de instantáneas",
       nota: "Huella SHA-256 sobre el JSON canónico (RFC 8785) de toda la base aprobada; la carga la recalcula y se niega si no coincide. El caso cita la instantánea con la que se calculó.",
       version: "Versión",
       huella: "Huella",
@@ -383,10 +385,12 @@ export const es: Textos = {
         prioridad: "prioridad {p}",
         sinMitigacion: "sin mitigación",
       },
+      origenes: { "propuesto-por-agente": "propuesto por el agente", "declarado-por-usuario": "declarado por quien aprobó el perfil" },
       ciclo: {
         titulo: "Ciclo de dependencias",
         alerta: "Ciclo detectado: no se puede ordenar",
-        calculo: "ondas calculadas: {ondas} · sin onda: {sin}",
+        sinOndas: "Mientras el ciclo exista no se calculan ondas: {sin} decisiones quedan sin onda.",
+        conOndas: "Ondas calculadas: {ondas} · sin onda por el ciclo: {sin}.",
         nota: "Se muestra, no se esconde: la herramienta no elige cuál dependencia romper. Quien decide quita una de las flechas del ciclo y las ondas se recalculan.",
       },
       riesgos: {
@@ -399,6 +403,10 @@ export const es: Textos = {
         bajo: "bajó de {de} a {a}",
         igual: "sin cambio de categoría",
         orden: "Orden: prioridad de acción → severidad → RPN (el RPN solo ordena dentro de una prioridad).",
+        desliza: "Desliza la tabla de lado para ver todas las columnas.",
+        etiquetaTabla: "Tabla de riesgos",
+        causa: "Causa: {texto}",
+        origenDe: "Origen de los números: {origen}.",
         tabla: {
           titulo: "Tabla de prioridad de acción (AIAG-VDA 2019)",
           nota: "Se lee por filas: la severidad y la ocurrencia dicen la fila; la detección, la columna. Severidad primero. La tabla viaja como dato dentro del paquete de la casa; el RPN (S × O × D) solo ordena y jamás decide la acción.",
@@ -424,6 +432,7 @@ export const es: Textos = {
         costo: "costo {c}",
         costos: { gratis: "gratis", bajo: "bajo", medio: "medio" },
         sostiene: "Sostiene",
+        origenDe: "Origen",
         alertaCritico: "Supuesto crítico sin probar: aparece en las alertas del plan.",
         refutado: "Refutado: revisa la decisión que sostiene.",
         vencido: "Venció contra la fecha de evaluación y sigue sin probar.",
@@ -465,6 +474,7 @@ export const es: Textos = {
         motivos: {
           "perfil-borrador": "aprobar el perfil del caso",
           "plan-borrador": "aprobar el plan del caso",
+          "sin-comparacion": "la comparación no puntúa con este perfil",
           ciclo: "resolver el ciclo de dependencias entre decisiones",
           bloqueado: "una mitigación para {ids}, que es una acción alta sin mitigación",
         },
@@ -559,6 +569,7 @@ export const es: Textos = {
         recomendacion: {
           titulo: "Recomendación",
           ganadora: "{plataforma}, con {brecha} puntos de ventaja.",
+          unica: "{plataforma}, la única plataforma que queda después de las restricciones.",
           empate: "Empate técnico entre {plataformas}: {brecha} puntos de diferencia.",
           sin: "Sin recomendación: {motivo}.",
           robustez: "Robustez {clase}: {plataforma} queda primera en el {pct} % de las {K} combinaciones de pesos.",
@@ -678,6 +689,7 @@ export const es: Textos = {
         faltanDecisiones: ["falta {n} decisión implícita por responder", "faltan {n} decisiones implícitas por responder"],
         faltaInstantanea: "falta la instantánea de la base contra la que se evalúa",
         comando: "listo para aprobar: lo aprueba una persona con su comando, en su terminal",
+        irAlEditor: "Ir al editor, abajo",
       },
       sello: { titulo: "Perfil aprobado", detalle: "{fecha} · sha256 {inicio}…{fin}", comparar: "Comparar" },
       editor: {
@@ -741,6 +753,7 @@ export const es: Textos = {
       },
       matriz: {
         titulo: "Puntajes por criterio",
+        tabla: "Tabla de puntajes por criterio",
         nota: "0–{max} con tope por madurez antes del mínimo; cada puntaje se remonta a una evidencia aprobada de la instantánea.",
         criterio: "Criterio",
         peso: "Peso",
@@ -790,6 +803,7 @@ export const es: Textos = {
       },
       robustez: {
         titulo: "Robustez por simulación",
+        tabla: "Tabla de aceptabilidad por puesto",
         nota: "{K} combinaciones de pesos dentro de los rangos del perfil, con semilla: en qué porcentaje queda cada plataforma en cada puesto y qué tan robusta es la recomendación. Los umbrales están declarados, no escondidos.",
         plataforma: "Plataforma",
         puesto: "{k}",
@@ -823,6 +837,7 @@ export const es: Textos = {
         cancelada: "Cancelaste la simulación de {pesos}; se muestra la de {anteriores}.",
         tope: "La simulación llegó al tope de {tope} intentos sin completar las combinaciones: falla cerrada, sin resultado de robustez.",
         error: "La simulación no pudo correr: {mensaje}",
+        errorWorker: "el programa de la simulación no se pudo cargar o respondió algo ilegible",
         noAplica: "Con una sola plataforma no hay robustez que medir.",
       },
       pros: {
@@ -877,6 +892,7 @@ export const es: Textos = {
       nota: "El diff contra el mapa aprobado lo calcula el código por id; el modelo solo redacta. Si el modelo dijera «sin novedades» y el diff no estuviera vacío, gana el diff.",
       corrida: "Corrida",
       modelo: "modelo declarado: {modelo}",
+      origen: "origen declarado: {origen}",
       reintentos: ["validador al cerrar: {n} bloqueo", "validador al cerrar: {n} bloqueos"],
       reintentosDeclarados: ["la corrida declara {n} reintento", "la corrida declara {n} reintentos"],
       fuentes: ["{n} fuente citada", "{n} fuentes citadas"],

@@ -138,7 +138,7 @@ export interface Textos {
     resumen: string;
     huellaNucleo: string;
     referencias: { titulo: string; nota: string };
-    propiedades: { titulo: string; nota: string };
+    propiedades: { titulo: string; nota: string; corridas: string };
     sembrados: { titulo: string; nota: string; detectados: string; no: string };
     aprobaciones: { titulo: string; nota: string };
     motores: { titulo: string; nota: string; sinHuella: string };
@@ -178,10 +178,11 @@ export interface Textos {
       ficticias: string;
     };
     criterios: { titulo: string; nota: string; capacidad: string; transversal: string };
-    escala: { titulo: string; nota: string; madurez: string; tope: string; topeVistaPrevia: string; sinTope: string };
+    escala: { titulo: string; tabla: string; nota: string; madurez: string; tope: string; topeVistaPrevia: string; sinTope: string };
     convenciones: { titulo: string; nota: string; empate: string; robustez: string; vigencia: string; prosContras: string; sensibilidad: string; simulacion: string };
     instantaneas: {
       titulo: string;
+      tabla: string;
       nota: string;
       version: string;
       huella: string;
@@ -235,7 +236,8 @@ export interface Textos {
         prioridad: string;
         sinMitigacion: string;
       };
-      ciclo: { titulo: string; alerta: string; calculo: string; nota: string };
+      origenes: { "propuesto-por-agente": string; "declarado-por-usuario": string };
+      ciclo: { titulo: string; alerta: string; sinOndas: string; conOndas: string; nota: string };
       riesgos: {
         titulo: string;
         nota: string;
@@ -246,6 +248,10 @@ export interface Textos {
         bajo: string;
         igual: string;
         orden: string;
+        desliza: string;
+        etiquetaTabla: string;
+        causa: string;
+        origenDe: string;
         tabla: { titulo: string; nota: string; severidad: string; ocurrencia: string; deteccion: string; fila: string };
         origen: string;
         razon: string;
@@ -253,7 +259,7 @@ export interface Textos {
         alertaCuerpo: string;
         momento: { antes: string; durante: string; despues: string };
       };
-      supuestos: { titulo: string; estados: { sin_probar: string; confirmado: string; refutado: string }; criticidad: string; niveles: { alta: string; media: string; baja: string }; pruebaBarata: string; tareaPara: string; vence: string; costo: string; costos: { gratis: string; bajo: string; medio: string }; sostiene: string; alertaCritico: string; refutado: string; vencido: string; nota: string };
+      supuestos: { titulo: string; estados: { sin_probar: string; confirmado: string; refutado: string }; criticidad: string; niveles: { alta: string; media: string; baja: string }; pruebaBarata: string; tareaPara: string; vence: string; costo: string; costos: { gratis: string; bajo: string; medio: string }; sostiene: string; origenDe: string; alertaCritico: string; refutado: string; vencido: string; nota: string };
       alertas: { titulo: string; tipos: { "supuesto-critico-sin-probar": string; "supuesto-vencido": string; "supuesto-refutado": string; "decision-implicita": string; "opcion-sin-fuente": string } };
       aprobar: {
         titulo: string;
@@ -271,7 +277,7 @@ export interface Textos {
       sub: string;
       vistas: { etiqueta: string; hoja: string; alistamiento: string; informe: string };
       meta: { items: readonly [string, string]; fases: readonly [string, string]; final: string; borrador: string; sinFase: string };
-      borrador: { titulo: string; cuerpo: string; motivos: { "perfil-borrador": string; "plan-borrador": string; ciclo: string; bloqueado: string } };
+      borrador: { titulo: string; cuerpo: string; motivos: { "perfil-borrador": string; "plan-borrador": string; "sin-comparacion": string; ciclo: string; bloqueado: string } };
       hoja: {
         titulo: string;
         nota: string;
@@ -307,7 +313,7 @@ export interface Textos {
         presupuesto: string;
         presupuestoTerminos: readonly [string, string];
         queSignifica: string;
-        recomendacion: { titulo: string; ganadora: string; empate: string; sin: string; robustez: string };
+        recomendacion: { titulo: string; ganadora: string; unica: string; empate: string; sin: string; robustez: string };
         unaVia: string;
         riesgos: string;
         sinUnaVia: string;
@@ -337,7 +343,7 @@ export interface Textos {
       decisiones: { titulo: string; nota: string; sinResponder: string; respondida: string; elegida: string };
       contexto: string;
       requisitos: { titulo: string; obligatorio: string; preferente: string; criterio: string };
-      aprobar: { boton: string; faltanDecisiones: readonly [string, string]; faltaInstantanea: string; comando: string };
+      aprobar: { boton: string; faltanDecisiones: readonly [string, string]; faltaInstantanea: string; comando: string; irAlEditor: string };
       sello: { titulo: string; detalle: string; comparar: string };
       /** El editor del perfil en borrador, que arma el comando de aprobación (S4). */
       editor: {
@@ -400,7 +406,7 @@ export interface Textos {
         esencial: string;
         barra: string;
       };
-      matriz: { titulo: string; nota: string; criterio: string; peso: string; total: string; mejor: string; limitante: string; formula: string; tope: string; escala: string; topeNota: string; alertas: string; alerta: string; alertaMadurez: string };
+      matriz: { titulo: string; tabla: string; nota: string; criterio: string; peso: string; total: string; mejor: string; limitante: string; formula: string; tope: string; escala: string; topeNota: string; alertas: string; alerta: string; alertaMadurez: string };
       sensibilidad: {
         titulo: string;
         nota: string;
@@ -436,6 +442,7 @@ export interface Textos {
       };
       robustez: {
         titulo: string;
+        tabla: string;
         nota: string;
         plataforma: string;
         puesto: string;
@@ -469,6 +476,8 @@ export interface Textos {
         cancelada: string;
         tope: string;
         error: string;
+        /** El Worker no cargó o un mensaje suyo no se pudo leer (AU-S3-06). */
+        errorWorker: string;
         noAplica: string;
       };
       pros: { titulo: string; destaca: string; corta: string; item: string; mejor: string; esencial: string; tope: string; nadaDestaca: string; nadaCorta: string; nota: string };
@@ -503,6 +512,8 @@ export interface Textos {
       nota: string;
       corrida: string;
       modelo: string;
+      /** Quién propone la evidencia, tal como lo declara la propuesta (AU-S3-04). */
+      origen: string;
       /** Bloqueos que contó el hook de fin (`.reintentos`). */
       reintentos: readonly [string, string];
       /** Reintentos que declara la propia corrida (`ejecucion.reintentos`). */

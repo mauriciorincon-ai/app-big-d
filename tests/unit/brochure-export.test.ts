@@ -124,9 +124,10 @@ describe("docs/brochure-export.json", () => {
       Object.keys(pkg.dependencies).length,
     );
     expect(exportado.app.version_repo).toBe(pkg.version);
+    // Un sprint cerrado: su resumen (S1–S3) o su cierre ejecutivo (S4 en adelante) trae `status: closed` o la fecha `closed:`.
     const cerrados = readdirSync("sprints")
-      .filter((f) => /^SPRINT_\d{3}-summary\.md$/.test(f))
-      .filter((f) => /^status: closed$/m.test(leer(`sprints/${f}`)));
+      .filter((f) => /^SPRINT_\d{3}-(summary|cierre)\.md$/.test(f))
+      .filter((f) => /^(status: closed|closed: \d{4}-\d{2}-\d{2})$/m.test(leer(`sprints/${f}`)));
     expect(exportado.app.sprints_cerrados).toBe(cerrados.length);
   });
 

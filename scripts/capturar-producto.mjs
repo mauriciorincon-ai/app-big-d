@@ -418,18 +418,22 @@ async function interactuar(pagina, ruta, tema, ancho, clave) {
     await decidir.nth(i).click();
     cambio((await decidir.nth(i).getAttribute("aria-pressed")) === "true", "un botón Aprobar/Rechazar no marcó su decisión");
   }
-  const copiar = pagina.locator(".comando button");
-  await marcar(copiar);
-  const nCopiar = await copiar.count();
-  for (let i = 0; i < nCopiar; i++) {
-    const b = copiar.nth(i);
-    const texto = await b.locator("xpath=..").locator("code").textContent();
-    const antes = await b.textContent();
-    await b.click();
-    await pagina.waitForTimeout(80);
-    cambio((await b.textContent()) !== antes, `«${antes}» no confirmó la copia de «${texto}»`);
-    cambio((await pagina.evaluate(() => navigator.clipboard.readText())) === texto, `«Copiar» no dejó «${texto}» en el portapapeles`);
-  }
+  // Una función, porque el editor del perfil (más abajo) vuelve a dibujar su comando al cambiar un campo: el botón nuevo se prueba también.
+  const probarCopiar = async () => {
+    const copiar = pagina.locator(".comando button");
+    await marcar(copiar);
+    const nCopiar = await copiar.count();
+    for (let i = 0; i < nCopiar; i++) {
+      const b = copiar.nth(i);
+      const texto = await b.locator("xpath=..").locator("code").textContent();
+      const antes = await b.textContent();
+      await b.click();
+      await pagina.waitForTimeout(80);
+      cambio((await b.textContent()) !== antes, `«${antes}» no confirmó la copia de «${texto}»`);
+      cambio((await pagina.evaluate(() => navigator.clipboard.readText())) === texto, `«Copiar» no dejó «${texto}» en el portapapeles`);
+    }
+  };
+  await probarCopiar();
 
   // Cada lienzo recibe el foco (la página de versiones trae uno por par).
   const lienzos = pagina.locator(".lienzo[tabindex]").filter({ visible: true });
@@ -526,10 +530,98 @@ async function interactuar(pagina, ruta, tema, ancho, clave) {
     cambio(razon.length > 0, `«${(await b.textContent())?.trim()}» está deshabilitado sin decir por qué`);
   }
 
+  // Editor del perfil (S4): cada campo de texto (peso y rango) marca su error con un valor que no es número y lo limpia al restituir
+  // el original; cada restricción cambia el comando al quitarla; cada respuesta cambia al elegir otra. Todo se deja como estaba.
+  const editor = pagina.locator("[data-editor-perfil]");
+  if (await editor.count()) {
+    const textos = editor.locator('input[type="text"]');
+    await marcar(textos);
+    for (let i = 0; i < (await textos.count()); i++) {
+      const campo = textos.nth(i);
+      const original = await campo.inputValue();
+      await campo.fill("no-es-numero");
+      cambio((await campo.getAttribute("aria-invalid")) === "true", `el campo «${await campo.getAttribute("aria-label")}» no marcó un valor que no es número`);
+      await campo.fill(original);
+      cambio((await campo.getAttribute("aria-invalid")) === "false", `el campo «${await campo.getAttribute("aria-label")}» no se limpió al volver a su valor`);
+    }
+    const comando = async () => (await editor.locator("code").count()) ? await editor.locator("code").first().textContent() : "";
+    const marcas = editor.locator('input[type="checkbox"]');
+    await marcar(marcas);
+    for (let i = 0; i < (await marcas.count()); i++) {
+      const antesComando = await comando();
+      await marcas.nth(i).uncheck();
+      cambio((await comando()) !== antesComando, `quitar la restricción ${i + 1} no cambió el comando`);
+      await marcas.nth(i).check();
+      cambio((await comando()) === antesComando, `volver a marcar la restricción ${i + 1} no restituyó el comando`);
+    }
+    const grupos = editor.locator("[data-decision-editor]");
+    for (let g = 0; g < (await grupos.count()); g++) {
+      const radios = grupos.nth(g).locator('input[type="radio"]');
+      await marcar(radios);
+      if ((await radios.count()) < 2) continue;
+      const elegida = await radios.evaluateAll((rs) => rs.findIndex((r) => r.checked));
+      const otra = elegida === 0 ? 1 : 0;
+      await radios.nth(otra).check();
+      cambio(await radios.nth(otra).isChecked(), `la decisión ${g + 1} no pasó a la otra respuesta`);
+      if (elegida >= 0) await radios.nth(elegida).check();
+    }
+    await probarCopiar();
+  }
+
+  // Decisiones (S5): cada tarjeta del diagrama de ondas abre la ficha de SU decisión en el panel, y Esc la cierra. Sus nodos
+  // llevan `.db-nodo` y `data-decision`, no `.dg-nodo`: la pasada de arriba no los ve (regla 22, deuda del S5 pagada en el S7).
+  const decNodos = pagina.locator(".lienzo .db-nodo[data-decision]");
+  if ((await decNodos.count()) && (await pagina.locator("#panel-ficha").count())) {
+    await marcar(decNodos);
+    const panel = pagina.locator("#panel-ficha");
+    for (let i = 0; i < (await decNodos.count()); i++) {
+      const id = await decNodos.nth(i).getAttribute("data-decision");
+      await decNodos.nth(i).evaluate((el) => el.dispatchEvent(new MouseEvent("click", { bubbles: true })));
+      await panel.waitFor({ state: "visible", timeout: 2000 }).catch(() => {});
+      cambio(await panel.locator(`[data-ficha="${id}"]`).isVisible(), `la tarjeta de «${id}» no abrió la ficha de su decisión`);
+      await pagina.keyboard.press("Escape");
+      cambio(await panel.isHidden(), `Esc no cerró la ficha de «${id}»`);
+    }
+    // «Cerrar» también la cierra.
+    await decNodos.first().evaluate((el) => el.dispatchEvent(new MouseEvent("click", { bubbles: true })));
+    await panel.waitFor({ state: "visible", timeout: 2000 }).catch(() => {});
+    const cerrar = panel.locator(".cerrar");
+    await marcar(cerrar);
+    await cerrar.click();
+    cambio(await panel.isHidden(), "«Cerrar» no cerró la ficha de una decisión");
+  }
+
+  // Un plegable (`<summary>`) que nadie tocó todavía —el «por qué estos números» de cada riesgo, S5— se abre al tocarlo y se cierra al volver a tocarlo.
+  const plegables = pagina.locator("details > summary");
+  for (let i = 0; i < (await plegables.count()); i++) {
+    const s = plegables.nth(i);
+    if (!(await s.isVisible()) || (await s.evaluate((e) => Boolean(e.dataset.pasada)))) continue;
+    await marcar(s);
+    const antes = await s.evaluate((e) => e.parentElement.open);
+    await s.click();
+    cambio((await s.evaluate((e) => e.parentElement.open)) !== antes, `el plegable «${(await s.textContent())?.trim()}» no cambió al tocarlo`);
+    await s.click();
+    cambio((await s.evaluate((e) => e.parentElement.open)) === antes, `el plegable «${(await s.textContent())?.trim()}» no volvió a su estado`);
+  }
+
+  // «Imprimir» (S6) abre el diálogo de impresión del navegador y nada más: se sustituye `window.print` para contar la llamada.
+  const imprimir = pagina.locator(".informe-acciones button");
+  if (await imprimir.count()) {
+    await marcar(imprimir);
+    await pagina.evaluate(() => {
+      window.__impresiones = 0;
+      window.print = () => void (window.__impresiones += 1);
+    });
+    await imprimir.first().click();
+    cambio((await pagina.evaluate(() => window.__impresiones)) === 1, "«Imprimir» no llamó una vez al diálogo de impresión");
+  }
+
   // Al final de los clics (la hoja modal tapa el resto en teléfono): una ficha abierta para la captura de
   // estado; sus enlaces a fuentes entran en la pasada de enlaces que sigue.
   if ((await pagina.locator("#panel-ficha").count()) && (!lado || ancho >= 900) && (await pagina.locator(activables).count()) > 1)
     await pagina.locator(activables).nth(1).evaluate((el) => el.dispatchEvent(new MouseEvent("click", { bubbles: true })));
+  else if ((await pagina.locator("#panel-ficha").count()) && (await decNodos.count()) > 1)
+    await decNodos.nth(1).evaluate((el) => el.dispatchEvent(new MouseEvent("click", { bubbles: true })));
 
   // Enlaces: cada uno lleva a una ruta que existe (el de idioma, además, cambia lang).
   const enlaces = pagina.locator("header a[href], main a[href]:not(.saltar-diagrama), #panel-ficha a[href]");

@@ -126,6 +126,8 @@ export function validarPropuestaEvidencias(dato: unknown, ctx: ContextoEvidencia
   const fallas: string[] = [];
   const plataforma = ctx.plataformas.find((x) => x.id === p.plataforma);
   if (!plataforma) fallas.push(`plataforma · «${p.plataforma}» no está en data/plataformas`);
+  // AU-S3-04: el origen lo declara la propia propuesta; «curador» es del ensayo con la plataforma ficticia (D-S3-11).
+  if (plataforma && p.origen === "curador" && !plataforma.ficticia) fallas.push(`origen · «curador» solo vale para una plataforma ficticia (el ensayo, D-S3-11); «${p.plataforma}» es real y la propone el investigador`);
   const nodos = ctx.componentes[p.plataforma];
   if (plataforma && !nodos) fallas.push(`plataforma · «${p.plataforma}» no tiene mapa aprobado: una evidencia nombra los componentes de ese mapa`);
   const caps = new Set(ctx.capacidades.map((c) => c.id));

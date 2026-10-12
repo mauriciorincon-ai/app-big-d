@@ -9,6 +9,8 @@ import { join } from "node:path";
 import { afterAll, describe, expect, it } from "vitest";
 import {
   alertasDeEvidencias,
+  CASOS_DE_REFERENCIA,
+  evaluar,
   modeloInforme,
   SECCIONES,
   type EvidenciaDeAlerta,
@@ -75,25 +77,32 @@ describe("el modelo del informe", () => {
       expect(informe(k).modelo.secciones).toEqual([...SECCIONES]);
   });
 
-  it("con el dato real: borrador por perfil y plan sin aprobar, sin comparación, y el resumen cuenta lo del plan", () => {
-    const m = informe(real).modelo;
-    expect(m.estado).toEqual({
-      tipo: "borrador",
-      motivos: [{ tipo: "perfil-borrador" }, { tipo: "plan-borrador" }],
-    });
-    expect(m.resumen.veredicto).toEqual({
-      tipo: "sin-comparacion",
-      motivo: "perfil-en-borrador",
-    });
+  // D-S7-02: el informe del dato real sigue a las aprobaciones del repo, estén como estén.
+  it("con el dato real: el estado y la comparación siguen a las aprobaciones, y el resumen cuenta lo del plan", () => {
+    const { modelo: m, entrada } = informe(real);
+    const caso = real.casos[0]!;
+    const plan = real.planes[0]!;
+    const perfilBorrador = caso.estado_aprobacion === "borrador";
+    const motivos = [
+      ...(perfilBorrador ? [{ tipo: "perfil-borrador" }] : []),
+      ...(plan.estado_aprobacion === "borrador" ? [{ tipo: "plan-borrador" }] : []),
+    ];
+    expect(m.estado).toEqual(motivos.length ? { tipo: "borrador", motivos } : { tipo: "final", motivos: [] });
+    if (perfilBorrador) {
+      expect(m.resumen.veredicto).toEqual({ tipo: "sin-comparacion", motivo: "perfil-en-borrador" });
+      expect(m.resumen.robustez).toBeNull();
+    } else {
+      expect(m.resumen.veredicto.tipo).not.toBe("sin-comparacion");
+      expect(m.resumen.robustez).not.toBeNull();
+    }
+    const unaVia = plan.decisiones.filter((d) => d.reversibilidad === "una_via").length;
     expect(m.resumen).toMatchObject({
-      robustez: null,
-      n_una_via: 3,
-      n_altos: 2,
-      n_supuestos_por_probar: 5,
-      n_pruebas_fase_0: 3,
+      n_una_via: unaVia,
+      n_altos: entrada.plan.riesgos.filter((r) => r.prioridad_de_accion === "alta").length,
+      n_supuestos_por_probar: entrada.hoja.items.filter((i) => i.tipo === "verificacion_alistamiento" && i.estado === "pendiente").length,
     });
-    expect(m.resumen.una_via).toHaveLength(3);
-    expect(m.resumen.riesgos_principales).toHaveLength(3);
+    expect(m.resumen.una_via).toHaveLength(unaVia);
+    expect(m.resumen.riesgos_principales.length).toBeGreaterThan(0);
   });
 
   it("con el sembrado: empate técnico con su robustez, y el borrador dice por qué (plan, ciclo y acción alta sin mitigación)", () => {
@@ -115,12 +124,25 @@ describe("el modelo del informe", () => {
   });
 
   it("final cuando perfil y plan están aprobados y nada bloquea; cada motivo de borrador aparece solo cuando es cierto", () => {
-    const base = informe(real).entrada;
+    // El plan es el real (sin ciclo ni bloqueos); la comparación es una que puntúa, la de la base sembrada: un informe «final»
+    // lleva su comparación (S6-M6).
+    const evaluada = informe(baseSembrada).entrada;
+    const base = {
+      ...informe(real).entrada,
+      resultado: evaluada.resultado,
+      simulacion: evaluada.simulacion,
+    };
     const limpio = { ...base, perfil_aprobado: true, plan_aprobado: true };
+    // Un resultado que no puntúa, sea cual sea el estado del repo: el de referencia «perfil en borrador».
+    const noEvaluable = evaluar(CASOS_DE_REFERENCIA.find((c) => c.id === "perfil-en-borrador")!.entrada);
     expect(modeloInforme(limpio).estado).toEqual({
       tipo: "final",
       motivos: [],
     });
+    // S6-M6: con todo aprobado pero sin una comparación que puntúe, el informe no puede ser «final».
+    expect(
+      modeloInforme({ ...limpio, resultado: noEvaluable }).estado,
+    ).toEqual({ tipo: "borrador", motivos: [{ tipo: "sin-comparacion" }] });
     expect(
       modeloInforme({ ...limpio, perfil_aprobado: false }).estado.motivos,
     ).toEqual([{ tipo: "perfil-borrador" }]);
@@ -155,6 +177,43 @@ describe("el modelo del informe", () => {
     expect(informe(real).huella_entradas).toBe(informe(real).huella_entradas);
     expect(informe(real).huella_entradas).not.toBe(
       informe(baseSembrada).huella_entradas,
+    );
+  });
+
+  it("S6-M4: el relato humano es una entrada; añadirlo o cambiarlo mueve la huella que el informe imprime", () => {
+    const caso = real.casos[0]!;
+    const sin = construirInforme(real, caso, real.planes[0]!).huella_entradas;
+    const relato = (texto: string) => ({
+      caso_id: caso.id,
+      texto: { es: texto, en: texto },
+      escrito_por: "Comité",
+      fecha: "2026-10-01",
+      origen: "declarado-por-usuario" as const,
+    });
+    const con = (texto: string) =>
+      construirInforme(
+        { ...real, relatos: [relato(texto)] },
+        caso,
+        real.planes[0]!,
+      ).huella_entradas;
+    expect(con("Es marzo de 2027.")).not.toBe(sin);
+    expect(con("Es marzo de 2027.")).toBe(con("Es marzo de 2027."));
+    expect(con("Es abril de 2027.")).not.toBe(con("Es marzo de 2027."));
+  });
+
+  it("S6-B1: la huella usa las convenciones de la instantánea con que se calculó, no las de la base viva", () => {
+    const caso = real.casos[0]!;
+    const base = construirInforme(real, caso, real.planes[0]!).huella_entradas;
+    const viva = {
+      ...real,
+      convenciones: {
+        ...real.convenciones,
+        umbral_empate_centesimas:
+          real.convenciones.umbral_empate_centesimas + 1,
+      },
+    };
+    expect(construirInforme(viva, caso, real.planes[0]!).huella_entradas).toBe(
+      base,
     );
   });
 

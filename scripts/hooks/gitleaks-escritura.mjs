@@ -11,7 +11,9 @@ let e = {};
 try {
   e = JSON.parse(readFileSync(0, "utf8") || "{}");
 } catch {
-  process.exit(0);
+  // AU-S3-11: falla cerrado también con una entrada que no es JSON; sin leerla no se sabe si trae un secreto.
+  process.stderr.write("BLOQUEADO: el hook no pudo leer lo que se iba a escribir (la entrada no es JSON) y no sabe si trae un secreto.\n");
+  process.exit(2);
 }
 const ti = e.tool_input ?? {};
 const partes = [ti.content, ti.new_string, ti.new_source, ...(Array.isArray(ti.edits) ? ti.edits.map((x) => x?.new_string) : [])].filter((x) => typeof x === "string" && x);

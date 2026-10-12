@@ -6,8 +6,7 @@ import { Alerta } from "@/components/caso/Iconos";
 import { plantilla } from "@/lib/atlas/plantilla";
 import { esIdioma, textos } from "@/lib/i18n";
 import { leerValidacion } from "@/lib/instrumento/leer";
-import "@/styles/secciones.css";
-import "@/styles/instrumento.css";
+import "@/styles/ruta-instrumento.css";
 
 // 11 Instrumento (maqueta instrumento.html; C15, RF-09): el estado de la validación que `pnpm build` corre antes de construir.
 // La página no valida: muestra el resultado. En el sitio publicado siempre es el verde (con rojo el build no llega aquí, RF-09.4);

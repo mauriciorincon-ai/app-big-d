@@ -12,7 +12,7 @@ regret, and understand every platform with the same map. Big-D is an open, repro
 atlas that draws each platform with one visual grammar, and a deterministic core that compares,
 measures robustness and turns the comparison into decisions, risks and a plan. It plans, manages and
 controls; it never operates a platform. The only AI is a Claude Code skill that proposes knowledge
-with checked quotes; a person approves it. **Today:** the atlas, the researcher, the knowledge base, the case profile with its comparison, the case plan (decisions in waves, risks by action priority and assumptions), and the instrument that validates the tool. The comparison is calculated once a person approves the profile.
+with checked quotes; a person approves it. **Today:** the atlas, the researcher, the knowledge base, the case profile with its comparison, the case plan (decisions in waves, risks by action priority and assumptions), the case report (a roadmap by phases with its origin, a readiness checklist and a 14-section report in two languages, printable), and the instrument that validates the tool. The comparison is calculated once a person approves the profile.
 
 ## Desarrollo local · Local development
 

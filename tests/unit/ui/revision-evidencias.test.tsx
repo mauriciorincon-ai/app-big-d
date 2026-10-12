@@ -28,7 +28,7 @@ const ev = (id: string, resultado: EvidenciaVista["resultado"], extra: Partial<E
   cambio: "nueva",
   ...extra,
 });
-const propuesta = (evidencias: EvidenciaVista[]): PropuestaEvidenciasVista => ({ carpeta: "propuestas/2026-10-05-norte-evidencias", fecha: "2026-10-05", modelo: "m", reintentos: 0, reintentosDeclarados: 0, fallas: [], verificada: true, fuentes: 1, niveles: NIVELES, topeNoDisponible: 2, evidencias, preguntas: [] });
+const propuesta = (evidencias: EvidenciaVista[]): PropuestaEvidenciasVista => ({ carpeta: "propuestas/2026-10-05-norte-evidencias", fecha: "2026-10-05", origen: "agente-investigador", modelo: "m", reintentos: 0, reintentosDeclarados: 0, fallas: [], verificada: true, fuentes: 1, niveles: NIVELES, topeNoDisponible: 2, evidencias, preguntas: [] });
 const t = textos("es").investigador;
 
 describe("revisión de una propuesta de evidencias", () => {

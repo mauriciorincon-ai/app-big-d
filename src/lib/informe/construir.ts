@@ -2,8 +2,8 @@ import pkg from "../../../package.json";
 import {
   comparacionDe,
   modeloInforme,
+  origenesHuerfanos,
   type EntradaInforme,
-  type EntradaRuta,
   type HojaDeRuta,
   type ModeloInforme,
   type ResultadoPlan,
@@ -22,8 +22,8 @@ import { hojaDeRutaDe, resultadoDelPlan } from "./entrada";
 export interface Informe {
   evaluacion: Evaluacion;
   resultadoPlan: ResultadoPlan;
-  entradaRuta: EntradaRuta;
   hoja: HojaDeRuta;
+  /** La entrada del modelo: las pruebas la varían (estado final, ciclo, bloqueado) para ver cada motivo de borrador. */
   entrada: EntradaInforme;
   modelo: ModeloInforme;
   /** SHA-256 del texto canónico (RFC 8785) de lo que el informe usó: perfil, plan, método, convenciones del informe e instantánea. */
@@ -43,6 +43,11 @@ export function construirInforme(
     k.informe.categorias,
     resultadoPlan,
   );
+
+  // S6-M7: «sin origen no hay ítem» (regla dura 9) se comprueba cada vez que se construye el informe, no solo en las pruebas.
+  const huerfanos = origenesHuerfanos(hoja, entradaRuta);
+  if (huerfanos.length)
+    throw new Error(`informe · hoja de ruta · ítems sin un origen que exista en el plan: ${huerfanos.join(", ")}`);
 
   const c = congelada.contenido;
   const eliminadas = new Set(
@@ -94,14 +99,16 @@ export function construirInforme(
   const huella_entradas = huellaDe({
     perfil: huellaCaso(caso),
     plan: huellaPlan(plan),
-    metodo: huellaDe(k.convenciones),
+    // S6-B1: las convenciones con que se calculó el informe son las de la instantánea (`conv`), no las de la base viva.
+    metodo: huellaDe(conv),
     informe: huellaDe(k.informe),
+    // S6-M4: el relato humano también es una entrada: lo muestra § 10, así que cambiarlo cambia la huella impresa.
+    relato: huellaDe(k.relatos.find((r) => r.caso_id === caso.id) ?? null),
     instantanea: congelada.huella,
   });
   return {
     evaluacion,
     resultadoPlan,
-    entradaRuta,
     hoja,
     entrada,
     modelo: modeloInforme(entrada),

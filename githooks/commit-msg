@@ -1,0 +1,15 @@
+#!/bin/sh
+# Hook commit-msg: commits convencionales (regla 6 del kit; S7). El asunto empieza con un tipo, un ámbito opcional y «: ».
+# Se dejan pasar los merges y los commits que git crea solo (fixup!, squash!, Revert "…", Merge …). Se activa con el mismo
+# `git config core.hooksPath githooks` que el pre-commit. Sale con 1 y dice cómo arreglarlo.
+asunto=$(sed -n '1p' "$1")
+case "$asunto" in
+  "Merge "*|"Revert "*|"fixup! "*|"squash! "*) exit 0 ;;
+esac
+if printf '%s' "$asunto" | grep -Eq '^(feat|fix|docs|test|chore|perf|refactor|ci|build|style|revert)(\([a-z0-9-]+\))?!?: .+'; then
+  exit 0
+fi
+echo "commit BLOQUEADO: el asunto no es un commit convencional."
+echo "  esperado: <tipo>(<ámbito>): <qué> — tipos: feat fix docs test chore perf refactor ci build style revert"
+echo "  recibido: $asunto"
+exit 1

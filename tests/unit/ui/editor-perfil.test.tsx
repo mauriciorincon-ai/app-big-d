@@ -93,6 +93,10 @@ const peso = (criterio: string) =>
 afterEach(cleanup);
 
 describe("EditorPerfil", () => {
+  it("S4-B7: el editor tiene el ancla a la que lleva el aviso de arriba de la pantalla del perfil", () => {
+    pintar();
+    expect(document.querySelector("section#editor-perfil[data-editor-perfil]")).not.toBeNull();
+  });
   it("con una decisión sin responder no hay comando: lo dice y cuenta lo que falta", () => {
     pintar();
     expect(comandoVisible()).toBeNull();

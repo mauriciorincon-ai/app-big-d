@@ -30,6 +30,15 @@ jobs:
           node scripts/verificar-dependencias.mjs origin/main
       - run: pnpm typecheck
       - run: pnpm lint
+      # S7 (lote S4): cuatro pruebas de gitleaks (el pre-commit y el hook de escritura) se saltaban en la CI porque el
+      # runner no trae el binario, y un check saltado no es verde (regla 15). Versión fijada con su suma de verificación.
+      - name: gitleaks (versión fijada, suma verificada) — para que sus pruebas corran y no se salten
+        run: |
+          curl -sfL -o gitleaks.tar.gz "https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz"
+          echo "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb  gitleaks.tar.gz" | sha256sum -c -
+          tar -xzf gitleaks.tar.gz gitleaks
+          sudo install -m 0755 gitleaks /usr/local/bin/gitleaks
+          gitleaks version
       - run: pnpm test            # vitest run --coverage (umbrales en vitest.config: 70 global · 80 motores y lib · 50 componentes)
       # kit v1.39.0 — lo que el proveedor publica no es lo que el build escribe (S2-AUD-32): `vercel build` sin
       # conexion con el adapter de Next (que corre `pnpm build`: un solo build, por eso no hay `pnpm build` aparte,

@@ -1,5 +1,5 @@
 // La pantalla del instrumento con la validación REAL de la base que se publica (S4, F3): en verde, con cada fila pasada, sin
-// bloqueo de publicación y «7 de 7 detectados»; a 380 px sin desbordar; y sin violaciones serias de axe en los dos temas. Las
+// bloqueo de publicación y «7 de 7 detectados»; a 380 px sin desbordar; y sin violaciones de axe en los dos temas. Las
 // filas se cuentan del archivo que escribe `pnpm build` (data/instrumento/validacion.json), no de un número fijo.
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -67,17 +67,15 @@ for (const [esquema, tema] of [
   test.describe(`axe en ${tema}`, () => {
     test.use({ colorScheme: esquema });
     for (const ruta of PAGINAS)
-      test(`${ruta} sin violaciones serias (${tema})`, async ({ page }) => {
+      test(`${ruta} sin violaciones de axe (${tema})`, async ({ page }) => {
         await page.goto(ruta);
         await listo(page);
         const scan = await new AxeBuilder({ page }).analyze();
-        const serias = scan.violations.filter(
-          (v) => v.impact === "critical" || v.impact === "serious",
-        );
+        const violaciones = scan.violations;
         expect(
-          serias,
+          violaciones,
           JSON.stringify(
-            serias.map((v) => [v.id, v.nodes.map((n) => n.target)]),
+            violaciones.map((v) => [v.id, v.nodes.map((n) => n.target)]),
           ),
         ).toEqual([]);
       });

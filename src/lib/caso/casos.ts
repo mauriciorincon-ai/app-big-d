@@ -43,10 +43,19 @@ export interface Evaluacion {
   simulacion: ResultadoSimulacion | null;
 }
 
+// S5-B-6: la comparación, la decisión y el informe de un caso piden la misma evaluación, y con el perfil aprobado ella corre
+// SMAA. Se hace una vez por (base, caso): el resultado es una función pura de ambos y las pantallas solo lo leen.
+const hechas = new WeakMap<Conocimiento, WeakMap<Caso, Evaluacion>>();
+
 export function evaluacionDe(k: Conocimiento, caso: Caso): Evaluacion {
+  const antes = hechas.get(k)?.get(caso);
+  if (antes) return antes;
   const congelada = congeladaDe(k, caso);
   const entrada = entradaDe(caso, congelada);
   const resultado = evaluar(entrada);
   const es = resultado.tipo === "evaluado" ? entradaSimulacion(entrada, resultado) : null;
-  return { caso, congelada, entrada, resultado, simulacion: es ? simular(es) : null };
+  const ev: Evaluacion = { caso, congelada, entrada, resultado, simulacion: es ? simular(es) : null };
+  if (!hechas.has(k)) hechas.set(k, new WeakMap());
+  hechas.get(k)!.set(caso, ev);
+  return ev;
 }

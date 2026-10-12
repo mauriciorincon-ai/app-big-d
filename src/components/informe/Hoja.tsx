@@ -23,9 +23,10 @@ const Estado = ({ estado, t }: { estado: ItemVista["estado"]; t: T }) => (
 );
 
 /** Un ítem de la hoja de ruta con su origen enlazado a donde se explica (decisión, riesgo o supuesto). */
-export function Item({ i, t }: { i: ItemVista; t: T }) {
+/** `prefijo` distingue el mismo ítem cuando sale en dos vistas de la página (hoja y alistamiento): un id es único (S6-M2). */
+export function Item({ i, t, prefijo = "i" }: { i: ItemVista; t: T; prefijo?: string }) {
   return (
-    <li className={`item item-${i.estado}`} id={`i-${i.id}`}>
+    <li className={`item item-${i.estado}`} id={`${prefijo}-${i.id}`}>
       <div className="item-cab">
         <span className="cod mono">{i.id}</span>
         <span className="item-tipo">
@@ -105,7 +106,7 @@ export function Alistamiento({ vista, t }: { vista: VistaHoja; t: T }) {
           </h3>
           <ul className="items">
             {c.items.map((i) => (
-              <Item key={i.id} i={i} t={t} />
+              <Item key={i.id} i={i} t={t} prefijo="a" />
             ))}
           </ul>
         </article>
