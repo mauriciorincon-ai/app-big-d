@@ -8,7 +8,7 @@ import { archivosDeCodigo, leer } from "./lib/codigo";
 //
 // Excepción declarada: la observabilidad del kit (Sentry client-only, inerte sin DSN) usa su SDK; no
 // hay un `fetch` escrito en el código.
-const ALCANCE = ["src", "packages/diagramador/src", "instrumentation-client.ts"];
+const ALCANCE = ["src", "packages/diagramador/src", "packages/instrumentos-de-plan/src", "instrumentation-client.ts"];
 
 const DOMINIOS = [
   "azuredatabricks.net", "cloud.databricks.com", "gcp.databricks.com", "snowflakecomputing.com",
