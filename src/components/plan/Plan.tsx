@@ -1,5 +1,6 @@
 import { TABLA_AIAG_VDA, type PrioridadDeAccion } from "instrumentos-de-plan";
 import { Alerta, Aspa, Ok, Pendiente } from "@/components/caso/Iconos";
+import { MarcoTabla } from "@/components/caso/MarcoTabla";
 import { Comando } from "@/components/investigador/Copiar";
 import type { AlertaDelPlan, RiesgoCalculado } from "@/engine";
 import { plantilla } from "@/lib/atlas/plantilla";
@@ -89,6 +90,21 @@ export function LecturaOndas({ filas, t }: { filas: FilaLectura[]; t: T }) {
   );
 }
 
+/**
+ * El ciclo de dependencias (S5, observado): el camino de las decisiones que se esperan unas a otras, nombrado, y qué pasa con el
+ * orden. Mientras el ciclo exista el motor no entrega ondas (el reusable devuelve ninguna), así que lo dice con palabras en vez
+ * de «ondas calculadas: 0».
+ */
+export function AlertaCiclo({ camino, ondas, sinOnda, t }: { camino: string[]; ondas: number; sinOnda: number; t: T }) {
+  return (
+    <div className="veredicto veredicto-alerta" role="alert">
+      <b>{t.ciclo.alerta}</b>
+      <span>{camino.join(" → ")}</span>
+      <span className="mono">{plantilla(ondas === 0 ? t.ciclo.sinOndas : t.ciclo.conOndas, { ondas, sin: sinOnda })}</span>
+    </div>
+  );
+}
+
 /** Las alertas del plan, cada una con el nombre de la decisión o del supuesto que señala. */
 export function Alertas({ alertas, nombre, nombrePlataforma, supuestos, idioma, t }: { alertas: AlertaDelPlan[]; nombre: Record<string, string>; nombrePlataforma: Record<string, string>; supuestos: Plan["supuestos"]; idioma: Idioma; t: T }) {
   if (!alertas.length) return null;
@@ -130,7 +146,9 @@ export function TablaRiesgos({
 }) {
   const modo = new Map(plan.modos_de_falla.map((m) => [m.id, m]));
   return (
-    <div className="tabla-marco">
+    <>
+      <p className="pista-tabla">{t.riesgos.desliza}</p>
+      <MarcoTabla etiqueta={t.riesgos.titulo}>
       <table className="tabla tabla-riesgos">
         <thead>
           <tr>
@@ -234,7 +252,8 @@ export function TablaRiesgos({
           })}
         </tbody>
       </table>
-    </div>
+      </MarcoTabla>
+    </>
   );
 }
 
@@ -249,7 +268,8 @@ export function TablaAccion({ t }: { t: T }) {
     <details className="lectura-seccion">
       <summary>{t.riesgos.tabla.titulo}</summary>
       <p className="kit-nota">{t.riesgos.tabla.nota}</p>
-      <div className="tabla-marco">
+      <p className="pista-tabla">{t.riesgos.desliza}</p>
+      <MarcoTabla etiqueta={t.riesgos.tabla.titulo}>
         <table className="tabla tabla-accion">
           <thead>
             <tr>
@@ -280,7 +300,7 @@ export function TablaAccion({ t }: { t: T }) {
             )}
           </tbody>
         </table>
-      </div>
+      </MarcoTabla>
     </details>
   );
 }

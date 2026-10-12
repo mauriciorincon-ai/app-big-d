@@ -98,6 +98,22 @@ test.describe("ES · el plan real del caso", () => {
     expect(ancho).toBeLessThanOrEqual(380);
   });
 
+  test("S5 observado: en el teléfono la tabla de riesgos avisa que se desliza y se alcanza con el teclado", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 380, height: 800 });
+    await page.goto(RUTA);
+    await listo(page);
+    const aviso = page.locator(".pista-tabla").first();
+    await expect(aviso).toBeVisible();
+    await expect(aviso).toHaveText(T.riesgos.desliza);
+    const marco = page.getByRole("region", { name: T.riesgos.titulo });
+    await expect(marco).toHaveAttribute("tabindex", "0");
+    expect(await marco.evaluate((el) => el.scrollWidth > el.clientWidth)).toBe(
+      true,
+    );
+  });
+
   for (const [esquema, tema] of [
     ["dark", "oscuro"],
     ["light", "claro"],

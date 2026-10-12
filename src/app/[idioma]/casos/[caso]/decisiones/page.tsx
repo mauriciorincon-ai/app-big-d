@@ -6,6 +6,7 @@ import { Ok, Pendiente } from "@/components/caso/Iconos";
 import { Meta } from "@/components/Meta";
 import { Pestanas } from "@/components/Pestanas";
 import {
+  AlertaCiclo,
   Alertas,
   AprobarPlan,
   Leyenda,
@@ -130,16 +131,12 @@ export default async function Decisiones({
         <h2 id="ond-t">{t.ondas.titulo}</h2>
         <p className="kit-nota">{t.ondas.nota}</p>
         {v.cicloNombres && (
-          <div className="veredicto veredicto-alerta" role="alert">
-            <b>{t.ciclo.alerta}</b>
-            <span>{v.cicloNombres.join(" → ")}</span>
-            <span className="mono">
-              {plantilla(t.ciclo.calculo, {
-                ondas: r.informe.ondas.length,
-                sin: v.sinOnda.length,
-              })}
-            </span>
-          </div>
+          <AlertaCiclo
+            camino={v.cicloNombres}
+            ondas={r.informe.ondas.length}
+            sinOnda={v.sinOnda.length}
+            t={t}
+          />
         )}
         {v.cicloNombres && <p className="kit-nota">{t.ciclo.nota}</p>}
         <Leyenda t={t} />

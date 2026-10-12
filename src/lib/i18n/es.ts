@@ -386,7 +386,8 @@ export const es: Textos = {
       ciclo: {
         titulo: "Ciclo de dependencias",
         alerta: "Ciclo detectado: no se puede ordenar",
-        calculo: "ondas calculadas: {ondas} · sin onda: {sin}",
+        sinOndas: "Mientras el ciclo exista no se calculan ondas: {sin} decisiones quedan sin onda.",
+        conOndas: "Ondas calculadas: {ondas} · sin onda por el ciclo: {sin}.",
         nota: "Se muestra, no se esconde: la herramienta no elige cuál dependencia romper. Quien decide quita una de las flechas del ciclo y las ondas se recalculan.",
       },
       riesgos: {
@@ -399,6 +400,7 @@ export const es: Textos = {
         bajo: "bajó de {de} a {a}",
         igual: "sin cambio de categoría",
         orden: "Orden: prioridad de acción → severidad → RPN (el RPN solo ordena dentro de una prioridad).",
+        desliza: "Desliza la tabla de lado para ver todas las columnas.",
         tabla: {
           titulo: "Tabla de prioridad de acción (AIAG-VDA 2019)",
           nota: "Se lee por filas: la severidad y la ocurrencia dicen la fila; la detección, la columna. Severidad primero. La tabla viaja como dato dentro del paquete de la casa; el RPN (S × O × D) solo ordena y jamás decide la acción.",

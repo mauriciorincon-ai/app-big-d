@@ -386,7 +386,8 @@ export const en: Textos = {
       ciclo: {
         titulo: "Dependency cycle",
         alerta: "Cycle detected: cannot be ordered",
-        calculo: "waves computed: {ondas} · no wave: {sin}",
+        sinOndas: "While the cycle exists no waves are computed: {sin} decisions have no wave.",
+        conOndas: "Waves computed: {ondas} · no wave because of the cycle: {sin}.",
         nota: "It is shown, not hidden: the tool does not pick which dependency to break. The decision-maker removes one of the cycle's arrows and the waves are recomputed.",
       },
       riesgos: {
@@ -399,6 +400,7 @@ export const en: Textos = {
         bajo: "down from {de} to {a}",
         igual: "no category change",
         orden: "Order: action priority → severity → RPN (RPN only orders within a priority).",
+        desliza: "Slide the table sideways to see every column.",
         tabla: {
           titulo: "Action priority table (AIAG-VDA 2019)",
           nota: "Read by rows: severity and occurrence give the row; detection gives the column. Severity first. The table ships as data inside the house package; the RPN (S × O × D) only orders and never decides the action.",

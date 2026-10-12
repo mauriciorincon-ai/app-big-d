@@ -235,7 +235,7 @@ export interface Textos {
         prioridad: string;
         sinMitigacion: string;
       };
-      ciclo: { titulo: string; alerta: string; calculo: string; nota: string };
+      ciclo: { titulo: string; alerta: string; sinOndas: string; conOndas: string; nota: string };
       riesgos: {
         titulo: string;
         nota: string;
@@ -246,6 +246,7 @@ export interface Textos {
         bajo: string;
         igual: string;
         orden: string;
+        desliza: string;
         tabla: { titulo: string; nota: string; severidad: string; ocurrencia: string; deteccion: string; fila: string };
         origen: string;
         razon: string;

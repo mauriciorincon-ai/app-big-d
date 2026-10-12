@@ -6,7 +6,7 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterAll, afterEach, describe, expect, it } from "vitest";
-import { Alertas, AprobarPlan, Leyenda, LecturaOndas, TablaAccion, TablaRiesgos, TarjetasSupuestos } from "@/components/plan/Plan";
+import { AlertaCiclo, Alertas, AprobarPlan, Leyenda, LecturaOndas, TablaAccion, TablaRiesgos, TarjetasSupuestos } from "@/components/plan/Plan";
 import { cargarConocimiento } from "@/lib/datos/cargar-conocimiento";
 import { huellaPlan } from "@/lib/datos/instantanea";
 import { textos } from "@/lib/i18n";
@@ -61,6 +61,22 @@ describe("la tabla de prioridad de acción se dibuja desde el dato del paquete",
   });
 });
 
+describe("S5 observado: las tablas anchas se deslizan y lo dicen", () => {
+  it("la tabla de riesgos y la de prioridad van en una región con nombre que se alcanza con el teclado, con el aviso de deslizar", () => {
+    const { container } = render(
+      <>
+        <TablaRiesgos riesgos={vReal.resultado.riesgos} plan={planReal} nombre={vReal.nombre} idioma="es" t={t} />
+        <TablaAccion t={t} />
+      </>,
+    );
+    expect(container.querySelectorAll(".pista-tabla")).toHaveLength(2);
+    for (const el of container.querySelectorAll(".pista-tabla")) expect(el.textContent).toBe(t.riesgos.desliza);
+    const regiones = screen.getAllByRole("region");
+    expect(regiones.map((r) => r.getAttribute("aria-label"))).toEqual([t.riesgos.titulo, t.riesgos.tabla.titulo]);
+    for (const r of regiones) expect(r.getAttribute("tabindex")).toBe("0");
+  });
+});
+
 describe("supuestos y alertas", () => {
   it("cada supuesto trae su prueba barata como tarea del equipo, con responsable, costo y la decisión que sostiene", () => {
     render(<TarjetasSupuestos supuestos={planReal.supuestos} nombre={vReal.nombre} alertas={vReal.resultado.alertas} idioma="es" t={t} />);
@@ -90,6 +106,15 @@ describe("la lectura en texto y la leyenda", () => {
     const filas = container.querySelectorAll("ol > li");
     expect(filas.length).toBe(vS.lectura.length);
     expect(container.textContent).toContain("ciclo: ");
+  });
+  it("S5 observado: un ciclo muestra su camino y dice con palabras que no hay ondas, no «ondas calculadas: 0»", () => {
+    const camino = vS.cicloNombres!;
+    expect(camino.length).toBeGreaterThan(1);
+    const { container } = render(<AlertaCiclo camino={camino} ondas={vS.resultado.informe.ondas.length} sinOnda={vS.sinOnda.length} t={t} />);
+    const alerta = screen.getByRole("alert");
+    expect(alerta.textContent).toContain(camino.join(" → "));
+    expect(container.textContent).toContain(plantilla(t.ciclo.sinOndas, { sin: vS.sinOnda.length }));
+    expect(container.textContent).not.toMatch(/calculadas: 0/);
   });
   it("la leyenda dice las tres reversibilidades y la implícita con palabras (no solo con el borde)", () => {
     render(<Leyenda t={t} />);
