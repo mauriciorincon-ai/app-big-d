@@ -5,7 +5,7 @@ hito: H-1 «El H-1 se cierra»
 opened: 2026-10-12
 closed: 2026-10-12
 branch: sprint-007/cierre-h1
-pr: pendiente
+pr: 20
 ---
 
 # Sprint 007 · cierre
