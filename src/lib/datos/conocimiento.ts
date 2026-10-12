@@ -8,11 +8,11 @@ import { esFechaCivil } from "./fecha";
 // entidad. Las reglas que cruzan archivos (referencias, cobertura de la gramática, celdas con varias evidencias, sello
 // del caso, huella de la instantánea) las aplica el cargador (cargar-conocimiento.ts) con el mismo formato de error.
 
-const fecha = z.string().refine(esFechaCivil, "una fecha AAAA-MM-DD que exista");
-const entero = (min: number, max: number) => z.number().int("un entero").min(min, `al menos ${min}`).max(max, `a lo sumo ${max}`);
-const hex64 = z.string().regex(/^[0-9a-f]{64}$/, "una huella SHA-256 en hexadecimal");
+export const fecha = z.string().refine(esFechaCivil, "una fecha AAAA-MM-DD que exista");
+export const entero = (min: number, max: number) => z.number().int("un entero").min(min, `al menos ${min}`).max(max, `a lo sumo ${max}`);
+export const hex64 = z.string().regex(/^[0-9a-f]{64}$/, "una huella SHA-256 en hexadecimal");
 /** Id con prefijo por tipo (técnica-núcleo § 3.3): `cap-`, `crit-`, `esc-`, `evi-`, `res-`. */
-const idCon = (prefijo: string) => z.string().regex(new RegExp(`^${prefijo}-[a-z0-9]+(-[a-z0-9]+)*$`), `un id «${prefijo}-…» en minúsculas con guiones`);
+export const idCon = (prefijo: string) => z.string().regex(new RegExp(`^${prefijo}-[a-z0-9]+(-[a-z0-9]+)*$`), `un id «${prefijo}-…» en minúsculas con guiones`);
 /** Versión de una instantánea: su fecha y un ordinal del día (`2026-10-05.1`); texto, nunca número (E5). */
 export const VERSION_INSTANTANEA = /^(\d{4}-\d{2}-\d{2})\.([1-9]\d*)$/;
 const versionInstantanea = z.string().regex(VERSION_INSTANTANEA, "una versión AAAA-MM-DD.N entre comillas");

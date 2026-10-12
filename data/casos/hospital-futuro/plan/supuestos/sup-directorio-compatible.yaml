@@ -1,0 +1,16 @@
+id: sup-directorio-compatible
+enunciado:
+  es: "El directorio de identidad del grupo se puede conectar a la plataforma elegida con un protocolo que esta admite."
+  en: "The group's identity directory can be connected to the chosen platform through a protocol it supports."
+criticidad: alta
+prueba_barata:
+  es: "Pedir al administrador del directorio del grupo el proveedor y el protocolo de aprovisionamiento que usa, y compararlos con los que cada plataforma documenta."
+  en: "Ask the group's directory administrator for the provider and provisioning protocol it uses, and compare them with those each platform documents."
+responsable:
+  es: "Administrador del directorio del grupo, con el responsable de datos del hospital"
+  en: "Group directory administrator, with the hospital data lead"
+costo_prueba: gratis
+estado: sin_probar
+vence: "2026-11-06"
+decisiones: [dec-identidad]
+origen: propuesto-por-agente

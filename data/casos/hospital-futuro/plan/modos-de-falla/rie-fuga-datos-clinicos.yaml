@@ -1,0 +1,38 @@
+id: rie-fuga-datos-clinicos
+decision_id: dec-proteccion-clinica
+modo:
+  es: "Datos clínicos visibles para quien no debe verlos"
+  en: "Clinical data visible to people who must not see it"
+efecto:
+  es: "Incidente de datos sensibles de pacientes y posible sanción regulatoria."
+  en: "Sensitive patient data incident and possible regulatory sanction."
+causa:
+  es: "Un filtro por fila o una máscara no se aplica en algún punto de acceso (una vista, un tablero, una exportación), o un rol amplio ve todo sin que nadie lo note."
+  en: "A row filter or mask is not applied at some access point (a view, a dashboard, an export), or a broad role sees everything and nobody notices."
+severidad: 9
+ocurrencia: 4
+deteccion: 6
+control_legal: true
+origen: propuesto-por-agente
+razon:
+  es: "Severidad 9: incidente de datos sensibles (ancla 9–10). Ocurrencia 4: improbable con las políticas bien escritas, pero las evidencias listan huecos reales (los filtros no se aplican a vistas en una plataforma; los roles de administración no quedan limitados en otra). Detección 6: se detecta a veces y tarde, porque nada falla a la vista cuando alguien ve de más."
+  en: "Severity 9: sensitive-data incident (anchor 9–10). Occurrence 4: unlikely with well-written policies, but the evidence lists real gaps (filters do not apply to views on one platform; admin roles stay unrestricted on another). Detection 6: sometimes detected, and late, because nothing visibly fails when someone sees too much."
+mitigaciones:
+  - accion:
+      es: "Antes de cargar datos reales, probar con datos ficticios que el filtro por fila y la máscara se aplican en cada punto de acceso (vistas, tableros, exportaciones) y dejar la prueba como regresión."
+      en: "Before loading real data, test with fictitious data that the row filter and mask apply at every access point (views, dashboards, exports) and keep the test as a regression."
+    responsable:
+      es: "Equipo de datos del hospital"
+      en: "Hospital data team"
+    momento: antes
+    efecto:
+      deteccion: 3
+  - accion:
+      es: "Dar acceso solo a grupos del directorio del grupo, sin permisos directos a personas, y revisar la lista de quién ve datos clínicos cada trimestre."
+      en: "Grant access only to groups from the group's directory, with no direct permissions to individuals, and review who sees clinical data every quarter."
+    responsable:
+      es: "Responsable de seguridad de la información"
+      en: "Information security lead"
+    momento: durante
+    efecto:
+      ocurrencia: 2

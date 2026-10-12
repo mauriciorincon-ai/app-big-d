@@ -1,11 +1,13 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { validateGrammar, type Gramatica } from "diagramador";
+import { informeDeInstrumentos } from "instrumentos-de-plan";
 import { parse } from "yaml";
 import { ErrorDeDatos, esDominioDeEjemplo } from "./cargar";
 import { esquemaCapacidad, esquemaCaso, esquemaConvenciones, esquemaCriterio, esquemaEscala, esquemaEvidencia, esquemaInstantanea, type Capacidad, type Caso, type Convenciones, type Criterio, type Escala, type Evidencia, type Instantanea } from "./conocimiento";
 import { esquemaPlataforma, type Plataforma } from "./esquemas";
-import { cambiosEntre, compararInstantanea, huellaCaso, huellaDe, type Base } from "./instantanea";
+import { cambiosEntre, compararInstantanea, huellaCaso, huellaDe, huellaPlan, type Base } from "./instantanea";
+import { esquemaDecision, esquemaModoDeFalla, esquemaPlanCaso, esquemaSupuesto, type Decision, type ModoDeFalla, type Plan, type PlanCaso, type Supuesto } from "./plan";
 import { dirDatos } from "./dir";
 import { migrarContrato } from "./migrar";
 import { leerConPosicion, linea, validarLeido, type Leido, type Ruta } from "./posicion";
@@ -29,6 +31,8 @@ export interface Conocimiento extends Base {
   /** De la más vieja a la más nueva. */
   instantaneas: Instantanea[];
   casos: Caso[];
+  /** El plan de cada caso que lo tiene (data/casos/<caso>/plan/), de decisiones, modos de falla y supuestos. */
+  planes: Plan[];
 }
 
 interface Con<T> {
@@ -101,6 +105,79 @@ function cruzarBase(b: { plataformas: { id: string; ficticia: boolean }[]; capac
   for (const [clave, is] of celdas)
     if (is.length > 1 && !is.some((i) => b.evidencias[i]!.esencial))
       fallas.push(donde("evidencia", is[0]!, ["esencial"], `${clave.replace("|", " · ")} tiene ${is.length} evidencias aprobadas y ninguna esencial: el mínimo no tiene sobre qué calcularse (RF-04.1)`));
+}
+
+/** La base contra la que un plan cita y se cruza: la de la instantánea del caso, o la viva de un borrador sin ella. */
+interface BaseDelPlan {
+  donde: string;
+  plataformas: { id: string; ficticia: boolean }[];
+  capacidades: { id: string }[];
+  criterios: { id: string }[];
+  evidencias: Evidencia[];
+}
+
+/**
+ * El plan de un caso: `data/casos/<caso>/plan/{plan.yaml, decisiones/, modos-de-falla/, supuestos/}`, un archivo por
+ * entidad. Aplica los esquemas y las reglas que cruzan archivos: toda cita es de una evidencia APROBADA de la plataforma
+ * de su opción, toda plataforma evaluable tiene su opción, y un plan aprobado lleva la huella de su contenido y ningún
+ * bloqueante. Un ciclo o una alta sin mitigación NO impiden cargar un borrador: la pantalla los muestra (C16–C17).
+ */
+function cargarPlan(dir: string, caso: Caso, b: BaseDelPlan, fallas: string[]): Plan | null {
+  const raiz = join(dir, "casos", caso.id, "plan");
+  if (!existsSync(raiz)) return null;
+  const rel = `data/casos/${caso.id}/plan`;
+  const cab = leerConPosicion(join(raiz, "plan.yaml"), `${rel}/plan.yaml`, fallas);
+  const cabecera = cab ? (validarLeido(cab, esquemaPlanCaso, fallas) as PlanCaso | null) : null;
+  if (cab && cabecera && cabecera.caso_id !== caso.id) fallas.push(linea(cab, ["caso_id"], `el plan está en la carpeta del caso «${caso.id}»`));
+  const decisiones = entidades<Decision>(join(raiz, "decisiones"), `${rel}/decisiones`, esquemaDecision, fallas);
+  const modos = entidades<ModoDeFalla>(join(raiz, "modos-de-falla"), `${rel}/modos-de-falla`, esquemaModoDeFalla, fallas);
+  const supuestos = entidades<Supuesto>(join(raiz, "supuestos"), `${rel}/supuestos`, esquemaSupuesto, fallas);
+
+  const eliminadas = new Set(caso.restricciones.flatMap((r) => r.elimina.map((e) => e.plataforma_id)));
+  const evaluables = b.plataformas.filter((p) => !eliminadas.has(p.id)).map((p) => p.id);
+  const aprobadas = new Map(b.evidencias.filter((e) => e.estado_aprobacion === "aprobada").map((e) => [e.id, e]));
+  const caps = new Set(b.capacidades.map((c) => c.id));
+  const crits = new Set(b.criterios.map((c) => c.id));
+  const idsDecision = new Set(decisiones.map((d) => d.v.id));
+
+  for (const x of decisiones) {
+    const d = x.v;
+    if (d.capacidad_id && !caps.has(d.capacidad_id)) fallas.push(linea(x.l, ["capacidad_id"], `«${d.capacidad_id}» no es una capacidad de ${b.donde}`));
+    if (d.criterio_id && !crits.has(d.criterio_id)) fallas.push(linea(x.l, ["criterio_id"], `«${d.criterio_id}» no es un criterio de ${b.donde}`));
+    d.depende_de.forEach((o, i) => !idsDecision.has(o) && fallas.push(linea(x.l, ["depende_de", i], `«${o}» no es una decisión del plan`)));
+    d.opciones_por_plataforma.forEach((o, i) => {
+      if (!evaluables.includes(o.plataforma_id)) fallas.push(linea(x.l, ["opciones_por_plataforma", i, "plataforma_id"], `«${o.plataforma_id}» no es una plataforma que el caso evalúe (${evaluables.join(", ")})`));
+      o.citas.forEach((c, k) => {
+        const e = aprobadas.get(c.evidencia_id);
+        const aqui = (campo: string, regla: string) => fallas.push(linea(x.l, ["opciones_por_plataforma", i, "citas", k, campo], regla));
+        if (!e) return aqui("evidencia_id", `«${c.evidencia_id}» no es una evidencia aprobada de ${b.donde}: el plan solo cita lo aprobado`);
+        if (e.plataforma_id !== o.plataforma_id) aqui("evidencia_id", `«${c.evidencia_id}» es de ${e.plataforma_id}, no de ${o.plataforma_id}`);
+        for (const comp of c.componentes ?? []) if (!e.componentes.includes(comp)) aqui("componentes", `«${comp}» no es un componente de ${c.evidencia_id} (${e.componentes.join(", ")})`);
+      });
+    });
+    for (const p of evaluables) if (!d.opciones_por_plataforma.some((o) => o.plataforma_id === p)) fallas.push(linea(x.l, ["opciones_por_plataforma"], `falta la opción de ${p}: cada plataforma que el caso evalúa se resuelve, aunque sea «sin_fuente»`));
+  }
+  for (const x of modos) {
+    const m = x.v;
+    if (!idsDecision.has(m.decision_id)) fallas.push(linea(x.l, ["decision_id"], `«${m.decision_id}» no es una decisión del plan`));
+    m.mitigaciones.forEach((t, i) => {
+      if (t.efecto.ocurrencia !== undefined && t.efecto.ocurrencia > m.ocurrencia) fallas.push(linea(x.l, ["mitigaciones", i, "efecto", "ocurrencia"], `una mitigación no sube la ocurrencia (${m.ocurrencia})`));
+      if (t.efecto.deteccion !== undefined && t.efecto.deteccion > m.deteccion) fallas.push(linea(x.l, ["mitigaciones", i, "efecto", "deteccion"], `una mitigación no empeora la detección (${m.deteccion})`));
+    });
+  }
+  for (const x of supuestos) x.v.decisiones.forEach((o, i) => !idsDecision.has(o) && fallas.push(linea(x.l, ["decisiones", i], `«${o}» no es una decisión del plan`)));
+  for (const x of decisiones) vetadas(x, ["pregunta", "razon_reversibilidad", "opciones_por_plataforma"], fallas);
+  for (const x of modos) vetadas(x, ["modo", "efecto", "causa", "razon", "mitigaciones"], fallas);
+  for (const x of supuestos) vetadas(x, ["enunciado", "prueba_barata", "responsable"], fallas);
+
+  if (!cab || !cabecera) return null;
+  const plan: Plan = { ...cabecera, decisiones: decisiones.map((x) => x.v), modos_de_falla: modos.map((x) => x.v), supuestos: supuestos.map((x) => x.v) };
+  if (plan.estado_aprobacion === "aprobado" && plan.aprobacion) {
+    if (plan.aprobacion.huella !== huellaPlan(plan)) fallas.push(linea(cab, ["aprobacion", "huella"], "no es la huella del plan: un plan aprobado no se edita a mano (se vuelve a aprobar)"));
+    const informe = informeDeInstrumentos({ decisiones: plan.decisiones, modos_de_falla: plan.modos_de_falla, supuestos: plan.supuestos });
+    for (const bl of informe.bloqueantes) fallas.push(linea(cab, ["estado_aprobacion"], `un plan aprobado no tiene bloqueantes (${bl.tipo}: ${bl.ids.join(", ")})`));
+  }
+  return plan;
 }
 
 /** `dir` = la carpeta de datos (data/ o un árbol de prueba). */
@@ -234,6 +311,18 @@ export function cargarConocimiento(dir = dirDatos()): Conocimiento {
     if (c.estado_aprobacion === "aprobado" && c.aprobacion && c.aprobacion.huella !== huellaCaso(c)) fallas.push(linea(x.l, ["aprobacion", "huella"], "no es la huella del perfil: un perfil aprobado no se edita a mano (se vuelve a aprobar)"));
   }
 
+  // Planes: cada caso que trae su carpeta `plan/`, contra la misma base que su perfil.
+  const planes: Plan[] = [];
+  for (const x of casos) {
+    const inst = x.v.instantanea === null ? null : porVersion.get(x.v.instantanea);
+    if (x.v.instantanea !== null && !inst) continue;
+    const base: BaseDelPlan = inst
+      ? { donde: `la instantánea ${inst.version}`, plataformas: inst.contenido.plataformas, capacidades: inst.contenido.capacidades, criterios: inst.contenido.criterios, evidencias: inst.contenido.evidencias }
+      : { donde: "la base", plataformas, capacidades: capacidades.map((y) => y.v), criterios: criterios.map((y) => y.v), evidencias: evidencias.map((y) => y.v) };
+    const plan = cargarPlan(dir, x.v, base, fallas);
+    if (plan) planes.push(plan);
+  }
+
   if (fallas.length || !convenciones || !gramatica) throw new ErrorDeDatos(fallas.length ? fallas : ["data/convenciones · sin convenciones ni gramática no hay base"]);
   return {
     gramatica,
@@ -245,5 +334,6 @@ export function cargarConocimiento(dir = dirDatos()): Conocimiento {
     evidencias: evidencias.map((x) => x.v),
     instantaneas: instantaneas.map((x) => x.v),
     casos: casos.map((x) => x.v),
+    planes,
   };
 }

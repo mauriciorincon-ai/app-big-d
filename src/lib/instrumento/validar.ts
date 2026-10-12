@@ -20,6 +20,7 @@ import { cargarDatos, type Datos } from "@/lib/datos";
 import { sha256 } from "@/lib/datos/instantanea";
 import {
   casosSinAprobacion,
+  planesSinAprobacion,
   evidenciasSinAprobacion,
   instantaneasSinAprobacion,
   mapasSinAprobacion,
@@ -33,8 +34,12 @@ const dos = (es: string, en = es): Bilingue => ({ es, en });
 
 /** El resumen de un resultado de referencia, en una línea: «ganadora-clara ref-b», «no-evaluable falta-evidencia»… */
 function texto(r: Resumen): string {
-  const base = r.veredicto ? `${r.veredicto.tipo}: ${r.veredicto.plataformas.join(", ")}` : `${r.tipo}: ${(r.motivos ?? []).join(", ")}`;
-  return r.celda ? `${base} · ${r.celda.plataforma_id}/${r.celda.criterio_id} = ${r.celda.puntaje}` : base;
+  const base = r.veredicto
+    ? `${r.veredicto.tipo}: ${r.veredicto.plataformas.join(", ")}`
+    : `${r.tipo}: ${(r.motivos ?? []).join(", ")}`;
+  return r.celda
+    ? `${base} · ${r.celda.plataforma_id}/${r.celda.criterio_id} = ${r.celda.puntaje}`
+    : base;
 }
 
 /** Una fila por comprobación de integridad: «las fallas que devuelve la función» → pasa si no hay ninguna. */
@@ -135,6 +140,12 @@ export function validar({
       "Cada perfil aprobado es el que aprobó una persona",
       "Each approved profile is the one a person approved",
       () => casosSinAprobacion(dir),
+    ),
+    integridad(
+      "planes-aprobados",
+      "Cada plan aprobado es el que aprobó una persona",
+      "Each approved plan is the one a person approved",
+      () => planesSinAprobacion(dir),
     ),
     integridad(
       "mapas-aprobados",

@@ -1,0 +1,38 @@
+id: dec-computo
+pregunta:
+  es: "¿El cómputo es sin servidor o aprovisionado?"
+  en: "Is compute serverless or provisioned?"
+capacidad_id: cap-transformacion
+reversibilidad: dos_vias
+razon_reversibilidad:
+  es: "Se cambia ajustando un tamaño o un modo de cobro: es una configuración, no una reconstrucción, y se corrige con el gasto real."
+  en: "It changes by adjusting a size or a billing mode: a setting, not a rebuild, corrected with real spending."
+depende_de: []
+implicita: false
+estado: esperando-prueba
+opciones_por_plataforma:
+  - plataforma_id: databricks
+    texto:
+      es: "Con cómputo serverless las cargas corren sin aprovisionar recursos en la cuenta de nube y se paga por consumo, sin costos iniciales; los presupuestos avisan hasta 24 horas después y no cuentan descuentos negociados."
+      en: "With serverless compute, workloads run without provisioning resources in the cloud account and are paid by consumption, with no upfront cost; budgets alert up to 24 hours late and do not count negotiated discounts."
+    citas:
+      - evidencia_id: evi-databricks-habilidades
+        componentes: [canalizaciones-lakeflow]
+      - evidencia_id: evi-databricks-costo
+        componentes: [presupuestos]
+  - plataforma_id: fabric
+    texto:
+      es: "El cómputo se paga por el tamaño de la capacidad, por segundo y sin compromiso, con reserva anual opcional; si la carga pasa de ese tamaño, la capacidad retrasa y después rechaza operaciones, salvo que se active el cobro de excedentes, que cuesta el triple."
+      en: "Compute is paid by capacity size, per second and with no commitment, with an optional annual reservation; if the load exceeds that size, the capacity delays and then rejects operations unless overage billing is turned on, which costs triple."
+    citas:
+      - evidencia_id: evi-fabric-costo
+        componentes: [capacidad]
+  - plataforma_id: snowflake
+    texto:
+      es: "Los warehouses se cobran por segundo, con un mínimo de 60 segundos cada vez que arrancan, y su tamaño se elige experimentando; los monitores de recursos pueden suspenderlos al llegar a una cuota, pero solo cubren warehouses."
+      en: "Warehouses are billed per second, with a 60-second minimum each time they start, and their size is chosen by experimenting; resource monitors can suspend them at a quota, but they only cover warehouses."
+    citas:
+      - evidencia_id: evi-snowflake-costo
+        componentes: [virtual-warehouses, monitores-recursos]
+      - evidencia_id: evi-snowflake-habilidades
+        componentes: [virtual-warehouses]

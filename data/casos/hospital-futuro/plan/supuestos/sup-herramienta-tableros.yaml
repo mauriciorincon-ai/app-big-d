@@ -1,0 +1,16 @@
+id: sup-herramienta-tableros
+enunciado:
+  es: "La herramienta de tableros que el grupo ya usa se conecta a la plataforma elegida sin rehacer los tableros existentes."
+  en: "The dashboard tool the group already uses connects to the chosen platform without rebuilding the existing dashboards."
+criticidad: alta
+prueba_barata:
+  es: "Conectar la herramienta actual a una cuenta de prueba de cada plataforma candidata y abrir un tablero existente con datos ficticios."
+  en: "Connect the current tool to a trial account of each candidate platform and open an existing dashboard with fictitious data."
+responsable:
+  es: "Analista de inteligencia de negocio del hospital"
+  en: "Hospital business intelligence analyst"
+costo_prueba: bajo
+estado: sin_probar
+vence: "2026-11-20"
+decisiones: [dec-consumo]
+origen: propuesto-por-agente

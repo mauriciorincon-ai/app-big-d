@@ -8,7 +8,7 @@
   GUÍA DE PRUEBA VIVA Y ACUMULATIVA de Big-D (regla 11 del CLAUDE.md; plantilla del kit v1.6.0; referencia
   app-habla/docs/GUIA-DE-PRUEBA.html). Autocontenida: cero CDNs, cero fetch; se abre con doble clic.
   Bola de nieve: cada sprint hereda ENTERAS las pruebas del anterior; lo «Nuevo · S1» pasa a «S1» (regresión)
-  en el S2 salvo que el S2 lo toque («Mejorado en S2»). Prefijo de localStorage versionado: «bigd-s4-» (cambia
+  en el S2 salvo que el S2 lo toque («Mejorado en S2»). Prefijo de localStorage versionado: «bigd-s5-» (cambia
   en cada versión). ⭐ = lo que ninguna automatización verifica; ⭐⭐ = el subconjunto que solo un humano juzga,
   caminable en el orden del documento. Sin URL de despliegue escrita (regla 17): el campo se llena en uso.
 -->
@@ -107,7 +107,7 @@
 <body>
 <div class="pagina">
   <header>
-    <p class="eyebrow">Big-D · Guía de prueba viva y acumulativa · Sprint 4 · 2026-10-11</p>
+    <p class="eyebrow">Big-D · Guía de prueba viva y acumulativa · Sprint 5 · 2026-10-11</p>
     <h1>Guía de prueba</h1>
     <p class="suave">Todas las pruebas vigentes de la app: el atlas (visión general, componentes, recorrido de un
       dato), el lado a lado, las versiones de un mapa, el investigador, la base, el perfil del caso, la comparación y
@@ -419,6 +419,22 @@
     <div class="reportame"><p><strong>Repórtame sí o sí:</strong> un estado que no es verde sin que la página diga por qué, o un sembrado que aparece como detectado sin estar detectado.</p></div>
   </section>
 
+  <section class="bloque">
+    <div class="bloque-cabeza"><span class="letra">O</span><h2>Las decisiones del caso</h2></div>
+    <p class="meta-bloque chica suave"><strong>Empieza en:</strong> <code>/es/casos/hospital-futuro/decisiones</code> · ~6 min · el plan del caso: sus decisiones, sus riesgos y sus supuestos; el plan no se aprueba aquí</p>
+    <ul class="pasos">
+      <li data-origen="nuevo"><input type="checkbox" id="o1"><label for="o1">Entra desde la barra, <strong>Caso</strong>, y abre <strong>Decisiones y riesgos</strong>. Esperado: el encabezado dice <strong>«Plan en borrador»</strong>; los conteos son 7 decisiones, 3 de una sola vía, 5 riesgos y 5 supuestos; y el diagrama de ondas muestra las decisiones de una vía con borde grueso, con la lectura en texto debajo.
+        <span class="origen origen-nuevo">Nuevo · S5</span></label></li>
+      <li data-origen="nuevo"><input type="checkbox" id="o2"><label for="o2">Toca una tarjeta de borde grueso. Esperado: su ficha con la opción de cada plataforma; cada opción muestra su evidencia citada (un código que empieza por «evi-») o dice <strong>«Sin fuente en la base»</strong>. Como el perfil está en borrador, la ficha dice por qué no hay recomendación.
+        <span class="origen origen-nuevo">Nuevo · S5</span></label></li>
+      <li data-origen="nuevo"><input type="checkbox" id="o3"><label for="o3">Baja a <strong>Riesgos con prioridad de acción</strong>. Esperado: la tabla va de prioridad alta a baja, y cada riesgo muestra su severidad, su ocurrencia, su detección y su mitigación; en el plan real, ninguna acción alta queda sin mitigación.
+        <span class="origen origen-nuevo">Nuevo · S5</span></label></li>
+      <li data-origen="nuevo"><input type="checkbox" id="o4"><label for="o4">Busca el apartado <strong>Aprobar el plan</strong>. Esperado: el comando no aparece si hay bloqueos, y dice que solo una persona lo corre y que la app no aprueba nada. <strong>No lo corras en esta prueba:</strong> el plan real queda en borrador.
+        <span class="origen origen-nuevo">Nuevo · S5</span></label></li>
+    </ul>
+    <div class="reportame"><p><strong>Repórtame sí o sí:</strong> una ficha con una evidencia que no está en la base, o un plan que se puede aprobar con una acción alta sin mitigación.</p></div>
+  </section>
+
   <footer>
     <p class="chica suave">Guía <strong>viva y acumulativa</strong>: contiene todas las pruebas vigentes de la app
       con su origen visible; una prueba solo se elimina cuando su feature dejó de existir, y queda declarado abajo.
@@ -426,6 +442,7 @@
     <details class="chica">
       <summary>Historial de la guía</summary>
       <ul>
+        <li><strong>S5 · 2026-10-11:</strong> 66 pruebas en 15 bloques (A–O). Las 62 del S4 siguen, con sus chips: S5 no reclasifica las «Nuevo» de S3 y S4 (eso va al lote del hito). Nuevas: el bloque O, el plan del caso (decisiones, riesgos y supuestos); cuatro pruebas, sin ⭐ porque el gate humano del plan se hace con el dato aprobado. Ninguna eliminada.</li>
         <li><strong>S4 · 2026-10-11:</strong> 62 pruebas en 14 bloques (A–N). Las 52 del S2 siguen: las 16 que el S2
           tenía como «Nuevo» o «Mejorado» pasan a heredadas, «S2» (regresión), porque el S4 no cambió su superficie.
           10 nuevas: la barra y la base (K), el perfil del caso (L), la comparación (M) y el instrumento (N). El perfil
@@ -469,7 +486,7 @@
   (function () {
     // NS VERSIONADO POR SPRINT (regla dura): al publicar la guía de un sprint nuevo se cambia
     // s1 → s2 en el sprint siguiente — así una regresión sin correr no aparece marcada por el sprint anterior.
-    var NS = "bigd-s4-";
+    var NS = "bigd-s5-";
     var casillas = Array.prototype.slice.call(document.querySelectorAll('input[type="checkbox"]'));
     var barra = document.getElementById("barra-avance");
     var contador = document.getElementById("contador");

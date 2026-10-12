@@ -8,29 +8,32 @@ import { execFileSync } from "node:child_process";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import {
-  DEL_CONTRATO,
   FUENTES_MAQUETA,
-  OBJETO,
   PLANEADORA,
   archivosEnCommit,
   bytesEnCommit,
+  esDelContrato,
   hayCommit,
   huellasDeLaCopia,
   leerLock,
+  objetoDeArgumentos,
   sha256,
   sha256DeBytes,
 } from "./huellas.mjs";
 
-const { version, origen, huellas: bloqueadas } = leerLock();
+// `--objeto <nombre>` elige el reusable (por omisión, el diagramador; también `instrumentos-de-plan`).
+const o = objetoDeArgumentos();
+const OBJETO = o.objeto;
+const { version, origen, huellas: bloqueadas } = leerLock(undefined, o);
 const fallas = [];
 if (!origen) fallas.push("CONTRATO.lock sin `origen:` (el commit de la planeadora del que sale la copia)");
 const conPlaneadora = origen !== null && hayCommit(origen);
-const copia = huellasDeLaCopia();
+const copia = huellasDeLaCopia(o);
 
 for (const [ruta, h] of copia) {
   if (bloqueadas.get(ruta) !== h) fallas.push(`${ruta}: la copia no coincide con CONTRATO.lock`);
-  const deContrato = DEL_CONTRATO.some((e) => ruta === e || ruta.startsWith(`${e}/`));
-  if (!deContrato) {
+  // Lo congelado (implementación copiada de otra app) solo se compara con el lock; lo de la maqueta, con la maqueta.
+  if (o.deLaMaqueta.some((e) => ruta === e || ruta.startsWith(`${e}/`))) {
     const maqueta = join(FUENTES_MAQUETA, ruta.replace(/^metricas\//, ""));
     if (!existsSync(maqueta)) fallas.push(`${ruta}: no existe en la maqueta (${maqueta})`);
     else if (sha256(maqueta) !== h) fallas.push(`${ruta}: DERIVA contra la maqueta`);
@@ -38,14 +41,14 @@ for (const [ruta, h] of copia) {
 }
 let enHead = null;
 if (conPlaneadora) {
-  const enCommit = archivosEnCommit(origen);
+  const enCommit = archivosEnCommit(origen, o);
   const enCopia = new Set(copia.map(([r]) => r));
   for (const r of enCommit) {
     if (!enCopia.has(r)) fallas.push(`${r}: está en ${origen.slice(0, 7)} y falta en la copia`);
-    else if (sha256DeBytes(bytesEnCommit(origen, r)) !== copia.find(([x]) => x === r)[1]) fallas.push(`${r}: DERIVA contra ${origen.slice(0, 7)}`);
+    else if (sha256DeBytes(bytesEnCommit(origen, r, o)) !== copia.find(([x]) => x === r)[1]) fallas.push(`${r}: DERIVA contra ${origen.slice(0, 7)}`);
   }
   for (const [r] of copia)
-    if (DEL_CONTRATO.some((e) => r === e || r.startsWith(`${e}/`)) && !enCommit.includes(r)) fallas.push(`${r}: no está en ${origen.slice(0, 7)}`);
+    if (esDelContrato(r, o) && !enCommit.includes(r)) fallas.push(`${r}: no está en ${origen.slice(0, 7)}`);
   // Informativo: ¿la planeadora publicó otra versión después del origen?
   const head = execFileSync("git", ["-C", PLANEADORA, "rev-parse", "HEAD"], { encoding: "utf8" }).trim();
   const cambiados = execFileSync("git", ["-C", PLANEADORA, "diff", "--name-only", origen, head, "--", `${OBJETO}/`], { encoding: "utf8" }).split("\n").filter(Boolean);

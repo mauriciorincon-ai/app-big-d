@@ -242,6 +242,22 @@ a ninguna ni pide cuentas.
   - La validación corre sobre la base que se va a publicar. Si abres la app sin haber corrido `pnpm build`, la pantalla dice que no hay validación y te pide correrlo.
   - Las propiedades son las mismas que prueba la suite de pruebas: no hay dos versiones de la verdad.
 
+#### 13. Las decisiones del caso · desde el Sprint 5
+
+- **Qué hace:** muestra las decisiones que el caso tiene que tomar, en el orden en que conviene tomarlas: primero las que son de una sola vía (rehacerlas cuesta migrar datos, rediseñar permisos o renegociar un contrato). Para cada decisión, su ficha dice cómo la resuelve cada plataforma y con qué evidencia. Debajo, los riesgos ordenados por prioridad de acción y los supuestos con su prueba barata.
+- **Cómo se usa:**
+  1. En el caso, abre «Decisiones y riesgos».
+  2. Lee el diagrama: cada decisión es una tarjeta. Las de borde grueso son de una sola vía y se deciden primero; las de borde discontinuo son costosas de revertir; las de borde fino se pueden revertir. Toca una tarjeta para abrir su ficha.
+  3. En la ficha, cada plataforma tiene su opción y la evidencia que la sostiene. «Opción recomendada» aparece cuando el perfil del caso está aprobado; mientras no, la pantalla dice por qué no hay recomendación.
+  4. En «Riesgos», la tabla ordena por prioridad de acción (alta, media, baja) y después por severidad. Una acción alta sin mitigación queda marcada y bloquea la aprobación del plan.
+  5. Si hay un ciclo de dependencias, la pantalla lo muestra con su camino («a → b → a») en lugar de esconderlo. Para resolverlo hay que quitar una de sus flechas.
+  6. Para aprobar el plan, la pantalla arma un comando solo si no hay bloqueos. Cópialo y córrelo tú, en la carpeta del proyecto. Solo una persona lo ejecuta: la app no aprueba nada.
+- **Limitaciones:**
+  - Severidad, ocurrencia y detección son juicio, no evidencia: las propone el agente con su razón, y quien aprueba el plan las hace suyas.
+  - La prueba barata de un supuesto es una tarea para el equipo del caso: la app la registra, con responsable y fecha, pero no la ejecuta ni se conecta a ninguna plataforma.
+  - Una opción sin fuente aparece marcada con «Sin fuente en la base» y la pantalla no afirma nada de ella; no se inventa un respaldo.
+  - Un plan aprobado que alguien edita a mano se rechaza al cargar.
+
 ### Preguntas frecuentes
 
 - **¿Big-D recomienda una plataforma?** No decide por ti. Compara con tus pesos y tu evidencia, muestra la sensibilidad del resultado a esos pesos y deja la decisión a quien pregunta. Mientras el perfil del caso de ejemplo esté en borrador, su comparación no se calcula: hace falta que una persona apruebe el perfil (sección 10).
@@ -260,6 +276,7 @@ a ninguna ni pide cuentas.
 | S2 (2026-10-04) | 5 al día: Databricks, Fabric y Snowflake con mapa · 6 la versión anterior se guarda al aprobar · 7 Lado a lado · 8 Versiones del mapa                                              |
 | S3 (2026-10-10) | 9 La base de conocimiento · 11 La comparación (no puntúa mientras el perfil esté en borrador)                                                                                      |
 | S4 (2026-10-11) | 10 El perfil del caso (se aprueba desde su pantalla) · 12 El instrumento (validación antes de publicar)                                                                            |
+| S5 (2026-10-11) | 13 Las decisiones del caso: ondas, fichas con evidencia, riesgos por prioridad y supuestos (se aprueba el plan desde su pantalla) |
 
 ---
 
@@ -489,6 +506,22 @@ manages and controls; it never operates a platform**: it connects to none and as
   - Validation runs on the base that will be published. If you open the app without having run `pnpm build`, the page says there is no validation yet and asks you to run it.
   - The properties are the same ones the test suite checks: there are not two versions of the truth.
 
+#### 13. The case's decisions · since Sprint 5
+
+- **What it does:** shows the decisions the case has to make, in the order they should be taken: first the one-way ones (reversing them costs a data migration, a permissions redesign or a renegotiated contract). Each decision's sheet says how each platform resolves it and with what evidence. Below it, the risks ordered by action priority and the assumptions with their cheap test.
+- **How to use it:**
+  1. In the case, open **“Decisions and risks”**.
+  2. Read the diagram: each decision is a card. Thick border means one-way and decided first; dashed border means costly to reverse; thin border means reversible. Tap a card to open its sheet.
+  3. On the sheet, each platform has its option and the evidence behind it. **“Recommended option”** appears when the case profile is approved; until then the page says why there is no recommendation.
+  4. Under **Risks**, the table sorts by action priority (high, medium, low) and then by severity. A high action without a mitigation is marked and blocks approving the plan.
+  5. If there is a dependency cycle, the page shows it with its path (“a → b → a”) instead of hiding it. To resolve it, remove one of its arrows.
+  6. To approve the plan, the page builds a command only when there are no blockers. Copy it and run it yourself, in the project folder. Only a person runs it: the app approves nothing.
+- **Limitations:**
+  - Severity, occurrence and detection are judgement, not evidence: the agent proposes them with their reason, and whoever approves the plan makes them their own.
+  - An assumption's cheap test is a task for the case team: the app records it, with an owner and a date, but does not run it or connect to any platform.
+  - An option with no source is marked “No source in the base”, and the page claims nothing about it; no backing is invented for it.
+  - An approved plan that someone edits by hand is rejected when it loads.
+
 ### Frequently asked questions
 
 - **Does Big-D recommend a platform?** No, it does not decide for you. It compares with your weights and your evidence, shows how sensitive the result is to those weights, and leaves the decision to whoever asks. While the example case's profile is a draft, its comparison is not calculated: a person has to approve the profile (section 10).
@@ -506,3 +539,4 @@ manages and controls; it never operates a platform**: it connects to none and as
 | S2 (2026-10-04) | 5 updated: Databricks, Fabric and Snowflake have maps · 6 the previous version is kept on approval · 7 Side by side · 8 Map versions                       |
 | S3 (2026-10-10) | 9 The knowledge base · 11 The comparison (does not score while the profile is a draft)                                                                     |
 | S4 (2026-10-11) | 10 The case profile (approved from its page) · 12 The instrument (validation before publishing)                                                            |
+| S5 (2026-10-11) | 13 The case's decisions: waves, sheets with evidence, risks by priority and assumptions (the plan is approved from its page) |

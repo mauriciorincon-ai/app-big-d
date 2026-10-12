@@ -1,0 +1,37 @@
+id: rie-ingesta-incompleta
+decision_id: dec-ingesta-cambios
+modo:
+  es: "Los cambios de la base de origen no llegan completos o llegan tarde"
+  en: "Changes from the source database do not arrive complete or arrive late"
+efecto:
+  es: "Tableros con datos desactualizados o faltantes, y decisiones tomadas sobre ellos."
+  en: "Dashboards with stale or missing data, and decisions made on them."
+causa:
+  es: "El mecanismo de captura no admite la versión o las tablas de la base de origen (sin clave de identidad, sin carga incremental), o depende de un recurso que alguien apaga."
+  en: "The capture mechanism does not support the source database's version or tables (no identity key, no incremental load), or depends on a resource someone switches off."
+severidad: 7
+ocurrencia: 5
+deteccion: 5
+origen: propuesto-por-agente
+razon:
+  es: "Severidad 7: decisiones sobre datos viejos y retrabajo de meses si se descubre tarde (ancla 7–8). Ocurrencia 5: posible; las evidencias listan fuentes y tablas sin carga incremental. Detección 5: se detecta a veces, cuando alguien compara contra el origen."
+  en: "Severity 7: decisions on old data and months of rework if found late (anchor 7–8). Occurrence 5: possible; the evidence lists sources and tables without incremental load. Detection 5: detected sometimes, when someone compares against the source."
+mitigaciones:
+  - accion:
+      es: "Comprobar la versión exacta de la base de origen contra las fuentes que documenta el mecanismo elegido, antes de comprometerlo."
+      en: "Check the exact version of the source database against the sources the chosen mechanism documents, before committing to it."
+    responsable:
+      es: "Equipo de datos del hospital"
+      en: "Hospital data team"
+    momento: antes
+    efecto:
+      ocurrencia: 3
+  - accion:
+      es: "Conciliar cada tabla entre el origen y la plataforma (conteos y sumas) en cada carga y avisar cuando la diferencia pase de cero."
+      en: "Reconcile each table between the source and the platform (counts and sums) on every load and alert when the difference exceeds zero."
+    responsable:
+      es: "Equipo de datos del hospital"
+      en: "Hospital data team"
+    momento: durante
+    efecto:
+      deteccion: 2

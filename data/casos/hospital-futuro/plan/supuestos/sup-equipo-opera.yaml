@@ -1,0 +1,16 @@
+id: sup-equipo-opera
+enunciado:
+  es: "El equipo actual puede operar la plataforma elegida sin contratar ingeniería de plataformas."
+  en: "The current team can run the chosen platform without hiring platform engineering."
+criticidad: alta
+prueba_barata:
+  es: "Dos personas del equipo arman una canalización de ejemplo con datos ficticios siguiendo solo la documentación pública, y se anota cuánto tardan y dónde se atascan."
+  en: "Two team members build an example pipeline with fictitious data following only the public documentation, noting how long it takes and where they get stuck."
+responsable:
+  es: "Responsable de datos del hospital"
+  en: "Hospital data lead"
+costo_prueba: bajo
+estado: sin_probar
+vence: "2026-12-04"
+decisiones: [dec-computo, dec-ingesta-cambios]
+origen: propuesto-por-agente

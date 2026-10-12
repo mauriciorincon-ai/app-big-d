@@ -84,7 +84,7 @@ export default async function Comparacion({ params }: PageProps<"/[idioma]/casos
           />
         </div>
       </div>
-      <Pestanas etiqueta={T.secciones.etiqueta} pestanas={pestanasCaso(T.secciones, idioma, caso.id, "comparacion")} />
+      <Pestanas etiqueta={T.secciones.etiqueta} pestanas={pestanasCaso(T.secciones, idioma, caso.id, "comparacion", k.planes.some((p) => p.caso_id === caso.id))} />
 
       {r.tipo === "no-evaluable" ? (
         <NoEvaluable motivos={r.motivos} idioma={idioma} t={t.noEvaluable} nombres={nombres} criteriosPorPlataforma={caso.criterios.length} rutaPerfil={rutaCaso(idioma, caso.id)} rutaBase={rutaBase(idioma)} />

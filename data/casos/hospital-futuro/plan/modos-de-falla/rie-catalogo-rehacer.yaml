@@ -1,0 +1,28 @@
+id: rie-catalogo-rehacer
+decision_id: dec-catalogo
+modo:
+  es: "El catálogo se organiza de una forma que no sirve y hay que rehacerlo"
+  en: "The catalog is organised in a way that does not work and has to be redone"
+efecto:
+  es: "Mover objetos, permisos y linaje, y rehacer lo construido encima: meses de retrabajo."
+  en: "Moving objects, permissions and lineage, and redoing what was built on top: months of rework."
+causa:
+  es: "Se organizó por ambiente cuando el uso real es por dominio clínico (o al revés) sin discutirlo con los dueños de los datos."
+  en: "It was organised by environment when real use is by clinical domain (or the reverse) without discussing it with the data owners."
+severidad: 7
+ocurrencia: 5
+deteccion: 4
+origen: propuesto-por-agente
+razon:
+  es: "Severidad 7: retrabajo de meses (ancla 7–8). Ocurrencia 5: posible; la organización suele decidirse por costumbre. Detección 4: se nota pronto, en cuanto el primer equipo no encuentra o no puede compartir sus datos."
+  en: "Severity 7: months of rework (anchor 7–8). Occurrence 5: possible; organisation is usually decided by habit. Detection 4: noticed early, as soon as the first team cannot find or share its data."
+mitigaciones:
+  - accion:
+      es: "Decidir la organización en una sesión con los dueños de los datos antes de crear el primer objeto, y dejar por escrito el criterio y quién lo cambia."
+      en: "Decide the organisation in a session with the data owners before creating the first object, and write down the criterion and who may change it."
+    responsable:
+      es: "Responsable de datos del hospital"
+      en: "Hospital data lead"
+    momento: antes
+    efecto:
+      ocurrencia: 3

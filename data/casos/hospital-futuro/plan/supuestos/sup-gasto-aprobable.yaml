@@ -1,0 +1,16 @@
+id: sup-gasto-aprobable
+enunciado:
+  es: "El gasto anticipado de la plataforma elegida cabe en lo que el grupo aprueba."
+  en: "The anticipated spending on the chosen platform fits what the group approves."
+criticidad: media
+prueba_barata:
+  es: "Estimar con el tarifario público de cada plataforma el gasto de una carga típica del hospital y llevar el rango al grupo antes de comprometerse."
+  en: "Estimate, with each platform's public price list, the spending of a typical hospital workload and take the range to the group before committing."
+responsable:
+  es: "Responsable de finanzas del hospital"
+  en: "Hospital finance lead"
+costo_prueba: gratis
+estado: sin_probar
+vence: "2026-11-20"
+decisiones: [dec-computo]
+origen: propuesto-por-agente

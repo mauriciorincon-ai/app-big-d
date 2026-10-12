@@ -1,0 +1,35 @@
+id: dec-consumo
+pregunta:
+  es: "¿Se sigue publicando en la herramienta de tableros del grupo o se usan las capacidades nativas de la plataforma?"
+  en: "Does publishing continue in the group's dashboard tool, or are the platform's native capabilities used?"
+capacidad_id: cap-consumo
+reversibilidad: costosa
+razon_reversibilidad:
+  es: "Cambiar de herramienta obliga a rehacer los modelos de datos y los tableros, pero no toca los datos guardados."
+  en: "Changing tools means rebuilding the data models and dashboards, but it does not touch the stored data."
+depende_de: [dec-catalogo]
+implicita: true
+estado: esperando-prueba
+opciones_por_plataforma:
+  - plataforma_id: databricks
+    texto:
+      es: "Las vistas de métricas definen cada indicador una sola vez para tableros, consultas y agentes, y los tableros AI/BI se comparten aun con quien no entra al espacio de trabajo; Power BI se conecta a los SQL warehouses, aunque Microsoft retiró del conector la compatibilidad con las vistas de métricas."
+      en: "Metric views define each indicator once for dashboards, queries and agents, and AI/BI dashboards can be shared even with people who do not enter the workspace; Power BI connects to the SQL warehouses, although Microsoft removed metric-view support from the connector."
+    citas:
+      - evidencia_id: evi-databricks-consumo
+        componentes: [vistas-metricas, tableros-aibi, herramientas-bi]
+  - plataforma_id: fabric
+    texto:
+      es: "Los modelos semánticos de Power BI dejan los datos listos para informes y, en modo Direct Lake, leen las tablas Delta de OneLake; en capacidades menores que F64, cada persona que ve informes necesita una licencia Pro, PPU o de prueba."
+      en: "Power BI semantic models leave data ready for reports and, in Direct Lake mode, read the Delta tables in OneLake; on capacities smaller than F64, each person who views reports needs a Pro, PPU or trial licence."
+    citas:
+      - evidencia_id: evi-fabric-consumo
+        componentes: [modelo-semantico, informe-power-bi]
+      - evidencia_id: evi-fabric-costo
+  - plataforma_id: snowflake
+    texto:
+      es: "Las vistas semánticas guardan en la base de datos los conceptos de negocio y Power BI se conecta con las credenciales del proveedor de identidad; los tableros de Snowsight se retiraron y la vía nativa son las aplicaciones Streamlit."
+      en: "Semantic views keep business concepts in the database and Power BI connects with the identity provider's credentials; Snowsight dashboards were retired and the native route is Streamlit apps."
+    citas:
+      - evidencia_id: evi-snowflake-consumo
+        componentes: [vistas-semanticas, streamlit]

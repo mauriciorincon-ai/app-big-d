@@ -1,0 +1,39 @@
+id: dec-proteccion-clinica
+pregunta:
+  es: "¿Cómo se protegen los datos clínicos: filtros por fila y enmascaramiento por columna?"
+  en: "How is clinical data protected: row filters and column masking?"
+capacidad_id: cap-gobierno
+reversibilidad: costosa
+razon_reversibilidad:
+  es: "Cambiar el mecanismo es trabajo acotado (reescribir las políticas y volver a probarlas), pero un dato expuesto antes del cambio no se deshace."
+  en: "Changing the mechanism is bounded work (rewriting the policies and testing them again), but data exposed before the change cannot be undone."
+depende_de: [dec-catalogo]
+implicita: false
+estado: pendiente
+opciones_por_plataforma:
+  - plataforma_id: databricks
+    texto:
+      es: "Unity Catalog aplica filtros por fila y máscaras de columna y guarda un registro de cada acceso; los filtros y las máscaras no se aplican a vistas, y el perfil de seguridad de cumplimiento para datos de salud se cobra como complemento aparte."
+      en: "Unity Catalog applies row filters and column masks and keeps a record of every access; filters and masks do not apply to views, and the compliance security profile for health data is billed as a separate add-on."
+    citas:
+      - evidencia_id: evi-databricks-gobierno
+        componentes: [filtros-mascaras]
+      - evidencia_id: evi-databricks-cumplimiento
+  - plataforma_id: fabric
+    texto:
+      es: "La seguridad de OneLake define roles hasta el nivel de fila y columna y los hace cumplir en todos los motores; las reglas por fila no admiten consultas dinámicas ni de varias tablas, y los roles no limitan a administradores, miembros ni colaboradores del espacio de trabajo."
+      en: "OneLake security defines roles down to the row and column level and enforces them across every engine; row rules do not support dynamic or multi-table queries, and roles do not restrict workspace admins, members or contributors."
+    citas:
+      - evidencia_id: evi-fabric-gobierno
+        componentes: [seguridad-onelake, auditoria]
+      - evidencia_id: evi-fabric-cumplimiento
+        componentes: [auditoria]
+  - plataforma_id: snowflake
+    texto:
+      es: "Las políticas por fila y las máscaras deciden qué ve cada persona y el historial de accesos registra qué datos lee cada consulta; una misma columna no puede estar a la vez en una política por fila y en una máscara, y el historial exige la edición Enterprise o superior."
+      en: "Row policies and masks decide what each person sees and the access history records which data each query reads; one column cannot be in both a row policy and a mask, and the history needs the Enterprise edition or higher."
+    citas:
+      - evidencia_id: evi-snowflake-gobierno
+        componentes: [politicas-acceso]
+      - evidencia_id: evi-snowflake-cumplimiento
+        componentes: [politicas-acceso]

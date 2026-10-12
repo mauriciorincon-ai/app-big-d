@@ -1,0 +1,24 @@
+# CONTRATO.lock — copia fijada de reusables/instrumentos-de-plan. NO se edita a mano:
+# `node scripts/contrato/fijar.mjs --objeto instrumentos-de-plan --origen <sha> --copiar` al renovar la copia; `node scripts/contrato/verificar.mjs --objeto instrumentos-de-plan`
+# la compara con reusables/instrumentos-de-plan/ de la planeadora EN ese commit; el gate `contrato-lock` la recalcula en cada test.
+# copia de: app-planlang@2642110e0129993bc0b0336f06797c168f8e0436 packages/instrumentos-de-plan (implementación congelada: ningún byte se edita después de copiada)
+version: 0.2.0
+origen: fe9ffd10edd17379cad9aef8af52cd6629d4661d
+d8e8385f8d8ee99cdd353217003f16d0a44add8c338f9b81dfe5fdf7eb2af168  README.md
+f94dc47ac79881b30ddf22c8c0b1979efd8097cd1269e591b8aad933cef7ca68  carnadas/C01-ciclo.json
+916d87613c323bf53ff3c6760d0a5acbf90e244c04d2b0012047cd8a65e15f20  carnadas/C02-una-via-primero.json
+1462a9f06b013268f9e8f0d3d77a087f76dc1837d951e29ade2e6147429bd9b7  carnadas/C03-bis-rpn-no-discrimina.json
+872575e438016a4dc9c09a33de0213a586797d8daf6602f6e92b0645d347e481  carnadas/C03-severidad-primero.json
+7474accdec711f6a7e6c46a6aefd72cdd34b08506a7ea45d4dba17382fd2902d  carnadas/C04-alta-sin-mitigacion.json
+005de49347a7a7ee8ec7be92e9a86ef03cd85ee5f347ce4c4f30d633d64cb435  carnadas/C05-supuesto-sin-prueba.json
+94642b018db8db4abb182ad58af17d8695ac4f213847100647226b3e57d3d6fa  carnadas/C06-control-legal.json
+6338168813b48f4baa6fc22c7a02158d6b9eda4054dedeb9cef16f78619cd867  contrato/CONTRATO.md
+5dce1171ea680368200a680be27320b94253684f4252d18ce2b5ba47d4cadacd  datos/escalas.json
+4433fa866786a5dafd30a6c6a0a79883d24d6fffe08d92e76c7f20ef7e372536  datos/prioridad-de-accion.json
+bf67ab6edddd4f34a64d0f7fa3a8e986223180dddd6fe3ca012ef8a8ed2504d8  src/decisiones.ts
+7f02fb566ac35e25bb2bbd3859ec0ca423053d607497fb2403930742bd9d18b0  src/index.ts
+e646c45a7db6bfabca5de6fa5a12e8434c0afceccafe9a45a16e2324b0ca2e26  src/informe.ts
+c79896c28e40ed3d61faafeb785d57348809db2d671dc11fd91b9ae817ddede0  src/modos-de-falla.ts
+ef4523f197f97594e55c6a905079e73f30d6a073af5e82b5b87b6e29f9f2788d  src/supuestos.ts
+3c7c3284c22ce6addd60b1c3113bc40e2ac997a991198cc339eba6ed1742f842  src/tipos.ts
+79833d0cd69a62486160cd8ded27db29f635023b5c7ce40ca48d688b63c93793  tests/carnadas.test.ts

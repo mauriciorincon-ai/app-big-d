@@ -1,0 +1,84 @@
+/* Decisiones y riesgos del caso (S5; maqueta `decisiones.html`): el diagrama de ondas, la reversibilidad, la tabla de riesgos
+   con su prioridad de acción, las tarjetas de supuesto y la ficha de la decisión. Mismos tokens que la maqueta: un solo
+   SVG sirve a los dos temas porque todo color entra por variable, y el color nunca va solo (glifo + palabra + borde). */
+
+/* --- diagrama de ondas (clases `db-*`/`dd-*` de la maqueta) --- */
+.dir-svg text { font-family: var(--letra); text-rendering: geometricPrecision; }
+.dir-svg [tabindex]:focus { outline: none; }
+.db-guia { stroke: var(--linea); stroke-width: 1; stroke-dasharray: 2 5; fill: none; }
+.db-t-num { font: 500 12px var(--letra-mono); letter-spacing: 0.1em; fill: var(--tinta-2); }
+.db-t-nombre { font-size: 16px; font-weight: 700; fill: var(--tinta-1); }
+.db-t-meta { font-size: 13px; fill: var(--tinta-2); }
+.db-t-meta-compacta { font-size: 12px; }
+.db-card { fill: var(--sup-2); stroke: var(--linea); stroke-width: 1; }
+.db-linea { fill: none; stroke: var(--tinta-2); stroke-width: 1.6; }
+.db-punta { fill: var(--tinta-2); }
+.db-marca { color: var(--tinta-1); }
+.dd-una_via .dd-caja { stroke: var(--tinta-1); stroke-width: 2.5; }
+.dd-costosa .dd-caja { stroke: var(--tinta-2); stroke-width: 1.5; stroke-dasharray: 7 4; }
+.dd-dos_vias .dd-caja { stroke: var(--linea); stroke-width: 1; }
+.dd-t-rev { fill: var(--tinta-1); letter-spacing: 0.04em; }
+.dd-t-nombre { font-size: 14px; }
+.dd-en-ciclo .dd-caja { fill: var(--sup-1); stroke: var(--tinta-1); stroke-width: 2.5; stroke-dasharray: 3 3; }
+.dd-bloq .dd-caja { fill: var(--sup-1); stroke-dasharray: 3 4; }
+.dd-bloq .dd-t-nombre { fill: var(--tinta-2); }
+.dd-dep-ciclo .db-linea { stroke: var(--tinta-1); stroke-width: 2.2; stroke-dasharray: 5 3; }
+.dd-dep-ciclo .db-punta { fill: var(--tinta-1); }
+.dd-dec { cursor: pointer; }
+/* Foco y ficha abierta SUMAN al borde de reposo (jamás lo reducen): una vía 2,5 → 4. */
+.dd-dec:focus-visible .dd-caja, .dd-dec[aria-current="true"] .dd-caja { stroke: var(--tinta-1); stroke-width: 4; }
+@media (forced-colors: active) {
+  .dd-caja, .db-card { fill: Canvas; stroke: CanvasText; }
+  .db-linea, .db-punta { stroke: CanvasText; }
+  .db-punta { fill: CanvasText; }
+}
+
+/* --- reversibilidad, prioridad y leyendas --- */
+.rev { display: inline-flex; align-items: center; gap: 6px; font: 600 13px/1.2 var(--letra-mono); color: var(--tinta-1); }
+.leyenda-dec { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 0 0 14px; }
+.leyenda-dec li { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
+.leyenda-dec small { font-size: 13px; color: var(--tinta-2); }
+.lectura-ondas > li { grid-template-columns: 1fr; }
+@media (min-width: 720px) { .lectura-ondas > li { grid-template-columns: 110px 1fr; } }
+.prio { display: inline-flex; align-items: center; gap: 6px; font: 600 12px/1 var(--letra-mono); padding: 4px 8px; border: 1px solid var(--tinta-2); border-radius: 999px; white-space: nowrap; }
+.prio-alta { border-color: var(--tinta-1); font-weight: 700; border-width: 2px; }
+.prio-media { border-color: var(--tinta-2); }
+.prio-baja { border-style: dashed; }
+
+/* --- ficha de la decisión (panel lateral) --- */
+.opciones { margin: 0; display: grid; gap: 6px; }
+.opciones > div { display: grid; grid-template-columns: 1fr; gap: 2px; padding: 8px 0; border-top: 1px solid var(--linea); font-size: 14px; }
+@media (min-width: 420px) { .opciones > div { grid-template-columns: 150px 1fr; gap: 10px; } }
+.opciones dt { font-weight: 600; color: var(--tinta-2); }
+.opciones dd { margin: 0; }
+.opciones .cita { display: block; margin-top: 4px; font-size: 12px; color: var(--tinta-2); }
+.opciones .cod { font-family: var(--letra-mono); }
+.opcion-fuera dd { color: var(--tinta-2); text-decoration: line-through; text-decoration-thickness: 1px; }
+.ficha-dec .kit-nota { margin: 6px 0 10px; }
+
+/* --- tabla de riesgos --- */
+.tabla-riesgos td small, .tabla-riesgos td .cod { font-size: 12px; color: var(--tinta-2); }
+.tabla-riesgos .cod { font-family: var(--letra-mono); }
+.tabla-riesgos { min-width: 1180px; }
+.tabla-riesgos td { min-width: 56px; vertical-align: top; }
+.tabla-riesgos td:first-child { min-width: 260px; }
+.tabla-riesgos td:nth-child(2) { min-width: 170px; }
+.tabla-riesgos td:nth-child(6) { min-width: 120px; }
+.tabla-riesgos td:nth-child(8) { min-width: 280px; }
+.tabla-riesgos td:nth-child(9) { min-width: 150px; }
+.tabla-riesgos .rpn { color: var(--tinta-2); }
+.tabla-riesgos .razon { display: block; margin-top: 6px; }
+.prioridad-alta-sin td { background: var(--sup-1); }
+.mitigaciones { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.mitigaciones small { display: block; margin-top: 2px; }
+.tabla-accion th, .tabla-accion td { text-align: left; }
+.tabla-accion td { white-space: nowrap; }
+.veredicto-alerta .boton { margin-left: auto; min-height: 36px; padding: 0 12px; font-size: 14px; }
+
+/* --- supuestos --- */
+.supuesto h3 { margin: 0 0 10px; }
+.supuesto-sin_probar { border-style: dashed; border-color: var(--tinta-1); }
+.supuesto-refutado h3 { text-decoration: line-through; text-decoration-thickness: 1.5px; color: var(--tinta-2); }
+.alertas-plan { list-style: none; padding: 0; margin: 0 0 14px; display: grid; gap: 6px; }
+.alertas-plan li { display: flex; align-items: flex-start; gap: 8px; font-size: 14px; }
+.alertas-plan svg { flex: none; margin-top: 2px; }

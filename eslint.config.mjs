@@ -7,7 +7,7 @@ import nextTs from "eslint-config-next/typescript";
 // Lo que sí se permite: + − × ÷ y Math.sqrt/floor/ceil/round/trunc/abs/min/max/sign/imul/fround/clz32.
 const INEXACTAS = ["sin", "cos", "tan", "asin", "acos", "atan", "atan2", "sinh", "cosh", "tanh", "asinh", "acosh", "atanh", "exp", "expm1", "log", "log1p", "log2", "log10", "pow", "cbrt", "hypot", "random"];
 const G2 = {
-  files: ["packages/diagramador/src/**/*.ts", "src/engine/**/*.ts"],
+  files: ["packages/diagramador/src/**/*.ts", "packages/instrumentos-de-plan/src/**/*.ts", "src/engine/**/*.ts"],
   rules: {
     "no-restricted-properties": [
       "error",
@@ -43,18 +43,18 @@ const NO_OPERA = {
   rules: { "no-restricted-imports": ["error", { patterns: PATRONES_NO_OPERA }] },
 };
 
-// El diagramador es un reusable de la casa: no importa nada de la app, ni del framework, ni abre I/O.
+// El diagramador y los instrumentos de plan son reusables de la casa: no importan nada de la app, ni del framework, ni abren I/O.
 // Lleva en la MISMA regla los patrones de «no opera»: en flat config dos bloques con
 // `no-restricted-imports` sobre los mismos archivos se pisan y gana el último (la demo en rojo lo cazó).
 const REUSABLE = {
-  files: ["packages/diagramador/src/**/*.ts"],
+  files: ["packages/diagramador/src/**/*.ts", "packages/instrumentos-de-plan/src/**/*.ts"],
   rules: {
     "no-restricted-imports": [
       "error",
       {
         patterns: [
-          { group: ["@/*", "**/src/**", "next", "next/*", "react", "react-dom", "react/*"], message: "El diagramador no importa nada de la app ni del framework (regla del reusable)." },
-          { group: ["node:*", "fs", "path", "http", "https", "net", "child_process", "os", "url"], message: "El diagramador no hace I/O: funciones puras (CONTRATO § 8)." },
+          { group: ["@/*", "**/src/**", "next", "next/*", "react", "react-dom", "react/*"], message: "Un reusable no importa nada de la app ni del framework (regla del reusable)." },
+          { group: ["node:*", "fs", "path", "http", "https", "net", "child_process", "os", "url"], message: "Un reusable no hace I/O: funciones puras (CONTRATO § 8)." },
           ...PATRONES_NO_OPERA,
         ],
       },
