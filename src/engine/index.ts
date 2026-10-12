@@ -9,6 +9,8 @@ export { comparar, racional, type Racional } from "./racional";
 export { comparacionDe, planDe, type AlertaDelPlan, type Comparacion, type DecisionCalculada, type DecisionDelPlan, type EntradaPlan, type ModoDelPlan, type ResultadoPlan, type RiesgoCalculado, type RiesgoResidual, type SupuestoDelPlan, type TipoAlerta } from "./plan";
 export { contieneTermino, medirLectura, NUMERO_SILABAS, palabrasDe, silabasDe, silabasEn, silabasEs, type IdiomaLectura, type Lectura, type PresupuestoDeLectura, type TerminoAExplicar } from "./legibilidad";
 export { hojaDeRuta, origenesHuerfanos, type Bloqueo, type CriterioDeCumplido, type DecisionDeRuta, type EntradaRuta, type FaseDeRuta, type HojaDeRuta, type ItemDeRuta, type ModoDeRuta, type OrigenDeItem, type SupuestoDeRuta } from "./hoja-de-ruta";
+export { alertasDeEvidencias, type AlertaEvidencia, type EvidenciaDeAlerta, type MotivoAlertaEvidencia } from "./alertas-evidencias";
+export { DESTACADOS_RESUMEN, modeloInforme, SECCIONES, type EntradaInforme, type FichaDeReproducibilidad, type ModeloInforme, type MotivoDeBorrador, type ResumenInforme, type RobustezResumen, type SeccionId, type VeredictoResumen } from "./informe";
 export { PUESTOS_VIGILADOS, sensibilidadDe, TOTAL, totalesCon } from "./sensibilidad";
 export type * from "./tipos";
 export { diasEntre, estadoVigencia, type EstadoVigencia } from "./vigencia";

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { entero } from "./conocimiento";
+import { entero, fecha } from "./conocimiento";
 import { id, textoIdioma } from "./esquemas";
 import { IDIOMAS, type Idioma } from "@/lib/i18n";
 
@@ -70,3 +70,17 @@ export const esquemaConvencionesInforme = z
   });
 
 export type ConvencionesInforme = z.infer<typeof esquemaConvencionesInforme>;
+
+/**
+ * El relato de fracaso que escribe el comité del caso ANTES del análisis (pre-mortem, E-9): data/casos/<caso>/relato-de-fracaso.yaml,
+ * opcional. La herramienta lo guarda y lo muestra al lado del relato generado por plantilla; jamás lo redacta.
+ */
+export const esquemaRelatoDeFracaso = z.strictObject({
+  caso_id: id,
+  texto: textoIdioma,
+  escrito_por: z.string().trim().min(1, "quién lo escribió"),
+  fecha,
+  origen: z.literal("declarado-por-usuario"),
+});
+
+export type RelatoDeFracaso = z.infer<typeof esquemaRelatoDeFracaso>;

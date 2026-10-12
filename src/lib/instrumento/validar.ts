@@ -2,6 +2,7 @@
 // integridad de lo aprobado sobre la base que se va a publicar, y devuelve el resultado SIN hora (la misma base, el mismo
 // archivo). La llama scripts/instrumento/validar.mjs al inicio de `pnpm build` y sale ≠ 0 si algo no pasa: sin validación en
 // verde no hay `out/` (RF-09.4). Solo Node.
+import { resumenesIlegibles } from "@/lib/informe/legible";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import {
@@ -152,6 +153,13 @@ export function validar({
       "Cada mapa es el que aprobó una persona",
       "Each map is the one a person approved",
       () => (d ? mapasSinAprobacion(d, dir) : ["los mapas no cargaron"]),
+    ),
+    // S6 (E-13, regla dura 11): el resumen de cada informe se lee dentro del presupuesto, en los dos idiomas.
+    integridad(
+      "informe-legible",
+      "El resumen de cada informe se lee dentro del presupuesto, en los dos idiomas",
+      "Each report summary reads within the budget, in both languages",
+      () => (k ? resumenesIlegibles(k) : ["la base no cargó"]),
     ),
   );
 

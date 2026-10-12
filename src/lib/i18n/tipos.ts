@@ -265,6 +265,63 @@ export interface Textos {
         sello: { titulo: string; detalle: string };
       };
     };
+    /** La pantalla de hoja de ruta e informe del caso (S6, C19–C20; maqueta `informe.html`). */
+    informe: {
+      ojo: string;
+      sub: string;
+      vistas: { etiqueta: string; hoja: string; alistamiento: string; informe: string };
+      meta: { items: readonly [string, string]; fases: readonly [string, string]; final: string; borrador: string; sinFase: string };
+      borrador: { titulo: string; cuerpo: string; motivos: { "perfil-borrador": string; "plan-borrador": string; ciclo: string; bloqueado: string } };
+      hoja: {
+        titulo: string;
+        nota: string;
+        regla: string;
+        fase: { pruebas: string; onda: string; seguimiento: string };
+        sinFase: string;
+        sinFaseNota: string;
+        ciclo: string;
+      };
+      item: {
+        tipo: { tarea: string; verificacion: string };
+        estado: { pendiente: string; hecho: string; bloqueado: string };
+        descripcion: { decision: string; mitigacion: string; supuesto: string };
+        origen: { decision: string; mitigacion: string; supuesto: string };
+        unaVia: string;
+        cumplido: string;
+        criterio: { decision: string; mitigacion: string; mitigacionSinCifra: string; supuesto: string };
+        efecto: { ocurrencia: string; deteccion: string };
+        bloqueo: { riesgo: string; ciclo: string };
+        responsable: string;
+        momento: { antes: string; durante: string; despues: string };
+        cadena: string;
+        antes: string;
+      };
+      alistamiento: { titulo: string; nota: string; progreso: string; categorias: Record<string, string> };
+      informe: { titulo: string; nota: string; imprimir: string; imprimirNota: string; indice: string; cabecera: string; pie: string; secciones: Record<string, string> };
+      resumen: {
+        parrafo: { ganadora: string; ganadoraSinSimulacion: string; unica: string; empate: string; sinComparacion: string; cierre: string; supuestos: readonly [string, string]; unaVia: readonly [string, string]; altos: readonly [string, string] };
+        lectura: string;
+        terminos: readonly [string, string];
+        dentro: string;
+        fuera: string;
+        presupuesto: string;
+        presupuestoTerminos: readonly [string, string];
+        queSignifica: string;
+        recomendacion: { titulo: string; ganadora: string; empate: string; sin: string; robustez: string };
+        unaVia: string;
+        riesgos: string;
+        sinUnaVia: string;
+        sinRiesgos: string;
+      };
+      caso: { contexto: string; requisitos: string; restricciones: string; pesos: string; origen: { "propuesto-por-agente": string; "declarado-por-usuario": string }; elimina: string; obligatorio: string; preferente: string };
+      matriz: { sin: string; pros: string };
+      decisiones: { columnas: { onda: string; decision: string; reversibilidad: string; opcion: string; depende: string }; sinOnda: string; sinOpcion: string; sinDependencias: string };
+      implicitas: { perfil: string; plan: string; respondida: string; sinResponder: string; ninguna: string };
+      robustez: { sin: string; inversion: string; sinInversion: string; porDebajo: string; desde: string; titulo: string; sinSimulacion: string };
+      relato: { generado: string; plantilla: string; sinRiesgos: string; humano: string; escritoPor: string; sinHumano: string; sinHumanoNota: string };
+      alertas: { vacia: string; evidencias: string; plan: string; "sin-fuente-oficial": string; vencida: string; "por-revisar": string; "vista-previa": string };
+      ficha: { instantanea: string; baseViva: string; huella: string; semilla: string; semillasMas: string; combinaciones: string; umbrales: string; umbralesTexto: string; version: string; fecha: string; nota: string };
+    };
     perfil: {
       ojo: string;
       sub: string;

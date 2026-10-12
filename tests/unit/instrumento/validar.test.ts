@@ -57,7 +57,7 @@ describe("la validación de la base real", () => {
   it("pasa: referencias, propiedades, siete sembrados detectados y lo aprobado es lo que aprobó una persona", () => {
     expect(falladas(v)).toEqual([]);
     expect(publicable(v)).toBe(true);
-    expect([v.referencias.length, v.propiedades.length, v.sembrados.length, v.aprobaciones.length]).toEqual([9, 7, 7, 7]);
+    expect([v.referencias.length, v.propiedades.length, v.sembrados.length, v.aprobaciones.length]).toEqual([9, 7, 7, 8]);
     expect(sembradosDetectados(v)).toEqual({ ok: 7, total: 7 });
     expect(v.huellaNucleo).toMatch(/^[0-9a-f]{64}$/);
   });
@@ -114,5 +114,25 @@ describe("scripts/instrumento/validar (el gate de publicación)", () => {
     expect(existsSync(salida)).toBe(false);
     const v = JSON.parse(readFileSync(join(datos, "instrumento/validacion.json"), "utf8")) as Validacion;
     expect(publicable(v)).toBe(false);
+  });
+  it("RF-09.4 y E-13: con un presupuesto de lectura que el resumen no cumple sale 1, nombra «informe-legible» y borra la salida", () => {
+    const { datos, salida } = baseSembrada();
+    const ruta = join(datos, "convenciones/informe.yaml");
+    writeFileSync(ruta, readFileSync(ruta, "utf8").replace("palabras_max: 50", "palabras_max: 5").replace("silabas_max: 95", "silabas_max: 5"));
+    const r = correr(datos, salida);
+    expect(r.status).toBe(1);
+    expect(r.stderr).toContain("aprobaciones · informe-legible");
+    expect(r.stderr).toContain("no se publica");
+    expect(existsSync(salida)).toBe(false);
+  });
+  it("con cero términos permitidos, un resumen que dice «empate técnico» tampoco se publica", () => {
+    const { datos, salida } = baseSembrada();
+    const ruta = join(datos, "convenciones/informe.yaml");
+    const texto = readFileSync(ruta, "utf8").replace(/terminos_max: 1/, "terminos_max: 0");
+    writeFileSync(ruta, texto);
+    const r = correr(datos, salida);
+    expect(r.status).toBe(1);
+    expect(r.stderr).toContain("aprobaciones · informe-legible");
+    expect(existsSync(salida)).toBe(false);
   });
 });

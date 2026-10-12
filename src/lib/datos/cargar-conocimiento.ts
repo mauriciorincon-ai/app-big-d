@@ -6,7 +6,7 @@ import { parse } from "yaml";
 import { ErrorDeDatos, esDominioDeEjemplo } from "./cargar";
 import { esquemaCapacidad, esquemaCaso, esquemaConvenciones, esquemaCriterio, esquemaEscala, esquemaEvidencia, esquemaInstantanea, type Capacidad, type Caso, type Convenciones, type Criterio, type Escala, type Evidencia, type Instantanea } from "./conocimiento";
 import { esquemaPlataforma, type Plataforma } from "./esquemas";
-import { esquemaConvencionesInforme, type ConvencionesInforme } from "./informe";
+import { esquemaConvencionesInforme, esquemaRelatoDeFracaso, type ConvencionesInforme, type RelatoDeFracaso } from "./informe";
 import { cambiosEntre, compararInstantanea, huellaCaso, huellaDe, huellaPlan, type Base } from "./instantanea";
 import { esquemaDecision, esquemaModoDeFalla, esquemaPlanCaso, esquemaSupuesto, type Decision, type ModoDeFalla, type Plan, type PlanCaso, type Supuesto } from "./plan";
 import { dirDatos } from "./dir";
@@ -36,6 +36,8 @@ export interface Conocimiento extends Base {
   casos: Caso[];
   /** El plan de cada caso que lo tiene (data/casos/<caso>/plan/), de decisiones, modos de falla y supuestos. */
   planes: Plan[];
+  /** El relato de fracaso humano de cada caso que lo tiene (S6, opcional): lo escribe el comité, la herramienta lo guarda. */
+  relatos: RelatoDeFracaso[];
 }
 
 interface Con<T> {
@@ -338,6 +340,19 @@ export function cargarConocimiento(dir = dirDatos()): Conocimiento {
     if (plan) planes.push(plan);
   }
 
+  // Relatos de fracaso del comité (pre-mortem): data/casos/<caso>/relato-de-fracaso.yaml, uno por caso y opcional.
+  const relatos: RelatoDeFracaso[] = [];
+  for (const x of casos) {
+    const ruta = join(dir, "casos", x.v.id, "relato-de-fracaso.yaml");
+    if (!existsSync(ruta)) continue;
+    const l = leerConPosicion(ruta, `data/casos/${x.v.id}/relato-de-fracaso.yaml`, fallas);
+    const v = l ? (validarLeido(l, esquemaRelatoDeFracaso, fallas) as RelatoDeFracaso | null) : null;
+    if (!l || !v) continue;
+    if (v.caso_id !== x.v.id) fallas.push(linea(l, ["caso_id"], `el relato está en la carpeta del caso «${x.v.id}»`));
+    vetadas({ l, v }, ["texto"], fallas);
+    relatos.push(v);
+  }
+
   if (fallas.length || !convenciones || !convInforme || !gramatica) throw new ErrorDeDatos(fallas.length ? fallas : ["data/convenciones · sin convenciones ni gramática no hay base"]);
   return {
     gramatica,
@@ -351,5 +366,6 @@ export function cargarConocimiento(dir = dirDatos()): Conocimiento {
     instantaneas: instantaneas.map((x) => x.v),
     casos: casos.map((x) => x.v),
     planes,
+    relatos,
   };
 }
