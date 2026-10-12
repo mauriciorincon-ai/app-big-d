@@ -58,26 +58,17 @@ export default defineConfig({
       testIgnore: SOLO_SEMBRADA,
     },
   ],
-  // Playwright arranca los servidores en orden: primero el sitio sembrado (su build deja out-sembrada/) y después el del
-  // dato real. Los dos builds escriben .next/ y no pueden correr a la vez.
-  webServer: [
-    {
-      command: `node scripts/datos/construir-sembrada.mjs && pnpm exec serve out-sembrada -l ${SEMBRADA} --config ../serve.json`,
-      url: `http://localhost:${SEMBRADA}`,
-      reuseExistingServer: false,
-      timeout: 300_000,
-    },
-    {
-      // SIEMPRE contra el BUILD, nunca contra el dev server (kit v1.12.0 — lección Velo S1).
-      // El dev server mete en la página cosas que NO existen en producción: websocket de HMR y
-      // `eval()` de React dev. En una app con CSP estricta o gate de red eso produce rojos sobre
-      // un árbol limpio — 5 en Velo S1 — y un suite que grita cuando no pasa nada acaba ignorado.
-      // Cuesta el tiempo del build; compra que el e2e local afirme lo mismo que el de CI.
-      command: `pnpm build && PORT=${PUERTO} pnpm start`,
-      url: `http://localhost:${PUERTO}`,
-      // Sin reuso: un `pnpm dev` olvidado en :3000 secuestraría el suite entero en silencio.
-      reuseExistingServer: false,
-      timeout: 180_000,
-    },
-  ],
+  // UN solo webServer (S7, D-S7-03). Playwright arranca los de un arreglo a la vez, y los dos builds (la base sembrada y el dato
+  // real) escribían `.next/` y `out/` al mismo tiempo: en local dejaban una caché dañada («ModuleGraph… canceled»). El script
+  // construye la sembrada, luego el dato real, y sirve los dos; Playwright espera al del dato real, que se levanta al final.
+  // SIEMPRE contra el BUILD, nunca contra el dev server (kit v1.12.0 — lección Velo S1): el dev server mete en la página cosas
+  // que NO existen en producción (websocket de HMR, `eval()` de React dev) y produce rojos sobre un árbol limpio.
+  webServer: {
+    command: "node scripts/e2e/servir.mjs",
+    url: `http://localhost:${PUERTO}`,
+    // Sin reuso: un `pnpm dev` olvidado en :3000 secuestraría el suite entero en silencio.
+    reuseExistingServer: false,
+    // Dos builds uno tras otro.
+    timeout: 600_000,
+  },
 });

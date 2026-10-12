@@ -1,4 +1,4 @@
-// El informe del caso (S6, F3) con el plan REAL, en borrador: las catorce secciones salen en el orden de § 12 con su
+// El informe del caso (S6, F3) con el plan REAL, en el estado en que esté (S7, D-S7-02: borrador o final): las catorce secciones salen en el orden de § 12 con su
 // título; cada ítem de la hoja de ruta lleva a su origen y el enlace llega a su ancla; la banda de borrador dice por qué;
 // la vista de impresión deja solo el informe; a 380 px no desborda; axe en los dos temas. Los títulos y el orden salen del
 // código (`SECCIONES`) y del texto de la pantalla, no de números escritos a mano.
@@ -7,10 +7,13 @@ import { expect, test } from "@playwright/test";
 import { SECCIONES } from "../../src/engine";
 import { textos } from "../../src/lib/i18n";
 import { listo } from "./lib/abrir";
+import { PERFIL_APROBADO, PLAN_APROBADO } from "./lib/estado";
 
 const CASO = "hospital-futuro";
 const RUTA = `/es/casos/${CASO}/informe`;
 const T = textos("es").caso.informe;
+/** Mientras falte aprobar el perfil o el plan, el informe es un borrador y lleva su banda. */
+const BORRADOR = !PERFIL_APROBADO || !PLAN_APROBADO;
 
 test("las catorce secciones salen en el orden de § 12, cada una con su título", async ({
   page,
@@ -64,15 +67,23 @@ test("cada ítem de la hoja de ruta trae su origen, y cada origen llega a su anc
   await expect(page).toHaveURL(/#(d|r|s)-/);
 });
 
-test("sin aprobar, la banda de borrador dice por qué", async ({ page }) => {
+test("la banda de borrador dice por qué mientras falte una aprobación, y con todo aprobado no hay banda", async ({
+  page,
+}) => {
   await page.goto(RUTA);
   await listo(page);
   const banda = page.locator("[data-borrador]");
+  if (!BORRADOR) {
+    await expect(banda).toHaveCount(0);
+    return;
+  }
   await expect(banda).toHaveCount(1);
   await expect(banda).toBeVisible();
   await expect(banda).toContainText(T.borrador.titulo);
-  await expect(banda).toContainText("aprobar el perfil del caso");
-  await expect(banda).toContainText("aprobar el plan del caso");
+  if (!PERFIL_APROBADO)
+    await expect(banda).toContainText("aprobar el perfil del caso");
+  if (!PLAN_APROBADO)
+    await expect(banda).toContainText("aprobar el plan del caso");
 });
 
 test("la vista de impresión deja solo el informe: sin barra, vistas, índice, botón ni banda", async ({
@@ -80,25 +91,17 @@ test("la vista de impresión deja solo el informe: sin barra, vistas, índice, b
 }) => {
   await page.goto(RUTA);
   await listo(page);
-  for (const sel of [
+  const sobran = [
     ".barra",
     ".niveles",
     ".inf-indice",
     ".informe-acciones",
     "#hoja",
-    "[data-borrador]",
-  ])
-    await expect(page.locator(sel)).not.toHaveCount(0);
+    ...(BORRADOR ? ["[data-borrador]"] : []),
+  ];
+  for (const sel of sobran) await expect(page.locator(sel)).not.toHaveCount(0);
   await page.emulateMedia({ media: "print" });
-  for (const sel of [
-    ".barra",
-    ".niveles",
-    ".inf-indice",
-    ".informe-acciones",
-    "#hoja",
-    "[data-borrador]",
-  ])
-    await expect(page.locator(sel).first()).toBeHidden();
+  for (const sel of sobran) await expect(page.locator(sel).first()).toBeHidden();
   await expect(page.locator("article.informe")).toBeVisible();
 });
 

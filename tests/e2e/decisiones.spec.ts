@@ -1,6 +1,6 @@
 // La pantalla de decisiones con el plan REAL del caso (S5, F3): el diagrama de ondas con las decisiones de una vía, la ficha
 // de una decisión con su evidencia citada, la tabla de riesgos por prioridad, el teléfono sin desbordar y axe en los dos
-// temas. El plan real sigue en borrador: la pantalla arma el comando de aprobación y no lo corre nadie aquí. Los conteos
+// temas. Con el plan en borrador la pantalla arma el comando de aprobación y no lo corre nadie aquí; aprobado, muestra su sello. Los conteos
 // salen de los YAML del plan, para que la prueba siga al dato y no a un número escrito a mano.
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -107,7 +107,10 @@ test.describe("ES · el plan real del caso", () => {
     const aviso = page.locator(".pista-tabla").first();
     await expect(aviso).toBeVisible();
     await expect(aviso).toHaveText(T.riesgos.desliza);
-    const marco = page.getByRole("region", { name: T.riesgos.titulo });
+    // El marco de la tabla (la sección también es una región con ese nombre): se alcanza con el teclado y se desliza.
+    const marco = page.locator("#riesgos div.tabla-marco");
+    await expect(marco).toHaveAttribute("role", "region");
+    await expect(marco).toHaveAttribute("aria-label", T.riesgos.titulo);
     await expect(marco).toHaveAttribute("tabindex", "0");
     expect(await marco.evaluate((el) => el.scrollWidth > el.clientWidth)).toBe(
       true,
