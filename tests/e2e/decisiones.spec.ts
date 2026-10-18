@@ -1,6 +1,6 @@
 // La pantalla de decisiones con el plan REAL del caso (S5, F3): el diagrama de ondas con las decisiones de una vía, la ficha
 // de una decisión con su evidencia citada, la tabla de riesgos por prioridad, el teléfono sin desbordar y axe en los dos
-// temas. El plan real sigue en borrador: la pantalla arma el comando de aprobación y no lo corre nadie aquí. Los conteos
+// temas. Con el plan en borrador la pantalla arma el comando de aprobación y no lo corre nadie aquí; aprobado, muestra su sello. Los conteos
 // salen de los YAML del plan, para que la prueba siga al dato y no a un número escrito a mano.
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -98,23 +98,40 @@ test.describe("ES · el plan real del caso", () => {
     expect(ancho).toBeLessThanOrEqual(380);
   });
 
+  test("S5 observado: en el teléfono la tabla de riesgos avisa que se desliza y se alcanza con el teclado", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 380, height: 800 });
+    await page.goto(RUTA);
+    await listo(page);
+    const aviso = page.locator(".pista-tabla").first();
+    await expect(aviso).toBeVisible();
+    await expect(aviso).toHaveText(T.riesgos.desliza);
+    // El marco de la tabla (la sección también es una región con ese nombre): se alcanza con el teclado y se desliza.
+    const marco = page.locator("#riesgos div.tabla-marco").first();
+    await expect(marco).toHaveAttribute("role", "region");
+    await expect(marco).toHaveAttribute("aria-label", T.riesgos.etiquetaTabla);
+    await expect(marco).toHaveAttribute("tabindex", "0");
+    expect(await marco.evaluate((el) => el.scrollWidth > el.clientWidth)).toBe(
+      true,
+    );
+  });
+
   for (const [esquema, tema] of [
     ["dark", "oscuro"],
     ["light", "claro"],
   ] as const)
     test.describe(`axe en ${tema}`, () => {
       test.use({ colorScheme: esquema });
-      test(`${RUTA} sin violaciones serias (${tema})`, async ({ page }) => {
+      test(`${RUTA} sin violaciones de axe (${tema})`, async ({ page }) => {
         await page.goto(RUTA);
         await listo(page);
         const scan = await new AxeBuilder({ page }).analyze();
-        const serias = scan.violations.filter(
-          (v) => v.impact === "critical" || v.impact === "serious",
-        );
+        const violaciones = scan.violations;
         expect(
-          serias,
+          violaciones,
           JSON.stringify(
-            serias.map((v) => [v.id, v.nodes.map((n) => n.target)]),
+            violaciones.map((v) => [v.id, v.nodes.map((n) => n.target)]),
           ),
         ).toEqual([]);
       });

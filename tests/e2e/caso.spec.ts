@@ -1,12 +1,13 @@
-// El caso y la base con el dato REAL de hoy (S3, fase 3): la base tiene sus evidencias aprobadas por una persona (la
-// prueba las cuenta en data/evidencias/ para seguir al dato), pero el perfil hospitalario es un borrador (con las decisiones
-// en sus defaults) que una persona todavía no aprueba, así que la comparación dice el estado honesto en vez de puntuar. Cuando el perfil se apruebe, estas pruebas cambian
-// con el dato: la comparación entera se prueba hoy contra la base sembrada (tests/e2e/sembrada/).
+// El caso y la base con el dato REAL (S3, fase 3): la base tiene sus evidencias aprobadas por una persona (la prueba las
+// cuenta en data/evidencias/ para seguir al dato). El perfil hospitalario puede estar en borrador (la comparación dice el estado
+// honesto en vez de puntuar) o aprobado (sello, sin editor, y la comparación puntúa): las pruebas siguen a `estado_aprobacion`
+// (S7, D-S7-02). La comparación entera y el perfil aprobado se prueban a fondo contra la base sembrada (tests/e2e/sembrada/).
 import { readdirSync } from "node:fs";
 import { expect, test } from "@playwright/test";
 import { plantilla, plural } from "../../src/lib/atlas/plantilla";
 import { textos } from "../../src/lib/i18n";
 import { listo } from "./lib/abrir";
+import { PERFIL_APROBADO } from "./lib/estado";
 import { CASOS, IDIOMAS } from "./lib/rutas";
 
 /** Las evidencias aprobadas del dato real: un archivo por evidencia en data/evidencias/<plataforma>/. */
@@ -29,7 +30,7 @@ const INSTANTANEAS = readdirSync("data/instantaneas")
 for (const idioma of IDIOMAS) {
   const T = textos(idioma);
   for (const caso of CASOS) {
-    test(`${idioma} · ${caso}: la barra lleva al caso y el perfil en borrador arma su comando sin aprobarse`, async ({
+    test(`${idioma} · ${caso}: la barra lleva al caso; el perfil, según su estado, arma su comando sin aprobarse o muestra su sello`, async ({
       page,
     }) => {
       await page.goto(`/${idioma}`);
@@ -45,11 +46,20 @@ for (const idioma of IDIOMAS) {
       await nav.getByRole("link", { name: T.barra.caso }).click();
       await expect(page).toHaveURL(new RegExp(`/${idioma}/casos/${caso}$`));
       await expect(page.locator(".encabezado .meta")).toContainText(
-        T.caso.perfil.borrador,
+        PERFIL_APROBADO ? T.caso.perfil.aprobado : T.caso.perfil.borrador,
       );
       await expect(
         page.getByRole("link", { name: T.secciones.perfil }),
       ).toHaveAttribute("aria-current", "page");
+      if (PERFIL_APROBADO) {
+        // Aprobado: de solo lectura, con su sello, sin editor ni comando.
+        await expect(page.locator(".veredicto .sello")).toContainText(
+          T.caso.perfil.sello.titulo,
+        );
+        await expect(page.locator("[data-editor-perfil]")).toHaveCount(0);
+        await expect(page.locator(".aprobar-perfil")).toHaveCount(0);
+        return;
+      }
       const sinResponder = await page
         .locator("[data-decision] .campo-aviso", {
           hasText: T.caso.perfil.decisiones.sinResponder,
@@ -63,14 +73,24 @@ for (const idioma of IDIOMAS) {
         T.caso.perfil.aprobar.comando,
       );
       await expect(page.locator("[data-editor-perfil]")).toBeVisible();
+      // S4-B7: el aviso de arriba lleva al editor de abajo.
+      const ir = page.getByRole("link", { name: T.caso.perfil.aprobar.irAlEditor });
+      await expect(ir).toHaveAttribute("href", "#editor-perfil");
+      await expect(page.locator("#editor-perfil[data-editor-perfil]")).toHaveCount(1);
       await expect(page.locator("[data-sin-comando]")).toHaveCount(0);
     });
 
-    test(`${idioma} · ${caso}: la comparación no puntúa y dice qué falta`, async ({
+    test(`${idioma} · ${caso}: la comparación sigue al perfil: en borrador no puntúa y dice qué falta; aprobada, puntúa`, async ({
       page,
     }) => {
       await page.goto(`/${idioma}/casos/${caso}/comparacion`);
       const estado = page.locator('[data-estado="no-evaluable"]');
+      if (PERFIL_APROBADO) {
+        await listo(page);
+        await expect(estado).toHaveCount(0);
+        await expect(page.locator(".veredicto").first()).toBeVisible();
+        return;
+      }
       await expect(estado.getByRole("heading")).toHaveText(
         T.caso.comparacion.noEvaluable.titulo,
       );

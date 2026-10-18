@@ -75,3 +75,8 @@ design-system version.
 «Ficha breve», the atlas platform selector and the trademark note at the foot of the legend; § 4 draws «por revisar»
 with the warning triangle; the empty state in context lives in the «Estado vacío» row; § 10 drops the two S1 debts.
 This ADR stays as the record of how each decision was seen.
+
+## Folded into the design system (v0.6.0, v0.7.0)
+
+`design-system.md` v0.6.0 folded these rows; v0.7.0 (S7, 2026-10-12) closed the hito H-1 and made the design system the only
+source: this ADR is the record of how each extension was seen, no longer a source of its own.

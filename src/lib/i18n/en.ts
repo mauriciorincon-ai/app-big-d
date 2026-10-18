@@ -219,10 +219,10 @@ export const en: Textos = {
     resumen: "{referencias} references · {propiedades} properties · {sembrados} seeded · {aprobaciones} approvals",
     huellaNucleo: "core fingerprint",
     referencias: { titulo: "Reference cases", nota: "The right answer is evident by construction." },
-    propiedades: { titulo: "Properties", nota: "Seeded property tests; monotonicity is the corrected one (the leader's position never worsens). They are the very ones in the test suite." },
+    propiedades: { titulo: "Properties", nota: "Seeded property tests; monotonicity is the corrected one (the leader's position never worsens). They are the very ones in the test suite.", corridas: "{corridas} runs · seed {semilla}" },
     sembrados: { titulo: "Seeded errors", nota: "Cases with a deliberate error: the tool must catch them all. Reported as how many out of how many.", detectados: "{ok} of {total} detected", no: "not detected" },
     aprobaciones: { titulo: "What is approved is what a person approved", nota: "Evidence, snapshots, profiles, plans and maps: none was edited by hand after its approval. And each report summary, which reads within the reading budget in Spanish and in English." },
-    motores: { titulo: "Same bytes on every engine", nota: "The same input produces the same fingerprint; continuous integration compares it on Node, Chromium, Firefox and WebKit, on Linux and macOS. Here, the fingerprint of the reference set.", sinHuella: "no fingerprint set in this base" },
+    motores: { titulo: "Same bytes on every engine", nota: "The same input produces the same fingerprint. Shown here is the fingerprint of the core's sums file, as it is in this version: the site does not recompute it. Continuous integration recomputes every case on Node, Chromium, Firefox and WebKit, on Linux and macOS, and stops if a sum changes.", sinHuella: "no fingerprint set in this base" },
     bloqueo: {
       ojo: "Publication attempt",
       titulo: "Not published",
@@ -282,6 +282,7 @@ export const en: Textos = {
     },
     escala: {
       titulo: "Scale and maturity caps",
+      tabla: "Maturity caps table",
       nota: "Every level with an observable description. Anything not generally available contributes at most its cap; if the case accepts previews, the cap goes up.",
       madurez: "Maturity",
       tope: "Cap",
@@ -300,6 +301,7 @@ export const en: Textos = {
     },
     instantaneas: {
       titulo: "Snapshots",
+      tabla: "Snapshots table",
       nota: "SHA-256 fingerprint over the canonical JSON (RFC 8785) of the whole approved base; loading recomputes it and refuses a mismatch. The case cites the snapshot it was computed with.",
       version: "Version",
       huella: "Fingerprint",
@@ -383,10 +385,12 @@ export const en: Textos = {
         prioridad: "priority {p}",
         sinMitigacion: "no mitigation",
       },
+      origenes: { "propuesto-por-agente": "proposed by the agent", "declarado-por-usuario": "declared by whoever approved the profile" },
       ciclo: {
         titulo: "Dependency cycle",
         alerta: "Cycle detected: cannot be ordered",
-        calculo: "waves computed: {ondas} · no wave: {sin}",
+        sinOndas: "While the cycle exists no waves are computed: {sin} decisions have no wave.",
+        conOndas: "Waves computed: {ondas} · no wave because of the cycle: {sin}.",
         nota: "It is shown, not hidden: the tool does not pick which dependency to break. The decision-maker removes one of the cycle's arrows and the waves are recomputed.",
       },
       riesgos: {
@@ -399,6 +403,10 @@ export const en: Textos = {
         bajo: "down from {de} to {a}",
         igual: "no category change",
         orden: "Order: action priority → severity → RPN (RPN only orders within a priority).",
+        desliza: "Slide the table sideways to see every column.",
+        etiquetaTabla: "Risk table",
+        causa: "Cause: {texto}",
+        origenDe: "Where the numbers come from: {origen}.",
         tabla: {
           titulo: "Action priority table (AIAG-VDA 2019)",
           nota: "Read by rows: severity and occurrence give the row; detection gives the column. Severity first. The table ships as data inside the house package; the RPN (S × O × D) only orders and never decides the action.",
@@ -424,6 +432,7 @@ export const en: Textos = {
         costo: "cost {c}",
         costos: { gratis: "free", bajo: "low", medio: "medium" },
         sostiene: "Supports",
+        origenDe: "Origin",
         alertaCritico: "Critical untested assumption: it appears in the plan alerts.",
         refutado: "Refuted: review the decision it supports.",
         vencido: "It expired against the evaluation date and is still untested.",
@@ -465,6 +474,7 @@ export const en: Textos = {
         motivos: {
           "perfil-borrador": "approving the case profile",
           "plan-borrador": "approving the case plan",
+          "sin-comparacion": "the comparison does not score with this profile",
           ciclo: "resolving the dependency cycle between decisions",
           bloqueado: "a mitigation for {ids}, a high action with none",
         },
@@ -559,6 +569,7 @@ export const en: Textos = {
         recomendacion: {
           titulo: "Recommendation",
           ganadora: "{plataforma}, with a {brecha}-point lead.",
+          unica: "{plataforma}, the only platform left after the constraints.",
           empate: "Technical tie between {plataformas}: {brecha} points apart.",
           sin: "No recommendation: {motivo}.",
           robustez: "Robustness {clase}: {plataforma} comes first in {pct}% of the {K} weight combinations.",
@@ -678,6 +689,7 @@ export const en: Textos = {
         faltanDecisiones: ["{n} implicit decision still unanswered", "{n} implicit decisions still unanswered"],
         faltaInstantanea: "the base snapshot it is evaluated against is missing",
         comando: "ready to approve: a person approves it with their command, in their terminal",
+        irAlEditor: "Go to the editor, below",
       },
       sello: { titulo: "Profile approved", detalle: "{fecha} · sha256 {inicio}…{fin}", comparar: "Compare" },
       editor: {
@@ -741,6 +753,7 @@ export const en: Textos = {
       },
       matriz: {
         titulo: "Scores per criterion",
+        tabla: "Scores per criterion table",
         nota: "0–{max}, capped by maturity before the minimum; every score traces back to approved evidence in the snapshot.",
         criterio: "Criterion",
         peso: "Weight",
@@ -790,6 +803,7 @@ export const en: Textos = {
       },
       robustez: {
         titulo: "Robustness by simulation",
+        tabla: "Acceptability by place table",
         nota: "{K} weight combinations within the profile's ranges, seeded: how often each platform lands in each place and how robust the recommendation is. The thresholds are declared, not hidden.",
         plataforma: "Platform",
         puesto: "{k}",
@@ -823,6 +837,7 @@ export const en: Textos = {
         cancelada: "You cancelled the simulation for {pesos}; showing the one for {anteriores}.",
         tope: "The simulation hit the cap of {tope} attempts before completing the combinations: it fails closed, with no robustness result.",
         error: "The simulation could not run: {mensaje}",
+        errorWorker: "the simulation program could not be loaded or sent something unreadable",
         noAplica: "With a single platform there is no robustness to measure.",
       },
       pros: {
@@ -877,6 +892,7 @@ export const en: Textos = {
       nota: "The diff against the approved map is computed by code, by id; the model only writes. If the model said “no news” and the diff were not empty, the diff wins.",
       corrida: "Run",
       modelo: "declared model: {modelo}",
+      origen: "declared origin: {origen}",
       reintentos: ["validator at the end: {n} block", "validator at the end: {n} blocks"],
       reintentosDeclarados: ["the run reports {n} retry", "the run reports {n} retries"],
       fuentes: ["{n} source cited", "{n} sources cited"],

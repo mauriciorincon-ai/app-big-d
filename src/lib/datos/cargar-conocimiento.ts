@@ -137,6 +137,8 @@ function cargarPlan(dir: string, caso: Caso, b: BaseDelPlan, categorias: Convenc
   const decisiones = entidades<Decision>(join(raiz, "decisiones"), `${rel}/decisiones`, esquemaDecision, fallas);
   const modos = entidades<ModoDeFalla>(join(raiz, "modos-de-falla"), `${rel}/modos-de-falla`, esquemaModoDeFalla, fallas);
   const supuestos = entidades<Supuesto>(join(raiz, "supuestos"), `${rel}/supuestos`, esquemaSupuesto, fallas);
+  // S5-B-3: un plan sin decisiones no es un plan (el diagrama saldría con un ancho negativo): falla al cargar, con su carpeta.
+  if (!decisiones.length) fallas.push(`${rel}/decisiones · ${caso.id} · decisiones · un plan tiene al menos una decisión`);
 
   const eliminadas = new Set(caso.restricciones.flatMap((r) => r.elimina.map((e) => e.plataforma_id)));
   const evaluables = b.plataformas.filter((p) => !eliminadas.has(p.id)).map((p) => p.id);

@@ -96,8 +96,7 @@ export interface DecisionCalculada {
   en_ciclo: boolean;
   /** Plataformas cuya opción se planifica (la ganadora o todas las empatadas); vacía sin comparación. */
   planificadas: string[];
-  /** Plataformas de la decisión cuya opción no tiene fuente en la base. */
-  sin_fuente: string[];
+  /** Supuestos de la decisión que aún no tienen su prueba barata (estado «sin_probar»). */
   supuestos_sin_probar: string[];
   riesgos: string[];
 }
@@ -111,7 +110,6 @@ export interface AlertaDelPlan {
   tipo: TipoAlerta;
   /** El supuesto o la decisión de la alerta; para una opción sin fuente, `decisión/plataforma`. */
   id: string;
-  decisiones: string[];
 }
 export interface ResultadoPlan {
   informe: InformeInstrumentos;
@@ -250,10 +248,6 @@ export function planDe(e: EntradaPlan): ResultadoPlan {
         .map((o) => o.plataforma_id)
         .filter((p) => planificadas.includes(p))
         .sort(cmp),
-      sin_fuente: d.opciones_por_plataforma
-        .filter((o) => o.sin_fuente === true)
-        .map((o) => o.plataforma_id)
-        .sort(cmp),
       supuestos_sin_probar: supuestos
         .filter((s) => s.estado === "sin_probar" && s.decisiones.includes(id))
         .map((s) => s.id),
@@ -267,7 +261,6 @@ export function planDe(e: EntradaPlan): ResultadoPlan {
       .map((s) => ({
         tipo: "supuesto-critico-sin-probar" as const,
         id: s.id,
-        decisiones: [...s.decisiones].sort(cmp),
       })),
     ...supuestos
       .filter(
@@ -279,21 +272,18 @@ export function planDe(e: EntradaPlan): ResultadoPlan {
       .map((s) => ({
         tipo: "supuesto-vencido" as const,
         id: s.id,
-        decisiones: [...s.decisiones].sort(cmp),
       })),
     ...supuestos
       .filter((s) => s.estado === "refutado")
       .map((s) => ({
         tipo: "supuesto-refutado" as const,
         id: s.id,
-        decisiones: [...s.decisiones].sort(cmp),
       })),
     ...decisiones
       .filter((d) => d.implicita && d.estado !== "decidida")
       .map((d) => ({
         tipo: "decision-implicita" as const,
         id: d.id,
-        decisiones: [d.id],
       })),
     ...decisiones.flatMap((d) =>
       d.opciones_por_plataforma
@@ -301,7 +291,6 @@ export function planDe(e: EntradaPlan): ResultadoPlan {
         .map((o) => ({
           tipo: "opcion-sin-fuente" as const,
           id: `${d.id}/${o.plataforma_id}`,
-          decisiones: [d.id],
         })),
     ),
   ];

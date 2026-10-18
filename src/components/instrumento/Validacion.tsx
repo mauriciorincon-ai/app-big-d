@@ -101,7 +101,7 @@ export function PanelDeValidacion({ v, t, idioma }: { v: Validacion; t: T; idiom
         </Bloque>
         <Bloque id="propiedades" titulo={t.propiedades.titulo} nota={t.propiedades.nota} conteo={cuenta(v.propiedades).replace("/", " / ")} falla={v.propiedades.some((f) => !f.ok)}>
           {v.propiedades.map((f) => (
-            <FilaDeValidacion key={f.id} fila={f} idioma={idioma} />
+            <FilaDeValidacion key={f.id} fila={f} idioma={idioma} extra={<> · {plantilla(t.propiedades.corridas, { corridas: f.corridas, semilla: f.semilla })}</>} />
           ))}
         </Bloque>
       </div>

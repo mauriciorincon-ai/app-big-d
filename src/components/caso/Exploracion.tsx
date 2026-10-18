@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { evaluar } from "@/engine/evaluar";
+import { puestoDe } from "@/engine/sensibilidad";
 import type { Peticion, Respuesta } from "@/engine/protocolo";
 import { comparar, racional } from "@/engine/racional";
 import { totalesCon } from "@/engine/sensibilidad";
@@ -142,6 +143,18 @@ export function Exploracion({ idioma, t, entrada, resultado, simulacion, nombres
           vigente.current = null;
         }
       };
+      // AU-S3-06: si el chunk del Worker no carga o un mensaje no se puede leer, la robustez dice que falló, no se queda «en curso».
+      // Un Worker que falló no se reutiliza (M1 de la auditoría S7): se termina y la siguiente exploración crea otro.
+      const fallo = (mensaje: string) => {
+        nuevo.terminate();
+        if (trabajador.current === nuevo) trabajador.current = null;
+        const v = vigente.current;
+        if (!v) return;
+        setRob({ clave: v.clave, estado: "error", mensaje });
+        vigente.current = null;
+      };
+      nuevo.onerror = (ev: ErrorEvent) => fallo(ev.message || t.r.errorWorker);
+      nuevo.onmessageerror = () => fallo(t.r.errorWorker);
       trabajador.current = nuevo;
     }
     const id = ++contador.current;
@@ -255,13 +268,13 @@ function Sensibilidad1({ idioma, t, s, w, rangoPct, esencial, actual, fijar, nom
     const lejos = abajo ? e.antes : e.despues;
     const nombres = lista(lejos.map(nomP), t.y);
     if (e.tipo === "lider") return { texto: plantilla(lejos.length > 1 ? t.s.lider[1] : t.s.lider[0], { lado: l, plataformas: nombres }), nota: t.s.exacto };
-    if (e.tipo === "puesto-2" || e.tipo === "puesto-3") return { texto: plantilla(lejos.length > 1 ? t.s.puesto[1] : t.s.puesto[0], { lado: l, plataformas: nombres, k: ordinal(e.tipo === "puesto-2" ? 2 : 3, idioma) }), nota: t.s.puestoNota };
+    if (puestoDe(e.tipo) >= 2) return { texto: plantilla(lejos.length > 1 ? t.s.puesto[1] : t.s.puesto[0], { lado: l, plataformas: nombres, k: ordinal(puestoDe(e.tipo), idioma) }), nota: t.s.puestoNota };
     const hay = (e.tipo === "empate-entra") !== abajo;
     return { texto: plantilla(hay ? t.s.hayEmpate : t.s.noHayEmpate, { lado: l }), nota: plantilla(t.s.bandaNota, { umbral }) };
   };
   const lideres = visibles.filter((e) => e.tipo === "lider");
   const empates = visibles.filter((e) => e.tipo === "empate-entra" || e.tipo === "empate-sale");
-  const puestos = visibles.filter((e) => e.tipo === "puesto-2" || e.tipo === "puesto-3");
+  const puestos = visibles.filter((e) => puestoDe(e.tipo) >= 2);
   const filas = [...new Set([0, ...lideres.map((e) => e.rejilla!), w, s.hasta, actual.t])].filter((x) => x % paso === 0 || x === w || x === s.hasta).sort((a, b) => a - b);
   const plataformas = resultado.orden.map((p) => p.plataforma_id);
   const totales = (x: number) => totalesCon(resultado.celdas, resultado.evaluadas, entrada.caso, s.criterio_id, x);
@@ -398,7 +411,7 @@ function VistaRobustez({ m, idioma, t, resultado, nombres, base, umbral, s, peso
     <div className="dos" data-simulacion="lista">
       <div>
         <p className="kit-nota">{plantilla(r.pesosDe, { pesos: m.etiqueta })}</p>
-        <MarcoTabla etiqueta={r.titulo}>
+        <MarcoTabla etiqueta={r.tabla}>
           <table className="tabla acept">
             <thead>
               <tr>

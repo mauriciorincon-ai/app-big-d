@@ -116,6 +116,8 @@ export interface EvidenciaVista {
 export interface PropuestaEvidenciasVista {
   carpeta: string;
   fecha: string;
+  /** Quién la propone, tal como lo declara la propuesta (AU-S3-04: la revisión lo muestra). */
+  origen: string;
   modelo: string;
   reintentos: number;
   reintentosDeclarados: number;
@@ -329,7 +331,7 @@ function propuestaEvidencias(d: Datos, raiz: string, id: string, idioma: Idioma,
   if (!carpeta) return undefined;
   const dir = join(raiz, "propuestas", carpeta);
   const bytes = readFileSync(join(dir, "propuesta.json"));
-  const vacia = { carpeta: `propuestas/${carpeta}`, fecha: "", modelo: "", reintentos: reintentosDe(dir), reintentosDeclarados: 0, verificada: false, fuentes: 0, niveles: [], topeNoDisponible: 0, evidencias: [], preguntas: [] };
+  const vacia = { carpeta: `propuestas/${carpeta}`, fecha: "", origen: "", modelo: "", reintentos: reintentosDe(dir), reintentosDeclarados: 0, verificada: false, fuentes: 0, niveles: [], topeNoDisponible: 0, evidencias: [], preguntas: [] };
   let dato: unknown;
   try {
     dato = JSON.parse(bytes.toString("utf8"));
@@ -352,6 +354,7 @@ function propuestaEvidencias(d: Datos, raiz: string, id: string, idioma: Idioma,
   return {
     ...vacia,
     fecha: p?.fecha ?? "",
+    origen: p?.origen ?? "",
     modelo: p?.ejecucion.modelo ?? "",
     reintentosDeclarados: p?.ejecucion.reintentos ?? 0,
     fallas,

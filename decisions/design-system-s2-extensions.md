@@ -43,3 +43,6 @@ The planning house folds them into the next design-system version. Until then, t
 `design-system.md` v0.6.0 (S3, phase 0) folds the nine rows above (rows «Lado a lado», «Desplegar todo», «Marca de
 diferencia», «Versiones de un mapa» and the diagram-grammar row) and corrects the three out-of-date lines this ADR
 named. This ADR stays as the record of how each extension was seen.
+
+Since `design-system.md` v0.7.0 (S7, 2026-10-12, close of the hito H-1) the design system is the only source; this ADR stays as
+the record of how each extension was seen.

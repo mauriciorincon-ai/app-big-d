@@ -25,17 +25,20 @@
 // Uso: node scripts/aprobar.mjs propuestas/<carpeta> --aprobar A-1,A-2 --rechazar A-3 --retirar -   («-» = ninguna)
 //      node scripts/aprobar.mjs --caso <id> --desde <huella> --pesos c=n,… --rangos c=n,… --restricciones r,…|- --respuestas d=o,…
 //      node scripts/aprobar.mjs --plan <caso> --desde <huella>
-import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, renameSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, relative } from "node:path";
 import { parse, stringify } from "yaml";
 import { cargarTs, RAIZ_REPO } from "./lib/cargar-ts.mjs";
 import { carpetaPropuesta, gramaticaDe, hoy, leerYaml, puedeAprobar, RAIZ, rangos } from "./investigar/comun.mjs";
+import { escribirCaso as escribirCasoAprobado, escribirEntero, escribirPlan as escribirPlanAprobado } from "./lib/escribir-aprobado.mjs";
 
-/** Escribe entero o no escribe: temporal al lado y `rename` (atómico en el mismo disco). */
-function escribirEntero(ruta, texto) {
-  writeFileSync(`${ruta}.tmp`, texto);
-  renameSync(`${ruta}.tmp`, ruta);
+/**
+ * Perilla de PRUEBA (S4-B3): con BIGD_PRUEBA_CORTE=1 y solo sobre la raíz de trabajo temporal (nunca sobre el repo real, ni
+ * sobre la copia del ensayo), simula un corte entre la línea de revisión y el archivo que dice «aprobado».
+ */
+function cortePruebas(raiz) {
+  if (process.env.BIGD_PRUEBA_CORTE === "1" && raiz === RAIZ && RAIZ !== RAIZ_REPO) throw new Error("corte simulado entre la revisión y el archivo aprobado");
 }
 
 /**
@@ -132,14 +135,8 @@ async function aprobarEvidencias(inv, d, dir, carpeta, bytes, verificacion, fech
   console.log(`aprobar: evidencias de ${id} el ${fecha} (UTC) · ${revision.aprobadas.length} aprobadas · ${revision.rechazadas.length} rechazadas → data/evidencias/${id}/`);
 }
 
-/** El perfil aprobado, entero a un temporal y renombrado, y la línea de la revisión al final (B-34: entero o nada). */
-function escribirCaso(raiz, caso, revision, desdeBorrador) {
-  const cabecera = `# APROBADO por una persona el ${revision.fecha} (UTC) con scripts/aprobar.mjs --caso (sobre el borrador ${desdeBorrador.slice(0, 12)}…).\n# No se edita a mano: su huella y la de su revisión (data/revisiones/casos/${caso.id}.jsonl) deben coincidir; para cambiarlo se aprueba otro borrador.\n`;
-  escribirEntero(join(raiz, "data/casos", `${caso.id}.yaml`), cabecera + stringify(caso, { lineWidth: 0, version: "1.2" }));
-  mkdirSync(join(raiz, "data/revisiones/casos"), { recursive: true });
-  const rutaRev = join(raiz, "data/revisiones/casos", `${caso.id}.jsonl`);
-  escribirEntero(rutaRev, `${existsSync(rutaRev) ? readFileSync(rutaRev, "utf8") : ""}${JSON.stringify(revision)}\n`);
-}
+/** El perfil aprobado (lo escribe `scripts/lib/escribir-aprobado.mjs`, el mismo código del ensayo en una copia). */
+const escribirCaso = (raiz, caso, revision, desdeBorrador) => escribirCasoAprobado(raiz, caso, revision, desdeBorrador, { alCortar: () => cortePruebas(raiz) });
 
 /** El perfil de un caso: se aprueba con lo que la persona fijó en su pantalla, contra el borrador del que partió (`--desde`). */
 async function aprobarUnCaso(inv, argv, fecha) {
@@ -167,23 +164,8 @@ async function aprobarUnCaso(inv, argv, fecha) {
   console.log(`aprobar: perfil ${caso.id} el ${fecha} (UTC) · ${caso.criterios.length} pesos · ${caso.restricciones.length} restricciones · huella ${revision.huella.slice(0, 12)}… → data/casos/${caso.id}.yaml`);
 }
 
-/**
- * El plan aprobado, archivo por archivo (cada uno entero a un temporal y renombrado) y la línea de la revisión al final.
- * `plan.yaml` conserva sus comentarios de procedencia; los riesgos y los supuestos se reescriben con su nuevo origen.
- */
-function escribirPlan(raiz, plan, revision, desdeBorrador) {
-  const base = join(raiz, "data/casos", plan.caso_id, "plan");
-  const rutaCab = join(base, "plan.yaml");
-  const previos = (existsSync(rutaCab) ? readFileSync(rutaCab, "utf8").split("\n") : []).filter((l) => l.startsWith("#") && !l.startsWith("# APROBADO") && !l.startsWith("# No se edita a mano"));
-  const aviso = `# APROBADO por una persona el ${revision.fecha} (UTC) con scripts/aprobar.mjs --plan (sobre el borrador ${desdeBorrador.slice(0, 12)}…): sus riesgos y sus supuestos quedan declarado-por-usuario.\n# No se edita a mano: su huella y la de su revisión (data/revisiones/planes/${plan.caso_id}.jsonl) deben coincidir; para cambiarlo se aprueba otro borrador.\n`;
-  const yaml = (d) => stringify(d, { lineWidth: 0, version: "1.2" });
-  for (const m of plan.modos_de_falla) escribirEntero(join(base, "modos-de-falla", `${m.id}.yaml`), yaml(m));
-  for (const s of plan.supuestos) escribirEntero(join(base, "supuestos", `${s.id}.yaml`), yaml(s));
-  escribirEntero(rutaCab, `${aviso}${previos.join("\n")}${previos.length ? "\n" : ""}${yaml({ caso_id: plan.caso_id, estado_aprobacion: plan.estado_aprobacion, aprobacion: plan.aprobacion })}`);
-  mkdirSync(join(raiz, "data/revisiones/planes"), { recursive: true });
-  const rutaRev = join(raiz, "data/revisiones/planes", `${plan.caso_id}.jsonl`);
-  escribirEntero(rutaRev, `${existsSync(rutaRev) ? readFileSync(rutaRev, "utf8") : ""}${JSON.stringify(revision)}\n`);
-}
+/** El plan aprobado (lo escribe `scripts/lib/escribir-aprobado.mjs`, el mismo código del ensayo en una copia). */
+const escribirPlan = (raiz, plan, revision, desdeBorrador) => escribirPlanAprobado(raiz, plan, revision, desdeBorrador, { alCortar: () => cortePruebas(raiz) });
 
 /** El plan de un caso: se aprueba tal como lo vio la persona en su pantalla, contra el borrador del que partió (`--desde`). */
 async function aprobarUnPlan(inv, argv, fecha) {

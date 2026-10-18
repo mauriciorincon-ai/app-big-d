@@ -128,7 +128,12 @@ export type Veredicto =
   | { tipo: "ganadora-clara"; plataforma_id: string; brecha_unidades: number }
   | { tipo: "empate-tecnico"; plataformas: string[]; brecha_unidades: number };
 
-export type TipoEvento = "lider" | "puesto-2" | "puesto-3" | "empate-entra" | "empate-sale";
+/**
+ * Los puestos que se vigilan además del primero, en orden (E-8: el 2.º y el 3.º). Es la única fuente: `TipoEvento`, los eventos
+ * que emite `sensibilidadDe` y `PUESTOS_VIGILADOS` salen de aquí (AU-S3-08), así que ninguno puede quedarse atrás de otro.
+ */
+export const TIPOS_DE_PUESTO = ["puesto-2", "puesto-3"] as const;
+export type TipoEvento = "lider" | (typeof TIPOS_DE_PUESTO)[number] | "empate-entra" | "empate-sale";
 
 export interface Evento {
   tipo: TipoEvento;

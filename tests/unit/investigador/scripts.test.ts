@@ -3,7 +3,7 @@
 // ficticia y páginas de fuente servidas desde disco (espejo file://): validar la propuesta, verificar sus
 // citas con curl y aprobar con la decisión de una persona. data/ y propuestas/ del repo no se tocan.
 import { execFileSync, spawnSync } from "node:child_process";
-import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { afterAll, describe, expect, it } from "vitest";
 import { parse } from "yaml";
@@ -193,6 +193,16 @@ describe("M-15: la guarda de la aprobación (la frontera está dentro del script
     expect(puedeAprobar({ raiz: repo, repo, env: {}, tty: false }).ok).toBe(false);
     expect(puedeAprobar({ raiz: repo, repo, env: {}, tty: true }).ok).toBe(true);
     expect(puedeAprobar({ raiz: raiz, repo, env: { CLAUDECODE: "1" }, tty: false }).ok).toBe(true);
+  });
+  it("AU-S3-03: un CLAUDECODE vacío también marca la sesión, y un enlace simbólico al repo no es una raíz temporal", async () => {
+    const { puedeAprobar } = await import("../../../scripts/investigar/comun.mjs");
+    const repo = process.cwd();
+    expect(puedeAprobar({ raiz: repo, repo, env: { CLAUDECODE: "" }, tty: true }).ok).toBe(false);
+    expect(puedeAprobar({ raiz: repo, repo, env: { CLAUDE_CODE_ENTRYPOINT: "cli" }, tty: true }).ok).toBe(false);
+    const enlace = join(raiz, "enlace-al-repo");
+    symlinkSync(repo, enlace);
+    expect(puedeAprobar({ raiz: enlace, repo, env: { CLAUDECODE: "1" }, tty: false }).ok).toBe(false);
+    expect(puedeAprobar({ raiz: enlace, repo, env: {}, tty: true }).ok).toBe(true);
   });
   it("el script la aplica: sin BIGD_RAIZ (el repo real) y sin terminal, sale con 1 sin tocar nada", () => {
     const env = { ...process.env, CLAUDECODE: "1" };

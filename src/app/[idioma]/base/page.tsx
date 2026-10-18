@@ -16,8 +16,7 @@ import { datos, ErrorDeDatos, fechaDeConsulta, rutaInvestigador } from "@/lib/da
 import type { Conocimiento } from "@/lib/datos/cargar-conocimiento";
 import type { Evidencia } from "@/lib/datos/conocimiento";
 import { esIdioma, textos, type Idioma } from "@/lib/i18n";
-import "@/styles/secciones.css";
-import "@/styles/conocimiento.css";
+import "@/styles/ruta-base.css";
 
 // 06 Base de conocimiento (maqueta base.html; C9–C10, RF-01): las evidencias con su cita y su verificación, los criterios,
 // la escala con sus topes por madurez, las convenciones del método (que entran a la huella) y las instantáneas. Una base
@@ -170,7 +169,7 @@ export default async function Base({ params }: PageProps<"/[idioma]/base">) {
             </li>
           ))}
         </ul>
-        <MarcoTabla etiqueta={t.escala.titulo}>
+        <MarcoTabla etiqueta={t.escala.tabla}>
           <table className="tabla">
             <thead>
               <tr>
@@ -221,7 +220,7 @@ export default async function Base({ params }: PageProps<"/[idioma]/base">) {
             {t.instantaneas.vacio}
           </p>
         ) : (
-          <MarcoTabla etiqueta={t.instantaneas.titulo}>
+          <MarcoTabla etiqueta={t.instantaneas.tabla}>
             <table className="tabla">
               <thead>
                 <tr>

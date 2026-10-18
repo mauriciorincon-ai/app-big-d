@@ -9,22 +9,35 @@ import { isAbsolute, relative, resolve } from "node:path";
 import { RAIZ } from "../raiz.mjs";
 import { bloquear, entrada, esInvestigador, pasar } from "./entrada.mjs";
 
-const LANZADOR = /^(?:\S+=\S*\s+)*(?:node|nodejs|bun|deno|npx|env|sh|bash|zsh|exec|eval|source|xargs|nohup|time|pnpm(?:\s+exec|\s+dlx)?|yarn|npm\s+exec)\b/;
-const RUTA = /^(?:\S+=\S*\s+)*(?:\.\/)?(?:\S*\/)?scripts\/aprobar\.mjs\b/;
+// AU-S3-03: un envoltorio delante del intérprete (`nice -n 10`, `command`, `sudo`…) y la ruta absoluta del intérprete
+// (`/opt/homebrew/bin/node`) lanzan el script igual que `node`: se aceptan antes del lanzador y antes de la ruta.
+const ENVOLTORIOS = String.raw`(?:(?:nice|command|builtin|time|nohup|env|sudo|doas|exec|setsid|stdbuf|timeout|ionice|caffeinate)\s+(?:-\S+\s+(?:\d+\s+)?)*)*`;
+const LANZADOR = new RegExp(
+  String.raw`^(?:\S+=\S*\s+)*${ENVOLTORIOS}(?:\S*\/)?(?:node|nodejs|bun|deno|npx|env|sh|bash|zsh|exec|eval|source|xargs|nohup|time|pnpm(?:\s+exec|\s+dlx)?|yarn|npm\s+exec)\b`,
+);
+const RUTA = new RegExp(String.raw`^(?:\S+=\S*\s+)*${ENVOLTORIOS}(?:\.\/)?(?:\S*\/)?scripts\/aprobar\.mjs\b`);
+
+/**
+ * El comando como lo leería la terminal: sin comillas (vacías o partidas dentro de una palabra, `apro""bar`, `apro"b"ar`)
+ * ni escapes (`apro\bar`). Si el nombre del script se parte así, el texto crudo no lo contiene y nada lo vería.
+ */
+const sinDisfraz = (comando) => comando.replace(/["']/g, "").replace(/\\(?!\n)(.)/g, "$1");
 
 /** Algún tramo del comando empieza lanzando el script (con un intérprete o por su ruta). */
 const tramoEjecuta = (texto) =>
   texto
     .split(/&&|\|\||[;|\n(){}]/)
-    .map((s) => s.trim().replace(/^["']/, ""))
+    .map((s) => s.trim())
     .some((s) => (LANZADOR.test(s) && /aprobar\.mjs/.test(s)) || RUTA.test(s));
 
 /**
  * ¿El comando EJECUTA el script de aprobación? Mencionarlo en un grep, un `git add` o un mensaje no cuenta;
  * lo que va dentro de $(…) o entre comillas invertidas se mira con la misma regla, porque también se ejecuta.
  */
-export function ejecutaAprobar(comando) {
-  if (typeof comando !== "string" || !/aprobar\.mjs/.test(comando)) return false;
+export function ejecutaAprobar(crudo) {
+  if (typeof crudo !== "string") return false;
+  const comando = sinDisfraz(crudo);
+  if (!/aprobar\.mjs/.test(comando)) return false;
   const internos = [...comando.matchAll(/\$\(([^()]*)\)|`([^`]*)`/g)].map((m) => m[1] ?? m[2] ?? "");
   return [comando, ...internos].some(tramoEjecuta);
 }

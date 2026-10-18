@@ -17,8 +17,14 @@ export function resumenesIlegibles(k: Conocimiento): string[] {
     for (const idioma of IDIOMAS) {
       const { lectura, sinExplicar } = lecturaDelResumen(k, informe, plan, idioma);
       const donde = `data/casos/${caso.id} · ${caso.id} · informe.resumen.${idioma}`;
-      if (!lectura.cumple)
-        fallas.push(`${donde} · ${lectura.palabras} palabras, ${lectura.silabas} sílabas y ${lectura.terminos.length} términos a explicar: el presupuesto es de ${palabras_max} palabras o ${silabas_max} sílabas y ${terminos_max} término(s)`);
+      if (!lectura.cumple) {
+        // Dice cuál de los dos límites se rompió: el largo (palabras Y sílabas pasadas) o los términos a explicar.
+        const roto = [
+          !lectura.por_palabras && !lectura.por_silabas ? "pasa de las dos medidas de largo" : null,
+          !lectura.terminos_ok ? "trae más términos a explicar de los que caben" : null,
+        ].filter(Boolean);
+        fallas.push(`${donde} · ${lectura.palabras} palabras, ${lectura.silabas} sílabas y ${lectura.terminos.length} términos a explicar (${roto.join(" y ")}): el presupuesto es de ${palabras_max} palabras o ${silabas_max} sílabas y ${terminos_max} término(s)`);
+      }
       if (sinExplicar.length) fallas.push(`${donde} · términos a explicar sin entrada en el glosario de data/convenciones/informe.yaml: ${sinExplicar.join(", ")}`);
     }
   }

@@ -10,8 +10,7 @@ import { conocimiento, evaluacionDe } from "@/lib/caso/casos";
 import { huellaCorta, lista } from "@/lib/caso/formato";
 import { pestanasCaso, rutaBase, rutaCaso } from "@/lib/caso/rutas";
 import { esIdioma, textos } from "@/lib/i18n";
-import "@/styles/secciones.css";
-import "@/styles/caso.css";
+import "@/styles/ruta-comparacion.css";
 
 // 08 Comparación (maqueta comparacion.html; RF-04, C11–C14): el resultado del núcleo para el caso contra su instantánea.
 // Si el caso no se puede comparar (perfil en borrador, sin evidencia aprobada, todas descartadas), lo dice y dice qué

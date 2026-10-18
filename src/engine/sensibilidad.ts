@@ -11,12 +11,12 @@
 // que el cambio ya se ve: el que la pantalla muestra y el que se re-sustituye en la prueba (± una décima de punto).
 
 import { comparar, pisoA, racional, seguro, techoA, type Racional } from "./racional";
-import type { CasoMotor, Celda, Evento, Sensibilidad, TipoEvento } from "./tipos";
+import { TIPOS_DE_PUESTO, type CasoMotor, type Celda, type Evento, type Sensibilidad, type TipoEvento } from "./tipos";
 
 /** La suma de los pesos de un caso, en centésimas. */
 export const TOTAL = 10_000;
-/** E-8 pide los cambios de 2.º y 3.er lugar además del primero: se vigilan los puestos hasta este. */
-export const PUESTOS_VIGILADOS = 3;
+/** E-8 pide los cambios de 2.º y 3.er lugar además del primero: se vigilan los puestos hasta este. Sale de `TIPOS_DE_PUESTO`. */
+export const PUESTOS_VIGILADOS = TIPOS_DE_PUESTO.length + 1;
 
 interface Recta {
   id: string;
@@ -71,7 +71,12 @@ const enPuesto = (e: Estado, k: number) =>
     .map(([id]) => id)
     .sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
 
-const puestoDe = (tipo: TipoEvento) => (tipo === "lider" ? 1 : tipo === "puesto-2" ? 2 : tipo === "puesto-3" ? 3 : 0);
+/** El puesto que mira un tipo de evento (1 = el líder, 2 y 3 = los vigilados); 0 si no mira ninguno (el empate). */
+export const puestoDe = (tipo: TipoEvento): number => {
+  if (tipo === "lider") return 1;
+  const k = (TIPOS_DE_PUESTO as readonly string[]).indexOf(tipo);
+  return k >= 0 ? k + 2 : 0;
+};
 
 /** Lo que un tipo de evento mira de un estado. */
 function proyeccion(tipo: TipoEvento, e: Estado): string {
@@ -112,9 +117,8 @@ function eventos(rs: readonly Recta[], w: number, hasta: number, R: number, band
   const bandaR = seguro(banda * R);
   const puntos = [racional(0), ...cortes(rs, hasta, bandaR), racional(hasta)];
   const tramos = puntos.slice(0, -1).map((p) => estadoTrasCorte(rs, p.n, p.d, bandaR));
-  const tipos: TipoEvento[] = ["lider"];
-  if (Math.min(PUESTOS_VIGILADOS, rs.length - 1) >= 2) tipos.push("puesto-2");
-  if (Math.min(PUESTOS_VIGILADOS, rs.length - 1) >= 3) tipos.push("puesto-3");
+  // El puesto k solo existe si hay al menos k plataformas detrás del líder en el ordenamiento (k ≤ rs.length − 1).
+  const tipos: TipoEvento[] = ["lider", ...TIPOS_DE_PUESTO.filter((_, i) => i + 2 <= rs.length - 1)];
   const actual = racional(w);
   const out: Evento[] = [];
   for (let k = 1; k < tramos.length; k++) {

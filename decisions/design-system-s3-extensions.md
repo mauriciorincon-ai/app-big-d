@@ -36,3 +36,10 @@ controls that work (rule 22). These are the places where the product departs fro
 The product shows these extensions; `design-system.md` does not yet. The planning house folds them into the next
 design-system version; until then this ADR, `design-system-s1-extensions.md` and `design-system-s2-extensions.md` are
 the extensions. `design-sync/` is updated in this sprint's PR (rule 16).
+
+## Folded into the design system (2026-10-12)
+
+`design-system.md` v0.7.0 (S7, close of the hito H-1) folds the sixteen rows above into its new § 5.1 «Extensiones del producto
+(S3 a S7)», together with the screen decisions of S4 to S6 that the mockup does not draw. Row 8 gained its S7 rule there: the
+frame of a wide table has a name of its own, different from its section's (axe `landmark-unique`). This ADR stays as the record
+of how each extension was seen; the design system is the only source.

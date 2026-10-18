@@ -30,6 +30,7 @@ import {
   leerAprobacionPlan,
 } from "@/lib/investigador/comando-plan";
 import { puedeAprobar } from "../../../scripts/investigar/comun.mjs";
+import { planABorrador } from "../lib/borrador";
 
 // El script de aprobación se nombra por partes: el candado de la sesión vigila su nombre completo.
 const APROBAR = ["scripts", "apro" + "bar.mjs"].join("/");
@@ -39,6 +40,12 @@ let raiz = "";
 
 const planDe = (dir: string): Plan =>
   cargarConocimiento(join(dir, "data")).planes.find((p) => p.caso_id === CASO)!;
+/** El plan del repo como borrador, esté o no aprobado (D-S7-02): lo que se aprueba es el contenido, no su estado. */
+const borradorDelRepo = (): Plan => {
+  const { aprobacion: _a, ...resto } = planDe(REPO);
+  void _a;
+  return { ...resto, estado_aprobacion: "borrador" };
+};
 const correr = (args: string[], env: Record<string, string> = {}) =>
   spawnSync("node", [APROBAR, ...args], {
     cwd: REPO,
@@ -61,6 +68,8 @@ const PLAN = `casos/${CASO}/plan`;
 beforeEach(() => {
   raiz = mkdtempSync(join(tmpdir(), "bigd-plan-aprob-"));
   cpSync(dirDatos(), join(raiz, "data"), { recursive: true });
+  // D-S7-02: estas pruebas aprueban un borrador; lo es pase lo que pase con el plan del repo.
+  planABorrador(join(raiz, "data"));
 });
 afterEach(() => rmSync(raiz, { recursive: true, force: true }));
 
@@ -94,7 +103,7 @@ describe("el comando que arma la pantalla de decisiones", () => {
 
 describe("aprobarPlan (puro)", () => {
   it("deja el plan aprobado con su sello, su revisión, y los riesgos y supuestos declarados por la persona", () => {
-    const b = planDe(REPO);
+    const b = borradorDelRepo();
     const { plan, revision } = aprobarPlan(b, huellaPlan(b), "2026-10-12");
     expect(plan.estado_aprobacion).toBe("aprobado");
     expect(plan.aprobacion).toEqual({
@@ -120,7 +129,7 @@ describe("aprobarPlan (puro)", () => {
     expect(plan.decisiones).toEqual(b.decisiones);
   });
   it("rechaza un `--desde` que ya no es el borrador: no aprueba lo que la persona no vio", () => {
-    const b = planDe(REPO);
+    const b = borradorDelRepo();
     expect(() => aprobarPlan(b, "0".repeat(64), "2026-10-12")).toThrow(
       ErrorDeAprobacionDePlan,
     );
@@ -129,14 +138,14 @@ describe("aprobarPlan (puro)", () => {
     );
   });
   it("rechaza un plan que ya está aprobado", () => {
-    const b = planDe(REPO);
+    const b = borradorDelRepo();
     const { plan } = aprobarPlan(b, huellaPlan(b), "2026-10-12");
     expect(() => aprobarPlan(plan, huellaPlan(plan), "2026-10-13")).toThrow(
       /ya está aprobado/,
     );
   });
   it("rechaza un plan con una acción alta sin mitigación, aunque el comando se arme", () => {
-    const b = planDe(REPO);
+    const b = borradorDelRepo();
     const roto: Plan = {
       ...b,
       modos_de_falla: b.modos_de_falla.map((m) =>
@@ -148,7 +157,7 @@ describe("aprobarPlan (puro)", () => {
     );
   });
   it("rechaza un plan con un ciclo", () => {
-    const b = planDe(REPO);
+    const b = borradorDelRepo();
     const roto: Plan = {
       ...b,
       decisiones: b.decisiones.map((d) =>
@@ -192,6 +201,16 @@ describe("el script de aprobación, sobre una raíz temporal", () => {
     expect(antes).not.toContain("APROBADO");
   });
 
+  it("S4-B3: un corte entre la revisión y plan.yaml deja la base cargable y el plan en borrador (el aprobado se escribe al final)", () => {
+    const r = correr(["--plan", CASO, "--desde", desdeActual()], {
+      BIGD_PRUEBA_CORTE: "1",
+    });
+    expect(r.status).not.toBe(0);
+    expect(r.stderr).toContain("corte simulado");
+    expect(planDe(raiz).estado_aprobacion).toBe("borrador");
+    expect(planesSinAprobacion(join(raiz, "data"))).toEqual([]);
+  });
+
   it("un `--desde` viejo se rechaza y no escribe nada", () => {
     const r = correr(["--plan", CASO, "--desde", "0".repeat(64)]);
     expect(r.status).not.toBe(0);
@@ -201,9 +220,20 @@ describe("el script de aprobación, sobre una raíz temporal", () => {
   });
 
   it("sobre el repo real, dentro de una sesión de Claude Code o sin terminal, la guarda no deja correrlo", () => {
-    expect(puedeAprobar({ raiz: REPO, repo: REPO, env: { CLAUDECODE: "1" }, tty: true }).ok).toBe(false);
-    expect(puedeAprobar({ raiz: REPO, repo: REPO, env: {}, tty: false }).ok).toBe(false);
-    expect(puedeAprobar({ raiz: REPO, repo: REPO, env: {}, tty: true }).ok).toBe(true);
+    expect(
+      puedeAprobar({
+        raiz: REPO,
+        repo: REPO,
+        env: { CLAUDECODE: "1" },
+        tty: true,
+      }).ok,
+    ).toBe(false);
+    expect(
+      puedeAprobar({ raiz: REPO, repo: REPO, env: {}, tty: false }).ok,
+    ).toBe(false);
+    expect(
+      puedeAprobar({ raiz: REPO, repo: REPO, env: {}, tty: true }).ok,
+    ).toBe(true);
   });
 
   it("un plan con un bloqueante no se escribe, aunque el comando esté bien armado", () => {
@@ -239,13 +269,31 @@ describe("planesSinAprobacion (el cinturón de la revisión)", () => {
   it("un plan aprobado editado a mano, aunque se recalcule su sello, se rechaza: no es el que aprobó una persona", () => {
     aprobado();
     const antes = planDe(raiz);
-    const editado: Plan = { ...antes, supuestos: antes.supuestos.map((x) => (x.id === "sup-equipo-opera" ? { ...x, estado: "confirmado" as const } : x)) };
-    yaml(`${PLAN}/supuestos/sup-equipo-opera.yaml`, (d) => (d.estado = "confirmado"));
+    const editado: Plan = {
+      ...antes,
+      supuestos: antes.supuestos.map((x) =>
+        x.id === "sup-equipo-opera"
+          ? { ...x, estado: "confirmado" as const }
+          : x,
+      ),
+    };
+    yaml(
+      `${PLAN}/supuestos/sup-equipo-opera.yaml`,
+      (d) => (d.estado = "confirmado"),
+    );
     // Quien edita a mano recalcula el sello para que el cargador lo acepte…
-    yaml(`${PLAN}/plan.yaml`, (d) => (d.aprobacion = { fecha: "2026-10-12", huella: huellaPlan(editado) }));
+    yaml(
+      `${PLAN}/plan.yaml`,
+      (d) =>
+        (d.aprobacion = { fecha: "2026-10-12", huella: huellaPlan(editado) }),
+    );
     expect(() => cargarConocimiento(join(raiz, "data"))).not.toThrow();
     // …pero la revisión, que solo escribe el comando, dice otra cosa.
-    expect(planesSinAprobacion(join(raiz, "data"))).toEqual([expect.stringContaining("su huella no es la que aprobó una persona el 2026-10-12")]);
+    expect(planesSinAprobacion(join(raiz, "data"))).toEqual([
+      expect.stringContaining(
+        "su huella no es la que aprobó una persona el 2026-10-12",
+      ),
+    ]);
   });
 
   it("un plan aprobado cuyo contenido cambió sin recalcular el sello ni siquiera carga", () => {

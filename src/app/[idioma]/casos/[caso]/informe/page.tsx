@@ -32,7 +32,7 @@ import {
 import { Imprimir } from "@/components/informe/Imprimir";
 import { Meta } from "@/components/Meta";
 import { Pestanas } from "@/components/Pestanas";
-import { SECCIONES } from "@/engine";
+import type { SeccionId } from "@/engine";
 import { plantilla, plural } from "@/lib/atlas/plantilla";
 import { conocimiento } from "@/lib/caso/casos";
 import { huellaCorta } from "@/lib/caso/formato";
@@ -134,9 +134,11 @@ export default async function InformePagina({
     r.tipo === "no-evaluable"
       ? motivoDeComparacion(r.motivos[0]?.motivo ?? "otro", idioma)
       : "";
-  const seccion = (s: (typeof SECCIONES)[number]) => ({
+  // S6-M3: el orden de las secciones es el que trae el modelo del informe (el núcleo), no una constante de la página.
+  const orden = informe.modelo.secciones;
+  const seccion = (s: SeccionId) => ({
     id: s,
-    n: SECCIONES.indexOf(s) + 1,
+    n: orden.indexOf(s) + 1,
     titulo: t.informe.secciones[s]!,
   });
   const cabecera = plantilla(t.informe.cabecera, {
@@ -237,7 +239,7 @@ export default async function InformePagina({
           <nav className="inf-indice" aria-label={t.informe.indice}>
             <b>{t.informe.indice}</b>
             <ol>
-              {SECCIONES.map((s, i) => (
+              {orden.map((s, i) => (
                 <li key={s}>
                   <a href={`#sec-${s}`}>
                     <span className="mono">
@@ -369,7 +371,6 @@ export default async function InformePagina({
                 plan={plan}
                 nombres={nombres}
                 opcionDe={opcionDe}
-
                 t={t}
                 td={tD}
               />
@@ -434,6 +435,7 @@ export default async function InformePagina({
                 informe={informe}
                 versionTexto={versionTexto}
                 huella={informe.huella_entradas}
+                idioma={idioma}
                 t={t}
               />
             </Sec>

@@ -7,7 +7,9 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterAll, describe, expect, it } from "vitest";
 import { cargarConocimiento } from "@/lib/datos/cargar-conocimiento";
-import { vistaDecisiones } from "@/lib/plan/vista";
+import { huellaPlan } from "@/lib/datos/instantanea";
+import { comandoAprobarPlan } from "@/lib/investigador/comando-plan";
+import { aprobacionDelPlan, vistaDecisiones } from "@/lib/plan/vista";
 import { armarBaseFuturo } from "../lib/base-futuro";
 
 const real = cargarConocimiento();
@@ -25,11 +27,11 @@ describe("el plan real, dibujado", () => {
   for (const idioma of ["es", "en"] as const) {
     const v = vistaDecisiones(real, casoReal, planReal, idioma);
 
-    it(`${idioma} · siete tarjetas, tres de borde grueso, cero líneas sobre una tarjeta ajena y accesible por teclado`, () => {
-      expect(veces(v.ondas.svg, /data-decision="/g)).toBe(7);
-      expect(veces(v.ondas.svg, /class="db-elem db-nodo dd-dec dd-una_via/g)).toBe(3);
+    it(`${idioma} · una tarjeta por decisión, las de una vía con borde grueso, cero líneas sobre una tarjeta ajena y accesible por teclado`, () => {
+      expect(veces(v.ondas.svg, /data-decision="/g)).toBe(planReal.decisiones.length);
+      expect(veces(v.ondas.svg, /class="db-elem db-nodo dd-dec dd-una_via/g)).toBe(planReal.decisiones.filter((d) => d.reversibilidad === "una_via").length);
       expect(v.ondas.cruces).toBe(0);
-      expect(veces(v.ondas.svg, /tabindex="0"/g)).toBe(7);
+      expect(veces(v.ondas.svg, /tabindex="0"/g)).toBe(planReal.decisiones.length);
       expect(v.ondas.svg).toMatch(/role="graphics-document document" aria-label="/);
       expect(v.ondas.svg).not.toMatch(/style=/); // sin estilos en línea (CSP)
       expect(v.ondas.svg).toContain(`lang="${idioma}"`);
@@ -46,13 +48,21 @@ describe("el plan real, dibujado", () => {
       // La ficticia que el caso descarta aparece tachada, con la razón de la restricción.
       expect(f).toContain("opcion-fuera");
     });
-    it(`${idioma} · con el perfil en borrador la ficha no recomienda nada y lo dice`, () => {
-      expect(v.resultado.comparacion.tipo).toBe("sin-comparacion");
-      expect(v.fichas["dec-catalogo"]).not.toContain("<ul class=\"pros\"><li><b>");
-      expect(v.fichas["dec-catalogo"]).toMatch(idioma === "es" ? /Todavía sin comparación/ : /No comparison yet/);
+    // D-S7-02: la ficha sigue al estado del perfil del repo, sea el que sea.
+    it(`${idioma} · la ficha sigue al perfil: en borrador no recomienda nada y lo dice; aprobado, planifica lo que puntúa`, () => {
+      const ficha = v.fichas["dec-catalogo"]!;
+      if (casoReal.estado_aprobacion === "borrador") {
+        expect(v.resultado.comparacion.tipo).toBe("sin-comparacion");
+        expect(ficha).not.toContain("<ul class=\"pros\"><li><b>");
+        expect(ficha).toMatch(idioma === "es" ? /Todavía sin comparación/ : /No comparison yet/);
+      } else {
+        expect(v.resultado.comparacion.tipo).not.toBe("sin-comparacion");
+        expect(ficha).not.toMatch(idioma === "es" ? /Todavía sin comparación/ : /No comparison yet/);
+        expect(ficha).toMatch(idioma === "es" ? /Para .+(la ganadora de la comparación|Hay empate técnico)/ : /For .+(the winner of the comparison|There is a technical tie)/);
+      }
     });
     it(`${idioma} · la lectura en texto lista cada decisión con su onda`, () => {
-      expect(v.lectura.flatMap((f) => f.items)).toHaveLength(7);
+      expect(v.lectura.flatMap((f) => f.items)).toHaveLength(planReal.decisiones.length);
       expect(v.lectura[0]!.etiqueta).toBe(idioma === "es" ? "Onda 1" : "Wave 1");
     });
     it(`${idioma} · las fichas escapan el HTML: ningún texto del plan inyecta marcado`, () => {
@@ -93,5 +103,35 @@ describe("la base sembrada: los estados que el plan real no tiene", () => {
     expect(planificadas.length).toBeGreaterThan(0);
     expect(v.fichas["dec-identidad"]).toContain('<ul class="pros"><li><b>');
     expect(v.fichas["dec-identidad"]).toMatch(/Hay empate técnico|la ganadora de la comparación/);
+  });
+});
+
+describe("S5-M-4: el apartado «Aprobar el plan» (lo que la página pinta)", () => {
+  const rReal = vistaDecisiones(real, casoReal, planReal, "es").resultado;
+  // El plan real, en el estado de borrador, con independencia de si ya lo aprobó una persona.
+  const borrador = { ...planReal, estado_aprobacion: "borrador" as const, aprobacion: undefined };
+
+  it("camino feliz: un plan aprobable y en borrador trae el comando que arma `comandoAprobarPlan` con la huella del borrador, y ningún bloqueo", () => {
+    const a = aprobacionDelPlan(borrador, rReal, "es");
+    expect(rReal.aprobable).toBe(true);
+    expect(a.bloqueos).toEqual([]);
+    expect(a.comando).toBe(comandoAprobarPlan(borrador.caso_id, huellaPlan(borrador)));
+    expect(a.comando).toMatch(/--plan hospital-futuro --desde [0-9a-f]{64}$/);
+  });
+  it("un plan ya aprobado no trae comando: no se vuelve a aprobar", () => {
+    expect(aprobacionDelPlan({ ...planReal, estado_aprobacion: "aprobado" as const }, rReal, "es").comando).toBeNull();
+  });
+  it("con un ciclo y una alta sin mitigación hay bloqueos, ninguno repite una decisión del ciclo, y no hay comando", () => {
+    const caso = k2.casos.find((c) => c.id === "hospital-futuro")!;
+    const plan = k2.planes[0]!;
+    const r = vistaDecisiones(k2, caso, plan, "es").resultado;
+    const a = aprobacionDelPlan(plan, r, "es");
+    expect(a.comando).toBeNull();
+    expect(a.bloqueos).toHaveLength(2);
+    const delCiclo = r.informe.bloqueantes.find((b) => b.tipo === "ciclo")!;
+    const ids = [...new Set(delCiclo.ids)];
+    expect(delCiclo.ids.length).toBeGreaterThan(ids.length); // el camino cierra en su primer nodo: a → b → a
+    const texto = a.bloqueos.find((b) => /ciclo/.test(b))!;
+    for (const id of ids) expect(texto.split(id).length - 1, `${id} se nombra una vez`).toBe(1);
   });
 });

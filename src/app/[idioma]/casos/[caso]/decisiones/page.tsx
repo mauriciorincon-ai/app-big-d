@@ -6,6 +6,7 @@ import { Ok, Pendiente } from "@/components/caso/Iconos";
 import { Meta } from "@/components/Meta";
 import { Pestanas } from "@/components/Pestanas";
 import {
+  AlertaCiclo,
   Alertas,
   AprobarPlan,
   Leyenda,
@@ -18,14 +19,9 @@ import { plantilla, plural } from "@/lib/atlas/plantilla";
 import { conocimiento } from "@/lib/caso/casos";
 import { lista } from "@/lib/caso/formato";
 import { pestanasCaso } from "@/lib/caso/rutas";
-import { huellaPlan } from "@/lib/datos/instantanea";
 import { esIdioma, textos } from "@/lib/i18n";
-import { comandoAprobarPlan } from "@/lib/investigador/comando-plan";
-import { vistaDecisiones } from "@/lib/plan/vista";
-import "@/styles/secciones.css";
-import "@/styles/caso.css";
-import "@/styles/decisiones.css";
-import "@/styles/investigador.css";
+import { aprobacionDelPlan, vistaDecisiones } from "@/lib/plan/vista";
+import "@/styles/ruta-decisiones.css";
 
 // 09 Decisiones y riesgos (maqueta decisiones.html; C16–C18): el plan del caso. Las decisiones por ondas con las de una
 // vía primero, la ficha de cada una con lo que dice la base aprobada de cada plataforma, los riesgos por prioridad de
@@ -72,17 +68,8 @@ export default async function Decisiones({
     (d) => d.reversibilidad === "una_via",
   ).length;
   const implicitas = plan.decisiones.filter((d) => d.implicita).length;
-  const bloqueos = r.informe.bloqueantes.map((b) =>
-    // El camino de un ciclo cierra en su primer nodo (a → b → a): sin repetidos, cada decisión se nombra una vez.
-    plantilla(t.aprobar.bloqueantes[b.tipo], {
-      ids: lista([...new Set(b.ids)], T.caso.y),
-    }),
-  );
+  const { bloqueos, comando } = aprobacionDelPlan(plan, r, idioma);
   const alta = r.riesgos.filter((x) => x.bloqueante);
-  const comando =
-    r.aprobable && !aprobado
-      ? comandoAprobarPlan(plan.caso_id, huellaPlan(plan))
-      : null;
 
   return (
     <>
@@ -117,7 +104,7 @@ export default async function Decisiones({
       </div>
       <Pestanas
         etiqueta={T.secciones.etiqueta}
-        pestanas={pestanasCaso(T.secciones, idioma, caso.id, "decisiones")}
+        pestanas={pestanasCaso(T.secciones, idioma, caso.id, "decisiones", true)}
       />
 
       <ul className="niveles kit-niveles" aria-label={t.vistas.etiqueta}>
@@ -141,20 +128,16 @@ export default async function Decisiones({
         <h2 id="ond-t">{t.ondas.titulo}</h2>
         <p className="kit-nota">{t.ondas.nota}</p>
         {v.cicloNombres && (
-          <div className="veredicto veredicto-alerta" role="alert">
-            <b>{t.ciclo.alerta}</b>
-            <span>{v.cicloNombres.join(" → ")}</span>
-            <span className="mono">
-              {plantilla(t.ciclo.calculo, {
-                ondas: r.informe.ondas.length,
-                sin: v.sinOnda.length,
-              })}
-            </span>
-          </div>
+          <AlertaCiclo
+            camino={v.cicloNombres}
+            ondas={r.informe.ondas.length}
+            sinOnda={v.sinOnda.length}
+            t={t}
+          />
         )}
         {v.cicloNombres && <p className="kit-nota">{t.ciclo.nota}</p>}
         <Leyenda t={t} />
-        <section className="mapa" id="mapa" aria-label={t.ondas.titulo}>
+        <section className="mapa" id="mapa">
           <ul className="indice" aria-label={t.ondas.indice}>
             {v.ondas.columnas.map((c, i) => (
               <li key={c.id}>

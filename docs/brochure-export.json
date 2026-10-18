@@ -12,14 +12,14 @@
     "enlaces.produccion": "null cuando la app no tiene URL pública. `razon` explica por qué, y es lo que la vitrina muestra en lugar del enlace. Nunca se rellena con un enlace de repositorio ni con una promesa."
   },
   "schema_version": "1.0.0",
-  "actualizado": "2026-10-11",
+  "actualizado": "2026-10-12",
   "app": {
     "slug": "big-d",
     "nombre": "Big-D",
     "ciclo": "H1",
     "estado": "inicial",
     "sellado_en": null,
-    "sprints_cerrados": 3,
+    "sprints_cerrados": 7,
     "version_repo": "0.1.0"
   },
   "promesa": {
@@ -187,18 +187,18 @@
     {
       "clave": "pruebas_automaticas",
       "etiqueta": "Pruebas automáticas",
-      "valor": 2614,
+      "valor": 3360,
       "unidad": "pruebas",
       "fuente": "medido",
-      "detalle": "1698 pruebas unitarias y de integración (Vitest, 88 archivos, incluidas las del diagramador), 907 ejecuciones de pruebas de navegador (Playwright en Chromium de escritorio y de teléfono, Firefox, WebKit y la base sembrada) y 9 de determinismo (3 pruebas en 3 navegadores). Contadas el 2026-10-11 con `pnpm test` y `playwright test --list`."
+      "detalle": "2186 unitarias y de integración (Vitest, 118 archivos, incluidas las del diagramador), 1165 de navegador (Playwright: escritorio, teléfono, Firefox, WebKit y la base sembrada; 9 se saltan porque dependen del dato) y 9 de determinismo (3 pruebas en 3 navegadores). Contadas el 2026-10-12."
     },
     {
       "clave": "cobertura_lineas",
       "etiqueta": "Cobertura de líneas",
-      "valor": 98.55,
+      "valor": 97.88,
       "unidad": "%",
       "fuente": "medido",
-      "detalle": "v8 sobre src/engine, src/lib, src/components y packages/diagramador/src: 4290 de 4353 líneas (salida de `pnpm test` del 2026-10-11). Los motores y lib llevan umbral propio del 80 %."
+      "detalle": "v8 sobre src/engine, src/lib, src/components y packages/diagramador/src: 5620 de 5742 líneas con código (pnpm test del 2026-10-12, por línea de cada sentencia). El método cambió respecto del 2026-10-11 (4290 de 4353): las dos cifras no son comparables. Motores y lib, umbral propio del 80 %."
     },
     {
       "clave": "motores_con_la_misma_huella",
@@ -211,7 +211,7 @@
     {
       "clave": "decisiones_registradas",
       "etiqueta": "Decisiones de arquitectura registradas",
-      "valor": 14,
+      "valor": 15,
       "unidad": "ADR",
       "fuente": "medido",
       "detalle": "Archivos de decisions/, sin contar la plantilla. Lo recuenta tests/unit/brochure-export.test.ts."

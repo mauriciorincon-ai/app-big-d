@@ -1,6 +1,7 @@
 import type { ItemDeRuta } from "@/engine";
 import { plantilla } from "@/lib/atlas/plantilla";
 import { lista } from "@/lib/caso/formato";
+import { CATEGORIAS } from "@/lib/datos/informe";
 import type { Plan } from "@/lib/datos/plan";
 import { textos, type Idioma } from "@/lib/i18n";
 import type { Informe } from "./construir";
@@ -51,16 +52,6 @@ export interface VistaHoja {
   /** Cuántos ítems y en cuántas fases, para el encabezado. */
   conteo: { items: number; fases: number; sinFase: number };
 }
-
-const CATEGORIAS_EN_ORDEN = [
-  "identidad_y_acceso",
-  "red_y_seguridad",
-  "gobierno",
-  "datos",
-  "habilidades",
-  "presupuesto_y_contratos",
-  "operacion",
-];
 
 export function vistaHoja(
   informe: Informe,
@@ -198,7 +189,7 @@ export function vistaHoja(
           camino: hoja.ciclo.map((id) => n.decision[id] ?? id).join(" → "),
         })
       : null,
-    alistamiento: CATEGORIAS_EN_ORDEN.map((categoria) => {
+    alistamiento: CATEGORIAS.map((categoria) => {
       const items = verificaciones.filter((v) => v.categoria === categoria);
       return {
         categoria,

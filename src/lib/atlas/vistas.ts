@@ -83,7 +83,8 @@ export interface VistaNivel1 extends VistaAtlas {
   ventanas: Record<string, string>;
 }
 
-export const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+export { esc } from "@/lib/html";
+import { esc } from "@/lib/html";
 
 /**
  * Ventana de un elemento del nivel 1 (pedido del usuario en la mirada de Fabric): su nombre y su frase, sus
