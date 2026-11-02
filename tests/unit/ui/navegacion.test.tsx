@@ -38,16 +38,21 @@ describe("ConmutadorIdioma", () => {
   it("lleva a la misma página en el otro idioma y marca el vigente", () => {
     ruta = "/es/atlas/fabric/componentes";
     render(<ConmutadorIdioma actual="es" etiqueta="Idioma" />);
-    const en = screen.getByRole("link", { name: "English" });
+    const en = screen.getByRole("link", { name: "EN · English" });
     expect(en.getAttribute("href")).toBe("/en/atlas/fabric/componentes");
     expect(en.getAttribute("hreflang")).toBe("en");
-    expect(screen.getByRole("link", { name: "Español" }).getAttribute("aria-current")).toBe("true");
+    expect(screen.getByRole("link", { name: "ES · Español" }).getAttribute("aria-current")).toBe("true");
+  });
+  it("WCAG 2.5.3: el nombre accesible de cada enlace empieza por su texto visible", () => {
+    ruta = "/es";
+    render(<ConmutadorIdioma actual="es" etiqueta="Idioma" />);
+    for (const a of screen.getAllByRole("link")) expect(a.getAttribute("aria-label")!.startsWith(a.textContent!)).toBe(true);
   });
   it("al tocarlo lleva también la consulta (en el lado a lado: qué plataformas y qué página)", () => {
     ruta = "/es/comparar";
     window.history.replaceState(null, "", "/es/comparar?plataformas=fabric&pagina=1");
     render(<ConmutadorIdioma actual="es" etiqueta="Idioma" />);
-    const en = screen.getByRole("link", { name: "English" });
+    const en = screen.getByRole("link", { name: "EN · English" });
     expect(en.getAttribute("href")).toBe("/en/comparar");
     en.addEventListener("click", (e) => e.preventDefault());
     en.click();
