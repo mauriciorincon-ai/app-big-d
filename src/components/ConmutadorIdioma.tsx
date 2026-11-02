@@ -17,6 +17,9 @@ export function ConmutadorIdioma({ actual, etiqueta }: { actual: Idioma; etiquet
       {IDIOMAS.map((idioma, i) => {
         const destino = rutaEnIdioma(ruta, idioma);
         const sumar = conConsulta(destino);
+        // WCAG 2.5.3 (nombre en la etiqueta): el nombre accesible empieza por lo que se ve, «EN · English», para que
+        // quien navega por voz pueda decir «EN» (axe-core 4.14 activa label-content-name-mismatch por defecto).
+        const sigla = idioma.toUpperCase();
         return (
           <span key={idioma} className="alterna-par">
             {i > 0 && <span className="sep" aria-hidden="true">/</span>}
@@ -24,14 +27,14 @@ export function ConmutadorIdioma({ actual, etiqueta }: { actual: Idioma; etiquet
               href={destino}
               hrefLang={idioma}
               lang={idioma}
-              aria-label={NOMBRE_PROPIO[idioma]}
+              aria-label={`${sigla} · ${NOMBRE_PROPIO[idioma]}`}
               aria-current={idioma === actual ? "true" : undefined}
               onClick={sumar}
               onAuxClick={sumar}
               onFocus={sumar}
               onPointerEnter={sumar}
             >
-              {idioma.toUpperCase()}
+              {sigla}
             </a>
           </span>
         );
