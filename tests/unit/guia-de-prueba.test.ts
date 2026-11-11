@@ -53,6 +53,6 @@ describe("guía de prueba (docs/GUIA-DE-PRUEBA.html)", () => {
     expect(GUIA).not.toMatch(/<(?:script|link)[^>]+(?:src|href)=/i);
     expect(GUIA).not.toMatch(/vercel[.]app|workers[.]dev|pages[.]dev/);
     const urls = [...GUIA.matchAll(/https?:\/\/[^\s"'<)]+/g)].map((m) => m[0]);
-    expect(urls.filter((u) => !/^http:\/\/localhost:\d+$/.test(u))).toEqual([]);
+    expect(urls.filter((u) => !/^http:\/\/127\.0\.0\.1:\d+$/.test(u))).toEqual([]);
   });
 });

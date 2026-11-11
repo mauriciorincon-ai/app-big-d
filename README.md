@@ -20,7 +20,7 @@ with checked quotes; a person approves it. **Today:** the atlas, the researcher,
 pnpm install
 pnpm dev            # servidor de desarrollo · dev server
 pnpm build          # export estático en out/ (copia la maqueta de diseño a /diseno/)
-pnpm start          # sirve out/ (PORT, por defecto 3000)
+pnpm start          # sirve out/ (PORT, por defecto 3400, en 127.0.0.1)
 pnpm test           # Vitest con cobertura · with coverage
 pnpm test:e2e       # Playwright contra el build
 ```

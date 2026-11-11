@@ -8,7 +8,7 @@
 import { spawn, spawnSync } from "node:child_process";
 import { RAIZ_REPO } from "../lib/cargar-ts.mjs";
 
-const PUERTO = process.env.E2E_PUERTO ?? "3000";
+const PUERTO = process.env.E2E_PUERTO ?? "3400";
 const SEMBRADA = process.env.E2E_SEMBRADA_PUERTO ?? String(Number(PUERTO) + 1);
 
 /** Corre un comando hasta el final; si falla, esto también (Playwright lo muestra como el webServer que no arrancó). */
@@ -41,9 +41,9 @@ correr("pnpm", ["build"]);
 
 console.log(`servir: 3/3 sirviendo out-sembrada/ en :${SEMBRADA} y out/ en :${PUERTO}`);
 const hijos = [
-  spawn("pnpm", ["exec", "serve", "out-sembrada", "-l", SEMBRADA, "--config", "../serve.json"], { cwd: RAIZ_REPO, stdio: "inherit" }),
+  spawn("pnpm", ["exec", "serve", "out-sembrada", "-l", `tcp://127.0.0.1:${SEMBRADA}`, "--config", "../serve.json"], { cwd: RAIZ_REPO, stdio: "inherit" }),
 ];
-await esperar(`http://localhost:${SEMBRADA}`);
+await esperar(`http://127.0.0.1:${SEMBRADA}`);
 hijos.push(spawn("pnpm", ["start"], { cwd: RAIZ_REPO, stdio: "inherit", env: { ...process.env, PORT: PUERTO } }));
 
 // Si uno de los dos servidores muere, esto también: Playwright no debe seguir contra medio sitio. Y al cerrar, nadie se queda.

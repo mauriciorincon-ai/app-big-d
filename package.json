@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -H 127.0.0.1 -p 3400",
     "build": "node scripts/instrumento/validar.mjs && node scripts/copiar-maqueta.mjs && next build && node scripts/csp/inyectar.mjs",
-    "start": "serve out -l ${PORT:-3000} --config ../serve.json",
+    "start": "serve out -l tcp://127.0.0.1:${PORT:-3400} --config ../serve.json",
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run --coverage --passWithNoTests",
