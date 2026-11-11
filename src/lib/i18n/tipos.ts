@@ -433,6 +433,7 @@ export interface Textos {
         sinCambiosPuestos: string;
         sigue: string;
         tabla: string;
+        desliza: string;
         peso: string;
         actual: string;
         explorado: string;
@@ -443,6 +444,7 @@ export interface Textos {
       robustez: {
         titulo: string;
         tabla: string;
+        desliza: string;
         nota: string;
         plataforma: string;
         puesto: string;

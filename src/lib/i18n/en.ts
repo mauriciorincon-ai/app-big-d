@@ -794,6 +794,7 @@ export const en: Textos = {
         sinCambiosPuestos: "The other places do not change across the range.",
         sigue: "{plataforma} stays first across the range.",
         tabla: "Totals with the weight moved",
+        desliza: "Slide the table sideways to see every column.",
         peso: "Weight",
         actual: "profile weight",
         explorado: "explored",
@@ -804,6 +805,7 @@ export const en: Textos = {
       robustez: {
         titulo: "Robustness by simulation",
         tabla: "Acceptability by place table",
+        desliza: "Slide the table sideways to see every place.",
         nota: "{K} weight combinations within the profile's ranges, seeded: how often each platform lands in each place and how robust the recommendation is. The thresholds are declared, not hidden.",
         plataforma: "Platform",
         puesto: "{k}",

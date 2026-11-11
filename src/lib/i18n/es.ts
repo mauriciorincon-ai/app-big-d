@@ -794,6 +794,7 @@ export const es: Textos = {
         sinCambiosPuestos: "Los demás puestos no cambian en todo el rango.",
         sigue: "{plataforma} sigue primera en todo el rango.",
         tabla: "Totales con el peso movido",
+        desliza: "Desliza la tabla de lado para ver todas las columnas.",
         peso: "Peso",
         actual: "peso del perfil",
         explorado: "explorado",
@@ -804,6 +805,7 @@ export const es: Textos = {
       robustez: {
         titulo: "Robustez por simulación",
         tabla: "Tabla de aceptabilidad por puesto",
+        desliza: "Desliza la tabla de lado para ver todos los puestos.",
         nota: "{K} combinaciones de pesos dentro de los rangos del perfil, con semilla: en qué porcentaje queda cada plataforma en cada puesto y qué tan robusta es la recomendación. Los umbrales están declarados, no escondidos.",
         plataforma: "Plataforma",
         puesto: "{k}",
