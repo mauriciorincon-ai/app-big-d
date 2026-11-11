@@ -40,6 +40,15 @@ jobs:
           sudo install -m 0755 gitleaks /usr/local/bin/gitleaks
           gitleaks version
       - run: pnpm test            # vitest run --coverage (umbrales en vitest.config: 70 global · 80 motores y lib · 50 componentes)
+      # S8 (deuda S7-M5): el estado aprobado jamás corría en la CI, porque el perfil y el plan reales siguen en borrador. La copia
+      # aprobada la arma el ensayo (scripts/datos/copia-aprobada.mjs, FUERA del repo, con la librería, nunca con el script de
+      # aprobación) y la suite entera corre contra ella. BIGD_ESPERA_APROBADO hace que la prueba falle si la copia no quedó aprobada.
+      - name: Suite sobre la base aprobada (copia fuera del repo, S7-M5)
+        env:
+          BIGD_ESPERA_APROBADO: "1"
+        run: |
+          COPIA="$(node scripts/datos/copia-aprobada.mjs | tail -1)"
+          BIGD_DATOS="$COPIA/data" pnpm exec vitest run
       # kit v1.39.0 — lo que el proveedor publica no es lo que el build escribe (S2-AUD-32): `vercel build` sin
       # conexion con el adapter de Next (que corre `pnpm build`: un solo build, por eso no hay `pnpm build` aparte,
       # K-S3-3) y cada pagina publicada identica a la de out/. Despues, el superconjunto de Big-D: cada pagina
