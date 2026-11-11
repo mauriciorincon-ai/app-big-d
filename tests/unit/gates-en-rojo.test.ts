@@ -19,7 +19,7 @@ import {
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { ESLint } from "eslint";
-import { afterAll, describe, expect, it } from "vitest";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import {
   huellasDeLaCopia,
   leerLock,
@@ -38,15 +38,20 @@ const temporal = (prefijo: string) => {
   return d;
 };
 
+// S7-B4: la copia aprobada se arma UNA vez (es un lanzamiento de esbuild) y cada demo recibe su propia copia por `cpSync`. Antes
+// eran seis lanzamientos bajo el testTimeout de 20 s, frágil en una CI cargada.
+let BASE_APROBADA = "";
+beforeAll(() => {
+  const destino = temporal("bigd-rojo-base-");
+  const r = spawnSync("node", ["scripts/datos/copia-aprobada.mjs", "--destino", join(destino, "c")], { cwd: REPO, encoding: "utf8" });
+  expect(r.status, r.stderr).toBe(0);
+  BASE_APROBADA = join(destino, "c");
+}, 120_000);
+
 /** Una copia de data/ (con el perfil y el plan aprobados, como los dejaría una persona) que el gate de publicación valida. */
 function copiaAprobada(): { datos: string; salida: string } {
   const destino = temporal("bigd-rojo-");
-  const r = spawnSync(
-    "node",
-    ["scripts/datos/copia-aprobada.mjs", "--destino", join(destino, "c")],
-    { cwd: REPO, encoding: "utf8" },
-  );
-  expect(r.status, r.stderr).toBe(0);
+  cpSync(BASE_APROBADA, join(destino, "c"), { recursive: true });
   return { datos: join(destino, "c", "data"), salida: join(destino, "out") };
 }
 
@@ -85,6 +90,9 @@ describe("RF-09.4: sin validación en verde no hay out/", () => {
     );
     const r = validar(datos, salida);
     expect(r.status, r.salida).not.toBe(0);
+    // S7-B4: nombra las filas que se pusieron rojas (la base ya no carga con ese perfil), no solo «no se publica».
+    expect(r.salida).toContain("× aprobaciones · base-carga");
+    expect(r.salida).toContain("× aprobaciones · casos-aprobados");
     expect(r.salida).toContain("no se publica");
     expect(r.hayOut).toBe(false);
   });
