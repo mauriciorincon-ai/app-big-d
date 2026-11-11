@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Big-D — Conócela</title>
+<!-- GENERADO por scripts/brochure/generar.mjs desde docs/brochure-export.json y docs/BROCHURE.plantilla.html: no se edita a mano
+     (tests/unit/brochure-html.test.ts lo comprueba). El copy se cambia en el export; el estilo, en el molde. -->
+<style>
+  :root {
+    --fondo: #fbfbfa; --superficie: #f1f1ee; --borde: #e3e3de;
+    --tinta: #1d2023; --tinta-suave: #5d6167;
+    --acento: #2f4858; --acento-suave: #e3ebf1; --acento-vivo: #3d6b84;
+    --realce: #a4632f;
+    --radio: 18px;
+    /* Motion-system de la pieza: deriva estos tokens del design-system de la app y del
+       storyboard (curvas, escala de duraciones, vocabulario). Precedente del piloto:
+       --ease-asentar: cubic-bezier(0.22, 1, 0.36, 1). Nada de números mágicos sueltos. */
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --fondo: #131619; --superficie: #1b2025; --borde: #2c333a;
+      --tinta: #f0efec; --tinta-suave: #9ba1a8;
+      --acento: #a9c9dd; --acento-suave: #212f3a; --acento-vivo: #7fb0cc;
+      --realce: #e0a468;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--fondo); color: var(--tinta);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 17px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  .lienzo { max-width: 720px; margin: 0 auto; padding: 0 20px 90px; }
+  h1, h2 { font-family: Georgia, "Times New Roman", serif; font-weight: 400;
+    text-wrap: balance; margin: 0; }
+  p { margin: 0.55em 0; }
+  .suave { color: var(--tinta-suave); }
+  .chica { font-size: 0.88rem; }
+  .eyebrow { font-family: ui-monospace, Menlo, monospace; font-size: 0.68rem;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--tinta-suave); }
+
+  /* ===== Capa 0 · Portada: la promesa en una frase ===== */
+  .portada { min-height: 88svh; display: flex; flex-direction: column;
+    justify-content: center; text-align: center; padding: 48px 0 24px; }
+  .portada h1 { font-size: clamp(2.3rem, 8vw, 3.6rem); line-height: 1.08; margin: 14px 0 18px; }
+  .portada .promesa { font-size: clamp(1.05rem, 3.4vw, 1.3rem); color: var(--tinta-suave);
+    max-width: 30ch; margin: 0 auto; }
+  .baja { margin-top: auto; padding-top: 40px; color: var(--tinta-suave);
+    font-size: 0.85rem; }
+  .baja .flecha { display: block; font-size: 1.3rem; margin-top: 6px; }
+
+  /* ===== Capa 1 · Tarjetas ===== */
+  .seccion { padding-top: 46px; }
+  .seccion > h2 { font-size: 1.7rem; margin-bottom: 6px; }
+  .tarjetas { display: grid; gap: 14px; margin-top: 22px; }
+  .tarjeta { background: var(--superficie); border: 1px solid var(--borde);
+    border-radius: var(--radio); overflow: hidden; }
+  /* Patrón canónico: el <h3> ENVUELVE al <button> (regla 7). El heading conserva la
+     navegación por encabezados; el botón conserva la semántica de control. */
+  .tarjeta-cabeza { margin: 0; font-size: inherit; font-weight: inherit; }
+  .tarjeta-boton { display: flex; align-items: center; gap: 14px; width: 100%;
+    padding: 18px; font: inherit; text-align: left; color: inherit;
+    background: none; border: 0; cursor: pointer; }
+  .tarjeta-boton:focus-visible { outline: 3px solid var(--acento-vivo); outline-offset: -3px; }
+  .icono { flex: none; width: 52px; height: 52px; display: grid;
+    place-items: center; background: var(--acento-suave); border-radius: 14px; }
+  .icono svg { width: 28px; height: 28px; }
+  .tarjeta-titulos { flex: 1; min-width: 0; }
+  .tarjeta-titulos .titulo { display: block; font-family: Georgia, serif;
+    font-size: 1.18rem; line-height: 1.3; }
+  .tarjeta-titulos .linea { display: block; margin-top: 2px; font-size: 0.9rem;
+    color: var(--tinta-suave); }
+  .chevron { flex: none; color: var(--tinta-suave); transition: transform 0.35s cubic-bezier(.3,.9,.3,1); }
+  .tarjeta[data-abierta] .chevron { transform: rotate(180deg); }
+
+  /* ===== Capa 2 · Detalle (G2: transición de estado; excepción declarada grid-rows) =====
+     visibility en la transición (regla 7): con un extremo en visible, CSS mantiene el
+     contenido visible durante TODO el colapso (la animación no se corta) y, cerrado, lo
+     saca del árbol de accesibilidad — sin esto, un lector de pantalla recita el detalle
+     completo de todas las tarjetas "cerradas". axe no lo ve; el e2e mira el árbol por CDP. */
+  .detalle { display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows 0.45s cubic-bezier(.3,.9,.3,1); }
+  .tarjeta[data-abierta] .detalle { grid-template-rows: 1fr; }
+  .detalle-interior { overflow: hidden; visibility: hidden;
+    transition: visibility 0.45s; }
+  .tarjeta[data-abierta] .detalle-interior { visibility: visible; }
+  .detalle-cuerpo { padding: 2px 18px 20px; border-top: 1px solid var(--borde);
+    opacity: 0; transform: translateY(6px);
+    transition: opacity 0.4s ease 0.12s, transform 0.4s ease 0.12s; }
+  .tarjeta[data-abierta] .detalle-cuerpo { opacity: 1; transform: none; }
+  .feature { padding: 13px 0; border-top: 1px solid var(--borde); }
+  .feature:first-of-type { border-top: 0; }
+  .feature h4 { margin: 0; font-size: 1rem; }
+  .feature .como { margin: 5px 0 0; font-size: 0.92rem; color: var(--tinta-suave); }
+  .tip { margin-top: 7px; padding: 8px 12px; background: var(--acento-suave);
+    border-radius: 10px; font-size: 0.88rem; }
+  .tip strong { color: var(--acento-vivo); }
+
+  /* ===== Capa 3 · Lo fino =====
+     El CLÍMAX del storyboard NO vive aquí: la promesa mayor de la app tiene su propia
+     escena arriba (lección del piloto). Aquí la página baja la voz a propósito. */
+  details.fino { background: var(--superficie); border: 1px solid var(--borde);
+    border-radius: var(--radio); padding: 0 18px; margin-top: 12px; }
+  details.fino summary { padding: 15px 0; cursor: pointer; font-weight: 600;
+    list-style-position: inside; }
+  details.fino[open] summary { border-bottom: 1px solid var(--borde); }
+  details.fino .cuerpo { padding: 12px 0 16px; }
+
+  footer { margin-top: 54px; padding-top: 18px; border-top: 1px solid var(--borde); }
+
+  /* ===== G3 · Coreografía de entrada (solo transform/opacity) =====
+     Esto es el PISO, no el techo: las escenas del storyboard traen sus técnicas del banco
+     (blur-to-focus, dibujar el trazo, steps(), contador, confeti determinista…). Stagger
+     con JERARQUÍA, jamás uniforme (la estrella entra un beat antes). */
+  @media (prefers-reduced-motion: no-preference) {
+    .revela { opacity: 0; transform: translateY(18px);
+      transition: opacity 0.6s ease, transform 0.6s cubic-bezier(.25,.8,.3,1); }
+    .revela.visto { opacity: 1; transform: none; }
+    .tarjetas .revela:nth-child(2) { transition-delay: 0.08s; }
+    .tarjetas .revela:nth-child(3) { transition-delay: 0.16s; }
+    .tarjetas .revela:nth-child(4) { transition-delay: 0.24s; }
+    .tarjetas .revela:nth-child(5) { transition-delay: 0.32s; }
+    .tarjetas .revela:nth-child(6) { transition-delay: 0.40s; }
+    /* LCP HONESTO (regla 7): el h1 SUBE sin desvanecerse — opacidad SIEMPRE 1 (un LCP que
+       nace invisible se mide como pintado al final del fundido). El fundido se lo queda la
+       línea de apoyo, que no es candidata. */
+    .portada h1 { animation: alzar-pintado 0.9s cubic-bezier(.25,.8,.3,1) both; }
+    .portada .promesa { animation: alzar 0.9s cubic-bezier(.25,.8,.3,1) 0.25s both; }
+    @keyframes alzar-pintado { from { transform: translateY(22px); } }
+    @keyframes alzar { from { opacity: 0; transform: translateY(22px); } }
+  }
+  /* Reduced motion: experiencia alterna completa — todo visible, cero movimiento.
+     NO es una promesa: el e2e obligatorio (regla 6) la verifica activamente. */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .revela { opacity: 1; transform: none; }
+    .detalle, .detalle-interior, .detalle-cuerpo, .chevron { transition: none; }
+  }
+</style>
+</head>
+<body>
+<div class="lienzo">
+
+  <header class="portada">
+    <p class="eyebrow">Big-D</p>
+    <h1>Elige tu plataforma de datos con evidencia fechada, no por costumbre.</h1>
+    <p class="promesa">Big-D dibuja Databricks, Microsoft Fabric y Snowflake con el mismo mapa, para que entiendas cada una de punta a punta y las compares lado a lado. Después toma tu caso y te muestra quién gana, por cuánto, qué tan sólido es el resultado y con qué peso cambiaría. Y no se queda en un puntaje: lo vuelve decisiones, riesgos, un plan y un informe en español e inglés.</p>
+    <p class="baja">Tócala capa por capa — cada tarjeta se abre solo si tú quieres
+      <span class="flecha" aria-hidden="true">↓</span></p>
+  </header>
+
+  <section class="seccion" aria-labelledby="t-quehace">
+    <h2 id="t-quehace" class="revela">Qué hace</h2>
+    <p class="suave revela">Para quien tiene que elegir o recomendar una plataforma de datos y necesita una comparación neutral que pueda mostrar y defender ante su equipo. Y para quien llega a una reunión o a una entrevista y quiere entender de punta a punta una plataforma que nunca ha usado.</p>
+    <div class="tarjetas">
+
+      <article class="tarjeta revela">
+        <h3 class="tarjeta-cabeza">
+          <button class="tarjeta-boton" aria-expanded="false" aria-controls="d1">
+            <span class="icono" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="4" width="22" height="6" rx="1.5"/><rect x="3" y="12" width="14" height="6" rx="1.5"/><rect x="3" y="20" width="22" height="4" rx="1.5"/></svg></span>
+            <span class="tarjeta-titulos">
+              <span class="titulo">Cualquier plataforma, el mismo mapa</span>
+              <span class="linea">Databricks, Microsoft Fabric y Snowflake de punta a punta, con las mismas capas, colores y símbolos.</span>
+            </span>
+            <svg class="chevron" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">
+              <path d="M5 8l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </h3>
+        <div class="detalle" id="d1" role="region" aria-label="Cualquier plataforma, el mismo mapa — detalle">
+          <div class="detalle-interior"><div class="detalle-cuerpo">
+            <div class="feature">
+              <h4>La plataforma entera, en una página</h4>
+              <p class="como">Ves una plataforma completa en una página, pensada para líderes. Se lee de izquierda a derecha, como el camino de un dato. Cada capa responde una pregunta, como de dónde vienen los datos o cómo entran. Cada bloque se abre en sus componentes.</p>
+            </div>
+            <div class="feature">
+              <h4>Cada componente, con su ficha y sus fuentes</h4>
+              <p class="como">Bajas un nivel y cada bloque se abre en sus componentes, para quien quiere el detalle técnico. Cada uno muestra su tipo con color, símbolo y etiqueta. Su ficha cuenta qué hace, por qué importa, qué tan maduro está y de qué fuentes fechadas sale.</p>
+            </div>
+            <div class="feature">
+              <h4>El viaje de un dato, paso a paso</h4>
+              <p class="como">Sigues un dato de ejemplo desde que nace hasta que alguien lo usa, paso a paso sobre el mismo mapa. Avanzas y retrocedes con botones o con las flechas del teclado. Si tocas un componente del camino, saltas a su paso y lees su ficha.</p>
+            </div>
+            <div class="feature">
+              <h4>Todas lado a lado, banda por banda</h4>
+              <p class="como">Comparas las plataformas en el mismo mapa, una por fila, con cada banda en la misma columna para todas. Ves tres a la vez en pantalla ancha y una banda a la vez en el teléfono. «Desplegar todo» abre los componentes sin mover las columnas.</p>
+            </div>
+            <div class="feature">
+              <h4>Cambia de plataforma sin perder el hilo</h4>
+              <p class="como">Pasas de Databricks a Microsoft Fabric o a Snowflake y sigues en el mismo nivel de lectura, sin empezar de nuevo. Big-D está hecho para cualquier número de plataformas: agregar una es agregar datos, nunca código.</p>
+            </div>
+            <div class="feature">
+              <h4>El mapa, también en texto y con teclado</h4>
+              <p class="como">Todo lo que dice un mapa también está escrito, como una lista de capas, bloques, componentes, conexiones y pasos, para leerlo con un lector de pantalla o sin mirar el dibujo. El mapa se recorre con Tab y se abre con Enter o Espacio.</p>
+            </div>
+          </div></div>
+        </div>
+      </article>
+
+      <article class="tarjeta revela">
+        <h3 class="tarjeta-cabeza">
+          <button class="tarjeta-boton" aria-expanded="false" aria-controls="d2">
+            <span class="icono" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22V6M4 22h20"/><path d="M8 18l5-5 4 3 6-8"/></svg></span>
+            <span class="tarjeta-titulos">
+              <span class="titulo">Tu caso, decidido con números</span>
+              <span class="linea">De tus pesos a un plan defendible: quién gana, qué tan seguro es y qué decidir primero.</span>
+            </span>
+            <svg class="chevron" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">
+              <path d="M5 8l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </h3>
+        <div class="detalle" id="d2" role="region" aria-label="Tu caso, decidido con números — detalle">
+          <div class="detalle-interior"><div class="detalle-cuerpo">
+            <div class="feature">
+              <h4>Tu caso: lo que pesa y lo que no se negocia</h4>
+              <p class="como">Defines tu caso: el peso de cada criterio, con suma 100 y su margen de duda, las restricciones que descartan plataformas y las decisiones que suelen quedar implícitas. Al cuadrar, la pantalla arma el comando que una persona corre para aprobarlo.</p>
+            </div>
+            <div class="feature">
+              <h4>Quién gana, por cuánto y qué tan seguro</h4>
+              <p class="como">Ves qué plataforma gana tu caso, por cuánto y qué tan sólido es el resultado. La sensibilidad muestra el peso exacto en que cambiaría la ganadora. La robustez prueba diez mil combinaciones de pesos dentro de tus rangos y dice en qué porcentaje sigue primera.</p>
+            </div>
+            <div class="feature">
+              <h4>Las decisiones, en el orden correcto</h4>
+              <p class="como">Conviertes la comparación en decisiones ordenadas por lo difícil que es deshacerlas: primero las de una sola vía. Cada una dice cómo la resuelve cada plataforma, con evidencia citada. Los riesgos se ordenan por urgencia y cada supuesto trae la prueba barata que lo confirma.</p>
+            </div>
+            <div class="feature">
+              <h4>El plan y el informe, listos para presentar</h4>
+              <p class="como">Te llevas el caso entero en una página: la hoja de ruta por fases, la lista de alistamiento y un informe de catorce secciones en español e inglés, con las mismas cifras. Cada ítem dice de dónde viene. Se imprime limpio, sin menús ni botones.</p>
+            </div>
+          </div></div>
+        </div>
+      </article>
+
+      <article class="tarjeta revela">
+        <h3 class="tarjeta-cabeza">
+          <button class="tarjeta-boton" aria-expanded="false" aria-controls="d3">
+            <span class="icono" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="7"/><path d="M17.5 17.5L24 24M9 12l2 2 4-4"/></svg></span>
+            <span class="tarjeta-titulos">
+              <span class="titulo">Evidencia que puedes auditar</span>
+              <span class="linea">Una IA propone con citas, una persona aprueba y la herramienta se pone a prueba antes de publicar.</span>
+            </span>
+            <svg class="chevron" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">
+              <path d="M5 8l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </h3>
+        <div class="detalle" id="d3" role="region" aria-label="Evidencia que puedes auditar — detalle">
+          <div class="detalle-interior"><div class="detalle-cuerpo">
+            <div class="feature">
+              <h4>Un investigador con IA que cita cada afirmación</h4>
+              <p class="como">Cada afirmación llega con una cita textual de la documentación del fabricante, y el código comprueba que la cita esté en la fuente. Las propone una IA cuando alguien la llama. Las aprueba una persona, con un comando que la IA no puede correr.</p>
+            </div>
+            <div class="feature">
+              <h4>Toda la evidencia, abierta y con fecha</h4>
+              <p class="como">Ves todo lo que Big-D sabe, en archivos legibles: criterios y evidencias con su fuente y su cita. Solo entra a la comparación lo que una persona aprobó. Cada evidencia avisa cuando envejece: «por revisar» a los 30 días y «vencida» a los 60.</p>
+            </div>
+            <div class="feature">
+              <h4>Qué cambió de una versión a otra</h4>
+              <p class="como">Ves qué cambió entre dos versiones aprobadas del mapa de una plataforma: lo nuevo, lo retirado, lo renombrado y lo que cambió de madurez, cada marca con símbolo y palabra. Lo que cambió sin tocar el dibujo, como textos y fuentes, se cuenta aparte.</p>
+            </div>
+            <div class="feature">
+              <h4>La herramienta se prueba antes de publicar</h4>
+              <p class="como">Sabes si puedes confiar en la herramienta antes de que se publique. Corre casos con respuesta conocida, propiedades matemáticas y siete errores sembrados a propósito, y comprueba que nadie editó a mano lo aprobado. Si algo falla, no se publica nada.</p>
+            </div>
+          </div></div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="seccion" aria-labelledby="t-fino">
+    <h2 id="t-fino" class="revela">Los detalles finos</h2>
+    <details class="fino revela">
+      <summary>Qué la hace distinta</summary>
+      <div class="cuerpo chica">Cada puntaje se apoya en una evidencia con fecha y cita, y el cálculo es abierto: lo repites, mueves los pesos y ves en qué punto cambiarías de opinión. El resultado sale de un núcleo sin IA que da los mismos bytes en Node, Chromium, Firefox y WebKit. Ninguna plataforma tiene trato especial: no hay logos de fabricante y el orden en que entran no cambia el resultado.</div>
+    </details>
+    <details class="fino revela">
+      <summary>Qué mide, y de dónde sale cada cifra</summary>
+      <div class="cuerpo chica"><ul>
+        <li><strong>Funcionalidades documentadas:</strong> 14 funcionalidades <span class="suave">· medido</span></li>
+        <li><strong>Plataformas reales en el atlas:</strong> 3 plataformas <span class="suave">· medido</span></li>
+        <li><strong>Evidencias fechadas y aprobadas:</strong> 33 evidencias <span class="suave">· medido</span></li>
+        <li><strong>Componentes en los mapas reales:</strong> 63 componentes <span class="suave">· medido</span></li>
+        <li><strong>Pruebas automáticas:</strong> 3 360 pruebas <span class="suave">· medido</span></li>
+        <li><strong>Cobertura de líneas:</strong> 97,82 % <span class="suave">· medido</span></li>
+        <li><strong>Motores que producen los mismos bytes:</strong> 4 motores <span class="suave">· medido</span></li>
+        <li><strong>Decisiones de arquitectura registradas:</strong> 15 ADR <span class="suave">· medido</span></li>
+        <li><strong>Dependencias en tiempo de ejecución:</strong> 7 paquetes <span class="suave">· medido</span></li>
+        <li><strong>Llamadas a modelos de lenguaje mientras la app corre:</strong> 0 llamadas <span class="suave">· declarado</span></li>
+        <li><strong>Costo de operación mensual:</strong> 0 USD <span class="suave">· calculada</span></li>
+      </ul></div>
+    </details>
+    <details class="fino revela">
+      <summary>Privacidad y dónde se ve</summary>
+      <div class="cuerpo chica"><p>Big-D es un sitio estático: sin servidor, sin cuentas y sin base de datos, y solo muestra información pública: documentación de los fabricantes y un hospital ficticio. Cada página solo puede conectarse con el propio sitio. El monitoreo de errores viene instalado pero apagado: sin su clave no envía nada. La app no usa IA mientras la miras; el investigador corre aparte, a demanda, y una persona aprueba lo que propone.</p><p>Big-D vive detrás de una protección de acceso: aquí se muestra, no se entrega. Es la regla de cero enlaces del Portafolio.</p></div>
+    </details>
+  </section>
+
+  <footer class="revela">
+    <p class="chica suave">Este recorrido cubre las <strong>14 funcionalidades</strong> de
+      Big-D — todas, agrupadas para que las descubras a tu ritmo.</p>
+    <details class="chica">
+      <summary>Historial</summary>
+      <ul>
+        <li><strong>S8 · 2026-10-27:</strong> el copy de la ficha de CV Viva (devolución 026) llega al brochure, al export y al README; el brochure se genera desde el export.</li>
+      </ul>
+    </details>
+  </footer>
+</div>
+
+<script>
+  (function () {
+    // G2 · abrir/cerrar tarjetas (transición de estado; accesible por teclado nativo).
+    document.querySelectorAll(".tarjeta-boton").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var tarjeta = btn.closest(".tarjeta");
+        var abierta = tarjeta.hasAttribute("data-abierta");
+        if (abierta) { tarjeta.removeAttribute("data-abierta"); }
+        else { tarjeta.setAttribute("data-abierta", ""); }
+        btn.setAttribute("aria-expanded", String(!abierta));
+      });
+    });
+    // G3 · coreografía de entrada. Con reduced-motion el CSS ya muestra todo: el observer
+    // solo añade la clase (inofensivo). Sin IntersectionObserver, todo visible (fallback).
+    if ("IntersectionObserver" in window) {
+      var obs = new IntersectionObserver(function (entradas) {
+        entradas.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add("visto"); obs.unobserve(e.target); }
+        });
+      }, { threshold: 0 }); // kit v1.23.0: 0, jamás un %: un bloque más alto que la pantalla puede no alcanzar nunca el umbral y quedar invisible (cazado a −5976px). Añade la red determinista: lo que ya quedó por encima del borde inferior se muestra siempre.
+      document.querySelectorAll(".revela").forEach(function (el) { obs.observe(el); });
+    } else {
+      document.querySelectorAll(".revela").forEach(function (el) { el.classList.add("visto"); });
+    }
+  })();
+</script>
+</body>
+</html>
