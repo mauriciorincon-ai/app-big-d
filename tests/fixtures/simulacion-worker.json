@@ -166,8 +166,7 @@
         }
       ],
       "clase": "robusta",
-      "estable": true,
-      "frontera": false
+      "estable": true
     }
   },
   {
@@ -253,8 +252,7 @@
         }
       ],
       "clase": null,
-      "estable": false,
-      "frontera": false
+      "estable": false
     }
   },
   {

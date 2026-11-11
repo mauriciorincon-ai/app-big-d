@@ -46,7 +46,6 @@ export function esRespuesta(x: unknown): x is Respuesta {
     lista(r.semillas) &&
     r.semillas.every(semillaValida) &&
     clase(r.clase) &&
-    typeof r.estable === "boolean" &&
-    typeof r.frontera === "boolean"
+    typeof r.estable === "boolean"
   );
 }

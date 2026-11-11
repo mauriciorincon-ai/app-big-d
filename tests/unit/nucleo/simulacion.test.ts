@@ -190,7 +190,8 @@ describe("la simulación del caso de la maqueta", () => {
   it("Norte queda primera en todas las combinaciones de las cuatro semillas: robusta, estable y sin zona gris", () => {
     expect(r.estado).toBe("completa");
     expect(r.ganadora).toBe("norte");
-    expect([r.clase, r.estable, r.frontera]).toEqual(["robusta", true, false]);
+    expect([r.clase, r.estable]).toEqual(["robusta", true]);
+    expect(r).not.toHaveProperty("frontera");
     expect(r.semillas.map((s) => s.semilla)).toEqual([
       20_261_004, 20_261_005, 20_261_006, 20_261_007,
     ]);
@@ -240,7 +241,7 @@ describe("la simulación del caso de la maqueta", () => {
         aceptadas: 200,
         semillas: [SEMILLA],
       }),
-    ).toMatchObject({ ganadora: null, clase: null, frontera: false });
+    ).toMatchObject({ ganadora: null, clase: null });
   });
 });
 
@@ -322,7 +323,6 @@ describe("créditos, pasos, orden y tope", () => {
       estado: "tope-de-intentos",
       clase: null,
       estable: false,
-      frontera: false,
     });
     expect(r.semillas.map((s) => [s.estado, s.intentos])).toEqual([
       ["tope-de-intentos", 50],
