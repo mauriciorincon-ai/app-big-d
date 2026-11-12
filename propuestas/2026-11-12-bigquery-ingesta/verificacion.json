@@ -1,0 +1,301 @@
+{
+  "version": 1,
+  "fecha": "2026-11-12",
+  "propuesta_sha256": "b7f9bfb2fa647b06769556252c9c2c26959cd03d3f323d43917641797da9e53e",
+  "resultados": [
+    {
+      "afirmacion": "A-1",
+      "url": "https://docs.cloud.google.com/bigquery/docs/introduction",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "a7d383946a1d90476e6aa3af89be7d68f1d0b73639a52158a45c8403ee9c809e"
+    },
+    {
+      "afirmacion": "A-2",
+      "url": "https://docs.cloud.google.com/bigquery/docs/write-api",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "521d4e8f0b3ef11d9e2c01f4eb5d511ff3ce1fb4bd1f79aa6b62df59247d49cd"
+    },
+    {
+      "afirmacion": "A-3",
+      "url": "https://docs.cloud.google.com/datastream/docs/overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "a30922cb5b17f064688440c5f93b76ec3b57e4ba1c60caee6c003d9ece177cf6"
+    },
+    {
+      "afirmacion": "A-4",
+      "url": "https://docs.cloud.google.com/bigquery/docs/dts-introduction",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "d6a8f46d016f4cb1391426e607fb70bea850daf456e92fe4aa9fabd4eb40125f"
+    },
+    {
+      "afirmacion": "A-5",
+      "url": "https://docs.cloud.google.com/bigquery/docs/dts-introduction",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "d6a8f46d016f4cb1391426e607fb70bea850daf456e92fe4aa9fabd4eb40125f"
+    },
+    {
+      "afirmacion": "A-6",
+      "url": "https://docs.cloud.google.com/bigquery/docs/storage_overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "7f61b95616bf5c3bc7eedb02ff61666ea2baf6df80fc4a14be60d687af43f702"
+    },
+    {
+      "afirmacion": "A-7",
+      "url": "https://docs.cloud.google.com/bigquery/docs/iceberg-tables",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "852a2438fcc82d8e677c7863b890f7baceb7daa30b7277d8a017126c225dc14a"
+    },
+    {
+      "afirmacion": "A-8",
+      "url": "https://docs.cloud.google.com/bigquery/docs/release-notes",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "7d98526ed6ddd6ee860b7f95a0f9a23088e31ca06b414a56d9c3921d1e6d879f"
+    },
+    {
+      "afirmacion": "A-9",
+      "url": "https://docs.cloud.google.com/bigquery/docs/introduction",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "a7d383946a1d90476e6aa3af89be7d68f1d0b73639a52158a45c8403ee9c809e"
+    },
+    {
+      "afirmacion": "A-10",
+      "url": "https://docs.cloud.google.com/dataform/docs/overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "dfbcba09d644bb96a7c0545c37e2da823bb86c832761fae1558c7fcead660e97"
+    },
+    {
+      "afirmacion": "A-11",
+      "url": "https://docs.cloud.google.com/bigquery/docs/orchestrate-workloads",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "92b2cfec9bf422fdc5175b0f743a02da6f4eb82d4b4d30bfabdd8126c781a892"
+    },
+    {
+      "afirmacion": "A-12",
+      "url": "https://docs.cloud.google.com/bigquery/docs/orchestrate-workloads",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "92b2cfec9bf422fdc5175b0f743a02da6f4eb82d4b4d30bfabdd8126c781a892"
+    },
+    {
+      "afirmacion": "A-13",
+      "url": "https://docs.cloud.google.com/bigquery/docs/bi-engine-intro",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "f00449dcfa60c9c110d9a0880985e0065a0f7859521b9990a3d37c33bb3dc884"
+    },
+    {
+      "afirmacion": "A-14",
+      "url": "https://docs.cloud.google.com/bigquery/docs/connected-sheets",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "cdb6187248412b23270d3a4cf58cd6971f21f4696edba8081a69a8613bfd1b7e"
+    },
+    {
+      "afirmacion": "A-15",
+      "url": "https://docs.cloud.google.com/bigquery/docs/introduction",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "a7d383946a1d90476e6aa3af89be7d68f1d0b73639a52158a45c8403ee9c809e"
+    },
+    {
+      "afirmacion": "A-16",
+      "url": "https://docs.cloud.google.com/bigquery/docs/introduction",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "a7d383946a1d90476e6aa3af89be7d68f1d0b73639a52158a45c8403ee9c809e"
+    },
+    {
+      "afirmacion": "A-17",
+      "url": "https://docs.cloud.google.com/bigquery/docs/release-notes",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "7d98526ed6ddd6ee860b7f95a0f9a23088e31ca06b414a56d9c3921d1e6d879f"
+    },
+    {
+      "afirmacion": "A-18",
+      "url": "https://docs.cloud.google.com/dataplex/docs/catalog-overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "f7491880915ddde245f4e003e0ee09b47421d87bcb94d487e90b180bdd4f22d4"
+    },
+    {
+      "afirmacion": "A-19",
+      "url": "https://docs.cloud.google.com/bigquery/docs/row-level-security-intro",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "14e6b9706aba0867359760853732458bb485760deab3c76626c633215aac9f46"
+    },
+    {
+      "afirmacion": "A-20",
+      "url": "https://docs.cloud.google.com/bigquery/docs/editions-intro",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "9e6c9f1b0e0614d92286b15927fd1048fffec9a949c080721eb34fea0994d2cb"
+    },
+    {
+      "afirmacion": "A-21",
+      "url": "https://docs.cloud.google.com/bigquery/docs/monitoring",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "6ebde15518cc90b5ed5d6057ff6a4dede2d88e8a047e7cf59ed8eb3ed0d99f70"
+    },
+    {
+      "afirmacion": "A-22",
+      "url": "https://docs.cloud.google.com/datastream/docs/overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "a30922cb5b17f064688440c5f93b76ec3b57e4ba1c60caee6c003d9ece177cf6"
+    },
+    {
+      "afirmacion": "A-23",
+      "url": "https://docs.cloud.google.com/bigquery/docs/dts-introduction",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "d6a8f46d016f4cb1391426e607fb70bea850daf456e92fe4aa9fabd4eb40125f"
+    },
+    {
+      "afirmacion": "A-24",
+      "url": "https://docs.cloud.google.com/bigquery/docs/loading-data",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "3aad9ad688687d2bb9cacc6b30f8fca75375de1b895deaa005813d216832c5cf"
+    },
+    {
+      "afirmacion": "A-25",
+      "url": "https://docs.cloud.google.com/bigquery/docs/write-api",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "521d4e8f0b3ef11d9e2c01f4eb5d511ff3ce1fb4bd1f79aa6b62df59247d49cd"
+    },
+    {
+      "afirmacion": "A-26",
+      "url": "https://docs.cloud.google.com/bigquery/docs/loading-data",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "3aad9ad688687d2bb9cacc6b30f8fca75375de1b895deaa005813d216832c5cf"
+    },
+    {
+      "afirmacion": "A-27",
+      "url": "https://docs.cloud.google.com/bigquery/docs/loading-data",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "3aad9ad688687d2bb9cacc6b30f8fca75375de1b895deaa005813d216832c5cf"
+    },
+    {
+      "afirmacion": "A-28",
+      "url": "https://docs.cloud.google.com/bigquery/docs/loading-data",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "3aad9ad688687d2bb9cacc6b30f8fca75375de1b895deaa005813d216832c5cf"
+    },
+    {
+      "afirmacion": "A-29",
+      "url": "https://docs.cloud.google.com/bigquery/docs/write-api",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "521d4e8f0b3ef11d9e2c01f4eb5d511ff3ce1fb4bd1f79aa6b62df59247d49cd"
+    },
+    {
+      "afirmacion": "A-30",
+      "url": "https://docs.cloud.google.com/bigquery/docs/storage_overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "7f61b95616bf5c3bc7eedb02ff61666ea2baf6df80fc4a14be60d687af43f702"
+    },
+    {
+      "afirmacion": "A-31",
+      "url": "https://docs.cloud.google.com/bigquery/docs/iceberg-tables",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "852a2438fcc82d8e677c7863b890f7baceb7daa30b7277d8a017126c225dc14a"
+    },
+    {
+      "afirmacion": "A-32",
+      "url": "https://docs.cloud.google.com/dataform/docs/overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "dfbcba09d644bb96a7c0545c37e2da823bb86c832761fae1558c7fcead660e97"
+    },
+    {
+      "afirmacion": "A-33",
+      "url": "https://docs.cloud.google.com/bigquery/docs/orchestrate-workloads",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "92b2cfec9bf422fdc5175b0f743a02da6f4eb82d4b4d30bfabdd8126c781a892"
+    },
+    {
+      "afirmacion": "A-34",
+      "url": "https://docs.cloud.google.com/bigquery/docs/orchestrate-workloads",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "92b2cfec9bf422fdc5175b0f743a02da6f4eb82d4b4d30bfabdd8126c781a892"
+    },
+    {
+      "afirmacion": "A-35",
+      "url": "https://docs.cloud.google.com/bigquery/docs/bi-engine-intro",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "f00449dcfa60c9c110d9a0880985e0065a0f7859521b9990a3d37c33bb3dc884"
+    },
+    {
+      "afirmacion": "A-36",
+      "url": "https://docs.cloud.google.com/bigquery/docs/connected-sheets",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "cdb6187248412b23270d3a4cf58cd6971f21f4696edba8081a69a8613bfd1b7e"
+    },
+    {
+      "afirmacion": "A-37",
+      "url": "https://docs.cloud.google.com/bigquery/docs/bqml-introduction",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "fe2165a088030ba555a5672c19c67d1798fb5624b8719ddc2fa52789b1373f94"
+    },
+    {
+      "afirmacion": "A-38",
+      "url": "https://docs.cloud.google.com/bigquery/docs/introduction",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "a7d383946a1d90476e6aa3af89be7d68f1d0b73639a52158a45c8403ee9c809e"
+    },
+    {
+      "afirmacion": "A-39",
+      "url": "https://docs.cloud.google.com/dataplex/docs/catalog-overview",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "f7491880915ddde245f4e003e0ee09b47421d87bcb94d487e90b180bdd4f22d4"
+    },
+    {
+      "afirmacion": "A-40",
+      "url": "https://docs.cloud.google.com/bigquery/docs/row-level-security-intro",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "14e6b9706aba0867359760853732458bb485760deab3c76626c633215aac9f46"
+    },
+    {
+      "afirmacion": "A-41",
+      "url": "https://docs.cloud.google.com/bigquery/docs/monitoring",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "6ebde15518cc90b5ed5d6057ff6a4dede2d88e8a047e7cf59ed8eb3ed0d99f70"
+    },
+    {
+      "afirmacion": "A-42",
+      "url": "https://docs.cloud.google.com/bigquery/docs/editions-intro",
+      "resultado": "verificada",
+      "http": 200,
+      "sha256": "9e6c9f1b0e0614d92286b15927fd1048fffec9a949c080721eb34fea0994d2cb"
+    }
+  ]
+}

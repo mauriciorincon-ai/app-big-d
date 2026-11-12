@@ -1,0 +1,2254 @@
+{
+  "version": 1,
+  "plataforma": "bigquery",
+  "capa": "ingesta",
+  "fecha": "2026-11-12",
+  "ejecucion": {
+    "herramienta": "modelo-del-sistema",
+    "modelo": "SystemLanguageModel.default (modelo del sistema de macOS, en el equipo)",
+    "reintentos": 0,
+    "base": "propuestas/2026-11-12-bigquery",
+    "propias": [
+      "A-1",
+      "A-2",
+      "A-3"
+    ]
+  },
+  "mapa": {
+    "contrato_version": "0.6.0",
+    "gramatica_id": "plataformas-datos",
+    "gramatica_version": "0.2.0",
+    "sujeto_id": "bigquery",
+    "sujeto_nombre": {
+      "es": "BigQuery",
+      "en": "BigQuery"
+    },
+    "version": "0.0.0",
+    "fecha_actualizacion": "2026-11-12",
+    "estado": "propuesta",
+    "bloques": [
+      {
+        "id": "origen",
+        "nombre": {
+          "es": "Sistemas de origen",
+          "en": "Source systems"
+        },
+        "banda_id": "fuentes",
+        "lider": {
+          "es": "Donde nacen los datos del negocio.",
+          "en": "Where the business data is born."
+        }
+      },
+      {
+        "id": "entrada",
+        "nombre": {
+          "es": "Entrada de datos",
+          "en": "Data intake"
+        },
+        "banda_id": "ingesta",
+        "lider": {
+          "es": "Trae los datos a BigQuery: en tandas, a medida que cambian o por encargo.",
+          "en": "Brings data into BigQuery: in batches, as it changes or on schedule."
+        }
+      },
+      {
+        "id": "almacen",
+        "nombre": {
+          "es": "Almacén de datos",
+          "en": "Data store"
+        },
+        "banda_id": "almacenamiento",
+        "lider": {
+          "es": "Guarda las tablas dentro de BigQuery o en un espacio que el cliente posee.",
+          "en": "Keeps the tables inside BigQuery or in a space the customer owns."
+        }
+      },
+      {
+        "id": "preparacion",
+        "nombre": {
+          "es": "Preparación",
+          "en": "Preparation"
+        },
+        "banda_id": "procesamiento",
+        "lider": {
+          "es": "Limpia y combina los datos con consultas que se pueden ordenar y probar.",
+          "en": "Cleans and combines the data with queries that can be ordered and tested."
+        }
+      },
+      {
+        "id": "consumo-bi",
+        "nombre": {
+          "es": "Reportes y hojas",
+          "en": "Reports and sheets"
+        },
+        "banda_id": "consumo",
+        "lider": {
+          "es": "Lleva los datos a tableros y hojas de cálculo que la gente ya usa.",
+          "en": "Takes the data to the dashboards and spreadsheets people already use."
+        }
+      },
+      {
+        "id": "agentes",
+        "nombre": {
+          "es": "Modelos y agentes",
+          "en": "Models and agents"
+        },
+        "banda_id": "ia",
+        "lider": {
+          "es": "Construye modelos y asistentes que responden usando los datos.",
+          "en": "Builds models and assistants that answer using the data."
+        }
+      },
+      {
+        "id": "gobierno",
+        "nombre": {
+          "es": "Gobierno",
+          "en": "Governance"
+        },
+        "banda_id": "gobierno",
+        "lider": {
+          "es": "Decide quién ve qué y ayuda a encontrar cada dato.",
+          "en": "Decides who sees what and helps find each dataset."
+        }
+      }
+    ],
+    "nodos": [
+      {
+        "id": "sistemas-origen",
+        "banda_id": "fuentes",
+        "tipo_id": "tipo-externo",
+        "bloque_id": "origen",
+        "orden": 1,
+        "nombre": {
+          "es": "Sistemas y archivos de origen",
+          "en": "Source systems and files"
+        },
+        "lider": {
+          "es": "Las bases, archivos y aplicaciones de donde salen los datos.",
+          "en": "The databases, files and applications the data comes from."
+        },
+        "experto": {
+          "es": "Sistemas fuera de BigQuery: bases de datos, almacenamiento en la nube, servicios de Google, plataformas de marketing y de pagos y aplicaciones SaaS, entre otros.",
+          "en": "Systems outside BigQuery: databases, cloud storage, Google services, marketing and payment platforms and SaaS applications, among others."
+        },
+        "por_que_importa": {
+          "es": "Cuántas fuentes se leen sin programar decide cuánto esfuerzo pide la entrada de datos.",
+          "en": "How many sources can be read without custom code decides how much effort data intake takes."
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://docs.cloud.google.com/bigquery/docs/dts-introduction",
+            "titulo": {
+              "es": "Introducción al BigQuery Data Transfer Service",
+              "en": "Introduction to the BigQuery Data Transfer Service"
+            },
+            "fecha": "2026-11-12",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-11-12"
+      },
+      {
+        "id": "carga-por-lotes",
+        "banda_id": "ingesta",
+        "tipo_id": "cap-ingesta",
+        "bloque_id": "entrada",
+        "orden": 1,
+        "nombre": {
+          "es": "Cargas por lotes",
+          "en": "Batch loads"
+        },
+        "lider": {
+          "es": "Sube archivos grandes de una sola vez, a bajo costo.",
+          "en": "Uploads large files in one go, at low cost."
+        },
+        "experto": {
+          "es": "Trabajos de carga desde archivos locales o Cloud Storage; el método está pensado para volúmenes grandes de múltiples orígenes.",
+          "en": "Load jobs from local files or Cloud Storage; the method is meant for large volumes from many sources."
+        },
+        "por_que_importa": {
+          "es": "Es el camino más barato para la carga inicial, pero los datos llegan por tandas, no al instante.",
+          "en": "It is the cheapest path for the initial load, but data arrives in batches, not instantly."
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://docs.cloud.google.com/bigquery/docs/loading-data",
+            "titulo": {
+              "es": "Introducción a la carga de datos",
+              "en": "Introduction to loading data"
+            },
+            "fecha": "2026-11-12",
+            "tipo": "oficial"
+          },
+          {
+            "url": "https://docs.cloud.google.com/bigquery/docs/introduction",
+            "titulo": {
+              "es": "Resumen de BigQuery",
+              "en": "BigQuery overview"
+            },
+            "fecha": "2026-11-12",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-11-12"
+      },
+      {
+        "id": "api-escritura",
+        "banda_id": "ingesta",
+        "tipo_id": "cap-ingesta",
+        "bloque_id": "entrada",
+        "orden": 2,
+        "nombre": {
+          "es": "Storage Write API",
+          "en": "Storage Write API"
+        },
+        "lider": {
+          "es": "Escribe datos en una tabla mientras la aplicación los produce.",
+          "en": "Writes data into a table while the application produces it."
+        },
+        "experto": {
+          "es": "Interfaz gRPC para transmitir y cargar por lotes registros en BigQuery.",
+          "en": "gRPC interface to stream and batch load records into BigQuery."
+        },
+        "por_que_importa": {
+          "es": "Sirve a aplicaciones que producen datos sin pausa, pero exige que el equipo desarrolle el código que escribe.",
+          "en": "It serves applications that produce data without pause, but your team has to build the code that writes."
+        },
+        "terminos": {
+          "es": {
+            "api": "Interfaz que un programa usa para pedirle trabajo a otro."
+          },
+          "en": {
+            "api": "Interface a program uses to ask another program to do work."
+          }
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://docs.cloud.google.com/bigquery/docs/write-api",
+            "titulo": {
+              "es": "Introducción a la Storage Write API (gRPC)",
+              "en": "Introduction to the Storage Write API (gRPC)"
+            },
+            "fecha": "2026-11-12",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-11-12"
+      },
+      {
+        "id": "datastream",
+        "banda_id": "ingesta",
+        "tipo_id": "cap-ingesta",
+        "bloque_id": "entrada",
+        "orden": 3,
+        "nombre": {
+          "es": "Datastream",
+          "en": "Datastream"
+        },
+        "lider": {
+          "es": "Copia a BigQuery los cambios de una base de datos casi al momento.",
+          "en": "Copies a database's changes to BigQuery almost as they happen."
+        },
+        "experto": {
+          "es": "Servicio sin servidores que replica con captura de cambios (CDC) y relleno histórico desde la base de origen hacia BigQuery; no requiere aprovisionar recursos.",
+          "en": "Serverless service that replicates with change data capture (CDC) and backfill from the source database to BigQuery; no resources to provision."
+        },
+        "por_que_importa": {
+          "es": "Evita copiar toda la base cada vez, pero cada base de origen necesita su perfil de conexión.",
+          "en": "It avoids copying the whole database each time, but every source database needs its own connection profile."
+        },
+        "terminos": {
+          "es": {
+            "cdc": "Captura de cambios: leer solo lo que se insertó, cambió o borró en el origen."
+          },
+          "en": {
+            "cdc": "Change data capture: reading only what was inserted, changed or deleted at the source."
+          }
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://docs.cloud.google.com/datastream/docs/overview",
+            "titulo": {
+              "es": "Resumen de Datastream",
+              "en": "Datastream overview"
+            },
+            "fecha": "2026-11-12",
+            "tipo": "oficial"
+          },
+          {
+            "url": "https://docs.cloud.google.com/bigquery/docs/loading-data",
+            "titulo": {
+              "es": "Introducción a la carga de datos",
+              "en": "Introduction to loading data"
+            },
+            "fecha": "2026-11-12",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-11-12"
+      },
+      {
+        "id": "transferencias",
+        "banda_id": "ingesta",
+        "tipo_id": "cap-ingesta",
+        "bloque_id": "entrada",
+        "orden": 4,
+        "nombre": {
+          "es": "Transferencias programadas",
+          "en": "Scheduled transfers"
+        },
+        "lider": {
+          "es": "Trae datos de servicios conocidos en horarios fijos, sin programar.",
+          "en": "Brings data from well-known services on a fixed schedule, without coding."
+        },
+        "experto": {
+          "es": "BigQuery Data Transfer Service automatiza transferencias administradas y programadas, únicas o recurrentes, desde almacenamiento en la nube, bases, servicios de Google, marketing, pagos y SaaS.",
+          "en": "BigQuery Data Transfer Service automates managed, scheduled transfers, one-time or recurring, from cloud storage, databases, Google services, marketing, payments and SaaS."
+        },
+        "por_que_importa": {
+          "es": "Cubre muchas fuentes de negocio sin código, pero solo en las que el servicio ya soporta.",
+          "en": "It covers many business sources with no code, but only the ones the service already supports."
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://docs.cloud.google.com/bigquery/docs/dts-introduction",
+            "titulo": {
+              "es": "Introducción al BigQuery Data Transfer Service",
+              "en": "Introduction to the BigQuery Data Transfer Service"
+            },
+            "fecha": "2026-11-12",
+            "tipo": "oficial"
+          },
+          {
+            "url": "https://docs.cloud.google.com/bigquery/docs/loading-data",
+            "titulo": {
+              "es": "Introducción a la carga de datos",
+              "en": "Introduction to loading data"
+            },
+            "fecha": "2026-11-12",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-11-12"
+      },
+      {
+        "id": "almacenamiento-gestionado",
+        "banda_id": "almacenamiento",
+        "tipo_id": "cap-almacenamiento",
+        "bloque_id": "almacen",
+        "orden": 1,
+        "nombre": {
+          "es": "Almacenamiento de BigQuery",
+          "en": "BigQuery storage"
+        },
+        "lider": {
+          "es": "Guarda las tablas sin que el equipo reserve espacio.",
+          "en": "Keeps the tables without your team reserving space."
+        },
+        "experto": {
+          "es": "Los datos de las tablas se guardan en formato columnar, cada columna por separado; no se aprovisiona ni se reserva almacenamiento, y el almacenamiento y el cómputo están separados.",
+          "en": "Table data is stored in columnar format, each column separately; storage is not provisioned or reserved, and storage and compute are separate."
+        },
+        "por_que_importa": {
+          "es": "El espacio crece solo y se paga por lo guardado, aparte del cómputo.",
+          "en": "Space grows on its own and you pay for what is stored, apart from compute."
+        },
+        "terminos": {
+          "es": {
+            "cómputo": "Capacidad de procesamiento que se alquila por tiempo de uso."
+          },
+          "en": {
+            "compute": "Processing capacity rented by time of use."
+          }
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://docs.cloud.google.com/bigquery/docs/storage_overview",
+            "titulo": {
+              "es": "Resumen del almacenamiento de BigQuery",
+              "en": "Overview of BigQuery storage"
+            },
+            "fecha": "2026-11-12",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-11-12"
+      },
+      {
+        "id": "tablas-iceberg",
+        "banda_id": "almacenamiento",
+        "tipo_id": "cap-almacenamiento",
+        "bloque_id": "almacen",
+        "orden": 2,
+        "nombre": {
+          "es": "Tablas Apache Iceberg administradas",
+          "en": "Apache Iceberg managed tables"
+        },
+        "lider": {
+          "es": "Tablas en formato abierto, guardadas en un espacio que el cliente posee.",
+          "en": "Open-format tables, stored in a space the customer owns."
+        },
+        "experto": {
+          "es": "Tablas Iceberg administradas por BigQuery con la experiencia de una tabla estándar, pero con los datos en buckets propios de Cloud Storage en formato abierto.",
+          "en": "Iceberg tables managed by BigQuery with the experience of a standard table, but with data in your own Cloud Storage buckets in an open format."
+        },
+        "por_que_importa": {
+          "es": "Un formato abierto facilita que otras herramientas lean los mismos datos y reduce la dependencia de una sola.",
+          "en": "An open format makes it easier for other tools to read the same data and reduces lock-in to a single one."
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://docs.cloud.google.com/bigquery/docs/iceberg-tables",
+            "titulo": {
+              "es": "Tablas administradas de Apache Iceberg",
+              "en": "Apache Iceberg managed tables"
+            },
+            "fecha": "2026-11-12",
+            "tipo": "oficial"
+          },
+          {
+            "url": "https://docs.cloud.google.com/bigquery/docs/release-notes",
+            "titulo": {
+              "es": "Notas de la versión de BigQuery",
+              "en": "BigQuery release notes"
+            },
+            "fecha": "2026-11-12",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-11-12"
+      },
+      {
+        "id": "motor-sql",
+        "banda_id": "procesamiento",
+        "tipo_id": "cap-transformacion",
+        "bloque_id": "preparacion",
+        "orden": 1,
+        "nombre": {
+          "es": "Motor de consultas",
+          "en": "Query engine"
+        },
+        "lider": {
+          "es": "Ejecuta las consultas que limpian y combinan los datos.",
+          "en": "Runs the queries that clean and combine the data."
+        },
+        "experto": {
+          "es": "Motor de consultas SQL en el que la separación de cómputo y almacenamiento permite que cada capa asigne recursos de forma dinámica.",
+          "en": "SQL query engine where the separation of compute and storage lets each layer allocate resources dynamically."
+        },
+        "por_que_importa": {
+          "es": "Se puede crecer el cómputo sin mover los datos, pero cada consulta consume capacidad que se paga.",
+          "en": "Compute can grow without moving the data, but each query consumes capacity that you pay for."
+        },
+        "terminos": {
+          "es": {
+            "sql": "Lenguaje estándar para consultar y transformar tablas.",
+            "cómputo": "Capacidad de procesamiento que se alquila por tiempo de uso."
+          },
+          "en": {
+            "sql": "Standard language for querying and transforming tables.",
+            "compute": "Processing capacity rented by time of use."
+          }
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://docs.cloud.google.com/bigquery/docs/introduction",
+            "titulo": {
+              "es": "Resumen de BigQuery",
+              "en": "BigQuery overview"
+            },
+            "fecha": "2026-11-12",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-11-12"
+      },
+      {
+        "id": "dataform",
+        "banda_id": "procesamiento",
+        "tipo_id": "cap-transformacion",
+        "bloque_id": "preparacion",
+        "orden": 2,
+        "nombre": {
+          "es": "Dataform",
+          "en": "Dataform"
+        },
+        "lider": {
+          "es": "Ordena los pasos de preparación y revisa que los datos cumplan reglas.",
+          "en": "Orders the preparation steps and checks that the data meets rules."
+        },
+        "experto": {
+          "es": "Metalenguaje de código abierto para crear tablas y flujos SQL; construye un árbol de dependencias y permite pruebas de calidad (assertions) sobre unicidad, nulos o una condición propia.",
+          "en": "Open-source meta-language to create SQL tables and workflows; it builds a dependency tree and supports data quality tests (assertions) for uniqueness, nulls or a custom condition."
+        },
+        "por_que_importa": {
+          "es": "Una regla de calidad explícita detiene un dato malo antes de que llegue a un tablero.",
+          "en": "An explicit quality rule stops bad data before it reaches a dashboard."
+        },
+        "terminos": {
+          "es": {
+            "sql": "Lenguaje estándar para consultar y transformar tablas."
+          },
+          "en": {
+            "sql": "Standard language for querying and transforming tables."
+          }
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://docs.cloud.google.com/dataform/docs/overview",
+            "titulo": {
+              "es": "Resumen de Dataform",
+              "en": "Dataform overview"
+            },
+            "fecha": "2026-11-12",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-11-12"
+      },
+      {
+        "id": "consultas-programadas",
+        "banda_id": "orquestacion",
+        "tipo_id": "cap-transformacion",
+        "orden": 1,
+        "nombre": {
+          "es": "Consultas programadas",
+          "en": "Scheduled queries"
+        },
+        "lider": {
+          "es": "Lanza consultas sencillas a la hora indicada.",
+          "en": "Launches simple queries at the set time."
+        },
+        "experto": {
+          "es": "Opción más simple para programar cargas; la documentación la recomienda solo para cadenas de consultas sencillas sin dependencias externas.",
+          "en": "The simplest option to schedule workloads; the documentation recommends it only for straightforward query chains with no external dependencies."
+        },
+        "por_que_importa": {
+          "es": "Basta para tareas simples, pero se queda corta cuando una tarea depende de otra fuera de BigQuery.",
+          "en": "It is enough for simple tasks but falls short when a task depends on something outside BigQuery."
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://docs.cloud.google.com/bigquery/docs/orchestrate-workloads",
+            "titulo": {
+              "es": "Programar cargas de trabajo",
+              "en": "Schedule workloads"
+            },
+            "fecha": "2026-11-12",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-11-12"
+      },
+      {
+        "id": "composer",
+        "banda_id": "orquestacion",
+        "tipo_id": "cap-transformacion",
+        "orden": 2,
+        "nombre": {
+          "es": "Managed Airflow (Cloud Composer)",
+          "en": "Managed Airflow (Cloud Composer)"
+        },
+        "lider": {
+          "es": "Coordina tareas complejas que dependen unas de otras.",
+          "en": "Coordinates complex tasks that depend on each other."
+        },
+        "experto": {
+          "es": "Herramienta totalmente administrada construida sobre Apache Airflow, que la documentación de BigQuery presenta entre las opciones para programar cargas.",
+          "en": "Fully managed tool built on Apache Airflow, which the BigQuery documentation lists among the options to schedule workloads."
+        },
+        "por_que_importa": {
+          "es": "Sirve cuando el orden de las tareas importa, a cambio de aprender y operar una herramienta más.",
+          "en": "It fits when task order matters, in exchange for learning and running one more tool."
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://docs.cloud.google.com/bigquery/docs/orchestrate-workloads",
+            "titulo": {
+              "es": "Programar cargas de trabajo",
+              "en": "Schedule workloads"
+            },
+            "fecha": "2026-11-12",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-11-12"
+      },
+      {
+        "id": "bi-engine",
+        "banda_id": "consumo",
+        "tipo_id": "cap-consumo",
+        "bloque_id": "consumo-bi",
+        "orden": 1,
+        "nombre": {
+          "es": "BI Engine",
+          "en": "BI Engine"
+        },
+        "lider": {
+          "es": "Acelera las consultas que alimentan los tableros.",
+          "en": "Speeds up the queries that feed dashboards."
+        },
+        "experto": {
+          "es": "Acelera consultas SQL, entre ellas las de tableros de inteligencia de negocio; se integra con herramientas de BI y respeta vistas autorizadas, seguridad por columna y enmascaramiento.",
+          "en": "Accelerates SQL queries, including those behind business intelligence dashboards; it integrates with BI tools and works with authorized views, column-level security and data masking."
+        },
+        "por_que_importa": {
+          "es": "Un tablero rápido se usa más, pero la aceleración depende de la memoria que se reserve.",
+          "en": "A fast dashboard gets used more, but acceleration depends on the memory you reserve."
+        },
+        "terminos": {
+          "es": {
+            "sql": "Lenguaje estándar para consultar y transformar tablas."
+          },
+          "en": {
+            "sql": "Standard language for querying and transforming tables."
+          }
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://docs.cloud.google.com/bigquery/docs/bi-engine-intro",
+            "titulo": {
+              "es": "Introducción a BI Engine",
+              "en": "Introduction to BI Engine"
+            },
+            "fecha": "2026-11-12",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-11-12"
+      },
+      {
+        "id": "connected-sheets",
+        "banda_id": "consumo",
+        "tipo_id": "cap-consumo",
+        "bloque_id": "consumo-bi",
+        "orden": 2,
+        "nombre": {
+          "es": "Connected Sheets",
+          "en": "Connected Sheets"
+        },
+        "lider": {
+          "es": "Analiza datos de BigQuery desde una hoja de cálculo.",
+          "en": "Analyzes BigQuery data from a spreadsheet."
+        },
+        "experto": {
+          "es": "Permite analizar conjuntos de datos de BigQuery dentro de Google Sheets; ejecuta las consultas en nombre del usuario, a petición o según un horario.",
+          "en": "Lets you analyze BigQuery datasets inside Google Sheets; it runs the queries on the user's behalf, on request or on a schedule."
+        },
+        "por_que_importa": {
+          "es": "Lleva el dato a quien ya trabaja en hojas de cálculo, sin exportar archivos.",
+          "en": "It brings the data to people who already work in spreadsheets, with no file exports."
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://docs.cloud.google.com/bigquery/docs/connected-sheets",
+            "titulo": {
+              "es": "Usar Connected Sheets",
+              "en": "Use Connected Sheets"
+            },
+            "fecha": "2026-11-12",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-11-12"
+      },
+      {
+        "id": "bigquery-ml",
+        "banda_id": "ia",
+        "tipo_id": "cap-ia",
+        "bloque_id": "agentes",
+        "orden": 1,
+        "nombre": {
+          "es": "BigQuery ML",
+          "en": "BigQuery ML"
+        },
+        "lider": {
+          "es": "Crea modelos de predicción sin sacar los datos de BigQuery.",
+          "en": "Builds prediction models without moving the data out of BigQuery."
+        },
+        "experto": {
+          "es": "Aprendizaje automático y analítica predictiva dentro de BigQuery: se entrenan modelos y se accede a recursos de IA con SQL, llevando el aprendizaje automático al dato.",
+          "en": "Machine learning and predictive analytics inside BigQuery: you train models and access AI resources with SQL, bringing machine learning to the data."
+        },
+        "por_que_importa": {
+          "es": "Quien ya sabe consultar tablas puede probar modelos, pero un modelo propio exige criterio estadístico.",
+          "en": "Anyone who can already query tables can try models, but a custom model still needs statistical judgment."
+        },
+        "terminos": {
+          "es": {
+            "sql": "Lenguaje estándar para consultar y transformar tablas."
+          },
+          "en": {
+            "sql": "Standard language for querying and transforming tables."
+          }
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://docs.cloud.google.com/bigquery/docs/introduction",
+            "titulo": {
+              "es": "Resumen de BigQuery",
+              "en": "BigQuery overview"
+            },
+            "fecha": "2026-11-12",
+            "tipo": "oficial"
+          },
+          {
+            "url": "https://docs.cloud.google.com/bigquery/docs/bqml-introduction",
+            "titulo": {
+              "es": "Introducción al aprendizaje automático en BigQuery",
+              "en": "Introduction to ML in BigQuery"
+            },
+            "fecha": "2026-11-12",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-11-12"
+      },
+      {
+        "id": "agentes-datos",
+        "banda_id": "ia",
+        "tipo_id": "cap-ia",
+        "bloque_id": "agentes",
+        "orden": 2,
+        "nombre": {
+          "es": "Agentes de datos",
+          "en": "Data agents"
+        },
+        "lider": {
+          "es": "Responden preguntas en lenguaje natural sobre los datos.",
+          "en": "Answer plain-language questions about the data."
+        },
+        "experto": {
+          "es": "Agentes de datos configurables con metadatos propios, base de la analítica conversacional (conversational analytics) en BigQuery.",
+          "en": "Data agents configurable with custom metadata, the basis of conversational analytics in BigQuery."
+        },
+        "por_que_importa": {
+          "es": "Acerca el dato a quien no escribe consultas, pero sus respuestas necesitan revisión humana.",
+          "en": "It brings data closer to people who do not write queries, but its answers need human review."
+        },
+        "terminos": {
+          "es": {
+            "metadatos": "Datos que describen a otros datos: su significado, origen y reglas de uso."
+          },
+          "en": {
+            "metadata": "Data that describes other data: its meaning, origin and rules of use."
+          }
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://docs.cloud.google.com/bigquery/docs/introduction",
+            "titulo": {
+              "es": "Resumen de BigQuery",
+              "en": "BigQuery overview"
+            },
+            "fecha": "2026-11-12",
+            "tipo": "oficial"
+          },
+          {
+            "url": "https://docs.cloud.google.com/bigquery/docs/release-notes",
+            "titulo": {
+              "es": "Notas de la versión de BigQuery",
+              "en": "BigQuery release notes"
+            },
+            "fecha": "2026-11-12",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-11-12"
+      },
+      {
+        "id": "catalogo",
+        "banda_id": "gobierno",
+        "tipo_id": "cap-gobierno",
+        "bloque_id": "gobierno",
+        "orden": 1,
+        "nombre": {
+          "es": "Knowledge Catalog",
+          "en": "Knowledge Catalog"
+        },
+        "lider": {
+          "es": "El inventario donde se descubre qué datos existen.",
+          "en": "The inventory where you discover which data exists."
+        },
+        "experto": {
+          "es": "Descubre e indexa de forma automática los recursos de la organización para que puedan buscarse.",
+          "en": "Automatically discovers and indexes the organization's resources so they can be searched."
+        },
+        "por_que_importa": {
+          "es": "Sin un inventario común, cada equipo conoce solo sus tablas y nadie ve el conjunto.",
+          "en": "Without a shared inventory each team knows only its own tables and nobody sees the whole."
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://docs.cloud.google.com/dataplex/docs/catalog-overview",
+            "titulo": {
+              "es": "Resumen de Knowledge Catalog",
+              "en": "Knowledge Catalog overview"
+            },
+            "fecha": "2026-11-12",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-11-12"
+      },
+      {
+        "id": "seguridad-filas",
+        "banda_id": "gobierno",
+        "tipo_id": "cap-gobierno",
+        "bloque_id": "gobierno",
+        "orden": 2,
+        "nombre": {
+          "es": "Seguridad por filas",
+          "en": "Row-level security"
+        },
+        "lider": {
+          "es": "Cada persona ve solo las filas que le corresponden.",
+          "en": "Each person sees only the rows that belong to them."
+        },
+        "experto": {
+          "es": "Políticas de acceso por fila creadas sobre una tabla de BigQuery para limitar qué filas ve cada persona.",
+          "en": "Row access policies created on a BigQuery table to limit which rows each person sees."
+        },
+        "por_que_importa": {
+          "es": "Con datos sensibles, un permiso mal puesto es un incidente; una política por fila lo acota.",
+          "en": "With sensitive data, a misplaced permission is an incident; a row policy narrows it."
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://docs.cloud.google.com/bigquery/docs/row-level-security-intro",
+            "titulo": {
+              "es": "Introducción a la seguridad por filas de BigQuery",
+              "en": "Introduction to BigQuery row-level security"
+            },
+            "fecha": "2026-11-12",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-11-12"
+      },
+      {
+        "id": "ediciones",
+        "banda_id": "operacion",
+        "tipo_id": "tipo-operacion",
+        "orden": 1,
+        "nombre": {
+          "es": "Ediciones y reservas",
+          "en": "Editions and reservations"
+        },
+        "lider": {
+          "es": "Define cuánta capacidad se contrata y cómo se paga.",
+          "en": "Defines how much capacity is bought and how it is paid for."
+        },
+        "experto": {
+          "es": "Tres ediciones para distintos tipos de carga; las reservas con autoescalado de slots crecen según la demanda, y ediciones y modelo bajo demanda pueden convivir por proyecto.",
+          "en": "Three editions for different workload types; reservations with slot autoscaling grow with demand, and editions and the on-demand model can coexist per project."
+        },
+        "por_que_importa": {
+          "es": "Elegir entre capacidad reservada y pago por uso cambia la factura y su previsibilidad.",
+          "en": "Choosing between reserved capacity and pay-per-use changes the bill and how predictable it is."
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://docs.cloud.google.com/bigquery/docs/editions-intro",
+            "titulo": {
+              "es": "Entender las ediciones de BigQuery",
+              "en": "Understand BigQuery editions"
+            },
+            "fecha": "2026-11-12",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-11-12"
+      },
+      {
+        "id": "monitoreo",
+        "banda_id": "operacion",
+        "tipo_id": "tipo-operacion",
+        "orden": 2,
+        "nombre": {
+          "es": "Monitoreo y registros",
+          "en": "Monitoring and logs"
+        },
+        "lider": {
+          "es": "Deja un registro de auditoría de lo que ocurre en BigQuery.",
+          "en": "Keeps an audit record of what happens in BigQuery."
+        },
+        "experto": {
+          "es": "Registros de auditoría de BigQuery, escritos en formato JSON estructurado.",
+          "en": "BigQuery audit logs, written in a structured JSON format."
+        },
+        "por_que_importa": {
+          "es": "Sin un registro de auditoría, los problemas y los accesos indebidos se descubren tarde.",
+          "en": "Without an audit record, problems and improper access are found late."
+        },
+        "madurez": "disponible-general",
+        "fuentes": [
+          {
+            "url": "https://docs.cloud.google.com/bigquery/docs/monitoring",
+            "titulo": {
+              "es": "Introducción al monitoreo de BigQuery",
+              "en": "Introduction to BigQuery monitoring"
+            },
+            "fecha": "2026-11-12",
+            "tipo": "oficial"
+          }
+        ],
+        "fecha_verificacion": "2026-11-12"
+      }
+    ],
+    "flujos": [
+      {
+        "id": "f-origen-datastream",
+        "origen": "sistemas-origen",
+        "destino": "datastream",
+        "modo_id": "continuo",
+        "que_viaja": {
+          "es": "Cambios de la base",
+          "en": "Database changes"
+        },
+        "lider": {
+          "es": "Los cambios de la base viajan casi al momento.",
+          "en": "Database changes travel almost at once."
+        }
+      },
+      {
+        "id": "f-origen-transferencias",
+        "origen": "sistemas-origen",
+        "destino": "transferencias",
+        "modo_id": "por-lotes",
+        "que_viaja": {
+          "es": "Datos de servicios",
+          "en": "Service data"
+        },
+        "lider": {
+          "es": "Los datos se traen en horarios fijos.",
+          "en": "Data is pulled on a fixed schedule."
+        }
+      },
+      {
+        "id": "f-origen-carga",
+        "origen": "sistemas-origen",
+        "destino": "carga-por-lotes",
+        "modo_id": "por-lotes",
+        "que_viaja": {
+          "es": "Archivos grandes",
+          "en": "Large files"
+        },
+        "lider": {
+          "es": "Los archivos se suben en tandas.",
+          "en": "Files are uploaded in batches."
+        }
+      },
+      {
+        "id": "f-origen-escritura",
+        "origen": "sistemas-origen",
+        "destino": "api-escritura",
+        "modo_id": "continuo",
+        "que_viaja": {
+          "es": "Registros de la aplicación",
+          "en": "Application records"
+        },
+        "lider": {
+          "es": "La aplicación escribe cada registro al producirlo.",
+          "en": "The application writes each record as it produces it."
+        }
+      },
+      {
+        "id": "f-datastream-almacen",
+        "origen": "datastream",
+        "destino": "almacenamiento-gestionado",
+        "modo_id": "continuo",
+        "que_viaja": {
+          "es": "Cambios replicados",
+          "en": "Replicated changes"
+        },
+        "lider": {
+          "es": "Los cambios llegan a las tablas casi al instante.",
+          "en": "Changes reach the tables almost instantly."
+        }
+      },
+      {
+        "id": "f-transferencias-almacen",
+        "origen": "transferencias",
+        "destino": "almacenamiento-gestionado",
+        "modo_id": "por-lotes",
+        "que_viaja": {
+          "es": "Datos transferidos",
+          "en": "Transferred data"
+        },
+        "lider": {
+          "es": "Cada transferencia deja sus datos en las tablas.",
+          "en": "Each transfer leaves its data in the tables."
+        }
+      },
+      {
+        "id": "f-carga-almacen",
+        "origen": "carga-por-lotes",
+        "destino": "almacenamiento-gestionado",
+        "modo_id": "por-lotes",
+        "que_viaja": {
+          "es": "Archivos cargados",
+          "en": "Loaded files"
+        },
+        "lider": {
+          "es": "Los archivos cargados se vuelven tablas.",
+          "en": "Loaded files become tables."
+        }
+      },
+      {
+        "id": "f-escritura-almacen",
+        "origen": "api-escritura",
+        "destino": "almacenamiento-gestionado",
+        "modo_id": "continuo",
+        "que_viaja": {
+          "es": "Registros escritos",
+          "en": "Written records"
+        },
+        "lider": {
+          "es": "Lo escrito se puede consultar de inmediato.",
+          "en": "What is written can be queried right away."
+        }
+      },
+      {
+        "id": "f-almacen-motor",
+        "origen": "almacenamiento-gestionado",
+        "destino": "motor-sql",
+        "modo_id": "a-demanda",
+        "que_viaja": {
+          "es": "Tablas para consultar",
+          "en": "Tables to query"
+        },
+        "lider": {
+          "es": "El motor lee las tablas cuando alguien consulta.",
+          "en": "The engine reads the tables when someone queries."
+        }
+      },
+      {
+        "id": "f-iceberg-motor",
+        "origen": "tablas-iceberg",
+        "destino": "motor-sql",
+        "modo_id": "a-demanda",
+        "que_viaja": {
+          "es": "Tablas en formato abierto",
+          "en": "Open-format tables"
+        },
+        "lider": {
+          "es": "Estas tablas se consultan como las demás.",
+          "en": "These tables are queried like the rest."
+        }
+      },
+      {
+        "id": "f-dataform-motor",
+        "origen": "dataform",
+        "destino": "motor-sql",
+        "modo_id": "a-demanda",
+        "que_viaja": {
+          "es": "Pasos y reglas de calidad",
+          "en": "Steps and quality rules"
+        },
+        "lider": {
+          "es": "Le dice al motor qué tablas crear y qué revisar.",
+          "en": "Tells the engine which tables to create and what to check."
+        }
+      },
+      {
+        "id": "f-programadas-motor",
+        "origen": "consultas-programadas",
+        "destino": "motor-sql",
+        "modo_id": "a-demanda",
+        "que_viaja": {
+          "es": "Orden de ejecución",
+          "en": "Run order"
+        },
+        "lider": {
+          "es": "Da la orden de correr una consulta.",
+          "en": "Gives the order to run a query."
+        }
+      },
+      {
+        "id": "f-composer-motor",
+        "origen": "composer",
+        "destino": "motor-sql",
+        "modo_id": "a-demanda",
+        "que_viaja": {
+          "es": "Orden de ejecución",
+          "en": "Run order"
+        },
+        "lider": {
+          "es": "Coordina cuándo corre cada tarea.",
+          "en": "Coordinates when each task runs."
+        }
+      },
+      {
+        "id": "f-almacen-bi",
+        "origen": "almacenamiento-gestionado",
+        "destino": "bi-engine",
+        "modo_id": "a-demanda",
+        "que_viaja": {
+          "es": "Consultas de tableros",
+          "en": "Dashboard queries"
+        },
+        "lider": {
+          "es": "El tablero pide datos al abrirse y llegan más rápido.",
+          "en": "The dashboard asks for data when opened and it arrives faster."
+        }
+      },
+      {
+        "id": "f-almacen-sheets",
+        "origen": "almacenamiento-gestionado",
+        "destino": "connected-sheets",
+        "modo_id": "a-demanda",
+        "que_viaja": {
+          "es": "Consultas desde la hoja",
+          "en": "Queries from the sheet"
+        },
+        "lider": {
+          "es": "La hoja pide datos cuando se le pide o en un horario.",
+          "en": "The sheet asks for data on request or on a schedule."
+        }
+      },
+      {
+        "id": "f-almacen-ml",
+        "origen": "almacenamiento-gestionado",
+        "destino": "bigquery-ml",
+        "modo_id": "sin-copia",
+        "que_viaja": {
+          "es": "Datos de entrenamiento",
+          "en": "Training data"
+        },
+        "lider": {
+          "es": "El modelo aprende de los datos sin sacarlos de BigQuery.",
+          "en": "The model learns from the data without taking it out of BigQuery."
+        }
+      },
+      {
+        "id": "f-almacen-agentes",
+        "origen": "almacenamiento-gestionado",
+        "destino": "agentes-datos",
+        "modo_id": "a-demanda",
+        "que_viaja": {
+          "es": "Contexto para responder",
+          "en": "Context to answer"
+        },
+        "lider": {
+          "es": "El agente consulta las tablas para responder.",
+          "en": "The agent queries the tables to answer."
+        }
+      },
+      {
+        "id": "f-catalogo-almacen",
+        "origen": "catalogo",
+        "destino": "almacenamiento-gestionado",
+        "modo_id": "a-demanda",
+        "que_viaja": {
+          "es": "Descripciones de los datos",
+          "en": "Data descriptions"
+        },
+        "lider": {
+          "es": "El inventario ayuda a encontrar cada tabla.",
+          "en": "The inventory helps find each table."
+        }
+      },
+      {
+        "id": "f-filas-almacen",
+        "origen": "seguridad-filas",
+        "destino": "almacenamiento-gestionado",
+        "modo_id": "a-demanda",
+        "que_viaja": {
+          "es": "Filas permitidas por persona",
+          "en": "Rows allowed per person"
+        },
+        "lider": {
+          "es": "Cada persona recibe solo sus filas.",
+          "en": "Each person receives only their rows."
+        }
+      },
+      {
+        "id": "f-motor-monitoreo",
+        "origen": "motor-sql",
+        "destino": "monitoreo",
+        "modo_id": "continuo",
+        "que_viaja": {
+          "es": "Datos de cada trabajo",
+          "en": "Data on each job"
+        },
+        "lider": {
+          "es": "Cada consulta deja su rastro de uso.",
+          "en": "Each query leaves its usage trail."
+        }
+      },
+      {
+        "id": "f-ediciones-motor",
+        "origen": "ediciones",
+        "destino": "motor-sql",
+        "modo_id": "a-demanda",
+        "que_viaja": {
+          "es": "Capacidad de cómputo",
+          "en": "Compute capacity"
+        },
+        "lider": {
+          "es": "La capacidad contratada crece con la demanda.",
+          "en": "The bought capacity grows with demand."
+        }
+      }
+    ],
+    "recorridos": [
+      {
+        "id": "cambios-de-base",
+        "titulo": {
+          "es": "Un cambio en una base, hasta el tablero y el agente",
+          "en": "A database change, all the way to the dashboard and the agent"
+        },
+        "pasos": [
+          {
+            "id": "p1",
+            "nodo_id": "sistemas-origen",
+            "que_pasa": {
+              "es": "Cambia un registro",
+              "en": "A record changes"
+            },
+            "lider": {
+              "es": "Alguien actualiza un registro en la base de la empresa.",
+              "en": "Someone updates a record in the company database."
+            },
+            "experto": {
+              "es": "Inserción o actualización en la base relacional de origen.",
+              "en": "Insert or update in the source relational database."
+            }
+          },
+          {
+            "id": "p2",
+            "nodo_id": "datastream",
+            "que_pasa": {
+              "es": "Se detecta y se envía",
+              "en": "Detected and sent"
+            },
+            "lider": {
+              "es": "El servicio nota el cambio y lo manda a BigQuery.",
+              "en": "The service notices the change and sends it to BigQuery."
+            },
+            "experto": {
+              "es": "Datastream captura el cambio y lo replica al destino mediante su flujo.",
+              "en": "Datastream captures the change and replicates it to the destination through its stream."
+            }
+          },
+          {
+            "id": "p3",
+            "nodo_id": "almacenamiento-gestionado",
+            "bifurca": "paralela",
+            "que_pasa": {
+              "es": "Queda en la tabla",
+              "en": "Lands in the table"
+            },
+            "lider": {
+              "es": "El cambio queda guardado y listo para consultar.",
+              "en": "The change is stored and ready to query."
+            },
+            "experto": {
+              "es": "El registro replicado se refleja en la tabla de BigQuery, en almacenamiento columnar.",
+              "en": "The replicated record is reflected in the BigQuery table, in columnar storage."
+            }
+          },
+          {
+            "id": "p4",
+            "nodo_id": "bi-engine",
+            "sigue_de": "p3",
+            "que_pasa": {
+              "es": "Aparece en el tablero",
+              "en": "Shows on the dashboard"
+            },
+            "lider": {
+              "es": "Quien abre el tablero ve el dato actualizado.",
+              "en": "Whoever opens the dashboard sees the updated data."
+            },
+            "experto": {
+              "es": "El tablero consulta la tabla; BI Engine acelera la consulta.",
+              "en": "The dashboard queries the table; BI Engine accelerates the query."
+            }
+          },
+          {
+            "id": "p5",
+            "nodo_id": "agentes-datos",
+            "sigue_de": "p3",
+            "que_pasa": {
+              "es": "Sirve a un agente",
+              "en": "Serves an agent"
+            },
+            "lider": {
+              "es": "Un agente puede responder preguntas con el dato nuevo.",
+              "en": "An agent can answer questions with the new data."
+            },
+            "experto": {
+              "es": "El agente de datos consulta las tablas como contexto para responder.",
+              "en": "The data agent queries the tables as context to answer."
+            }
+          }
+        ]
+      }
+    ],
+    "glosario": {
+      "es": {
+        "cdc": "Captura de cambios: leer solo lo que se insertó, cambió o borró en el origen.",
+        "sql": "Lenguaje estándar para consultar y transformar tablas.",
+        "api": "Interfaz que un programa usa para pedirle trabajo a otro.",
+        "cómputo": "Capacidad de procesamiento que se alquila por tiempo de uso.",
+        "metadatos": "Datos que describen a otros datos: su significado, origen y reglas de uso."
+      },
+      "en": {
+        "cdc": "Change data capture: reading only what was inserted, changed or deleted at the source.",
+        "sql": "Standard language for querying and transforming tables.",
+        "api": "Interface a program uses to ask another program to do work.",
+        "compute": "Processing capacity rented by time of use.",
+        "metadata": "Data that describes other data: its meaning, origin and rules of use."
+      }
+    }
+  },
+  "afirmaciones": [
+    {
+      "id": "A-1",
+      "sobre": {
+        "entidad": "nodo",
+        "id": "carga-por-lotes"
+      },
+      "enunciado": {
+        "es": "La plataforma permite cargar datos por lotes para gestionar y analizar datos.",
+        "en": "The platform allows batch loads to manage and analyze your data."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/bigquery/docs/introduction",
+        "texto": "Continuous data ingestion: stream both structured and unstructured data in real-time, with support for open table formats like Apache Iceberg, Delta, and Apache Hudi.",
+        "titulo": "BigQuery overview &nbsp;|&nbsp; Google Cloud Documentation",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-2",
+      "sobre": {
+        "entidad": "nodo",
+        "id": "api-escritura"
+      },
+      "enunciado": {
+        "es": "La API de escritura permite transmitir y cargar registros en BigQuery mediante conexiones gRPC bidireccionales.",
+        "en": "The BigQuery Storage Write API (gRPC) lets you stream and batch load records into BigQuery over bidirectional gRPC connections."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/bigquery/docs/write-api",
+        "texto": "The BigQuery Storage Write API (gRPC) lets you stream and batch load records into BigQuery over bidirectional gRPC connections.",
+        "titulo": "Introduction to the Storage Write API (gRPC) &nbsp;|&nbsp; BigQuery &nbsp;|&nbsp; Google Cloud Documentation",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-3",
+      "sobre": {
+        "entidad": "nodo",
+        "id": "datastream"
+      },
+      "enunciado": {
+        "es": "Datastream es un servicio sin servidor de captura y replicación de datos de cambio (CDC) que permite sincronizar datos entre bases de datos y aplicaciones heterogéneas con mínima latencia.",
+        "en": "Datastream is a serverless change data capture (CDC) and replication service that lets you synchronize data across heterogeneous databases and applications with minimal latency."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/datastream/docs/overview",
+        "texto": "Datastream is a serverless change data capture (CDC) and replication service that lets you synchronize data across heterogeneous databases and applications with minimal latency.",
+        "titulo": "Datastream overview &nbsp;|&nbsp; Google Cloud Documentation",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-4",
+      "sobre": {
+        "entidad": "nodo",
+        "id": "sistemas-origen"
+      },
+      "enunciado": {
+        "es": "BigQuery Data Transfer Service carga datos desde varias categorías de fuentes externas.",
+        "en": "BigQuery Data Transfer Service loads data from several categories of external sources."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/bigquery/docs/dts-introduction",
+        "texto": "supports loading data from the following data sources",
+        "titulo": "Introduction to the BigQuery Data Transfer Service",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-5",
+      "sobre": {
+        "entidad": "nodo",
+        "id": "transferencias"
+      },
+      "enunciado": {
+        "es": "BigQuery Data Transfer Service automatiza transferencias programadas y administradas hacia BigQuery.",
+        "en": "BigQuery Data Transfer Service automates scheduled, managed transfers into BigQuery."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/bigquery/docs/dts-introduction",
+        "texto": "lets you automate scheduled, managed data transfers into",
+        "titulo": "Introduction to the BigQuery Data Transfer Service",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-6",
+      "sobre": {
+        "entidad": "nodo",
+        "id": "almacenamiento-gestionado"
+      },
+      "enunciado": {
+        "es": "BigQuery guarda los datos de las tablas en formato columnar, cada columna por separado.",
+        "en": "BigQuery stores table data in columnar format, each column separately."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/bigquery/docs/storage_overview",
+        "texto": "table data in columnar format, meaning it stores each column separately",
+        "titulo": "Overview of BigQuery storage",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-7",
+      "sobre": {
+        "entidad": "nodo",
+        "id": "tablas-iceberg"
+      },
+      "enunciado": {
+        "es": "Las tablas Iceberg administradas dan la misma experiencia administrada que las tablas estándar, pero guardan los datos en buckets del cliente.",
+        "en": "Iceberg managed tables offer the same fully managed experience as standard tables, but store data in buckets the customer owns."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/bigquery/docs/iceberg-tables",
+        "texto": "but store data in storage buckets that you own",
+        "titulo": "Apache Iceberg managed tables",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-8",
+      "sobre": {
+        "entidad": "nodo",
+        "id": "tablas-iceberg"
+      },
+      "enunciado": {
+        "es": "Las notas de versión declaran disponibles de forma general funciones de las tablas Iceberg administradas (particionamiento, transacciones de varias sentencias).",
+        "en": "The release notes declare features of Iceberg managed tables generally available (partitioning, multi-statement transactions)."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/bigquery/docs/release-notes",
+        "texto": "Table partitioning, multi-statement transactions, and advanced runtime are now generally available (GA)",
+        "titulo": "BigQuery release notes",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-9",
+      "sobre": {
+        "entidad": "nodo",
+        "id": "motor-sql"
+      },
+      "enunciado": {
+        "es": "En BigQuery el cómputo y el almacenamiento están separados y cada capa asigna recursos de forma dinámica.",
+        "en": "In BigQuery compute and storage are separate and each layer allocates resources dynamically."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/bigquery/docs/introduction",
+        "texto": "BigQuery's separation of compute and storage layers lets each layer dynamically allocate resources",
+        "titulo": "BigQuery overview",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-10",
+      "sobre": {
+        "entidad": "nodo",
+        "id": "dataform"
+      },
+      "enunciado": {
+        "es": "Dataform permite definir pruebas de calidad (assertions) sobre unicidad, nulos o una condición propia.",
+        "en": "Dataform lets you define data quality tests (assertions) for uniqueness, nulls or a custom condition."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/dataform/docs/overview",
+        "texto": "to check for uniqueness, null values, or a custom condition",
+        "titulo": "Dataform overview",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-11",
+      "sobre": {
+        "entidad": "nodo",
+        "id": "consultas-programadas"
+      },
+      "enunciado": {
+        "es": "La documentación recomienda las consultas programadas solo para cadenas sencillas sin dependencias externas.",
+        "en": "The documentation recommends scheduled queries only for straightforward chains with no external dependencies."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/bigquery/docs/orchestrate-workloads",
+        "texto": "we recommend it only for straightforward query chains with no external dependencies.",
+        "titulo": "Schedule workloads",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-12",
+      "sobre": {
+        "entidad": "nodo",
+        "id": "composer"
+      },
+      "enunciado": {
+        "es": "Managed Airflow es una herramienta totalmente administrada construida sobre Apache Airflow.",
+        "en": "Managed Airflow is a fully managed tool built on Apache Airflow."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/bigquery/docs/orchestrate-workloads",
+        "texto": "Managed Airflow is a fully managed tool built on Apache Airflow.",
+        "titulo": "Schedule workloads",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-13",
+      "sobre": {
+        "entidad": "nodo",
+        "id": "bi-engine"
+      },
+      "enunciado": {
+        "es": "BI Engine acelera muchas consultas, incluidas las de tableros de inteligencia de negocio.",
+        "en": "BI Engine can significantly accelerate many queries, including those used for BI dashboards."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/bigquery/docs/bi-engine-intro",
+        "texto": "can significantly accelerate many SQL queries, including queries used for BI dashboards",
+        "titulo": "Introduction to BI Engine",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-14",
+      "sobre": {
+        "entidad": "nodo",
+        "id": "connected-sheets"
+      },
+      "enunciado": {
+        "es": "Connected Sheets analiza conjuntos de datos de BigQuery directamente en Google Sheets.",
+        "en": "Connected Sheets analyzes BigQuery datasets directly in Google Sheets."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/bigquery/docs/connected-sheets",
+        "texto": "You can use Connected Sheets to analyze BigQuery datasets directly within the familiar Google Sheets interface.",
+        "titulo": "Use Connected Sheets",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-15",
+      "sobre": {
+        "entidad": "nodo",
+        "id": "bigquery-ml"
+      },
+      "enunciado": {
+        "es": "BigQuery ML ofrece aprendizaje automático y analítica predictiva.",
+        "en": "BigQuery ML provides machine learning and predictive analytics."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/bigquery/docs/introduction",
+        "texto": "BigQuery ML provides machine learning and predictive analytics.",
+        "titulo": "BigQuery overview",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-16",
+      "sobre": {
+        "entidad": "nodo",
+        "id": "agentes-datos"
+      },
+      "enunciado": {
+        "es": "Se pueden crear agentes de datos configurados con metadatos propios.",
+        "en": "You can create data agents configured with custom metadata."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/bigquery/docs/introduction",
+        "texto": "You can create data agents configured with custom metadata",
+        "titulo": "BigQuery overview",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-17",
+      "sobre": {
+        "entidad": "nodo",
+        "id": "agentes-datos"
+      },
+      "enunciado": {
+        "es": "Las notas de versión declaran disponible de forma general la analítica conversacional en BigQuery.",
+        "en": "The release notes declare conversational analytics in BigQuery generally available."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/bigquery/docs/release-notes",
+        "texto": "Conversational analytics in BigQuery is now generally available (GA)",
+        "titulo": "BigQuery release notes",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-18",
+      "sobre": {
+        "entidad": "nodo",
+        "id": "catalogo"
+      },
+      "enunciado": {
+        "es": "Knowledge Catalog descubre e indexa recursos de forma automática.",
+        "en": "Knowledge Catalog automatically discovers and indexes resources."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/dataplex/docs/catalog-overview",
+        "texto": "lets you automatically discover and index",
+        "titulo": "Knowledge Catalog overview",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-19",
+      "sobre": {
+        "entidad": "nodo",
+        "id": "seguridad-filas"
+      },
+      "enunciado": {
+        "es": "La seguridad por filas consiste en crear políticas de acceso por fila sobre una tabla de BigQuery.",
+        "en": "Row-level security involves creating row-level access policies on a BigQuery table."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/bigquery/docs/row-level-security-intro",
+        "texto": "row-level security involves the creation of row-level access policies on a target",
+        "titulo": "Introduction to BigQuery row-level security",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-20",
+      "sobre": {
+        "entidad": "nodo",
+        "id": "ediciones"
+      },
+      "enunciado": {
+        "es": "Las reservas con autoescalado de slots crecen automáticamente según la demanda de sus cargas.",
+        "en": "Reservations configured with slots autoscaling scale automatically to the demands of their workloads."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/bigquery/docs/editions-intro",
+        "texto": "Reservations configured to use slots autoscaling automatically scale to accommodate the demands of their workloads.",
+        "titulo": "Understand BigQuery editions",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-21",
+      "sobre": {
+        "entidad": "nodo",
+        "id": "monitoreo"
+      },
+      "enunciado": {
+        "es": "Los registros de auditoría de BigQuery se escriben en formato JSON estructurado.",
+        "en": "BigQuery audit logs are written in a structured JSON format."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/bigquery/docs/monitoring",
+        "texto": "Audit logs are written in a structured JSON format",
+        "titulo": "Introduction to BigQuery monitoring",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-22",
+      "sobre": {
+        "entidad": "flujo",
+        "id": "f-origen-datastream"
+      },
+      "enunciado": {
+        "es": "Los flujos de Datastream transfieren datos de captura de cambios y de relleno histórico del origen al destino.",
+        "en": "Datastream streams transfer CDC and backfill data from the source to the destination."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/datastream/docs/overview",
+        "texto": "Streams use the information in the connection profiles to transfer CDC and backfill data from the source to the destination.",
+        "titulo": "Datastream overview",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-23",
+      "sobre": {
+        "entidad": "flujo",
+        "id": "f-origen-transferencias"
+      },
+      "enunciado": {
+        "es": "El servicio de transferencias automatiza transferencias programadas hacia BigQuery.",
+        "en": "The transfer service automates scheduled transfers into BigQuery."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/bigquery/docs/dts-introduction",
+        "texto": "lets you automate scheduled, managed data transfers into",
+        "titulo": "Introduction to the BigQuery Data Transfer Service",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-24",
+      "sobre": {
+        "entidad": "flujo",
+        "id": "f-origen-carga"
+      },
+      "enunciado": {
+        "es": "Los trabajos de carga mueven por lotes grandes volúmenes desde varias fuentes.",
+        "en": "Load jobs move large volumes in batches from a variety of sources."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/bigquery/docs/loading-data",
+        "texto": "batch loading large volumes of data from a variety of sources",
+        "titulo": "Introduction to loading data",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-25",
+      "sobre": {
+        "entidad": "flujo",
+        "id": "f-origen-escritura"
+      },
+      "enunciado": {
+        "es": "La Storage Write API (gRPC) permite transmitir y cargar por lotes registros en BigQuery.",
+        "en": "The Storage Write API (gRPC) lets you stream and batch load records into BigQuery."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/bigquery/docs/write-api",
+        "texto": "lets you stream and batch load records into BigQuery over bidirectional gRPC",
+        "titulo": "Introduction to the Storage Write API (gRPC)",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-26",
+      "sobre": {
+        "entidad": "flujo",
+        "id": "f-datastream-almacen"
+      },
+      "enunciado": {
+        "es": "Datastream puede transmitir datos de bases a BigQuery con replicación casi en tiempo real.",
+        "en": "Datastream can stream data from databases to BigQuery with near real-time replication."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/bigquery/docs/loading-data",
+        "texto": "stream data from databases to BigQuery data with near real-time replication",
+        "titulo": "Introduction to loading data",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-27",
+      "sobre": {
+        "entidad": "flujo",
+        "id": "f-transferencias-almacen"
+      },
+      "enunciado": {
+        "es": "Las transferencias se pueden programar, únicas o por lotes, a intervalos regulares.",
+        "en": "Transfers can be scheduled, one-time or batch, at regular intervals."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/bigquery/docs/loading-data",
+        "texto": "schedule one-time or batch data transfers at regular intervals",
+        "titulo": "Introduction to loading data",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-28",
+      "sobre": {
+        "entidad": "flujo",
+        "id": "f-carga-almacen"
+      },
+      "enunciado": {
+        "es": "Los trabajos de carga son una forma menos costosa y de menor consumo de recursos de cargar datos en BigQuery.",
+        "en": "Load jobs can be a less expensive, less resource-intensive way to load data into BigQuery."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/bigquery/docs/loading-data",
+        "texto": "load jobs can be a less expensive, less resource-intensive way to load your data into",
+        "titulo": "Introduction to loading data",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-29",
+      "sobre": {
+        "entidad": "flujo",
+        "id": "f-escritura-almacen"
+      },
+      "enunciado": {
+        "es": "La Storage Write API (gRPC) permite transmitir y cargar por lotes registros en BigQuery.",
+        "en": "The Storage Write API (gRPC) lets you stream and batch load records into BigQuery."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/bigquery/docs/write-api",
+        "texto": "lets you stream and batch load records into BigQuery over bidirectional gRPC",
+        "titulo": "Introduction to the Storage Write API (gRPC)",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-30",
+      "sobre": {
+        "entidad": "flujo",
+        "id": "f-almacen-motor"
+      },
+      "enunciado": {
+        "es": "La separación del almacenamiento y el cómputo es una característica clave de la arquitectura de BigQuery.",
+        "en": "The separation of storage and compute is a key feature of BigQuery's architecture."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/bigquery/docs/storage_overview",
+        "texto": "architecture is the separation of storage and compute",
+        "titulo": "Overview of BigQuery storage",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-31",
+      "sobre": {
+        "entidad": "flujo",
+        "id": "f-iceberg-motor"
+      },
+      "enunciado": {
+        "es": "Las tablas Iceberg administradas ofrecen la misma experiencia administrada que las tablas estándar de BigQuery.",
+        "en": "Iceberg managed tables offer the same fully managed experience as standard BigQuery tables."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/bigquery/docs/iceberg-tables",
+        "texto": "They offer the same fully managed experience as standard",
+        "titulo": "Apache Iceberg managed tables",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-32",
+      "sobre": {
+        "entidad": "flujo",
+        "id": "f-dataform-motor"
+      },
+      "enunciado": {
+        "es": "Dataform es un metalenguaje de código abierto para crear tablas y flujos de trabajo SQL.",
+        "en": "Dataform is an open-source meta-language to create SQL tables and workflows."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/dataform/docs/overview",
+        "texto": "is an open source meta-language to create SQL tables and workflows",
+        "titulo": "Dataform overview",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-33",
+      "sobre": {
+        "entidad": "flujo",
+        "id": "f-programadas-motor"
+      },
+      "enunciado": {
+        "es": "La documentación recomienda las consultas programadas para cadenas de consultas sencillas, sin dependencias externas.",
+        "en": "The documentation recommends scheduled queries for straightforward query chains with no external dependencies."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/bigquery/docs/orchestrate-workloads",
+        "texto": "we recommend it only for straightforward query chains with no external dependencies.",
+        "titulo": "Schedule workloads",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-34",
+      "sobre": {
+        "entidad": "flujo",
+        "id": "f-composer-motor"
+      },
+      "enunciado": {
+        "es": "La documentación de BigQuery presenta Managed Airflow entre las opciones para programar cargas de trabajo.",
+        "en": "The BigQuery documentation presents Managed Airflow among the options to schedule workloads."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/bigquery/docs/orchestrate-workloads",
+        "texto": "Managed Airflow is a fully managed tool built on Apache Airflow.",
+        "titulo": "Schedule workloads",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-35",
+      "sobre": {
+        "entidad": "flujo",
+        "id": "f-almacen-bi"
+      },
+      "enunciado": {
+        "es": "BI Engine acelera las consultas usadas por tableros de inteligencia de negocio.",
+        "en": "BI Engine accelerates the queries used by BI dashboards."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/bigquery/docs/bi-engine-intro",
+        "texto": "can significantly accelerate many SQL queries, including queries used for BI dashboards",
+        "titulo": "Introduction to BI Engine",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-36",
+      "sobre": {
+        "entidad": "flujo",
+        "id": "f-almacen-sheets"
+      },
+      "enunciado": {
+        "es": "Connected Sheets ejecuta consultas de BigQuery a petición del usuario o en un horario definido.",
+        "en": "Connected Sheets runs BigQuery queries on the user's behalf, on request or on a defined schedule."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/bigquery/docs/connected-sheets",
+        "texto": "Connected Sheets runs BigQuery queries on your behalf either upon your request or on a defined schedule.",
+        "titulo": "Use Connected Sheets",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-37",
+      "sobre": {
+        "entidad": "flujo",
+        "id": "f-almacen-ml"
+      },
+      "enunciado": {
+        "es": "BigQuery ML lleva el aprendizaje automático al dato, en vez de mover el dato.",
+        "en": "BigQuery ML brings ML to the data instead of moving the data."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/bigquery/docs/bqml-introduction",
+        "texto": "Instead, BigQuery ML brings ML to the data, which offers the following advantages:",
+        "titulo": "Introduction to ML in BigQuery",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-38",
+      "sobre": {
+        "entidad": "flujo",
+        "id": "f-almacen-agentes"
+      },
+      "enunciado": {
+        "es": "Los agentes de datos se configuran sobre los datos de BigQuery con metadatos propios.",
+        "en": "Data agents are configured over BigQuery data with custom metadata."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/bigquery/docs/introduction",
+        "texto": "You can create data agents configured with custom metadata",
+        "titulo": "BigQuery overview",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-39",
+      "sobre": {
+        "entidad": "flujo",
+        "id": "f-catalogo-almacen"
+      },
+      "enunciado": {
+        "es": "Knowledge Catalog descubre e indexa recursos de forma automática, lo que permite encontrarlos.",
+        "en": "Knowledge Catalog automatically discovers and indexes resources, which makes them findable."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/dataplex/docs/catalog-overview",
+        "texto": "lets you automatically discover and index",
+        "titulo": "Knowledge Catalog overview",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-40",
+      "sobre": {
+        "entidad": "flujo",
+        "id": "f-filas-almacen"
+      },
+      "enunciado": {
+        "es": "La seguridad por filas consiste en crear políticas de acceso por fila sobre una tabla de BigQuery.",
+        "en": "Row-level security involves creating row-level access policies on a BigQuery table."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/bigquery/docs/row-level-security-intro",
+        "texto": "row-level security involves the creation of row-level access policies on a target",
+        "titulo": "Introduction to BigQuery row-level security",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-41",
+      "sobre": {
+        "entidad": "flujo",
+        "id": "f-motor-monitoreo"
+      },
+      "enunciado": {
+        "es": "Los registros de auditoría de BigQuery se escriben en formato JSON estructurado.",
+        "en": "BigQuery audit logs are written in a structured JSON format."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/bigquery/docs/monitoring",
+        "texto": "Audit logs are written in a structured JSON format",
+        "titulo": "Introduction to BigQuery monitoring",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    },
+    {
+      "id": "A-42",
+      "sobre": {
+        "entidad": "flujo",
+        "id": "f-ediciones-motor"
+      },
+      "enunciado": {
+        "es": "Las reservas con autoescalado de slots se ajustan a la demanda de sus cargas de trabajo.",
+        "en": "Reservations with slots autoscaling adjust to the demands of their workloads."
+      },
+      "cita": {
+        "url": "https://docs.cloud.google.com/bigquery/docs/editions-intro",
+        "texto": "Reservations configured to use slots autoscaling automatically scale to accommodate the demands of their workloads.",
+        "titulo": "Understand BigQuery editions",
+        "tipo": "oficial",
+        "conflicto_de_interes": {
+          "es": "Documentación del fabricante (Google), que tiene interés en presentar bien su producto.",
+          "en": "Vendor documentation (Google), which has an interest in presenting its product well."
+        }
+      }
+    }
+  ],
+  "retiros": [],
+  "preguntas_guia": [
+    {
+      "pregunta": {
+        "es": "La página de Knowledge Catalog dice, según la lectura con WebFetch, que antes se llamaba Dataplex Universal Catalog, pero esa frase no pasó la verificación por código (la marca de enlace parte el texto), así que el mapa no lo afirma. ¿Se confirma el nombre anterior en la documentación oficial?",
+        "en": "The Knowledge Catalog page says, as read with WebFetch, that it was formerly named Dataplex Universal Catalog, but that sentence did not pass code verification (link markup splits the text), so the map does not assert it. Is the former name confirmed in the official documentation?"
+      },
+      "respondida": false
+    },
+    {
+      "pregunta": {
+        "es": "La madurez «disponible de forma general» de la mayoría de los componentes (cargas por lotes, Storage Write API, Datastream, transferencias, almacenamiento, motor, Dataform, consultas programadas, BI Engine, Connected Sheets, BigQuery ML, Knowledge Catalog, seguridad por filas, ediciones, monitoreo) no sale de una cita que la diga: las páginas consultadas no la declaran y la consulta de las notas de versión fue parcial. ¿Qué madurez declara la documentación de cada uno?",
+        "en": "The «generally available» maturity of most components (batch loads, Storage Write API, Datastream, transfers, storage, engine, Dataform, scheduled queries, BI Engine, Connected Sheets, BigQuery ML, Knowledge Catalog, row-level security, editions, monitoring) does not come from a citation that states it: the pages consulted do not declare it and the release-notes review was partial. What maturity does the documentation declare for each one?"
+      },
+      "respondida": false
+    },
+    {
+      "pregunta": {
+        "es": "Las notas de versión muestran estados mezclados en torno a los agentes de datos (analítica conversacional disponible de forma general, pero funciones asociadas como el monitoreo de agentes en vista previa en fechas distintas). ¿La madurez de los agentes de datos como conjunto es disponible de forma general?",
+        "en": "The release notes show mixed states around data agents (conversational analytics generally available, but associated features such as agent monitoring in preview on different dates). Is the maturity of data agents as a whole generally available?"
+      },
+      "respondida": false
+    },
+    {
+      "pregunta": {
+        "es": "Las notas de versión indican que la función antes llamada Storage Write API cambió de nombre (entrada del 27 de julio de 2026) y las tablas Iceberg administradas aparecen con otros nombres en distintas páginas. ¿Cuál es el nombre vigente que debe llevar el mapa?",
+        "en": "The release notes say the feature formerly known as the Storage Write API was renamed (July 27, 2026 entry) and Iceberg managed tables appear under different names across pages. What is the current name the map should carry?"
+      },
+      "respondida": false
+    },
+    {
+      "pregunta": {
+        "es": "¿Qué documentación oficial describe a Looker o Looker Studio como capa de consumo de BigQuery? Esta propuesta solo cubre BI Engine y Connected Sheets, y no incluye ninguna herramienta de BI de Google más allá de ellos.",
+        "en": "Which official documentation describes Looker or Looker Studio as a BigQuery consumption layer? This proposal covers only BI Engine and Connected Sheets, and includes no other Google BI tool."
+      },
+      "respondida": false
+    },
+    {
+      "pregunta": {
+        "es": "El flujo de Managed Airflow hacia el motor de consultas se apoya en que la página de BigQuery lo presenta como opción para programar cargas; la cita no describe cómo dispara las consultas. ¿Qué página oficial lo describe?",
+        "en": "The Managed Airflow to query engine flow relies on the BigQuery page presenting it as an option to schedule workloads; the citation does not describe how it triggers queries. Which official page describes it?"
+      },
+      "respondida": false
+    }
+  ],
+  "sin_novedades": false
+}
