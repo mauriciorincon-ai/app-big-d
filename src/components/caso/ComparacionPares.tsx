@@ -73,9 +73,15 @@ export function ComparacionPares({
   const top = conv.escala_max - 1;
   /** De «b importa 9 veces más» a «a importa 9 veces más», pasando por «igual»: el orden de la escala, sin saltos. */
   const opcionesDe = (na: string, nb: string) => [
-    ...Array.from({ length: top }, (_, i) => ({ v: -(top - i), texto: plantilla(t.importaMas, { criterio: nb, k: top - i + 1 }) })),
+    ...Array.from({ length: top }, (_, i) => ({
+      v: -(top - i),
+      texto: plantilla(t.importaMas, { criterio: nb, k: top - i + 1 }),
+    })),
     { v: 0, texto: t.igual },
-    ...Array.from({ length: top }, (_, i) => ({ v: i + 1, texto: plantilla(t.importaMas, { criterio: na, k: i + 2 }) })),
+    ...Array.from({ length: top }, (_, i) => ({
+      v: i + 1,
+      texto: plantilla(t.importaMas, { criterio: na, k: i + 2 }),
+    })),
   ];
 
   if (pares.length === 0) return null;
@@ -159,9 +165,7 @@ export function ComparacionPares({
         <div data-pares-propuesta>
           <MarcoTabla etiqueta={t.tabla}>
             <table>
-              <caption className="sr-only">
-                {t.tabla}
-              </caption>
+              <caption className="sr-only">{t.tabla}</caption>
               <thead>
                 <tr>
                   <th scope="col">{t.criterio}</th>
@@ -201,10 +205,10 @@ export function ComparacionPares({
                 {plantilla(t.razon, {
                   razon: milesimas(resultado.razon_milesimas, idioma),
                   // «0,10», como lo dicen la nota, el manual y la guía: sin el tercer decimal cuando es cero.
-                  umbral: milesimas(conv.umbral_razon_milesimas, idioma).replace(
-                    /0$/,
-                    "",
-                  ),
+                  umbral: milesimas(
+                    conv.umbral_razon_milesimas,
+                    idioma,
+                  ).replace(/0$/, ""),
                 })}
                 {" · "}
                 {resultado.consistente ? t.consistente : t.inconsistente}
