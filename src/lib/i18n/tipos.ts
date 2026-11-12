@@ -245,7 +245,7 @@ export interface Textos {
         prioridad: string;
         sinMitigacion: string;
       };
-      origenes: { "propuesto-por-agente": string; "declarado-por-usuario": string };
+      origenes: { "propuesto-por-agente": string; "declarado-por-usuario": string; entrevista: string };
       ciclo: { titulo: string; alerta: string; sinOndas: string; conOndas: string; nota: string };
       riesgos: {
         titulo: string;
@@ -328,7 +328,7 @@ export interface Textos {
         sinUnaVia: string;
         sinRiesgos: string;
       };
-      caso: { contexto: string; requisitos: string; restricciones: string; pesos: string; origen: { "propuesto-por-agente": string; "declarado-por-usuario": string }; elimina: string; obligatorio: string; preferente: string };
+      caso: { contexto: string; requisitos: string; restricciones: string; pesos: string; origen: { "propuesto-por-agente": string; "declarado-por-usuario": string; entrevista: string }; elimina: string; obligatorio: string; preferente: string };
       matriz: { sin: string; pros: string };
       decisiones: { columnas: { onda: string; decision: string; reversibilidad: string; opcion: string; depende: string }; sinOnda: string; sinOpcion: string; sinDependencias: string };
       implicitas: { perfil: string; plan: string; respondida: string; sinResponder: string; ninguna: string };
@@ -347,7 +347,7 @@ export interface Textos {
       instantanea: string;
       sinInstantanea: string;
       soloLectura: string;
-      pesos: { titulo: string; nota: string; suma: string; sumaBien: string; origen: string; origenAgente: string; origenPersona: string; rango: string; sinRango: string; esencial: string; etiquetaBarra: string };
+      pesos: { titulo: string; nota: string; suma: string; sumaBien: string; origen: string; origenAgente: string; origenPersona: string; origenEntrevista: string; rango: string; sinRango: string; esencial: string; etiquetaBarra: string };
       restricciones: { titulo: string; nota: string; elimina: string; todas: string; origen: string; vacio: string };
       decisiones: { titulo: string; nota: string; sinResponder: string; respondida: string; elegida: string };
       contexto: string;
@@ -374,6 +374,7 @@ export interface Textos {
         comandoNota: string;
         sinComando: string;
         usadosPares: string;
+        usadosEntrevista: string;
       };
       /** D3 (S8): duplicar el caso; la pantalla arma el comando y una persona lo corre. */
       duplicar: {
@@ -383,6 +384,21 @@ export interface Textos {
         problemas: { vacio: string; invalido: string; mismo: string; existe: string };
         comandoNota: string;
         copiaDe: string;
+      };
+      /** S9: el entrevistador dentro del editor del perfil (las preguntas y los niveles vienen del dato). */
+      entrevista: {
+        titulo: string;
+        nota: string;
+        progreso: string;
+        faltan: readonly [string, string];
+        sinPrioridad: string;
+        tabla: string;
+        criterio: string;
+        peso: string;
+        conserva: string;
+        conservaNinguna: string;
+        usar: string;
+        declaracion: string;
       };
       /** D7 (S8): la comparación de pares dentro del editor del perfil. */
       pares: {
