@@ -172,6 +172,29 @@ describe("sistema.mjs con el modelo falso", () => {
   }, 60_000);
 });
 
+describe("sistema.mjs y la ventana corta del modelo", () => {
+  it("un trozo que no cabe se parte en dos y la corrida termina igual; si ni partido cabe, falla sin escribir", () => {
+    const otra = raizDePrueba(p);
+    const env = { BIGD_VERIFICAR_ESPEJO: otra.espejo };
+    try {
+      const n = nodosDeCapa.length;
+      const r = correr([PLATAFORMA, CAPA], { ...env, BIGD_FALSO_VENTANA: "600" }, otra.raiz);
+      expect(r.status, r.stderr).toBe(0);
+      expect(r.stdout).toContain(`${n} de ${n} citas propias verificadas`);
+      // Por página: el pedido que no cupo y, al menos, sus dos mitades (y las mitades de una mitad que tampoco cupo).
+      const [, paginas, llamadas] = r.stdout.match(/(\d+) páginas, (\d+) trozos/)!.map(Number);
+      expect(paginas).toBe(n);
+      expect(llamadas).toBeGreaterThanOrEqual(3 * n);
+      const r2 = correr([PLATAFORMA, CAPA], { ...env, BIGD_FALSO_VENTANA: "10", BIGD_FECHA_CONSULTA: "2026-09-29" }, otra.raiz);
+      expect(r2.status).toBe(1);
+      expect(r2.stderr).toContain("exceeds the maximum allowed context size");
+      expect(existsSync(join(otra.raiz, `propuestas/2026-09-29-${PLATAFORMA}-${CAPA}`))).toBe(false);
+    } finally {
+      rmSync(otra.raiz, { recursive: true, force: true });
+    }
+  }, 60_000);
+});
+
 describe("el contrato de la propuesta", () => {
   it("base y propias van juntas y solo con el modelo del sistema; propias tienen que existir", async () => {
     const { validarPropuesta } = await import("@/lib/investigador");

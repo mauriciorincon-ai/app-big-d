@@ -22,8 +22,12 @@ import { carpetaPropuesta, gramaticaDe, hoy, identificadores, RAIZ } from "./com
 
 const ID = /^[a-z0-9][a-z0-9-]*$/;
 /** Caracteres por trozo: la ventana del modelo del sistema es de 8192 tokens, con las instrucciones y la lista dentro. */
-const TROZO = 3500;
+const TROZO = 3000;
 /** Trozos por página, como máximo: cada uno es una llamada de unos segundos. */
+/** Lo que dice el sistema cuando el pedido no cabe en la ventana del modelo. */
+const VENTANA = /exceeds the maximum allowed context size/i;
+/** Por debajo de esto, un trozo ya no se parte: el error sube tal cual. */
+const MITAD_MINIMA = 400;
 const TROZOS_POR_PAGINA = 12;
 const MODELO = "SystemLanguageModel.default (modelo del sistema de macOS, en el equipo)";
 const INSTRUCCIONES =
@@ -196,13 +200,26 @@ try {
     // Solo los nombres: con la descripción del mapa a la vista, el modelo la copiaba como enunciado (corrida del 2026-11-12).
     const lista = candidatos.map((n) => `- ${n.id}: ${n.nombre.es} / ${n.nombre.en}`).join("\n");
     for (const trozo of trozos(pagina.texto).slice(0, TROZOS_POR_PAGINA)) {
-      llamadas++;
-      const hallazgos = await m.generar({
-        instrucciones: INSTRUCCIONES,
-        prompt: `Plataforma: ${b.mapa.sujeto_nombre.en}. Capa: ${banda.nombre.en}.\nComponentes:\n${lista}\n\nTexto de ${url}:\n${trozo}`,
-        componentes: candidatos.map((n) => n.id),
-        maximo: 3,
-      });
+      // Un trozo que no cabe en la ventana (el texto técnico rinde menos caracteres por token) se parte en dos, y así hasta que
+      // quepa: la corrida real sobre BigQuery (2026-11-12) llegó a 8 193 tokens de 8 192 con trozos de 3 500 caracteres.
+      const pedir = async (t) => {
+        llamadas++;
+        try {
+          return await m.generar({
+            instrucciones: INSTRUCCIONES,
+            prompt: `Plataforma: ${b.mapa.sujeto_nombre.en}. Capa: ${banda.nombre.en}.\nComponentes:\n${lista}\n\nTexto de ${url}:\n${t}`,
+            componentes: candidatos.map((n) => n.id),
+            maximo: 3,
+          });
+        } catch (e) {
+          if (!VENTANA.test(e.message) || t.length < 2 * MITAD_MINIMA) throw e;
+          const partes = trozos(t, Math.ceil(t.length / 2));
+          const out = [];
+          for (const parte of partes) out.push(...(await pedir(parte)));
+          return out;
+        }
+      };
+      const hallazgos = await pedir(trozo);
       for (const h of hallazgos) {
         const cita = String(h.cita ?? "").trim();
         const es = String(h.enunciado_es ?? "").trim();

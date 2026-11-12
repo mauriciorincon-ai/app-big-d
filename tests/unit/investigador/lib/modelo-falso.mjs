@@ -2,6 +2,7 @@
 // Anota, por cada componente de la lista, la frase de la muestra que lo nombra (una cita literal, que el código acepta), y
 // además dos cosas que el código debe tumbar: una cita inventada y un componente que no está en la lista.
 // BIGD_FALSO_MODO: «no-disponible» (Apple Intelligence apagado) · «sin-es» (el modelo no trae español).
+// BIGD_FALSO_VENTANA=<caracteres>: un texto más largo falla como el modelo real cuando el pedido no cabe en su ventana.
 export function disponible() {
   const modo = process.env.BIGD_FALSO_MODO;
   if (modo === "no-disponible") return { disponible: false, razon: "Apple Intelligence está apagado en Configuración del Sistema" };
@@ -10,6 +11,8 @@ export function disponible() {
 
 export function generar({ prompt, componentes }) {
   const texto = prompt.slice(prompt.indexOf("Texto de"));
+  const ventana = Number(process.env.BIGD_FALSO_VENTANA);
+  if (ventana && texto.length > ventana) throw new Error("Content contains 8193 tokens, which exceeds the maximum allowed context size of 8192.");
   const hallazgos = [];
   for (const id of componentes) {
     const cita = `El componente ${id} existe y cumple su función en la plataforma.`;
