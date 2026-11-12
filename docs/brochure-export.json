@@ -221,7 +221,7 @@
     {
       "clave": "decisiones_registradas",
       "etiqueta": "Decisiones de arquitectura registradas",
-      "valor": 16,
+      "valor": 17,
       "unidad": "ADR",
       "fuente": "medido",
       "detalle": "Archivos de decisions/, sin contar la plantilla. Lo recuenta tests/unit/brochure-export.test.ts."
