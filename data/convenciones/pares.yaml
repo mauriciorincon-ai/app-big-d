@@ -1,0 +1,27 @@
+# D7 (S8): la convención de la comparación de pares (proceso analítico jerárquico). No entra a la instantánea: los pesos
+# por pares son una PROPUESTA para el perfil en borrador, que solo el comando de aprobación vuelve pesos del caso.
+id: pares
+# La escala de Saaty: 1 = igual de importantes; 3, 5, 7 y 9 = moderada, fuerte, muy fuerte y extrema; los pares, intermedios.
+escala_max: 9
+# Aviso visible (no bloqueo) cuando la razón de consistencia pasa de 0,10 (en milésimas).
+umbral_razon_milesimas: 100
+# El índice aleatorio (IA) por número de criterios, en milésimas: la tabla de Saaty (1980, «The Analytic Hierarchy
+# Process», McGraw-Hill), de n = 3 a n = 15. Las tablas publicadas difieren según la simulación que las produjo; esta es
+# una convención declarada, como los umbrales del método. Con n ≤ 2 toda matriz es consistente y no se usa.
+indice_aleatorio:
+  - { n: 3, milesimas: 580 }
+  - { n: 4, milesimas: 900 }
+  - { n: 5, milesimas: 1120 }
+  - { n: 6, milesimas: 1240 }
+  - { n: 7, milesimas: 1320 }
+  - { n: 8, milesimas: 1410 }
+  - { n: 9, milesimas: 1450 }
+  - { n: 10, milesimas: 1490 }
+  - { n: 11, milesimas: 1510 }
+  - { n: 12, milesimas: 1480 }
+  - { n: 13, milesimas: 1560 }
+  - { n: 14, milesimas: 1570 }
+  - { n: 15, milesimas: 1590 }
+declaracion:
+  es: "Los pesos por pares salen de la media geométrica de cada fila; la razón de consistencia se compara con el índice aleatorio de Saaty (1980). El umbral de 0,10 es una convención: pasarlo avisa, no bloquea."
+  en: "Pairwise weights come from each row's geometric mean; the consistency ratio is compared with Saaty's (1980) random index. The 0.10 threshold is a convention: going over it warns, it does not block."

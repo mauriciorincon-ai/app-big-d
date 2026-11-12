@@ -20,3 +20,4 @@ export { CASOS_DE_REFERENCIA, correrReferencia, resumen, type CasoDeReferencia, 
 export { enteroMenorQue, sfc32, siguiente, type Sfc32 } from "./sfc32";
 export { avanzar, entradaSimulacion, enZonaGris, iniciar, muestras, N_MAX_SIMULACION, rangoEntero, resultadoDe, semiamplitud, simular, type Clase, type EntradaSimulacion, type EstadoSimulacion, type ResultadoSemilla, type ResultadoSimulacion } from "./simulacion";
 export { atender, type Peticion, type Respuesta } from "./protocolo";
+export { paresCanonicos, paresDe, pesosPorPares, raizEntera, type ConvencionPares, type Juicio, type ResultadoPares } from "./pares";

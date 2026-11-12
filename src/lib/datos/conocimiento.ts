@@ -91,6 +91,20 @@ export const esquemaConvenciones = z
     if (new Set(semillas).size !== semillas.length) r(["simulacion", "semillas_estabilidad"], "las semillas no se repiten ni repiten la principal");
   });
 
+/** D7 (S8): la convención de la comparación de pares (data/convenciones/pares.yaml). No entra a la instantánea. */
+export const esquemaConvencionesPares = z
+  .strictObject({
+    id: z.literal("pares"),
+    escala_max: entero(2, 9),
+    umbral_razon_milesimas: entero(1, 1_000),
+    /** El índice aleatorio de Saaty por número de criterios, en milésimas (n ≥ 3). */
+    indice_aleatorio: z.array(z.strictObject({ n: entero(3, 50), milesimas: entero(1, 10_000) })).min(1, "al menos un índice aleatorio"),
+    declaracion: textoIdioma,
+  })
+  .superRefine((c, ctx) => {
+    if (!sinRepetir(c.indice_aleatorio, (x) => String(x.n))) ctx.addIssue({ code: "custom", path: ["indice_aleatorio"], message: "un n aparece dos veces" });
+  });
+
 /** E-18: quién publica la fuente y qué interés tiene respecto de la plataforma de la evidencia. */
 export const CONFLICTOS = ["propio-fabricante", "fabricante-competidor", "socio-comercial", "resena-incentivada", "independiente"] as const;
 
@@ -166,7 +180,7 @@ export const esquemaCaso = z
           /** Cuánto podría variar el peso, relativo a él (E-2: ±20 % de 30 = 24–36). */
           rango_relativo_pct: entero(0, 100),
           /** RF-03.3. */
-          origen: z.enum(["declarado-por-usuario", "propuesto-por-agente"]),
+          origen: z.enum(["declarado-por-usuario", "propuesto-por-agente", "comparacion-por-pares"]),
           /** Quién lo fijó en el caso (p. ej., el comité clínico). */
           fijado_por: textoIdioma.optional(),
           /** Esencial para este caso: entra al leximin y a la evidencia limitante. */
@@ -246,6 +260,7 @@ export type Capacidad = z.infer<typeof esquemaCapacidad>;
 export type Criterio = z.infer<typeof esquemaCriterio>;
 export type Escala = z.infer<typeof esquemaEscala>;
 export type Convenciones = z.infer<typeof esquemaConvenciones>;
+export type ConvencionesPares = z.infer<typeof esquemaConvencionesPares>;
 export type Evidencia = z.infer<typeof esquemaEvidencia>;
 export type Caso = z.infer<typeof esquemaCaso>;
 export type Instantanea = z.infer<typeof esquemaInstantanea>;

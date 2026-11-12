@@ -6,7 +6,7 @@
 // El plan del caso (S5: ondas, prioridad de acción, residual, recomendación y alertas) entra con seis variantes.
 // S6: la hoja de ruta de cada variante del plan, la medida de lectura del E-13 en español y en inglés (sílabas, palabras y
 // términos con expresiones regulares Unicode) y el modelo del informe de cinco variantes, con perfil y plan aprobados o no.
-import { CASOS_DE_REFERENCIA, canonicoEstricto, comparacionDe, entradaSimulacion, evaluar, hojaDeRuta, medirLectura, modeloInforme, planDe, simular, type Entrada, type EntradaPlan, type EntradaRuta, type ResultadoPlan } from "../../src/engine";
+import { CASOS_DE_REFERENCIA, canonicoEstricto, paresCanonicos, pesosPorPares, comparacionDe, entradaSimulacion, evaluar, hojaDeRuta, medirLectura, modeloInforme, planDe, simular, type Entrada, type EntradaPlan, type EntradaRuta, type ResultadoPlan } from "../../src/engine";
 import { futuro } from "../unit/nucleo/lib/futuro";
 import { planCon, VARIANTES_PLAN } from "../unit/nucleo/lib/plan";
 
@@ -139,5 +139,22 @@ export function casosNucleo(): { caso: string; texto: string }[] {
   informe("informe-ciclo", "2026-10-06", (e) => void (e.decisiones[0] = { ...e.decisiones[0]!, depende_de: ["dec-f"] }), true, true);
   informe("informe-alta-sin-mitigacion", "2026-10-06", (e) => void (e.modos_de_falla[0] = { ...e.modos_de_falla[0]!, mitigaciones: [] }), true, true);
   informe("informe-aprobado", "2026-10-06", (e) => void (e.modos_de_falla = e.modos_de_falla.map((m) => ({ ...m, mitigaciones: m.mitigaciones.length ? m.mitigaciones : [{ efecto: { ocurrencia: 1 } }] }))), true, true);
+  // S8 (D7): los pesos por comparación de pares con la tabla de Saaty fija (la de data/convenciones/pares.yaml): 1, 3, 4 y 11
+  // criterios, consistente e inconsistente; BigInt y raíz entera, los mismos bytes en los cuatro motores.
+  const CONV_PARES = { escala_max: 9, umbral_razon_milesimas: 100, indice_aleatorio: [580, 900, 1120, 1240, 1320, 1410, 1450, 1490, 1510, 1480, 1560, 1570, 1590].map((milesimas, i) => ({ n: i + 3, milesimas })) };
+  const pares = (nombre: string, k: number, semilla: number) => {
+    const r = xorshift(semilla);
+    const ids = Array.from({ length: k }, (_, j) => `crit-${String.fromCharCode(97 + j)}`);
+    const juicios = paresCanonicos(ids).map(([a, b]) => {
+      const v = r(17) - 8;
+      return v >= 0 ? { mayor: a, menor: b, intensidad: v + 1 } : { mayor: b, menor: a, intensidad: 1 - v };
+    });
+    out.push({ caso: nombre, texto: canonicoEstricto(pesosPorPares(ids, juicios, CONV_PARES)) });
+  };
+  pares("pares-1", 1, 1);
+  pares("pares-3", 3, 2);
+  pares("pares-4", 4, 3);
+  pares("pares-11-a", 11, 4);
+  pares("pares-11-b", 11, 5);
   return out;
 }
