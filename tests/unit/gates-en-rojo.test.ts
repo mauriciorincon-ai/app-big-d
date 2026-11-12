@@ -130,6 +130,22 @@ describe("S6-B5: informe-legible", () => {
   });
 });
 
+describe("S9-F1: jerga", () => {
+  it("una palabra del resumen que sale del vocabulario llano deja el gate en rojo, la nombra y no hay out/", () => {
+    const { datos, salida } = copiaAprobada();
+    const ruta = join(datos, "convenciones/jerga.yaml");
+    const texto = readFileSync(ruta, "utf8");
+    expect(texto).toMatch(/^ {4}"riesgos": \d$/m);
+    writeFileSync(ruta, texto.replace(/^ {4}"riesgos": \d\n/m, ""));
+    const r = validar(datos, salida);
+    expect(r.status, r.salida).not.toBe(0);
+    expect(r.salida).toContain("jerga");
+    expect(r.salida).toContain("riesgos");
+    expect(r.salida).toContain("no se publica");
+    expect(r.hayOut).toBe(false);
+  });
+});
+
 describe("S5-B-10: contrato-lock", () => {
   for (const nombre of Object.keys(OBJETOS))
     it(`${nombre}: un byte cambiado en la copia deja exactamente ese archivo fuera de su huella`, () => {

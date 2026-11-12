@@ -10,6 +10,8 @@ import { esquemaConvencionesInforme, esquemaRelatoDeFracaso, type ConvencionesIn
 import { cambiosEntre, compararInstantanea, huellaCaso, huellaDe, huellaPlan, type Base } from "./instantanea";
 import { esquemaDecision, esquemaModoDeFalla, esquemaPlanCaso, esquemaSupuesto, type Decision, type ModoDeFalla, type Plan, type PlanCaso, type Supuesto } from "./plan";
 import { dirDatos } from "./dir";
+import { esquemaConvencionesEntrevista, type ConvencionesEntrevista } from "./entrevista";
+import { esquemaConvencionesJerga, type ConvencionesJerga } from "./jerga";
 import { migrarContrato } from "./migrar";
 import { leerConPosicion, linea, validarLeido, type Leido, type Ruta } from "./posicion";
 import { vocabularioVetado } from "./vocabulario";
@@ -28,6 +30,10 @@ export interface Conocimiento extends Base {
   informe: ConvencionesInforme;
   /** S8 (D7): la escala, el umbral y el índice aleatorio de la comparación de pares. No entra a la instantánea. */
   pares: ConvencionesPares;
+  /** S9 (F1): las preguntas del entrevistador y la regla que las vuelve pesos. No entra a la instantánea. */
+  entrevista: ConvencionesEntrevista;
+  /** S9 (F1): la tabla de palabras del detector de jerga y las permitidas. No entra a la instantánea. */
+  jerga: ConvencionesJerga;
   capacidades: Capacidad[];
   criterios: Criterio[];
   escalas: Escala[];
@@ -199,13 +205,17 @@ export function cargarConocimiento(dir = dirDatos()): Conocimiento {
   const plataformas = entidades<Plataforma>(join(dir, "plataformas"), "data/plataformas", esquemaPlataforma, fallas).map((x) => x.v);
 
   const archivosConv = yamls(join(dir, "convenciones"));
-  if (archivosConv.join() !== "informe.yaml,metodo.yaml,pares.yaml") fallas.push(`data/convenciones · la base trae exactamente tres archivos de convenciones, informe.yaml, metodo.yaml y pares.yaml (hay: ${archivosConv.join(", ") || "ninguno"})`);
+  if (archivosConv.join() !== "entrevista.yaml,informe.yaml,jerga.yaml,metodo.yaml,pares.yaml") fallas.push(`data/convenciones · la base trae exactamente cinco archivos de convenciones, entrevista.yaml, informe.yaml, jerga.yaml, metodo.yaml y pares.yaml (hay: ${archivosConv.join(", ") || "ninguno"})`);
   const convL = archivosConv.includes("metodo.yaml") ? leerConPosicion(join(dir, "convenciones/metodo.yaml"), "data/convenciones/metodo.yaml", fallas) : null;
   const convenciones = convL ? (validarLeido(convL, esquemaConvenciones, fallas) as Convenciones | null) : null;
   const infL = archivosConv.includes("informe.yaml") ? leerConPosicion(join(dir, "convenciones/informe.yaml"), "data/convenciones/informe.yaml", fallas) : null;
   const convInforme = infL ? (validarLeido(infL, esquemaConvencionesInforme, fallas) as ConvencionesInforme | null) : null;
   const parL = archivosConv.includes("pares.yaml") ? leerConPosicion(join(dir, "convenciones/pares.yaml"), "data/convenciones/pares.yaml", fallas) : null;
   const convPares = parL ? (validarLeido(parL, esquemaConvencionesPares, fallas) as ConvencionesPares | null) : null;
+  const entL = archivosConv.includes("entrevista.yaml") ? leerConPosicion(join(dir, "convenciones/entrevista.yaml"), "data/convenciones/entrevista.yaml", fallas) : null;
+  const convEntrevista = entL ? (validarLeido(entL, esquemaConvencionesEntrevista, fallas) as ConvencionesEntrevista | null) : null;
+  const jerL = archivosConv.includes("jerga.yaml") ? leerConPosicion(join(dir, "convenciones/jerga.yaml"), "data/convenciones/jerga.yaml", fallas) : null;
+  const convJerga = jerL ? (validarLeido(jerL, esquemaConvencionesJerga, fallas) as ConvencionesJerga | null) : null;
 
   // La gramática del atlas: de ella salen las capacidades y la escala de madurez.
   let gramatica: Gramatica | null = null;
@@ -317,6 +327,11 @@ export function cargarConocimiento(dir = dirDatos()): Conocimiento {
     // La comparación de pares (D7) necesita el índice aleatorio de n criterios; sin él, la pantalla del perfil fallaría al dibujarse.
     const n = c.criterios.length;
     if (convPares && n >= 3 && !convPares.indice_aleatorio.some((r) => r.n === n)) fallas.push(linea(x.l, ["criterios"], `el caso tiene ${n} criterios y data/convenciones/pares.yaml no trae el índice aleatorio para n = ${n}`));
+    // El entrevistador (S9) pregunta por cada criterio del caso, y cada pregunta apunta a un criterio que existe.
+    if (convEntrevista) {
+      const conPregunta = new Set(convEntrevista.preguntas.map((q) => q.criterio_id));
+      c.criterios.forEach((k, i) => !conPregunta.has(k.criterio_id) && fallas.push(linea(x.l, ["criterios", i, "criterio_id"], `«${k.criterio_id}» no tiene pregunta en data/convenciones/entrevista.yaml`)));
+    }
     // Un borrador sin instantánea se cruza con la base viva; con instantánea, con lo que ella congeló.
     const inst = c.instantanea === null ? null : porVersion.get(c.instantanea);
     if (c.instantanea !== null && !inst) {
@@ -362,13 +377,20 @@ export function cargarConocimiento(dir = dirDatos()): Conocimiento {
     relatos.push(v);
   }
 
-  if (fallas.length || !convenciones || !convInforme || !convPares || !gramatica) throw new ErrorDeDatos(fallas.length ? fallas : ["data/convenciones · sin convenciones ni gramática no hay base"]);
+  if (convEntrevista) {
+    const existentes = new Set(criterios.map((x) => x.v.id));
+    convEntrevista.preguntas.forEach((q, i) => !existentes.has(q.criterio_id) && fallas.push(linea(entL!, ["preguntas", i, "criterio_id"], `«${q.criterio_id}» no es un criterio de data/criterios`)));
+  }
+
+  if (fallas.length || !convenciones || !convInforme || !convPares || !convEntrevista || !convJerga || !gramatica) throw new ErrorDeDatos(fallas.length ? fallas : ["data/convenciones · sin convenciones ni gramática no hay base"]);
   return {
     gramatica,
     plataformas,
     convenciones,
     informe: convInforme,
     pares: convPares,
+    entrevista: convEntrevista,
+    jerga: convJerga,
     capacidades: capacidades.map((x) => x.v),
     criterios: criterios.map((x) => x.v),
     escalas: escalas.map((x) => x.v),

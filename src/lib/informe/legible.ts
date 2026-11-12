@@ -1,4 +1,5 @@
 import type { Conocimiento } from "@/lib/datos/cargar-conocimiento";
+import { detectarJerga, palabrasDe } from "@/engine";
 import { IDIOMAS } from "@/lib/i18n";
 import { construirInforme } from "./construir";
 import { lecturaDelResumen } from "./narrativa";
@@ -26,6 +27,28 @@ export function resumenesIlegibles(k: Conocimiento): string[] {
         fallas.push(`${donde} · ${lectura.palabras} palabras, ${lectura.silabas} sílabas y ${lectura.terminos.length} términos a explicar (${roto.join(" y ")}): el presupuesto es de ${palabras_max} palabras o ${silabas_max} sílabas y ${terminos_max} término(s)`);
       }
       if (sinExplicar.length) fallas.push(`${donde} · términos a explicar sin entrada en el glosario de data/convenciones/informe.yaml: ${sinExplicar.join(", ")}`);
+    }
+  }
+  return fallas;
+}
+
+// S9 (regla dura 11, decisions/jargon-detector.md): el detector de jerga sobre el mismo párrafo de § 1, en cada idioma. Una
+// palabra rara (fuera de la tabla derivada de los textos del proyecto), que no es una permitida del dato ni un término que el
+// glosario del informe explica, deja la base sin publicar: se reescribe el texto o una persona la agrega a `permitidas`.
+export function resumenesConJerga(k: Conocimiento): string[] {
+  const fallas: string[] = [];
+  for (const caso of k.casos) {
+    const plan = k.planes.find((p) => p.caso_id === caso.id);
+    if (!plan) continue;
+    const informe = construirInforme(k, caso, plan);
+    for (const idioma of IDIOMAS) {
+      const { texto } = lecturaDelResumen(k, informe, plan, idioma);
+      const tabla = { largo_minimo: k.jerga.largo_minimo, umbral_cubo: k.jerga.umbral_cubo, cubos: k.jerga.cubos[idioma] };
+      const explicadas = k.informe.glosario.flatMap((g) => g.formas[idioma]);
+      // Los nombres de las plataformas de la base son nombres propios: se citan tal cual, no son jerga.
+      const nombres = k.plataformas.flatMap((p) => palabrasDe(p.nombre[idioma]));
+      const raras = detectarJerga(texto, tabla, [...k.jerga.permitidas[idioma], ...nombres], explicadas);
+      if (raras.length) fallas.push(`data/casos/${caso.id} · ${caso.id} · informe.resumen.${idioma} · palabras fuera del vocabulario llano de data/convenciones/jerga.yaml: ${raras.join(", ")}`);
     }
   }
   return fallas;

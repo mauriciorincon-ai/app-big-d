@@ -1,0 +1,83 @@
+# S9 (F1): la convención del entrevistador. Una pregunta por criterio, redactada sin nombrar ninguna plataforma, y una escala
+# común de importancia. Las respuestas se traducen a pesos (enteros, en centésimas, que suman 10 000, repartidos en proporción
+# al valor de cada respuesta) por una regla del dato, no del código. El resultado es un perfil PROPUESTO, en borrador, con
+# origen `entrevista`: solo el comando de aprobación, que arma la pantalla y corre una persona, lo vuelve declarado.
+# No entra a la instantánea y ningún modelo interviene: es código puro.
+id: entrevista
+introduccion:
+  es: "Responde a cada pregunta pensando en tu organización, no en ninguna plataforma. Al terminar, la pantalla propone los pesos del perfil; tú decides si los usas."
+  en: "Answer each question thinking about your organization, not about any platform. When you finish, the screen proposes the profile weights; you decide whether to use them."
+# La escala de importancia, de menor a mayor. `valor` es lo que pesa la respuesta (entero); el peso de un criterio es su valor
+# entre la suma de los valores de todos.
+niveles:
+  - id: poco
+    valor: 0
+    texto: { es: "No nos preocupa", en: "It does not worry us" }
+  - id: algo
+    valor: 1
+    texto: { es: "Importa un poco", en: "It matters a little" }
+  - id: mucho
+    valor: 3
+    texto: { es: "Importa mucho", en: "It matters a lot" }
+  - id: decisivo
+    valor: 5
+    texto: { es: "Es decisivo: sin esto no seguimos", en: "It is decisive: without it we stop" }
+# Las restricciones que eliminan plataformas se conservan solo para los criterios cuya respuesta vale al menos esto: quien dice
+# «no nos preocupa» no quiere que ese tema deje a nadie fuera.
+conserva_restricciones_desde: 3
+preguntas:
+  - id: p-almacenamiento
+    criterio_id: crit-almacenamiento
+    texto:
+      es: "¿Cuánto importa que guardar los datos sea simple, barato y que crezca sin rehacer nada?"
+      en: "How much does it matter that storing the data is simple, cheap and grows without redoing anything?"
+  - id: p-consumo
+    criterio_id: crit-consumo
+    texto:
+      es: "¿Cuánto importa que las personas del equipo encuentren y usen los datos por sí mismas, en informes, consultas o aplicaciones?"
+      en: "How much does it matter that people on the team find and use the data on their own, in reports, queries or applications?"
+  - id: p-costo
+    criterio_id: crit-costo
+    texto:
+      es: "¿Cuánto importa saber de antemano cuánto va a costar cada mes, sin sorpresas cuando crezca el uso?"
+      en: "How much does it matter to know in advance what it will cost each month, with no surprises when usage grows?"
+  - id: p-cumplimiento
+    criterio_id: crit-cumplimiento
+    texto:
+      es: "¿Cuánto importa poder demostrar ante una auditoría o un regulador cómo se protegen y se manejan los datos?"
+      en: "How much does it matter to be able to show an auditor or a regulator how the data is protected and handled?"
+  - id: p-dependencia
+    criterio_id: crit-dependencia
+    texto:
+      es: "¿Cuánto importa poder irse a otro proveedor más adelante sin perder lo construido?"
+      en: "How much does it matter to be able to move to another provider later without losing what was built?"
+  - id: p-ecosistema
+    criterio_id: crit-ecosistema
+    texto:
+      es: "¿Cuánto importa que lo nuevo se lleve bien con las herramientas que la organización ya usa?"
+      en: "How much does it matter that the new thing works well with the tools the organization already uses?"
+  - id: p-gobierno
+    criterio_id: crit-gobierno
+    texto:
+      es: "¿Cuánto importa controlar quién ve qué dato y dejar constancia de cada acceso?"
+      en: "How much does it matter to control who sees which data and keep a record of every access?"
+  - id: p-habilidades
+    criterio_id: crit-habilidades
+    texto:
+      es: "¿Cuánto importa que el equipo actual pueda aprender a usarla rápido, sin contratar a especialistas nuevos?"
+      en: "How much does it matter that the current team can learn to use it quickly, without hiring new specialists?"
+  - id: p-ia
+    criterio_id: crit-ia
+    texto:
+      es: "¿Cuánto importa poder construir, con los mismos datos, modelos de inteligencia artificial y aplicaciones que los usen?"
+      en: "How much does it matter to build artificial intelligence models and applications on the same data?"
+  - id: p-ingesta
+    criterio_id: crit-ingesta
+    texto:
+      es: "¿Cuánto importa traer datos de muchas fuentes distintas, por lotes o casi al instante?"
+      en: "How much does it matter to bring in data from many different sources, in batches or almost instantly?"
+  - id: p-transformacion
+    criterio_id: crit-transformacion
+    texto:
+      es: "¿Cuánto importa limpiar, combinar y programar los procesos que preparan los datos, con ayuda de la propia plataforma?"
+      en: "How much does it matter to clean, combine and schedule the processes that prepare the data, with the platform's own help?"
