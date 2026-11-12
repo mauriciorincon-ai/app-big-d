@@ -5,7 +5,7 @@ hito: H-2 «El caso se mueve (apertura del H-2)»
 opened: 2026-11-11
 closed: 2026-11-11
 branch: sprint-008/el-caso-se-mueve
-pr: pendiente
+pr: 25
 ---
 
 # Sprint 008 · cierre
