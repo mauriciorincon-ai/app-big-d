@@ -68,7 +68,7 @@ for (const idioma of ["es", "en"] as const)
       idioma === "es" ? "100,00" : "100.00",
     );
     // El comando aparece en cuanto se responden las decisiones: si ya está, lleva los pesos propuestos.
-    const comando = page.locator(".comando code");
+    const comando = page.locator("#editor-perfil .comando code");
     if (await comando.count())
       await expect(comando).toContainText(/--pesos crit-[a-z-]+=9(09|10),/);
   });
