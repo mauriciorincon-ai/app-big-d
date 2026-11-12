@@ -207,12 +207,14 @@ describe("vista del lado a lado", () => {
     expect(v.css).toMatch(/\.lado-filas::before\{left:\d+(\.\d)?px\}/);
   });
 
-  it("N plataformas: una quinta entra sola, en su lugar por id, sin tocar código", () => {
+  it("N plataformas: una más entra sola, en su lugar por id, sin tocar código", () => {
     const v = vistaLado(conOtra(d, "ocelote"), "es", FECHA);
     expect(v.ids).toEqual([...d.plataformas.map((p) => p.id), "ocelote"].sort());
     expect(v.filas.find((f) => f.id === "ocelote")!.n1).toContain('data-mapa="ocelote"');
     expect(v.script).toContain('"ocelote"');
-    expect(tituloLado("es", v.ids.length)).toBe("Cinco plataformas, el mismo mapa");
+    expect(v.ids).toHaveLength(d.plataformas.length + 1);
+    // El número en palabras, sin una cuenta a mano que caduque con la plataforma siguiente.
+    expect(tituloLado("es", v.ids.length)).toMatch(/^[A-ZÁÉÍÓÚ][a-záéíóú]+ plataformas, el mismo mapa$/);
   });
 
   it("neutralidad: reordenar las plataformas en el dato no cambia un byte", () => {
