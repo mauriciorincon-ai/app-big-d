@@ -70,7 +70,11 @@ for (const idioma of ["es", "en"] as const)
     // El comando aparece en cuanto se responden las decisiones: si ya está, lleva los pesos propuestos.
     const comando = page.locator("#editor-perfil .comando code");
     if (await comando.count())
-      await expect(comando).toContainText(/--pesos crit-[a-z-]+=9(09|10),/);
+      await expect(comando).toContainText(
+        new RegExp(
+          `--pesos crit-[a-z-]+=(${Math.floor(10000 / N)}|${Math.ceil(10000 / N)}),`,
+        ),
+      );
   });
 
 test("es · todos los pares a favor del primero (9) no son transitivos: avisa con ícono y texto, y deja usar los pesos", async ({
