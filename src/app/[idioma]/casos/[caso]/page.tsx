@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BarraPeso } from "@/components/caso/Barras";
+import { DuplicarCaso } from "@/components/caso/DuplicarCaso";
 import { EditorPerfil } from "@/components/caso/EditorPerfil";
 import { Alerta, Anillo, Aspa, Circulo, Estrella, Ok, Pendiente } from "@/components/caso/Iconos";
 import { Meta } from "@/components/Meta";
@@ -78,6 +79,7 @@ export default async function Perfil({ params }: PageProps<"/[idioma]/casos/[cas
                 plantilla(t.archivo, { id: caso.id }),
                 plantilla(t.evaluacion, { fecha: caso.fecha_evaluacion }),
                 caso.instantanea ? plantilla(t.instantanea, { version: caso.instantanea }) : t.sinInstantanea,
+                ...(caso.origen ? [plantilla(t.duplicar.copiaDe, { caso: k.casos.find((x) => x.id === caso.origen!.duplicado_de)?.nombre[idioma] ?? caso.origen.duplicado_de })] : []),
               ]}
             />
           )}
@@ -227,6 +229,8 @@ export default async function Perfil({ params }: PageProps<"/[idioma]/casos/[cas
           t={{ ...t.editor, suma: t.pesos.suma, sumaBien: t.pesos.sumaBien, copiar: T.investigador.comando.copiar, copiado: T.investigador.comando.copiado, sinResponder: t.decisiones.sinResponder, pares: t.pares }}
         />
       )}
+
+      <DuplicarCaso caso={caso.id} existentes={k.casos.map((x) => x.id)} t={t.duplicar} copiar={T.investigador.comando.copiar} copiado={T.investigador.comando.copiado} />
 
       <details className="lectura-seccion contexto">
         <summary>{t.contexto}</summary>

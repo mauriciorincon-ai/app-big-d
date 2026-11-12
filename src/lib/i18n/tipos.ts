@@ -375,6 +375,15 @@ export interface Textos {
         sinComando: string;
         usadosPares: string;
       };
+      /** D3 (S8): duplicar el caso; la pantalla arma el comando y una persona lo corre. */
+      duplicar: {
+        titulo: string;
+        nota: string;
+        etiqueta: string;
+        problemas: { vacio: string; invalido: string; mismo: string; existe: string };
+        comandoNota: string;
+        copiaDe: string;
+      };
       /** D7 (S8): la comparación de pares dentro del editor del perfil. */
       pares: {
         titulo: string;

@@ -100,3 +100,7 @@
 .comparacion-pares .par { display: flex; flex-wrap: wrap; gap: 6px 10px; margin: 6px 0; }
 .comparacion-pares .par select { min-height: 36px; max-width: 100%; padding: 0 8px; font: 500 14px/1.2 var(--letra); color: var(--tinta-1); background: var(--sup-2); border: 1.5px solid var(--linea); border-radius: 6px; }
 .comparacion-pares .par select:focus-visible { outline: 2px solid var(--tinta-1); outline-offset: 2px; }
+/* D3 (S8): el id de la copia del caso. */
+.duplicar .campo-id { display: block; width: 100%; max-width: 24em; min-height: 36px; margin: 6px 0 10px; padding: 0 8px; font: 500 15px/1 var(--letra-mono); color: var(--tinta-1); background: var(--sup-2); border: 1.5px solid var(--linea); border-radius: 6px; }
+.duplicar .campo-id:focus-visible { outline: 2px solid var(--tinta-1); outline-offset: 2px; }
+.duplicar .campo-id[aria-invalid="true"] { border-style: dashed; border-color: var(--tinta-1); }

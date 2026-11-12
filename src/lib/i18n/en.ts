@@ -738,6 +738,19 @@ export const en: Textos = {
         sinComando: "No command yet: fix what is marked above.",
         usadosPares: "These weights come from the pairwise comparison (origin: pairwise comparison). They become yours, declared, only when you run the command.",
       },
+      duplicar: {
+        titulo: "Duplicate this case",
+        nota: "To try a variant without touching this case: the copy starts as a draft, with its plan, and remembers which case it came from. Type its id and run the command in your terminal; this page writes nothing.",
+        etiqueta: "Id of the copy",
+        problemas: {
+          vacio: "Type the id of the copy.",
+          invalido: "Use lowercase letters, numbers and hyphens, like “hospital-futuro-b”.",
+          mismo: "That is this case's id: pick another.",
+          existe: "A case with that id already exists: pick another.",
+        },
+        comandoNota: "Run it in a terminal open in the project folder. Only a person can run it; if the id already exists, it refuses and writes nothing.",
+        copiaDe: "copy of {caso}",
+      },
       pares: {
         titulo: "Compare in pairs",
         nota: "Can't split 100 points? Compare the criteria two at a time: for each pair, which matters more and by how much. The screen proposes the weights and you decide whether to use them; nothing gets approved here.",

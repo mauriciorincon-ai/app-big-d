@@ -738,6 +738,19 @@ export const es: Textos = {
         sinComando: "Aún no hay comando: arregla lo marcado arriba.",
         usadosPares: "Estos pesos vienen de la comparación de pares (origen: comparación de pares). Pasan a ser tuyos, declarados, solo cuando corres el comando.",
       },
+      duplicar: {
+        titulo: "Duplicar este caso",
+        nota: "Para probar una variante sin tocar este caso: la copia nace en borrador, con su plan, y recuerda de qué caso salió. Escribe su id y corre el comando en tu terminal; esta página no escribe nada.",
+        etiqueta: "Id de la copia",
+        problemas: {
+          vacio: "Escribe el id de la copia.",
+          invalido: "Usa minúsculas, números y guiones, como «hospital-futuro-b».",
+          mismo: "Ese es el id de este caso: elige otro.",
+          existe: "Ya hay un caso con ese id: elige otro.",
+        },
+        comandoNota: "Córrelo en una terminal abierta en la carpeta del proyecto. Solo una persona puede correrlo; si el id ya existe, se niega sin escribir nada.",
+        copiaDe: "copia de {caso}",
+      },
       pares: {
         titulo: "Comparar por pares",
         nota: "¿Repartir 100 puntos no te sale? Compara los criterios de dos en dos: en cada par, cuál importa más y cuánto. La pantalla propone los pesos y tú decides si los usas; aquí no se aprueba nada.",

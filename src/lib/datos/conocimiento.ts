@@ -217,6 +217,8 @@ export const esquemaCaso = z
     estado_aprobacion: z.enum(["borrador", "aprobado"]),
     /** El sello que escribe el comando de aprobación: la fecha y la huella del perfil aprobado. */
     aprobacion: z.strictObject({ fecha, huella: hex64 }).optional(),
+    /** D3 (S8): de qué caso es copia y la huella del perfil que se copió (scripts/duplicar-caso.mjs). */
+    origen: z.strictObject({ duplicado_de: id, huella: hex64 }).optional(),
   })
   .superRefine((c, ctx) => {
     const r = (path: (string | number)[], message: string) => ctx.addIssue({ code: "custom", path, message });

@@ -59,6 +59,11 @@ describe("candado — nadie corre la aprobación", () => {
     "/opt/homebrew/bin/node scripts/aprobar.mjs",
     "/usr/bin/env node scripts/aprobar.mjs",
     "nice ./scripts/aprobar.mjs",
+    // D3 (S8): duplicar un caso también es de una persona.
+    "node scripts/duplicar-caso.mjs hospital-futuro hospital-futuro-b",
+    "cd /repo && nice node ./scripts/duplicar-caso.mjs a b",
+    'node scripts/duplicar-ca""so.mjs a b',
+    "./scripts/duplicar-caso.mjs a b",
   ])("bloquea «%s» (sesión principal y subagente)", (c) => {
     expect(bash(c).status).toBe(2);
     expect(bash(c, INV).status).toBe(2);
@@ -75,6 +80,7 @@ describe("candado — nadie corre la aprobación", () => {
   it.each([
     "grep -n aprobar.mjs scripts/*.mjs",
     "git add scripts/aprobar.mjs",
+    "git add scripts/duplicar-caso.mjs",
     "cat scripts/aprobar.mjs",
     "pnpm test",
     "git commit -m 'el script de aprobación'",
