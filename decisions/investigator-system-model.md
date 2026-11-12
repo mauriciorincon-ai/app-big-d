@@ -29,7 +29,7 @@ and what it may and may not do. It does not change the first one ([investigator-
   and asks, per chunk, for a statement in each language and a literal quote. It does **not** draw new components
   or flows: the map is the base's, unchanged.
 - **Code decides, before and after.** Before writing, the code discards any quote that is not in the downloaded page,
-  any component outside the list, and any empty or long statement; the count by reason is printed. After writing, the
+  any component outside the list, any quote that is not a sentence (code, a heading, a list: fewer than two function words), any statement copied from the component names, and any statement not in its own language (function-word count); the count by reason is printed. These checks came from the first real run (2026-11-12, Snowflake storage layer, on a temporary copy): two literal «quotes» that were a SQL line and a repeated heading, a Spanish statement written in English and an English one copied from the prompt. What code cannot check (that a literal sentence really supports the statement) stays with the person who reviews. After writing, the
   proposal goes through the same Zod schema, the same diagramador validation (`validar.mjs`) and the same citation
   verification (`verificar-citas.mjs`) as the skill's, and the verification must hash this very proposal.
 - **Traceability.** `ejecucion.herramienta: "modelo-del-sistema"`, `ejecucion.base` (the base folder) and

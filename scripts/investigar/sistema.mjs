@@ -111,6 +111,27 @@ function carpetaBase(plataforma, base) {
   return carpetaPropuesta(`propuestas/${hay.at(-1)}`);
 }
 
+// Lo que el código puede comprobar del borrador sin otro modelo (la corrida real del 2026-11-12 sobre Snowflake trajo una
+// línea de SQL y un título repetido como «citas», un enunciado en español escrito en inglés y otro copiado de la lista).
+const PALABRAS = {
+  es: new Set("de la el los las que en y con para una un se por del al es su sus sin como".split(" ")),
+  en: new Set("the and of to a in is with for its it that by on as are an without".split(" ")),
+};
+const palabras = (t) => t.toLowerCase().match(/\p{L}+/gu) ?? [];
+/** Un enunciado está en su idioma si trae más palabras de función de ese idioma que del otro. */
+function enIdioma(t, idioma) {
+  const otro = idioma === "es" ? "en" : "es";
+  const ps = palabras(t);
+  return ps.filter((w) => PALABRAS[idioma].has(w)).length > ps.filter((w) => PALABRAS[otro].has(w)).length;
+}
+const mismo = (a, b) => palabras(a).join(" ") === palabras(b).join(" ");
+/** Una frase: al menos seis palabras, casi todo letras y espacios, y dos palabras de función (un título o una línea de código no las trae). */
+function esProsa(t) {
+  const ps = palabras(t);
+  const funcion = ps.filter((w) => PALABRAS.es.has(w) || PALABRAS.en.has(w)).length;
+  return ps.length >= 6 && funcion >= 2 && (t.match(/[\p{L}\s]/gu) ?? []).length / t.length >= 0.85;
+}
+
 const legible = (url) => {
   try {
     return decodeURIComponent(url).toLowerCase();
@@ -172,7 +193,8 @@ try {
   let llamadas = 0;
   for (const [url, pagina] of paginas) {
     const candidatos = nodos.filter((n) => n.fuentes.some((f) => f.url === url));
-    const lista = candidatos.map((n) => `- ${n.id}: ${n.nombre.en} — ${n.lider.en}`).join("\n");
+    // Solo los nombres: con la descripción del mapa a la vista, el modelo la copiaba como enunciado (corrida del 2026-11-12).
+    const lista = candidatos.map((n) => `- ${n.id}: ${n.nombre.es} / ${n.nombre.en}`).join("\n");
     for (const trozo of trozos(pagina.texto).slice(0, TROZOS_POR_PAGINA)) {
       llamadas++;
       const hallazgos = await m.generar({
@@ -185,15 +207,22 @@ try {
         const cita = String(h.cita ?? "").trim();
         const es = String(h.enunciado_es ?? "").trim();
         const en = String(h.enunciado_en ?? "").trim();
-        const motivo = !candidatos.some((n) => n.id === h.componente)
+        const nodo = candidatos.find((n) => n.id === h.componente);
+        const motivo = !nodo
           ? "componente fuera de la lista"
           : cita.length < 40 || cita.length > 600
             ? "cita de menos de 40 o más de 600 caracteres"
-            : !es || !en || es.length > 400 || en.length > 400
-              ? "enunciado vacío o largo"
-              : inv.verificarCita(200, pagina.html, cita).resultado !== "verificada"
-                ? "la cita no está en la página"
-                : null;
+            : !esProsa(cita)
+              ? "la cita no es una frase (código, título o lista)"
+              : !es || !en || es.length > 400 || en.length > 400
+                ? "enunciado vacío o largo"
+                : [nodo.lider.es, nodo.lider.en, nodo.nombre.es, nodo.nombre.en].some((x) => mismo(x, es) || mismo(x, en))
+                  ? "enunciado copiado de la lista, no del texto"
+                  : !enIdioma(es, "es") || !enIdioma(en, "en") || mismo(es, en)
+                    ? "enunciado que no está en su idioma"
+                    : inv.verificarCita(200, pagina.html, cita).resultado !== "verificada"
+                      ? "la cita no está en la página"
+                      : null;
         if (motivo) rechazos.push({ componente: String(h.componente), url, motivo });
         else if (!propias.has(h.componente)) propias.set(h.componente, { url, cita, es, en, titulo: pagina.titulo });
       }

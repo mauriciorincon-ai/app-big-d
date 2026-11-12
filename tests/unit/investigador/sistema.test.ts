@@ -101,9 +101,10 @@ describe("sistema.mjs con el modelo falso", () => {
     expect(r.stdout).toContain(
       `sistema: ${carpeta} · capa ${CAPA} sobre ${base} · ${n} de ${n} componentes con afirmación propia · ${n} de ${n} citas propias verificadas`,
     );
-    // Por página: una cita inventada y un componente fuera de la lista; el código los tumbó antes de escribir.
+    // Por página, uno por motivo: el código los tumbó antes de escribir.
     expect(r.stdout).toContain(
-      `${2 * n} rechazadas por el código antes de escribir (${n} la cita no está en la página, ${n} componente fuera de la lista)`,
+      `${5 * n} rechazadas por el código antes de escribir (${n} la cita no está en la página, ${n} componente fuera de la lista, ` +
+        `${n} la cita no es una frase (código, título o lista), ${n} enunciado que no está en su idioma, ${n} enunciado copiado de la lista, no del texto)`,
     );
     expect(r.stdout).toContain("Nada se aprobó");
 
