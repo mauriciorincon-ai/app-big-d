@@ -453,6 +453,19 @@ describe("una base rota no carga y dice dónde (RF-01.2)", () => {
       /pares\.yaml:\d+:\d+ · pares · indice_aleatorio · un n aparece dos veces$/,
     ],
     [
+      "un caso con más criterios que filas de índice aleatorio en la convención de pares",
+      (d) =>
+        yaml(
+          d,
+          "convenciones/pares.yaml",
+          (c) =>
+            void (c.indice_aleatorio = (
+              c.indice_aleatorio as { n: number }[]
+            ).filter((r) => r.n < 5)),
+        ),
+      /casos\/hospital-futuro\.yaml:\d+:\d+ · hospital-futuro · criterios · el caso tiene \d+ criterios y data\/convenciones\/pares\.yaml no trae el índice aleatorio para n = \d+$/,
+    ],
+    [
       "un presupuesto de lectura en cero",
       (d) =>
         yaml(

@@ -314,6 +314,9 @@ export function cargarConocimiento(dir = dirDatos()): Conocimiento {
   for (const x of casos) {
     const c = x.v;
     vetadas(x, ["nombre", "descripcion", "contexto", "requisitos", "restricciones", "decisiones_implicitas"], fallas);
+    // La comparación de pares (D7) necesita el índice aleatorio de n criterios; sin él, la pantalla del perfil fallaría al dibujarse.
+    const n = c.criterios.length;
+    if (convPares && n >= 3 && !convPares.indice_aleatorio.some((r) => r.n === n)) fallas.push(linea(x.l, ["criterios"], `el caso tiene ${n} criterios y data/convenciones/pares.yaml no trae el índice aleatorio para n = ${n}`));
     // Un borrador sin instantánea se cruza con la base viva; con instantánea, con lo que ella congeló.
     const inst = c.instantanea === null ? null : porVersion.get(c.instantanea);
     if (c.instantanea !== null && !inst) {
