@@ -12,7 +12,7 @@
     "enlaces.produccion": "null cuando la app no tiene URL pública. `razon` explica por qué, y es lo que la vitrina muestra en lugar del enlace. Nunca se rellena con un enlace de repositorio ni con una promesa."
   },
   "schema_version": "1.0.0",
-  "actualizado": "2026-10-27",
+  "actualizado": "2026-11-11",
   "app": {
     "slug": "big-d",
     "nombre": "Big-D",
@@ -29,7 +29,7 @@
     "diferencial": "Cada puntaje se apoya en una evidencia con fecha y cita, y el cálculo es abierto: lo repites, mueves los pesos y ves en qué punto cambiarías de opinión. El resultado sale de un núcleo sin IA que da los mismos bytes en Node, Chromium, Firefox y WebKit. Ninguna plataforma tiene trato especial: no hay logos de fabricante y el orden en que entran no cambia el resultado."
   },
   "funcionalidades": {
-    "total": 14,
+    "total": 17,
     "fuente_del_conteo": "docs/MANUAL-DE-USO.md",
     "descartadas": [],
     "grupos": [
@@ -106,6 +106,18 @@
             "nombre": "El plan y el informe, listos para presentar",
             "que_hace": "Te llevas el caso entero en una página: la hoja de ruta por fases, la lista de alistamiento y un informe de catorce secciones en español e inglés, con las mismas cifras. Cada ítem dice de dónde viene. Se imprime limpio, sin menús ni botones.",
             "seccion_manual": "14. El informe del caso"
+          },
+          {
+            "id": "F16",
+            "nombre": "Pesos por pares, sin repartir 100 a ojo",
+            "que_hace": "Comparas los criterios de dos en dos y la pantalla propone los pesos, que suman 100, y mide si tus juicios se contradicen. Si pasan del umbral avisa, no bloquea. Los números son enteros: los mismos juicios dan los mismos pesos en cualquier navegador.",
+            "seccion_manual": "16. Comparar por pares"
+          },
+          {
+            "id": "F17",
+            "nombre": "Una variante del caso, sin tocar el original",
+            "que_hace": "Para probar otra versión del caso, la pantalla arma el comando que crea una copia. La copia nace en borrador, con su plan en borrador, y recuerda de qué caso salió. Solo una persona corre el comando, y el original queda igual.",
+            "seccion_manual": "17. Duplicar un caso"
           }
         ]
       },
@@ -138,6 +150,12 @@
             "nombre": "La herramienta se prueba antes de publicar",
             "que_hace": "Sabes si puedes confiar en la herramienta antes de que se publique. Corre casos con respuesta conocida, propiedades matemáticas y siete errores sembrados a propósito, y comprueba que nadie editó a mano lo aprobado. Si algo falla, no se publica nada.",
             "seccion_manual": "12. El instrumento"
+          },
+          {
+            "id": "F15",
+            "nombre": "Qué cambió entre una versión y otra",
+            "que_hace": "Comparas cada instantánea de la base con la anterior: qué evidencia es nueva, cuál cambió y en qué campos, y cuál se retiró. Para cada caso ves si cambia la plataforma ganadora, el empate o lo que se descarta, dicho con palabras.",
+            "seccion_manual": "15. Qué cambió entre instantáneas"
           }
         ]
       }
@@ -147,10 +165,10 @@
     {
       "clave": "funcionalidades",
       "etiqueta": "Funcionalidades documentadas",
-      "valor": 14,
+      "valor": 17,
       "unidad": "funcionalidades",
       "fuente": "medido",
-      "detalle": "Las funciones numeradas del manual (docs/MANUAL-DE-USO.md), construidas en los sprints 1 a 6. Las de los sprints 3 y 4 (la base de conocimiento, el perfil del caso, la comparación y el instrumento) se cuentan desde que el manual las documenta. Lo recuenta tests/unit/brochure-export.test.ts."
+      "detalle": "Las funciones numeradas del manual (docs/MANUAL-DE-USO.md), construidas en los sprints 1 a 6 y 8. Las de los sprints 3 y 4 (la base de conocimiento, el perfil del caso, la comparación y el instrumento) se cuentan desde que el manual las documenta. Lo recuenta tests/unit/brochure-export.test.ts."
     },
     {
       "clave": "plataformas_en_el_atlas",
@@ -179,18 +197,18 @@
     {
       "clave": "pruebas_automaticas",
       "etiqueta": "Pruebas automáticas",
-      "valor": 3360,
+      "valor": 3438,
       "unidad": "pruebas",
       "fuente": "medido",
-      "detalle": "2186 unitarias y de integración (Vitest, 118 archivos, incluidas las del diagramador), 1165 de navegador (Playwright: escritorio, teléfono, Firefox, WebKit y la base sembrada) y 9 de determinismo (3 pruebas en 3 navegadores). Recontadas el 2026-10-27 sobre 84aa911: `pnpm test` y `playwright test --list`."
+      "detalle": "2244 unitarias y de integración (Vitest, 126 archivos, incluidas las del diagramador), 1185 de navegador (Playwright: escritorio, teléfono, Firefox, WebKit y la base sembrada) y 9 de determinismo (3 pruebas en 3 navegadores). Recontadas el 2026-11-11 sobre 36e1d26: `pnpm test` y `playwright test --list`."
     },
     {
       "clave": "cobertura_lineas",
       "etiqueta": "Cobertura de líneas",
-      "valor": 97.82,
+      "valor": 97.88,
       "unidad": "%",
       "fuente": "medido",
-      "detalle": "v8 sobre src/engine, src/lib, src/components y los dos paquetes de la casa (diagramador e instrumentos-de-plan): 5725 de 5852 líneas, `pnpm test` del 2026-10-27 sobre 84aa911. Motores y lib, umbral propio del 80 %."
+      "detalle": "v8 sobre src/engine, src/lib, src/components y los dos paquetes de la casa (diagramador e instrumentos-de-plan): 5983 de 6112 líneas, `pnpm test` del 2026-11-11 sobre 36e1d26. Motores y lib, umbral propio del 80 %."
     },
     {
       "clave": "motores_con_la_misma_huella",
