@@ -219,11 +219,12 @@ export default async function Perfil({ params }: PageProps<"/[idioma]/casos/[cas
             idioma,
             desde: huellaCaso(caso),
             perfil: caso,
+            pares: k.pares,
             criterios: caso.criterios.map((c) => ({ id: c.criterio_id, nombre: nombreCriterio.get(c.criterio_id) ?? c.criterio_id, esencial: c.esencial })),
             restricciones: caso.restricciones.map((r) => ({ id: r.id, texto: r.descripcion[idioma] })),
             decisiones: caso.decisiones_implicitas.map((d) => ({ id: d.id, pregunta: d.pregunta[idioma], opciones: d.opciones.map((o) => ({ id: o.id, texto: o.texto[idioma] })) })),
           }}
-          t={{ ...t.editor, suma: t.pesos.suma, sumaBien: t.pesos.sumaBien, copiar: T.investigador.comando.copiar, copiado: T.investigador.comando.copiado, sinResponder: t.decisiones.sinResponder }}
+          t={{ ...t.editor, suma: t.pesos.suma, sumaBien: t.pesos.sumaBien, copiar: T.investigador.comando.copiar, copiado: T.investigador.comando.copiado, sinResponder: t.decisiones.sinResponder, pares: t.pares }}
         />
       )}
 

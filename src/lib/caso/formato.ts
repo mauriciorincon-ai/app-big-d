@@ -85,3 +85,8 @@ export function lista(nombres: readonly string[], y: string): string {
 export function huellaCorta(h: string): { inicio: string; fin: string } {
   return { inicio: h.slice(0, 6), fin: h.slice(-4) };
 }
+
+/** Milésimas como número con tres decimales (42 → «0,042» en español, «0.042» en inglés); D7, la razón de consistencia. */
+export function milesimas(n: number, idioma: Idioma): string {
+  return `${Math.floor(n / 1000)}${idioma === "es" ? "," : "."}${String(n % 1000).padStart(3, "0")}`;
+}

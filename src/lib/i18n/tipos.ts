@@ -180,6 +180,15 @@ export interface Textos {
     criterios: { titulo: string; nota: string; capacidad: string; transversal: string };
     escala: { titulo: string; tabla: string; nota: string; madurez: string; tope: string; topeVistaPrevia: string; sinTope: string };
     convenciones: { titulo: string; nota: string; empate: string; robustez: string; vigencia: string; prosContras: string; sensibilidad: string; simulacion: string };
+    /** D2 (S8): qué cambió entre una instantánea y la anterior. */
+    diferencias: {
+      titulo: string; nota: string; una: string; par: string; nuevas: string; modificadas: string; retiradas: string; campos: string; ninguna: string;
+      casos: string; tablaCasos: string; caso: string; antes: string; ahora: string; cambia: string; gana: string; empate: string; fuera: string; noEvaluable: string;
+      motivos: { "perfil-en-borrador": string; "todas-descartadas": string; "falta-evidencia": string };
+      cambio: { ganadora: string; empate: string; bloqueo: string };
+      sinCambio: string;
+      sinCasos: string;
+    };
     instantaneas: {
       titulo: string;
       tabla: string;
@@ -364,6 +373,31 @@ export interface Textos {
         comandoTitulo: string;
         comandoNota: string;
         sinComando: string;
+        usadosPares: string;
+      };
+      /** D7 (S8): la comparación de pares dentro del editor del perfil. */
+      pares: {
+        titulo: string;
+        nota: string;
+        escala: string;
+        grupo: string;
+        anterior: string;
+        siguiente: string;
+        parDe: string;
+        sinJuzgar: string;
+        igual: string;
+        importaMas: string;
+        progreso: string;
+        faltan: readonly [string, string];
+        tabla: string;
+        criterio: string;
+        peso: string;
+        razon: string;
+        sinRazon: string;
+        consistente: string;
+        inconsistente: string;
+        usar: string;
+        declaracion: string;
       };
     };
     comparacion: {

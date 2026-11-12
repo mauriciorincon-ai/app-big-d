@@ -7,7 +7,10 @@ import {
   screen,
   within,
 } from "@testing-library/react";
-import { afterEach, describe, expect, it } from "vitest";
+import { readFileSync } from "node:fs";
+import { parse } from "yaml";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { esquemaConvencionesPares } from "@/lib/datos/conocimiento";
 import { EditorPerfil, type DatosEditor } from "@/components/caso/EditorPerfil";
 import { textos } from "@/lib/i18n";
 import {
@@ -45,10 +48,12 @@ const perfil: PerfilEditable = {
     },
   ],
 };
+const PARES = esquemaConvencionesPares.parse(parse(readFileSync("data/convenciones/pares.yaml", "utf8")));
 const datos: DatosEditor = {
   idioma: "es",
   desde: DESDE,
   perfil,
+  pares: PARES,
   criterios: [
     { id: "crit-gobierno", nombre: "Gobierno", esencial: true },
     { id: "crit-costo", nombre: "Costo", esencial: false },
@@ -82,6 +87,7 @@ const t = {
   copiar: T.investigador.comando.copiar,
   copiado: T.investigador.comando.copiado,
   sinResponder: T.caso.perfil.decisiones.sinResponder,
+  pares: T.caso.perfil.pares,
 };
 const pintar = (d: DatosEditor = datos) =>
   render(<EditorPerfil datos={d} t={t} />);
@@ -169,5 +175,49 @@ describe("EditorPerfil", () => {
   it("la sola vista del borrador no escribe ni aprueba nada: no hay botón de aprobar ni petición de red", () => {
     pintar();
     expect(screen.queryByRole("button", { name: /aprobar/i })).toBeNull();
+  });
+});
+
+// D7 (S8): la comparación de pares propone pesos; el avance vive en la URL y «usar» solo llena el editor.
+describe("EditorPerfil · comparar por pares", () => {
+  const P = T.caso.perfil.pares;
+  beforeEach(() => window.history.replaceState(null, "", "/es/casos/caso-de-prueba"));
+  const select = () => document.querySelector("[data-pares] select") as HTMLSelectElement;
+
+  it("sin juzgar dice cuántos pares faltan y no propone nada", () => {
+    pintar();
+    expect(document.querySelector("[data-pares-progreso]")!.textContent).toBe("0 de 1 pares juzgados");
+    expect(document.querySelector("[data-pares-faltan]")!.textContent).toContain("Falta juzgar 1 par");
+    expect(document.querySelector("[data-pares-propuesta]")).toBeNull();
+  });
+
+  it("juzgar el par escribe la URL (por id del criterio, no por posición) y propone los pesos con su razón", () => {
+    pintar();
+    // Pares canónicos por id: crit-costo < crit-gobierno; «Gobierno importa más (3)» es v = −2 → «g».
+    fireEvent.change(select(), { target: { value: "-2" } });
+    expect(window.location.search).toBe("?pares=g&grupo=1");
+    expect(document.querySelector('[data-peso-par="crit-gobierno"] td')!.textContent).toBe("75,00");
+    expect(document.querySelector('[data-peso-par="crit-costo"] td')!.textContent).toBe("25,00");
+    expect(document.querySelector('[data-pares-razon="nula"]')!.textContent).toContain(P.sinRazon);
+  });
+
+  it("«usar» llena el editor, dice el origen y el comando sale con esos pesos; tocar un peso a mano quita el aviso", () => {
+    window.history.replaceState(null, "", "/es/casos/caso-de-prueba?pares=g&grupo=1");
+    pintar();
+    fireEvent.click(screen.getByRole("button", { name: P.usar }));
+    expect(peso("Gobierno").value).toBe("75,00");
+    expect(peso("Costo").value).toBe("25,00");
+    expect(document.querySelector("[data-pesos-desde-pares]")!.textContent).toContain(t.usadosPares);
+    fireEvent.click(screen.getByLabelText("Una sola"));
+    expect(comandoVisible()).toContain("--pesos crit-gobierno=7500,crit-costo=2500");
+    fireEvent.change(peso("Costo"), { target: { value: "25" } });
+    expect(document.querySelector("[data-pesos-desde-pares]")).toBeNull();
+  });
+
+  it("una URL que no cabe cae a «nada juzgado»", () => {
+    window.history.replaceState(null, "", "/es/casos/caso-de-prueba?pares=zz&grupo=9");
+    pintar();
+    expect(document.querySelector("[data-pares-progreso]")!.textContent).toBe("0 de 1 pares juzgados");
+    expect(document.querySelector("[data-pares-grupo]")!.getAttribute("data-pares-grupo")).toBe("1");
   });
 });

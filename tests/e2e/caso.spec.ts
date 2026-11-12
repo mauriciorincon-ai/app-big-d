@@ -136,6 +136,10 @@ for (const idioma of IDIOMAS) {
     for (const [n, v] of INSTANTANEAS.entries())
       await expect(filas.nth(n).locator("td").first()).toContainText(v);
     await expect(filas.first()).toContainText(T.base.instantaneas.vigente);
+    // D2 (S8): con una sola instantánea, la sección de diferencias lo dice; con más, abre la más nueva frente a la anterior.
+    const dif = page.locator("[data-diferencias]");
+    if (INSTANTANEAS.length === 1) await expect(dif.locator('[data-estado="una-instantanea"]')).toHaveText(T.base.diferencias.una);
+    else await expect(dif.locator("[data-par-instantaneas]")).toHaveCount(INSTANTANEAS.length - 1);
     await expect(
       page.getByRole("link", { name: T.secciones.base }),
     ).toHaveAttribute("aria-current", "page");
