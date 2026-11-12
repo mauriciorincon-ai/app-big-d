@@ -104,3 +104,7 @@
 .duplicar .campo-id { display: block; width: 100%; max-width: 24em; min-height: 36px; margin: 6px 0 10px; padding: 0 8px; font: 500 15px/1 var(--letra-mono); color: var(--tinta-1); background: var(--sup-2); border: 1.5px solid var(--linea); border-radius: 6px; }
 .duplicar .campo-id:focus-visible { outline: 2px solid var(--tinta-1); outline-offset: 2px; }
 .duplicar .campo-id[aria-invalid="true"] { border-style: dashed; border-color: var(--tinta-1); }
+
+/* El aviso «esta tabla se desliza» (riesgos, robustez): lo usan la ruta de decisiones y la de comparación, así que vive aquí y no en una de ellas. */
+.pista-tabla { display: none; margin: 0 0 8px; font: 500 13px/1.4 var(--letra-mono); color: var(--tinta-2); }
+@media (max-width: 1260px) { .pista-tabla { display: block; } }

@@ -662,6 +662,10 @@ h1 { font-size: 32px; line-height: 1.1; font-weight: 700; letter-spacing: -0.025
 .duplicar .campo-id { display: block; width: 100%; max-width: 24em; min-height: 36px; margin: 6px 0 10px; padding: 0 8px; font: 500 15px/1 var(--letra-mono); color: var(--tinta-1); background: var(--sup-2); border: 1.5px solid var(--linea); border-radius: 6px; }
 .duplicar .campo-id:focus-visible { outline: 2px solid var(--tinta-1); outline-offset: 2px; }
 .duplicar .campo-id[aria-invalid="true"] { border-style: dashed; border-color: var(--tinta-1); }
+
+/* El aviso «esta tabla se desliza» (riesgos, robustez): lo usan la ruta de decisiones y la de comparación, así que vive aquí y no en una de ellas. */
+.pista-tabla { display: none; margin: 0 0 8px; font: 500 13px/1.4 var(--letra-mono); color: var(--tinta-2); }
+@media (max-width: 1260px) { .pista-tabla { display: block; } }
 /* ── src/styles/decisiones.css ── */
 /* Decisiones y riesgos del caso (S5; maqueta `decisiones.html`): el diagrama de ondas, la reversibilidad, la tabla de riesgos
    con su prioridad de acción, las tarjetas de supuesto y la ficha de la decisión. Mismos tokens que la maqueta: un solo
@@ -724,8 +728,6 @@ h1 { font-size: 32px; line-height: 1.1; font-weight: 700; letter-spacing: -0.025
 /* --- tabla de riesgos --- */
 .tabla-riesgos td small, .tabla-riesgos td .cod { font-size: 12px; color: var(--tinta-2); }
 .tabla-riesgos .cod { font-family: var(--letra-mono); }
-.pista-tabla { display: none; margin: 0 0 8px; font: 500 13px/1.4 var(--letra-mono); color: var(--tinta-2); }
-@media (max-width: 1260px) { .pista-tabla { display: block; } }
 .tabla-riesgos { min-width: 1180px; }
 .tabla-riesgos td { min-width: 56px; vertical-align: top; }
 .tabla-riesgos td:first-child { min-width: 260px; }

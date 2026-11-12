@@ -165,4 +165,7 @@ for (const idioma of ["es", "en"] as const)
     const aviso = marco.locator("xpath=preceding-sibling::p[contains(@class,'pista-tabla')][1]");
     await expect(aviso).toBeVisible();
     await expect(aviso).toHaveText(T.robustez.desliza);
+    // Sin la regla de estilo el aviso se vería a todos los anchos: a 1440 px la tabla cabe y el aviso se oculta.
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await expect(aviso).toBeHidden();
   });
