@@ -52,6 +52,9 @@ export function validarPropuesta(dato: unknown, gramatica: Gramatica, rangos: re
     const fuentes = nodo ? nodo.fuentes : mapa.nodos.filter((n) => n.id === flujo!.origen || n.id === flujo!.destino).flatMap((n) => n.fuentes);
     if (!fuentes.some((f) => "url" in f && f.url === a.cita.url)) fallas.push(`afirmaciones · ${a.id} cita ${a.cita.url}, que no es fuente de ${a.sobre.entidad === "nodo" ? "ese componente" : "ninguno de los extremos del flujo"}`);
   }
+  // El ejecutor del modelo del sistema dice cuáles afirmaciones son suyas: tienen que existir y no repetirse.
+  const propias = p.ejecucion.propias ?? [];
+  for (const x of propias.filter((x, i) => propias.indexOf(x) !== i || !ids.has(x))) fallas.push(`ejecucion/propias · ${x} no es una afirmación de esta propuesta, o está repetida`);
   // También en «sin novedades»: la exigencia de cita no se apaga con una bandera del modelo (A-3).
   for (const x of sinAfirmacion(mapa, p.afirmaciones)) fallas.push(`afirmaciones · ${x} no tiene ninguna afirmación que lo respalde`);
   for (const v of vocabularioVetado(p.mapa)) fallas.push(`vocabulario · mapa${v.ruta} · ${v.que}`);

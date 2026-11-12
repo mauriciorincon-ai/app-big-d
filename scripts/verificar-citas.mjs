@@ -7,57 +7,12 @@
 //
 // Uso: node scripts/verificar-citas.mjs propuestas/<fecha>-<plataforma>[-<capa>]
 // Pruebas: BIGD_VERIFICAR_ESPEJO="https://ejemplo.invalid/=file:///ruta/" sirve un prefijo desde disco.
-import { execFileSync } from "node:child_process";
-import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, relative } from "node:path";
 import { cargarTs } from "./lib/cargar-ts.mjs";
+import { bajar } from "./investigar/bajar.mjs";
 import { carpetaPropuesta, hoy, identificadores, RAIZ } from "./investigar/comun.mjs";
-
-const AGENTE = "Mozilla/5.0 (compatible; Big-D-verificador-de-citas/1.0)";
-const espejo = (() => {
-  const v = process.env.BIGD_VERIFICAR_ESPEJO;
-  if (!v) return null;
-  const [de, a] = v.split("=");
-  return { de, a };
-})();
-
-/** Salidas de curl de una conexión cortada: 92 (un flujo HTTP/2 que el servidor cerró) y 56 (fallo al recibir). */
-const CORTADA = new Set([92, 56]);
-
-// Hay servidores que cortan HTTP/2 ante un agente que no conocen (GlobeNewswire, S2-AUD-39: corta HTTP/2 y, con
-// HTTP/1.1 y el agente propio, no responde hasta agotar el tiempo). Si la conexión se corta, un reintento con HTTP/1.1
-// y, si sigue cortándose o no responde, otro sin el agente propio. Ninguno lleva cookies, sesión ni datos del usuario;
-// el resultado dice qué reintento bajó la página.
-const INTENTOS = [
-  { args: ["-A", AGENTE] },
-  { args: ["--http1.1", "-A", AGENTE], reintento: "http1.1" },
-  { args: ["--http1.1"], reintento: "sin-agente" },
-];
-
-function bajar(url, tmp) {
-  const real = espejo && url.startsWith(espejo.de) ? espejo.a + url.slice(espejo.de.length) : url;
-  const local = real.startsWith("file://");
-  const salida = join(tmp, "pagina");
-  let falla;
-  for (const { args, reintento } of INTENTOS) {
-    try {
-      const codigo = execFileSync(
-        "curl",
-        // `-q` primero: no lee ~/.curlrc; `-g`: no expande `{a,b}` ni `[1-9]` de la URL (B-30).
-        ["-q", "-g", "-sS", "-L", "--max-redirs", "5", "--max-time", "25", "--proto", local ? "=file" : "=https", ...args, "-H", "Accept-Language: en, es", "-o", salida, "-w", "%{http_code}", real],
-        { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] },
-      );
-      const cuerpo = readFileSync(salida);
-      return { http: local ? 200 : Number(codigo), cuerpo, ...(reintento ? { reintento } : {}) };
-    } catch (e) {
-      falla = { http: null, cuerpo: null, motivo: String(e.stderr || e.message).trim().split("\n")[0] };
-      // En un reintento, un tiempo agotado (28) también sigue al próximo: el primer intento ya mostró el corte.
-      if (!CORTADA.has(e.status) && !(reintento && e.status === 28)) return falla;
-    }
-  }
-  return falla;
-}
 
 try {
   const dir = carpetaPropuesta(process.argv[2]);
@@ -100,6 +55,8 @@ try {
       ...(b.reintento ? { reintento: b.reintento } : {}),
     });
   }
+  // Lo bajado ya está en memoria (y su huella en el resultado): el temporal no se queda.
+  rmSync(tmp, { recursive: true, force: true });
   const verificacion = { version: 1, fecha: hoy("BIGD_FECHA_CONSULTA"), propuesta_sha256: inv.sha256(bytes), resultados };
   inv.esquemaVerificacion.parse(verificacion);
   writeFileSync(join(dir, "verificacion.json"), `${JSON.stringify(verificacion, null, 2)}\n`);

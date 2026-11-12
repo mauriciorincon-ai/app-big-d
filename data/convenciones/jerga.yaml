@@ -658,7 +658,7 @@ cubos:
     "equis": 4
     "error": 3
     "errores": 3
-    "esa": 3
+    "esa": 2
     "esc": 4
     "escala": 2
     "escalas": 4
@@ -669,7 +669,7 @@ cubos:
     "escriben": 4
     "escribes": 4
     "escribir": 3
-    "escribió": 4
+    "escribió": 3
     "escrita": 4
     "escritas": 4
     "escrito": 3
@@ -1587,6 +1587,7 @@ cubos:
     "supuestos": 2
     "sus": 2
     "suspenderlos": 4
+    "suya": 4
     "suyas": 4
     "suyos": 4
     "sílabas": 4
@@ -2059,6 +2060,7 @@ cubos:
     "components": 1
     "computation": 4
     "computed": 2
+    "computer's": 4
     "concepts": 4
     "confirm": 4
     "confirmed": 4
@@ -2972,6 +2974,7 @@ cubos:
     "resolving": 4
     "resource": 4
     "resources": 4
+    "rest": 4
     "restrict": 4
     "rests": 4
     "result": 3
@@ -3137,6 +3140,7 @@ cubos:
     "starts": 3
     "state": 4
     "statement": 4
+    "statements": 4
     "states": 4
     "status": 4
     "stay": 3

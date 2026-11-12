@@ -974,6 +974,7 @@ export const en: Textos = {
       modelo: "declared model: {modelo}",
       origen: "declared origin: {origen}",
       reintentos: ["validator at the end: {n} block", "validator at the end: {n} blocks"],
+      sistema: ["written by this computer's system model on top of {base}: {n} statement is its own; the rest come from that proposal", "written by this computer's system model on top of {base}: {n} statements are its own; the rest come from that proposal"],
       reintentosDeclarados: ["the run reports {n} retry", "the run reports {n} retries"],
       fuentes: ["{n} source cited", "{n} sources cited"],
       verificadaEl: "quotes checked on {fecha}",

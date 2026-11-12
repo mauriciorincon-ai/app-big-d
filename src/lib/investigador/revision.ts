@@ -66,6 +66,8 @@ export interface PropuestaVista {
   fecha: string;
   capa?: string;
   modelo: string;
+  /** Solo el ejecutor del modelo del sistema: sobre qué propuesta rehízo la capa y cuántas afirmaciones son suyas. */
+  sistema?: { base: string; propias: number };
   /** Reintentos que CONTÓ el hook de fin (`.reintentos`), no los que declara el modelo (B-45). */
   reintentos: number;
   /** Reintentos que declara la corrida (`ejecucion.reintentos`). */
@@ -280,6 +282,7 @@ export function vistaInvestigador(d: Datos, id: string, idioma: Idioma, fecha: s
     fecha: p?.fecha ?? "",
     ...(p?.capa ? { capa: p.capa } : {}),
     modelo: p?.ejecucion.modelo ?? "",
+    ...(p?.ejecucion.base && p.ejecucion.propias ? { sistema: { base: p.ejecucion.base, propias: p.ejecucion.propias.length } } : {}),
     reintentos: reintentosDe(dir),
     reintentosDeclarados: p?.ejecucion.reintentos ?? 0,
     fallas,

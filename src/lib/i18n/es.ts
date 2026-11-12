@@ -974,6 +974,7 @@ export const es: Textos = {
       modelo: "modelo declarado: {modelo}",
       origen: "origen declarado: {origen}",
       reintentos: ["validador al cerrar: {n} bloqueo", "validador al cerrar: {n} bloqueos"],
+      sistema: ["la escribió el modelo del sistema de este equipo sobre {base}: {n} afirmación es suya; las demás vienen de esa propuesta", "la escribió el modelo del sistema de este equipo sobre {base}: {n} afirmaciones son suyas; las demás vienen de esa propuesta"],
       reintentosDeclarados: ["la corrida declara {n} reintento", "la corrida declara {n} reintentos"],
       fuentes: ["{n} fuente citada", "{n} fuentes citadas"],
       verificadaEl: "citas verificadas el {fecha}",

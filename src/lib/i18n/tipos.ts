@@ -577,6 +577,8 @@ export interface Textos {
       origen: string;
       /** Bloqueos que contó el hook de fin (`.reintentos`). */
       reintentos: readonly [string, string];
+      /** El ejecutor del modelo del sistema: la base y cuántas afirmaciones son suyas ({base}, {n}). */
+      sistema: readonly [string, string];
       /** Reintentos que declara la propia corrida (`ejecucion.reintentos`). */
       reintentosDeclarados: readonly [string, string];
       fuentes: readonly [string, string];
