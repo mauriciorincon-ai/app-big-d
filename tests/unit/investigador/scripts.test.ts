@@ -205,6 +205,24 @@ describe("M-15: la guarda de la aprobación (la frontera está dentro del script
       expect(puedeAprobar({ raiz: repo, repo, env: { [ajuste]: "1" }, tty: true }).ok, ajuste).toBe(true);
   });
 
+  it("B-7 (S8): las 7 marcas de sesión están escritas aquí, no leídas de la lista: quitar una del candado rompe esta prueba", async () => {
+    const { puedeAprobar } = await import("../../../scripts/investigar/comun.mjs");
+    const repo = process.cwd();
+    const siete = [
+      "CLAUDECODE",
+      "CLAUDE_CODE_ENTRYPOINT",
+      "CLAUDE_CODE_SESSION_ID",
+      "CLAUDE_CODE_CHILD_SESSION",
+      "CLAUDE_CODE_SESSION_ATTENDED",
+      "CLAUDE_CODE_EXECPATH",
+      "CLAUDE_CODE_SSE_PORT",
+    ];
+    for (const marca of siete)
+      expect(puedeAprobar({ raiz: repo, repo, env: { [marca]: "1" }, tty: true }).ok, marca).toBe(false);
+    // Una variable ajena con el mismo prefijo no bloquea a la persona en su terminal.
+    expect(puedeAprobar({ raiz: repo, repo, env: { CLAUDE_CODE_AUTO_COMPACT_WINDOW: "1" }, tty: true }).ok).toBe(true);
+  });
+
   it("AU-S3-03: un CLAUDECODE vacío también marca la sesión, y un enlace simbólico al repo no es una raíz temporal", async () => {
     const { puedeAprobar } = await import("../../../scripts/investigar/comun.mjs");
     const repo = process.cwd();
