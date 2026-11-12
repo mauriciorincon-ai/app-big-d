@@ -14,6 +14,14 @@ const espejo = (() => {
   return { de, a };
 })();
 
+/**
+ * Inglés primero, español después, CON PESO. Con «en, es» (el mismo peso) la documentación de Google servía a veces la
+ * traducción al español de la misma URL y la cita inglesa «no aparecía»: la misma propuesta de BigQuery dio entre 17 y 34
+ * citas verificadas en 11 corridas (2026-11-12). Con el peso, 8 de 8 en inglés. Una fuente en español ya lleva su idioma
+ * en la URL.
+ */
+export const IDIOMA = "Accept-Language: en, es;q=0.5";
+
 /** Salidas de curl de una conexión cortada: 92 (un flujo HTTP/2 que el servidor cerró) y 56 (fallo al recibir). */
 const CORTADA = new Set([92, 56]);
 
@@ -38,7 +46,7 @@ export function bajar(url, tmp) {
       const codigo = execFileSync(
         "curl",
         // `-q` primero: no lee ~/.curlrc; `-g`: no expande `{a,b}` ni `[1-9]` de la URL (B-30).
-        ["-q", "-g", "-sS", "-L", "--max-redirs", "5", "--max-time", "25", "--proto", local ? "=file" : "=https", ...args, "-H", "Accept-Language: en, es", "-o", salida, "-w", "%{http_code}", real],
+        ["-q", "-g", "-sS", "-L", "--max-redirs", "5", "--max-time", "25", "--proto", local ? "=file" : "=https", ...args, "-H", IDIOMA, "-o", salida, "-w", "%{http_code}", real],
         { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] },
       );
       const cuerpo = readFileSync(salida);
