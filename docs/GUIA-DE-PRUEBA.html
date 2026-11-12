@@ -8,7 +8,7 @@
   GUÍA DE PRUEBA VIVA Y ACUMULATIVA de Big-D (regla 11 del CLAUDE.md; plantilla del kit v1.6.0; referencia
   app-habla/docs/GUIA-DE-PRUEBA.html). Autocontenida: cero CDNs, cero fetch; se abre con doble clic.
   Bola de nieve: cada sprint hereda ENTERAS las pruebas del anterior; lo «Nuevo · S1» pasa a «S1» (regresión)
-  en el S2 salvo que el S2 lo toque («Mejorado en S2»). Prefijo de localStorage versionado: «bigd-s7-» (cambia
+  en el S2 salvo que el S2 lo toque («Mejorado en S2»). Prefijo de localStorage versionado: «bigd-s8-» (cambia
   en cada versión). ⭐ = lo que ninguna automatización verifica; ⭐⭐ = el subconjunto que solo un humano juzga,
   caminable en el orden del documento. Sin URL de despliegue escrita (regla 17): el campo se llena en uso.
 -->
@@ -107,11 +107,11 @@
 <body>
 <div class="pagina">
   <header>
-    <p class="eyebrow">Big-D · Guía de prueba viva y acumulativa · Sprint 7 · 2026-10-12</p>
+    <p class="eyebrow">Big-D · Guía de prueba viva y acumulativa · Sprint 8 · 2026-11-11</p>
     <h1>Guía de prueba</h1>
     <p class="suave">Todas las pruebas vigentes de la app: el atlas (visión general, componentes, recorrido de un
       dato), el lado a lado, las versiones de un mapa, el investigador, la base, el perfil del caso, la comparación y
-      el instrumento, las decisiones del caso y el informe. Cada prueba dice su origen: «Nuevo · S4» (la ves por primera vez), «Mejorado en S7» (cambió en este sprint), o «S1» a «S6»
+      el instrumento, las decisiones del caso y el informe; desde el S8, qué cambió entre instantáneas, la comparación de pares y duplicar un caso. Cada prueba dice su origen: «Nuevo · S4» (la ves por primera vez), «Nuevo · S8» (llegó en este sprint), «Mejorado en S7» o «S1» a «S7»
       (heredada sin cambios: es la regresión). Las casillas se
       guardan solas en este navegador.</p>
     <p class="chica"><strong>Gate corto ⭐⭐: 8 paradas · ~30 min (estimado) — es el que el cierre del hito exige.</strong> Solo lo que únicamente una persona puede juzgar, en el orden del documento. Dos son aprobaciones que haces tú (L3, el perfil, y O4, el plan); las demás miradas se hacen con el dato ya aprobado. Para caber, b1 y h6 se hacen con la misma persona en la misma sentada, y b11 y h7 con el mismo teléfono. Deja fuera 5 pruebas ⭐, y siguen enteras en el filtro ⭐.</p>
@@ -149,7 +149,7 @@
     </div>
     <div class="filtros" role="group" aria-label="Filtrar pruebas por origen">
       <button type="button" data-filtro="todo" class="activo">Todo</button>
-      <button type="button" data-filtro="cambios">Lo que cambió en S7</button>
+      <button type="button" data-filtro="cambios">Lo que cambió en S8</button>
       <button type="button" data-filtro="minimo">Gate mínimo ⭐</button>
       <button type="button" data-filtro="corto">Gate corto ⭐⭐</button>
     </div>
@@ -363,6 +363,8 @@
         <span class="origen origen-heredada">S3</span></label></li>
       <li data-origen="heredada"><input type="checkbox" id="k3"><label for="k3">Desde el investigador, el enlace <strong>Base</strong> lleva a la base; desde la base, <strong>Investigador</strong> vuelve. Esperado: la sección que ves queda marcada en la barra.
         <span class="origen origen-heredada">S3</span></label></li>
+      <li data-origen="nuevo"><input type="checkbox" id="k4"><label for="k4">En la misma página <strong>Base</strong>, baja a <strong>«Qué cambió entre instantáneas»</strong>. Esperado: con la base real, que hoy tiene una sola instantánea, la sección dice <strong>«Hay una sola instantánea: todavía no hay nada que comparar»</strong>. Con dos, mostraría cada una frente a la anterior: las evidencias <strong>nuevas</strong>, las <strong>modificadas</strong> (con los campos que cambiaron) y las <strong>retiradas</strong>, y una tabla con cada caso evaluado con las dos y qué cambia (la ganadora, el empate o lo que se descarta, siempre dicho con palabras). La prueba de dos instantáneas la corre la CI con la base sembrada.
+        <span class="origen origen-nuevo">Nuevo · S8</span></label></li>
     </ul>
     <div class="reportame"><p><strong>Repórtame sí o sí:</strong> una sección de la barra que dice «pendiente», o una evidencia sin su criterio, o una instantánea sin fecha.</p></div>
   </section>
@@ -381,6 +383,10 @@
         <span class="origen origen-mejorado">Mejorado en S7</span>
         <span class="minimo">⭐ mínimo</span>
         <span class="minimo">⭐⭐ Parada 5 de 8</span></label></li>
+      <li data-origen="nuevo"><input type="checkbox" id="l4"><label for="l4">En el editor, abre <strong>«Comparar por pares»</strong> y juzga los pares de un grupo: en cada uno, cuál importa más y cuánto. Esperado: la dirección de la página guarda tus juicios (puedes recargar y siguen ahí); cuando están todos juzgados, la página propone los pesos, que suman 100, junto con la <strong>razón de consistencia</strong>. Si pasa de 0,10 avisa con un ícono y con texto («Inconsistente…»), no bloquea y deja usar los pesos. El botón <strong>«Usar estos pesos en el editor»</strong> solo llena el editor: nada se aprueba, y la suma del editor vuelve a ser la que manda.
+        <span class="origen origen-nuevo">Nuevo · S8</span></label></li>
+      <li data-origen="nuevo"><input type="checkbox" id="l5"><label for="l5">Antes o después de aprobar, baja a <strong>«Duplicar este caso»</strong>, escribe un id nuevo (por ejemplo «hospital-futuro-b») y mira el comando que arma la página. Esperado: con un id vacío, igual al del caso o con mayúsculas, la página dice qué corregir y no arma el comando; con uno válido, lo arma. Córrelo tú, en una Terminal abierta en la carpeta del proyecto, con <strong>Cmd+V</strong> y <strong>Enter</strong>: la copia nace <strong>en borrador</strong>, con su plan en borrador y «copia de hospital-futuro», y el caso original queda igual. Si no quieres la copia, bórrala a mano (<code>data/casos/hospital-futuro-b.yaml</code> y su carpeta). Esta prueba escribe datos del repo: hazla solo si quieres esa copia.
+        <span class="origen origen-nuevo">Nuevo · S8</span></label></li>
     </ul>
     <div class="reportame"><p><strong>Repórtame sí o sí:</strong> un comando que no cambia lo que dice la página, o un perfil aprobado que todavía muestra el editor.</p></div>
   </section>
@@ -455,6 +461,7 @@
     <details class="chica">
       <summary>Historial de la guía</summary>
       <ul>
+        <li><strong>S8 · 2026-11-11:</strong> 73 pruebas en 16 bloques (A–P). Las 70 del S7 siguen, con sus chips; el prefijo de las casillas es «bigd-s8-», así que las marcas del S7 no se heredan. Nuevas, cada una en su lugar del flujo: k4 (qué cambió entre instantáneas, en la base), l4 (comparar por pares, en el editor del perfil) y l5 (duplicar un caso, con el comando que arma la pantalla). Ninguna sube al ⭐ ni al ⭐⭐: la CI las cubre de punta a punta. La reestructuración como UN recorrido con la matriz <code>cubre</code> llega con el cierre de la construcción. Ninguna eliminada.</li>
         <li><strong>S7 · 2026-10-12:</strong> 70 pruebas en 16 bloques (A–P). Las 70 del S6 siguen, con sus chips; el prefijo de las casillas es «bigd-s7-», así que las marcas del S6 no se heredan. Cambian: L2 (la forma del editor, sin ver), L3 (la aprobación del perfil, con el enlace al editor), N1 (la forma y el texto del instrumento, sin ver), O3 (la tabla de riesgos en teléfono) y O4 (la aprobación del plan, que antes no se corría). Para el gate, b1 se hace con h6 y b11 con h7 en la misma sentada, y j5 pasa de ⭐⭐ a ⭐ mínimo. Ninguna eliminada.</li>
         <li><strong>S6 · 2026-10-11:</strong> 70 pruebas en 16 bloques (A–P). Las 66 del S5 siguen, con sus chips. Prefijo de las casillas «bigd-s6-»: las marcas del S5 no se heredan. Nuevas: el bloque P, el informe del caso (la hoja de ruta, el alistamiento y el informe de catorce secciones); cuatro pruebas, sin ⭐ porque el informe se juzga con el perfil y el plan aprobados. La introducción ahora nombra también las decisiones del caso (bloque O), que faltaban. Ninguna eliminada.</li>
         <li><strong>S5 · 2026-10-11:</strong> 66 pruebas en 15 bloques (A–O). Las 62 del S4 siguen, con sus chips: S5 no reclasifica las «Nuevo» de S3 y S4 (eso va al lote del hito). Nuevas: el bloque O, el plan del caso (decisiones, riesgos y supuestos); cuatro pruebas, sin ⭐ porque el gate humano del plan se hace con el dato aprobado. Ninguna eliminada.</li>
@@ -501,7 +508,7 @@
   (function () {
     // NS VERSIONADO POR SPRINT (regla dura): al publicar la guía de un sprint nuevo se cambia
     // s1 → s2 en el sprint siguiente — así una regresión sin correr no aparece marcada por el sprint anterior.
-    var NS = "bigd-s7-";
+    var NS = "bigd-s8-";
     var casillas = Array.prototype.slice.call(document.querySelectorAll('input[type="checkbox"]'));
     var barra = document.getElementById("barra-avance");
     var contador = document.getElementById("contador");

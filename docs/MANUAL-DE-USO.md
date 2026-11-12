@@ -274,6 +274,46 @@ a ninguna ni pide cuentas.
   - El relato de fracaso generado es una plantilla y va marcado como generado. Un relato humano aparece solo si alguien lo escribe: un archivo `data/casos/<caso>/relato-de-fracaso.yaml` con `caso_id`, `texto` (en español y en inglés), `escrito_por`, `fecha` y `origen: declarado-por-usuario`. Si el archivo no existe, la sección dice «sin relato humano».
   - La prueba barata de un supuesto sigue siendo una tarea del equipo: el informe la registra, pero no la ejecuta.
 
+#### 15. Qué cambió entre instantáneas · desde el Sprint 8
+
+- **Qué hace:** en la base de conocimiento, compara cada instantánea con la anterior y dice qué evidencias son nuevas, cuáles cambiaron (y en qué campos) y cuáles se retiraron. Para cada caso, dice si con una y con otra cambia la plataforma ganadora, el empate técnico o lo que se descarta.
+- **Cómo se usa:**
+  1. En la barra, abre «Conocimiento» y elige «Base de conocimiento».
+  2. Baja a «Qué cambió entre instantáneas». Con una sola instantánea la sección dice que todavía no hay nada que comparar.
+  3. Con dos o más, cada par aparece como «la nueva frente a la anterior», con tres listas: nuevas, modificadas (con los campos que cambiaron) y retiradas.
+  4. Debajo, una tabla muestra cada caso evaluado con las dos instantáneas y una columna «Qué cambia», siempre en palabras: «cambia la ganadora», «cambia el empate» o «cambia lo que bloquea o descarta».
+- **Limitaciones:**
+  - Solo compara: no aprueba ni cambia nada. Los datos siguen siendo los archivos aprobados de `data/`.
+  - Un caso con el perfil en borrador no se evalúa con ninguna instantánea; la tabla dice por qué en lugar de inventar un resultado.
+
+#### 16. Comparar por pares · desde el Sprint 8
+
+- **Qué hace:** ayuda a fijar los pesos del perfil cuando repartir 100 puntos no sale. Comparas los criterios de dos en dos —cuál importa más y cuánto— y la pantalla propone los pesos, que suman 100, y mide si tus juicios se contradicen.
+- **Cómo se usa:**
+  1. En el perfil del caso, mientras está en borrador, abre «Comparar por pares».
+  2. Juzga cada par con la escala de la pantalla: «igual de importantes» o cuál importa más, de 3 («algo más») a 9 («muchísimo más»). Los pares se reparten en grupos, y avanzas con «Grupo siguiente».
+  3. La dirección de la página guarda tus juicios, así que puedes recargar o compartirla y siguen ahí.
+  4. Cuando todos los pares están juzgados, la pantalla muestra los pesos propuestos y la razón de consistencia. Si pasa de 0,10, avisa con un ícono y con texto; no bloquea y puedes usar los pesos igual.
+  5. «Usar estos pesos en el editor» solo llena el editor. Los pesos quedan con el origen «propuesto por la comparación de pares, por decidir», y los apruebas como siempre, con el comando que arma la pantalla.
+- **Limitaciones:**
+  - Aquí no se aprueba nada: el perfil se aprueba solo con el comando de la pantalla del perfil, que corre una persona.
+  - Con dos criterios o menos, los juicios no pueden contradecirse y la razón no se calcula.
+  - Los pesos se calculan con números enteros, así que el mismo juicio da siempre los mismos pesos en cualquier navegador.
+  - Un perfil ya aprobado es de solo lectura: no muestra esta comparación.
+
+#### 17. Duplicar un caso · desde el Sprint 8
+
+- **Qué hace:** para probar una variante sin tocar el caso original, arma el comando que crea una copia. La copia nace en borrador, con su plan en borrador, y recuerda de qué caso salió.
+- **Cómo se usa:**
+  1. En el perfil del caso, baja a «Duplicar este caso».
+  2. Escribe el id de la copia, con minúsculas, números y guiones (por ejemplo, «hospital-futuro-b»). Si está vacío, es el del caso o ya existe, la pantalla dice qué corregir y no arma el comando.
+  3. Con un id válido, la pantalla arma el comando. Cópialo, abre Terminal tú mismo en la carpeta del proyecto, pégalo con Cmd+V y pulsa Enter.
+  4. La copia aparece como un caso nuevo, en borrador, con «copia de» el original. Sus revisiones no se copian: hay que aprobar su perfil y su plan por su cuenta.
+- **Limitaciones:**
+  - La página no escribe nada: solo una persona corre el comando, y si el id ya existe se niega sin escribir.
+  - El caso original queda exactamente igual.
+  - Si no quieres la copia, bórrala a mano: su archivo en `data/casos/` y su carpeta.
+
 ### Preguntas frecuentes
 
 - **¿Big-D recomienda una plataforma?** No decide por ti. Compara con tus pesos y tu evidencia, muestra la sensibilidad del resultado a esos pesos y deja la decisión a quien pregunta. Mientras el perfil del caso de ejemplo esté en borrador, su comparación no se calcula: hace falta que una persona apruebe el perfil (sección 10).
@@ -295,6 +335,7 @@ a ninguna ni pide cuentas.
 | S5 (2026-10-11) | 13 Las decisiones del caso: ondas, fichas con evidencia, riesgos por prioridad y supuestos (se aprueba el plan desde su pantalla)                                                  |
 | S6 (2026-10-11) | 14 El informe del caso: hoja de ruta por fases con su origen, alistamiento, informe de catorce secciones en dos idiomas e impresión                                                |
 | S7 (2026-10-12) | Cambios visibles: si el cálculo en segundo plano falla, la robustez lo dice y no se queda «en curso»; cada riesgo muestra su causa y de dónde salen sus números; el enlace «Ir al editor, abajo» junto al botón de aprobación; en teléfono, la tabla de riesgos avisa que se desliza de lado. El caso, el informe y las pantallas también se prueban en inglés. |
+| S8 (2026-11-11) | 15 Qué cambió entre instantáneas · 16 Comparar por pares (propone pesos y mide su consistencia; no aprueba) · 17 Duplicar un caso (la pantalla arma el comando) |
 
 ---
 
@@ -556,6 +597,46 @@ manages and controls; it never operates a platform**: it connects to none and as
   - The generated failure story is a template and is marked as generated. A human account appears only if someone writes it: a file `data/casos/<case>/relato-de-fracaso.yaml` with `caso_id`, `texto` (in Spanish and English), `escrito_por`, `fecha` and `origen: declarado-por-usuario`. If the file does not exist, the section says “no human story”.
   - An assumption's cheap test is still a task for the case team: the report records it, but does not run it.
 
+#### 15. What changed between snapshots · since Sprint 8
+
+- **What it does:** in the knowledge base, compares each snapshot with the previous one and says which evidence is new, which changed (and in which fields) and which was withdrawn. For each case, it says whether the winning platform, the technical tie or what is ruled out changes between one and the other.
+- **How to use it:**
+  1. In the bar, open **“Knowledge”** and choose **“Knowledge base”**.
+  2. Scroll to **“What changed between snapshots”**. With a single snapshot the section says there is nothing to compare yet.
+  3. With two or more, each pair appears as “the newer against the older”, with three lists: new, modified (with the fields that changed) and withdrawn.
+  4. Below, a table shows each case evaluated with both snapshots and a “What changes” column, always in words: “the winner changes”, “the tie changes” or “what blocks or rules out changes”.
+- **Limitations:**
+  - It only compares: it approves and changes nothing. The data are still the approved files in `data/`.
+  - A case whose profile is a draft is not evaluated with any snapshot; the table says why instead of inventing a result.
+
+#### 16. Comparing in pairs · since Sprint 8
+
+- **What it does:** helps you set the profile's weights when splitting 100 points does not come out. You compare the criteria two at a time —which matters more and by how much— and the screen proposes the weights, which add up to 100, and measures whether your judgments contradict each other.
+- **How to use it:**
+  1. In the case profile, while it is a draft, open **“Compare in pairs”**.
+  2. Judge each pair with the scale on screen: “equally important” or which matters more, from 3 (“a bit more”) to 9 (“overwhelmingly more”). The pairs are split into groups, and you move on with **“Next group”**.
+  3. The page address keeps your judgments, so you can reload or share it and they stay.
+  4. When every pair is judged, the screen shows the proposed weights and the consistency ratio. Above 0.10 it warns with an icon and with text; it does not block, and you can use the weights anyway.
+  5. **“Use these weights in the editor”** only fills in the editor. The weights keep the origin “proposed by the pairwise comparison, to be decided”, and you approve them as usual, with the command the screen builds.
+- **Limitations:**
+  - Nothing is approved here: the profile is approved only with the command on the profile screen, which a person runs.
+  - With two criteria or fewer the judgments cannot contradict each other and the ratio is not computed.
+  - The weights are computed with whole numbers, so the same judgments always give the same weights in any browser.
+  - An already approved profile is read-only: it does not show this comparison.
+
+#### 17. Duplicating a case · since Sprint 8
+
+- **What it does:** to try a variant without touching the original case, it builds the command that creates a copy. The copy is born as a draft, with its plan as a draft, and remembers which case it came from.
+- **How to use it:**
+  1. In the case profile, scroll to **“Duplicate this case”**.
+  2. Type the copy's id, with lowercase letters, numbers and hyphens (for example “hospital-futuro-b”). If it is empty, it is the case's own or it already exists, the screen says what to fix and does not build the command.
+  3. With a valid id, the screen builds the command. Copy it, open Terminal yourself in the project folder, paste it with Cmd+V and press Enter.
+  4. The copy shows up as a new case, as a draft, marked “copy of” the original. Its reviews are not copied: its profile and plan have to be approved on their own.
+- **Limitations:**
+  - The page writes nothing: only a person runs the command, and if the id already exists it refuses without writing.
+  - The original case stays exactly the same.
+  - If you do not want the copy, delete it by hand: its file in `data/casos/` and its folder.
+
 ### Frequently asked questions
 
 - **Does Big-D recommend a platform?** No, it does not decide for you. It compares with your weights and your evidence, shows how sensitive the result is to those weights, and leaves the decision to whoever asks. While the example case's profile is a draft, its comparison is not calculated: a person has to approve the profile (section 10).
@@ -576,3 +657,4 @@ manages and controls; it never operates a platform**: it connects to none and as
 | S5 (2026-10-11) | 13 The case's decisions: waves, sheets with evidence, risks by priority and assumptions (the plan is approved from its page)                               |
 | S6 (2026-10-11) | 14 The case report: the roadmap by phases with its origin, the readiness checklist, a fourteen-section report in two languages, and printing               |
 | S7 (2026-10-12) | Visible changes: if the background calculation fails, robustness says so instead of staying «in progress»; each risk shows its cause and where its numbers come from; the “Go to the editor, below” link next to the approval button; on a phone, the risk table says it slides sideways. The case, the report and the screens are also tested in English. |
+| S8 (2026-11-11) | 15 What changed between snapshots · 16 Comparing in pairs (proposes weights and measures their consistency; approves nothing) · 17 Duplicating a case (the screen builds the command) |
