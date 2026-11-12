@@ -24,7 +24,7 @@
         ]
       },
       {
-        "_comment": "Investigador (regla «la IA propone, el humano aprueba»): nadie corre scripts/aprobar.mjs; el subagente `investigador` solo escribe propuestas/<carpeta>/propuesta.json, solo lee lo de su oficio y solo corre sus dos scripts. Se filtra por agent_type dentro del script.",
+        "_comment": "Investigador (regla «la IA propone, el humano aprueba»): nadie corre scripts/aprobar.mjs ni scripts/duplicar-caso.mjs; el subagente `investigador` solo escribe propuestas/<carpeta>/propuesta.json, solo lee lo de su oficio y solo corre sus dos scripts. Se filtra por agent_type dentro del script.",
         "matcher": "Bash|Write|Edit|MultiEdit|NotebookEdit|Read|Glob|Grep",
         "hooks": [
           {
