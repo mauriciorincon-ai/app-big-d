@@ -155,6 +155,7 @@ describe("impactoEnCaso", () => {
       empate: ["norte", "sur"],
       descartadas: [],
       motivos: [],
+      faltantes: [],
     });
     expect(impactoEnCaso(a, empate)).toMatchObject({
       cambia_ganadora: true,
@@ -174,6 +175,28 @@ describe("impactoEnCaso", () => {
         ),
       ),
     ).toMatchObject({ cambia_ganadora: false, cambia_bloqueo: true });
+  });
+
+  it("sigue sin evaluarse por falta de evidencia, pero falta otra pareja: cambia lo que bloquea", () => {
+    const falta = (plataforma_id: string, criterio_id: string) =>
+      ({
+        ...comun,
+        tipo: "no-evaluable",
+        motivos: [
+          {
+            motivo: "falta-evidencia",
+            faltantes: [{ plataforma_id, criterio_id }],
+          },
+        ],
+      }) as Resultado;
+    const r = impactoEnCaso(falta("norte", "crit-a"), falta("sur", "crit-a"));
+    expect(r.antes.faltantes).toEqual(["norte|crit-a"]);
+    expect(r.ahora.faltantes).toEqual(["sur|crit-a"]);
+    expect(r.cambia_bloqueo).toBe(true);
+    expect(
+      impactoEnCaso(falta("norte", "crit-a"), falta("norte", "crit-a"))
+        .cambia_bloqueo,
+    ).toBe(false);
   });
 
   it("un borrador no se evalúa con ninguna: sin cambio, y el resumen dice por qué", () => {

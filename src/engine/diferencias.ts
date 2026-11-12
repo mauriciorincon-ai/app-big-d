@@ -67,6 +67,8 @@ export interface ResumenResultado {
   descartadas: string[];
   /** Por qué no se evaluó (vacía si se evaluó), en el orden del núcleo. */
   motivos: string[];
+  /** Qué evidencia falta («plataforma|criterio», por unidades de código): dos instantáneas pueden faltar en parejas distintas. */
+  faltantes: string[];
 }
 
 export function resumenResultado(r: Resultado): ResumenResultado {
@@ -80,6 +82,13 @@ export function resumenResultado(r: Resultado): ResumenResultado {
       empate: [],
       descartadas,
       motivos: r.motivos.map((m) => m.motivo),
+      faltantes: r.motivos
+        .flatMap((m) =>
+          m.motivo === "falta-evidencia"
+            ? m.faltantes.map((f) => `${f.plataforma_id}|${f.criterio_id}`)
+            : [],
+        )
+        .sort(porUnidades),
     };
   const v = r.veredicto;
   return {
@@ -89,6 +98,7 @@ export function resumenResultado(r: Resultado): ResumenResultado {
       v.tipo === "empate-tecnico" ? [...v.plataformas].sort(porUnidades) : [],
     descartadas,
     motivos: [],
+    faltantes: [],
   };
 }
 
@@ -97,7 +107,7 @@ export interface ImpactoEnCaso {
   ahora: ResumenResultado;
   cambia_ganadora: boolean;
   cambia_empate: boolean;
-  /** Cambia lo que deja fuera o impide evaluar: descartadas, evaluable y motivos. */
+  /** Cambia lo que deja fuera o impide evaluar: descartadas, evaluable, motivos y qué evidencia falta. */
   cambia_bloqueo: boolean;
 }
 
@@ -118,6 +128,7 @@ export function impactoEnCaso(
     cambia_bloqueo:
       a.evaluable !== b.evaluable ||
       !igual(a.descartadas, b.descartadas) ||
-      !igual(a.motivos, b.motivos),
+      !igual(a.motivos, b.motivos) ||
+      !igual(a.faltantes, b.faltantes),
   };
 }
