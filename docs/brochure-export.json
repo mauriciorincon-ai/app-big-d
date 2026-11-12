@@ -153,7 +153,7 @@
           },
           {
             "id": "F15",
-            "nombre": "Qué cambió entre una versión y otra",
+            "nombre": "Qué cambió en la base entre instantáneas",
             "que_hace": "Comparas cada instantánea de la base con la anterior: qué evidencia es nueva, cuál cambió y en qué campos, y cuál se retiró. Para cada caso ves si cambia la plataforma ganadora, el empate o lo que se descarta, dicho con palabras.",
             "seccion_manual": "15. Qué cambió entre instantáneas"
           }
