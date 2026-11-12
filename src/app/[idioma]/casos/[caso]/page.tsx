@@ -115,7 +115,7 @@ export default async function Perfil({ params }: PageProps<"/[idioma]/casos/[cas
           {caso.criterios.map((c) => {
             const [lo, hi] = rangoEntero(c.peso_centesimas, c.rango_relativo_pct);
             const nombre = nombreCriterio.get(c.criterio_id) ?? c.criterio_id;
-            const origen = c.fijado_por ? plantilla(t.pesos.origen, { quien: c.fijado_por[idioma] }) : c.origen === "propuesto-por-agente" ? t.pesos.origenAgente : c.origen === "comparacion-por-pares" ? t.pesos.origenPares : t.pesos.origenPersona;
+            const origen = c.fijado_por ? plantilla(t.pesos.origen, { quien: c.fijado_por[idioma] }) : c.origen === "propuesto-por-agente" ? t.pesos.origenAgente : t.pesos.origenPersona;
             return (
               <li key={c.criterio_id} data-criterio={c.criterio_id}>
                 <span className="peso-nombre">

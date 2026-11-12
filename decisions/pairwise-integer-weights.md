@@ -27,7 +27,7 @@ proposed by this method, the method that produced them has to keep producing the
    - The n-th root is the exact integer floor, found by binary search (`raizEntera`).
    - `⌊⌊x⌋^(1/n)⌋ = ⌊x^(1/n)⌋`, so only the root truncates.
    - It does not use power iteration on the eigenvector. That would need an iteration cap and a convergence test. The
-     geometric mean is closed-form, and for n ≤ 15 it differs from the eigenvector by less than the hundredths shown.
+     geometric mean is closed-form, and it is close to the eigenvector when the judgments are nearly consistent (CR ≤ 0.10). With contradictory judgments the two can differ materially, which is why the warning exists.
 2. **Hundredths.**
    - `w_i = G_i · 10 000 / Σ G`, distributed by largest remainder so the weights sum to exactly 10 000.
    - **Remainder ties are broken by criterion id**, comparing code units, never by position. Combined with ordering the
@@ -49,14 +49,14 @@ proposed by this method, the method that produced them has to keep producing the
 - λ and CR: with n ≤ 15 the floors lose less than n² / F, so both stay within ±1 thousandth.
 - `tests/unit/nucleo/pares.test.ts` checks these bounds over 150 fast-check runs.
 
-**Provenance.** The proposed weights carry `origen: comparacion-por-pares`. They become `declarado-por-usuario` only
-through the usual approval command, which a person runs. The convention file stays outside the snapshot, because pairwise
+**Provenance.** The proposal exists only on screen and in the URL (the judgments), and nothing in the data records it.
+The weights become `declarado-por-usuario` only through the usual approval command, which a person runs. The convention file stays outside the snapshot, because pairwise
 weights are a proposal and are never evaluated.
 
 ## Consequences
 
-- `NUCLEO.SHA256SUMS` adds five lines (`pares-1`, `pares-3`, `pares-4`, `pares-11-a`, `pares-11-b`). No existing line
-  changes. Browsers check them through `tests/determinismo/nucleo.spec.ts`.
+- `NUCLEO.SHA256SUMS` adds five lines (`pares-1`, `pares-3`, `pares-4`, `pares-11-a`, `pares-11-b`). D7 changes no existing line (the six
+  `simulacion-*` lines changed in the same sprint, for S7 item B2). Browsers check them through `tests/determinismo/nucleo.spec.ts`.
 - `data/convenciones/` now holds three files, and the loader requires all three.
 - Changing the method, the fixed points or the tie-break changes the bytes. Doing so needs a new ADR that supersedes
   this one.

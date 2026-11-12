@@ -294,7 +294,7 @@ a ninguna ni pide cuentas.
   2. Juzga cada par con la escala de la pantalla: «igual de importantes» o cuál importa más, de 3 («algo más») a 9 («muchísimo más»). Los pares se reparten en grupos, y avanzas con «Grupo siguiente».
   3. La dirección de la página guarda tus juicios, así que puedes recargar o compartirla y siguen ahí.
   4. Cuando todos los pares están juzgados, la pantalla muestra los pesos propuestos y la razón de consistencia. Si pasa de 0,10, avisa con un ícono y con texto; no bloquea y puedes usar los pesos igual.
-  5. «Usar estos pesos en el editor» solo llena el editor. Los pesos quedan con el origen «propuesto por la comparación de pares, por decidir», y los apruebas como siempre, con el comando que arma la pantalla.
+  5. «Usar estos pesos en el editor» solo llena el editor. La propuesta vive solo en la pantalla y en la dirección de la página; al aprobar, los pesos quedan como declarados por ti, con el comando que arma la pantalla, como siempre.
 - **Limitaciones:**
   - Aquí no se aprueba nada: el perfil se aprueba solo con el comando de la pantalla del perfil, que corre una persona.
   - Con dos criterios o menos, los juicios no pueden contradecirse y la razón no se calcula.
@@ -617,7 +617,7 @@ manages and controls; it never operates a platform**: it connects to none and as
   2. Judge each pair with the scale on screen: “equally important” or which matters more, from 3 (“a bit more”) to 9 (“overwhelmingly more”). The pairs are split into groups, and you move on with **“Next group”**.
   3. The page address keeps your judgments, so you can reload or share it and they stay.
   4. When every pair is judged, the screen shows the proposed weights and the consistency ratio. Above 0.10 it warns with an icon and with text; it does not block, and you can use the weights anyway.
-  5. **“Use these weights in the editor”** only fills in the editor. The weights keep the origin “proposed by the pairwise comparison, to be decided”, and you approve them as usual, with the command the screen builds.
+  5. **“Use these weights in the editor”** only fills in the editor. The proposal lives only on the screen and in the page address; on approval the weights are recorded as declared by you, with the command the screen builds, as usual.
 - **Limitations:**
   - Nothing is approved here: the profile is approved only with the command on the profile screen, which a person runs.
   - With two criteria or fewer the judgments cannot contradict each other and the ratio is not computed.

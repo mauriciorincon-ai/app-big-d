@@ -200,7 +200,11 @@ export function ComparacionPares({
               <span>
                 {plantilla(t.razon, {
                   razon: milesimas(resultado.razon_milesimas, idioma),
-                  umbral: milesimas(conv.umbral_razon_milesimas, idioma),
+                  // «0,10», como lo dicen la nota, el manual y la guía: sin el tercer decimal cuando es cero.
+                  umbral: milesimas(conv.umbral_razon_milesimas, idioma).replace(
+                    /0$/,
+                    "",
+                  ),
                 })}
                 {" · "}
                 {resultado.consistente ? t.consistente : t.inconsistente}
