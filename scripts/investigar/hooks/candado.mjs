@@ -1,5 +1,6 @@
 // Hook PreToolUse (Bash, escrituras y lecturas) — el candado del investigador.
-//   1. NINGÚN agente (tampoco la sesión principal) corre scripts/aprobar.mjs: aprobar es de una persona. Es la
+//   1. NINGÚN agente (tampoco la sesión principal) corre scripts/aprobar.mjs ni scripts/duplicar-caso.mjs (D3, S8): aprobar y
+//      duplicar son de una persona. Es la
 //      defensa contra el accidente; la frontera está dentro del script (`puedeAprobar`, M-15).
 //   2. El subagente `investigador` solo escribe `propuestas/<carpeta>/propuesta.json` (A-1: todo lo demás de
 //      propuestas/ lo escribe el código —verificacion.json, el registro, el contador de reintentos— y el
@@ -15,7 +16,7 @@ const ENVOLTORIOS = String.raw`(?:(?:nice|command|builtin|time|nohup|env|sudo|do
 const LANZADOR = new RegExp(
   String.raw`^(?:\S+=\S*\s+)*${ENVOLTORIOS}(?:\S*\/)?(?:node|nodejs|bun|deno|npx|env|sh|bash|zsh|exec|eval|source|xargs|nohup|time|pnpm(?:\s+exec|\s+dlx)?|yarn|npm\s+exec)\b`,
 );
-const RUTA = new RegExp(String.raw`^(?:\S+=\S*\s+)*${ENVOLTORIOS}(?:\.\/)?(?:\S*\/)?scripts\/aprobar\.mjs\b`);
+const RUTA = new RegExp(String.raw`^(?:\S+=\S*\s+)*${ENVOLTORIOS}(?:\.\/)?(?:\S*\/)?scripts\/(?:aprobar|duplicar-caso)\.mjs\b`);
 
 /**
  * El comando como lo leería la terminal: sin comillas (vacías o partidas dentro de una palabra, `apro""bar`, `apro"b"ar`)
@@ -23,12 +24,15 @@ const RUTA = new RegExp(String.raw`^(?:\S+=\S*\s+)*${ENVOLTORIOS}(?:\.\/)?(?:\S*
  */
 const sinDisfraz = (comando) => comando.replace(/["']/g, "").replace(/\\(?!\n)(.)/g, "$1");
 
+/** Los scripts que solo corre una persona. */
+const SCRIPT = /(?:aprobar|duplicar-caso)\.mjs/;
+
 /** Algún tramo del comando empieza lanzando el script (con un intérprete o por su ruta). */
 const tramoEjecuta = (texto) =>
   texto
     .split(/&&|\|\||[;|\n(){}]/)
     .map((s) => s.trim())
-    .some((s) => (LANZADOR.test(s) && /aprobar\.mjs/.test(s)) || RUTA.test(s));
+    .some((s) => (LANZADOR.test(s) && SCRIPT.test(s)) || RUTA.test(s));
 
 /**
  * ¿El comando EJECUTA el script de aprobación? Mencionarlo en un grep, un `git add` o un mensaje no cuenta;
@@ -37,7 +41,7 @@ const tramoEjecuta = (texto) =>
 export function ejecutaAprobar(crudo) {
   if (typeof crudo !== "string") return false;
   const comando = sinDisfraz(crudo);
-  if (!/aprobar\.mjs/.test(comando)) return false;
+  if (!SCRIPT.test(comando)) return false;
   const internos = [...comando.matchAll(/\$\(([^()]*)\)|`([^`]*)`/g)].map((m) => m[1] ?? m[2] ?? "");
   return [comando, ...internos].some(tramoEjecuta);
 }
@@ -61,7 +65,7 @@ const ti = e.tool_input ?? {};
 const cwd = e.cwd ?? RAIZ;
 
 if (herramienta === "Bash" && ejecutaAprobar(ti.command))
-  bloquear("BLOQUEADO: scripts/aprobar.mjs lo corre solo una persona (la IA propone, el humano aprueba). Arma el comando en la pantalla de revisión y pídeselo al usuario.");
+  bloquear("BLOQUEADO: scripts/aprobar.mjs y scripts/duplicar-caso.mjs los corre solo una persona (la IA propone, el humano aprueba). Arma el comando en su pantalla y pídeselo al usuario.");
 
 if (!esInvestigador(e)) pasar();
 

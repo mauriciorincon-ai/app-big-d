@@ -24,7 +24,7 @@ cp -R docs/kit-de-prueba/propuesta-de-muestra/. .
 pnpm build && pnpm start
 ```
 
-Abre `http://localhost:3000/es/investigador/plataforma-norte`. Al terminar, **deja el proyecto como estaba** con
+Abre `http://127.0.0.1:3400/es/investigador/plataforma-norte`. Al terminar, **deja el proyecto como estaba** con
 el comando de la sección 5.
 
 No corras el comando de aprobación con esta muestra: escribiría un mapa aprobado de una plataforma que no existe.
@@ -80,7 +80,7 @@ cp -R docs/kit-de-prueba/versiones-de-muestra/. .
 pnpm build && pnpm start
 ```
 
-Abre `http://localhost:3000/es/atlas/plataforma-ejemplo/versiones`. Esperado: «De v0.0.9 a v0.1.0», con **«+ nuevo»**
+Abre `http://127.0.0.1:3400/es/atlas/plataforma-ejemplo/versiones`. Esperado: «De v0.0.9 a v0.1.0», con **«+ nuevo»**
 (Filtros por fila y enmascaramiento), **«− retirado»** (Cuadernos interactivos, en la fila de arriba), **«→
 renombrado»** (Conector de bases relacionales, antes «Conector JDBC») y **«madurez»** (Agente de preguntas sobre
 datos, de beta a vista previa pública), y la lista que explica las cuatro. Después, el comando de la sección 5.

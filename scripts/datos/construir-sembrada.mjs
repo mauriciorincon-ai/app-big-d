@@ -11,7 +11,7 @@ const datos = join(RAIZ_REPO, ".sembrada/datos");
 rmSync(join(RAIZ_REPO, ".sembrada"), { recursive: true, force: true });
 mkdirSync(datos, { recursive: true });
 const { armarBaseFuturo } = await cargarTs("tests/unit/lib/base-futuro.ts");
-const version = armarBaseFuturo(datos, { atlas: true, raiz: RAIZ_REPO });
+const version = armarBaseFuturo(datos, { atlas: true, raiz: RAIZ_REPO, segunda: true });
 console.log(`construir-sembrada: base sembrada en .sembrada/datos (instantánea ${version})`);
 execFileSync("pnpm", ["build"], { cwd: RAIZ_REPO, stdio: "inherit", env: { ...process.env, BIGD_DATOS: datos, BIGD_FECHA_CONSULTA: "2026-09-26" } });
 rmSync(join(RAIZ_REPO, "out-sembrada"), { recursive: true, force: true });

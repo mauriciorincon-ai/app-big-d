@@ -52,6 +52,35 @@ const planS = k2.planes[0]!;
 const infS = construirInforme(k2, k2.casos[0]!, planS);
 const vS = vistaHoja(infS, planS, "es");
 
+describe("el resumen no inventa un riesgo (S7-M3)", () => {
+  it("un riesgo principal que el plan calculado no trae hace fallar el render, nombrándolo", () => {
+    const [id] = infS.modelo.resumen.riesgos_principales;
+    expect(id, "el informe sembrado trae al menos un riesgo principal").toBeDefined();
+    const sinRiesgos = { ...infS, resultadoPlan: { ...infS.resultadoPlan, riesgos: [] } };
+    const n = nombresDe(infS, planS, "es");
+    const espia = vi.spyOn(console, "error").mockImplementation(() => {});
+    expect(() =>
+      render(
+        <Resumen
+          parrafo="x"
+          lectura={{ palabras: 1, silabas: 1, terminos: [], cumple: true } as never}
+          informe={sinRiesgos}
+          nombres={n}
+          glosario={[]}
+          nombreRiesgo={n.riesgo}
+          prioridad={T.caso.decisiones.riesgos.prioridad}
+          motivoTexto=""
+          y={T.caso.y}
+          tc={T.caso.comparacion}
+          idioma="es"
+          t={t}
+        />,
+      ),
+    ).toThrow(new RegExp(`informe · resumen · el riesgo «${id}» no está en el plan calculado`));
+    espia.mockRestore();
+  });
+});
+
 describe("las fases y sus ítems", () => {
   it("cada ítem dice su tipo, su estado en palabras, de dónde viene (con enlace al lugar donde se explica) y cuándo está cumplido", () => {
     const { container } = render(<Fases vista={vR} t={t} />);

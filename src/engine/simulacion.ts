@@ -18,7 +18,7 @@
 // que filas y columnas de la aceptabilidad suman K·L. El vector central promedia los pesos con que cada plataforma
 // queda primera (restos mayores a 10 000; null si nunca lo queda). La zona gris compara el intervalo del 95 % con cada
 // umbral sin raíces ni decimales (BigInt). Corre la semilla principal y luego las de estabilidad; si la clase cambia
-// entre semillas o el intervalo cruza un umbral, el resultado es de «frontera» (no hay una cuarta clase).
+// entre semillas, `estable` es falso; el intervalo sobre un umbral lo dice la zona gris de cada semilla (no hay una cuarta clase).
 //
 // Corre por pasos: `iniciar` → `avanzar(estado, intentos)` → `resultadoDe`. El resultado no depende del tamaño de paso.
 
@@ -85,8 +85,6 @@ export interface ResultadoSimulacion {
   clase: Clase | null;
   /** La misma clase en todas las semillas. */
   estable: boolean;
-  /** Inestable entre semillas o con el intervalo sobre un umbral. */
-  frontera: boolean;
 }
 
 const mcd = (a: number, b: number): number => (b ? mcd(b, a % b) : a);
@@ -332,7 +330,6 @@ export function resultadoDe(s: EstadoSimulacion): ResultadoSimulacion {
     semillas: s.hechas,
     clase: agotada ? null : s.hechas[0]!.clase,
     estable,
-    frontera: !agotada && (!estable || s.hechas[0]!.zona_gris),
   };
 }
 

@@ -72,6 +72,17 @@ const real = (ruta) => {
   }
 };
 
+/** Las variables que marcan una sesión de Claude Code (S7-B3: lista explícita, no un prefijo). */
+export const MARCAS_DE_SESION = [
+  "CLAUDECODE",
+  "CLAUDE_CODE_ENTRYPOINT",
+  "CLAUDE_CODE_SESSION_ID",
+  "CLAUDE_CODE_CHILD_SESSION",
+  "CLAUDE_CODE_SESSION_ATTENDED",
+  "CLAUDE_CODE_EXECPATH",
+  "CLAUDE_CODE_SSE_PORT",
+];
+
 /**
  * ¿Puede correr la aprobación aquí? Sobre el repo real, solo una persona en su terminal: no desde una sesión
  * de Claude Code (`CLAUDECODE`) ni sin terminal. El candado de Bash es la defensa contra el accidente; esta
@@ -80,8 +91,10 @@ const real = (ruta) => {
  */
 export function puedeAprobar({ raiz, repo, env, tty }) {
   if (real(raiz) !== real(repo)) return { ok: true };
-  // AU-S3-03: la presencia de la variable basta (un valor vacío, `CLAUDECODE=`, también marca la sesión).
-  if (Object.keys(env).some((k) => k === "CLAUDECODE" || k.startsWith("CLAUDE_CODE_")))
+  // AU-S3-03: la presencia de la variable basta (un valor vacío, `CLAUDECODE=`, también marca la sesión). S7-B3: la lista es
+  // EXPLÍCITA, no el prefijo `CLAUDE_CODE_`: una persona con CLAUDE_CODE_AUTO_COMPACT_WINDOW o _USE_BEDROCK en su perfil de shell
+  // quedaba bloqueada en su propia terminal. Una variable de sesión nueva se suma aquí, con su prueba.
+  if (MARCAS_DE_SESION.some((k) => k in env))
     return { ok: false, motivo: "corre dentro de una sesión de Claude Code; ábrelo en tu propia terminal" };
   if (!tty) return { ok: false, motivo: "no hay una terminal interactiva; ábrelo en tu propia terminal" };
   return { ok: true };

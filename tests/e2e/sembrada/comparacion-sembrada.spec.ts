@@ -151,3 +151,21 @@ test("los filtros de la base ocultan las evidencias que no pasan y dicen cuánta
   expect(ahora).toBeLessThan(todas);
   await expect(page.locator(".conteo[aria-live]")).toHaveText(plantilla(T.mostrando, { n: ahora }));
 });
+
+// 026-5 (observado en la captura de la ficha): a 1024 px la tabla de «Robustez por simulación» cortaba su última columna sin
+// decirlo. Ahora avisa en palabras que se desliza (como la de riesgos), justo antes de su marco, que se alcanza con el teclado.
+for (const idioma of ["es", "en"] as const)
+  test(`026-5 (${idioma}): a 1024 px la tabla de robustez avisa que se desliza y su marco se alcanza con el teclado`, async ({ page }) => {
+    const T = textos(idioma).caso.comparacion;
+    await page.setViewportSize({ width: 1024, height: 800 });
+    await page.goto(`/${idioma}/casos/${CASO}/comparacion`);
+    await listo(page);
+    const marco = page.locator(`div.tabla-marco[aria-label="${T.robustez.tabla}"]`);
+    await expect(marco).toHaveAttribute("tabindex", "0");
+    const aviso = marco.locator("xpath=preceding-sibling::p[contains(@class,'pista-tabla')][1]");
+    await expect(aviso).toBeVisible();
+    await expect(aviso).toHaveText(T.robustez.desliza);
+    // Sin la regla de estilo el aviso se vería a todos los anchos: a 1440 px la tabla cabe y el aviso se oculta.
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await expect(aviso).toBeHidden();
+  });

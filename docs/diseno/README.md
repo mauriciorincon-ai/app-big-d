@@ -9,7 +9,7 @@
 
 - **En el preview de Vercel del PR** (protegido: pide tu sesión): ruta `/diseno/index.html`.
 - **En local**: doble clic en `docs/diseno/index.html` (sin red, sin build), o `pnpm build && pnpm start`
-  y `http://localhost:3000/diseno/index.html`.
+  y `http://127.0.0.1:3400/diseno/index.html`.
 - Cada pantalla trae su barra de sala: **estado · tema · idioma**. La nota bajo la barra dice qué mirar.
 
 ## Qué vive aquí

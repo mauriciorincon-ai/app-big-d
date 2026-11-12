@@ -159,7 +159,7 @@ export function escribirPlanFuturo(dir: string): void {
  * construir el sitio (BIGD_DATOS): la Plataforma Ejemplo queda publicada con su mapa y sus versiones archivadas de
  * data/mapas, y las demás ficticias, «próximamente».
  */
-export function armarBaseFuturo(dir: string, { atlas = false, raiz = process.cwd() }: { atlas?: boolean; raiz?: string } = {}): string {
+export function armarBaseFuturo(dir: string, { atlas = false, raiz = process.cwd(), segunda = false }: { atlas?: boolean; raiz?: string; segunda?: boolean } = {}): string {
   for (const d of ["gramaticas", "capacidades", "criterios", "escalas", "convenciones"]) cpSync(join(raiz, "data", d), join(dir, d), { recursive: true });
   mkdirSync(join(dir, "plataformas"));
   for (const [id, [es, en]] of Object.entries(NOMBRES)) escribir(join(dir, "plataformas", `${id}.yaml`), { id, nombre: { es, en }, estado: atlas && id === "plataforma-ejemplo" ? "publicada" : "proximamente", ficticia: true });
@@ -193,5 +193,24 @@ export function armarBaseFuturo(dir: string, { atlas = false, raiz = process.cwd
   const sello = caso.aprobacion!;
   writeFileSync(join(dir, "revisiones", "casos", "hospital-futuro.jsonl"), `${JSON.stringify({ fecha: sello.fecha, caso: caso.id, desde: sello.huella, huella: sello.huella })}\n`);
   escribirPlanFuturo(dir);
+  if (segunda) segundaInstantanea(dir, inst);
   return inst.version;
+}
+
+/**
+ * D2 (S8): una segunda instantánea del mismo día, para que haya dos que comparar. Una persona vuelve a aprobar la evidencia
+ * de gobierno de Norte con otro puntaje (una línea más en su revisión, como la escribe la aprobación) y se congela de nuevo.
+ * El caso sigue citando la primera: sus pruebas no cambian; la página de la base muestra la diferencia.
+ */
+export const EVIDENCIA_CAMBIADA = "evi-norte-gobierno";
+function segundaInstantanea(dir: string, primera: ReturnType<typeof nuevaInstantanea>): void {
+  const ruta = join(dir, "evidencias", "norte", `${EVIDENCIA_CAMBIADA}.yaml`);
+  const e = parse(readFileSync(ruta, "utf8")) as Record<string, unknown>;
+  const puntaje = (e.puntaje as number) > 0 ? (e.puntaje as number) - 1 : 1;
+  const nueva = { ...e, puntaje, justificacion_puntaje: { es: `${puntaje}: la documentación ficticia se revisó y baja un nivel.`, en: `${puntaje}: the fictional documentation was reviewed and drops one level.` } };
+  escribir(ruta, nueva);
+  const linea = { fecha: "2026-09-26", propuesta: "propuestas/2026-09-26-norte-evidencias", aprobadas: ["A-1"], rechazadas: [], evidencias: [{ id: EVIDENCIA_CAMBIADA, huella: huella(nueva) }] };
+  writeFileSync(join(dir, "revisiones", "evidencias", "norte.jsonl"), `${readFileSync(join(dir, "revisiones", "evidencias", "norte.jsonl"), "utf8")}${JSON.stringify(linea)}\n`);
+  const inst = nuevaInstantanea(cargarConocimiento(dir), FECHA_INSTANTANEA, [primera]);
+  writeFileSync(join(dir, "instantaneas", `${inst.version}.json`), `${JSON.stringify(inst, null, 2)}\n`);
 }

@@ -34,7 +34,6 @@ export const esquemaRespuesta = z.discriminatedUnion("tipo", [
       semillas: z.array(semilla),
       clase,
       estable: z.boolean(),
-      frontera: z.boolean(),
     }),
   }),
   z.strictObject({ tipo: z.literal("error"), id: entero, mensaje: z.string() }),

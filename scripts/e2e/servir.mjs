@@ -7,8 +7,9 @@
 // Uso: node scripts/e2e/servir.mjs   (lo lanza playwright.config.ts; no hay que correrlo a mano)
 import { spawn, spawnSync } from "node:child_process";
 import { RAIZ_REPO } from "../lib/cargar-ts.mjs";
+import { orquestar } from "./orquestar.mjs";
 
-const PUERTO = process.env.E2E_PUERTO ?? "3000";
+const PUERTO = process.env.E2E_PUERTO ?? "3400";
 const SEMBRADA = process.env.E2E_SEMBRADA_PUERTO ?? String(Number(PUERTO) + 1);
 
 /** Corre un comando hasta el final; si falla, esto también (Playwright lo muestra como el webServer que no arrancó). */
@@ -34,22 +35,17 @@ async function esperar(url, ms = 60_000) {
   throw new Error(`servir: ${url} no respondió en ${ms / 1000} s`);
 }
 
-console.log("servir: 1/3 construyendo la base sembrada");
-correr("node", ["scripts/datos/construir-sembrada.mjs"]);
-console.log("servir: 2/3 construyendo el dato real");
-correr("pnpm", ["build"]);
+console.log(`servir: construyendo la sembrada y el dato real, y sirviendo out-sembrada/ en :${SEMBRADA} y out/ en :${PUERTO}`);
+const lanzar = (nombre) =>
+  nombre === "sembrada"
+    ? spawn("pnpm", ["exec", "serve", "out-sembrada", "-l", `tcp://127.0.0.1:${SEMBRADA}`, "--config", "../serve.json"], { cwd: RAIZ_REPO, stdio: "inherit" })
+    : spawn("pnpm", ["start"], { cwd: RAIZ_REPO, stdio: "inherit", env: { ...process.env, PORT: PUERTO } });
 
-console.log(`servir: 3/3 sirviendo out-sembrada/ en :${SEMBRADA} y out/ en :${PUERTO}`);
-const hijos = [
-  spawn("pnpm", ["exec", "serve", "out-sembrada", "-l", SEMBRADA, "--config", "../serve.json"], { cwd: RAIZ_REPO, stdio: "inherit" }),
-];
-await esperar(`http://localhost:${SEMBRADA}`);
-hijos.push(spawn("pnpm", ["start"], { cwd: RAIZ_REPO, stdio: "inherit", env: { ...process.env, PORT: PUERTO } }));
-
-// Si uno de los dos servidores muere, esto también: Playwright no debe seguir contra medio sitio. Y al cerrar, nadie se queda.
-const cerrar = (codigo) => {
-  for (const h of hijos) if (!h.killed) h.kill("SIGTERM");
-  process.exit(codigo);
-};
-for (const h of hijos) h.on("exit", (codigo) => cerrar(codigo ?? 1));
-for (const s of ["SIGINT", "SIGTERM"]) process.on(s, () => cerrar(0));
+await orquestar({
+  correr,
+  lanzar,
+  esperar,
+  salir: (codigo) => process.exit(codigo),
+  proceso: process,
+  urls: { sembrada: `http://127.0.0.1:${SEMBRADA}`, real: `http://127.0.0.1:${PUERTO}` },
+});

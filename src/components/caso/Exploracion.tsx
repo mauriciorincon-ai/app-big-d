@@ -17,6 +17,7 @@ import type { Idioma, Textos } from "@/lib/i18n";
 import { BarraMini, BarraPeso } from "./Barras";
 import { Alerta, Estrella, Ok } from "./Iconos";
 import { MarcoTabla } from "./MarcoTabla";
+import { consultaDelCliente, consultaDelServidor, escribirConsulta, suscribirConsulta } from "./consulta-url";
 
 // Sensibilidad de un factor y robustez por simulación (maqueta comparacion.html, vistas b y c; D-S3-06 a D-S3-08). El
 // criterio y el peso explorados viven en la URL; los totales y los eventos salen de la fórmula racional exacta del
@@ -31,21 +32,6 @@ type TC = Textos["caso"]["comparacion"];
 const INTENTOS_POR_PASO = 4000;
 /** Espera tras el último movimiento antes de escribir la URL y simular (history.replaceState tiene cupo en Safari). */
 const ESPERA_MS = 300;
-
-const oyentes = new Set<() => void>();
-function suscribir(avisar: () => void) {
-  oyentes.add(avisar);
-  window.addEventListener("popstate", avisar);
-  return () => {
-    oyentes.delete(avisar);
-    window.removeEventListener("popstate", avisar);
-  };
-}
-function escribir(consulta: string) {
-  if (consulta === window.location.search) return;
-  window.history.replaceState(window.history.state, "", `${window.location.pathname}${consulta}${window.location.hash}`);
-  for (const avisar of oyentes) avisar();
-}
 
 const clave = (e: EstadoExploracion) => `${e.criterio}|${e.t}`;
 
@@ -81,11 +67,7 @@ export function Exploracion({ idioma, t, entrada, resultado, simulacion, nombres
   const nomC = (id: string) => nombres.criterio[id] ?? id;
   const pesoDe = (c: string) => caso.pesos.find((p) => p.criterio_id === c)!;
 
-  const consulta = useSyncExternalStore(
-    suscribir,
-    () => window.location.search,
-    () => "",
-  );
+  const consulta = useSyncExternalStore(suscribirConsulta, consultaDelCliente, consultaDelServidor);
   const desdeUrl = estadoExploracion(consulta, caso.pesos, resultado.sensibilidad, paso);
   // Mientras se arrastra el control, el peso vive aquí; la URL se escribe al soltar (o tras la espera).
   const [arrastre, setArrastre] = useState<EstadoExploracion | null>(null);
@@ -96,7 +78,7 @@ export function Exploracion({ idioma, t, entrada, resultado, simulacion, nombres
     if (espera.current) clearTimeout(espera.current);
     setArrastre(e);
     const escribirYa = () => {
-      escribir(consultaExploracion(e, caso.pesos, window.location.search));
+      escribirConsulta(consultaExploracion(e, caso.pesos, window.location.search));
       setArrastre(null);
     };
     if (inmediato) escribirYa();
@@ -348,7 +330,7 @@ function Sensibilidad1({ idioma, t, s, w, rangoPct, esencial, actual, fijar, nom
             </li>
           )}
         </ul>
-        <MarcoTabla etiqueta={t.s.tabla}>
+        <MarcoTabla etiqueta={t.s.tabla} pista={t.s.desliza}>
           <table className="tabla">
             <thead>
               <tr>
@@ -411,7 +393,7 @@ function VistaRobustez({ m, idioma, t, resultado, nombres, base, umbral, s, peso
     <div className="dos" data-simulacion="lista">
       <div>
         <p className="kit-nota">{plantilla(r.pesosDe, { pesos: m.etiqueta })}</p>
-        <MarcoTabla etiqueta={r.tabla}>
+        <MarcoTabla etiqueta={r.tabla} pista={r.desliza}>
           <table className="tabla acept">
             <thead>
               <tr>

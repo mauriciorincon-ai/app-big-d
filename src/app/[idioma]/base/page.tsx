@@ -10,6 +10,7 @@ import { Pestanas } from "@/components/Pestanas";
 import { diasEntre, estadoVigencia } from "@/engine";
 import { plantilla, plural } from "@/lib/atlas/plantilla";
 import { conocimiento } from "@/lib/caso/casos";
+import { diferenciasDeLaBase } from "@/lib/caso/diferencias";
 import { entero, huellaCorta, peso } from "@/lib/caso/formato";
 import { pestanasConocimiento } from "@/lib/caso/rutas";
 import { datos, ErrorDeDatos, fechaDeConsulta, rutaInvestigador } from "@/lib/datos";
@@ -258,6 +259,8 @@ export default async function Base({ params }: PageProps<"/[idioma]/base">) {
           </MarcoTabla>
         )}
       </section>
+
+      <Diferencias k={k} t={t.diferencias} idioma={idioma} />
     </>
   );
 }
@@ -326,5 +329,122 @@ function TarjetaEvidencia({ e, idioma, t, vig, fecha, umbrales, max, plataforma,
         </div>
       </dl>
     </article>
+  );
+}
+
+/** D2 (S8): cada instantánea frente a la anterior. El color nunca va solo: cada cambio lleva su ícono y su texto. */
+function Diferencias({ k, t, idioma }: { k: Conocimiento; t: ReturnType<typeof textos>["base"]["diferencias"]; idioma: Idioma }) {
+  const pares = diferenciasDeLaBase(k);
+  const nomP = new Map(k.plataformas.map((p) => [p.id, p.nombre[idioma]]));
+  const nomC = new Map(k.casos.map((c) => [c.id, c.nombre[idioma]]));
+  const plataformas = (ids: readonly string[]) => ids.map((id) => nomP.get(id) ?? id).join(", ");
+  const resumen = (r: (typeof pares)[number]["casos"][number]["antes"]) =>
+    [
+      !r.evaluable ? plantilla(t.noEvaluable, { motivos: r.motivos.map((m) => t.motivos[m as keyof typeof t.motivos] ?? m).join(", ") }) : null,
+      r.ganadora ? plantilla(t.gana, { plataforma: nomP.get(r.ganadora) ?? r.ganadora }) : null,
+      r.empate.length ? plantilla(t.empate, { plataformas: plataformas(r.empate) }) : null,
+      r.descartadas.length ? plantilla(t.fuera, { plataformas: plataformas(r.descartadas) }) : null,
+    ]
+      .filter(Boolean)
+      .join(" · ");
+  return (
+    <section className="seccion diferencias" aria-labelledby="dif-t" data-diferencias>
+      <h2 id="dif-t">{t.titulo}</h2>
+      <p className="kit-nota">{t.nota}</p>
+      {pares.length === 0 ? (
+        <p className="kit-nota" data-estado="una-instantanea">
+          {t.una}
+        </p>
+      ) : (
+        pares.map((p, n) => {
+          const vacio = !p.evidencias.nuevas.length && !p.evidencias.modificadas.length && !p.evidencias.retiradas.length;
+          return (
+            <details key={p.ahora} className="lectura-seccion" open={n === 0} data-par-instantaneas={`${p.antes}|${p.ahora}`}>
+              <summary className="mono">{plantilla(t.par, { ahora: p.ahora, antes: p.antes })}</summary>
+              {vacio ? (
+                <p className="kit-nota" data-sin-diferencias>
+                  {t.ninguna}
+                </p>
+              ) : (
+                <dl className="diferencias-lista">
+                  {p.evidencias.nuevas.length > 0 && (
+                    <div data-dif="nuevas">
+                      <dt>{t.nuevas}</dt>
+                      {p.evidencias.nuevas.map((id) => (
+                        <dd key={id} className="mono">
+                          + {id}
+                        </dd>
+                      ))}
+                    </div>
+                  )}
+                  {p.evidencias.modificadas.length > 0 && (
+                    <div data-dif="modificadas">
+                      <dt>{t.modificadas}</dt>
+                      {p.evidencias.modificadas.map((m) => (
+                        <dd key={m.id}>
+                          <span className="mono">~ {m.id}</span> · {plantilla(t.campos, { campos: m.campos.join(", ") })}
+                        </dd>
+                      ))}
+                    </div>
+                  )}
+                  {p.evidencias.retiradas.length > 0 && (
+                    <div data-dif="retiradas">
+                      <dt>{t.retiradas}</dt>
+                      {p.evidencias.retiradas.map((id) => (
+                        <dd key={id} className="mono">
+                          − {id}
+                        </dd>
+                      ))}
+                    </div>
+                  )}
+                </dl>
+              )}
+              <h3>{t.casos}</h3>
+              {p.casos.length === 0 ? (
+                <p className="kit-nota">{t.sinCasos}</p>
+              ) : (
+                <MarcoTabla etiqueta={t.tablaCasos}>
+                  <table className="tabla">
+                    <thead>
+                      <tr>
+                        <th scope="col">{t.caso}</th>
+                        <th scope="col">{plantilla(t.antes, { version: p.antes })}</th>
+                        <th scope="col">{plantilla(t.ahora, { version: p.ahora })}</th>
+                        <th scope="col">{t.cambia}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {p.casos.map((c) => {
+                        const cambios = (["ganadora", "empate", "bloqueo"] as const).filter((x) => c[`cambia_${x}`]);
+                        return (
+                          <tr key={c.caso_id} data-caso-dif={c.caso_id} data-cambia={cambios.join(" ") || "nada"}>
+                            <th scope="row">{nomC.get(c.caso_id) ?? c.caso_id}</th>
+                            <td>{resumen(c.antes)}</td>
+                            <td>{resumen(c.ahora)}</td>
+                            <td>
+                              {cambios.length ? (
+                                <span className="campo-aviso">
+                                  <Alerta />
+                                  {cambios.map((x) => t.cambio[x]).join(" · ")}
+                                </span>
+                              ) : (
+                                <span className="campo-aviso">
+                                  <Ok />
+                                  {t.sinCambio}
+                                </span>
+                              )}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </MarcoTabla>
+              )}
+            </details>
+          );
+        })
+      )}
+    </section>
   );
 }

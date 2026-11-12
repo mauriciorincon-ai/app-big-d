@@ -2,9 +2,9 @@ import { defineConfig, devices } from "@playwright/test";
 
 // Config que el ci.yml del kit ya asume (job e2e: "pnpm test:e2e").
 // Patrón validado en app-nutri-kids S1. Móvil primero: las apps del pipeline son mobile-first.
-// Puerto configurable (E2E_PUERTO) para correr en local cuando :3000 está ocupado por otra app;
-// en CI no se define y queda 3000, el mismo de Lighthouse.
-const PUERTO = process.env.E2E_PUERTO ?? "3000";
+// Big-D vive en el 3400 (app, e2e y Lighthouse) y el 3401 (base sembrada), siempre en 127.0.0.1 (CLAUDE.md, «Lo que ya no se
+// necesita se cierra»). E2E_PUERTO queda por si un puerto propio está ocupado; en CI no se define.
+const PUERTO = process.env.E2E_PUERTO ?? "3400";
 // La base sembrada (D-S3-14): el mismo sitio construido con la base ficticia completa, servido al lado. Ejercita los
 // estados que el dato real aún no tiene (la comparación entera, la robustez en el Worker, los filtros de la base).
 const SEMBRADA = process.env.E2E_SEMBRADA_PUERTO ?? String(Number(PUERTO) + 1);
@@ -22,7 +22,7 @@ export default defineConfig({
   // de paso desmintió la razón original del cambio — ver CHANGELOG).
   reporter: process.env.CI ? [["github"], ["list"]] : "list",
   use: {
-    baseURL: `http://localhost:${PUERTO}`,
+    baseURL: `http://127.0.0.1:${PUERTO}`,
     trace: "on-first-retry",
   },
   projects: [
@@ -40,7 +40,7 @@ export default defineConfig({
     // La base sembrada: sus pruebas fijan su propio ancho (1280 o 380) y su tema.
     {
       name: "sembrada",
-      use: { ...devices["Desktop Chrome"], baseURL: `http://localhost:${SEMBRADA}` },
+      use: { ...devices["Desktop Chrome"], baseURL: `http://127.0.0.1:${SEMBRADA}` },
       testMatch: SOLO_SEMBRADA,
     },
     // G11 en los otros dos motores (DoD del S1: «e2e G11 a 380 px en tres navegadores»). Solo esa spec: el
@@ -65,8 +65,8 @@ export default defineConfig({
   // que NO existen en producción (websocket de HMR, `eval()` de React dev) y produce rojos sobre un árbol limpio.
   webServer: {
     command: "node scripts/e2e/servir.mjs",
-    url: `http://localhost:${PUERTO}`,
-    // Sin reuso: un `pnpm dev` olvidado en :3000 secuestraría el suite entero en silencio.
+    url: `http://127.0.0.1:${PUERTO}`,
+    // Sin reuso: un `pnpm dev` olvidado en :3400 secuestraría el suite entero en silencio.
     reuseExistingServer: false,
     // Dos builds uno tras otro.
     timeout: 600_000,

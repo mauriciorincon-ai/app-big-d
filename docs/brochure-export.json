@@ -12,140 +12,150 @@
     "enlaces.produccion": "null cuando la app no tiene URL pública. `razon` explica por qué, y es lo que la vitrina muestra en lugar del enlace. Nunca se rellena con un enlace de repositorio ni con una promesa."
   },
   "schema_version": "1.0.0",
-  "actualizado": "2026-10-12",
+  "actualizado": "2026-11-11",
   "app": {
     "slug": "big-d",
     "nombre": "Big-D",
     "ciclo": "H1",
     "estado": "inicial",
     "sellado_en": null,
-    "sprints_cerrados": 7,
+    "sprints_cerrados": 8,
     "version_repo": "0.1.0"
   },
   "promesa": {
-    "tagline": "Elige tu plataforma de datos con evidencia fechada y un mismo mapa para todas.",
-    "intro": "Un planeador abierto y reproducible para elegir plataforma de datos: hoy Databricks, Microsoft Fabric y Snowflake. Primero explica cada una de punta a punta con una sola gramática visual. Después toma tu caso y te dice quién gana, por cuánto, qué tan seguro es y con qué peso cambiaría, y lo vuelve un plan para no arrepentirte. La única IA propone; tú apruebas. En español e inglés.",
-    "para_quien": "Para el planificador de datos que hoy elige plataforma por costumbre, por presión comercial o por lo que ya conoce el equipo, sin una comparación neutral que pueda mostrar y defender; y para quien, en una entrevista o una reunión, quiere entender en cinco minutos cómo funciona una plataforma que no ha usado.",
-    "diferencial": "No es «otro comparador»: es el único donde puedes ver el cálculo, repetirlo, mover los pesos y descubrir en qué punto cambiarías de opinión, con cada puntaje amarrado a una evidencia fechada; y el único atlas que explica a las plataformas con el mismo mapa, en dos idiomas, sin un logo de fabricante. Y no termina en un puntaje: muestra en qué punto cambiaría el resultado, qué tan robusto es frente a tus pesos y qué evidencia ya está por revisar. Todo sale de un núcleo determinista que cualquiera puede repetir y verificar, y el atlas muestra cada plataforma —hoy tres, mañana las que agregues— con la visión de un líder, el detalle de un experto y el recorrido de un dato, lado a lado."
+    "tagline": "Elige tu plataforma de datos con evidencia fechada, no por costumbre.",
+    "intro": "Big-D dibuja Databricks, Microsoft Fabric y Snowflake con el mismo mapa, para que entiendas cada una de punta a punta y las compares lado a lado. Después toma tu caso y te muestra quién gana, por cuánto, qué tan sólido es el resultado y con qué peso cambiaría. Y no se queda en un puntaje: lo vuelve decisiones, riesgos, un plan y un informe en español e inglés.",
+    "para_quien": "Para quien tiene que elegir o recomendar una plataforma de datos y necesita una comparación neutral que pueda mostrar y defender ante su equipo. Y para quien llega a una reunión o a una entrevista y quiere entender de punta a punta una plataforma que nunca ha usado.",
+    "diferencial": "Cada puntaje se apoya en una evidencia con fecha y cita, y el cálculo es abierto: lo repites, mueves los pesos y ves en qué punto cambiarías de opinión. El resultado sale de un núcleo sin IA que da los mismos bytes en Node, Chromium, Firefox y WebKit. Ninguna plataforma tiene trato especial: no hay logos de fabricante y el orden en que entran no cambia el resultado."
   },
   "funcionalidades": {
-    "total": 14,
+    "total": 17,
     "fuente_del_conteo": "docs/MANUAL-DE-USO.md",
     "descartadas": [],
     "grupos": [
       {
         "orden": 1,
         "estrella": true,
-        "nombre": "El mismo mapa para todas",
-        "linea": "Cada plataforma de datos de punta a punta, con las mismas capas, colores y símbolos, y todas lado a lado.",
+        "nombre": "Cualquier plataforma, el mismo mapa",
+        "linea": "Databricks, Microsoft Fabric y Snowflake de punta a punta, con las mismas capas, colores y símbolos.",
         "features": [
           {
             "id": "F1",
-            "nombre": "Visión general (nivel 1)",
-            "que_hace": "Muestra la plataforma entera para líderes, de izquierda a derecha como el camino que recorre un dato: cada capa responde una pregunta y cada bloque se abre en una ventana con sus componentes. El encabezado dice qué tan al día está el mapa.",
+            "nombre": "La plataforma entera, en una página",
+            "que_hace": "Ves una plataforma completa en una página, pensada para líderes. Se lee de izquierda a derecha, como el camino de un dato. Cada capa responde una pregunta, como de dónde vienen los datos o cómo entran. Cada bloque se abre en sus componentes.",
             "seccion_manual": "1. Visión general (nivel 1)"
           },
           {
             "id": "F2",
-            "nombre": "Componentes (nivel 2)",
-            "que_hace": "El mismo mapa, un nivel adentro, para expertos: cada componente con su tipo (color, símbolo y etiqueta), su madurez y una ficha con qué hace, por qué importa, sus términos y sus fuentes con fecha.",
+            "nombre": "Cada componente, con su ficha y sus fuentes",
+            "que_hace": "Bajas un nivel y cada bloque se abre en sus componentes, para quien quiere el detalle técnico. Cada uno muestra su tipo con color, símbolo y etiqueta. Su ficha cuenta qué hace, por qué importa, qué tan maduro está y de qué fuentes fechadas sale.",
             "seccion_manual": "2. Componentes (nivel 2)"
           },
           {
             "id": "F3",
-            "nombre": "Recorrido de un dato (nivel 3)",
-            "que_hace": "Sigue un dato de ejemplo desde que nace hasta que alguien lo usa, paso a paso sobre el mismo mapa, con anterior y siguiente; se reproduce solo si lo pides, y con «reducir movimiento» no se anima.",
+            "nombre": "El viaje de un dato, paso a paso",
+            "que_hace": "Sigues un dato de ejemplo desde que nace hasta que alguien lo usa, paso a paso sobre el mismo mapa. Avanzas y retrocedes con botones o con las flechas del teclado. Si tocas un componente del camino, saltas a su paso y lees su ficha.",
             "seccion_manual": "3. Recorrido de un dato (nivel 3)"
           },
           {
+            "id": "F7",
+            "nombre": "Todas lado a lado, banda por banda",
+            "que_hace": "Comparas las plataformas en el mismo mapa, una por fila, con cada banda en la misma columna para todas. Ves tres a la vez en pantalla ancha y una banda a la vez en el teléfono. «Desplegar todo» abre los componentes sin mover las columnas.",
+            "seccion_manual": "7. Lado a lado"
+          },
+          {
             "id": "F5",
-            "nombre": "Varias plataformas con el mismo mapa",
-            "que_hace": "Big-D está hecho para cualquier número de plataformas: hoy tienen mapa Databricks, Microsoft Fabric y Snowflake, más la Plataforma Ejemplo, ficticia. Al cambiar de plataforma te quedas en el mismo nivel de lectura.",
+            "nombre": "Cambia de plataforma sin perder el hilo",
+            "que_hace": "Pasas de Databricks a Microsoft Fabric o a Snowflake y sigues en el mismo nivel de lectura, sin empezar de nuevo. Big-D está hecho para cualquier número de plataformas: agregar una es agregar datos, nunca código.",
             "seccion_manual": "5. Varias plataformas con el mismo mapa"
           },
           {
-            "id": "F7",
-            "nombre": "Lado a lado",
-            "que_hace": "Todas las plataformas en el mismo mapa, una por fila, con cada banda en la misma columna para todas: tres a la vez en pantalla ancha, con páginas si hay más, y una banda a la vez en el teléfono. «Desplegar todo» abre los componentes sin mover las columnas.",
-            "seccion_manual": "7. Lado a lado"
+            "id": "F4",
+            "nombre": "El mapa, también en texto y con teclado",
+            "que_hace": "Todo lo que dice un mapa también está escrito, como una lista de capas, bloques, componentes, conexiones y pasos, para leerlo con un lector de pantalla o sin mirar el dibujo. El mapa se recorre con Tab y se abre con Enter o Espacio.",
+            "seccion_manual": "4. Lectura en texto y teclado"
           }
         ]
       },
       {
         "orden": 2,
         "estrella": false,
-        "nombre": "Conocimiento con cita y con firma",
-        "linea": "Lo propone una IA con citas que el código comprueba y lo aprueba una persona; cada versión aprobada queda guardada.",
+        "nombre": "Tu caso, decidido con números",
+        "linea": "De tus pesos a un plan defendible: quién gana, qué tan seguro es y qué decidir primero.",
         "features": [
           {
-            "id": "F6",
-            "nombre": "El investigador",
-            "que_hace": "Una inteligencia artificial propone el conocimiento de cada plataforma, con una cita textual de la documentación del fabricante por afirmación, que el código comprueba; una persona lo aprueba con un comando que la IA no puede correr. La app nunca usa IA mientras la miras.",
-            "seccion_manual": "6. El investigador: cómo entra el conocimiento"
+            "id": "F10",
+            "nombre": "Tu caso: lo que pesa y lo que no se negocia",
+            "que_hace": "Defines tu caso: el peso de cada criterio, con suma 100 y su margen de duda, las restricciones que descartan plataformas y las decisiones que suelen quedar implícitas. Al cuadrar, la pantalla arma el comando que una persona corre para aprobarlo.",
+            "seccion_manual": "10. El perfil del caso"
           },
           {
-            "id": "F8",
-            "nombre": "Versiones del mapa",
-            "que_hace": "Muestra qué cambió entre una versión aprobada del mapa y la siguiente: nuevo, retirado, renombrado y madurez, cada marca con símbolo y palabra. Lo que cambió sin cambiar el dibujo (textos y fuentes) se cuenta aparte.",
-            "seccion_manual": "8. Versiones del mapa"
+            "id": "F11",
+            "nombre": "Quién gana, por cuánto y qué tan seguro",
+            "que_hace": "Ves qué plataforma gana tu caso, por cuánto y qué tan sólido es el resultado. La sensibilidad muestra el peso exacto en que cambiaría la ganadora. La robustez prueba diez mil combinaciones de pesos dentro de tus rangos y dice en qué porcentaje sigue primera.",
+            "seccion_manual": "11. La comparación"
           },
           {
-            "id": "F9",
-            "nombre": "Base de conocimiento",
-            "que_hace": "Muestra lo que Big-D sabe en archivos legibles y con huella: criterios, evidencias con su fuente y su cita, la escala de madurez y cada instantánea. Solo entra a la comparación la evidencia que una persona aprobó; una evidencia pasa a «por revisar» a los 30 días de su verificación y a «vencida» a los 60.",
-            "seccion_manual": "9. La base de conocimiento"
+            "id": "F13",
+            "nombre": "Las decisiones, en el orden correcto",
+            "que_hace": "Conviertes la comparación en decisiones ordenadas por lo difícil que es deshacerlas: primero las de una sola vía. Cada una dice cómo la resuelve cada plataforma, con evidencia citada. Los riesgos se ordenan por urgencia y cada supuesto trae la prueba barata que lo confirma.",
+            "seccion_manual": "13. Las decisiones del caso"
+          },
+          {
+            "id": "F14",
+            "nombre": "El plan y el informe, listos para presentar",
+            "que_hace": "Te llevas el caso entero en una página: la hoja de ruta por fases, la lista de alistamiento y un informe de catorce secciones en español e inglés, con las mismas cifras. Cada ítem dice de dónde viene. Se imprime limpio, sin menús ni botones.",
+            "seccion_manual": "14. El informe del caso"
+          },
+          {
+            "id": "F16",
+            "nombre": "Pesos por pares, sin repartir 100 a ojo",
+            "que_hace": "Comparas los criterios de dos en dos y la pantalla propone los pesos, que suman 100, y mide si tus juicios se contradicen. Si pasan del umbral avisa, no bloquea. Los números son enteros: los mismos juicios dan los mismos pesos en cualquier navegador.",
+            "seccion_manual": "16. Comparar por pares"
+          },
+          {
+            "id": "F17",
+            "nombre": "Una variante del caso, sin tocar el original",
+            "que_hace": "Para probar otra versión del caso, la pantalla arma el comando que crea una copia. La copia nace en borrador, con su plan en borrador, y recuerda de qué caso salió. Solo una persona corre el comando, y el original queda igual.",
+            "seccion_manual": "17. Duplicar un caso"
           }
         ]
       },
       {
         "orden": 3,
         "estrella": false,
-        "nombre": "Transversales",
-        "linea": "Lo que acompaña a todo el atlas, no a una pantalla.",
+        "nombre": "Evidencia que puedes auditar",
+        "linea": "Una IA propone con citas, una persona aprueba y la herramienta se pone a prueba antes de publicar.",
         "features": [
           {
-            "id": "F4",
-            "nombre": "Lectura en texto y teclado",
-            "que_hace": "Todo lo que dice un mapa también está escrito, como una lista de capas, bloques, componentes, conexiones y pasos; el mapa se recorre con Tab y se abre con Enter o Espacio.",
-            "seccion_manual": "4. Lectura en texto y teclado"
-          }
-        ]
-      },
-      {
-        "orden": 4,
-        "estrella": false,
-        "nombre": "Caso, comparación e instrumento",
-        "linea": "Lo que decide un caso y lo que prueba que la herramienta se puede confiar.",
-        "features": [
-          {
-            "id": "F10",
-            "nombre": "Perfil del caso",
-            "que_hace": "Un caso de decisión con sus pesos (que suman 100), sus rangos de incertidumbre, sus restricciones y sus decisiones implícitas. La pantalla arma el comando que una persona ejecuta para aprobar el perfil; la app no aprueba nada.",
-            "seccion_manual": "10. El perfil del caso"
+            "id": "F6",
+            "nombre": "Un investigador con IA que cita cada afirmación",
+            "que_hace": "Cada afirmación llega con una cita textual de la documentación del fabricante, y el código comprueba que la cita esté en la fuente. Las propone una IA cuando alguien la llama. Las aprueba una persona, con un comando que la IA no puede correr.",
+            "seccion_manual": "6. El investigador: cómo entra el conocimiento"
           },
           {
-            "id": "F11",
-            "nombre": "Comparación",
-            "que_hace": "Compara las plataformas con el perfil aprobado y la evidencia aprobada: totales, sensibilidad, robustez y pros y contras, con su fecha de evaluación e instantánea. Con el perfil en borrador no puntúa y dice por qué. No recomienda una plataforma: muestra el resultado con sus supuestos.",
-            "seccion_manual": "11. La comparación"
+            "id": "F9",
+            "nombre": "Toda la evidencia, abierta y con fecha",
+            "que_hace": "Ves todo lo que Big-D sabe, en archivos legibles: criterios y evidencias con su fuente y su cita. Solo entra a la comparación lo que una persona aprobó. Cada evidencia avisa cuando envejece: «por revisar» a los 30 días y «vencida» a los 60.",
+            "seccion_manual": "9. La base de conocimiento"
+          },
+          {
+            "id": "F8",
+            "nombre": "Qué cambió de una versión a otra",
+            "que_hace": "Ves qué cambió entre dos versiones aprobadas del mapa de una plataforma: lo nuevo, lo retirado, lo renombrado y lo que cambió de madurez, cada marca con símbolo y palabra. Lo que cambió sin tocar el dibujo, como textos y fuentes, se cuenta aparte.",
+            "seccion_manual": "8. Versiones del mapa"
           },
           {
             "id": "F12",
-            "nombre": "Instrumento",
-            "que_hace": "Dice si la herramienta se puede confiar antes de publicar: casos con respuesta conocida, propiedades matemáticas, siete errores sembrados y la comprobación de que lo aprobado no se editó a mano. Si algo falla, la app no se publica.",
+            "nombre": "La herramienta se prueba antes de publicar",
+            "que_hace": "Sabes si puedes confiar en la herramienta antes de que se publique. Corre casos con respuesta conocida, propiedades matemáticas y siete errores sembrados a propósito, y comprueba que nadie editó a mano lo aprobado. Si algo falla, no se publica nada.",
             "seccion_manual": "12. El instrumento"
           },
           {
-            "id": "F13",
-            "nombre": "Decisiones y riesgos",
-            "que_hace": "Las decisiones del caso en orden de reversibilidad: primero las de una sola vía. Cada decisión tiene su ficha con cómo la resuelve cada plataforma y con qué evidencia citada; los riesgos se ordenan por prioridad de acción; los supuestos tienen su prueba barata, que es una tarea del equipo. Un ciclo se muestra con su camino y un plan con acciones altas sin mitigación no se puede aprobar. La pantalla arma el comando de aprobación; solo una persona lo corre.",
-            "seccion_manual": "13. Las decisiones del caso"
-          },
-          {
-            "id": "F14",
-            "nombre": "Hoja de ruta e informe",
-            "que_hace": "El caso entero en una página: la hoja de ruta por fases, con cada ítem, su origen y el criterio para darlo por cumplido; la lista de alistamiento; y un informe de catorce secciones en español e inglés con las mismas cifras. Con el perfil o el plan en borrador, lo dice arriba. Se puede imprimir, y el papel sale sin menús.",
-            "seccion_manual": "14. El informe del caso"
+            "id": "F15",
+            "nombre": "Qué cambió en la base entre instantáneas",
+            "que_hace": "Comparas cada instantánea de la base con la anterior: qué evidencia es nueva, cuál cambió y en qué campos, y cuál se retiró. Para cada caso ves si cambia la plataforma ganadora, el empate o lo que se descarta, dicho con palabras.",
+            "seccion_manual": "15. Qué cambió entre instantáneas"
           }
         ]
       }
@@ -155,10 +165,10 @@
     {
       "clave": "funcionalidades",
       "etiqueta": "Funcionalidades documentadas",
-      "valor": 14,
+      "valor": 17,
       "unidad": "funcionalidades",
       "fuente": "medido",
-      "detalle": "Las funciones numeradas del manual (docs/MANUAL-DE-USO.md), construidas en los sprints 1 a 6. Las de los sprints 3 y 4 (la base de conocimiento, el perfil del caso, la comparación y el instrumento) se cuentan desde que el manual las documenta. Lo recuenta tests/unit/brochure-export.test.ts."
+      "detalle": "Las funciones numeradas del manual (docs/MANUAL-DE-USO.md), construidas en los sprints 1 a 6 y 8. Las de los sprints 3 y 4 (la base de conocimiento, el perfil del caso, la comparación y el instrumento) se cuentan desde que el manual las documenta. Lo recuenta tests/unit/brochure-export.test.ts."
     },
     {
       "clave": "plataformas_en_el_atlas",
@@ -187,18 +197,18 @@
     {
       "clave": "pruebas_automaticas",
       "etiqueta": "Pruebas automáticas",
-      "valor": 3360,
+      "valor": 3442,
       "unidad": "pruebas",
       "fuente": "medido",
-      "detalle": "2186 unitarias y de integración (Vitest, 118 archivos, incluidas las del diagramador), 1165 de navegador (Playwright: escritorio, teléfono, Firefox, WebKit y la base sembrada; 9 se saltan porque dependen del dato) y 9 de determinismo (3 pruebas en 3 navegadores). Contadas el 2026-10-12."
+      "detalle": "2248 unitarias y de integración (Vitest, 126 archivos, incluidas las del diagramador), 1185 de navegador (Playwright: escritorio, teléfono, Firefox, WebKit y la base sembrada) y 9 de determinismo (3 pruebas en 3 navegadores). Recontadas el 2026-11-11 sobre a6fb3f3: `pnpm test` y `playwright test --list`."
     },
     {
       "clave": "cobertura_lineas",
       "etiqueta": "Cobertura de líneas",
-      "valor": 97.88,
+      "valor": 97.89,
       "unidad": "%",
       "fuente": "medido",
-      "detalle": "v8 sobre src/engine, src/lib, src/components y packages/diagramador/src: 5620 de 5742 líneas con código (pnpm test del 2026-10-12, por línea de cada sentencia). El método cambió respecto del 2026-10-11 (4290 de 4353): las dos cifras no son comparables. Motores y lib, umbral propio del 80 %."
+      "detalle": "v8 sobre src/engine, src/lib, src/components y los dos paquetes de la casa (diagramador e instrumentos-de-plan): 5996 de 6125 líneas, `pnpm test` del 2026-11-11 sobre a6fb3f3. Motores y lib, umbral propio del 80 %."
     },
     {
       "clave": "motores_con_la_misma_huella",
@@ -211,7 +221,7 @@
     {
       "clave": "decisiones_registradas",
       "etiqueta": "Decisiones de arquitectura registradas",
-      "valor": 15,
+      "valor": 16,
       "unidad": "ADR",
       "fuente": "medido",
       "detalle": "Archivos de decisions/, sin contar la plantilla. Lo recuenta tests/unit/brochure-export.test.ts."
@@ -279,13 +289,13 @@
     "local_only": false,
     "red_saliente": false,
     "usa_ia": false,
-    "detalle": "Big-D es una web estática: no hay servidor, ni cuentas, ni base de datos, y solo muestra contenido público por diseño (documentación pública de los fabricantes y un hospital ficticio). Cada página lleva una política de seguridad que solo le permite conectarse con el propio sitio; Sentry viene cableado pero inerte sin DSN, y solo sumaría su origen a esa política si el build trajera una. La app no usa IA mientras corre: la única IA es el investigador, que se corre a demanda fuera del producto y cuyas propuestas aprueba una persona."
+    "detalle": "Big-D es un sitio estático: sin servidor, sin cuentas y sin base de datos, y solo muestra información pública: documentación de los fabricantes y un hospital ficticio. Cada página solo puede conectarse con el propio sitio. El monitoreo de errores viene instalado pero apagado: sin su clave no envía nada. La app no usa IA mientras la miras; el investigador corre aparte, a demanda, y una persona aprueba lo que propone."
   },
   "enlaces": {
     "produccion": null,
-    "razon": "La app privada no se publica: vive detrás de la protección de acceso. Es la regla de cero enlaces del portafolio: la producción se muestra, jamás se entrega.",
+    "razon": "Big-D vive detrás de una protección de acceso: aquí se muestra, no se entrega. Es la regla de cero enlaces del Portafolio.",
     "repositorio": null,
-    "razon_repositorio": "Ningún enlace de acceso viaja en este export: es la regla de cero enlaces del portafolio, no una cuestión de visibilidad del repositorio.",
+    "razon_repositorio": "Tampoco viaja el enlace al código: la regla de cero enlaces cubre todo, no es una cuestión de visibilidad del repositorio.",
     "brochure_archivo": "docs/BROCHURE.html",
     "brochure_ruta_local": "/conoce"
   }

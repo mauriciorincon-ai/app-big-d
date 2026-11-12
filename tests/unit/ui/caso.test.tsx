@@ -87,6 +87,17 @@ describe("Exploracion: sensibilidad y robustez", () => {
     expect(WorkerFalso.ultimo).toBeNull();
   });
 
+  it("026-5: las dos tablas de la exploración avisan en palabras que se deslizan, justo antes de su marco, en los dos idiomas", () => {
+    const { container } = exploracion();
+    const avisos = [...container.querySelectorAll("p.pista-tabla")];
+    expect(avisos.map((p) => p.textContent)).toEqual([tc.sensibilidad.desliza, tc.robustez.desliza]);
+    for (const p of avisos) expect(p.nextElementSibling?.classList.contains("tabla-marco")).toBe(true);
+    // Los dos idiomas lo dicen, y con palabras distintas (redactado, no traducido palabra por palabra).
+    const en = textos("en").caso.comparacion;
+    expect(en.sensibilidad.desliza).toMatch(/Slide the table sideways/);
+    expect(en.robustez.desliza).toMatch(/Slide the table sideways/);
+  });
+
   it("mover el peso escribe la URL, pide la simulación al Worker y pinta la aceptabilidad de los pesos explorados", async () => {
     WorkerFalso.ultimo = null;
     exploracion();
