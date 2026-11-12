@@ -48,6 +48,8 @@ export function copiaDe(dir: string, original: string, nuevo: string): Map<strin
   const carpeta = join(dir, "casos", original);
   if (existsSync(carpeta))
     for (const f of archivosDe(carpeta)) {
+      // El relato de fracaso es un texto humano sobre el ORIGINAL (origen declarado-por-usuario, que el esquema exige): no se copia.
+      if (f === "relato-de-fracaso.yaml") continue;
       let texto = readFileSync(join(carpeta, f), "utf8").replace(new RegExp(`^caso_id: ${original}$`, "gm"), `caso_id: ${nuevo}`);
       if (f === join("plan", "plan.yaml")) {
         texto = texto.replace(/^estado_aprobacion: aprobado$/m, "estado_aprobacion: borrador").replace(/^aprobacion:\n(?:[ \t]+.*\n?)*/m, "");
@@ -58,10 +60,21 @@ export function copiaDe(dir: string, original: string, nuevo: string): Map<strin
   return out;
 }
 
-const escribir = (dir: string, archivos: Map<string, string>) => {
-  for (const [r, texto] of archivos) {
-    mkdirSync(dirname(join(dir, r)), { recursive: true });
-    writeFileSync(join(dir, r), texto, { flag: "wx" });
+/** Escribe cada archivo con `wx` (jamás pisa). Si uno falla, borra solo los que ESTA llamada creó: no queda una copia a medias. */
+export const escribir = (dir: string, archivos: Map<string, string>) => {
+  const creados: string[] = [];
+  const carpetas: string[] = [];
+  try {
+    for (const [r, texto] of archivos) {
+      const nueva = mkdirSync(dirname(join(dir, r)), { recursive: true });
+      if (nueva) carpetas.push(nueva);
+      writeFileSync(join(dir, r), texto, { flag: "wx" });
+      creados.push(join(dir, r));
+    }
+  } catch (e) {
+    for (const c of creados) rmSync(c, { force: true });
+    for (const c of carpetas) rmSync(c, { recursive: true, force: true });
+    throw e;
   }
 };
 

@@ -18,7 +18,7 @@ import { join } from "node:path";
 import { parse } from "yaml";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { comandoDuplicarCaso } from "@/lib/caso/comando-duplicar";
-import { copiaDe, duplicarCaso, ErrorAlDuplicar } from "@/lib/caso/duplicar";
+import { copiaDe, duplicarCaso, ErrorAlDuplicar, escribir } from "@/lib/caso/duplicar";
 import { cargarConocimiento } from "@/lib/datos/cargar-conocimiento";
 import { huellaCaso } from "@/lib/datos/instantanea";
 import { armarBaseFuturo } from "../lib/base-futuro";
@@ -145,10 +145,41 @@ describe("duplicarCaso", () => {
     expect(() => duplicarCaso(dir, "no-existe", "otro")).toThrow(
       ErrorAlDuplicar,
     );
+    for (const hostil of ["../x", "a/b", ".."])
+      expect(() => duplicarCaso(dir, hostil, "otro")).toThrow(/no permitido/);
     expect(huellas(dir)).toEqual(conCopia);
     expect(Object.keys(antes).every((f) => conCopia[f] === antes[f])).toBe(
       true,
     );
+  });
+
+  it("un relato de fracaso humano del original no se copia, y la copia carga", () => {
+    writeFileSync(
+      join(dir, "casos", "hospital-futuro", "relato-de-fracaso.yaml"),
+      "caso_id: hospital-futuro\ntexto:\n  es: Falló porque nadie era dueño de los datos.\n  en: It failed because nobody owned the data.\nescrito_por: el comité\nfecha: 2026-11-01\norigen: declarado-por-usuario\n",
+    );
+    const escritos = duplicarCaso(dir, "hospital-futuro", "hospital-futuro-b");
+    expect(escritos.some((f) => f.includes("relato-de-fracaso"))).toBe(false);
+    expect(
+      cargarConocimiento(dir).casos.map((c) => c.id),
+    ).toContain("hospital-futuro-b");
+  });
+
+  it("si la escritura falla a medias, borra lo que creó (archivos y carpetas) y se puede reintentar", () => {
+    const antes = huellas(dir);
+    // El segundo archivo cuelga del primero, que es un archivo: su carpeta no puede crearse y `wx` falla tras el primero.
+    expect(() =>
+      escribir(
+        dir,
+        new Map([
+          ["casos/nuevo/a.yaml", "1"],
+          ["casos/nuevo/a.yaml/b.yaml", "2"],
+        ]),
+      ),
+    ).toThrow();
+    expect(existsSync(join(dir, "casos", "nuevo"))).toBe(false);
+    expect(huellas(dir)).toEqual(antes);
+    expect(() => duplicarCaso(dir, "hospital-futuro", "hospital-futuro-b")).not.toThrow();
   });
 
   it("si la copia no carga en el ensayo, no escribe nada", () => {
