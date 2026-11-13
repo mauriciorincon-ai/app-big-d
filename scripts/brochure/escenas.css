@@ -1,0 +1,67 @@
+  /* ===== S10 · Escenas del storyboard (docs/BROCHURE-storyboard.md) =====
+     Motion-system de la pieza: sereno y exacto. Solo transform/opacity, más stroke-dashoffset en E1 (excepción declarada).
+     El texto NUNCA se desvanece (banco § 5): lo que entra se mueve; la letra está pintada desde el primer cuadro. */
+  :root { --ease-asentar: cubic-bezier(0.22, 1, 0.36, 1); --t-breve: 0.35s; --t-escena: 0.8s; --t-vuelta: 1.4s; }
+  .escena { padding-top: 56px; }
+  .escena > h2 { font-size: 1.7rem; margin-bottom: 6px; }
+  .escena .rotulo { font-family: ui-monospace, Menlo, monospace; font-size: 0.68rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--tinta-suave); }
+  .escena-cuadro { margin-top: 22px; padding: 20px; background: var(--superficie); border: 1px solid var(--borde);
+    border-radius: var(--radio); }
+  .mono { font-family: ui-monospace, Menlo, monospace; }
+
+  /* E1 · dibujar el trazo: tres mapas abstractos de bandas, el mismo trazo tres veces. */
+  .mapas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 0; }
+  .mapa-mini { margin: 0; text-align: center; }
+  .mapa-mini svg { width: 100%; height: auto; display: block; color: var(--acento-vivo); }
+  .mapa-mini figcaption { margin-top: 6px; font-size: 0.85rem; color: var(--tinta-suave); }
+  .trazo { fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
+
+  /* E2 · alzar y asentar: barras que crecen hasta su total y se asientan dentro de la franja del empate. */
+  .barras { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  .barras li { display: grid; grid-template-columns: minmax(0, 9rem) minmax(0, 1fr) auto; align-items: center; gap: 12px; font-size: 0.92rem; }
+  .barra-pista { position: relative; height: 14px; border-radius: 7px; background: var(--fondo); overflow: hidden; }
+  .barra { position: absolute; inset: 0; transform-origin: left center; transform: scaleX(var(--v)); background: var(--acento-vivo); border-radius: 7px; }
+  @media (max-width: 560px) {
+    .barras li { grid-template-columns: minmax(0, 1fr) auto; row-gap: 6px; }
+    .barras .pista-envoltura { grid-column: 1 / -1; grid-row: 2; }
+  }
+  .barra-valor { text-align: right; font-variant-numeric: tabular-nums; }
+  .franja-empate { position: absolute; top: -4px; bottom: -4px; left: var(--desde); width: var(--ancho);
+    border-left: 2px dashed var(--realce); border-right: 2px dashed var(--realce); }
+  .barras .pista-envoltura, .barra-pista, .barra, .franja-empate { display: block; }
+  .barras .pista-envoltura { position: relative; }
+  .empate-rotulo { margin: 14px 0 0; font-weight: 600; }
+  .empate-rotulo .signo { color: var(--realce); }
+
+  /* E3 · clímax: los nombres cambian de lugar; la huella no se mueve. */
+  .orden-fila { margin: 0 0 16px; }
+  .orden-fila:last-of-type { margin-bottom: 0; }
+  .orden-fila .rotulo { display: block; margin-bottom: 8px; }
+  .fichas { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .ficha { padding: 10px 8px; text-align: center; border: 1px solid var(--borde); border-radius: 10px; background: var(--fondo);
+    font-weight: 600; font-size: 0.92rem; transform: translateX(var(--dx, 0)); }
+  .huella { margin: 8px 0 0; padding: 8px 10px; border-radius: 8px; background: var(--fondo); font-size: 0.78rem; overflow-wrap: anywhere; }
+  .igual { margin: 16px 0 0; font-weight: 700; }
+  .repetir { margin-top: 14px; font: 600 0.95rem/1.2 system-ui, sans-serif; color: var(--tinta); background: var(--acento-suave);
+    border: 1px solid var(--borde); border-radius: 10px; padding: 10px 14px; min-height: 44px; cursor: pointer; }
+  .repetir:focus-visible { outline: 3px solid var(--acento-vivo); outline-offset: 2px; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .escena-viva .trazo { stroke-dashoffset: 1; }
+    .escena-viva.visto .trazo { stroke-dashoffset: 0; transition: stroke-dashoffset var(--t-escena) var(--ease-asentar); }
+    .escena-viva.visto .mapa-mini:nth-child(2) .trazo { transition-delay: 0.45s; }
+    .escena-viva.visto .mapa-mini:nth-child(3) .trazo { transition-delay: 0.9s; }
+    .escena-viva .barra { transform: scaleX(0); }
+    .escena-viva.visto .barra { transform: scaleX(var(--v)); transition: transform var(--t-escena) var(--ease-asentar); }
+    .escena-viva.visto li:nth-child(2) .barra { transition-delay: 0.12s; }
+    .escena-viva.visto li:nth-child(3) .barra { transition-delay: 0.24s; }
+    .escena-viva .franja-empate { opacity: 0; transform: translateY(6px); }
+    .escena-viva.visto .franja-empate { opacity: 1; transform: none; transition: opacity var(--t-breve) ease 1.05s, transform var(--t-breve) var(--ease-asentar) 1.05s; }
+    .ficha { transition: transform var(--t-vuelta) var(--ease-asentar); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .trazo { stroke-dashoffset: 0; }
+    .barra { transform: scaleX(var(--v)); }
+    .ficha { transition: none; }
+  }

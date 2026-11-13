@@ -1,0 +1,48 @@
+{
+  "version": "1.0.0",
+  "nota": "S10 (F2): las escenas del storyboard del brochure (docs/BROCHURE-storyboard.md). scripts/brochure/generar.mjs las pone entre la portada y las tarjetas, con las cifras y la huella REALES de la demo (src/lib/demo). Las técnicas salen de docs/BROCHURE-banco-de-tecnicas.md. Ocho campos por escena (mensaje, gramatica, tecnica, justificacion, assets, peso, propiedades, reducido); un solo clímax.",
+  "escenas": [
+    {
+      "id": "e1-gramatica",
+      "rol": "respiro",
+      "titulo": "Una sola forma de leer todas las plataformas",
+      "texto": "Cada plataforma se dibuja con la misma gramática: capas de izquierda a derecha y la misma marca para el mismo tipo de pieza. Aprendes a leer una y ya sabes leer las demás.",
+      "mensaje": "Una gramática visual para N plataformas: lo que aprendes en una sirve para todas.",
+      "gramatica": "G3",
+      "tecnica": "Dibujar el trazo (§ 2): tres mapas abstractos de bandas se terminan de dibujar uno tras otro con stroke-dashoffset, un disparo.",
+      "justificacion": "Ver el MISMO trazo dibujarse tres veces es el mensaje: no son tres dibujos, es una forma repetida. Si los mapas aparecieran de golpe, la repetición no se notaría.",
+      "assets": "SVG abstracto de bandas generado por scripts/brochure/generar.mjs (no imita la app); los nombres son los de las plataformas publicadas en la demo.",
+      "peso": "≈ 2 KB",
+      "propiedades": "stroke-dashoffset (excepción declarada del molde: trazo decorativo, un disparo) y transform.",
+      "reducido": "Los tres mapas ya dibujados, quietos, con el nombre de cada plataforma debajo: el mensaje queda completo sin movimiento."
+    },
+    {
+      "id": "e2-empate",
+      "rol": "respiro",
+      "titulo": "Cuando la diferencia es chica, lo dice",
+      "texto": "Con los pesos de partida del caso de ejemplo, las tres quedan a menos de {umbral} puntos. Big-D no inventa una ganadora: declara empate técnico y te muestra qué peso tendría que moverse para que una se separe.",
+      "mensaje": "La incertidumbre se muestra: un empate técnico se declara, no se esconde detrás de un decimal.",
+      "gramatica": "G3",
+      "tecnica": "Alzar y asentar con stagger jerárquico (§ 2): las tres barras crecen hasta su total y se asientan dentro de la franja del empate; la franja entra un beat después.",
+      "justificacion": "Las barras llegan cada una a su sitio y, al asentarse, se ve que todas caen dentro de la misma franja: el movimiento muestra que la diferencia no alcanza para separarlas.",
+      "assets": "Totales reales de la demo pública (atenderDemo sobre la entrada de la demo, pesos de partida del autor) y el umbral del empate del dato.",
+      "peso": "≈ 1 KB",
+      "propiedades": "transform (scaleX de la barra, translateY) y opacity solo en la franja, que no es texto.",
+      "reducido": "Las barras en su total, la franja del empate y su rótulo visibles desde el primer cuadro."
+    },
+    {
+      "id": "e3-neutralidad",
+      "rol": "climax",
+      "titulo": "Cambia el orden de las plataformas: el resultado no cambia",
+      "texto": "Ninguna plataforma tiene un trato especial en el código. Entrégalas en cualquier orden al mismo cálculo y la huella del resultado —un código que lo resume entero— sale idéntica. En la demo pública lo pruebas con un botón; en el repositorio, una prueba lo verifica en cada cambio.",
+      "mensaje": "Neutralidad verificable: reordenar las plataformas no cambia ni un byte del resultado.",
+      "gramatica": "G2",
+      "tecnica": "Máquina de estados + transición (§ 3) con el único loop ambiental de la pieza (§ 2, «solo para el clímax»): los nombres cambian de lugar tres veces al entrar en pantalla mientras la huella de abajo no se mueve; un botón repite la jugada.",
+      "justificacion": "Lo que se mueve son las plataformas; lo que se queda quieto es la huella. La quietud ES la promesa: el ojo busca un cambio abajo y no lo encuentra. Tres vueltas y se detiene (menos de 5 s, sin necesidad de pausa).",
+      "assets": "Nombres y huella reales de la demo: el generador evalúa los seis órdenes posibles y se niega a escribir si alguna huella difiere.",
+      "peso": "≈ 1,5 KB (+ ≈ 2 KB de script para las tres escenas)",
+      "propiedades": "transform (translateX de cada nombre); la huella no se anima nunca.",
+      "reducido": "Dos órdenes distintos, uno encima del otro, cada uno con su huella completa: idénticas, con «✓ Misma huella» en texto."
+    }
+  ]
+}

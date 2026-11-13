@@ -48,3 +48,46 @@ describe("docs/BROCHURE.html", () => {
     expect(visible).not.toMatch(/manual/i);
   });
 });
+
+// S10 (F2): las escenas del storyboard (docs/BROCHURE-storyboard.md, molde v2). El guion vive en docs/brochure-escenas.json.
+const guion = JSON.parse(readFileSync("docs/brochure-escenas.json", "utf8")) as {
+  escenas: Record<string, string>[];
+};
+const OCHO = ["mensaje", "gramatica", "tecnica", "justificacion", "assets", "peso", "propiedades", "reducido"] as const;
+
+describe("docs/BROCHURE.html · escenas del storyboard (S10)", () => {
+  it("cada escena trae los ocho campos, y el clímax es uno solo: la neutralidad", () => {
+    expect(guion.escenas.length).toBeGreaterThan(0);
+    for (const x of guion.escenas)
+      for (const c of OCHO) expect(x[c]?.trim(), `${x.id} · ${c}`).toBeTruthy();
+    const climax = guion.escenas.filter((x) => x.rol === "climax");
+    expect(climax.map((x) => x.id)).toEqual(["e3-neutralidad"]);
+  });
+
+  it("cada escena está en la pieza con su título y su texto, entre la portada y «Qué hace», y el clímax no va en un acordeón", () => {
+    const portada = HTML.indexOf("</header>");
+    const queHace = HTML.indexOf('id="t-quehace"');
+    for (const x of guion.escenas) {
+      const i = HTML.indexOf(`id="${x.id}"`);
+      expect(i, x.id).toBeGreaterThan(portada);
+      expect(i, x.id).toBeLessThan(queHace);
+      expect(visible).toContain(esc(x.titulo!));
+      expect(visible).toContain(esc(x.texto!.split("{umbral}")[0]!));
+    }
+    const climax = HTML.slice(HTML.indexOf('id="e3-neutralidad"'), queHace);
+    expect(climax).not.toMatch(/<details/);
+  });
+
+  it("el clímax muestra dos órdenes distintos con la MISMA huella (64 hex), en texto", () => {
+    const climax = HTML.slice(HTML.indexOf('id="e3-neutralidad"'), HTML.indexOf('id="t-quehace"'));
+    const huellas = [...climax.matchAll(/data-huella>([0-9a-f]{64})</g)].map((m) => m[1]);
+    expect(huellas).toHaveLength(2);
+    expect(huellas[0]).toBe(huellas[1]);
+    const ordenes = [...climax.matchAll(/<ol class="fichas"[^>]*>([\s\S]*?)<\/ol>/g)].map((m) =>
+      [...m[1]!.matchAll(/data-plataforma="([^"]+)"/g)].map((x) => x[1]).join(","),
+    );
+    expect(ordenes).toHaveLength(2);
+    expect(ordenes[0]).not.toBe(ordenes[1]);
+    expect(climax).toContain("Misma huella");
+  });
+});
