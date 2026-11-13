@@ -51,6 +51,8 @@ export function politica({ scripts, estilos, conectar = [] }) {
     "img-src 'self' data:",
     "font-src 'self'",
     ["connect-src 'self'", ...conectar].join(" "),
+    // El Worker de la simulación (y el de la demo) se sirve del mismo sitio; dicho aquí, no heredado de default-src.
+    "worker-src 'self'",
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",
