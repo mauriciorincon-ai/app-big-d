@@ -62,7 +62,7 @@
 <body>
 <main>
   <h1>Big-D — Blueprint de infraestructura <span class="badge">as-built</span></h1>
-  <p class="meta">Ciclo: <strong>H-1 «El planeador completo» (E1–E3)</strong> · Cerrado: <strong>2026-10-12</strong> · Sprints del ciclo: <strong>S1–S7</strong> · Última actualización: <strong>2026-10-12</strong></p>
+  <p class="meta">Ciclo: <strong>H-1 «El planeador completo» (E1–E3)</strong> · Cerrado: <strong>2026-10-12</strong> · Sprints del ciclo: <strong>S1–S7</strong> · Última actualización: <strong>2026-11-12</strong> (la tabla de ADR y la fila de IA, S9)</p>
   <p class="nota"><strong>Entregable del cierre del hito H-1.</strong> El mapa real de la infraestructura que soporta esta app, tomado del repositorio tal como está hoy: lo que se ve en el diagrama existe y está cableado; lo previsto y no desplegado va punteado. No contiene secretos, claves ni URLs: solo qué gestor guarda cada cosa. <code>tests/unit/blueprint.test.ts</code> comprueba que cada job de CI, cada paquete reusable y cada ADR del repositorio aparezcan aquí, para que el documento no se pudra.</p>
 
   <h2>Diagrama</h2>
@@ -154,7 +154,7 @@
       <tr><td>Auth</td><td>No aplica en la app</td><td>El acceso lo decide Vercel Authentication. Dentro de la app no hay cuentas, sesiones ni roles.</td></tr>
       <tr><td>Almacenamiento de archivos</td><td>No aplica</td><td>Todo es de solo lectura en el build. La skill escribe solo en <code>propuestas/</code> (un hook bloquea cualquier otra carpeta).</td></tr>
       <tr><td>Email / notificaciones</td><td>No aplica</td><td>—</td></tr>
-      <tr><td>IA embebida</td><td><strong>NINGUNA</strong> en tiempo de ejecución</td><td>La única IA es el investigador (<code>/investigar</code>), una skill de Claude Code que corre interactiva en la máquina de la persona, con el binario oficial, jamás en lote ni en CI. ADR <code>investigator-code-first</code> e <code>investigator-7s-compliance</code>. Sin proveedor cableado ni claves de API.</td></tr>
+      <tr><td>IA embebida</td><td><strong>NINGUNA</strong> en tiempo de ejecución</td><td>La única IA es el investigador (<code>/investigar</code>), que corre a demanda en la máquina de la persona: la skill de Claude Code, interactiva, con el binario oficial y jamás en lote ni en CI, o un segundo ejecutor (<code>scripts/investigar/sistema.mjs</code>) con el modelo del sistema de macOS, sin claves ni descargas. ADR <code>investigator-code-first</code>, <code>investigator-7s-compliance</code> e <code>investigator-system-model</code>. Sin proveedor cableado ni claves de API.</td></tr>
       <tr><td>Observabilidad</td><td>Sentry, solo cliente</td><td>Metadata-only e inerte sin DSN (<code>instrumentation-client.ts</code>); el SDK se importa dinámicamente y no viaja si no hay DSN. Sin tracing ni replay.</td></tr>
       <tr><td>Crons / keep-alives</td><td>Ninguno</td><td>No hay base ni servicio que mantener despierto.</td></tr>
       <tr><td>Secretos</td><td><code>.env.local</code> (ignorado por git) y variables de entorno de Vercel</td><td>jamás el repo. gitleaks a doble cinturón: hook de escritura de Claude Code, <code>githooks/pre-commit</code> y paso fijado (versión y suma) en el job <code>quality</code>. Hoy solo hay dos variables opcionales (la DSN de Sentry y el nombre de la app) y una perilla de build, <code>BIGD_DATOS</code>, que el build rechaza dentro de Vercel.</td></tr>
@@ -222,6 +222,7 @@
     <thead><tr><th>Fecha</th><th>Ciclo</th><th>Cambios</th></tr></thead>
     <tbody>
       <tr><td>2026-10-12</td><td>H-1 (S1–S7)</td><td>Versión inicial</td></tr>
+      <tr><td>2026-11-12</td><td>H-2 (S9)</td><td>ADR del modelo del sistema y del detector de jerga; la fila de IA nombra el segundo ejecutor</td></tr>
     </tbody>
   </table>
   </div>

@@ -215,18 +215,18 @@
     {
       "clave": "pruebas_automaticas",
       "etiqueta": "Pruebas automáticas",
-      "valor": 3442,
+      "valor": 3525,
       "unidad": "pruebas",
       "fuente": "medido",
-      "detalle": "2248 unitarias y de integración (Vitest, 126 archivos, incluidas las del diagramador), 1185 de navegador (Playwright: escritorio, teléfono, Firefox, WebKit y la base sembrada) y 9 de determinismo (3 pruebas en 3 navegadores). Recontadas el 2026-11-11 sobre a6fb3f3: `pnpm test` y `playwright test --list`."
+      "detalle": "2277 unitarias y de integración (Vitest, 129 archivos, incluidas las del diagramador), 1239 de navegador (Playwright: escritorio, teléfono, Firefox, WebKit y la base sembrada) y 9 de determinismo (3 pruebas en 3 navegadores). Recontadas el 2026-11-12 sobre bc87c2e: `pnpm test` y `playwright test --list`."
     },
     {
       "clave": "cobertura_lineas",
       "etiqueta": "Cobertura de líneas",
-      "valor": 97.89,
+      "valor": 97.96,
       "unidad": "%",
       "fuente": "medido",
-      "detalle": "v8 sobre src/engine, src/lib, src/components y los dos paquetes de la casa (diagramador e instrumentos-de-plan): 5996 de 6125 líneas, `pnpm test` del 2026-11-11 sobre a6fb3f3. Motores y lib, umbral propio del 80 %."
+      "detalle": "v8 sobre src/engine, src/lib, src/components y los dos paquetes de la casa (diagramador e instrumentos-de-plan): 6107 de 6234 líneas, `pnpm test` del 2026-11-12 sobre bc87c2e. Motores y lib, umbral propio del 80 %."
     },
     {
       "clave": "motores_con_la_misma_huella",
@@ -258,7 +258,7 @@
       "valor": 0,
       "unidad": "llamadas",
       "fuente": "declarado",
-      "detalle": "Regla dura del producto: el núcleo jamás invoca un modelo de lenguaje y la narrativa sale de plantillas. ESLint prohíbe importar los SDK de proveedores de modelos y tests/unit/planea-no-opera.test.ts falla si el código nombra sus dominios. La única IA es el investigador, que se corre a demanda fuera de la app."
+      "detalle": "Regla dura del producto: el núcleo jamás invoca un modelo de lenguaje y la narrativa sale de plantillas. ESLint prohíbe importar los SDK de proveedores de modelos y tests/unit/planea-no-opera.test.ts falla si el código nombra sus dominios. La única IA es el investigador, que se corre a demanda fuera de la app, con Claude Code o con el modelo del sistema del Mac."
     },
     {
       "clave": "costo_operacion_mensual",
