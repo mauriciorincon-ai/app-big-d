@@ -23,11 +23,11 @@ import { carpetaPropuesta, gramaticaDe, hoy, identificadores, RAIZ } from "./com
 const ID = /^[a-z0-9][a-z0-9-]*$/;
 /** Caracteres por trozo: la ventana del modelo del sistema es de 8192 tokens, con las instrucciones y la lista dentro. */
 const TROZO = 3000;
-/** Trozos por página, como máximo: cada uno es una llamada de unos segundos. */
 /** Lo que dice el sistema cuando el pedido no cabe en la ventana del modelo. */
 const VENTANA = /exceeds the maximum allowed context size/i;
 /** Por debajo de esto, un trozo ya no se parte: el error sube tal cual. */
 const MITAD_MINIMA = 400;
+/** Trozos por página, como máximo: cada uno es una llamada de unos segundos. */
 const TROZOS_POR_PAGINA = 12;
 const MODELO = "SystemLanguageModel.default (macOS)";
 const INSTRUCCIONES =
@@ -70,7 +70,7 @@ async function modelo() {
     }
   }
   const llamar = (pedido) => {
-    const r = JSON.parse(execFileSync(bin, { input: JSON.stringify(pedido), encoding: "utf8", maxBuffer: 1 << 24 }));
+    const r = JSON.parse(execFileSync(bin, { input: JSON.stringify(pedido), encoding: "utf8", maxBuffer: 1 << 24, timeout: 120_000 }));
     if (r.error) throw new Error(`el modelo del sistema: ${r.error}`);
     return r;
   };
@@ -87,7 +87,16 @@ function trozos(texto, n = TROZO) {
       out.push(actual);
       actual = "";
     }
-    actual = actual ? `${actual} ${f}` : f.slice(0, n);
+    if (actual) actual = `${actual} ${f}`;
+    else {
+      // Una frase más larga que `n` no se trunca: se parte en pedazos de `n`.
+      let resto = f;
+      while (resto.length > n) {
+        out.push(resto.slice(0, n));
+        resto = resto.slice(n);
+      }
+      actual = resto;
+    }
   }
   if (actual) out.push(actual);
   return out;
@@ -195,11 +204,14 @@ try {
   const propias = new Map();
   const rechazos = [];
   let llamadas = 0;
+  let sinLeer = 0;
   for (const [url, pagina] of paginas) {
     const candidatos = nodos.filter((n) => n.fuentes.some((f) => f.url === url));
     // Solo los nombres: con la descripción del mapa a la vista, el modelo la copiaba como enunciado (corrida del 2026-11-12).
     const lista = candidatos.map((n) => `- ${n.id}: ${n.nombre.es} / ${n.nombre.en}`).join("\n");
-    for (const trozo of trozos(pagina.texto).slice(0, TROZOS_POR_PAGINA)) {
+    const todos = trozos(pagina.texto);
+    sinLeer += Math.max(0, todos.length - TROZOS_POR_PAGINA);
+    for (const trozo of todos.slice(0, TROZOS_POR_PAGINA)) {
       // Un trozo que no cabe en la ventana (el texto técnico rinde menos caracteres por token) se parte en dos, y así hasta que
       // quepa: la corrida real sobre BigQuery (2026-11-12) llegó a 8 193 tokens de 8 192 con trozos de 3 500 caracteres.
       const pedir = async (t) => {
@@ -293,7 +305,7 @@ try {
   console.log(
     `sistema: ${carpeta} · capa ${capa} sobre ${relative(RAIZ, dirBase)} · ${propias.size} de ${nodos.length} componentes con afirmación propia · ` +
       `${ok} de ${deLasPropias.length} citas propias verificadas · ${rechazos.length} rechazadas por el código antes de escribir${porMotivo.length ? ` (${porMotivo.join(", ")})` : ""} · ` +
-      `${paginas.size} páginas, ${llamadas} trozos${saltadas.length ? ` · sin leer: ${saltadas.join(", ")}` : ""}`,
+      `${paginas.size} páginas, ${llamadas} trozos${sinLeer ? ` (${sinLeer} trozos más allá del tope de ${TROZOS_POR_PAGINA} por página, sin leer)` : ""}${saltadas.length ? ` · sin leer: ${saltadas.join(", ")}` : ""}`,
   );
   console.log("Nada se aprobó: la revisa una persona en /investigador y aprueba con el comando que arma esa pantalla.");
 } catch (e) {

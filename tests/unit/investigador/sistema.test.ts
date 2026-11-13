@@ -4,7 +4,8 @@
 // cita que no está en la página y el componente que no está en la lista, y la propuesta sale por el mismo esquema, el mismo
 // validador y la misma verificación de citas que la de la skill. Sin modelo, lo dice y no escribe nada. Jamás aprueba.
 import { spawnSync } from "node:child_process";
-import { existsSync, readdirSync, readFileSync, rmSync } from "node:fs";
+import { existsSync, mkdtempSync, readdirSync, readFileSync, rmSync, symlinkSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterAll, describe, expect, it } from "vitest";
 import { esquemaPropuesta } from "@/lib/investigador";
@@ -28,6 +29,8 @@ const correr = (args: string[], env: Record<string, string> = {}, r = raiz) =>
       ...env,
     },
   });
+const carpetasReales = () => readdirSync("propuestas").sort();
+const carpetasAntes = carpetasReales();
 const carpetas = () =>
   readdirSync(join(raiz, "propuestas"))
     .filter((c) => !c.endsWith(".jsonl"))
@@ -59,18 +62,21 @@ describe("sistema.mjs sin modelo", () => {
   });
 
   it("el modelo falso jamás corre sobre el repo real", () => {
-    const r = spawnSync(
-      "node",
-      ["scripts/investigar/sistema.mjs", PLATAFORMA, CAPA],
-      {
+    // Un enlace simbólico al repo: la raíz «distinta» es la misma carpeta, y la base (la propuesta real de BigQuery) existe,
+    // así que lo único que puede negar la corrida es la guarda del modelo falso.
+    const enlace = join(mkdtempSync(join(tmpdir(), "bigd-enlace-")), "repo");
+    symlinkSync(process.cwd(), enlace);
+    try {
+      const r = spawnSync("node", ["scripts/investigar/sistema.mjs", "bigquery", "ingesta"], {
         encoding: "utf8",
-        env: { ...process.env, BIGD_RAIZ: "", BIGD_MODELO_FALSO: FALSO },
-      },
-    );
-    expect(r.status).toBe(1);
-    expect(r.stderr).toMatch(
-      /solo corre sobre una raíz temporal|no hay una propuesta de mapa completo/,
-    );
+        env: { ...process.env, BIGD_RAIZ: enlace, BIGD_MODELO_FALSO: FALSO },
+      });
+      expect(r.status).toBe(1);
+      expect(r.stderr).toMatch(/solo corre sobre una raíz temporal/);
+      expect(carpetasReales()).toEqual(carpetasAntes);
+    } finally {
+      rmSync(join(enlace, ".."), { recursive: true, force: true });
+    }
   });
 });
 

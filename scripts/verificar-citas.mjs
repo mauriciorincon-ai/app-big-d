@@ -14,6 +14,7 @@ import { cargarTs } from "./lib/cargar-ts.mjs";
 import { bajar } from "./investigar/bajar.mjs";
 import { carpetaPropuesta, hoy, identificadores, RAIZ } from "./investigar/comun.mjs";
 
+let tmpAbierto;
 try {
   const dir = carpetaPropuesta(process.argv[2]);
   const inv = await cargarTs("src/lib/investigador/index.ts");
@@ -38,6 +39,7 @@ try {
   const conId = citas.filter((a) => ids.some((x) => legible(a.url).includes(x)));
   if (conId.length) throw new Error(`${conId.map((a) => a.id).join(", ")}: la URL de la cita lleva un identificador de quien investiga; no se consulta`);
   const tmp = mkdtempSync(join(tmpdir(), "bigd-citas-"));
+  tmpAbierto = tmp;
   const cache = new Map();
   const resultados = [];
   for (const a of citas) {
@@ -66,6 +68,7 @@ try {
     : `${forma.data.afirmaciones.length} afirmaciones${forma.data.retiros.length ? ` y ${forma.data.retiros.length} retiros` : ""}`;
   console.log(`verificar-citas: ${relative(RAIZ, dir)} · ${que} · ${cuenta("verificada")} verificadas · ${cuenta("no-verificable")} no verificables · ${cuenta("no-encontrada")} no encontradas · ${cache.size} páginas`);
 } catch (e) {
+  if (tmpAbierto) rmSync(tmpAbierto, { recursive: true, force: true });
   console.error(`verificar-citas: ${e.message}`);
   process.exit(1);
 }
