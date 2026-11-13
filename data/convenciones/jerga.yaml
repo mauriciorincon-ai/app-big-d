@@ -1375,6 +1375,7 @@ cubos:
     "rechazar": 4
     "rechazarlas": 4
     "recibe": 4
+    "reciente": 4
     "recomendación": 3
     "recomendada": 3
     "recomendar": 4
@@ -2601,6 +2602,7 @@ cubos:
     "limiting": 4
     "line": 3
     "link": 3
+    "links": 4
     "linux": 4
     "list": 3
     "lists": 3
@@ -2951,6 +2953,7 @@ cubos:
     "rebuild": 4
     "rebuilding": 3
     "receives": 4
+    "recent": 4
     "recommend": 3
     "recommendation": 3
     "recommended": 3
@@ -3166,7 +3169,7 @@ cubos:
     "someone": 3
     "something": 3
     "sometimes": 3
-    "soon": 3
+    "soon": 2
     "sooner": 4
     "sorts": 4
     "source": 2
