@@ -13,7 +13,7 @@ import { esquemaRespuestaDemo } from "@/lib/demo/contrato";
 import { conPesos, entradaDeExploracion, reordenada } from "@/lib/demo/entrada";
 import { entradaDemo, paqueteDemo } from "@/lib/demo/pagina";
 import { atenderDemo, esRespuesta, type RespuestaDemo } from "@/lib/demo/protocolo";
-import { TEXTOS_DEMO } from "@/lib/demo/textos";
+import { TEXTOS_DEMO } from "@/lib/i18n/demo";
 import { vistaDe } from "@/lib/demo/vista";
 
 const sha = async (t: string) => createHash("sha256").update(t, "utf8").digest("hex");

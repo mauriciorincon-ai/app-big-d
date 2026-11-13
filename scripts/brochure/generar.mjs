@@ -35,7 +35,7 @@ const { entradaDemo, CASO_DEMO } = await cargarTs("src/lib/demo/pagina.ts");
 const { atenderDemo } = await cargarTs("src/lib/demo/protocolo.ts");
 const { reordenada } = await cargarTs("src/lib/demo/entrada.ts");
 const { vistaDe } = await cargarTs("src/lib/demo/vista.ts");
-const { TEXTOS_DEMO } = await cargarTs("src/lib/demo/textos.ts");
+const { TEXTOS_DEMO } = await cargarTs("src/lib/i18n/demo.ts");
 const { datos } = await cargarTs("src/lib/datos/index.ts");
 const sha = async (t) => createHash("sha256").update(t, "utf8").digest("hex");
 const entrada = entradaDemo();

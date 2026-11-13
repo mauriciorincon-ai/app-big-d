@@ -9,7 +9,7 @@ import {
 import { plantilla } from "@/lib/atlas/plantilla";
 import type { Idioma } from "@/lib/i18n";
 import type { RespuestaDemo } from "./protocolo";
-import type { TextosDemo } from "./textos";
+import type { TextosDemo } from "@/lib/i18n/demo";
 
 // S10 (F2): lo que la demo escribe de una respuesta del núcleo. La MISMA función arma la página en el build (con la respuesta
 // que da Node) y la actualiza en el navegador (con la del Worker): sin dos maneras de escribir un número.

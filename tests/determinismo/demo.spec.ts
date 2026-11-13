@@ -7,14 +7,31 @@
 //   - nada se sale del basePath: ninguna petición fuera de /piezas/big-d/ y ninguna violación de la CSP.
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
+import { TEXTOS_DEMO } from "../../src/lib/i18n/demo";
 
 const PUERTO = process.env.E2E_DEMO_PUERTO ?? "3401";
 const BASE = `http://127.0.0.1:${PUERTO}/piezas/big-d/`;
 
-const TEXTOS = {
-  es: { rotulo: "Perfil en borrador del autor: mueve los pesos", igual: "Misma huella", proxima: "aún no tiene puntaje", autor: "Declaración del autor", otro: "Read in English", restablecer: "Volver a los pesos del autor", neutralidad: "Reordenar las plataformas" },
-  en: { rotulo: "Author's draft profile: move the weights", igual: "Same fingerprint", proxima: "it has no score yet", autor: "Author's statement", otro: "Leer en español", restablecer: "Back to the author's weights", neutralidad: "Reorder the platforms" },
-} as const;
+// Los textos salen del diccionario de la demo, no de una copia: si se redactan de nuevo, la prueba los sigue.
+type Clave = "rotulo" | "igual" | "proxima" | "autor" | "otro" | "restablecer" | "neutralidad";
+const TEXTOS = Object.fromEntries(
+  (["es", "en"] as const).map((i) => {
+    const d = TEXTOS_DEMO[i];
+    return [
+      i,
+      {
+        rotulo: d.rotulo,
+        igual: d.neutralidadIgual.split(":")[0]!,
+        // «{nombre}: … aún no tiene puntos.»: lo que viene después del nombre.
+        proxima: d.proximamente.split("{nombre}").pop()!.replace(/^:\s*/, "").trim(),
+        autor: d.declaracionTitulo,
+        otro: d.otroIdioma.etiqueta,
+        restablecer: d.restablecer,
+        neutralidad: d.neutralidadBoton,
+      },
+    ];
+  }),
+) as Record<"es" | "en", Record<Clave, string>>;
 
 function vigilar(page: Page) {
   const fallas: string[] = [];

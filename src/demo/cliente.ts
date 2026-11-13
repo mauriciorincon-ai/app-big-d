@@ -15,7 +15,7 @@ const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as 
 async function arrancar() {
   const raiz = $("demo");
   const idioma = raiz.dataset.idioma as Idioma;
-  const d = (await (await fetch(`datos-${idioma}.json`)).json()) as DatosCliente;
+  const d = JSON.parse($("datos-demo").textContent ?? "") as DatosCliente;
   const ctx: Contexto = { idioma, t: d.t, nombres: d.nombres, umbralCentesimas: d.umbralCentesimas };
   const autor = d.entrada.caso.pesos.map((p) => p.peso);
   let pesos = d.entrada.caso.pesos.map((p) => ({ ...p }));

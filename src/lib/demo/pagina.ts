@@ -8,7 +8,7 @@ import { IDIOMAS, textos, type Idioma } from "@/lib/i18n";
 import type { Entrada } from "@/engine";
 import { entradaDeExploracion } from "./entrada";
 import { atenderDemo, type RespuestaDemo } from "./protocolo";
-import { TEXTOS_DEMO, type TextosDemo } from "./textos";
+import { TEXTOS_DEMO, type TextosDemo } from "@/lib/i18n/demo";
 import { pesoEscrito, vistaDe, type Contexto } from "./vista";
 
 // S10 (F2): el contenido de la demo pública (anexo E4), armado en el build con el núcleo y los datos de la app. Solo contenido
@@ -61,6 +61,10 @@ const etiqueta = (
     .filter(([, v]) => v !== undefined)
     .map(([k, v]) => ` ${k}="${esc(String(v))}"`)
     .join("")}>${cuerpo}</${nombre}>`;
+
+/** Los datos del cliente viajan dentro de la página como bloque de datos (no se ejecuta; la CSP no lo toca): sin `fetch`
+ * (lint «planea, no opera») y sin un archivo más. `<` se escribe escapado para que el bloque no pueda cerrarse antes. */
+const jsonEnHtml = (x: unknown) => JSON.stringify(x).replace(/</g, "\\u003c");
 
 export async function paqueteDemo(): Promise<PaqueteDemo> {
   const { k, c } = caso_();
@@ -130,6 +134,7 @@ export async function paqueteDemo(): Promise<PaqueteDemo> {
 <section class="demo-atlas" aria-labelledby="atlas-titulo"><h2 id="atlas-titulo">${esc(t.atlasTitulo)}</h2><p class="demo-ayuda">${esc(t.atlasAyuda)}</p>${atlas.join("")}</section>
 <section class="demo-declaracion" aria-labelledby="declaracion-titulo"><h2 id="declaracion-titulo">${esc(t.declaracionTitulo)}</h2><p>${esc(t.declaracion)}</p></section>
 </main>
+<script type="application/json" id="datos-demo">${jsonEnHtml(datosCli[idioma])}</script>
 <footer class="demo-pie"><p>${esc(textos(idioma).pie)}</p></footer>
 </body></html>
 `;

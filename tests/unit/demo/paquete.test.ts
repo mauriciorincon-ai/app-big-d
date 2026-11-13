@@ -23,7 +23,7 @@ afterAll(() => rmSync(tmp, { recursive: true, force: true }));
 
 describe("el paquete de la demo", () => {
   it("trae las dos entradas, el cliente, el Worker, los datos, la hoja, las fuentes con su licencia y el manifiesto", () => {
-    expect(readdirSync(a).sort()).toEqual(["datos-en.json", "datos-es.json", "demo-worker.js", "demo.css", "demo.js", "en.html", "es.html", "fuentes", "manifiesto.json"]);
+    expect(readdirSync(a).sort()).toEqual(["demo-worker.js", "demo.css", "demo.js", "en.html", "es.html", "fuentes", "manifiesto.json"]);
     expect(readdirSync(join(a, "fuentes")).sort()).toEqual(["OFL-jetbrains-mono.txt", "OFL-space-grotesk.txt", "jetbrains-mono.woff2", "space-grotesk.woff2"]);
     const m = JSON.parse(readFileSync(join(a, "manifiesto.json"), "utf8"));
     expect(m).toMatchObject({ paquete: "big-d", basePath: "/piezas/big-d", entradas: ["es.html", "en.html"] });

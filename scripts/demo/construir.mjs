@@ -1,8 +1,8 @@
 // S10 (F2): `pnpm build:demo` — el paquete estático de la demo pública (anexo E4) en `out-demo/`, listo para que la sesión de
 // CV Viva lo copie a `/piezas/big-d` por un PR de contenido (pregunta 2 a del G-Plan). Este repo NO escribe en hoja-de-vida.
-//   es.html · en.html        las dos entradas, con su CSP por meta (huellas; sin nada en línea)
+//   es.html · en.html        las dos entradas, con su CSP por meta (huellas; ningún script en línea que se ejecute)
 //   demo.js · demo-worker.js el cliente y el Worker, empaquetados con esbuild desde src/demo/ (el núcleo es el de la app)
-//   datos-es.json · datos-en.json   la entrada del núcleo, los nombres y los textos de cada idioma
+//   (los datos del cliente —entrada, nombres y textos— viajan en cada HTML como bloque JSON: sin `fetch`, sin archivos aparte)
 //   demo.css · fuentes/      la hoja (tokens + base + diagrama + atlas + demo) y los woff2 de G15 con su licencia OFL
 //   manifiesto.json          la huella SHA-256 de cada archivo (sin sí mismo); dos builds dan los mismos bytes
 // Las rutas son relativas: el paquete funciona bajo `/piezas/big-d/` (el `basePath` que declara el manifiesto) sin reescribir
@@ -54,7 +54,6 @@ const p = await paqueteDemo();
 rmSync(DESTINO, { recursive: true, force: true });
 mkdirSync(join(DESTINO, "fuentes"), { recursive: true });
 for (const [idioma, html] of Object.entries(p.paginas)) writeFileSync(join(DESTINO, `${idioma}.html`), conCSP(html, { archivo: `${idioma}.html` }).html);
-for (const [idioma, d] of Object.entries(p.datos)) writeFileSync(join(DESTINO, `datos-${idioma}.json`), `${JSON.stringify(d)}\n`);
 writeFileSync(join(DESTINO, "demo.js"), await empaquetar("src/demo/cliente.ts"));
 writeFileSync(join(DESTINO, "demo-worker.js"), await empaquetar("src/demo/worker.ts"));
 // Minificada: sin comentarios (los de las hojas citan rutas del repo que no viajan).
