@@ -1,5 +1,5 @@
 // S9 (F1): el detector de jerga (regla dura 11; decisions/jargon-detector.md § 3). Puro y entero: cada palabra del texto cae en
-// un CUBO de frecuencia (1 = la más usada) según una tabla del dato, derivada de textos del propio proyecto, y se marca la que
+// un CUBO de frecuencia (1 = la más usada) según una tabla del dato, derivada de la frecuencia de uso de Google Books Ngram, y se marca la que
 // no está en la tabla o cae en un cubo más raro que el umbral, salvo las permitidas del dato y los términos que el informe ya
 // explica en su glosario. Sin reloj, sin flotantes, sin `Intl`: el mismo texto da la misma lista en Node y en el navegador.
 import { palabrasDe } from "./legibilidad";
@@ -28,7 +28,8 @@ export function detectarJerga(
   permitidas: readonly string[],
   explicadas: readonly string[] = [],
 ): string[] {
-  const libres = new Set([...permitidas, ...explicadas].map(formaDePalabra));
+  // Las palabras de un término que el glosario explica («empate técnico») también quedan explicadas.
+  const libres = new Set([...permitidas, ...explicadas.flatMap((e) => palabrasDe(e))].map(formaDePalabra));
   const raras = new Set<string>();
   for (const p of palabrasDe(texto)) {
     if (ES_NUMERO.test(p)) continue;
@@ -40,7 +41,14 @@ export function detectarJerga(
   return [...raras].sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
 }
 
-/** El cubo de una cuenta de apariciones (la regla con que se deriva la tabla: scripts/jerga/derivar.mjs). */
-export function cuboDeCuenta(cuenta: number): number {
-  return cuenta >= 50 ? 1 : cuenta >= 10 ? 2 : cuenta >= 3 ? 3 : 4;
+/** Hasta qué rango de frecuencia (1 = la más usada) llega cada cubo; más allá, cubo 4. */
+export const LIMITES_DE_RANGO = [1500, 4000, 8000] as const;
+
+/**
+ * El cubo de un rango de frecuencia (S10: la tabla sale de Google Books Ngram, CC BY 3.0, ordenada por uso; la regla con que
+ * la deriva scripts/jerga/derivar.mjs). Entero: el rango es la posición, 1 la palabra más usada.
+ */
+export function cuboDeRango(rango: number): number {
+  const i = LIMITES_DE_RANGO.findIndex((tope) => rango <= tope);
+  return i < 0 ? LIMITES_DE_RANGO.length + 1 : i + 1;
 }
