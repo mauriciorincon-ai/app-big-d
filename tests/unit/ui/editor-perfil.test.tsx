@@ -34,7 +34,7 @@ const perfil: PerfilEditable = {
       rango_relativo_pct: 10,
     },
   ],
-  restricciones: [{ id: "res-residencia" }],
+  restricciones: [{ id: "res-residencia", criterio_id: "crit-gobierno" }],
   decisiones_implicitas: [
     {
       id: "una-o-combinacion",
@@ -54,6 +54,19 @@ const datos: DatosEditor = {
   desde: DESDE,
   perfil,
   pares: PARES,
+  entrevista: {
+    introduccion: "Responde pensando en tu organización.",
+    niveles: [
+      { id: "poco", valor: 0, texto: "No nos preocupa" },
+      { id: "mucho", valor: 3, texto: "Importa mucho" },
+      { id: "decisivo", valor: 5, texto: "Es decisivo" },
+    ],
+    conserva_restricciones_desde: 3,
+    preguntas: [
+      { id: "p-gobierno", criterio_id: "crit-gobierno", texto: "¿Cuánto importa el gobierno de los datos?" },
+      { id: "p-costo", criterio_id: "crit-costo", texto: "¿Cuánto importa el costo?" },
+    ],
+  },
   criterios: [
     { id: "crit-gobierno", nombre: "Gobierno", esencial: true },
     { id: "crit-costo", nombre: "Costo", esencial: false },
@@ -87,6 +100,7 @@ const t = {
   copiar: T.investigador.comando.copiar,
   copiado: T.investigador.comando.copiado,
   sinResponder: T.caso.perfil.decisiones.sinResponder,
+  entrevista: T.caso.perfil.entrevista,
   pares: T.caso.perfil.pares,
 };
 const pintar = (d: DatosEditor = datos) =>
@@ -219,5 +233,56 @@ describe("EditorPerfil · comparar por pares", () => {
     pintar();
     expect(document.querySelector("[data-pares-progreso]")!.textContent).toBe("0 de 1 pares juzgados");
     expect(document.querySelector("[data-pares-grupo]")!.getAttribute("data-pares-grupo")).toBe("1");
+  });
+});
+
+describe("EditorPerfil · armar el perfil con preguntas (S9)", () => {
+  const E = T.caso.perfil.entrevista;
+  const responder = (pregunta: string, texto: string) =>
+    fireEvent.click(within(document.querySelector(`[data-pregunta="${pregunta}"]`) as HTMLElement).getByLabelText(texto));
+
+  it("sin responder dice cuántas preguntas faltan y no propone nada; no escribe la URL", () => {
+    window.history.replaceState(null, "", "/es/casos/caso-de-prueba");
+    pintar();
+    expect(document.querySelector("[data-entrevista-progreso]")!.textContent).toBe("0 de 2 preguntas respondidas");
+    expect(document.querySelector("[data-entrevista-faltan]")!.textContent).toContain("Faltan responder 2 preguntas");
+    expect(document.querySelector("[data-entrevista-propuesta]")).toBeNull();
+    expect(window.location.search).toBe("");
+  });
+
+  it("todo en «no nos preocupa» avisa que no hay con qué repartir", () => {
+    pintar();
+    responder("p-gobierno", "No nos preocupa");
+    responder("p-costo", "No nos preocupa");
+    expect(document.querySelector("[data-entrevista-sin-prioridad]")!.textContent).toContain(E.sinPrioridad);
+  });
+
+  it("con todo respondido propone los pesos; «usar» llena el editor con origen entrevista, conserva la restricción del criterio decisivo y el comando sale", () => {
+    pintar();
+    responder("p-gobierno", "Es decisivo");
+    responder("p-costo", "Importa mucho");
+    // 5 y 3 de 8: 62,50 y 37,50.
+    expect(document.querySelector('[data-peso-entrevista="crit-gobierno"] td')!.textContent).toBe("62,50");
+    expect(document.querySelector('[data-peso-entrevista="crit-costo"] td')!.textContent).toBe("37,50");
+    expect(document.querySelector("[data-entrevista-conserva]")!.textContent).toContain("Costo, Gobierno");
+    fireEvent.click(screen.getByRole("button", { name: E.usar }));
+    expect(peso("Gobierno").value).toBe("62,50");
+    expect(peso("Costo").value).toBe("37,50");
+    expect(document.querySelector("[data-pesos-desde-entrevista]")!.textContent).toContain(t.usadosEntrevista);
+    fireEvent.click(screen.getByLabelText("Una sola"));
+    expect(comandoVisible()).toContain("--pesos crit-gobierno=6250,crit-costo=3750");
+    expect(comandoVisible()).toContain("--restricciones res-residencia");
+    fireEvent.change(peso("Costo"), { target: { value: "37,5" } });
+    expect(document.querySelector("[data-pesos-desde-entrevista]")).toBeNull();
+  });
+
+  it("la restricción de un criterio que no es prioridad se suelta del comando", () => {
+    pintar();
+    responder("p-gobierno", "No nos preocupa");
+    responder("p-costo", "Es decisivo");
+    fireEvent.click(screen.getByRole("button", { name: E.usar }));
+    expect(document.querySelector("[data-entrevista-conserva]")!.textContent).toContain("Costo");
+    fireEvent.click(screen.getByLabelText("Una sola"));
+    expect(comandoVisible()).not.toContain("res-residencia");
   });
 });

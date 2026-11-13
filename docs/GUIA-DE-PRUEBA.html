@@ -8,7 +8,7 @@
   GUÍA DE PRUEBA VIVA Y ACUMULATIVA de Big-D (regla 11 del CLAUDE.md; plantilla del kit v1.6.0; referencia
   app-habla/docs/GUIA-DE-PRUEBA.html). Autocontenida: cero CDNs, cero fetch; se abre con doble clic.
   Bola de nieve: cada sprint hereda ENTERAS las pruebas del anterior; lo «Nuevo · S1» pasa a «S1» (regresión)
-  en el S2 salvo que el S2 lo toque («Mejorado en S2»). Prefijo de localStorage versionado: «bigd-s8-» (cambia
+  en el S2 salvo que el S2 lo toque («Mejorado en S2»). Prefijo de localStorage versionado: «bigd-s9-» (cambia
   en cada versión). ⭐ = lo que ninguna automatización verifica; ⭐⭐ = el subconjunto que solo un humano juzga,
   caminable en el orden del documento. Sin URL de despliegue escrita (regla 17): el campo se llena en uso.
 -->
@@ -107,11 +107,11 @@
 <body>
 <div class="pagina">
   <header>
-    <p class="eyebrow">Big-D · Guía de prueba viva y acumulativa · Sprint 8 · 2026-11-11</p>
+    <p class="eyebrow">Big-D · Guía de prueba viva y acumulativa · Sprint 9 · 2026-11-12</p>
     <h1>Guía de prueba</h1>
     <p class="suave">Todas las pruebas vigentes de la app: el atlas (visión general, componentes, recorrido de un
       dato), el lado a lado, las versiones de un mapa, el investigador, la base, el perfil del caso, la comparación y
-      el instrumento, las decisiones del caso y el informe; desde el S8, qué cambió entre instantáneas, la comparación de pares y duplicar un caso. Cada prueba dice su origen: «Nuevo · S4» (la ves por primera vez), «Nuevo · S8» (llegó en este sprint), «Mejorado en S7» o «S1» a «S7»
+      el instrumento, las decisiones del caso y el informe; desde el S8, qué cambió entre instantáneas, la comparación de pares y duplicar un caso; desde el S9, armar el perfil con preguntas, BigQuery como «próximamente», la propuesta del modelo del sistema y la fila de jerga. Cada prueba dice su origen: «Nuevo · S4» (la ves por primera vez), «Nuevo · S9» (llegó en este sprint), «Mejorado en S7» o «S1» a «S7»
       (heredada sin cambios: es la regresión). Las casillas se
       guardan solas en este navegador.</p>
     <p class="chica"><strong>Gate corto ⭐⭐: 8 paradas · ~30 min (estimado) — es el que el cierre del hito exige.</strong> Solo lo que únicamente una persona puede juzgar, en el orden del documento. Dos son aprobaciones que haces tú (L3, el perfil, y O4, el plan); las demás miradas se hacen con el dato ya aprobado. Para caber, b1 y h6 se hacen con la misma persona en la misma sentada, y b11 y h7 con el mismo teléfono. Deja fuera 5 pruebas ⭐, y siguen enteras en el filtro ⭐.</p>
@@ -283,6 +283,8 @@
         <span class="origen origen-heredada">S1</span></label></li>
       <li data-origen="heredada"><input type="checkbox" id="f7"><label for="f7">Borra los archivos del kit con el <code>rm -rf</code> de la sección «Al terminar» del README del kit y compila de nuevo. Esperado: build limpio y el sitio como estaba; «Plataforma Norte» ya no aparece.
         <span class="origen origen-heredada">S1</span></label></li>
+      <li data-origen="nuevo"><input type="checkbox" id="f8"><label for="f8">Abre <code>/es/investigador/bigquery</code>. Esperado: BigQuery aparece como <strong>«próximamente»</strong> (no tiene mapa aprobado y la página no inventa uno); más abajo, la propuesta por revisar: la de capa «ingesta», que escribió <strong>el modelo del sistema de este equipo</strong> sobre la propuesta de mapa completo de <code>/investigar</code>. Una línea dice «la escribió el modelo del sistema de este equipo sobre…» y cuántas afirmaciones son suyas; las demás vienen de la propuesta base y siguen con su cita. Esperado también: cada afirmación trae su cita y su fuente, y nada aparece aprobado. <strong>No corras el comando de aprobar aquí</strong>: aprobar el mapa de BigQuery es tu decisión de la parada final del sprint.
+        <span class="origen origen-nuevo">Nuevo · S9</span></label></li>
     </ul>
     <div class="kit"><p><strong>Kit de prueba:</strong> <code>docs/kit-de-prueba/README.md</code> trae los dos kits de este bloque con sus comandos exactos: <strong>propuesta de muestra</strong> (f3–f5) y <strong>base incompleta</strong> (f6), y cómo dejar el proyecto como estaba (f7). Se corren en una terminal abierta en la carpeta del proyecto, con el sitio local (<code>pnpm build &amp;&amp; pnpm start</code>).</p></div>
     <div class="reportame"><p><strong>Repórtame sí o sí:</strong> una afirmación sin cita o sin resultado, un comando que no cambia con tu decisión, o un build que carga una base incompleta sin decir qué falta.</p></div>
@@ -387,6 +389,8 @@
         <span class="origen origen-nuevo">Nuevo · S8</span></label></li>
       <li data-origen="nuevo"><input type="checkbox" id="l5"><label for="l5">Antes o después de aprobar, baja a <strong>«Duplicar este caso»</strong>, escribe un id nuevo (por ejemplo «hospital-futuro-b») y mira el comando que arma la página. Esperado: con un id vacío, igual al del caso o con mayúsculas, la página dice qué corregir y no arma el comando; con uno válido, lo arma. Córrelo tú, en una Terminal abierta en la carpeta del proyecto, con <strong>Cmd+V</strong> y <strong>Enter</strong>: la copia nace <strong>en borrador</strong>, con su plan en borrador y «copia de» seguido del nombre del original, y el caso original queda igual. Si no quieres la copia, bórrala a mano (<code>data/casos/hospital-futuro-b.yaml</code> y su carpeta). Esta prueba escribe datos del repo: hazla solo si quieres esa copia.
         <span class="origen origen-nuevo">Nuevo · S8</span></label></li>
+      <li data-origen="nuevo"><input type="checkbox" id="l6"><label for="l6">En el editor, abre <strong>«Armar el perfil con preguntas»</strong> y responde una pregunta por criterio, sin pensar en ninguna plataforma. Esperado: mientras falte alguna, la página dice «Faltan responder N preguntas» y no propone nada; con todas respondidas, muestra los pesos propuestos (enteros que suman 100) y de qué criterios se conservan las restricciones. Responde «no nos preocupa» a todo: debe decir que no hay con qué repartir, sin proponer pesos. El botón <strong>«Usar este perfil en el editor»</strong> solo llena el editor; en el perfil que apruebes, esos pesos quedan marcados como <strong>«propuesto por la entrevista, por decidir»</strong> hasta que corras el comando de siempre. Nada se aprueba aquí.
+        <span class="origen origen-nuevo">Nuevo · S9</span></label></li>
     </ul>
     <div class="reportame"><p><strong>Repórtame sí o sí:</strong> un comando que no cambia lo que dice la página, o un perfil aprobado que todavía muestra el editor.</p></div>
   </section>
@@ -416,6 +420,8 @@
       <li data-origen="heredada" data-minimo><input type="checkbox" id="n2"><label for="n2">En el teléfono (o con la ventana estrecha, unos 380 px), abre la misma página. Esperado: no se desliza de lado, y cada fila se lee sin cortar sus letras.
         <span class="origen origen-heredada">S4</span>
         <span class="minimo">⭐ mínimo</span></label></li>
+      <li data-origen="nuevo"><input type="checkbox" id="n3"><label for="n3">En la misma página, busca la fila que dice <strong>«no trae jerga fuera del vocabulario llano»</strong>. Esperado: en verde, con su símbolo y su texto, y dice que el resumen de cada informe no trae jerga fuera del vocabulario llano, <strong>en los dos idiomas</strong>. Es la regla «lenguaje de líder»: si un texto trajera una palabra técnica sin explicar, la fila se pondría en rojo y el build se negaría a publicar.
+        <span class="origen origen-nuevo">Nuevo · S9</span></label></li>
     </ul>
     <div class="reportame"><p><strong>Repórtame sí o sí:</strong> un estado que no es verde sin que la página diga por qué, o un sembrado que aparece como detectado sin estar detectado.</p></div>
   </section>
@@ -461,6 +467,7 @@
     <details class="chica">
       <summary>Historial de la guía</summary>
       <ul>
+        <li><strong>S9 · 2026-11-12:</strong> 76 pruebas en 16 bloques (A–P). Las 73 del S8 siguen, con sus chips; el prefijo de las casillas es «bigd-s9-», así que las marcas del S8 no se heredan. Nuevas, cada una en su lugar del flujo: f8 (BigQuery entra como «próximamente» y la propuesta que escribió el modelo del sistema, en el investigador), l6 (armar el perfil con preguntas, en el editor del perfil) y n3 (la fila «jerga», en el instrumento). Ninguna sube al ⭐ ni al ⭐⭐: la CI las cubre de punta a punta. La guía como UN recorrido con la matriz <code>cubre</code> queda para el S10, como declara el sprint. Ninguna eliminada.</li>
         <li><strong>S8 · 2026-11-11:</strong> 73 pruebas en 16 bloques (A–P). Las 70 del S7 siguen, con sus chips; el prefijo de las casillas es «bigd-s8-», así que las marcas del S7 no se heredan. Nuevas, cada una en su lugar del flujo: k4 (qué cambió entre instantáneas, en la base), l4 (comparar por pares, en el editor del perfil) y l5 (duplicar un caso, con el comando que arma la pantalla). Ninguna sube al ⭐ ni al ⭐⭐: la CI las cubre de punta a punta. La reestructuración como UN recorrido con la matriz <code>cubre</code> llega con el cierre de la construcción. Ninguna eliminada.</li>
         <li><strong>S7 · 2026-10-12:</strong> 70 pruebas en 16 bloques (A–P). Las 70 del S6 siguen, con sus chips; el prefijo de las casillas es «bigd-s7-», así que las marcas del S6 no se heredan. Cambian: L2 (la forma del editor, sin ver), L3 (la aprobación del perfil, con el enlace al editor), N1 (la forma y el texto del instrumento, sin ver), O3 (la tabla de riesgos en teléfono) y O4 (la aprobación del plan, que antes no se corría). Para el gate, b1 se hace con h6 y b11 con h7 en la misma sentada, y j5 pasa de ⭐⭐ a ⭐ mínimo. Ninguna eliminada.</li>
         <li><strong>S6 · 2026-10-11:</strong> 70 pruebas en 16 bloques (A–P). Las 66 del S5 siguen, con sus chips. Prefijo de las casillas «bigd-s6-»: las marcas del S5 no se heredan. Nuevas: el bloque P, el informe del caso (la hoja de ruta, el alistamiento y el informe de catorce secciones); cuatro pruebas, sin ⭐ porque el informe se juzga con el perfil y el plan aprobados. La introducción ahora nombra también las decisiones del caso (bloque O), que faltaban. Ninguna eliminada.</li>
@@ -508,7 +515,7 @@
   (function () {
     // NS VERSIONADO POR SPRINT (regla dura): al publicar la guía de un sprint nuevo se cambia
     // s1 → s2 en el sprint siguiente — así una regresión sin correr no aparece marcada por el sprint anterior.
-    var NS = "bigd-s8-";
+    var NS = "bigd-s9-";
     var casillas = Array.prototype.slice.call(document.querySelectorAll('input[type="checkbox"]'));
     var barra = document.getElementById("barra-avance");
     var contador = document.getElementById("contador");

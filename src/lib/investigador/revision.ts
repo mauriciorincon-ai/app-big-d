@@ -66,6 +66,8 @@ export interface PropuestaVista {
   fecha: string;
   capa?: string;
   modelo: string;
+  /** Solo el ejecutor del modelo del sistema: sobre qué propuesta rehízo la capa y cuántas afirmaciones son suyas. */
+  sistema?: { base: string; propias: number };
   /** Reintentos que CONTÓ el hook de fin (`.reintentos`), no los que declara el modelo (B-45). */
   reintentos: number;
   /** Reintentos que declara la corrida (`ejecucion.reintentos`). */
@@ -189,18 +191,21 @@ export function revisionesEvidencias(raiz: string, id: string): RevisionEvidenci
 function pendiente(raiz: string, id: string, ultima: string | undefined, evidencias = false): string | undefined {
   const base = join(raiz, "propuestas");
   if (!existsSync(base)) return undefined;
-  return readdirSync(base)
+  const candidatas = readdirSync(base)
     .filter((d) => /^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(d) && existsSync(join(base, d, "propuesta.json")) && (ultima === undefined || `propuestas/${d}` > ultima))
-    .filter((d) => {
+    .flatMap((d) => {
       try {
         const dato = JSON.parse(readFileSync(join(base, d, "propuesta.json"), "utf8"));
-        return dato.plataforma === id && esPropuestaDeEvidencias(dato) === evidencias;
+        return dato.plataforma === id && esPropuestaDeEvidencias(dato) === evidencias ? [{ d, capa: dato.capa as string | undefined }] : [];
       } catch {
-        return d.includes(id) && d.endsWith("-evidencias") === evidencias;
+        return d.includes(id) && d.endsWith("-evidencias") === evidencias ? [{ d, capa: undefined }] : [];
       }
     })
-    .sort()
-    .at(-1);
+    .sort((a, b) => (a.d < b.d ? -1 : a.d > b.d ? 1 : 0));
+  // Del mapa se revisa primero la propuesta de mapa completo (sin capa): una capa rehecha sobre ella no reemplaza al mapa en
+  // la pantalla. Las capas se revisan aparte, con su propia carpeta.
+  const completas = evidencias ? [] : candidatas.filter((c) => c.capa === undefined);
+  return (completas.length ? completas : candidatas).at(-1)?.d;
 }
 
 /** El nombre de un componente, u «origen → destino» de un flujo, en el idioma pedido. */
@@ -280,6 +285,7 @@ export function vistaInvestigador(d: Datos, id: string, idioma: Idioma, fecha: s
     fecha: p?.fecha ?? "",
     ...(p?.capa ? { capa: p.capa } : {}),
     modelo: p?.ejecucion.modelo ?? "",
+    ...(p?.ejecucion.base && p.ejecucion.propias ? { sistema: { base: p.ejecucion.base, propias: p.ejecucion.propias.length } } : {}),
     reintentos: reintentosDe(dir),
     reintentosDeclarados: p?.ejecucion.reintentos ?? 0,
     fallas,

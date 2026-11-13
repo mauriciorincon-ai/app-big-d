@@ -180,7 +180,7 @@ export const esquemaCaso = z
           /** Cuánto podría variar el peso, relativo a él (E-2: ±20 % de 30 = 24–36). */
           rango_relativo_pct: entero(0, 100),
           /** RF-03.3. */
-          origen: z.enum(["declarado-por-usuario", "propuesto-por-agente"]),
+          origen: z.enum(["declarado-por-usuario", "propuesto-por-agente", "entrevista"]),
           /** Quién lo fijó en el caso (p. ej., el comité clínico). */
           fijado_por: textoIdioma.optional(),
           /** Esencial para este caso: entra al leximin y a la evidencia limitante. */

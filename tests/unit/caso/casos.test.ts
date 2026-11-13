@@ -61,7 +61,8 @@ describe("el caso del repo (borrador)", () => {
         .filter((e) => e.estado_aprobacion === "aprobada")
         .map((e) => `${e.plataforma_id} ${criterioDe(e)}`),
     );
-    const esperadas = k.plataformas
+    // Las plataformas de la base que lo evalúa (su instantánea): una plataforma que llegó después no entra al caso.
+    const esperadas = congelada.contenido.plataformas
       .filter((p) => !p.ficticia)
       .flatMap((p) =>
         caso.criterios

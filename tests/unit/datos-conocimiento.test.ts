@@ -431,12 +431,12 @@ describe("una base rota no carga y dice dónde (RF-01.2)", () => {
     [
       "un cuarto archivo de convenciones",
       (d) => writeFileSync(join(d, "convenciones/otro.yaml"), "id: metodo\n"),
-      /^data\/convenciones · la base trae exactamente tres archivos de convenciones, informe\.yaml, metodo\.yaml y pares\.yaml/,
+      /^data\/convenciones · la base trae exactamente cinco archivos de convenciones, entrevista\.yaml, informe\.yaml, jerga\.yaml, metodo\.yaml y pares\.yaml/,
     ],
     [
       "sin las convenciones del informe",
       (d) => rmSync(join(d, "convenciones/informe.yaml")),
-      /^data\/convenciones · la base trae exactamente tres archivos de convenciones, informe\.yaml, metodo\.yaml y pares\.yaml \(hay: metodo\.yaml, pares\.yaml\)/,
+      /^data\/convenciones · la base trae exactamente cinco archivos de convenciones, entrevista\.yaml, informe\.yaml, jerga\.yaml, metodo\.yaml y pares\.yaml \(hay: entrevista\.yaml, jerga\.yaml, metodo\.yaml, pares\.yaml\)/,
     ],
     [
       "un índice aleatorio repetido en la convención de pares",

@@ -43,19 +43,35 @@ export const esquemaRetiro = z.strictObject({
   cita: esquemaCita,
 });
 
+/** Los ejecutores del contrato de propuestas/: el mismo esquema, la misma validación y la misma verificación de citas. */
+export const EJECUTORES = ["claude-code", "modelo-del-sistema"] as const;
+export type Ejecutor = (typeof EJECUTORES)[number];
+
 export const esquemaPropuesta = z.strictObject({
   version: z.literal(1),
   plataforma: id,
   /** Banda investigada; sin ella, la plataforma entera. */
   capa: id.optional(),
   fecha,
-  ejecucion: z.strictObject({
-    herramienta: z.literal("claude-code"),
-    /** El modelo que declara la sesión; no se verifica. */
-    modelo: z.string().trim().min(1),
-    /** Reintentos del validador (máximo 2). */
-    reintentos: z.number().int().min(0).max(2),
-  }),
+  ejecucion: z
+    .strictObject({
+      /** Quién la escribió: la skill en Claude Code o el ejecutor del modelo del sistema (decisions/investigator-system-model.md). */
+      herramienta: z.enum(EJECUTORES),
+      /** El modelo que declara la sesión; no se verifica. */
+      modelo: z.string().trim().min(1),
+      /** Reintentos del validador (máximo 2). */
+      reintentos: z.number().int().min(0).max(2),
+      /**
+       * Solo el ejecutor del modelo del sistema: rehace UNA capa sobre una propuesta de mapa completa (`base`, su carpeta en
+       * propuestas/), y `propias` son las afirmaciones que escribió él; las demás vienen de la base, con su cita, y el código
+       * las vuelve a verificar como a todas.
+       */
+      base: z.string().regex(/^propuestas\/[A-Za-z0-9][A-Za-z0-9._-]*$/, "base: propuestas/<carpeta>").optional(),
+      propias: z.array(z.string().regex(/^A-[1-9]\d*$/)).optional(),
+    })
+    .refine((e) => (e.herramienta === "modelo-del-sistema" ? e.base !== undefined && e.propias !== undefined : e.base === undefined && e.propias === undefined), {
+      message: "base y propias van juntas, y solo en una propuesta del modelo del sistema",
+    }),
   /** El mapa propuesto completo (estado «propuesta»); lo valida el diagramador. */
   mapa: z.record(z.string(), z.unknown()),
   afirmaciones: z.array(esquemaAfirmacion),

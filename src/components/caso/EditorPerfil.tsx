@@ -13,6 +13,7 @@ import {
 } from "@/lib/investigador/comando-caso";
 import type { ConvencionPares } from "@/engine/pares";
 import { ComparacionPares, type TextosPares } from "./ComparacionPares";
+import { EntrevistaPerfil, type DatosEntrevista, type TextosEntrevista } from "./EntrevistaPerfil";
 import { Alerta, Ok } from "./Iconos";
 
 /** Los textos de la interfaz (T.caso.perfil.editor) y del botón de copiar (T.comando), ya en el idioma de la página. */
@@ -40,6 +41,8 @@ export interface TextosEditor {
   copiado: string;
   sinResponder: string;
   usadosPares: string;
+  usadosEntrevista: string;
+  entrevista: TextosEntrevista;
   pares: TextosPares;
 }
 
@@ -50,6 +53,8 @@ export interface DatosEditor {
   perfil: PerfilEditable;
   /** D7 (S8): la convención de la comparación de pares (data/convenciones/pares.yaml). */
   pares: ConvencionPares;
+  /** S9 (F1): las preguntas del entrevistador, con los textos en el idioma de la página. */
+  entrevista: DatosEntrevista;
   criterios: readonly { id: string; nombre: string; esencial: boolean }[];
   restricciones: readonly { id: string; texto: string }[];
   decisiones: readonly {
@@ -86,6 +91,8 @@ export function EditorPerfil({
   );
   // D7: los pesos del editor vienen de la comparación de pares hasta que la persona toca uno a mano.
   const [desdePares, setDesdePares] = useState(false);
+  // S9: o de la entrevista, que además decide qué restricciones se conservan.
+  const [desdeEntrevista, setDesdeEntrevista] = useState(false);
   const [rangos, setRangos] = useState<Record<string, string>>(() =>
     Object.fromEntries(
       perfil.criterios.map((k) => [
@@ -184,6 +191,7 @@ export function EditorPerfil({
                     onChange={(e) => {
                       setPesos({ ...pesos, [k.id]: e.target.value });
                       setDesdePares(false);
+                      setDesdeEntrevista(false);
                     }}
                   />
                   <span>{t.puntos}</span>
@@ -236,6 +244,12 @@ export function EditorPerfil({
               : plantilla(t.sumaMal, { suma: centesimasAPuntos(suma, idioma) })}
           </span>
         </div>
+        {desdeEntrevista && (
+          <p className="campo-aviso" role="status" data-pesos-desde-entrevista>
+            <Ok />
+            {t.usadosEntrevista}
+          </p>
+        )}
         {desdePares && (
           <p className="campo-aviso" role="status" data-pesos-desde-pares>
             <Ok />
@@ -243,6 +257,19 @@ export function EditorPerfil({
           </p>
         )}
       </fieldset>
+
+      <EntrevistaPerfil
+        idioma={idioma}
+        t={t.entrevista}
+        datos={datos.entrevista}
+        criterios={datos.criterios}
+        usar={(propuestos, conservan) => {
+          setPesos(Object.fromEntries(perfil.criterios.map((k) => [k.criterio_id, centesimasAPuntos(propuestos[k.criterio_id] ?? 0, idioma)])));
+          setConserva(Object.fromEntries(perfil.restricciones.map((r) => [r.id, conservan.includes(r.criterio_id)])));
+          setDesdePares(false);
+          setDesdeEntrevista(true);
+        }}
+      />
 
       <ComparacionPares
         idioma={idioma}
@@ -252,6 +279,7 @@ export function EditorPerfil({
         usar={(propuestos) => {
           setPesos(Object.fromEntries(perfil.criterios.map((k) => [k.criterio_id, centesimasAPuntos(propuestos[k.criterio_id] ?? 0, idioma)])));
           setDesdePares(true);
+          setDesdeEntrevista(false);
         }}
       />
 

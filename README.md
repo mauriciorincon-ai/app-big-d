@@ -5,16 +5,16 @@ Microsoft Fabric y Snowflake con el mismo mapa, para que entiendas cada una de p
 compares lado a lado. Después toma tu caso y te muestra quién gana, por cuánto, qué tan sólido es el
 resultado y con qué peso cambiaría. Y no se queda en un puntaje: lo vuelve decisiones, riesgos, un plan
 y un informe en español e inglés. Es abierto y reproducible; planea, gestiona y controla, y jamás opera
-una plataforma. La única IA es una skill de Claude Code que propone conocimiento con citas
-comprobadas; una persona lo aprueba. **Hoy:** el atlas, el investigador, la base de conocimiento, el perfil del caso con su comparación (con los pesos también por pares y la opción de duplicar un caso), qué cambió entre instantáneas de la base, el plan del caso (decisiones por ondas, riesgos por prioridad de acción y supuestos), el informe del caso (hoja de ruta por fases con su origen, alistamiento y un informe de catorce secciones en dos idiomas, imprimible) y el instrumento que valida la herramienta. La comparación se calcula cuando una persona aprueba el perfil.
+una plataforma. La única IA es el investigador, que propone conocimiento con citas
+comprobadas (con la skill de Claude Code o con el modelo que ya trae tu Mac); una persona lo aprueba. **Hoy:** el atlas, el investigador, la base de conocimiento, el perfil del caso con su comparación (con los pesos también por pares o con preguntas, y la opción de duplicar un caso), qué cambió entre instantáneas de la base, el plan del caso (decisiones por ondas, riesgos por prioridad de acción y supuestos), el informe del caso (hoja de ruta por fases con su origen, alistamiento y un informe de catorce secciones en dos idiomas, imprimible) BigQuery como próxima plataforma y el instrumento que valida la herramienta, también la jerga de sus textos. La comparación se calcula cuando una persona aprueba el perfil.
 
 **EN** · **Choose your data platform with dated evidence, not out of habit.** Big-D draws Databricks,
 Microsoft Fabric and Snowflake on the same map, so you can understand each one end to end and compare
 them side by side. Then it takes your case and shows you who wins, by how much, how solid the result is
 and at what weight it would change. And it does not stop at a score: it turns it into decisions, risks,
 a plan and a report in Spanish and English. It is open and reproducible; it plans, manages and
-controls, and never operates a platform. The only AI is a Claude Code skill that proposes knowledge
-with checked quotes; a person approves it. **Today:** the atlas, the researcher, the knowledge base, the case profile with its comparison (with weights also by pairs and the option to duplicate a case), what changed between snapshots of the base, the case plan (decisions in waves, risks by action priority and assumptions), the case report (a roadmap by phases with its origin, a readiness checklist and a 14-section report in two languages, printable), and the instrument that validates the tool. The comparison is calculated once a person approves the profile.
+controls, and never operates a platform. The only AI is the researcher, which proposes knowledge
+with checked quotes (with the Claude Code skill or with the model your Mac already ships with); a person approves it. **Today:** the atlas, the researcher, the knowledge base, the case profile with its comparison (with weights also by pairs or by questions, and the option to duplicate a case), what changed between snapshots of the base, the case plan (decisions in waves, risks by action priority and assumptions), the case report (a roadmap by phases with its origin, a readiness checklist and a 14-section report in two languages, printable), BigQuery as the next platform, and the instrument that validates the tool, jargon in its texts included. The comparison is calculated once a person approves the profile.
 
 ## Desarrollo local · Local development
 

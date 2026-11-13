@@ -17,7 +17,7 @@ export interface PerfilEditable {
     peso_centesimas: number;
     rango_relativo_pct: number;
   }[];
-  restricciones: readonly { id: string }[];
+  restricciones: readonly { id: string; criterio_id: string }[];
   decisiones_implicitas: readonly {
     id: string;
     opciones: readonly { id: string }[];

@@ -25,9 +25,13 @@ test.describe("investigador", () => {
     expect(url.searchParams.get("title")).toBe(`Investigar ${proxima!.nombre.es}`);
     expect(url.searchParams.get("labels")).toBe("investigacion");
     expect(url.searchParams.get("body")).toContain(`/investigar ${proxima!.id}`);
-    await expect(page.locator("main")).not.toContainText("Claude Code");
+    // Del estado vacío, no de toda la página: BigQuery trae además una propuesta, y esa sí nombra con qué herramienta se corrió.
+    await expect(page.locator(".estado")).not.toContainText("Claude Code");
     // «page» solo en la página a la que lleva la sección (el investigador de la primera plataforma por id).
-    await expect(page.getByRole("link", { name: "Conocimiento" })).toHaveAttribute("aria-current", proxima!.id === PLATAFORMAS[0] ? "page" : "true");
+    // El enlace de la sección lleva al investigador de la primera plataforma (por id, también las de «próximamente»): solo ahí es «page».
+    const seccion = page.getByRole("link", { name: "Conocimiento", exact: true });
+    const llevaAqui = (await seccion.getAttribute("href")) === `/es/investigador/${proxima!.id}`;
+    await expect(seccion).toHaveAttribute("aria-current", llevaAqui ? "page" : "true");
   });
 
   test("con mapa: una fila por banda de la gramática, con su semáforo en símbolo y texto", async ({ page }) => {

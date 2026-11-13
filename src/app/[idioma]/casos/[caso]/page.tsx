@@ -115,7 +115,7 @@ export default async function Perfil({ params }: PageProps<"/[idioma]/casos/[cas
           {caso.criterios.map((c) => {
             const [lo, hi] = rangoEntero(c.peso_centesimas, c.rango_relativo_pct);
             const nombre = nombreCriterio.get(c.criterio_id) ?? c.criterio_id;
-            const origen = c.fijado_por ? plantilla(t.pesos.origen, { quien: c.fijado_por[idioma] }) : c.origen === "propuesto-por-agente" ? t.pesos.origenAgente : t.pesos.origenPersona;
+            const origen = c.fijado_por ? plantilla(t.pesos.origen, { quien: c.fijado_por[idioma] }) : c.origen === "propuesto-por-agente" ? t.pesos.origenAgente : c.origen === "entrevista" ? t.pesos.origenEntrevista : t.pesos.origenPersona;
             return (
               <li key={c.criterio_id} data-criterio={c.criterio_id}>
                 <span className="peso-nombre">
@@ -222,11 +222,17 @@ export default async function Perfil({ params }: PageProps<"/[idioma]/casos/[cas
             desde: huellaCaso(caso),
             perfil: caso,
             pares: k.pares,
+            entrevista: {
+              introduccion: k.entrevista.introduccion[idioma],
+              niveles: k.entrevista.niveles.map((n) => ({ id: n.id, valor: n.valor, texto: n.texto[idioma] })),
+              conserva_restricciones_desde: k.entrevista.conserva_restricciones_desde,
+              preguntas: k.entrevista.preguntas.map((p) => ({ id: p.id, criterio_id: p.criterio_id, texto: p.texto[idioma] })),
+            },
             criterios: caso.criterios.map((c) => ({ id: c.criterio_id, nombre: nombreCriterio.get(c.criterio_id) ?? c.criterio_id, esencial: c.esencial })),
             restricciones: caso.restricciones.map((r) => ({ id: r.id, texto: r.descripcion[idioma] })),
             decisiones: caso.decisiones_implicitas.map((d) => ({ id: d.id, pregunta: d.pregunta[idioma], opciones: d.opciones.map((o) => ({ id: o.id, texto: o.texto[idioma] })) })),
           }}
-          t={{ ...t.editor, suma: t.pesos.suma, sumaBien: t.pesos.sumaBien, copiar: T.investigador.comando.copiar, copiado: T.investigador.comando.copiado, sinResponder: t.decisiones.sinResponder, pares: t.pares }}
+          t={{ ...t.editor, suma: t.pesos.suma, sumaBien: t.pesos.sumaBien, copiar: T.investigador.comando.copiar, copiado: T.investigador.comando.copiado, sinResponder: t.decisiones.sinResponder, entrevista: t.entrevista, pares: t.pares }}
         />
       )}
 

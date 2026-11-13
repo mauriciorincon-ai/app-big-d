@@ -126,6 +126,7 @@ export default async function Investigador({ params }: PageProps<"/[idioma]/inve
               items={[
                 p.fecha,
                 plantilla(t.propuesta.modelo, { modelo: p.modelo }),
+                ...(p.sistema ? [plantilla(plural(t.propuesta.sistema, p.sistema.propias), { base: p.sistema.base })] : []),
                 plural(t.propuesta.reintentos, p.reintentos),
                 plural(t.propuesta.reintentosDeclarados, p.reintentosDeclarados),
                 plural(t.propuesta.fuentes, p.fuentes),

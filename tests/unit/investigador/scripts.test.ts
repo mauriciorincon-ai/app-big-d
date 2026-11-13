@@ -70,6 +70,29 @@ describe("verificar-citas", () => {
   }, 20_000);
 });
 
+describe("el idioma de lo que se baja", () => {
+  // 2026-11-12: con «en, es» al mismo peso, la documentación de Google servía a veces la traducción al español de la misma URL
+  // y la cita inglesa «no aparecía» (BigQuery: entre 17 y 34 verificadas en 11 corridas). El inglés va primero, CON PESO.
+  it("pide inglés primero y español con menos peso; un curl que recibe otra cosa no responde", () => {
+    const otra = raizDePrueba(p);
+    const bin = join(otra.raiz, "bin");
+    mkdirSync(bin);
+    const curl = execFileSync("sh", ["-c", "command -v curl"], { encoding: "utf8" }).trim();
+    writeFileSync(join(bin, "curl"), `#!/bin/sh\ncase "$*" in *"Accept-Language: en, es;q=0.5 "*) exec "${curl}" "$@";; esac\necho "curl: (7) idioma sin peso" >&2; exit 7\n`, { mode: 0o755 });
+    try {
+      const r = spawnSync("node", ["scripts/verificar-citas.mjs", otra.carpeta], {
+        encoding: "utf8",
+        env: { ...process.env, PATH: `${bin}:${process.env.PATH}`, BIGD_RAIZ: otra.raiz, BIGD_VERIFICAR_ESPEJO: otra.espejo, BIGD_FECHA_CONSULTA: "2026-09-27" },
+      });
+      expect(r.status, r.stderr).toBe(0);
+      const v = JSON.parse(readFileSync(join(otra.raiz, otra.carpeta, "verificacion.json"), "utf8")) as { resultados: { resultado: string }[] };
+      expect(v.resultados.every((x) => x.resultado === "verificada")).toBe(true);
+    } finally {
+      rmSync(otra.raiz, { recursive: true, force: true });
+    }
+  }, 20_000);
+});
+
 describe("aprobar", () => {
   const todas = p.afirmaciones.map((a) => a.id);
   const tablero = idDe("nodo", "tablero");

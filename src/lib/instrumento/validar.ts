@@ -2,7 +2,7 @@
 // integridad de lo aprobado sobre la base que se va a publicar, y devuelve el resultado SIN hora (la misma base, el mismo
 // archivo). La llama scripts/instrumento/validar.mjs al inicio de `pnpm build` y sale ≠ 0 si algo no pasa: sin validación en
 // verde no hay `out/` (RF-09.4). Solo Node.
-import { resumenesIlegibles } from "@/lib/informe/legible";
+import { resumenesConJerga, resumenesIlegibles } from "@/lib/informe/legible";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import {
@@ -160,6 +160,13 @@ export function validar({
       "El resumen de cada informe se lee dentro del presupuesto, en los dos idiomas",
       "Each report summary reads within the budget, in both languages",
       () => (k ? resumenesIlegibles(k) : ["la base no cargó"]),
+    ),
+    // S9 (regla dura 11): el detector de jerga sobre el mismo resumen, en los dos idiomas.
+    integridad(
+      "jerga",
+      "El resumen de cada informe no trae jerga fuera del vocabulario llano, en los dos idiomas",
+      "Each report summary has no jargon outside the plain vocabulary, in both languages",
+      () => (k ? resumenesConJerga(k) : ["la base no cargó"]),
     ),
   );
 
