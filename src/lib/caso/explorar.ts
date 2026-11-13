@@ -1,4 +1,5 @@
-import { TOTAL, type PesoCaso } from "@/engine";
+import { TOTAL } from "@/engine/sensibilidad";
+import type { PesoCaso } from "@/engine/tipos";
 
 /**
  * Los pesos enteros con que se simula un peso explorado (D-S3-06, regla 3 del motor): el criterio movido vale `t` y los

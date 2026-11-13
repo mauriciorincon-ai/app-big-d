@@ -1,0 +1,49 @@
+/* S10 (F2): la hoja de la demo pública (anexo E4). Va DESPUÉS de tokens.css, base.css, diagrama.css y atlas.css, que el
+   constructor (scripts/demo/construir.mjs) concatena en demo.css. Las fuentes son los mismos woff2 de la tabla de métricas
+   (G15), con su licencia OFL al lado. Colores solo por variable; el color nunca va solo (puesto, número y texto). */
+@font-face { font-family: "Space Grotesk"; src: url("fuentes/space-grotesk.woff2") format("woff2"); font-weight: 300 700; font-display: block; }
+@font-face { font-family: "JetBrains Mono"; src: url("fuentes/jetbrains-mono.woff2") format("woff2"); font-weight: 100 800; font-display: block; }
+:root { --letra: "Space Grotesk", system-ui, sans-serif; --letra-mono: "JetBrains Mono", ui-monospace, monospace; }
+
+.demo-barra { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 56px; padding: 0 24px; border-bottom: 1px solid var(--linea); }
+.demo-idioma { min-height: 44px; display: inline-flex; align-items: center; color: var(--tinta-2); }
+.demo { max-width: var(--ancho-pagina); margin: 0 auto; padding: 24px 24px 48px; }
+.demo h1 { font-size: clamp(26px, 4vw, 38px); line-height: 1.15; letter-spacing: -0.02em; margin: 8px 0 12px; }
+.demo h2 { font-size: 22px; margin: 0 0 8px; }
+.demo h3 { font-size: 16px; margin: 24px 0 4px; }
+.demo-intro, .demo-caso { max-width: 70ch; color: var(--tinta-2); }
+.demo-rotulo { max-width: 80ch; padding: 12px 16px; border: 1px dashed var(--tinta-2); border-radius: 6px; background: var(--sup-1); }
+.demo-rotulo-signo { font-size: 18px; }
+.demo-aviso { padding: 8px 12px; border-left: 3px solid var(--tinta-2); }
+.demo-ayuda { color: var(--tinta-2); font-size: 14px; max-width: 70ch; margin: 0 0 12px; }
+.demo-rejilla { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; margin-top: 24px; }
+.demo-panel { border: 1px solid var(--linea); border-radius: 8px; background: var(--sup-1); padding: 20px; min-width: 0; }
+.demo-pesos { list-style: none; margin: 0 0 16px; padding: 0; display: grid; gap: 10px; }
+.demo-peso { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) 4.5ch; align-items: center; gap: 12px; font-size: 14px; }
+.demo-peso input[type="range"] { width: 100%; min-height: 32px; accent-color: var(--tinta-1); }
+.demo-peso output { text-align: right; }
+.demo-boton { font: 600 14px/1.2 var(--letra); color: var(--tinta-1); background: var(--sup-2); border: 1px solid var(--linea); border-radius: 6px; padding: 10px 14px; min-height: 44px; cursor: pointer; }
+.demo-boton:disabled { opacity: 0.6; cursor: progress; }
+.demo-filas { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.demo-fila { display: grid; grid-template-columns: 4ch minmax(8ch, 1fr) minmax(0, 1.4fr) auto; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--linea); }
+.demo-fila meter { width: 100%; height: 12px; }
+.demo-nombre { font-weight: 600; }
+.demo-veredicto { font-weight: 600; margin: 16px 0 0; }
+.demo-huella { overflow-wrap: anywhere; padding: 8px 10px; border-radius: 4px; background: var(--sup-2); margin: 0; }
+.demo-neutralidad { margin-top: 12px; display: grid; gap: 6px; }
+.demo-neutralidad p { margin: 0; }
+.demo-igualdad { font-weight: 700; }
+.demo-proximas { list-style: none; padding: 0; margin: 0; color: var(--tinta-2); }
+.demo-atlas { margin-top: 40px; }
+.demo-mapa { margin-top: 24px; border: 1px solid var(--linea); border-radius: 8px; padding: 16px; background: var(--sup-1); }
+.demo-mapa h3 { margin-top: 0; }
+.demo-mapa .leyenda-motor { display: block; margin-top: 12px; font-size: 13px; }
+.demo-declaracion { margin-top: 40px; max-width: 80ch; }
+.demo-pie { border-top: 1px solid var(--linea); padding: 16px 24px; color: var(--tinta-2); font-size: 13px; }
+@media (max-width: 860px) {
+  .demo-rejilla { grid-template-columns: minmax(0, 1fr); }
+  .demo { padding: 16px; }
+  .demo-barra { padding: 0 16px; }
+  .demo-fila { grid-template-columns: 4ch minmax(0, 1fr) auto; }
+  .demo-fila meter { grid-column: 1 / -1; }
+}

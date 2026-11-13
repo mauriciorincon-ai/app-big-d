@@ -84,6 +84,7 @@ const eslintConfig = defineConfig([
     "coverage/**",
     // Sitio y base de la base sembrada (D-S3-14): derivados de scripts/datos/construir-sembrada.mjs, ignorados en git.
     "out-sembrada/**",
+    "out-demo/**",
     ".sembrada/**",
   ]),
 ]);
