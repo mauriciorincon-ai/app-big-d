@@ -23,16 +23,14 @@ pr: pendiente (abrir tras confirmar que no hay PR vivo)
 - **Huellas:** `NUCLEO.SHA256SUMS` sin cambios (determinismo 9/9). `CONTRATO.lock` sin cambios. `data/convenciones/jerga.yaml` re-derivado y en verde.
 - **F1 (commits):** fdd939d · e3c2409 · f5270cf.
 - **F2 (commits):** a4d001b · 21cfaba · 767151a · d2f7d9e · b6b03ee · a60b5f4 · 51fec54.
-- **F3 (commits):** 17c3b4e (guía, manual, export) · c855d69 (e2e) · bc87c2e (lighthouse, jerga) · 8770f9a (auditoría, bajos) · 5badf9d (auditoría, medios).
+- **F3 (commits):** 17c3b4e (guía, manual, export) · c855d69 (e2e) · bc87c2e (lighthouse, jerga) · 8770f9a (auditoría, bajos) · 5badf9d (auditoría, medios) · 43163c0 (revisión del mapa).
 - **Auditoría** (4 casillas, Sonnet 5.5 · high, solo lectura): 0 críticos, 0 altos, 4 medios, 5 bajos. Todos pagados: medios (README, fila de IA y fecha del BLUEPRINT, cifras del export) · 5badf9d; bajos (truncado silencioso de frases, trozos sin leer no dichos, timeout de la llamada al modelo, limpieza del temporal, guarda del modelo falso) · 8770f9a.
 - **Desviaciones:**
   - La nota de la planeadora (SPRINT_009 §4, 2026-11-12) dice que se verificó Google Books Ngram (CC BY 3.0) como vía (b) del detector. `decisions/jargon-detector.md` y `jerga.yaml` dicen que no se halló una lista «sin ambigüedad» y no mencionan Ngram. Se usa la vía d (jerga por dato) y no se incorpora Ngram.
   - La propuesta de capa `evidencias` de BigQuery no existe: exige mapa aprobado (ver pendientes).
   - La guía sigue por paradas (no como un solo recorrido con `cubre`): decisión del sprint, la matriz pasa a S10.
 - **Causas:** `ejecucion.modelo` llevaba texto en español y se veía en inglés. Corregido; citas re-verificadas 42/42.
-- **Decisiones del dueño pendientes (en llano, para el STOP):**
-  1. ¿Aprobar el mapa de BigQuery? Opciones: (a) la propuesta de `/investigar` (42 afirmaciones), (b) la capa de ingesta del modelo del sistema sobre ella, (c) no aprobar todavía. Default: (c). Cómo: en `/es/investigador/bigquery`, copiar el comando de «Aprobar lo marcado» y correrlo en la Terminal.
-  2. Después, `/investigar bigquery evidencias` en tu sesión y aprobar las evidencias. Default: no hacerlo hasta el punto 1.
+- **Decisión del dueño (2026-11-12, escrita):** «Vamos a revisarlo en la prueba completa de H-2». Eligió la propuesta A (`/investigar`, 42 afirmaciones); la pantalla del mapa ahora muestra el mapa completo antes que una capa rehecha (43163c0). Mapa y evidencias de BigQuery se aprueban en el ensayo general; las evidencias exigen el mapa aprobado.
 - **Aprendizajes:** (1) con el dato real aprobado, los e2e del entrevistador se omiten; la prueba del editor vive en la copia. (2) El modelo del Mac rinde menos caracteres por token en texto técnico: el trozo se parte en dos al desbordar.
 - **Dos caminos, comparados en la capa de ingesta de BigQuery:** `/investigar` 4/4 componentes, 42/42 citas verificadas; modelo del sistema 3/4 componentes, 3/3 citas verificadas, 26 descartadas por el código. La revisión de una persona sigue siendo obligatoria en ambos.
 - **Enmienda propuesta a la constitución (regla dura 2):** «La única IA es `/investigar`, que corre a demanda: con Claude Code (skill) o con el modelo del sistema de macOS (`scripts/investigar/sistema.mjs`), sin claves ni descargas.» La planeadora la aplica.
