@@ -5,7 +5,7 @@ hito: H-2 «Producto completo» (ensayo general pendiente)
 opened: 2026-11-11
 closed: 2026-11-12
 branch: sprint-009/preguntar-investigar-crecer
-pr: pendiente (abrir tras confirmar que no hay PR vivo)
+pr: 27
 ---
 
 # Sprint 009 · cierre
