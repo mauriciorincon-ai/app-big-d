@@ -345,10 +345,10 @@ a ninguna ni pide cuentas.
 
 - **Qué hace:** BigQuery entra como cuarta plataforma real, marcada **«próximamente»**: todavía no tiene mapa aprobado y la página no inventa uno; llega con su propia investigación. Además, el instrumento suma la fila **«jerga»**: comprueba, en español y en inglés, que el resumen de cada informe no use palabras técnicas fuera del vocabulario llano, salvo las que el texto explica.
 - **Cómo se usa:**
-  1. En el investigador, elige BigQuery: ves «próximamente» y sus propuestas por revisar.
+  1. En el investigador, elige BigQuery: ves «próximamente» y la propuesta por revisar (la más reciente).
   2. En «Instrumento», la fila de jerga se lee como las demás: pasa o no pasa, con símbolo y texto.
 - **Limitaciones:**
-  - Hasta que una persona apruebe el mapa de BigQuery, no aparece en el lado a lado ni en las comparaciones.
+  - Hasta que una persona apruebe el mapa de BigQuery, en el lado a lado es una fila «próximamente» que lleva a su página del investigador, y no entra en las comparaciones del caso.
   - Si un texto trae jerga sin explicar, la validación se pone en rojo y el build no publica.
 
 ### Preguntas frecuentes
@@ -706,10 +706,10 @@ manages and controls; it never operates a platform**: it connects to none and as
 
 - **What it does:** BigQuery enters as the fourth real platform, marked **“coming soon”**: it has no approved map yet and the page does not invent one; it arrives with its own research. The instrument also gains a **“jargon”** row: it checks, in Spanish and in English, that each report's summary uses no technical words outside the plain vocabulary, except the ones the text explains.
 - **How to use it:**
-  1. In the researcher, pick BigQuery: you see “coming soon” and its proposals to review.
+  1. In the researcher, pick BigQuery: you see “coming soon” and the proposal to review (the most recent one).
   2. In **“Instrument”**, the jargon row reads like the others: pass or fail, with a symbol and text.
 - **Limitations:**
-  - Until a person approves BigQuery's map, it does not appear in side by side or in comparisons.
+  - Until a person approves BigQuery's map, in side by side it is a “coming soon” row that links to its researcher page, and it does not enter the case comparisons.
   - If a text carries unexplained jargon, validation turns red and the build does not publish.
 
 ### Frequently asked questions

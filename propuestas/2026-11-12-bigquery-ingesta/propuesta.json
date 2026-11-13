@@ -5,7 +5,7 @@
   "fecha": "2026-11-12",
   "ejecucion": {
     "herramienta": "modelo-del-sistema",
-    "modelo": "SystemLanguageModel.default (modelo del sistema de macOS, en el equipo)",
+    "modelo": "SystemLanguageModel.default (macOS)",
     "reintentos": 0,
     "base": "propuestas/2026-11-12-bigquery",
     "propias": [

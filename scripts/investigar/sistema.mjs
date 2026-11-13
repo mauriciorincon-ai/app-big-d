@@ -29,7 +29,7 @@ const VENTANA = /exceeds the maximum allowed context size/i;
 /** Por debajo de esto, un trozo ya no se parte: el error sube tal cual. */
 const MITAD_MINIMA = 400;
 const TROZOS_POR_PAGINA = 12;
-const MODELO = "SystemLanguageModel.default (modelo del sistema de macOS, en el equipo)";
+const MODELO = "SystemLanguageModel.default (macOS)";
 const INSTRUCCIONES =
   "Lees documentación pública de una plataforma de datos y anotas lo que el texto dice de cada componente de la lista. " +
   "Solo lo que el texto dice: si no habla de un componente, no lo anotes. La cita es una frase copiada letra por letra del texto, " +
