@@ -10,9 +10,11 @@ const abrirFicha = async (p) => {
   await p.locator(".lienzo .dg-elem, .lienzo .dg-nodo").first().evaluate((el) => el.dispatchEvent(new MouseEvent("click", { bubbles: true })));
   await p.locator("#panel-ficha").waitFor({ state: "visible", timeout: 2000 });
 };
-/** Baja hasta el encabezado de la lectura en texto, debajo del mapa (la pieza F4). */
+/** Abre y baja hasta la lectura en texto, debajo del mapa (la pieza F4): el `<details class="lectura-seccion">`. */
 const bajarALectura = async (p) => {
-  await p.getByRole("heading", { name: /lectura|reading/i }).first().scrollIntoViewIfNeeded();
+  const lectura = p.locator("details.lectura-seccion").first();
+  await lectura.locator("summary").click();
+  await lectura.scrollIntoViewIfNeeded();
 };
 
 /** { id, archivo, ruta, paso? } — `id` es la funcionalidad del manual (F1…F14) o «portada». */
