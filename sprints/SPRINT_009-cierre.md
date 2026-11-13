@@ -1,0 +1,43 @@
+---
+sprint: 009
+app: big-d
+hito: H-2 «Producto completo» (ensayo general pendiente)
+opened: 2026-11-11
+closed: 2026-11-12
+branch: sprint-009/preguntar-investigar-crecer
+pr: pendiente (abrir tras confirmar que no hay PR vivo)
+---
+
+# Sprint 009 · cierre
+
+- **Nombre:** Preguntar, investigar y crecer.
+- **Objetivo planeado:** entrevistador, ejecutor con el modelo del sistema, 4.ª plataforma (BigQuery) y detector de jerga ES/EN.
+- **Resultado:** los cuatro entregables construidos; BigQuery entra como «próximamente» con su propuesta. **Construido; falta la parada final del dueño (mapa de BigQuery).**
+- **Estado:** construido, auditado, pendiente de PR y de STOP.
+- **Tiempo estimado:** 4 h. **Tiempo real** (`node scripts/horas-sprint.mjs`, `origin/main..HEAD`): 2,2 h activas en 3 sesiones (span 20,7 h). F1 0,5 h · F2 1,2 h · F3 0,5 h.
+- **Diferencia:** −1,8 h (−45 %). Ninguna fase pasó más del 50 %.
+- **Modelo por fase:** F1 Sonnet 5.5 · medium · F2 Opus 5.5 · medium · F3 Sonnet 5.5 · medium · cierre Haiku 5.5 · low. Sin desvío de modelo.
+- **Relevos:** ninguno.
+- **Tokens:** F2 1 Explore (Haiku 5.5); F3 1 auditor general-purpose (Sonnet 5.5 · high, solo lectura). Pedidos: `/compact` (F1→F2), `/model opus` (F2), `/compact` + `/model sonnet` + `/effort medium` (F2→F3), `/model haiku` + `/effort low` (cierre).
+- **Verificación:** `tsc` y lint limpios. Vitest 2276 pasan, 1 omitido, 97,96 % líneas. e2e 971 pasan en escritorio y teléfono (6 omitidos, por el dato aprobado), Firefox y WebKit 262 pasan. Determinismo 9/9.
+- **Servidores:** `lsof` LISTEN en 3400/3401 de este repo: 0.
+- **Huellas:** `NUCLEO.SHA256SUMS` sin cambios (determinismo 9/9). `CONTRATO.lock` sin cambios. `data/convenciones/jerga.yaml` re-derivado y en verde.
+- **F1 (commits):** fdd939d · e3c2409 · f5270cf.
+- **F2 (commits):** a4d001b · 21cfaba · 767151a · d2f7d9e · b6b03ee · a60b5f4 · 51fec54.
+- **F3 (commits):** 17c3b4e (guía, manual, export) · c855d69 (e2e) · bc87c2e (lighthouse, jerga) · 8770f9a (auditoría, bajos) · 5badf9d (auditoría, medios).
+- **Auditoría** (4 casillas, Sonnet 5.5 · high, solo lectura): 0 críticos, 0 altos, 4 medios, 5 bajos. Todos pagados: medios (README, fila de IA y fecha del BLUEPRINT, cifras del export) · 5badf9d; bajos (truncado silencioso de frases, trozos sin leer no dichos, timeout de la llamada al modelo, limpieza del temporal, guarda del modelo falso) · 8770f9a.
+- **Desviaciones:**
+  - La nota de la planeadora (SPRINT_009 §4, 2026-11-12) dice que se verificó Google Books Ngram (CC BY 3.0) como vía (b) del detector. `decisions/jargon-detector.md` y `jerga.yaml` dicen que no se halló una lista «sin ambigüedad» y no mencionan Ngram. Se usa la vía d (jerga por dato) y no se incorpora Ngram.
+  - La propuesta de capa `evidencias` de BigQuery no existe: exige mapa aprobado (ver pendientes).
+  - La guía sigue por paradas (no como un solo recorrido con `cubre`): decisión del sprint, la matriz pasa a S10.
+- **Causas:** la propuesta del modelo del Mac grabó «modelo del sistema de este equipo» en `ejecucion.modelo`, y se veía en inglés. Corregido a `SystemLanguageModel.default (macOS)`, citas re-verificadas 42/42.
+- **Decisiones del dueño pendientes (en llano, para el STOP):**
+  1. ¿Aprobar el mapa de BigQuery? Opciones: (a) la propuesta de `/investigar` (42 afirmaciones), (b) la capa de ingesta del modelo del sistema sobre ella, (c) no aprobar todavía. Default: (c). Cómo: en `/es/investigador/bigquery`, copiar el comando de «Aprobar lo marcado» y correrlo en la Terminal.
+  2. Después, `/investigar bigquery evidencias` en tu sesión y aprobar las evidencias. Default: no hacerlo hasta el punto 1.
+- **Deuda (solo lo imposible):** ninguna pendiente en código. Lo que requiere decisión del dueño está en el punto anterior.
+- **Aprendizajes:** (1) con el dato real aprobado, los e2e del entrevistador se omiten; la prueba del editor vive en la copia. (2) El modelo del Mac rinde menos caracteres por token en texto técnico: el trozo se parte en dos al desbordar.
+- **Dos caminos, comparados en la capa de ingesta de BigQuery:** `/investigar` 4/4 componentes, 42/42 citas verificadas; modelo del sistema 3/4 componentes, 3/3 citas verificadas, 26 descartadas por el código. La revisión de una persona sigue siendo obligatoria en ambos.
+- **Enmienda propuesta a la constitución (regla dura 2):** «La única IA es `/investigar`, que corre a demanda: con Claude Code (skill) o con el modelo del sistema de macOS (`scripts/investigar/sistema.mjs`), sin claves ni descargas.» La planeadora la aplica.
+- **Recomendación para S10:** matriz `cubre` de la guía como un recorrido; decidir si el ejecutor del sistema cubre más capas.
+- **Evaluación esfuerzo-beneficio:** alta. El ejecutor da una segunda vía sin costo; la costura es la revisión humana.
+- **Para mergear:** squash y borrar la rama; después `/cierre-sprint big-d`.
