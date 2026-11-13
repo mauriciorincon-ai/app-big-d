@@ -35,7 +35,7 @@ cubos:
     "active": 4
     "actual": 3
     "adelante": 4
-    "además": 4
+    "además": 3
     "adentro": 4
     "administra": 3
     "administración": 4
@@ -103,6 +103,7 @@ cubos:
     "análisis": 3
     "apache": 4
     "apaga": 4
+    "apagado": 4
     "aparece": 2
     "aparecen": 3
     "aparte": 4
@@ -116,6 +117,7 @@ cubos:
     "aporta": 4
     "apoya": 4
     "app": 2
+    "apple": 4
     "aprender": 4
     "aprendizaje": 4
     "aprobaciones": 4
@@ -133,7 +135,7 @@ cubos:
     "aprueba": 2
     "apruebas": 4
     "apruebe": 3
-    "aquí": 3
+    "aquí": 2
     "archivada": 4
     "archivo": 3
     "archivos": 3
@@ -141,7 +143,7 @@ cubos:
     "aritmética": 4
     "arma": 2
     "arman": 4
-    "armar": 4
+    "armar": 3
     "armarlo": 4
     "armas": 4
     "arrancan": 4
@@ -169,7 +171,7 @@ cubos:
     "avisa": 3
     "avisan": 4
     "avisar": 4
-    "ayuda": 4
+    "ayuda": 3
     "azure": 4
     "añadidas": 4
     "años": 4
@@ -191,6 +193,7 @@ cubos:
     "beta": 4
     "bien": 3
     "big": 2
+    "bigquery": 3
     "bloque": 2
     "bloquea": 3
     "bloqueadas": 4
@@ -268,13 +271,14 @@ cubos:
     "citada": 4
     "citadas": 4
     "citan": 4
-    "citas": 3
+    "citas": 2
     "cite": 4
     "clara": 4
     "claro": 3
     "clase": 3
     "claude": 3
     "clave": 4
+    "claves": 4
     "clientes": 4
     "clínico": 3
     "clínicos": 3
@@ -301,6 +305,7 @@ cubos:
     "comp": 4
     "compara": 2
     "comparacion": 4
+    "comparaciones": 4
     "comparación": 2
     "comparador": 4
     "comparan": 4
@@ -315,6 +320,7 @@ cubos:
     "compartir": 4
     "compartirla": 4
     "compatibilidad": 4
+    "compatible": 4
     "compensa": 4
     "competidor": 4
     "complemento": 4
@@ -332,7 +338,8 @@ cubos:
     "comprometerlo": 4
     "comprometerse": 4
     "compromiso": 4
-    "comprueba": 4
+    "comprueba": 3
+    "computador": 4
     "con": 1
     "conceptos": 4
     "conciliar": 4
@@ -355,7 +362,7 @@ cubos:
     "conocida": 4
     "conocimiento": 2
     "conserva": 3
-    "conservan": 4
+    "conservan": 3
     "conservar": 4
     "consistencia": 3
     "consistente": 4
@@ -447,6 +454,7 @@ cubos:
     "cualquiera": 3
     "cuando": 2
     "cuanto": 4
+    "cuarta": 4
     "cuatro": 4
     "cubren": 4
     "cuenta": 2
@@ -465,7 +473,7 @@ cubos:
     "cuál": 3
     "cuáles": 3
     "cuándo": 3
-    "cuántas": 4
+    "cuántas": 3
     "cuánto": 2
     "cuántos": 3
     "cálculo": 3
@@ -493,7 +501,7 @@ cubos:
     "decimales": 4
     "decision": 4
     "decisiones": 2
-    "decisivo": 4
+    "decisivo": 3
     "decisión": 2
     "declara": 3
     "declaración": 4
@@ -515,7 +523,7 @@ cubos:
     "deliberados": 4
     "demo": 4
     "demostrar": 4
-    "demás": 3
+    "demás": 2
     "dentro": 2
     "depende": 2
     "dependen": 4
@@ -525,14 +533,16 @@ cubos:
     "derecha": 3
     "desactualizados": 4
     "desarrollo": 4
+    "descarga": 4
     "descarta": 3
     "descartadas": 3
     "descartan": 4
+    "descartó": 4
     "descripción": 4
     "descubre": 4
     "descubrimiento": 4
     "descuentos": 4
-    "desde": 2
+    "desde": 1
     "desempate": 4
     "deshabilitado": 4
     "deshace": 4
@@ -550,6 +560,7 @@ cubos:
     "detectados": 4
     "detectar": 4
     "detectarlos": 4
+    "detector": 4
     "detectó": 4
     "detiene": 3
     "detuvo": 4
@@ -560,7 +571,7 @@ cubos:
     "dibujan": 4
     "dibujar": 4
     "dibujo": 3
-    "dice": 2
+    "dice": 1
     "dicen": 3
     "diez": 4
     "diferencia": 3
@@ -601,7 +612,7 @@ cubos:
     "ecosistema": 4
     "edición": 4
     "edita": 3
-    "editor": 3
+    "editor": 2
     "editó": 4
     "efectos": 4
     "ejecución": 4
@@ -631,6 +642,7 @@ cubos:
     "empieza": 4
     "encabezado": 3
     "encaja": 4
+    "encender": 4
     "encendida": 4
     "encima": 4
     "encontrada": 3
@@ -652,7 +664,8 @@ cubos:
     "entradas": 4
     "entran": 3
     "entre": 2
-    "entrevista": 3
+    "entrevista": 2
+    "enunciado": 4
     "envejecieron": 4
     "equipo": 2
     "equis": 4
@@ -736,7 +749,7 @@ cubos:
     "explicación": 4
     "explicado": 4
     "explicados": 4
-    "explicar": 4
+    "explicar": 3
     "explorado": 4
     "exportaciones": 4
     "exportación": 4
@@ -751,7 +764,7 @@ cubos:
     "falla": 3
     "falló": 4
     "falta": 2
-    "faltan": 3
+    "faltan": 2
     "faltantes": 4
     "falte": 4
     "fase": 2
@@ -788,7 +801,7 @@ cubos:
     "formato": 2
     "fracaso": 3
     "franjas": 3
-    "frase": 4
+    "frase": 3
     "frecuentes": 4
     "frente": 3
     "frágil": 3
@@ -873,6 +886,7 @@ cubos:
     "implícita": 3
     "implícitas": 3
     "importa": 2
+    "importancia": 4
     "importantes": 3
     "impresión": 4
     "impresora": 4
@@ -903,12 +917,14 @@ cubos:
     "inquilino": 4
     "inserciones": 4
     "insignia": 3
+    "instala": 4
     "instante": 4
     "instantánea": 2
     "instantáneas": 2
     "instrumento": 3
     "integración": 3
     "inteligencia": 2
+    "intelligence": 4
     "intenta": 4
     "intento": 4
     "intentos": 3
@@ -929,6 +945,7 @@ cubos:
     "irse": 4
     "izquierda": 3
     "jamás": 3
+    "jerga": 3
     "json": 4
     "juicio": 3
     "juicios": 3
@@ -948,7 +965,7 @@ cubos:
     "leer": 3
     "legal": 4
     "legibles": 4
-    "lenguaje": 4
+    "lenguaje": 3
     "leximin": 4
     "ley": 4
     "leyenda": 4
@@ -966,7 +983,8 @@ cubos:
     "listo": 4
     "listos": 4
     "llama": 4
-    "llega": 3
+    "llano": 4
+    "llega": 2
     "llegada": 4
     "llegan": 3
     "llegar": 4
@@ -986,6 +1004,7 @@ cubos:
     "líder": 4
     "líderes": 4
     "línea": 3
+    "mac": 4
     "macos": 4
     "madurez": 2
     "mal": 4
@@ -997,7 +1016,7 @@ cubos:
     "mapa": 1
     "mapas": 3
     "marca": 2
-    "marcada": 4
+    "marcada": 3
     "marcadas": 4
     "marcado": 3
     "marcados": 4
@@ -1035,7 +1054,7 @@ cubos:
     "mismo": 2
     "mismos": 2
     "mitigación": 2
-    "modelo": 3
+    "modelo": 2
     "modelos": 3
     "moderada": 4
     "modificadas": 3
@@ -1097,7 +1116,7 @@ cubos:
     "nombrarlos": 4
     "nombre": 3
     "nombres": 3
-    "nos": 4
+    "nos": 3
     "nota": 3
     "note": 4
     "novedades": 4
@@ -1180,7 +1199,7 @@ cubos:
     "pausar": 4
     "pdf": 4
     "pedida": 4
-    "pedir": 4
+    "pedir": 3
     "pendiente": 4
     "pensando": 4
     "pensar": 4
@@ -1238,8 +1257,8 @@ cubos:
     "preferente": 4
     "prefieres": 4
     "pregunta": 3
-    "preguntas": 3
-    "preocupa": 4
+    "preguntas": 2
+    "preocupa": 3
     "prepara": 4
     "preparan": 4
     "preparar": 4
@@ -1294,7 +1313,7 @@ cubos:
     "prueba": 2
     "prueban": 4
     "pruebas": 3
-    "próximamente": 4
+    "próximamente": 3
     "próximos": 4
     "publica": 3
     "publicación": 4
@@ -1327,7 +1346,7 @@ cubos:
     "público": 4
     "que": 1
     "queda": 2
-    "quedan": 3
+    "quedan": 2
     "quedar": 3
     "quedaron": 4
     "quedas": 4
@@ -1392,9 +1411,11 @@ cubos:
     "regulador": 4
     "regulatoria": 4
     "regulatorio": 4
+    "rehace": 4
     "rehacer": 3
     "rehacerlas": 4
     "rehacerlo": 4
+    "rehaga": 4
     "reintento": 4
     "reintentos": 4
     "rejilla": 4
@@ -1438,6 +1459,7 @@ cubos:
     "responde": 3
     "responder": 3
     "responderlas": 4
+    "respondes": 4
     "respondida": 3
     "respondidas": 4
     "respondiste": 4
@@ -1469,13 +1491,13 @@ cubos:
     "revisar": 2
     "revisarla": 4
     "revisiones": 4
-    "revisión": 4
+    "revisión": 3
     "revés": 4
     "reúne": 3
     "rfc": 4
     "riesgo": 2
     "riesgos": 2
-    "rojo": 4
+    "rojo": 3
     "rol": 4
     "roles": 3
     "romper": 4
@@ -1497,11 +1519,11 @@ cubos:
     "salió": 3
     "saltar": 3
     "salud": 4
-    "salvo": 4
+    "salvo": 3
     "sanción": 4
     "scim": 4
-    "script": 4
-    "sea": 4
+    "script": 3
+    "sea": 3
     "secciones": 3
     "sección": 3
     "seguimos": 4
@@ -1663,7 +1685,9 @@ cubos:
     "triple": 4
     "triángulo": 4
     "tus": 3
-    "tuyos": 4
+    "tuya": 4
+    "tuyos": 3
+    "técnicas": 4
     "técnico": 2
     "técnicos": 4
     "término": 4
@@ -1683,6 +1707,7 @@ cubos:
     "usarla": 4
     "usaron": 4
     "usas": 3
+    "use": 4
     "usen": 4
     "uso": 3
     "usuario": 4
@@ -1722,7 +1747,7 @@ cubos:
     "verificado": 2
     "verificador": 4
     "verificar": 4
-    "verificaron": 4
+    "verificaron": 3
     "verificó": 4
     "verlos": 4
     "versionado": 4
@@ -1730,7 +1755,7 @@ cubos:
     "versiones": 2
     "versión": 2
     "verás": 4
-    "ves": 4
+    "ves": 3
     "vez": 2
     "viaja": 4
     "vieja": 4
@@ -1748,6 +1773,7 @@ cubos:
     "viva": 4
     "vive": 4
     "viven": 4
+    "vocabulario": 4
     "volver": 3
     "vuelta": 3
     "vuelve": 3
@@ -1770,7 +1796,7 @@ cubos:
     "única": 3
   en:
     "able": 4
-    "about": 3
+    "about": 2
     "above": 3
     "acceptability": 4
     "accepted": 4
@@ -1847,6 +1873,7 @@ cubos:
     "app": 2
     "appear": 3
     "appears": 3
+    "apple": 4
     "applications": 3
     "applied": 3
     "applies": 4
@@ -1904,7 +1931,7 @@ cubos:
     "batches": 4
     "beats": 4
     "because": 2
-    "become": 4
+    "become": 3
     "been": 4
     "before": 2
     "begins": 4
@@ -1914,11 +1941,14 @@ cubos:
     "belong": 4
     "belongs": 4
     "below": 2
+    "besides": 4
     "best": 3
     "beta": 4
     "better": 4
     "between": 2
     "big": 2
+    "bigquery": 3
+    "bigquery's": 4
     "billed": 4
     "billing": 4
     "bit": 4
@@ -1946,7 +1976,7 @@ cubos:
     "budget": 3
     "budgets": 4
     "build": 2
-    "building": 4
+    "building": 3
     "builds": 3
     "built": 3
     "business": 3
@@ -2050,6 +2080,7 @@ cubos:
     "compares": 3
     "comparing": 4
     "comparison": 2
+    "comparisons": 4
     "competidor": 4
     "competing": 4
     "complete": 4
@@ -2060,7 +2091,8 @@ cubos:
     "components": 1
     "computation": 4
     "computed": 2
-    "computer's": 4
+    "computer": 4
+    "computer's": 3
     "concepts": 4
     "confirm": 4
     "confirmed": 4
@@ -2158,7 +2190,7 @@ cubos:
     "decision": 2
     "decision's": 4
     "decisions": 2
-    "decisive": 4
+    "decisive": 3
     "declarado": 4
     "declarative": 4
     "declared": 2
@@ -2186,7 +2218,9 @@ cubos:
     "detect": 4
     "detected": 3
     "detection": 2
+    "detector": 4
     "development": 4
+    "device": 4
     "diagram": 3
     "diagramador's": 4
     "dialog": 4
@@ -2200,6 +2234,7 @@ cubos:
     "directory": 2
     "directory's": 4
     "disabled": 4
+    "discarded": 4
     "discounts": 4
     "discovered": 4
     "discovery": 4
@@ -2215,6 +2250,7 @@ cubos:
     "dotted": 4
     "double": 4
     "down": 3
+    "downloads": 4
     "draft": 2
     "draw": 3
     "drawing": 3
@@ -2235,7 +2271,7 @@ cubos:
     "ecosystem": 4
     "edited": 3
     "edition": 4
-    "editor": 3
+    "editor": 2
     "edits": 4
     "effects": 4
     "effort": 4
@@ -2246,6 +2282,7 @@ cubos:
     "empty": 3
     "enables": 4
     "end": 3
+    "ended": 4
     "endorsement": 3
     "ends": 3
     "enforces": 4
@@ -2256,7 +2293,7 @@ cubos:
     "enter": 2
     "entering": 4
     "enterprise": 4
-    "enters": 4
+    "enters": 3
     "entra": 3
     "entrevista": 4
     "environment": 4
@@ -2284,6 +2321,7 @@ cubos:
     "exactly": 3
     "example": 2
     "exceeds": 4
+    "except": 4
     "excess": 4
     "exist": 3
     "existing": 3
@@ -2309,6 +2347,7 @@ cubos:
     "fabric's": 4
     "fabricante": 4
     "factor": 4
+    "fail": 4
     "failed": 3
     "fails": 3
     "failure": 3
@@ -2363,6 +2402,7 @@ cubos:
     "found": 3
     "four": 4
     "fourteen": 4
+    "fourth": 4
     "fragile": 3
     "frame": 4
     "free": 4
@@ -2374,6 +2414,7 @@ cubos:
     "full": 3
     "future": 4
     "futuro": 4
+    "gains": 4
     "gap": 4
     "gaps": 4
     "gathers": 4
@@ -2424,7 +2465,7 @@ cubos:
     "health": 4
     "help": 4
     "helps": 4
-    "here": 3
+    "here": 2
     "hidden": 4
     "hiding": 4
     "high": 2
@@ -2452,6 +2493,7 @@ cubos:
     "implicit": 2
     "implicita": 4
     "implies": 3
+    "importance": 4
     "important": 3
     "incentivada": 4
     "incentivised": 4
@@ -2473,6 +2515,7 @@ cubos:
     "inputs": 4
     "inserts": 4
     "inside": 3
+    "installs": 4
     "instance": 4
     "instantly": 4
     "instead": 3
@@ -2494,6 +2537,7 @@ cubos:
     "items": 4
     "its": 1
     "itself": 4
+    "jargon": 3
     "joins": 4
     "journey": 2
     "json": 4
@@ -2503,13 +2547,13 @@ cubos:
     "judgment": 4
     "judgments": 3
     "jump": 4
-    "keep": 3
+    "keep": 2
     "keeping": 4
     "keeps": 2
     "kept": 2
     "key": 3
     "keyboard": 3
-    "keys": 4
+    "keys": 3
     "knock": 3
     "know": 4
     "knowing": 4
@@ -2579,6 +2623,7 @@ cubos:
     "lot": 4
     "low": 3
     "lowercase": 4
+    "mac": 4
     "macos": 4
     "made": 3
     "main": 4
@@ -2590,6 +2635,7 @@ cubos:
     "manages": 3
     "mandatory": 4
     "manual": 4
+    "manufacturer's": 4
     "many": 2
     "map": 1
     "map's": 3
@@ -2597,7 +2643,7 @@ cubos:
     "maps": 3
     "margin": 4
     "mark": 3
-    "marked": 3
+    "marked": 2
     "market": 4
     "marks": 3
     "mask": 3
@@ -2634,7 +2680,7 @@ cubos:
     "missing": 2
     "mitigation": 2
     "mode": 3
-    "model": 3
+    "model": 2
     "models": 3
     "moderate": 4
     "modes": 4
@@ -2703,7 +2749,7 @@ cubos:
     "once": 2
     "one": 1
     "onelake": 3
-    "ones": 3
+    "ones": 2
     "only": 1
     "opcion": 4
     "open": 2
@@ -2756,7 +2802,7 @@ cubos:
     "partner": 4
     "party": 3
     "party's": 4
-    "pass": 4
+    "pass": 3
     "passed": 3
     "paste": 4
     "path": 4
@@ -2785,6 +2831,7 @@ cubos:
     "pipelines": 4
     "place": 2
     "places": 4
+    "plain": 4
     "plan": 2
     "plan's": 4
     "planned": 3
@@ -2846,6 +2893,7 @@ cubos:
     "propio": 4
     "proportion": 4
     "proposal": 2
+    "proposal's": 4
     "proposals": 3
     "proposed": 2
     "proposes": 2
@@ -2865,7 +2913,7 @@ cubos:
     "prueba": 4
     "public": 3
     "publication": 4
-    "publish": 4
+    "publish": 3
     "published": 3
     "publishes": 4
     "publishing": 3
@@ -2876,7 +2924,7 @@ cubos:
     "queries": 3
     "query": 4
     "question": 3
-    "questions": 3
+    "questions": 2
     "quickly": 4
     "quota": 4
     "quote": 2
@@ -2897,6 +2945,7 @@ cubos:
     "reads": 3
     "ready": 3
     "real": 3
+    "really": 4
     "reason": 3
     "reasoning": 4
     "rebuild": 4
@@ -2912,9 +2961,11 @@ cubos:
     "record": 2
     "recorded": 3
     "records": 3
-    "red": 4
+    "red": 3
     "redesign": 4
     "redistribution": 4
+    "redo": 4
+    "redoes": 4
     "redoing": 3
     "redone": 4
     "reduce": 4
@@ -2953,6 +3004,7 @@ cubos:
     "replicated": 4
     "replicates": 4
     "report": 2
+    "report's": 4
     "reported": 4
     "reports": 3
     "repository": 3
@@ -2960,9 +3012,10 @@ cubos:
     "request": 3
     "requested": 4
     "requirements": 4
-    "research": 3
+    "research": 2
     "researched": 3
     "researcher": 2
+    "researcher's": 4
     "researches": 4
     "resena": 4
     "reservation": 4
@@ -2988,6 +3041,7 @@ cubos:
     "reversing": 4
     "review": 2
     "reviewed": 3
+    "reviewer": 4
     "reviews": 4
     "revisar": 4
     "rework": 3
@@ -3022,7 +3076,7 @@ cubos:
     "save": 4
     "say": 3
     "says": 2
-    "scale": 3
+    "scale": 2
     "scale's": 4
     "scales": 4
     "schedule": 4
@@ -3033,8 +3087,9 @@ cubos:
     "scores": 3
     "scoring": 4
     "screen": 2
+    "screen's": 4
     "screens": 4
-    "script": 4
+    "script": 3
     "scroll": 3
     "scrolls": 3
     "seal": 4
@@ -3052,6 +3107,7 @@ cubos:
     "sensitive": 3
     "sensitivity": 3
     "sent": 4
+    "sentence": 4
     "separate": 4
     "server": 4
     "service": 4
@@ -3139,7 +3195,7 @@ cubos:
     "started": 4
     "starts": 3
     "state": 4
-    "statement": 4
+    "statement": 3
     "statements": 4
     "states": 4
     "status": 4
@@ -3224,7 +3280,7 @@ cubos:
     "thick": 3
     "thin": 4
     "thing": 4
-    "thinking": 4
+    "thinking": 3
     "third": 3
     "this": 2
     "those": 3
@@ -3272,6 +3328,7 @@ cubos:
     "trying": 4
     "turn": 4
     "turned": 4
+    "turning": 4
     "turns": 4
     "twelve": 4
     "twice": 4
@@ -3288,12 +3345,14 @@ cubos:
     "understand": 4
     "undiscussed": 4
     "undone": 4
+    "unexplained": 4
     "uniform": 4
     "unity": 4
     "unless": 4
     "unlikely": 4
     "unreadable": 4
     "unrestricted": 4
+    "unsupported": 4
     "untested": 3
     "until": 3
     "updated": 4
@@ -3302,7 +3361,7 @@ cubos:
     "use": 2
     "used": 3
     "users": 3
-    "uses": 3
+    "uses": 2
     "usual": 4
     "usually": 3
     "usuario": 4
@@ -3310,7 +3369,7 @@ cubos:
     "valid": 4
     "validated": 4
     "validates": 4
-    "validation": 3
+    "validation": 2
     "validator": 4
     "validity": 3
     "variant": 4
@@ -3332,6 +3391,7 @@ cubos:
     "visibly": 4
     "vista": 4
     "visual": 4
+    "vocabulary": 4
     "waits": 4
     "want": 3
     "warehouses": 3
@@ -3372,7 +3432,7 @@ cubos:
     "with": 1
     "withdrawn": 3
     "within": 2
-    "without": 2
+    "without": 1
     "word": 3
     "words": 3
     "work": 3
@@ -3383,14 +3443,14 @@ cubos:
     "works": 3
     "workspace": 3
     "workspaces": 4
-    "worry": 4
+    "worry": 3
     "worsens": 4
     "worth": 3
     "would": 3
     "write": 3
     "writes": 3
     "writing": 4
-    "written": 3
+    "written": 2
     "wrong": 4
     "wrote": 4
     "yaml": 4
@@ -3399,7 +3459,7 @@ cubos:
     "yet": 2
     "you": 1
     "your": 2
-    "yours": 4
+    "yours": 3
     "yourself": 3
     "zero": 3
     "zone": 4

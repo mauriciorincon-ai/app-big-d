@@ -16,7 +16,7 @@
 
 ### Qué es Big-D
 
-Big-D explica las plataformas de datos (hoy Databricks, Microsoft Fabric y Snowflake, más la Plataforma Ejemplo,
+Big-D explica las plataformas de datos (hoy Databricks, Microsoft Fabric y Snowflake, con BigQuery «próximamente», más la Plataforma Ejemplo,
 ficticia, que viene del contrato del diagramador y muestra el mapa completo) **con un mismo mapa**: las mismas capas,
 los mismos colores y los mismos símbolos para todas. Así puedes entender una plataforma de punta a punta y
 compararlas lado a lado sin aprender un dibujo nuevo cada vez. Todo lo que dice el mapa viene de documentación pública del fabricante, con fecha, y lo aprobó una
@@ -314,6 +314,43 @@ a ninguna ni pide cuentas.
   - El caso original queda exactamente igual.
   - Si no quieres la copia, bórrala a mano: su archivo en `data/casos/` y su carpeta.
 
+#### 18. Armar el perfil con preguntas · desde el Sprint 9
+
+- **Qué hace:** ayuda a fijar los pesos del perfil cuando no sabes cuántos puntos darle a cada criterio. Respondes una pregunta por criterio, sin pensar en ninguna plataforma, y la pantalla propone los pesos y qué restricciones conservar.
+- **Cómo se usa:**
+  1. En el perfil del caso, mientras está en borrador, abre «Armar el perfil con preguntas».
+  2. Responde cada pregunta con la escala de importancia de la pantalla, desde «no nos preocupa» hasta «es decisivo: sin esto no seguimos».
+  3. Mientras falte alguna respuesta, la pantalla dice cuántas faltan y no propone nada. Con todas respondidas, muestra los pesos propuestos (enteros que suman 100 puntos) y de qué criterios se conservan las restricciones: solo de los que contestaste como importantes.
+  4. «Usar este perfil en el editor» solo llena el editor. Los pesos quedan marcados como «propuesto por la entrevista, por decidir» y pasan a ser tuyos, declarados, solo cuando corres el comando de la pantalla del perfil, como siempre.
+- **Limitaciones:**
+  - Aquí no se aprueba nada: el perfil se aprueba solo con el comando que arma la pantalla del perfil, que corre una persona.
+  - Si respondes «no nos preocupa» a todo, no hay con qué repartir los pesos: la pantalla lo dice y no propone nada.
+  - Es código y datos: la entrevista no usa ningún modelo de lenguaje.
+
+#### 19. El modelo del sistema como segundo investigador · desde el Sprint 9
+
+- **Qué hace:** además de `/investigar` con Claude Code, una persona puede pedir a **el modelo de inteligencia artificial que ya trae su Mac** que rehaga **una capa** de una propuesta. No cuesta nada, no usa claves y no descarga ni instala modelos; nada sale de tu computador salvo la lectura de la documentación pública del fabricante.
+- **Cómo se usa:**
+  1. Primero hace falta una propuesta de mapa completo de la plataforma (la de `/investigar`).
+  2. En una terminal abierta en la carpeta del proyecto: `node scripts/investigar/sistema.mjs <plataforma> <capa>` (por ejemplo, `bigquery ingesta`).
+  3. El script dice cuántos componentes quedaron con una afirmación propia, cuántas citas se verificaron y cuántas descartó el código antes de escribir, y deja una propuesta nueva en `propuestas/`.
+  4. En la pantalla de revisión del investigador, esa propuesta lleva una línea: «la escribió el modelo del sistema de este equipo sobre…». Se revisa y se aprueba como cualquier otra.
+- **Limitaciones:**
+  - Si el modelo no está disponible (equipo no compatible, Apple Intelligence apagado o sin español e inglés), el script lo dice y no escribe nada. Encender Apple Intelligence es decisión tuya: no se hace por ti.
+  - Solo rehace una capa y no dibuja componentes ni conexiones nuevos: el mapa es el de la propuesta base.
+  - El código comprueba que cada cita esté en la página y que sea una frase; si la frase respalda de verdad lo que dice el enunciado, lo juzga quien revisa.
+  - Jamás aprueba: el comando de aprobación sale de la pantalla de revisión y solo lo corre una persona.
+
+#### 20. BigQuery y el detector de jerga · desde el Sprint 9
+
+- **Qué hace:** BigQuery entra como cuarta plataforma real, marcada **«próximamente»**: todavía no tiene mapa aprobado y la página no inventa uno; llega con su propia investigación. Además, el instrumento suma la fila **«jerga»**: comprueba, en español y en inglés, que el resumen de cada informe no use palabras técnicas fuera del vocabulario llano, salvo las que el texto explica.
+- **Cómo se usa:**
+  1. En el investigador, elige BigQuery: ves «próximamente» y sus propuestas por revisar.
+  2. En «Instrumento», la fila de jerga se lee como las demás: pasa o no pasa, con símbolo y texto.
+- **Limitaciones:**
+  - Hasta que una persona apruebe el mapa de BigQuery, no aparece en el lado a lado ni en las comparaciones.
+  - Si un texto trae jerga sin explicar, la validación se pone en rojo y el build no publica.
+
 ### Preguntas frecuentes
 
 - **¿Big-D recomienda una plataforma?** No decide por ti. Compara con tus pesos y tu evidencia, muestra la sensibilidad del resultado a esos pesos y deja la decisión a quien pregunta. Mientras el perfil del caso de ejemplo esté en borrador, su comparación no se calcula: hace falta que una persona apruebe el perfil (sección 10).
@@ -336,6 +373,7 @@ a ninguna ni pide cuentas.
 | S6 (2026-10-11) | 14 El informe del caso: hoja de ruta por fases con su origen, alistamiento, informe de catorce secciones en dos idiomas e impresión                                                |
 | S7 (2026-10-12) | Cambios visibles: si el cálculo en segundo plano falla, la robustez lo dice y no se queda «en curso»; cada riesgo muestra su causa y de dónde salen sus números; el enlace «Ir al editor, abajo» junto al botón de aprobación; en teléfono, la tabla de riesgos avisa que se desliza de lado. El caso, el informe y las pantallas también se prueban en inglés. |
 | S8 (2026-11-11) | 15 Qué cambió entre instantáneas · 16 Comparar por pares (propone pesos y mide su consistencia; no aprueba) · 17 Duplicar un caso (la pantalla arma el comando) |
+| S9 (2026-11-12) | 18 Armar el perfil con preguntas (propone pesos; no aprueba) · 19 El modelo del sistema como segundo investigador · 20 BigQuery «próximamente» y la fila de jerga |
 
 ---
 
@@ -343,7 +381,7 @@ a ninguna ni pide cuentas.
 
 ### What Big-D is
 
-Big-D explains data platforms (today Databricks, Microsoft Fabric and Snowflake, plus the Example Platform, a
+Big-D explains data platforms (today Databricks, Microsoft Fabric and Snowflake, with BigQuery “coming soon”, plus the Example Platform, a
 fictional one that comes from the diagramador's contract and shows the full map) **with one shared map**: the same
 layers, colours and symbols for all of them. You can understand a platform end to end and compare platforms side by
 side without learning a new drawing each time. Everything on the map
@@ -637,6 +675,43 @@ manages and controls; it never operates a platform**: it connects to none and as
   - The original case stays exactly the same.
   - If you do not want the copy, delete it by hand: its file in `data/casos/` and its folder.
 
+#### 18. Building the profile with questions · since Sprint 9
+
+- **What it does:** helps set the profile's weights when you are not sure how many points each criterion deserves. You answer one question per criterion, without thinking about any platform, and the screen proposes the weights and which constraints to keep.
+- **How to use it:**
+  1. In the case profile, while it is a draft, open **“Build the profile with questions”**.
+  2. Answer each question with the screen's importance scale, from “it does not worry us” to “it is decisive: without it we stop”.
+  3. While any answer is missing, the screen says how many are left and proposes nothing. With every question answered, it shows the proposed weights (whole numbers adding up to 100 points) and which criteria keep their constraints: only the ones you answered as important.
+  4. **“Use this profile in the editor”** only fills the editor. The weights are marked “proposed by the interview, to be decided” and become yours, declared, only when you run the profile page's command, as always.
+- **Limitations:**
+  - Nothing is approved here: the profile is approved only with the command the profile page builds, which a person runs.
+  - If you answer “it does not worry us” to everything there is nothing to split the weights with: the screen says so and proposes nothing.
+  - It is code and data: the interview uses no language model.
+
+#### 19. The system model as a second researcher · since Sprint 9
+
+- **What it does:** besides `/investigar` with Claude Code, a person can ask **the AI model your Mac already ships with** to redo **one layer** of a proposal. It costs nothing, uses no keys and downloads or installs no models; nothing leaves your computer except reading the manufacturer's public documentation.
+- **How to use it:**
+  1. First you need a full-map proposal of the platform (the one from `/investigar`).
+  2. In a terminal opened in the project folder: `node scripts/investigar/sistema.mjs <platform> <layer>` (for example, `bigquery ingesta`).
+  3. The script says how many components ended up with a statement of their own, how many quotes were verified and how many the code discarded before writing, and leaves a new proposal in `propuestas/`.
+  4. On the researcher's review screen that proposal carries a line: “written by this computer's system model on top of…”. It is reviewed and approved like any other.
+- **Limitations:**
+  - If the model is not available (unsupported device, Apple Intelligence off, or no Spanish and English), the script says so and writes nothing. Turning Apple Intelligence on is your decision: it is never done for you.
+  - It redoes one layer only and draws no new components or connections: the map is the base proposal's.
+  - Code checks that each quote is on the page and is a sentence; whether the sentence really supports the statement is for the reviewer to judge.
+  - It never approves: the approval command comes from the review screen and only a person runs it.
+
+#### 20. BigQuery and the jargon detector · since Sprint 9
+
+- **What it does:** BigQuery enters as the fourth real platform, marked **“coming soon”**: it has no approved map yet and the page does not invent one; it arrives with its own research. The instrument also gains a **“jargon”** row: it checks, in Spanish and in English, that each report's summary uses no technical words outside the plain vocabulary, except the ones the text explains.
+- **How to use it:**
+  1. In the researcher, pick BigQuery: you see “coming soon” and its proposals to review.
+  2. In **“Instrument”**, the jargon row reads like the others: pass or fail, with a symbol and text.
+- **Limitations:**
+  - Until a person approves BigQuery's map, it does not appear in side by side or in comparisons.
+  - If a text carries unexplained jargon, validation turns red and the build does not publish.
+
 ### Frequently asked questions
 
 - **Does Big-D recommend a platform?** No, it does not decide for you. It compares with your weights and your evidence, shows how sensitive the result is to those weights, and leaves the decision to whoever asks. While the example case's profile is a draft, its comparison is not calculated: a person has to approve the profile (section 10).
@@ -658,3 +733,4 @@ manages and controls; it never operates a platform**: it connects to none and as
 | S6 (2026-10-11) | 14 The case report: the roadmap by phases with its origin, the readiness checklist, a fourteen-section report in two languages, and printing               |
 | S7 (2026-10-12) | Visible changes: if the background calculation fails, robustness says so instead of staying «in progress»; each risk shows its cause and where its numbers come from; the “Go to the editor, below” link next to the approval button; on a phone, the risk table says it slides sideways. The case, the report and the screens are also tested in English. |
 | S8 (2026-11-11) | 15 What changed between snapshots · 16 Comparing in pairs (proposes weights and measures their consistency; approves nothing) · 17 Duplicating a case (the screen builds the command) |
+| S9 (2026-11-12) | 18 Building the profile with questions (proposes weights; approves nothing) · 19 The system model as a second researcher · 20 BigQuery “coming soon” and the jargon row |
