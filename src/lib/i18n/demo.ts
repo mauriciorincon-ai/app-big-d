@@ -38,6 +38,7 @@ export interface TextosDemo {
   proximamente: string;
   atlasTitulo: string;
   atlasAyuda: string;
+  vigencia: string;
   lecturaTexto: string;
   declaracionTitulo: string;
   declaracion: string;
@@ -48,11 +49,11 @@ export const TEXTOS_DEMO: Record<Idioma, TextosDemo> = {
   es: {
     titulo: "Big-D · demo",
     descripcion:
-      "Mueve los pesos de un caso inventado y mira cómo cambia el orden de tres plataformas de datos, con el mismo cálculo de Big-D.",
+      "Mueve los pesos de un caso inventado y mira cómo cambia el orden de las plataformas de datos, con el mismo cálculo de Big-D.",
     ojo: "Big-D · demo pública",
-    h1: "Compara tres plataformas de datos con tus propios pesos",
+    h1: "Compara plataformas de datos con tus propios pesos",
     intro:
-      "Tres plataformas reales, el caso de un hospital inventado y el mismo cálculo que usa Big-D. Mueve los pesos y mira cómo cambia el orden.",
+      "Plataformas reales, el caso de un hospital inventado y el mismo cálculo que usa Big-D. Mueve los pesos y mira cómo cambia el orden.",
     rotulo: "Perfil en borrador del autor: mueve los pesos",
     rotuloDetalle:
       "Los pesos de partida son un borrador del autor; nadie los aprobó. Lo que ves es lo que dan tus pesos, no una recomendación.",
@@ -88,7 +89,8 @@ export const TEXTOS_DEMO: Record<Idioma, TextosDemo> = {
       "{nombre}: su mapa y su evidencia están en revisión; aún no tiene puntos.",
     atlasTitulo: "El atlas: cómo está hecha cada plataforma",
     atlasAyuda:
-      "Los tres mapas usan la misma gramática visual: capas de izquierda a derecha y la misma marca para el mismo tipo de pieza.",
+      "Los mapas usan la misma gramática visual: capas de izquierda a derecha y la misma marca para el mismo tipo de pieza.",
+    vigencia: "Qué tan al día está cada evidencia, contando los días hasta el {fecha} y no hasta hoy.",
     lecturaTexto: "Leer el mapa en texto",
     declaracionTitulo: "Declaración del autor",
     declaracion:
@@ -99,11 +101,11 @@ export const TEXTOS_DEMO: Record<Idioma, TextosDemo> = {
   en: {
     titulo: "Big-D · demo",
     descripcion:
-      "Move the weights of a made-up case and see how the order of three data platforms changes, with the same calculation Big-D uses.",
+      "Move the weights of a made-up case and see how the order of the data platforms changes, with the same calculation Big-D uses.",
     ojo: "Big-D · public demo",
-    h1: "Compare three data platforms with your own weights",
+    h1: "Compare data platforms with your own weights",
     intro:
-      "Three real platforms, the case of a made-up hospital and the same calculation Big-D uses. Move the weights and watch the order change.",
+      "Real platforms, the case of a made-up hospital and the same calculation Big-D uses. Move the weights and watch the order change.",
     rotulo: "Draft profile by the author: move the weights",
     rotuloDetalle:
       "The starting weights are a draft by the author; nobody has approved them. What you see is what your weights give, not a recommendation.",
@@ -140,7 +142,8 @@ export const TEXTOS_DEMO: Record<Idioma, TextosDemo> = {
       "{nombre}: its map and its evidence are under review; it has no score yet.",
     atlasTitulo: "The atlas: how each platform is built",
     atlasAyuda:
-      "The three maps share one visual grammar: layers from left to right and the same mark for the same kind of piece.",
+      "The maps share one visual grammar: layers from left to right and the same mark for the same kind of piece.",
+    vigencia: "How up to date each piece of evidence is, measured up to {fecha} and not up to today.",
     lecturaTexto: "Read the map as text",
     declaracionTitulo: "Statement by the author",
     declaracion:

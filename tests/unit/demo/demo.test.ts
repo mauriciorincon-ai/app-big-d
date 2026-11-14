@@ -58,13 +58,25 @@ describe("probar la neutralidad (regla dura 5)", () => {
   it("cada vuelta entrega otro orden de plataformas y la huella del resultado no cambia", () => {
     const base = huellaDe(e);
     const ordenes = new Set<string>();
-    for (let k = 0; k < 6; k++) {
+    const n = e.base.plataformas.length;
+    for (let k = 0; k < 2 * n; k++) {
       const r = reordenada(e, k);
       ordenes.add(r.base.plataformas.map((p) => p.id).join(","));
       expect(new Set(r.base.evidencias)).toEqual(new Set(e.base.evidencias));
       expect(huellaDe(r)).toBe(base);
     }
-    expect(ordenes.size).toBe(6);
+    expect(ordenes.size).toBe(2 * n);
+  });
+
+  it("con N plataformas (2 a 6) la vuelta 1 ya entrega otro orden que la 0 (propiedad)", () => {
+    fc.assert(
+      fc.property(fc.integer({ min: 2, max: 6 }), (n) => {
+        const ps = Array.from({ length: n }, (_, i) => ({ ...e.base.plataformas[0]!, id: `p${i}` }));
+        const x = { ...e, base: { ...e.base, plataformas: ps, evidencias: [] } };
+        const orden = (k: number) => reordenada(x, k).base.plataformas.map((p) => p.id).join(",");
+        expect(orden(1)).not.toBe(orden(0));
+      }),
+    );
   });
 
   it("con cualquier peso explorado y cualquier vuelta, la huella es la misma (propiedad)", () => {
@@ -160,13 +172,13 @@ describe("los textos de la demo", () => {
     for (const i of ["es", "en"] as const) {
       const tabla = { largo_minimo: k.jerga.largo_minimo, umbral_cubo: k.jerga.umbral_cubo, cubos: k.jerga.cubos[i] };
       // La prosa, sin los rótulos (título, ojo, el enlace al otro idioma, que está en ESE idioma) ni los marcadores {nombre}.
-      // «Big-D» y «Fabric» son nombres propios; «empate técnico» es término del glosario (E-7); «borrador» y «próximamente» son
+      // «Big» y «Fabric» son nombres propios y están en `permitidas` del dato; «empate técnico» es término del glosario (E-7); «borrador» y «próximamente» son
       // los rótulos que fija el G-Plan, y su propia frase los explica.
       const { titulo, ojo, otroIdioma, atlasTitulo, proximamenteTitulo, ...prosa } = TEXTOS_DEMO[i];
       void [titulo, ojo, otroIdioma, atlasTitulo, proximamenteTitulo];
       const texto = planos(prosa).join(" ").replace(/\{[a-z]+\}/g, " ");
       const explicadas = i === "es" ? ["borrador", "próximamente", "empate técnico"] : ["technical tie"];
-      expect(detectarJerga(texto, tabla, [...k.jerga.permitidas[i], "big", "fabric"], explicadas)).toEqual([]);
+      expect(detectarJerga(texto, tabla, k.jerga.permitidas[i], explicadas)).toEqual([]);
     }
   });
 });
@@ -183,7 +195,7 @@ describe("la página armada en el build", () => {
       expect(html).toContain(`data-huella-node="${p.huellaInicial}"`);
       expect(html).toMatch(/data-proxima="bigquery"/);
       expect(html).not.toMatch(/data-plataforma="bigquery"/);
-      expect((html.match(/class="demo-fila"/g) ?? []).length).toBe(3);
+      expect((html.match(/class="demo-fila"/g) ?? []).length).toBe(e.base.plataformas.length);
       expect((html.match(/<input type="range"/g) ?? []).length).toBe(e.caso.pesos.length);
       expect(p.datos[i].inicial).toEqual(JSON.parse(JSON.stringify(p.datos[i].inicial)) as RespuestaDemo);
     }

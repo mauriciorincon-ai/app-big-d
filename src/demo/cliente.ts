@@ -83,8 +83,18 @@ async function arrancar() {
       pintarResultado(r);
       neutralidad.disabled = false;
       raiz.dataset.listo = "true";
-    } else if (motivo === "neutralidad") pintarNeutralidad(r);
+    } else if (motivo === "neutralidad" && r.id > vigente) pintarNeutralidad(r); // una respuesta de antes de mover los pesos no se muestra
   };
+  // Si el Worker no carga o falla (por ejemplo, una política de seguridad del anfitrión), la página lo dice y deja a la vista
+  // el resultado que dio Node al construir, en vez de quedarse en «Haciendo la cuenta…».
+  const fallo = (mensaje: string) => {
+    $("veredicto").textContent = plantilla(d.t.veredicto.error, { mensaje });
+    pintarResultado(d.inicial);
+    $("veredicto").textContent = plantilla(d.t.veredicto.error, { mensaje });
+    raiz.dataset.listo = "error";
+  };
+  trabajador.onerror = (ev) => fallo(ev.message || "worker");
+  trabajador.onmessageerror = () => fallo("message");
 
   const recalcular = () => {
     $("veredicto").textContent = d.t.veredicto.calculando;

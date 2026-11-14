@@ -69,8 +69,25 @@ for (const idioma of ["es", "en"] as const) {
       await expect(page.getByRole("heading", { name: t.autor })).toBeVisible();
       await expect(page.locator("[data-proxima='bigquery']")).toContainText(t.proxima);
       await expect(page.locator("[data-plataforma='bigquery']")).toHaveCount(0);
-      await expect(page.locator(".demo-fila")).toHaveCount(3);
-      await expect(page.locator(".demo-mapa")).toHaveCount(3);
+      // N sale de los datos que la página trae (no de un literal): una fila y un mapa por plataforma evaluada.
+      const n = await page.evaluate(() => (JSON.parse(document.getElementById("datos-demo")!.textContent!) as { entrada: { base: { plataformas: unknown[] } } }).entrada.base.plataformas.length);
+      expect(n).toBeGreaterThanOrEqual(2);
+      await expect(page.locator(".demo-fila")).toHaveCount(n);
+      await expect(page.locator(".demo-mapa")).toHaveCount(n);
+      // Anclas escritas a mano (no del diccionario): si alguien vacía o cambia el texto de los dos lados, esto lo ve.
+      await expect(page.getByRole("heading", { level: 1 })).toHaveText(idioma === "es" ? /^Compara plataformas/ : /^Compare data platforms/);
+      await expect(page.getByRole("button", { name: idioma === "es" ? /^Cambiar el orden/ : /^Change the order/ })).toBeVisible();
+      await expect(page.locator("#demo-vigencia")).toHaveText(/\d{4}-\d{2}-\d{2}/);
+      // Sin id repetido ni aria-describedby colgante (los tres mapas comparten página).
+      const ids = await page.evaluate(() => {
+        const todos = [...document.querySelectorAll("[id]")].map((x) => x.id);
+        const repetidos = todos.filter((x, i) => todos.indexOf(x) !== i);
+        const colgantes = [...document.querySelectorAll("[aria-describedby],[aria-details],[aria-labelledby]")]
+          .flatMap((x) => ["aria-describedby", "aria-details", "aria-labelledby"].flatMap((a) => (x.getAttribute(a) ?? "").split(/\s+/).filter(Boolean)))
+          .filter((x) => !document.getElementById(x));
+        return { repetidos, colgantes };
+      });
+      expect(ids).toEqual({ repetidos: [], colgantes: [] });
       expect(await suma(page)).toBeGreaterThan(1);
 
       // Neutralidad con los pesos del autor: dos vueltas, dos órdenes distintos, la misma huella.
@@ -119,12 +136,44 @@ for (const idioma of ["es", "en"] as const) {
   });
 }
 
-test("axe: la demo no tiene violaciones en ninguna entrada", async ({ page, browserName }) => {
-  test.skip(browserName !== "chromium", "axe corre una vez, en Chromium");
-  for (const idioma of ["es", "en"]) {
-    await page.goto(`${BASE}${idioma}.html`);
-    await expect(page.locator("#demo")).toHaveAttribute("data-listo", "true");
-    const r = await new AxeBuilder({ page }).analyze();
-    expect(r.violations.map((v) => `${v.id}: ${v.nodes.length}`)).toEqual([]);
-  }
+for (const esquema of ["dark", "light"] as const) {
+  test(`axe y 380 px (${esquema}): la demo no tiene violaciones ni desborda en ninguna entrada`, async ({ page, browserName }) => {
+    test.skip(browserName !== "chromium", "axe corre una vez, en Chromium");
+    await page.emulateMedia({ colorScheme: esquema });
+    await page.setViewportSize({ width: 380, height: 800 });
+    for (const idioma of ["es", "en"]) {
+      await page.goto(`${BASE}${idioma}.html`);
+      await expect(page.locator("#demo")).toHaveAttribute("data-listo", "true");
+      const r = await new AxeBuilder({ page }).analyze();
+      expect(r.violations.map((v) => `${v.id}: ${v.nodes.length}`)).toEqual([]);
+      // G11: la página no desliza de lado (los lienzos de los mapas sí, dentro de su propio marco).
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
+    }
+  });
+}
+
+test("el Worker que falla o llega tarde no deja la página a medias", async ({ page }) => {
+  // Un Worker que no carga: la página lo dice y muestra la respuesta del build, sin quedarse en «calculando».
+  await page.route("**/demo-worker.js", (r) => r.abort());
+  await page.goto(`${BASE}es.html`, { waitUntil: "load" });
+  await expect(page.locator("#demo")).toHaveAttribute("data-listo", "error");
+  await expect(page.locator("#veredicto")).toContainText(TEXTOS_DEMO.es.veredicto.error.split("{mensaje}")[0]!.trim());
+});
+
+test("un clic en la neutralidad seguido de un peso movido deja el resultado de los pesos nuevos", async ({ page }) => {
+  await page.goto(`${BASE}es.html`);
+  const demo = page.locator("#demo");
+  await expect(demo).toHaveAttribute("data-listo", "true");
+  // La caja de la neutralidad está oculta de verdad hasta que hay una respuesta (el `hidden` no lo pisa el CSS).
+  await expect(page.locator("#neutralidad-resultado")).toBeHidden();
+  await page.getByRole("button", { name: /^Cambiar el orden/ }).click();
+  await page.locator("input[data-criterio]").first().fill("0");
+  const antes = (await demo.getAttribute("data-huella-node"))!;
+  await expect(demo).not.toHaveAttribute("data-huella", antes);
+  await expect(demo).toHaveAttribute("data-listo", "true");
+  const huella = await demo.getAttribute("data-huella");
+  await expect(page.locator("#huella")).toHaveText(huella!);
+  // Si la neutralidad se pinta, es la de los pesos vigentes: la misma huella que el resultado, nunca la de los pesos viejos.
+  const visible = await page.locator("#neutralidad-resultado").isVisible();
+  if (visible) await expect(page.locator("#neutralidad-huella")).toHaveText(huella!);
 });

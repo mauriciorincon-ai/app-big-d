@@ -41,9 +41,9 @@
     "id": 2,
     "huella": "c0633ab23044a0c9c7ad94b91446f3fe8dbdefcaa5d831df8148ed153723feb1",
     "recibido": [
-      "databricks",
+      "fabric",
       "snowflake",
-      "fabric"
+      "databricks"
     ],
     "max": 4,
     "filas": [

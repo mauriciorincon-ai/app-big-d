@@ -59,11 +59,12 @@ export function reordenada(entrada: Entrada, k: number): Entrada {
     ...entrada.base.plataformas.slice(r),
     ...entrada.base.plataformas.slice(0, r),
   ];
-  const plataformas = k % 2 ? rotadas.reverse() : rotadas;
+  // Invertir cada `n` vueltas (no cada vuelta impar): con N = 2 la vuelta 1 también cambia el orden.
+  const plataformas = Math.floor(k / n) % 2 ? rotadas.reverse() : rotadas;
   const lugar = new Map(plataformas.map((p, i) => [p.id, i]));
   const evidencias = [...entrada.base.evidencias].sort(
     (a, b) => lugar.get(a.plataforma_id)! - lugar.get(b.plataforma_id)!,
   );
-  if (k % 2) evidencias.reverse();
+  if (Math.floor(k / n) % 2) evidencias.reverse();
   return { ...entrada, base: { ...entrada.base, plataformas, evidencias } };
 }

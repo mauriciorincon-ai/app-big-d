@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { plantilla, vistaNivel1 } from "@/lib/atlas";
+import { ID_LECTURA, ID_PISTA, plantilla, vistaNivel1 } from "@/lib/atlas";
 import { congeladaDe, conocimiento } from "@/lib/caso/casos";
 import { datos, fechaDeConsulta } from "@/lib/datos";
 import { entradaDe } from "@/lib/datos/instantanea";
@@ -112,7 +112,15 @@ export async function paqueteDemo(): Promise<PaqueteDemo> {
     const atlas = reales.map((id) => {
       const a = d.atlas.get(id)!;
       const n1 = vistaNivel1(a, idioma, fecha);
-      return `<section class="demo-mapa" aria-labelledby="mapa-${id}"><h3 id="mapa-${id}">${esc(a.plataforma.nombre[idioma]!)}</h3><div class="lienzo">${n1.svg}</div><div class="leyenda-motor">${n1.leyenda}</div><details class="lectura-seccion"><summary>${esc(t.lecturaTexto)}</summary>${n1.lectura}</details></section>`;
+      // Tres mapas en una página: los ids que el atlas escribe una sola vez por página (la pista y la lectura) se hacen únicos
+      // por plataforma, y la pista que el SVG referencia existe (sin id repetido ni aria-describedby colgante).
+      const pista = `${ID_PISTA}-${id}`;
+      const lectura = `${ID_LECTURA}-${id}`;
+      const svg = n1.svg
+        .replaceAll(`aria-describedby="${ID_PISTA}"`, `aria-describedby="${pista}"`)
+        .replaceAll(`aria-details="${ID_LECTURA}"`, `aria-details="${lectura}"`);
+      const texto = n1.lectura.replaceAll(`id="${ID_LECTURA}"`, `id="${lectura}"`);
+      return `<section class="demo-mapa" aria-labelledby="mapa-${id}"><h3 id="mapa-${id}">${esc(a.plataforma.nombre[idioma]!)}</h3><div class="lienzo">${svg}</div><p class="solo-lector" id="${pista}">${esc(textos(idioma).atlas.pistaActivar)}</p><div class="leyenda-motor">${n1.leyenda}</div><details class="lectura-seccion"><summary>${esc(t.lecturaTexto)}</summary>${texto}</details></section>`;
     });
 
     const html = `<!DOCTYPE html><html lang="${idioma}"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>${esc(t.titulo)}</title><meta name="description" content="${esc(t.descripcion)}"/><link rel="stylesheet" href="demo.css"/><script src="demo.js" defer></script></head><body>
@@ -131,7 +139,7 @@ export async function paqueteDemo(): Promise<PaqueteDemo> {
 <h3>${esc(t.proximamenteTitulo)}</h3><ul class="demo-proximas">${proximas.map((p) => `<li data-proxima="${esc(p.id)}"><span aria-hidden="true">◌</span> ${esc(plantilla(t.proximamente, { nombre: p.nombre[idioma]! }))}</li>`).join("")}</ul>
 </section>
 </div>
-<section class="demo-atlas" aria-labelledby="atlas-titulo"><h2 id="atlas-titulo">${esc(t.atlasTitulo)}</h2><p class="demo-ayuda">${esc(t.atlasAyuda)}</p>${atlas.join("")}</section>
+<section class="demo-atlas" aria-labelledby="atlas-titulo"><h2 id="atlas-titulo">${esc(t.atlasTitulo)}</h2><p class="demo-ayuda">${esc(t.atlasAyuda)}</p><p class="demo-ayuda" id="demo-vigencia" data-fecha="${esc(fecha)}">${esc(plantilla(t.vigencia, { fecha }))}</p>${atlas.join("")}</section>
 <section class="demo-declaracion" aria-labelledby="declaracion-titulo"><h2 id="declaracion-titulo">${esc(t.declaracionTitulo)}</h2><p>${esc(t.declaracion)}</p></section>
 </main>
 <script type="application/json" id="datos-demo">${jsonEnHtml(datosCli[idioma])}</script>
