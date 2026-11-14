@@ -5,7 +5,7 @@ hito: H-2 «Producto completo» (ensayo general pendiente)
 opened: 2026-11-12
 closed: 2026-11-13
 branch: sprint-010/mostrarlo-al-mundo
-pr: PENDIENTE
+pr: 28
 ---
 
 # Sprint 010 · cierre
