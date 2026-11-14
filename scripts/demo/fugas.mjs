@@ -17,6 +17,8 @@ export const PROHIBIDO = [
   [/diseno\/|maqueta|mockup/i, "la maqueta (A-25)"],
   [/vercel\.app|\.vercel\b/i, "un host de la app privada"],
   [/sentry/i, "la observabilidad de la app privada"],
+  [/pnpm (?:aprobar|maqueta|capturas|tokens|paleta|datos|investigar)|\.claude\//i, "un comando o una carpeta de trabajo del repo"],
+  [/\blocalhost\b|\b(?:\d{1,3}\.){3}\d{1,3}\b/i, "una dirección local o una IP (el paquete no habla con ningún servidor)"],
 ];
 /** Los únicos URI absolutos permitidos fuera de las licencias: espacios de nombres XML, que no se piden. */
 const NAMESPACES = new Set(["http://www.w3.org/2000/svg", "http://www.w3.org/1999/xlink", "http://www.w3.org/1999/xhtml"]);
@@ -41,7 +43,9 @@ export function fugasDe(dir) {
       for (const m of new Set([...texto.matchAll(new RegExp(re.source, "gi"))].map((x) => x[0]))) fallas.push(`${f}: «${m}» — ${que}`);
     if (f.endsWith(".txt")) continue;
     for (const m of texto.matchAll(/\b(?:https?:)?\/\/[a-z0-9.-]+\.[a-z]{2,}[^\s"'<>)]*/gi)) if (!NAMESPACES.has(m[0])) fallas.push(`${f}: enlace absoluto «${m[0]}» — nada sale del sitio`);
-    for (const m of texto.matchAll(/\b(?:href|src|action)\s*=\s*"(\/[^"]*)"/g)) fallas.push(`${f}: ruta desde la raíz «${m[1]}» — se saldría del basePath`);
+    for (const m of texto.matchAll(/\b(?:href|src|action)\s*=\s*["'](\/[^"']*)["']/g)) fallas.push(`${f}: ruta desde la raíz «${m[1]}» — se saldría del basePath`);
+    for (const m of texto.matchAll(/\b(?:href|src|action)\s*=\s*["'](\.\.\/[^"']*)["']/g)) fallas.push(`${f}: ruta que sube de carpeta «${m[1]}» — se saldría del paquete`);
+    for (const m of texto.matchAll(/url\(\s*["']?(\/[^)"']*)/g)) fallas.push(`${f}: url() desde la raíz «${m[1]}» — se saldría del basePath`);
     for (const m of texto.matchAll(/\b(?:mailto|tel|javascript):/gi)) fallas.push(`${f}: «${m[0]}»`);
     if (f.endsWith(".html")) {
       const metas = [...texto.matchAll(CSP)];
