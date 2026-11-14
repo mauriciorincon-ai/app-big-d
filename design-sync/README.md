@@ -3,7 +3,7 @@
 Bundle publicable del design system (la regla del CLAUDE.md «el bundle publicable del design system es un artefacto
 del repo»). La jerarquía es fija:
 
-1. **`design-system.md`** es la fuente de verdad. La v0.7.0 (S7, 2026-10-12, cierre del hito H-1) ya funde las extensiones del
+1. **`design-system.md`** es la fuente de verdad. La v0.7.0 (S7, 2026-10-12, cierre del hito H-1; el S10 la extiende sin subir la versión, § 11) ya funde las extensiones del
    S1 y del S2 (v0.6.0), las del S3 y las decisiones de pantalla de S4 a S7 (§ 5.1); los ADR
    `decisions/design-system-s{1,2,3}-extensions.md` quedan como registro, no como fuente.
 2. **`design-sync/`** es este bundle. Deriva de lo anterior y del producto; jamás lo contradice.
@@ -28,6 +28,9 @@ del repo»). La jerarquía es fija:
 | `components/componentes-s5/leyenda-de-decisiones.html` | Componentes · S5 | La leyenda de reversibilidad: una vía, costosa y dos vías con glifo, palabra y borde, y la decisión implícita |
 | `components/componentes-s5/tabla-de-prioridad-de-accion.html` | Componentes · S5 | La tabla AIAG-VDA completa, dibujada desde el dato del paquete de instrumentos de plan |
 | `components/componentes-s5/alerta-de-ciclo.html` | Componentes · S5 | El ciclo de dependencias con su camino y dicho con palabras |
+| `components/componentes-s8/duplicar-un-caso.html` | Componentes · S8 | «Duplicar este caso»: el id de la copia y el comando que arma la pantalla |
+| `components/componentes-s9/armar-el-perfil-con-preguntas.html` | Componentes · S9 | El entrevistador: una pregunta por criterio con una escala común |
+| `components/componentes-s10/demo-publica.html` | Componentes · S10 | La demo: pesos, resultado con empate declarado, huella y prueba de neutralidad (plataformas y huella de muestra) |
 
 Cada tarjeta es HTML autocontenido. Su primera línea es la marca `@dsCard` con la que Claude Design la indexa, lleva
 el CSS en línea y no hace ninguna petición a la red. La tarjeta no carga fuentes: la letra se ve donde Space
