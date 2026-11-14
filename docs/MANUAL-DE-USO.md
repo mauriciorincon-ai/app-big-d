@@ -343,13 +343,29 @@ a ninguna ni pide cuentas.
 
 #### 20. BigQuery y el detector de jerga · desde el Sprint 9
 
-- **Qué hace:** BigQuery entra como cuarta plataforma real, marcada **«próximamente»**: todavía no tiene mapa aprobado y la página no inventa uno; llega con su propia investigación. Además, el instrumento suma la fila **«jerga»**: comprueba, en español y en inglés, que el resumen de cada informe no use palabras técnicas fuera del vocabulario llano, salvo las que el texto explica.
+- **Qué hace:** BigQuery entra como cuarta plataforma real, marcada **«próximamente»**: todavía no tiene mapa aprobado y la página no inventa uno; llega con su propia investigación. Además, el instrumento suma la fila **«jerga»**: comprueba, en español y en inglés, que el resumen de cada informe no use palabras técnicas fuera del vocabulario llano, salvo las que el texto explica. Desde el Sprint 10, qué palabras son «llanas» sale de una lista pública de frecuencia de uso (Google Books Ngram, licencia CC BY 3.0, español e inglés): una palabra rara en los libros cuenta como jerga a menos que una persona la haya permitido a mano. Si la lista dice que una palabra es poco común, el texto se reescribe con otra más cotidiana; no se esconde.
 - **Cómo se usa:**
   1. En el investigador, elige BigQuery: ves «próximamente» y la propuesta por revisar (la más reciente).
   2. En «Instrumento», la fila de jerga se lee como las demás: pasa o no pasa, con símbolo y texto.
 - **Limitaciones:**
   - Hasta que una persona apruebe el mapa de BigQuery, en el lado a lado es una fila «próximamente» que lleva a su página del investigador, y no entra en las comparaciones del caso.
   - Si un texto trae jerga sin explicar, la validación se pone en rojo y el build no publica.
+
+#### 21. La demo pública · desde el Sprint 10
+
+- **Qué hace:** es la parte de Big-D que cualquiera puede probar, sin cuenta ni instalación: una página (en español y en inglés) con el caso de un hospital inventado y tres plataformas reales. Mueves los pesos de los criterios y ves, al instante, cómo cambia el orden. El cálculo es el mismo de Big-D y corre en tu equipo, no en un servidor. Muestra además el **atlas** de las tres plataformas y la **declaración del autor** (conoce Fabric más a fondo que las otras dos). No trae el investigador, ni comandos de aprobación, ni la maqueta, ni enlaces que salgan del sitio.
+- **Cómo se usa:**
+  1. Abre la página de la demo (`es.html`, o `en.html` con «Read in English»). Arriba dice «Perfil en borrador del autor: mueve los pesos»: los pesos de partida los puso el autor y nadie los aprobó.
+  2. En **«Tus pesos»** mueve el control de un criterio. Los demás se reparten el resto en proporción, siempre sobre 100 puntos. «Volver a los pesos del autor» deshace todo.
+  3. En **«Lo que dan tus pesos»** lees el orden y los puntos de cada plataforma. Si la diferencia es menor a 5 puntos, la página dice **«Empate técnico»** y no inventa una ganadora.
+  4. **«Huella del resultado»** es un código que resume el resultado entero: la misma entrada da la misma huella en cualquier equipo.
+  5. **«Probar la neutralidad»**: el botón «Cambiar el orden de las plataformas y volver a calcular» entrega las plataformas en otro orden al mismo cálculo. La huella no cambia: ninguna plataforma tiene un trato especial.
+  6. Más abajo, **«Próximamente»** (BigQuery, sin puntos), el atlas con un mapa por plataforma y su lectura en texto, y la declaración del autor.
+- **Limitaciones:**
+  - Es una exploración con tus pesos, no una recomendación: la página no dice «recomendada» ni «aprobada».
+  - Si tu navegador no ejecuta su código, ves el resultado con los pesos del autor y un aviso; los controles necesitan que el código corra.
+  - El caso es inventado: no se carga ningún dato de una institución real.
+  - La demo se arma con `pnpm build:demo` y viaja a hoja-de-vida por copia; no se publica desde esta app.
 
 ### Preguntas frecuentes
 
@@ -363,17 +379,18 @@ a ninguna ni pide cuentas.
 
 ### Historial
 
-| Sprint          | Funciones añadidas a este manual                                                                                                                                                   |
-| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| S1 (2026-09-29) | 1 Visión general, con la ventana de un bloque · 2 Componentes · 3 Recorrido de un dato · 4 Lectura en texto y teclado · 5 Varias plataformas con el mismo mapa · 6 El investigador |
-| S2 (2026-10-04) | 5 al día: Databricks, Fabric y Snowflake con mapa · 6 la versión anterior se guarda al aprobar · 7 Lado a lado · 8 Versiones del mapa                                              |
-| S3 (2026-10-10) | 9 La base de conocimiento · 11 La comparación (no puntúa mientras el perfil esté en borrador)                                                                                      |
-| S4 (2026-10-11) | 10 El perfil del caso (se aprueba desde su pantalla) · 12 El instrumento (validación antes de publicar)                                                                            |
-| S5 (2026-10-11) | 13 Las decisiones del caso: ondas, fichas con evidencia, riesgos por prioridad y supuestos (se aprueba el plan desde su pantalla)                                                  |
-| S6 (2026-10-11) | 14 El informe del caso: hoja de ruta por fases con su origen, alistamiento, informe de catorce secciones en dos idiomas e impresión                                                |
-| S7 (2026-10-12) | Cambios visibles: si el cálculo en segundo plano falla, la robustez lo dice y no se queda «en curso»; cada riesgo muestra su causa y de dónde salen sus números; el enlace «Ir al editor, abajo» junto al botón de aprobación; en teléfono, la tabla de riesgos avisa que se desliza de lado. El caso, el informe y las pantallas también se prueban en inglés. |
-| S8 (2026-11-11) | 15 Qué cambió entre instantáneas · 16 Comparar por pares (propone pesos y mide su consistencia; no aprueba) · 17 Duplicar un caso (la pantalla arma el comando) |
-| S9 (2026-11-12) | 18 Armar el perfil con preguntas (propone pesos; no aprueba) · 19 El modelo del sistema como segundo investigador · 20 BigQuery «próximamente» y la fila de jerga |
+| Sprint           | Funciones añadidas a este manual                                                                                                                                                                                                                                                                                                                                |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| S1 (2026-09-29)  | 1 Visión general, con la ventana de un bloque · 2 Componentes · 3 Recorrido de un dato · 4 Lectura en texto y teclado · 5 Varias plataformas con el mismo mapa · 6 El investigador                                                                                                                                                                              |
+| S2 (2026-10-04)  | 5 al día: Databricks, Fabric y Snowflake con mapa · 6 la versión anterior se guarda al aprobar · 7 Lado a lado · 8 Versiones del mapa                                                                                                                                                                                                                           |
+| S3 (2026-10-10)  | 9 La base de conocimiento · 11 La comparación (no puntúa mientras el perfil esté en borrador)                                                                                                                                                                                                                                                                   |
+| S4 (2026-10-11)  | 10 El perfil del caso (se aprueba desde su pantalla) · 12 El instrumento (validación antes de publicar)                                                                                                                                                                                                                                                         |
+| S5 (2026-10-11)  | 13 Las decisiones del caso: ondas, fichas con evidencia, riesgos por prioridad y supuestos (se aprueba el plan desde su pantalla)                                                                                                                                                                                                                               |
+| S6 (2026-10-11)  | 14 El informe del caso: hoja de ruta por fases con su origen, alistamiento, informe de catorce secciones en dos idiomas e impresión                                                                                                                                                                                                                             |
+| S7 (2026-10-12)  | Cambios visibles: si el cálculo en segundo plano falla, la robustez lo dice y no se queda «en curso»; cada riesgo muestra su causa y de dónde salen sus números; el enlace «Ir al editor, abajo» junto al botón de aprobación; en teléfono, la tabla de riesgos avisa que se desliza de lado. El caso, el informe y las pantallas también se prueban en inglés. |
+| S8 (2026-11-11)  | 15 Qué cambió entre instantáneas · 16 Comparar por pares (propone pesos y mide su consistencia; no aprueba) · 17 Duplicar un caso (la pantalla arma el comando)                                                                                                                                                                                                 |
+| S9 (2026-11-12)  | 18 Armar el perfil con preguntas (propone pesos; no aprueba) · 19 El modelo del sistema como segundo investigador · 20 BigQuery «próximamente» y la fila de jerga                                                                                                                                                                                               |
+| S10 (2026-11-13) | 21 La demo pública (mueves los pesos y ves la neutralidad con tus ojos) · 20 al día: la lista de palabras llanas sale de Google Books Ngram                                                                                                                                                                                                                     |
 
 ---
 
@@ -704,13 +721,29 @@ manages and controls; it never operates a platform**: it connects to none and as
 
 #### 20. BigQuery and the jargon detector · since Sprint 9
 
-- **What it does:** BigQuery enters as the fourth real platform, marked **“coming soon”**: it has no approved map yet and the page does not invent one; it arrives with its own research. The instrument also gains a **“jargon”** row: it checks, in Spanish and in English, that each report's summary uses no technical words outside the plain vocabulary, except the ones the text explains.
+- **What it does:** BigQuery enters as the fourth real platform, marked **“coming soon”**: it has no approved map yet and the page does not invent one; it arrives with its own research. The instrument also gains a **“jargon”** row: it checks, in Spanish and in English, that each report's summary uses no technical words outside the plain vocabulary, except the ones the text explains. Since Sprint 10, which words count as plain comes from a public usage-frequency list (Google Books Ngram, CC BY 3.0 licence, Spanish and English): a word that is rare in books counts as jargon unless a person allowed it by hand. If the list says a word is uncommon, the text is rewritten with an everyday one; it is not hidden.
 - **How to use it:**
   1. In the researcher, pick BigQuery: you see “coming soon” and the proposal to review (the most recent one).
   2. In **“Instrument”**, the jargon row reads like the others: pass or fail, with a symbol and text.
 - **Limitations:**
   - Until a person approves BigQuery's map, in side by side it is a “coming soon” row that links to its researcher page, and it does not enter the case comparisons.
   - If a text carries unexplained jargon, validation turns red and the build does not publish.
+
+#### 21. The public demo · since Sprint 10
+
+- **What it does:** it is the part of Big-D anyone can try, with no account and nothing to install: one page (in Spanish and in English) with a made-up hospital's case and three real platforms. You move the weights of the criteria and see, at once, how the order changes. The calculation is Big-D's own and runs on your device, not on a server. It also shows the three platforms' **atlas** and the **statement by the author** (the author knows Fabric more deeply than the other two). It has no researcher, no approval commands, no mock-up and no links that leave the site.
+- **How to use it:**
+  1. Open the demo page (`en.html`, or `es.html` through “Leer en español”). At the top it says “Draft profile by the author: move the weights”: the starting weights are the author's and nobody approved them.
+  2. Under **“Your weights”** move one criterion's control. The others share the rest in proportion, always out of 100 points. “Back to the weights of the author” undoes everything.
+  3. Under **“What your weights give”** you read each platform's order and points. If the gap is under 5 points, the page says **“Technical tie”** and does not invent a winner.
+  4. **“Result signature”** is a code that sums up the whole result: the same input gives the same signature on any device.
+  5. **“Test the neutrality”**: the “Change the order of the platforms and calculate again” button hands the platforms to the same calculation in another order. The signature does not change: no platform gets special treatment.
+  6. Further down, **“Coming soon”** (BigQuery, no points), the atlas with one map per platform and its text reading, and the statement by the author.
+- **Limitations:**
+  - It is an exploration with your weights, not a recommendation: the page never says “recommended” or “approved”.
+  - If your browser does not run its code, you see the result with the author's weights and a notice; the controls need the code to run.
+  - The case is made up: no data from a real institution is loaded.
+  - The demo is built with `pnpm build:demo` and travels to hoja-de-vida by copy; it is not published from this app.
 
 ### Frequently asked questions
 
@@ -723,14 +756,15 @@ manages and controls; it never operates a platform**: it connects to none and as
 
 ### History
 
-| Sprint          | Features added to this manual                                                                                                                              |
-| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| S1 (2026-09-29) | 1 Overview, with the block window · 2 Components · 3 A datum's journey · 4 Reading in text and the keyboard · 5 Many platforms, one map · 6 The researcher |
-| S2 (2026-10-04) | 5 updated: Databricks, Fabric and Snowflake have maps · 6 the previous version is kept on approval · 7 Side by side · 8 Map versions                       |
-| S3 (2026-10-10) | 9 The knowledge base · 11 The comparison (does not score while the profile is a draft)                                                                     |
-| S4 (2026-10-11) | 10 The case profile (approved from its page) · 12 The instrument (validation before publishing)                                                            |
-| S5 (2026-10-11) | 13 The case's decisions: waves, sheets with evidence, risks by priority and assumptions (the plan is approved from its page)                               |
-| S6 (2026-10-11) | 14 The case report: the roadmap by phases with its origin, the readiness checklist, a fourteen-section report in two languages, and printing               |
-| S7 (2026-10-12) | Visible changes: if the background calculation fails, robustness says so instead of staying «in progress»; each risk shows its cause and where its numbers come from; the “Go to the editor, below” link next to the approval button; on a phone, the risk table says it slides sideways. The case, the report and the screens are also tested in English. |
-| S8 (2026-11-11) | 15 What changed between snapshots · 16 Comparing in pairs (proposes weights and measures their consistency; approves nothing) · 17 Duplicating a case (the screen builds the command) |
-| S9 (2026-11-12) | 18 Building the profile with questions (proposes weights; approves nothing) · 19 The system model as a second researcher · 20 BigQuery “coming soon” and the jargon row |
+| Sprint           | Features added to this manual                                                                                                                                                                                                                                                                                                                              |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| S1 (2026-09-29)  | 1 Overview, with the block window · 2 Components · 3 A datum's journey · 4 Reading in text and the keyboard · 5 Many platforms, one map · 6 The researcher                                                                                                                                                                                                 |
+| S2 (2026-10-04)  | 5 updated: Databricks, Fabric and Snowflake have maps · 6 the previous version is kept on approval · 7 Side by side · 8 Map versions                                                                                                                                                                                                                       |
+| S3 (2026-10-10)  | 9 The knowledge base · 11 The comparison (does not score while the profile is a draft)                                                                                                                                                                                                                                                                     |
+| S4 (2026-10-11)  | 10 The case profile (approved from its page) · 12 The instrument (validation before publishing)                                                                                                                                                                                                                                                            |
+| S5 (2026-10-11)  | 13 The case's decisions: waves, sheets with evidence, risks by priority and assumptions (the plan is approved from its page)                                                                                                                                                                                                                               |
+| S6 (2026-10-11)  | 14 The case report: the roadmap by phases with its origin, the readiness checklist, a fourteen-section report in two languages, and printing                                                                                                                                                                                                               |
+| S7 (2026-10-12)  | Visible changes: if the background calculation fails, robustness says so instead of staying «in progress»; each risk shows its cause and where its numbers come from; the “Go to the editor, below” link next to the approval button; on a phone, the risk table says it slides sideways. The case, the report and the screens are also tested in English. |
+| S8 (2026-11-11)  | 15 What changed between snapshots · 16 Comparing in pairs (proposes weights and measures their consistency; approves nothing) · 17 Duplicating a case (the screen builds the command)                                                                                                                                                                      |
+| S9 (2026-11-12)  | 18 Building the profile with questions (proposes weights; approves nothing) · 19 The system model as a second researcher · 20 BigQuery “coming soon” and the jargon row                                                                                                                                                                                    |
+| S10 (2026-11-13) | 21 The public demo (you move the weights and see neutrality with your own eyes) · 20 updated: the plain-words list comes from Google Books Ngram                                                                                                                                                                                                           |
