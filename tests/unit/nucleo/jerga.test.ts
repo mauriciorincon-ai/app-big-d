@@ -78,7 +78,7 @@ describe("data/convenciones/jerga.yaml", () => {
 
   it("`permitidas` trae solo nombres propios (ninguna palabra común del idioma)", () => {
     for (const idioma of ["es", "en"] as const)
-      for (const p of k.jerga.permitidas[idioma]) expect(["bigquery", "databricks", "microsoft", "snowflake"], p).toContain(p);
+      for (const p of k.jerga.permitidas[idioma]) expect(["big", "bigquery", "databricks", "fabric", "microsoft", "snowflake"], p).toContain(p);
   });
 
   it("el resumen del caso real no trae jerga en ninguno de los dos idiomas", async () => {
