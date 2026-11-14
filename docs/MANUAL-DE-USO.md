@@ -353,7 +353,7 @@ a ninguna ni pide cuentas.
 
 #### 21. La demo pública · desde el Sprint 10
 
-- **Qué hace:** es la parte de Big-D que cualquiera puede probar, sin cuenta ni instalación: una página (en español y en inglés) con el caso de un hospital inventado y tres plataformas reales. Mueves los pesos de los criterios y ves, al instante, cómo cambia el orden. El cálculo es el mismo de Big-D y corre en tu equipo, no en un servidor. Muestra además el **atlas** de las tres plataformas y la **declaración del autor** (conoce Fabric más a fondo que las otras dos). No trae el investigador, ni comandos de aprobación, ni la maqueta, ni enlaces que salgan del sitio.
+- **Qué hace:** es la parte de Big-D que cualquiera puede probar, sin cuenta ni instalación: una página (en español y en inglés) con el caso de un hospital inventado y las plataformas reales publicadas. Mueves los pesos de los criterios y ves, al instante, cómo cambia el orden. El cálculo es el mismo de Big-D y corre en tu equipo, no en un servidor. Muestra además el **atlas** de cada plataforma publicada y la **declaración del autor** (conoce Fabric más a fondo que las otras dos). No trae el investigador, ni comandos de aprobación, ni la maqueta, ni enlaces que salgan del sitio.
 - **Cómo se usa:**
   1. Abre la página de la demo (`es.html`, o `en.html` con «Read in English»). Arriba dice «Perfil en borrador del autor: mueve los pesos»: los pesos de partida los puso el autor y nadie los aprobó.
   2. En **«Tus pesos»** mueve el control de un criterio. Los demás se reparten el resto en proporción, siempre sobre 100 puntos. «Volver a los pesos del autor» deshace todo.
@@ -731,7 +731,7 @@ manages and controls; it never operates a platform**: it connects to none and as
 
 #### 21. The public demo · since Sprint 10
 
-- **What it does:** it is the part of Big-D anyone can try, with no account and nothing to install: one page (in Spanish and in English) with a made-up hospital's case and three real platforms. You move the weights of the criteria and see, at once, how the order changes. The calculation is Big-D's own and runs on your device, not on a server. It also shows the three platforms' **atlas** and the **statement by the author** (the author knows Fabric more deeply than the other two). It has no researcher, no approval commands, no mock-up and no links that leave the site.
+- **What it does:** it is the part of Big-D anyone can try, with no account and nothing to install: one page (in Spanish and in English) with a made-up hospital's case and the real platforms published. You move the weights of the criteria and see, at once, how the order changes. The calculation is Big-D's own and runs on your device, not on a server. It also shows the **atlas** of each published platform and the **statement by the author** (the author knows Fabric more deeply than the other two). It has no researcher, no approval commands, no mock-up and no links that leave the site.
 - **How to use it:**
   1. Open the demo page (`en.html`, or `es.html` through “Leer en español”). At the top it says “Draft profile by the author: move the weights”: the starting weights are the author's and nobody approved them.
   2. Under **“Your weights”** move one criterion's control. The others share the rest in proportion, always out of 100 points. “Back to the weights of the author” undoes everything.

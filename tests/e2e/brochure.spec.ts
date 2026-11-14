@@ -37,7 +37,8 @@ const ordenVisto = (page: Page) =>
   );
 
 test.describe("brochure · escenas", () => {
-  test("con movimiento: el clímax cambia el orden tres veces y la huella no se mueve", async ({ page }) => {
+  test("con movimiento: el clímax cambia el orden una vez por plataforma y la huella no se mueve", async ({ page }) => {
+    await page.clock.install();
     await page.emulateMedia({ reducedMotion: "no-preference" });
     await page.goto(PIEZA);
     const antes = await huellas(page);
@@ -52,14 +53,15 @@ test.describe("brochure · escenas", () => {
     // La primera vuelta deja un orden visto distinto del de partida (cuando la transición asienta).
     await expect.poll(() => ordenVisto(page), { timeout: 3000 }).not.toBe(dom);
     expect(await huellas(page)).toEqual(antes);
-    await expect(fila).toHaveAttribute("data-vuelta", "3", { timeout: 6000 });
-    // Tres vueltas y se detiene, de vuelta en el orden real de la fila (la huella de abajo es la de ESE orden).
+    const n = await fila.locator(".ficha").count();
+    await expect(fila).toHaveAttribute("data-vuelta", String(n), { timeout: 6000 });
+    // N vueltas (una por plataforma) y se detiene, de vuelta en el orden real de la fila (la huella de abajo es la de ESE orden).
     await expect.poll(() => ordenVisto(page), { timeout: 3000 }).toBe(dom);
-    await page.waitForTimeout(1600);
-    await expect(fila).toHaveAttribute("data-vuelta", "3");
+    await page.clock.runFor(1600); // un ciclo más de reloj: si no se detuviera, avanzaría
+    await expect(fila).toHaveAttribute("data-vuelta", String(n));
 
     await page.locator("[data-repetir]").click();
-    await expect(fila).toHaveAttribute("data-vuelta", "4");
+    await expect(fila).toHaveAttribute("data-vuelta", String(n + 1));
     expect(await huellas(page)).toEqual(antes);
     // E1 y E2 se asientan en su sitio: los trazos dibujados y las barras en su total.
     await page.locator("#e1-gramatica").scrollIntoViewIfNeeded();
@@ -67,6 +69,7 @@ test.describe("brochure · escenas", () => {
   });
 
   test("con reduced-motion: cada escena completa, a opacidad y tamaño reales, y nada se mueve", async ({ page }) => {
+    await page.clock.install();
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto(PIEZA);
     for (const id of ESCENAS) {
@@ -83,19 +86,20 @@ test.describe("brochure · escenas", () => {
     );
     for (const b of barras) expect(b.m).toBeCloseTo(b.v, 3);
     // …y se VEN: cada barra con alto real y un ancho proporcional a su total dentro de la pista.
-    expect(await seVe(page, ".barra")).toEqual([1, 1, 1]);
+    const nBarras = await page.locator(".barra").count();
+    expect(await seVe(page, ".barra")).toEqual(Array(nBarras).fill(1));
     const anchos = await page.locator(".barra").evaluateAll((e) =>
       e.map((x) => x.getBoundingClientRect().width / x.parentElement!.getBoundingClientRect().width),
     );
     for (const [i, b] of barras.entries()) expect(anchos[i]).toBeCloseTo(b.v, 2);
-    expect(await seVe(page, ".franja-empate")).toEqual([1, 1, 1]);
+    expect(await seVe(page, ".franja-empate")).toEqual(Array(nBarras).fill(1));
     expect(await seVe(page, ".empate-rotulo")).toEqual([1]);
     // El clímax: dos órdenes, dos huellas idénticas y «Misma huella», sin que nada arranque solo.
     expect(await seVe(page, "#e3-neutralidad [data-huella]")).toEqual([1, 1]);
     const [a, b] = await huellas(page);
     expect(a).toBe(b);
     await expect(page.locator("#e3-neutralidad .igual")).toContainText("Misma huella");
-    await page.waitForTimeout(1600);
+    await page.clock.runFor(1600);
     await expect(page.locator("[data-fila-viva]")).not.toHaveAttribute("data-vuelta", /.*/);
     expect(await page.evaluate(() => document.getAnimations().filter((x) => x.playState === "running").length)).toBe(0);
     // El botón responde al instante, sin transición.

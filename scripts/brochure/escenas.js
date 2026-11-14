@@ -15,8 +15,11 @@
     var fila = document.querySelector("[data-fila-viva]");
     if (!fila) return;
     var fichas = Array.prototype.slice.call(fila.querySelectorAll(".ficha"));
-    // El ciclo de órdenes (lugar que ocupa cada ficha); vuelve al orden de partida en la tercera vuelta.
-    var CICLO = [[2, 0, 1], [1, 2, 0], [0, 1, 2]];
+    // El ciclo de órdenes: en la vuelta s la ficha i ocupa el lugar (i - s - 1) módulo N, con N las fichas de la fila; en la
+    // vuelta N vuelve al orden de partida. N sale del documento (hoy las plataformas de la demo), no de un literal.
+    var N = fichas.length;
+    var CICLO = [];
+    for (var s = 0; s < N; s++) CICLO.push(fichas.map(function (_, i) { return (((i - s - 1) % N) + N) % N; }));
     var paso = 0, timer = 0, vueltas = 0, ancho = 0;
     var medir = function () { ancho = fichas.length > 1 ? fichas[1].offsetLeft - fichas[0].offsetLeft : 0; };
     var colocar = function (lugares) {
@@ -29,7 +32,7 @@
     };
     var jugada = function () {
       clearInterval(timer);
-      var quedan = 3;
+      var quedan = N;
       vuelta(); quedan -= 1;
       timer = setInterval(function () {
         if (document.hidden) return;

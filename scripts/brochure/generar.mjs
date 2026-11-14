@@ -40,7 +40,7 @@ const { datos } = await cargarTs("src/lib/datos/index.ts");
 const sha = async (t) => createHash("sha256").update(t, "utf8").digest("hex");
 const entrada = entradaDemo();
 const nPlat = entrada.base.plataformas.length;
-// Todos los órdenes que da «probar la neutralidad» (rotación × inversión: con tres plataformas, las seis permutaciones).
+// Todos los órdenes que da «probar la neutralidad» (rotación × inversión: 2·N órdenes para N plataformas; no son las N! permutaciones, y el texto dice «órdenes», no «todas las maneras»).
 const vueltas = [];
 for (let k = 0; k < 2 * nPlat; k++) {
   const r = await atenderDemo({ tipo: "evaluar", id: k, entrada: reordenada(entrada, k) }, sha);
@@ -54,6 +54,8 @@ const atlasDe = datos().atlas;
 const nombres = Object.fromEntries(entrada.base.plataformas.map((p) => [p.id, atlasDe.get(p.id)?.plataforma.nombre.es ?? p.id]));
 const umbralCentesimas = entrada.base.convenciones.umbral_empate_centesimas;
 const vista = vistaDe(vueltas[0], { idioma: "es", t: TEXTOS_DEMO.es, nombres, umbralCentesimas });
+// E2 afirma «empate técnico»: si los pesos del autor ya no lo dan, el guion miente y el generador se niega a escribir.
+if (vueltas[0].veredicto.tipo !== "empate-tecnico") throw new Error(`brochure: E2 dice «empate técnico» y el veredicto de la demo es «${vueltas[0].veredicto.tipo}»: cambia el guion o los pesos`);
 const umbralPuntos = cifra(String(umbralCentesimas / 100));
 
 const climaxes = guion.escenas.filter((x) => x.rol === "climax");
@@ -62,7 +64,8 @@ const texto = (x) => esc(x.texto.replace("{umbral}", umbralPuntos));
 
 /** E1: un mapa abstracto de bandas (no imita la app): un marco, tres bandas, cajas por banda. Un solo trazo por mapa. */
 const mapaAbstracto = (i) => {
-  const cajas = [[3, 2, 3], [2, 3, 2], [3, 3, 2]][i % 3];
+  const CAJAS = [[3, 2, 3], [2, 3, 2], [3, 3, 2]];
+  const cajas = CAJAS[i % CAJAS.length];
   let d = "M4 4H116V76H4Z";
   [0, 1, 2].forEach((b) => {
     const y = 10 + b * 22;
@@ -95,7 +98,7 @@ const cuerpoEscena = {
   },
   "e3-neutralidad": () => `<div class="orden-fila"><span class="rotulo">Un orden</span><ol class="fichas">${fichas(vueltas[0].recibido)}</ol><p class="huella mono" data-huella>${vueltas[0].huella}</p></div>
       <div class="orden-fila"><span class="rotulo">Otro orden</span><ol class="fichas" data-fila-viva>${fichas(otro.recibido)}</ol><p class="huella mono" data-huella>${otro.huella}</p></div>
-      <p class="igual"><span aria-hidden="true">✓</span> Misma huella. Las ${ordenes.size} maneras de ordenar las ${nPlat} plataformas dan esta misma huella.</p>
+      <p class="igual"><span aria-hidden="true">✓</span> Misma huella. Estos ${ordenes.size} órdenes distintos de las ${nPlat} plataformas dan esta misma huella.</p>
       <button type="button" class="repetir" data-repetir>Cambiar el orden otra vez</button>`,
 };
 

@@ -134,7 +134,7 @@
           {
             "id": "F21",
             "nombre": "Pruébalo tú, sin cuenta",
-            "que_hace": "Una demo pública, en español e inglés: mueves los pesos de un hospital inventado y ves cómo cambia el orden de tres plataformas. El cálculo corre en tu equipo y un botón reordena las plataformas para mostrar que el resultado no cambia.",
+            "que_hace": "Una demo pública, en español e inglés: mueves los pesos de un hospital inventado y ves cómo cambia el orden de las plataformas publicadas. El cálculo corre en tu equipo y un botón reordena las plataformas para mostrar que el resultado no cambia.",
             "seccion_manual": "21. La demo pública"
           }
         ]

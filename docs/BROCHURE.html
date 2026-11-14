@@ -228,7 +228,7 @@
   <section class="seccion escena escena-viva" id="e2-empate" data-rol="respiro" aria-labelledby="t-e2-empate">
     <p class="rotulo">2 de 3</p>
     <h2 id="t-e2-empate">Cuando la diferencia es chica, lo dice</h2>
-    <p>Con los pesos de partida del caso de ejemplo, las tres quedan a menos de 5 puntos. Big-D no inventa una ganadora: declara empate técnico y te muestra qué peso tendría que moverse para que una se separe.</p>
+    <p>Con los pesos de partida del caso de ejemplo, todas quedan a menos de 5 puntos. Big-D no inventa una ganadora: declara empate técnico y te muestra qué peso tendría que moverse para que una se separe.</p>
     <div class="escena-cuadro">
       <ul class="barras"><li data-plataforma="databricks"><span>Databricks</span><span class="pista-envoltura"><span class="barra-pista"><span class="barra" style="--v:0.733"></span></span><span class="franja-empate" style="--desde:68.3%;--ancho:5%" aria-hidden="true"></span></span><span class="barra-valor mono">73,3 de 100</span></li><li data-plataforma="fabric"><span>Microsoft Fabric</span><span class="pista-envoltura"><span class="barra-pista"><span class="barra" style="--v:0.73"></span></span><span class="franja-empate" style="--desde:68.3%;--ancho:5%" aria-hidden="true"></span></span><span class="barra-valor mono">73,0 de 100</span></li><li data-plataforma="snowflake"><span>Snowflake</span><span class="pista-envoltura"><span class="barra-pista"><span class="barra" style="--v:0.708"></span></span><span class="franja-empate" style="--desde:68.3%;--ancho:5%" aria-hidden="true"></span></span><span class="barra-valor mono">70,8 de 100</span></li></ul><p class="empate-rotulo"><span class="signo" aria-hidden="true">≈</span> Empate técnico: Databricks, Microsoft Fabric y Snowflake quedan a menos de 5 puntos; con estos pesos ninguna se separa.</p>
     </div>
@@ -240,8 +240,8 @@
     <p>Ninguna plataforma tiene un trato especial en el código. Entrégalas en cualquier orden al mismo cálculo y la huella del resultado —un código que lo resume entero— sale idéntica. En la demo pública lo pruebas con un botón; en el repositorio, una prueba lo verifica en cada cambio.</p>
     <div class="escena-cuadro">
       <div class="orden-fila"><span class="rotulo">Un orden</span><ol class="fichas"><li class="ficha" data-plataforma="databricks">Databricks</li><li class="ficha" data-plataforma="fabric">Microsoft Fabric</li><li class="ficha" data-plataforma="snowflake">Snowflake</li></ol><p class="huella mono" data-huella>c0633ab23044a0c9c7ad94b91446f3fe8dbdefcaa5d831df8148ed153723feb1</p></div>
-      <div class="orden-fila"><span class="rotulo">Otro orden</span><ol class="fichas" data-fila-viva><li class="ficha" data-plataforma="snowflake">Snowflake</li><li class="ficha" data-plataforma="databricks">Databricks</li><li class="ficha" data-plataforma="fabric">Microsoft Fabric</li></ol><p class="huella mono" data-huella>c0633ab23044a0c9c7ad94b91446f3fe8dbdefcaa5d831df8148ed153723feb1</p></div>
-      <p class="igual"><span aria-hidden="true">✓</span> Misma huella. Las 6 maneras de ordenar las 3 plataformas dan esta misma huella.</p>
+      <div class="orden-fila"><span class="rotulo">Otro orden</span><ol class="fichas" data-fila-viva><li class="ficha" data-plataforma="fabric">Microsoft Fabric</li><li class="ficha" data-plataforma="snowflake">Snowflake</li><li class="ficha" data-plataforma="databricks">Databricks</li></ol><p class="huella mono" data-huella>c0633ab23044a0c9c7ad94b91446f3fe8dbdefcaa5d831df8148ed153723feb1</p></div>
+      <p class="igual"><span aria-hidden="true">✓</span> Misma huella. Estos 6 órdenes distintos de las 3 plataformas dan esta misma huella.</p>
       <button type="button" class="repetir" data-repetir>Cambiar el orden otra vez</button>
     </div>
   </section>
@@ -343,7 +343,7 @@
             </div>
             <div class="feature">
               <h4>Pruébalo tú, sin cuenta</h4>
-              <p class="como">Una demo pública, en español e inglés: mueves los pesos de un hospital inventado y ves cómo cambia el orden de tres plataformas. El cálculo corre en tu equipo y un botón reordena las plataformas para mostrar que el resultado no cambia.</p>
+              <p class="como">Una demo pública, en español e inglés: mueves los pesos de un hospital inventado y ves cómo cambia el orden de las plataformas publicadas. El cálculo corre en tu equipo y un botón reordena las plataformas para mostrar que el resultado no cambia.</p>
             </div>
           </div></div>
         </div>
@@ -480,8 +480,11 @@
     var fila = document.querySelector("[data-fila-viva]");
     if (!fila) return;
     var fichas = Array.prototype.slice.call(fila.querySelectorAll(".ficha"));
-    // El ciclo de órdenes (lugar que ocupa cada ficha); vuelve al orden de partida en la tercera vuelta.
-    var CICLO = [[2, 0, 1], [1, 2, 0], [0, 1, 2]];
+    // El ciclo de órdenes: en la vuelta s la ficha i ocupa el lugar (i - s - 1) módulo N, con N las fichas de la fila; en la
+    // vuelta N vuelve al orden de partida. N sale del documento (hoy las plataformas de la demo), no de un literal.
+    var N = fichas.length;
+    var CICLO = [];
+    for (var s = 0; s < N; s++) CICLO.push(fichas.map(function (_, i) { return (((i - s - 1) % N) + N) % N; }));
     var paso = 0, timer = 0, vueltas = 0, ancho = 0;
     var medir = function () { ancho = fichas.length > 1 ? fichas[1].offsetLeft - fichas[0].offsetLeft : 0; };
     var colocar = function (lugares) {
@@ -494,7 +497,7 @@
     };
     var jugada = function () {
       clearInterval(timer);
-      var quedan = 3;
+      var quedan = N;
       vuelta(); quedan -= 1;
       timer = setInterval(function () {
         if (document.hidden) return;
