@@ -19,7 +19,7 @@
     "ciclo": "H1",
     "estado": "inicial",
     "sellado_en": null,
-    "sprints_cerrados": 9,
+    "sprints_cerrados": 10,
     "version_repo": "0.1.0"
   },
   "promesa": {
@@ -221,10 +221,10 @@
     {
       "clave": "pruebas_automaticas",
       "etiqueta": "Pruebas automáticas",
-      "valor": 3572,
+      "valor": 3586,
       "unidad": "pruebas",
       "fuente": "medido",
-      "detalle": "2309 unitarias y de integración (Vitest, 133 archivos, incluidas las del diagramador), 1245 de navegador (Playwright: escritorio, teléfono, Firefox, WebKit y la base sembrada) y 18 de determinismo (6 pruebas en 3 navegadores, la demo pública incluida). Recontadas el 2026-11-13 sobre ea0e528: `pnpm test` y `playwright test --list`."
+      "detalle": "2314 unitarias y de integración (Vitest, 133 archivos, incluidas las del diagramador), 1245 de navegador (Playwright: escritorio, teléfono, Firefox, WebKit y la base sembrada) y 27 de determinismo (núcleo y demo pública en tres navegadores; 4 saltadas a propósito: el axe de la demo corre solo en Chromium). Recontadas el 2026-11-13 sobre ec0fcdc: `pnpm test` y `playwright test --list`."
     },
     {
       "clave": "cobertura_lineas",
@@ -232,7 +232,7 @@
       "valor": 97.96,
       "unidad": "%",
       "fuente": "medido",
-      "detalle": "v8 sobre src/engine, src/lib, src/components y los dos paquetes de la casa (diagramador e instrumentos-de-plan): 6218 de 6347 líneas, `pnpm test` del 2026-11-13 sobre ea0e528. Motores y lib, umbral propio del 80 %."
+      "detalle": "v8 sobre src/engine, src/lib, src/components y los dos paquetes de la casa (diagramador e instrumentos-de-plan): 6222 de 6351 líneas, `pnpm test` del 2026-11-13 sobre ec0fcdc. Motores y lib, umbral propio del 80 %."
     },
     {
       "clave": "motores_con_la_misma_huella",
