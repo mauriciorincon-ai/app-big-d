@@ -192,7 +192,7 @@
       "valor": 21,
       "unidad": "funcionalidades",
       "fuente": "medido",
-      "detalle": "Las funciones numeradas del manual (docs/MANUAL-DE-USO.md), construidas en los sprints 1 a 6, 8 y 9. Las de los sprints 3 y 4 (la base de conocimiento, el perfil del caso, la comparación y el instrumento) se cuentan desde que el manual las documenta. Lo recuenta tests/unit/brochure-export.test.ts."
+      "detalle": "Las funciones numeradas del manual (docs/MANUAL-DE-USO.md), construidas en los sprints 1 a 6, 8, 9 y 10. Las de los sprints 3 y 4 (la base de conocimiento, el perfil del caso, la comparación y el instrumento) se cuentan desde que el manual las documenta. Lo recuenta tests/unit/brochure-export.test.ts."
     },
     {
       "clave": "plataformas_en_el_atlas",

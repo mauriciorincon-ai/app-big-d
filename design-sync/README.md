@@ -13,7 +13,7 @@ del repo»). La jerarquía es fija:
 
 | Archivo | Grupo | Qué muestra |
 |---|---|---|
-| `styles.css` | — | Las hojas del producto tal cual: tokens (generados y medidos), base, diagrama, atlas, lado a lado, versiones, secciones, caso y decisiones |
+| `styles.css` | — | Las hojas del producto tal cual: tokens (generados y medidos), base, diagrama, atlas, lado a lado, versiones, secciones, caso y decisiones, más la de la demo pública (`demo.css`, sin sus fuentes: la demo lleva las suyas con su licencia) |
 | `components/fundamentos/color.html` | Fundamentos | Neutros y tipos de componente en los dos temas, con su uso |
 | `components/fundamentos/letra.html` | Fundamentos | Space Grotesk y JetBrains Mono en sus roles |
 | `components/diagrama/leyenda.html` | Diagrama | La leyenda del motor y la nota de marcas |
@@ -48,6 +48,6 @@ Grotesk y JetBrains Mono están instaladas.
 
 ## Publicación
 
-**Pendiente del cierre del ciclo H1 (S4), después del gate ⭐⭐ corto.** Nunca se publica un sistema que la persona
-no ha juzgado. El disparador es de la persona (`/design-sync`); el trabajo lo hace la sesión de esta app.
+**Pendiente: la publica la persona, al cerrar el hito (el ensayo general del H-2, con su gate humano).** Nunca se publica
+un sistema que la persona no ha juzgado. El disparador es de la persona (`/design-sync`); el trabajo lo hace la sesión de esta app.
 `project.json` todavía no tiene proyecto: se crea o se elige en ese momento, con la persona.
