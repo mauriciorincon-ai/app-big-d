@@ -17,17 +17,24 @@ const bajarALectura = async (p) => {
   await lectura.scrollIntoViewIfNeeded();
 };
 
-/** { id, archivo, ruta, paso? } — `id` es la funcionalidad del manual (F1…F14) o «portada». */
+/**
+ * { id, archivo, ruta, paso?, arbol?, contiene? } — `id` es la funcionalidad del manual (F1…F14) o «portada».
+ * `arbol` (por omisión «out») es el export que fotografía el encuadre: `capturas.yaml` pide F11 de la base sembrada («base de
+ * prueba, ficticia»), así que ese encuadre solo se toma con `--arbol out-sembrada` (en el árbol real el perfil es borrador y no
+ * hay totales). `contiene` es una expresión que el texto visible debe cumplir: sin ella un encuadre «existe» pero puede estar
+ * vacío. F6 (propuesta real reabierta, «-ensayo») depende de lo que haya en `propuestas/` en el equipo de quien captura y no se
+ * puede afirmar desde el repo: se documenta aquí y en el cierre en vez de simularlo.
+ */
 export const ENCUADRES = [
   { id: "portada", archivo: "entrada", ruta: "/es" },
-  { id: "F1", archivo: "F1", ruta: "/es/atlas/fabric" },
+  { id: "F1", archivo: "F1", ruta: "/es/atlas/fabric", contiene: "Fabric" },
   { id: "F2", archivo: "F2", ruta: "/es/atlas/fabric/componentes", paso: abrirFicha },
   { id: "F3", archivo: "F3", ruta: "/es/atlas/fabric/recorrido" },
-  { id: "F7", archivo: "F7", ruta: "/es/comparar?plataformas=databricks,fabric,snowflake" },
+  { id: "F7", archivo: "F7", ruta: "/es/comparar?plataformas=databricks,fabric,snowflake", contiene: "Databricks" },
   { id: "F5", archivo: "F5", ruta: "/es/atlas/snowflake" },
   { id: "F4", archivo: "F4", ruta: "/es/atlas/fabric", paso: bajarALectura },
   { id: "F10", archivo: "F10", ruta: "/es/casos/hospital-futuro" },
-  { id: "F11", archivo: "F11", ruta: "/es/casos/hospital-futuro/comparacion" },
+  { id: "F11", archivo: "F11", ruta: "/es/casos/hospital-futuro/comparacion", arbol: "out-sembrada", contiene: "Empate técnico" },
   { id: "F13", archivo: "F13", ruta: "/es/casos/hospital-futuro/decisiones" },
   { id: "F14", archivo: "F14", ruta: "/es/casos/hospital-futuro/informe" },
   { id: "F6", archivo: "F6", ruta: "/es/investigador/bigquery" },

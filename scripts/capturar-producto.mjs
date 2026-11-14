@@ -686,6 +686,10 @@ if (bandera("portafolio")) {
   const { ENCUADRES, ESCALA, VENTANA } = await import("./capturas-portafolio.mjs");
   const malas = [];
   for (const e of ENCUADRES) {
+    if ((e.arbol ?? "out") !== nombreArbol) {
+      console.log(`capturar-producto --portafolio: ${e.id} se toma con --arbol ${e.arbol ?? "out"} (este es ${nombreArbol}); se omite`);
+      continue;
+    }
     const ctx = await navegador.newContext({ viewport: VENTANA, deviceScaleFactor: ESCALA, colorScheme: "light" });
     await ctx.addInitScript(() => {
       try {
@@ -701,6 +705,7 @@ if (bandera("portafolio")) {
     await pagina.evaluate(() => document.fonts.ready);
     if (e.paso) await e.paso(pagina);
     await pagina.waitForTimeout(150);
+    if (e.contiene && !new RegExp(e.contiene, "i").test(await pagina.locator("main").innerText())) malas.push(`${e.id}: el texto visible no contiene «${e.contiene}»`);
     const desborde = await pagina.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
     if (desborde > 0) malas.push(`${e.id}: la página desborda ${desborde} px a ${VENTANA.width} px`);
     for (const x of errores) malas.push(`${e.id}: error en la consola: ${x}`);

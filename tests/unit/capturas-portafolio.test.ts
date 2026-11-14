@@ -9,7 +9,7 @@ import {
   VENTANA,
 } from "../../scripts/capturas-portafolio.mjs";
 
-type Encuadre = { id: string; archivo: string; ruta: string };
+type Encuadre = { id: string; archivo: string; ruta: string; arbol?: string; contiene?: string };
 const encuadres = ENCUADRES as Encuadre[];
 
 describe("scripts/capturas-portafolio.mjs", () => {
@@ -37,6 +37,13 @@ describe("scripts/capturas-portafolio.mjs", () => {
       ].sort(),
     );
     for (const e of encuadres) expect(e.ruta.startsWith("/es")).toBe(true);
+  });
+
+  it("F11 se toma de la base sembrada y pide que se vea el empate; el resto, del árbol real", () => {
+    const f11 = encuadres.find((e) => e.id === "F11")!;
+    expect(f11.arbol).toBe("out-sembrada");
+    expect(f11.contiene).toBe("Empate técnico");
+    for (const e of encuadres) if (e.arbol !== undefined) expect(["out", "out-sembrada"]).toContain(e.arbol);
   });
 
   it("el tamaño es el del sprint: 1024×640 a DPR 1,5", () => {
