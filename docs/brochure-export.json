@@ -221,10 +221,10 @@
     {
       "clave": "pruebas_automaticas",
       "etiqueta": "Pruebas automáticas",
-      "valor": 3525,
+      "valor": 3572,
       "unidad": "pruebas",
       "fuente": "medido",
-      "detalle": "2277 unitarias y de integración (Vitest, 129 archivos, incluidas las del diagramador), 1239 de navegador (Playwright: escritorio, teléfono, Firefox, WebKit y la base sembrada) y 9 de determinismo (3 pruebas en 3 navegadores). Recontadas el 2026-11-12 sobre bc87c2e: `pnpm test` y `playwright test --list`."
+      "detalle": "2309 unitarias y de integración (Vitest, 133 archivos, incluidas las del diagramador), 1245 de navegador (Playwright: escritorio, teléfono, Firefox, WebKit y la base sembrada) y 18 de determinismo (6 pruebas en 3 navegadores, la demo pública incluida). Recontadas el 2026-11-13 sobre ea0e528: `pnpm test` y `playwright test --list`."
     },
     {
       "clave": "cobertura_lineas",
@@ -232,7 +232,7 @@
       "valor": 97.96,
       "unidad": "%",
       "fuente": "medido",
-      "detalle": "v8 sobre src/engine, src/lib, src/components y los dos paquetes de la casa (diagramador e instrumentos-de-plan): 6107 de 6234 líneas, `pnpm test` del 2026-11-12 sobre bc87c2e. Motores y lib, umbral propio del 80 %."
+      "detalle": "v8 sobre src/engine, src/lib, src/components y los dos paquetes de la casa (diagramador e instrumentos-de-plan): 6218 de 6347 líneas, `pnpm test` del 2026-11-13 sobre ea0e528. Motores y lib, umbral propio del 80 %."
     },
     {
       "clave": "motores_con_la_misma_huella",
