@@ -8,10 +8,16 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
+import { DuplicarCaso } from "@/components/caso/DuplicarCaso";
+import { EntrevistaPerfil } from "@/components/caso/EntrevistaPerfil";
 import { MarcoTabla } from "@/components/caso/MarcoTabla";
 import { AlertaCiclo, Leyenda, TablaAccion } from "@/components/plan/Plan";
 import { opcionesPlataforma, plantilla, plural, vistaLado, vistaNivel1, vistaNivel2, vistaVersiones } from "@/lib/atlas";
+import { conocimiento } from "@/lib/caso/casos";
 import { cargarDatos } from "@/lib/datos";
+import { vistaDe, pesoEscrito } from "@/lib/demo/vista";
+import type { RespuestaDemo } from "@/lib/demo/protocolo";
+import { TEXTOS_DEMO } from "@/lib/i18n/demo";
 import { textos } from "@/lib/i18n";
 
 /** Fecha de consulta fija: el mapa de ejemplo se verificó el 2026-09-20, así que sale vigente. */
@@ -28,6 +34,8 @@ const HOJAS = [
   "src/styles/secciones.css",
   "src/styles/caso.css",
   "src/styles/decisiones.css",
+  // S10 (F3): la hoja de la demo pública (sin sus @font-face: la tarjeta no carga fuentes).
+  "src/styles/demo.css",
 ];
 const FAMILIAS = `:root { --letra: "Space Grotesk", system-ui, sans-serif; --letra-mono: "JetBrains Mono", ui-monospace, monospace; }`;
 const PROPIAS = `.ds { padding: 24px 16px; display: grid; gap: 16px; max-width: 1280px; margin: 0 auto; }
@@ -52,7 +60,8 @@ const esc = (s: string) =>
 
 /** Las hojas del producto, una tras otra, con las familias como pila (la tarjeta no carga fuentes). */
 export function estilos(): string {
-  const partes = HOJAS.map((h) => `/* ── ${h} ── */\n${leer(h).trimEnd()}`);
+  const sinFuentes = (css: string) => css.split("\n").filter((l) => !l.startsWith("@font-face") && !l.startsWith(":root { --letra")).join("\n");
+  const partes = HOJAS.map((h) => `/* ── ${h} ── */\n${(h.endsWith("demo.css") ? sinFuentes(leer(h)) : leer(h)).trimEnd()}`);
   return `/* GENERADO por scripts/design-sync/bundle.ts — no editar a mano (tests/unit/design-sync.test.ts detecta la deriva). */\n${FAMILIAS}\n${partes.join("\n")}\n`;
 }
 
@@ -302,6 +311,66 @@ export function bundle(): Record<string, string> {
       "Alerta de ciclo de dependencias",
       `<div style="max-width:720px">${estatico(createElement(AlertaCiclo, { camino: ["¿Cómo se organiza el catálogo?", "¿Cómo se protegen los datos clínicos?", "¿Cómo se organiza el catálogo?"], ondas: 0, sinOnda: 3, t: td }))}</div>`,
       "El ciclo se muestra con su camino y con palabras; la herramienta no elige cuál dependencia romper. Con un ciclo no hay ondas.",
+    ],
+  );
+
+  // S10 (F3): tarjetas de S8 a S10. Los mismos componentes y la misma función de texto que el producto y la demo, con datos
+  // SINTÉTICOS (la vitrina no lleva fabricantes): las plataformas son inventadas y la huella es una de muestra.
+  const k = conocimiento();
+  const abierta = (html: string) => html.replace("<details ", "<details open ");
+  const pDup = textos("es").caso.perfil.duplicar;
+  const pEnt = textos("es").caso.perfil.entrevista;
+  const criterios = k.criterios.slice(0, 3).map((c) => ({ id: c.id, nombre: c.nombre.es }));
+  const datosEntrevista = {
+    introduccion: k.entrevista.introduccion.es,
+    niveles: k.entrevista.niveles.map((n) => ({ id: n.id, valor: n.valor, texto: n.texto.es })),
+    conserva_restricciones_desde: k.entrevista.conserva_restricciones_desde,
+    preguntas: k.entrevista.preguntas.filter((q) => criterios.some((c) => c.id === q.criterio_id)).map((q) => ({ id: q.id, criterio_id: q.criterio_id, texto: q.texto.es })),
+  };
+  const TD = TEXTOS_DEMO.es;
+  const nombresDemo = { uno: "Plataforma Uno", dos: "Plataforma Dos", tres: "Plataforma Tres" };
+  const muestra: RespuestaDemo = {
+    tipo: "evaluado",
+    id: 0,
+    huella: "a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90",
+    recibido: ["uno", "dos", "tres"],
+    max: 10000,
+    filas: [
+      { plataforma_id: "uno", posicion: 1, unidades: 7330 },
+      { plataforma_id: "dos", posicion: 2, unidades: 7300 },
+      { plataforma_id: "tres", posicion: 3, unidades: 7080 },
+    ],
+    veredicto: { tipo: "empate-tecnico", plataformas: ["uno", "dos", "tres"], brecha_unidades: 250 },
+  };
+  const vd = vistaDe(muestra, { idioma: "es", t: TD, nombres: nombresDemo, umbralCentesimas: 500 });
+  const demoPesos = k.criterios.slice(0, 3).map((c, i) => {
+    const id = `peso-${c.id}`;
+    const valor = [4000, 3500, 2500][i]!;
+    return `<li class="demo-peso"><label for="${id}">${esc(c.nombre.es)}</label><input type="range" id="${id}" min="0" max="9900" step="100" value="${valor}"><output for="${id}" class="mono">${esc(pesoEscrito(valor, "es"))}</output></li>`;
+  });
+  const demoFilas = vd.filas.map((f) => `<li class="demo-fila"><span class="demo-puesto mono">${esc(f.puesto)}</span><span class="demo-nombre">${esc(f.nombre)}</span><meter min="0" max="1000" value="${f.decimas}" aria-hidden="true"></meter><span class="demo-total mono">${esc(f.total)}</span></li>`);
+  const demo = `<div class="demo-rejilla" style="max-width:1100px"><section class="demo-panel"><h2>${esc(TD.pesosTitulo)}</h2><p class="demo-ayuda">${esc(TD.pesosAyuda)}</p><ul class="demo-pesos">${demoPesos.join("")}</ul><button type="button" class="demo-boton">${esc(TD.restablecer)}</button></section><section class="demo-panel"><h2>${esc(TD.resultadoTitulo)}</h2><ol class="demo-filas">${demoFilas.join("")}</ol><p class="demo-veredicto">${esc(vd.veredicto)}</p><h3>${esc(TD.huellaTitulo)}</h3><p class="demo-ayuda">${esc(TD.huellaAyuda)}</p><p class="demo-huella mono">${muestra.huella}</p><h3>${esc(TD.neutralidadTitulo)}</h3><p class="demo-ayuda">${esc(TD.neutralidadAyuda)}</p><button type="button" class="demo-boton">${esc(TD.neutralidadBoton)}</button><div class="demo-neutralidad"><p>${esc(plantilla(TD.neutralidadOrden, { orden: "Plataforma Tres · Plataforma Uno · Plataforma Dos" }))}</p><p class="demo-huella mono">${muestra.huella}</p><p class="demo-igualdad"><span aria-hidden="true">✓</span> ${esc(TD.neutralidadIgual)}</p></div></section></div>`;
+  tarjetas.push(
+    [
+      "componentes-s8/duplicar-un-caso.html",
+      "Componentes · S8",
+      "Duplicar un caso",
+      `<div style="max-width:720px">${abierta(estatico(createElement(DuplicarCaso, { caso: "hospital-futuro", existentes: ["hospital-futuro"], t: pDup, copiar: t.investigador.comando.copiar, copiado: t.investigador.comando.copiado })))}</div>`,
+      "DuplicarCaso (D3, S8): la persona escribe el id de la copia y la pantalla ARMA el comando; ella lo corre en su terminal. La copia nace en borrador y el original no se toca.",
+    ],
+    [
+      "componentes-s9/armar-el-perfil-con-preguntas.html",
+      "Componentes · S9",
+      "Armar el perfil con preguntas",
+      `<div style="max-width:720px">${abierta(estatico(createElement(EntrevistaPerfil, { idioma: "es", t: pEnt, datos: datosEntrevista, criterios, usar: () => {} })))}</div>`,
+      "EntrevistaPerfil (S9): una pregunta por criterio, sin nombrar plataformas, con una escala común; con todo respondido, el núcleo propone los pesos en enteros. Nada se guarda ni se aprueba aquí.",
+    ],
+    [
+      "componentes-s10/demo-publica.html",
+      "Componentes · S10",
+      "Demo pública · pesos, huella y neutralidad",
+      demo,
+      "La demo (S10, anexo E4): los pesos de quien la visita, el resultado con su veredicto («empate técnico» declarado, no una ganadora inventada), la huella del resultado y la prueba de neutralidad con la misma huella en otro orden. Plataformas y huella son de muestra; el texto sale del mismo diccionario que la demo.",
     ],
   );
 

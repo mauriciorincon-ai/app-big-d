@@ -1,0 +1,125 @@
+[
+  {
+    "tipo": "evaluado",
+    "id": 1,
+    "huella": "c0633ab23044a0c9c7ad94b91446f3fe8dbdefcaa5d831df8148ed153723feb1",
+    "recibido": [
+      "databricks",
+      "fabric",
+      "snowflake"
+    ],
+    "max": 4,
+    "filas": [
+      {
+        "plataforma_id": "databricks",
+        "posicion": 1,
+        "unidades": 29300
+      },
+      {
+        "plataforma_id": "fabric",
+        "posicion": 2,
+        "unidades": 29200
+      },
+      {
+        "plataforma_id": "snowflake",
+        "posicion": 3,
+        "unidades": 28300
+      }
+    ],
+    "veredicto": {
+      "tipo": "empate-tecnico",
+      "plataformas": [
+        "databricks",
+        "fabric",
+        "snowflake"
+      ],
+      "brecha_unidades": 100
+    }
+  },
+  {
+    "tipo": "evaluado",
+    "id": 2,
+    "huella": "c0633ab23044a0c9c7ad94b91446f3fe8dbdefcaa5d831df8148ed153723feb1",
+    "recibido": [
+      "fabric",
+      "snowflake",
+      "databricks"
+    ],
+    "max": 4,
+    "filas": [
+      {
+        "plataforma_id": "databricks",
+        "posicion": 1,
+        "unidades": 29300
+      },
+      {
+        "plataforma_id": "fabric",
+        "posicion": 2,
+        "unidades": 29200
+      },
+      {
+        "plataforma_id": "snowflake",
+        "posicion": 3,
+        "unidades": 28300
+      }
+    ],
+    "veredicto": {
+      "tipo": "empate-tecnico",
+      "plataformas": [
+        "databricks",
+        "fabric",
+        "snowflake"
+      ],
+      "brecha_unidades": 100
+    }
+  },
+  {
+    "tipo": "evaluado",
+    "id": 3,
+    "huella": "820d47141d81575beed3b299e36215baecb2d10973776a22c3b230979d938b6f",
+    "recibido": [
+      "databricks",
+      "fabric",
+      "snowflake"
+    ],
+    "max": 4,
+    "filas": [
+      {
+        "plataforma_id": "databricks",
+        "posicion": 1,
+        "unidades": 29147
+      },
+      {
+        "plataforma_id": "fabric",
+        "posicion": 2,
+        "unidades": 29024
+      },
+      {
+        "plataforma_id": "snowflake",
+        "posicion": 3,
+        "unidades": 27927
+      }
+    ],
+    "veredicto": {
+      "tipo": "empate-tecnico",
+      "plataformas": [
+        "databricks",
+        "fabric",
+        "snowflake"
+      ],
+      "brecha_unidades": 123
+    }
+  },
+  {
+    "tipo": "no-evaluable",
+    "id": 4,
+    "motivos": [
+      "perfil-en-borrador"
+    ]
+  },
+  {
+    "tipo": "error",
+    "id": 5,
+    "mensaje": "núcleo: los pesos suman 11 y deben sumar 10000"
+  }
+]

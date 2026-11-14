@@ -62,12 +62,12 @@
 <body>
 <main>
   <h1>Big-D — Blueprint de infraestructura <span class="badge">as-built</span></h1>
-  <p class="meta">Ciclo: <strong>H-1 «El planeador completo» (E1–E3)</strong> · Cerrado: <strong>2026-10-12</strong> · Sprints del ciclo: <strong>S1–S7</strong> · Última actualización: <strong>2026-11-12</strong> (la tabla de ADR y la fila de IA, S9)</p>
-  <p class="nota"><strong>Entregable del cierre del hito H-1.</strong> El mapa real de la infraestructura que soporta esta app, tomado del repositorio tal como está hoy: lo que se ve en el diagrama existe y está cableado; lo previsto y no desplegado va punteado. No contiene secretos, claves ni URLs: solo qué gestor guarda cada cosa. <code>tests/unit/blueprint.test.ts</code> comprueba que cada job de CI, cada paquete reusable y cada ADR del repositorio aparezcan aquí, para que el documento no se pudra.</p>
+  <p class="meta">Ciclos: <strong>H-1 «El planeador completo» (S1–S7, cerrado 2026-10-12)</strong> y <strong>H-2 (S8–S10, en curso)</strong> · Última actualización: <strong>2026-11-13</strong> (la demo pública y su paquete y la CSP con Worker, S10; el ensayo general del usuario va después, al cerrar el hito)</p>
+  <p class="nota"><strong>As-built tras el S10 (H-2 en curso); el ensayo general del usuario va después.</strong> Nació como entregable del cierre del hito H-1 y se pone al día en cada hito. El mapa real de la infraestructura que soporta esta app, tomado del repositorio tal como está hoy: lo que se ve en el diagrama existe y está cableado; lo previsto y no desplegado va punteado. No contiene secretos, claves ni URLs: solo qué gestor guarda cada cosa. <code>tests/unit/blueprint.test.ts</code> comprueba que cada job de CI, cada paquete reusable y cada ADR del repositorio aparezcan aquí, para que el documento no se pudra.</p>
 
   <h2>Diagrama</h2>
   <div class="diagrama">
-  <svg viewBox="0 0 960 470" role="img" aria-label="Diagrama de infraestructura de Big-D: la persona que decide, el hosting estático, los datos en el repositorio, la observabilidad opcional, GitHub con su CI, el investigador y la demo prevista">
+  <svg viewBox="0 0 960 560" role="img" aria-label="Diagrama de infraestructura de Big-D: la persona que decide, el hosting estático, los datos en el repositorio, la observabilidad opcional, GitHub con su CI, el investigador y la demo pública con su destino previsto en hoja-de-vida">
     <defs>
       <marker id="punta" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
         <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" opacity="0.65"/>
@@ -114,12 +114,19 @@
     <text class="detalle-caja" x="780" y="393" text-anchor="middle">escribe solo en propuestas/</text>
     <text class="detalle-caja" x="780" y="410" text-anchor="middle">la persona aprueba con su comando</text>
 
+    <!-- Demo pública -->
+    <rect class="caja" x="290" y="450" width="240" height="96" rx="10"/>
+    <text class="titulo-caja" x="410" y="478" text-anchor="middle">Demo pública (pnpm build:demo)</text>
+    <text class="detalle-caja" x="410" y="496" text-anchor="middle">out-demo/ con manifiesto de huellas</text>
+    <text class="detalle-caja" x="410" y="513" text-anchor="middle">cálculo en un Worker del propio sitio</text>
+    <text class="detalle-caja" x="410" y="530" text-anchor="middle">sin investigador ni enlaces que salgan</text>
+
     <!-- Futuro -->
-    <rect class="caja-futuro" x="20" y="330" width="230" height="96" rx="10"/>
-    <text class="titulo-caja detalle-futuro" x="135" y="358" text-anchor="middle">(futuro) demo estática</text>
-    <text class="detalle-caja detalle-futuro" x="135" y="376" text-anchor="middle">paquete con manifiesto de huellas,</text>
-    <text class="detalle-caja detalle-futuro" x="135" y="393" text-anchor="middle">a hoja-de-vida por PR de contenido</text>
-    <text class="detalle-caja detalle-futuro" x="135" y="410" text-anchor="middle">(hito H-2)</text>
+    <rect class="caja-futuro" x="20" y="450" width="230" height="96" rx="10"/>
+    <text class="titulo-caja detalle-futuro" x="135" y="478" text-anchor="middle">(futuro) hoja-de-vida</text>
+    <text class="detalle-caja detalle-futuro" x="135" y="496" text-anchor="middle">recibe el paquete por copia,</text>
+    <text class="detalle-caja detalle-futuro" x="135" y="513" text-anchor="middle">en un PR de contenido (la hace</text>
+    <text class="detalle-caja detalle-futuro" x="135" y="530" text-anchor="middle">la sesión de esa app)</text>
 
     <!-- Flechas -->
     <path class="flecha" d="M 190 198 L 285 198"/>
@@ -137,7 +144,10 @@
     <path class="flecha" d="M 640 378 L 535 378"/>
     <text class="etiqueta-flecha" x="586" y="368" text-anchor="middle">aprobado → PR</text>
 
-    <path class="flecha flecha-futura" d="M 250 378 L 285 378"/>
+    <path class="flecha" d="M 410 426 L 410 445"/>
+    <text class="etiqueta-flecha" x="418" y="440">el build la arma</text>
+
+    <path class="flecha flecha-futura" d="M 285 498 L 255 498"/>
   </svg>
   </div>
 
@@ -155,6 +165,7 @@
       <tr><td>Almacenamiento de archivos</td><td>No aplica</td><td>Todo es de solo lectura en el build. La skill escribe solo en <code>propuestas/</code> (un hook bloquea cualquier otra carpeta).</td></tr>
       <tr><td>Email / notificaciones</td><td>No aplica</td><td>—</td></tr>
       <tr><td>IA embebida</td><td><strong>NINGUNA</strong> en tiempo de ejecución</td><td>La única IA es el investigador (<code>/investigar</code>), que corre a demanda en la máquina de la persona: la skill de Claude Code, interactiva, con el binario oficial y jamás en lote ni en CI, o un segundo ejecutor (<code>scripts/investigar/sistema.mjs</code>) con el modelo del sistema de macOS, sin claves ni descargas. ADR <code>investigator-code-first</code>, <code>investigator-7s-compliance</code> e <code>investigator-system-model</code>. Sin proveedor cableado ni claves de API.</td></tr>
+      <tr><td>Demo pública</td><td><code>pnpm build:demo</code> → <code>out-demo/</code></td><td>Paquete estático bajo <code>/piezas/big-d</code> (<code>es.html</code>, <code>en.html</code>, un script, un Worker, estilos, fuentes con licencia libre y <code>manifiesto.json</code> con la huella de cada archivo): el mismo núcleo corre en el navegador de quien la visita y debe dar la huella que dio Node al construir. Los datos van dentro de cada página, sin <code>fetch</code>. Un gate de fugas recorre el paquete y falla ante investigador, comandos, propuestas, maqueta o un enlace que salga del sitio. El paquete viaja a hoja-de-vida por copia; esta app no lo publica.</td></tr>
       <tr><td>Observabilidad</td><td>Sentry, solo cliente</td><td>Metadata-only e inerte sin DSN (<code>instrumentation-client.ts</code>); el SDK se importa dinámicamente y no viaja si no hay DSN. Sin tracing ni replay.</td></tr>
       <tr><td>Crons / keep-alives</td><td>Ninguno</td><td>No hay base ni servicio que mantener despierto.</td></tr>
       <tr><td>Secretos</td><td><code>.env.local</code> (ignorado por git) y variables de entorno de Vercel</td><td>jamás el repo. gitleaks a doble cinturón: hook de escritura de Claude Code, <code>githooks/pre-commit</code> y paso fijado (versión y suma) en el job <code>quality</code>. Hoy solo hay dos variables opcionales (la DSN de Sentry y el nombre de la app) y una perilla de build, <code>BIGD_DATOS</code>, que el build rechaza dentro de Vercel.</td></tr>
@@ -170,10 +181,10 @@
   <table>
     <thead><tr><th>Job</th><th>Dónde corre</th><th>Qué gatea</th></tr></thead>
     <tbody>
-      <tr><td><code>quality</code></td><td>ubuntu-latest · <code>ci.yml</code></td><td>Regla 18 (ningún paquete por debajo de <code>main</code>), tipos, lint, pruebas con cobertura, gitleaks, build, build como el proveedor y salida publicada idéntica a <code>out/</code>, CSP de lo publicado y cero enlaces (árbol y homepage).</td></tr>
+      <tr><td><code>quality</code></td><td>ubuntu-latest · <code>ci.yml</code></td><td>Regla 18 (ningún paquete por debajo de <code>main</code>), tipos, lint, pruebas con cobertura, gitleaks, build, build como el proveedor y salida publicada idéntica a <code>out/</code>, CSP de lo publicado (con <code>worker-src 'self'</code> para el Worker de la simulación y el de la demo), cero enlaces (árbol y homepage) y, desde el S10, el paquete de la demo con su manifiesto y su gate de fugas (<code>pnpm build:demo</code>).</td></tr>
       <tr><td><code>e2e</code></td><td>ubuntu-latest · <code>ci.yml</code> · después de <code>quality</code></td><td>Playwright (Chromium; Firefox y WebKit solo para G11 y CSP) con axe, en español, en inglés y contra la base sembrada.</td></tr>
       <tr><td><code>lighthouse</code></td><td>ubuntu-latest · <code>ci.yml</code> · después de <code>quality</code></td><td>Presupuestos de <code>perf-budget.json</code> y categorías ≥ 0,9 (3 corridas, mediana) sobre <code>lighthouse-urls.json</code>; avisa si el margen baja de 10 %.</td></tr>
-      <tr><td><code>diagramador</code></td><td>ubuntu-latest y macos-latest · <code>ci.yml</code> · sin <code>needs</code></td><td>Pruebas de los paquetes reusables en Node (carnadas, golden files, D11, propiedades, locks del contrato, G3), el núcleo con sus huellas y los tres navegadores con la misma huella que Node.</td></tr>
+      <tr><td><code>diagramador</code></td><td>ubuntu-latest y macos-latest · <code>ci.yml</code> · sin <code>needs</code></td><td>Pruebas de los paquetes reusables en Node (carnadas, golden files, D11, propiedades, locks del contrato, G3), el núcleo con sus huellas y los tres navegadores con la misma huella que Node, y desde el S10 la demo pública servida bajo <code>/piezas/big-d</code> con su Worker, su neutralidad en vivo y axe.</td></tr>
       <tr><td><code>un-pr-vivo</code></td><td>ubuntu-latest · <code>un-pr-vivo.yml</code></td><td>Falla si hay más de un PR abierto y el cuerpo de este no empieza con «complementa #N: …».</td></tr>
     </tbody>
   </table>
@@ -206,7 +217,7 @@
       <tr><td><code>decisions/investigator-7s-compliance.md</code></td><td>Investigator skill: compliance with the subscription-AI standard (7-S)</td><td>accepted</td></tr>
       <tr><td><code>decisions/investigator-code-first.md</code></td><td>Platform investigator with generative AI: why code alone is not enough</td><td>accepted</td></tr>
       <tr><td><code>decisions/investigator-system-model.md</code></td><td>A second investigator executor: the macOS system model</td><td>accepted</td></tr>
-      <tr><td><code>decisions/jargon-detector.md</code></td><td>Jargon detector: deferred in H-1, built in S9</td><td>accepted</td></tr>
+      <tr><td><code>decisions/jargon-detector.md</code></td><td>Jargon detector: deferred in H-1, built in S9, table from Google Books Ngram in S10</td><td>accepted</td></tr>
       <tr><td><code>decisions/lcp-budget-by-profile.md</code></td><td>LCP budget for an app that measures its text with a metrics table</td><td>accepted</td></tr>
       <tr><td><code>decisions/map-versioning.md</code></td><td>Map versioning: archive the approved bytes</td><td>accepted</td></tr>
       <tr><td><code>decisions/pairwise-integer-weights.md</code></td><td>Pairwise weights in integer arithmetic (D7)</td><td>accepted</td></tr>
@@ -223,6 +234,7 @@
     <tbody>
       <tr><td>2026-10-12</td><td>H-1 (S1–S7)</td><td>Versión inicial</td></tr>
       <tr><td>2026-11-12</td><td>H-2 (S9)</td><td>ADR del modelo del sistema y del detector de jerga; la fila de IA nombra el segundo ejecutor</td></tr>
+      <tr><td>2026-11-13</td><td>H-2 (S10)</td><td>La demo deja de ser «futuro»: su caja, su fila en la tabla por pieza y sus gates en los jobs <code>quality</code> y <code>diagramador</code>; la CSP declara <code>worker-src 'self'</code>; el destino en hoja-de-vida sigue punteado; el ADR de jerga cuenta la fuente Ngram</td></tr>
     </tbody>
   </table>
   </div>

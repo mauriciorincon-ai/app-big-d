@@ -136,6 +136,73 @@
     .revela { opacity: 1; transform: none; }
     .detalle, .detalle-interior, .detalle-cuerpo, .chevron { transition: none; }
   }
+  /* ===== S10 · Escenas del storyboard (docs/BROCHURE-storyboard.md) =====
+     Motion-system de la pieza: sereno y exacto. Solo transform/opacity, más stroke-dashoffset en E1 (excepción declarada).
+     El texto NUNCA se desvanece (banco § 5): lo que entra se mueve; la letra está pintada desde el primer cuadro. */
+  :root { --ease-asentar: cubic-bezier(0.22, 1, 0.36, 1); --t-breve: 0.35s; --t-escena: 0.8s; --t-vuelta: 1.4s; }
+  .escena { padding-top: 56px; }
+  .escena > h2 { font-size: 1.7rem; margin-bottom: 6px; }
+  .escena .rotulo { font-family: ui-monospace, Menlo, monospace; font-size: 0.68rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--tinta-suave); }
+  .escena-cuadro { margin-top: 22px; padding: 20px; background: var(--superficie); border: 1px solid var(--borde);
+    border-radius: var(--radio); }
+  .mono { font-family: ui-monospace, Menlo, monospace; }
+
+  /* E1 · dibujar el trazo: tres mapas abstractos de bandas, el mismo trazo tres veces. */
+  .mapas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 0; }
+  .mapa-mini { margin: 0; text-align: center; }
+  .mapa-mini svg { width: 100%; height: auto; display: block; color: var(--acento-vivo); }
+  .mapa-mini figcaption { margin-top: 6px; font-size: 0.85rem; color: var(--tinta-suave); }
+  .trazo { fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
+
+  /* E2 · alzar y asentar: barras que crecen hasta su total y se asientan dentro de la franja del empate. */
+  .barras { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  .barras li { display: grid; grid-template-columns: minmax(0, 9rem) minmax(0, 1fr) auto; align-items: center; gap: 12px; font-size: 0.92rem; }
+  .barra-pista { position: relative; height: 14px; border-radius: 7px; background: var(--fondo); overflow: hidden; }
+  .barra { position: absolute; inset: 0; transform-origin: left center; transform: scaleX(var(--v)); background: var(--acento-vivo); border-radius: 7px; }
+  @media (max-width: 560px) {
+    .barras li { grid-template-columns: minmax(0, 1fr) auto; row-gap: 6px; }
+    .barras .pista-envoltura { grid-column: 1 / -1; grid-row: 2; }
+  }
+  .barra-valor { text-align: right; font-variant-numeric: tabular-nums; }
+  .franja-empate { position: absolute; top: -4px; bottom: -4px; left: var(--desde); width: var(--ancho);
+    border-left: 2px dashed var(--realce); border-right: 2px dashed var(--realce); }
+  .barras .pista-envoltura, .barra-pista, .barra, .franja-empate { display: block; }
+  .barras .pista-envoltura { position: relative; }
+  .empate-rotulo { margin: 14px 0 0; font-weight: 600; }
+  .empate-rotulo .signo { color: var(--realce); }
+
+  /* E3 · clímax: los nombres cambian de lugar; la huella no se mueve. */
+  .orden-fila { margin: 0 0 16px; }
+  .orden-fila:last-of-type { margin-bottom: 0; }
+  .orden-fila .rotulo { display: block; margin-bottom: 8px; }
+  .fichas { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .ficha { padding: 10px 8px; text-align: center; border: 1px solid var(--borde); border-radius: 10px; background: var(--fondo);
+    font-weight: 600; font-size: 0.92rem; transform: translateX(var(--dx, 0)); }
+  .huella { margin: 8px 0 0; padding: 8px 10px; border-radius: 8px; background: var(--fondo); font-size: 0.78rem; overflow-wrap: anywhere; }
+  .igual { margin: 16px 0 0; font-weight: 700; }
+  .repetir { margin-top: 14px; font: 600 0.95rem/1.2 system-ui, sans-serif; color: var(--tinta); background: var(--acento-suave);
+    border: 1px solid var(--borde); border-radius: 10px; padding: 10px 14px; min-height: 44px; cursor: pointer; }
+  .repetir:focus-visible { outline: 3px solid var(--acento-vivo); outline-offset: 2px; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .escena-viva .trazo { stroke-dashoffset: 1; }
+    .escena-viva.visto .trazo { stroke-dashoffset: 0; transition: stroke-dashoffset var(--t-escena) var(--ease-asentar); }
+    .escena-viva.visto .mapa-mini:nth-child(2) .trazo { transition-delay: 0.45s; }
+    .escena-viva.visto .mapa-mini:nth-child(3) .trazo { transition-delay: 0.9s; }
+    .escena-viva .barra { transform: scaleX(0); }
+    .escena-viva.visto .barra { transform: scaleX(var(--v)); transition: transform var(--t-escena) var(--ease-asentar); }
+    .escena-viva.visto li:nth-child(2) .barra { transition-delay: 0.12s; }
+    .escena-viva.visto li:nth-child(3) .barra { transition-delay: 0.24s; }
+    .escena-viva .franja-empate { opacity: 0; transform: translateY(6px); }
+    .escena-viva.visto .franja-empate { opacity: 1; transform: none; transition: opacity var(--t-breve) ease 1.05s, transform var(--t-breve) var(--ease-asentar) 1.05s; }
+    .ficha { transition: transform var(--t-vuelta) var(--ease-asentar); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .trazo { stroke-dashoffset: 0; }
+    .barra { transform: scaleX(var(--v)); }
+    .ficha { transition: none; }
+  }
 </style>
 </head>
 <body>
@@ -148,6 +215,36 @@
     <p class="baja">Tócala capa por capa — cada tarjeta se abre solo si tú quieres
       <span class="flecha" aria-hidden="true">↓</span></p>
   </header>
+
+  <section class="seccion escena escena-viva" id="e1-gramatica" data-rol="respiro" aria-labelledby="t-e1-gramatica">
+    <p class="rotulo">1 de 3</p>
+    <h2 id="t-e1-gramatica">Una sola forma de leer todas las plataformas</h2>
+    <p>Cada plataforma se dibuja con la misma gramática: capas de izquierda a derecha y la misma marca para el mismo tipo de pieza. Aprendes a leer una y ya sabes leer las demás.</p>
+    <div class="escena-cuadro">
+      <div class="mapas"><figure class="mapa-mini"><svg viewBox="0 0 120 80" aria-hidden="true"><path class="trazo" pathLength="1" d="M4 4H116V76H4ZM10.0 10h29.3v14h-29.3ZM45.3 10h29.3v14h-29.3ZM80.7 10h29.3v14h-29.3ZM10.0 32h47.0v14h-47.0ZM63.0 32h47.0v14h-47.0ZM10.0 54h29.3v14h-29.3ZM45.3 54h29.3v14h-29.3ZM80.7 54h29.3v14h-29.3Z"/></svg><figcaption>Databricks</figcaption></figure><figure class="mapa-mini"><svg viewBox="0 0 120 80" aria-hidden="true"><path class="trazo" pathLength="1" d="M4 4H116V76H4ZM10.0 10h47.0v14h-47.0ZM63.0 10h47.0v14h-47.0ZM10.0 32h29.3v14h-29.3ZM45.3 32h29.3v14h-29.3ZM80.7 32h29.3v14h-29.3ZM10.0 54h47.0v14h-47.0ZM63.0 54h47.0v14h-47.0Z"/></svg><figcaption>Microsoft Fabric</figcaption></figure><figure class="mapa-mini"><svg viewBox="0 0 120 80" aria-hidden="true"><path class="trazo" pathLength="1" d="M4 4H116V76H4ZM10.0 10h29.3v14h-29.3ZM45.3 10h29.3v14h-29.3ZM80.7 10h29.3v14h-29.3ZM10.0 32h29.3v14h-29.3ZM45.3 32h29.3v14h-29.3ZM80.7 32h29.3v14h-29.3ZM10.0 54h47.0v14h-47.0ZM63.0 54h47.0v14h-47.0Z"/></svg><figcaption>Snowflake</figcaption></figure></div>
+    </div>
+  </section>
+
+  <section class="seccion escena escena-viva" id="e2-empate" data-rol="respiro" aria-labelledby="t-e2-empate">
+    <p class="rotulo">2 de 3</p>
+    <h2 id="t-e2-empate">Cuando la diferencia es chica, lo dice</h2>
+    <p>Con los pesos de partida del caso de ejemplo, todas quedan a menos de 5 puntos. Big-D no inventa una ganadora: declara empate técnico y te muestra qué peso tendría que moverse para que una se separe.</p>
+    <div class="escena-cuadro">
+      <ul class="barras"><li data-plataforma="databricks"><span>Databricks</span><span class="pista-envoltura"><span class="barra-pista"><span class="barra" style="--v:0.733"></span></span><span class="franja-empate" style="--desde:68.3%;--ancho:5%" aria-hidden="true"></span></span><span class="barra-valor mono">73,3 de 100</span></li><li data-plataforma="fabric"><span>Microsoft Fabric</span><span class="pista-envoltura"><span class="barra-pista"><span class="barra" style="--v:0.73"></span></span><span class="franja-empate" style="--desde:68.3%;--ancho:5%" aria-hidden="true"></span></span><span class="barra-valor mono">73,0 de 100</span></li><li data-plataforma="snowflake"><span>Snowflake</span><span class="pista-envoltura"><span class="barra-pista"><span class="barra" style="--v:0.708"></span></span><span class="franja-empate" style="--desde:68.3%;--ancho:5%" aria-hidden="true"></span></span><span class="barra-valor mono">70,8 de 100</span></li></ul><p class="empate-rotulo"><span class="signo" aria-hidden="true">≈</span> Empate técnico: Databricks, Microsoft Fabric y Snowflake quedan a menos de 5 puntos; con estos pesos ninguna se separa.</p>
+    </div>
+  </section>
+
+  <section class="seccion escena climax" id="e3-neutralidad" data-rol="climax" aria-labelledby="t-e3-neutralidad">
+    <p class="rotulo">3 de 3 · lo central</p>
+    <h2 id="t-e3-neutralidad">Cambia el orden de las plataformas: el resultado no cambia</h2>
+    <p>Ninguna plataforma tiene un trato especial en el código. Entrégalas en cualquier orden al mismo cálculo y la huella del resultado —un código que lo resume entero— sale idéntica. En la demo pública lo pruebas con un botón; en el repositorio, una prueba lo verifica en cada cambio.</p>
+    <div class="escena-cuadro">
+      <div class="orden-fila"><span class="rotulo">Un orden</span><ol class="fichas"><li class="ficha" data-plataforma="databricks">Databricks</li><li class="ficha" data-plataforma="fabric">Microsoft Fabric</li><li class="ficha" data-plataforma="snowflake">Snowflake</li></ol><p class="huella mono" data-huella>c0633ab23044a0c9c7ad94b91446f3fe8dbdefcaa5d831df8148ed153723feb1</p></div>
+      <div class="orden-fila"><span class="rotulo">Otro orden</span><ol class="fichas" data-fila-viva><li class="ficha" data-plataforma="fabric">Microsoft Fabric</li><li class="ficha" data-plataforma="snowflake">Snowflake</li><li class="ficha" data-plataforma="databricks">Databricks</li></ol><p class="huella mono" data-huella>c0633ab23044a0c9c7ad94b91446f3fe8dbdefcaa5d831df8148ed153723feb1</p></div>
+      <p class="igual"><span aria-hidden="true">✓</span> Misma huella. Estos 6 órdenes distintos de las 3 plataformas dan esta misma huella.</p>
+      <button type="button" class="repetir" data-repetir>Cambiar el orden otra vez</button>
+    </div>
+  </section>
 
   <section class="seccion" aria-labelledby="t-quehace">
     <h2 id="t-quehace" class="revela">Qué hace</h2>
@@ -244,6 +341,10 @@
               <h4>El perfil, armado con preguntas</h4>
               <p class="como">Si no sabes cuántos puntos darle a cada criterio, respondes una pregunta por criterio, sin pensar en ninguna plataforma. La pantalla propone los pesos, en enteros que suman 100, y qué restricciones conservar; tú decides si los usas y nada se aprueba ahí.</p>
             </div>
+            <div class="feature">
+              <h4>Pruébalo tú, sin cuenta</h4>
+              <p class="como">Una demo pública, en español e inglés: mueves los pesos de un hospital inventado y ves cómo cambia el orden de las plataformas publicadas. El cálculo corre en tu equipo y un botón reordena las plataformas para mostrar que el resultado no cambia.</p>
+            </div>
           </div></div>
         </div>
       </article>
@@ -303,11 +404,11 @@
     <details class="fino revela">
       <summary>Qué mide, y de dónde sale cada cifra</summary>
       <div class="cuerpo chica"><ul>
-        <li><strong>Funcionalidades documentadas:</strong> 20 funcionalidades <span class="suave">· medido</span></li>
+        <li><strong>Funcionalidades documentadas:</strong> 21 funcionalidades <span class="suave">· medido</span></li>
         <li><strong>Plataformas reales en el atlas:</strong> 3 plataformas <span class="suave">· medido</span></li>
         <li><strong>Evidencias fechadas y aprobadas:</strong> 33 evidencias <span class="suave">· medido</span></li>
         <li><strong>Componentes en los mapas reales:</strong> 63 componentes <span class="suave">· medido</span></li>
-        <li><strong>Pruebas automáticas:</strong> 3 525 pruebas <span class="suave">· medido</span></li>
+        <li><strong>Pruebas automáticas:</strong> 3 586 pruebas <span class="suave">· medido</span></li>
         <li><strong>Cobertura de líneas:</strong> 97,96 % <span class="suave">· medido</span></li>
         <li><strong>Motores que producen los mismos bytes:</strong> 4 motores <span class="suave">· medido</span></li>
         <li><strong>Decisiones de arquitectura registradas:</strong> 17 ADR <span class="suave">· medido</span></li>
@@ -323,12 +424,13 @@
   </section>
 
   <footer class="revela">
-    <p class="chica suave">Este recorrido cubre las <strong>20 funcionalidades</strong> de
+    <p class="chica suave">Este recorrido cubre las <strong>21 funcionalidades</strong> de
       Big-D — todas, agrupadas para que las descubras a tu ritmo.</p>
     <details class="chica">
       <summary>Historial</summary>
       <ul>
-        <li><strong>S8 · 2026-11-12:</strong> el copy de la ficha de CV Viva (devolución 026) llega al brochure, al export y al README; el brochure se genera desde el export.</li>
+        <li><strong>S8 · 2026-11-13:</strong> el copy de la ficha de CV Viva (devolución 026) llega al brochure, al export y al README; el brochure se genera desde el export.</li>
+        <li><strong>S10:</strong> tres escenas con las cifras y la huella reales de la demo pública (hospital-futuro); lo central: cambiar el orden de las plataformas no cambia la huella.</li>
       </ul>
     </details>
   </footer>
@@ -358,6 +460,67 @@
     } else {
       document.querySelectorAll(".revela").forEach(function (el) { el.classList.add("visto"); });
     }
+  })();
+</script>
+<script>
+  (function () {
+    // S10 · escenas del storyboard. E1 y E2: un disparo al entrar en pantalla (la clase «visto»; el CSS decide si hay
+    // movimiento). E3, el clímax: la segunda fila cambia el orden de sus nombres TRES vueltas al entrar (menos de 5 s) y el
+    // botón repite la jugada; la huella no se toca nunca. Sin azar: el ciclo de órdenes está escrito abajo. Con
+    // reduced-motion el árbol es el mismo, nada arranca solo y el botón cambia el orden al instante, sin transición.
+    var escenas = document.querySelectorAll(".escena-viva");
+    var ver = function (el) { el.classList.add("visto"); };
+    if ("IntersectionObserver" in window) {
+      var obs = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) { ver(e.target); obs.unobserve(e.target); } });
+      }, { threshold: 0 });
+      escenas.forEach(function (el) { obs.observe(el); });
+    } else { escenas.forEach(ver); }
+
+    var fila = document.querySelector("[data-fila-viva]");
+    if (!fila) return;
+    var fichas = Array.prototype.slice.call(fila.querySelectorAll(".ficha"));
+    // El ciclo de órdenes: en la vuelta s la ficha i ocupa el lugar (i - s - 1) módulo N, con N las fichas de la fila; en la
+    // vuelta N vuelve al orden de partida. N sale del documento (hoy las plataformas de la demo), no de un literal.
+    var N = fichas.length;
+    var CICLO = [];
+    for (var s = 0; s < N; s++) CICLO.push(fichas.map(function (_, i) { return (((i - s - 1) % N) + N) % N; }));
+    var paso = 0, timer = 0, vueltas = 0, ancho = 0;
+    var medir = function () { ancho = fichas.length > 1 ? fichas[1].offsetLeft - fichas[0].offsetLeft : 0; };
+    var colocar = function (lugares) {
+      fichas.forEach(function (f, i) { f.style.setProperty("--dx", (lugares[i] - i) * ancho + "px"); });
+    };
+    var vuelta = function () {
+      colocar(CICLO[paso % CICLO.length]);
+      paso += 1; vueltas += 1;
+      fila.setAttribute("data-vuelta", String(vueltas));
+    };
+    var jugada = function () {
+      clearInterval(timer);
+      var quedan = N;
+      vuelta(); quedan -= 1;
+      timer = setInterval(function () {
+        if (document.hidden) return;
+        vuelta(); quedan -= 1;
+        if (quedan <= 0) clearInterval(timer);
+      }, 1500);
+    };
+    medir();
+    window.addEventListener("resize", function () { medir(); colocar(CICLO[(paso + CICLO.length - 1) % CICLO.length]); });
+    var climax = document.getElementById("e3-neutralidad");
+    // Con reduced-motion la escena ya está completa (dos órdenes, una huella): nada arranca solo; el botón sí responde.
+    var quieto = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if ("IntersectionObserver" in window && climax && !quieto) {
+      var o = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          if (e.isIntersecting && !fila.hasAttribute("data-vuelta")) jugada();
+          if (!e.isIntersecting) clearInterval(timer);
+        });
+      }, { threshold: 0 });
+      o.observe(climax);
+    }
+    var boton = document.querySelector("[data-repetir]");
+    if (boton) boton.addEventListener("click", jugada);
   })();
 </script>
 </body>

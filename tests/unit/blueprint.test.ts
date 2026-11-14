@@ -60,4 +60,12 @@ describe("docs/BLUEPRINT.html", () => {
     expect(texto).toMatch(/<svg[^>]+role="img"[^>]+aria-label="Diagrama de infraestructura de Big-D/);
     expect(texto).toContain("flecha-futura");
   });
+
+  it("nombra la demo pública (H-2): su comando, su paquete y su fila, y no dice que el ensayo ya ocurrió", () => {
+    expect(texto).toContain("build:demo");
+    expect(texto).toContain("out-demo");
+    expect(texto).toContain("Demo pública");
+    expect(texto).toMatch(/H-2 \(S8–S10, en curso\)/);
+    expect(texto).not.toMatch(/Entregable del cierre del hito H-1\.<\/strong>/);
+  });
 });

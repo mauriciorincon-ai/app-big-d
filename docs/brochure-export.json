@@ -12,14 +12,14 @@
     "enlaces.produccion": "null cuando la app no tiene URL pública. `razon` explica por qué, y es lo que la vitrina muestra en lugar del enlace. Nunca se rellena con un enlace de repositorio ni con una promesa."
   },
   "schema_version": "1.0.0",
-  "actualizado": "2026-11-12",
+  "actualizado": "2026-11-13",
   "app": {
     "slug": "big-d",
     "nombre": "Big-D",
     "ciclo": "H1",
     "estado": "inicial",
     "sellado_en": null,
-    "sprints_cerrados": 9,
+    "sprints_cerrados": 10,
     "version_repo": "0.1.0"
   },
   "promesa": {
@@ -29,7 +29,7 @@
     "diferencial": "Cada puntaje se apoya en una evidencia con fecha y cita, y el cálculo es abierto: lo repites, mueves los pesos y ves en qué punto cambiarías de opinión. El resultado sale de un núcleo sin IA que da los mismos bytes en Node, Chromium, Firefox y WebKit. Ninguna plataforma tiene trato especial: no hay logos de fabricante y el orden en que entran no cambia el resultado."
   },
   "funcionalidades": {
-    "total": 20,
+    "total": 21,
     "fuente_del_conteo": "docs/MANUAL-DE-USO.md",
     "descartadas": [],
     "grupos": [
@@ -130,6 +130,12 @@
             "nombre": "El perfil, armado con preguntas",
             "que_hace": "Si no sabes cuántos puntos darle a cada criterio, respondes una pregunta por criterio, sin pensar en ninguna plataforma. La pantalla propone los pesos, en enteros que suman 100, y qué restricciones conservar; tú decides si los usas y nada se aprueba ahí.",
             "seccion_manual": "18. Armar el perfil con preguntas"
+          },
+          {
+            "id": "F21",
+            "nombre": "Pruébalo tú, sin cuenta",
+            "que_hace": "Una demo pública, en español e inglés: mueves los pesos de un hospital inventado y ves cómo cambia el orden de las plataformas publicadas. El cálculo corre en tu equipo y un botón reordena las plataformas para mostrar que el resultado no cambia.",
+            "seccion_manual": "21. La demo pública"
           }
         ]
       },
@@ -183,10 +189,10 @@
     {
       "clave": "funcionalidades",
       "etiqueta": "Funcionalidades documentadas",
-      "valor": 20,
+      "valor": 21,
       "unidad": "funcionalidades",
       "fuente": "medido",
-      "detalle": "Las funciones numeradas del manual (docs/MANUAL-DE-USO.md), construidas en los sprints 1 a 6, 8 y 9. Las de los sprints 3 y 4 (la base de conocimiento, el perfil del caso, la comparación y el instrumento) se cuentan desde que el manual las documenta. Lo recuenta tests/unit/brochure-export.test.ts."
+      "detalle": "Las funciones numeradas del manual (docs/MANUAL-DE-USO.md), construidas en los sprints 1 a 6, 8, 9 y 10. Las de los sprints 3 y 4 (la base de conocimiento, el perfil del caso, la comparación y el instrumento) se cuentan desde que el manual las documenta. Lo recuenta tests/unit/brochure-export.test.ts."
     },
     {
       "clave": "plataformas_en_el_atlas",
@@ -215,10 +221,10 @@
     {
       "clave": "pruebas_automaticas",
       "etiqueta": "Pruebas automáticas",
-      "valor": 3525,
+      "valor": 3586,
       "unidad": "pruebas",
       "fuente": "medido",
-      "detalle": "2277 unitarias y de integración (Vitest, 129 archivos, incluidas las del diagramador), 1239 de navegador (Playwright: escritorio, teléfono, Firefox, WebKit y la base sembrada) y 9 de determinismo (3 pruebas en 3 navegadores). Recontadas el 2026-11-12 sobre bc87c2e: `pnpm test` y `playwright test --list`."
+      "detalle": "2314 unitarias y de integración (Vitest, 133 archivos, incluidas las del diagramador), 1245 de navegador (Playwright: escritorio, teléfono, Firefox, WebKit y la base sembrada) y 27 de determinismo (núcleo y demo pública en tres navegadores; 4 saltadas a propósito: el axe de la demo corre solo en Chromium). Recontadas el 2026-11-13 sobre ec0fcdc: `pnpm test` y `playwright test --list`."
     },
     {
       "clave": "cobertura_lineas",
@@ -226,7 +232,7 @@
       "valor": 97.96,
       "unidad": "%",
       "fuente": "medido",
-      "detalle": "v8 sobre src/engine, src/lib, src/components y los dos paquetes de la casa (diagramador e instrumentos-de-plan): 6107 de 6234 líneas, `pnpm test` del 2026-11-12 sobre bc87c2e. Motores y lib, umbral propio del 80 %."
+      "detalle": "v8 sobre src/engine, src/lib, src/components y los dos paquetes de la casa (diagramador e instrumentos-de-plan): 6222 de 6351 líneas, `pnpm test` del 2026-11-13 sobre ec0fcdc. Motores y lib, umbral propio del 80 %."
     },
     {
       "clave": "motores_con_la_misma_huella",

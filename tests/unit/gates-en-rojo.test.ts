@@ -135,12 +135,12 @@ describe("S9-F1: jerga", () => {
     const { datos, salida } = copiaAprobada();
     const ruta = join(datos, "convenciones/jerga.yaml");
     const texto = readFileSync(ruta, "utf8");
-    expect(texto).toMatch(/^ {4}"riesgos": \d$/m);
-    writeFileSync(ruta, texto.replace(/^ {4}"riesgos": \d\n/m, ""));
+    expect(texto).toMatch(/^ {4}"\d": ".*\bdecidir\b/m);
+    writeFileSync(ruta, texto.replace(/(^ {4}"\d": ".*?)\bdecidir /m, "$1"));
     const r = validar(datos, salida);
     expect(r.status, r.salida).not.toBe(0);
     expect(r.salida).toContain("jerga");
-    expect(r.salida).toContain("riesgos");
+    expect(r.salida).toContain("decidir");
     expect(r.salida).toContain("no se publica");
     expect(r.hayOut).toBe(false);
   });

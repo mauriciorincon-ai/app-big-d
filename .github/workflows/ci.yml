@@ -57,6 +57,10 @@ jobs:
         run: node scripts/build-como-proveedor.mjs
       - name: CSP en lo que se publica (Big-D, S2-AUD-32)
         run: node scripts/csp/verificar-salida.mjs .vercel/output/static out
+      # S10 (F2): la demo pública (anexo E4) se construye y pasa su gate de fugas en cada PR; su e2e bajo /piezas/big-d corre en
+      # el job `diagramador` (tres motores, ubuntu y macOS).
+      - name: Demo pública — paquete, manifiesto y fugas (S10)
+        run: pnpm build:demo
       - run: pnpm audit --audit-level high
       # kit v2.0.0 — regla 17 (cero enlaces) es un gate de CI, no una casilla manual: los archivos versionados (git grep)
       # y el campo `homepage` del repo en GitHub. Los dominios salen de cero-enlaces.json (los 8 del kit; el host de

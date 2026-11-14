@@ -33,7 +33,7 @@ export function resumenesIlegibles(k: Conocimiento): string[] {
 }
 
 // S9 (regla dura 11, decisions/jargon-detector.md): el detector de jerga sobre el mismo párrafo de § 1, en cada idioma. Una
-// palabra rara (fuera de la tabla derivada de los textos del proyecto), que no es una permitida del dato ni un término que el
+// palabra rara (fuera de la tabla derivada de Google Books Ngram, CC BY 3.0), que no es una permitida del dato ni un término que el
 // glosario del informe explica, deja la base sin publicar: se reescribe el texto o una persona la agrega a `permitidas`.
 export function resumenesConJerga(k: Conocimiento): string[] {
   const fallas: string[] = [];

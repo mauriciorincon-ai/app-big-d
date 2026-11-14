@@ -1,6 +1,6 @@
 # Jargon detector: deferred in H-1, built in S9
 
-**Status:** accepted (built in S9 by route d; the S7 deferral is kept below as history) · **Date:** 2026-10-12, updated 2026-11-11 · **Sprint:** S7 (deferral), S9 (built)
+**Status:** accepted (built in S9 by route d; since S10 the table comes from route b, Google Books Ngram; the S7 deferral is kept below as history) · **Date:** 2026-10-12, updated 2026-11-11 and 2026-11-12 · **Sprint:** S7 (deferral), S9 (built), S10 (route b)
 
 ## Context
 
@@ -72,3 +72,26 @@ derived from texts the project owns.
 - **Limits, said plainly:** a table from the project's own texts is small (about 1 700 words per language) and can only call
   «rare» what the project never wrote; it catches a technical word that sneaks in from data, not a rare word that is wrong for
   other reasons. When the table later grows from a licensed list, only `cubos` and `fuente` change.
+
+## Update, 2026-11-12 (S10): the table now comes from route (b), Google Books Ngram
+
+The S9 closing note asked for a real frequency list. **Google Books Ngram** (1-grams, edition 20200217, Spanish `spa` and English
+`eng`) is published under **CC BY 3.0**: attribution only, no share-alike and no non-commercial clause, so it passes the bar this ADR
+set (MIT, Apache-2.0, CC0 or CC BY with attribution). It is route **(b)**: a list under CC BY. The sister app Habla already used the
+same edition in its S8; this repository rewrites the reader and copies nothing between repos.
+
+- **How it is read:** `scripts/jerga/derivar.mjs` + `scripts/jerga/ngram.mjs` stream each fragment (download → gunzip → line) and keep
+  only the 1990-2019 count of lowercase forms of the language's alphabet. **Nothing of the raw data touches the disk or the repo**
+  (≈ 8 GB in a stream, a few minutes). The result is the 12 000 most used forms per language, in four buckets by frequency rank
+  (`cuboDeRango`: ≤ 1 500, ≤ 4 000, ≤ 8 000, the rest).
+- **Curation** (Ngram brings OCR, proper names and the other language): no grammatical tags, proper names out (the capitalised form
+  weighs more than four times the lowercase one), letters the language does not use, words of the other language, a count floor of
+  300. `permitidas` now holds **proper names only** (the platform names).
+- **Attribution:** `jerga.yaml` `fuente` says «Google Books Ngram · CC BY 3.0» in both languages; `LICENCIA-jerga.md` carries the
+  full attribution. `jerga.yaml` also stores `edicion` and `huella` (SHA-256 of the buckets).
+- **The «file is the derivation» test stays,** adapted to a raw data set that is not in the repo: a fixed sample of Ngram lines
+  (`tests/fixtures/ngram-muestra/`) must derive to its expected table (`esperada.json`), and `derivar.mjs --comprobar` recomputes the
+  hash of the buckets, so a hand edit of any bucket fails. The gate row `jerga`, its red demo and the unit tests are unchanged.
+- **What the new table flagged** in the leader texts was rewritten, not hidden (the S10 closing note lists the sentences).
+- **Supersedes** the S9 note «about 1 700 words per language, route d»: the own-texts table is gone; the limits paragraph above no
+  longer applies (the table is now general-purpose Spanish and English, so it catches technical words, not words the project never wrote).

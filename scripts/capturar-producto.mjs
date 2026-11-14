@@ -18,8 +18,11 @@
 // Con --arbol out-sembrada fotografía el sitio de la base sembrada (D-S3-14; scripts/datos/construir-sembrada.mjs): los
 // estados que el dato real aún no tiene. Solo esos dos árboles del repo; el arnés declara cuál sirve al arrancar.
 //
+// Con --portafolio (S10, 026-4) toma los 15 encuadres de scripts/capturas-portafolio.mjs (1024×640, DPR 1,5, solo el área visible,
+// tema claro, español) y sale: son las piezas del Portafolio de CV Viva. Mide en cada una que la página no desborda a 1024 px.
+//
 // Uso: node scripts/capturar-producto.mjs --salida <dir> [--rutas /es/atlas/x,/en] [--anchos 380,1280]
-//      [--temas oscuro,claro] [--maqueta] [--solo-medir] [--arbol out|out-sembrada]
+//      [--temas oscuro,claro] [--maqueta] [--solo-medir] [--arbol out|out-sembrada] [--portafolio]
 import { spawn } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { createServer } from "node:net";
@@ -677,6 +680,48 @@ async function componer(izq, der, archivo, titulo) {
   );
   await p.screenshot({ path: archivo, fullPage: true });
   await ctx.close();
+}
+
+if (bandera("portafolio")) {
+  const { ENCUADRES, ESCALA, VENTANA } = await import("./capturas-portafolio.mjs");
+  const malas = [];
+  for (const e of ENCUADRES) {
+    if ((e.arbol ?? "out") !== nombreArbol) {
+      console.log(`capturar-producto --portafolio: ${e.id} se toma con --arbol ${e.arbol ?? "out"} (este es ${nombreArbol}); se omite`);
+      continue;
+    }
+    const ctx = await navegador.newContext({ viewport: VENTANA, deviceScaleFactor: ESCALA, colorScheme: "light" });
+    await ctx.addInitScript(() => {
+      try {
+        localStorage.setItem("bigd-tema", "claro");
+      } catch {
+        /* sin almacenamiento */
+      }
+    });
+    const pagina = await ctx.newPage();
+    const errores = [];
+    pagina.on("pageerror", (x) => errores.push(x.message));
+    await pagina.goto(`${base}${e.ruta}`);
+    await pagina.evaluate(() => document.fonts.ready);
+    if (e.paso) await e.paso(pagina);
+    await pagina.waitForTimeout(150);
+    if (e.contiene && !new RegExp(e.contiene, "i").test(await pagina.locator("main").innerText())) malas.push(`${e.id}: el texto visible no contiene «${e.contiene}»`);
+    const desborde = await pagina.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    if (desborde > 0) malas.push(`${e.id}: la página desborda ${desborde} px a ${VENTANA.width} px`);
+    for (const x of errores) malas.push(`${e.id}: error en la consola: ${x}`);
+    if (salida) await pagina.screenshot({ path: join(salida, `${e.archivo}.png`), fullPage: false });
+    encuadres++;
+    await ctx.close();
+  }
+  await navegador.close();
+  servidor.kill();
+  console.log(`capturar-producto --portafolio: ${encuadres} encuadres de ${VENTANA.width}×${VENTANA.height} a DPR ${ESCALA}${salida ? ` en ${salida}` : ""}`);
+  if (malas.length) {
+    console.error(`\n${malas.length} fallas:\n` + malas.join("\n"));
+    process.exit(2);
+  }
+  console.log("capturar-producto --portafolio: 0 fallas");
+  process.exit(0);
 }
 
 for (const ruta of rutas)

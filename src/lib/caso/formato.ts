@@ -1,4 +1,4 @@
-import type { Racional } from "@/engine";
+import type { Racional } from "@/engine/racional";
 import type { Idioma } from "@/lib/i18n";
 
 // Cómo se escriben en pantalla los números del núcleo (D-S3-06, regla 1 del motor). El núcleo entrega enteros (unidades,
