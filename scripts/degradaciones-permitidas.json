@@ -1,8 +1,1 @@
-[
-  {
-    "nombre": "supports-color",
-    "de": "8.1.1",
-    "a": "7.2.0",
-    "razon": "@sentry/bundler-plugins 11.12.0 (via @sentry/nextjs 11.12.0, PR #29) dejó de depender de supports-color ^8.1.1 (la 11.10.0 sí; verificado con npm view) y ningún otro paquete del lockfile pide la línea 8. La línea desaparece, no baja. Borrar esta entrada cuando origin/main ya no tenga supports-color 8.1.1 (el gate falla si queda vieja)."
-  }
-]
+[]
