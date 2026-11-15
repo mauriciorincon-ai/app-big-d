@@ -31,7 +31,7 @@ pr: 30
 | C-9 manual cita la fecha fija sin test que la ate                                                       | B    | pagado · 49ac375 (test de la nota ES/EN)                                     |
 | C-10 fecha congelada: vigencia de la demo no envejece                                                   | B    | decisión del sprint, anotada aquí; `FECHA_FIJA` se renueva al cerrar un hito |
 | S-1 comentario de `compression` con «14.2.6 (la última)»                                                | B    | pagado · 6343866                                                             |
-| S-2 entrada de `supports-color` a borrar tras el merge                                                  | B    | instrucción de este cierre (ver «Dependencias»)                              |
+| S-2 entrada de `supports-color` a borrar tras el merge                                                  | B    | pagado · 37346e7                                                             |
 | F-1 a F-3 comentarios de capturas con 15 encuadres y dos árboles                                        | B    | pagado · 0cc751b                                                             |
 | F-4 `.env.example` sin la nota de `build:demo`                                                          | B    | pagado · 6343866                                                             |
 
