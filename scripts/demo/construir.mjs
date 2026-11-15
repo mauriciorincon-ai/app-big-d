@@ -8,13 +8,14 @@
 // Las rutas son relativas: el paquete funciona bajo `/piezas/big-d/` (el `basePath` que declara el manifiesto) sin reescribir
 // nada; tests/determinismo/demo.spec.ts lo sirve ahí y lo recorre en Chromium, Firefox y WebKit.
 //
-// Uso: node scripts/demo/construir.mjs [--destino <carpeta>]   (por defecto out-demo/)
+// Uso: node scripts/demo/construir.mjs [--destino <carpeta>]   (por defecto out-demo/; fecha de consulta: BIGD_FECHA_CONSULTA o, sin ella, FECHA_FIJA)
 import { createHash } from "node:crypto";
 import { copyFileSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { join, relative, resolve } from "node:path";
 import { build, transform } from "esbuild";
 import { conCSP } from "../csp/inyectar.mjs";
 import { cargarTs, RAIZ_REPO } from "../lib/cargar-ts.mjs";
+import { FECHA_FIJA } from "./fecha.mjs";
 
 export const BASE_PATH = "/piezas/big-d";
 export const ENTRADAS = ["es.html", "en.html"];
@@ -48,6 +49,9 @@ function archivos(dir, base = dir) {
     .sort();
 }
 
+// S11 (F2): sin variable, la fecha de consulta es FECHA_FIJA (la de DEMO.SHA256SUMS), no el reloj: `pnpm build:demo` da las mismas
+// huellas en cualquier día y sin preparar nada. Una BIGD_FECHA_CONSULTA explícita sigue mandando (la demo de otro día se arma a propósito).
+if (!process.env.BIGD_FECHA_CONSULTA) process.env.BIGD_FECHA_CONSULTA = FECHA_FIJA;
 const { paqueteDemo } = await cargarTs("src/lib/demo/pagina.ts");
 const p = await paqueteDemo();
 

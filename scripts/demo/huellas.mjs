@@ -1,5 +1,5 @@
 // S10 (F3): la huella de la demo pública, versionada. Construye el paquete en una carpeta temporal con la fecha de consulta
-// fija y escribe `tests/determinismo/DEMO.SHA256SUMS` (una línea `sha256  archivo` por archivo del paquete, y la huella del
+// por omisión del build (FECHA_FIJA, sin variables) y escribe `tests/determinismo/DEMO.SHA256SUMS` (una línea `sha256  archivo` por archivo del paquete, y la huella del
 // resultado del núcleo como `huella_inicial`). Un cambio en la demo cambia esas líneas a la vista de la revisión; el test
 // tests/unit/demo/paquete.test.ts las compara con un build nuevo. Uso: node scripts/demo/huellas.mjs [--comprobar]
 import { execFileSync } from "node:child_process";
@@ -9,7 +9,8 @@ import { tmpdir } from "node:os";
 import { join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 
-export const FECHA_FIJA = "2026-11-12";
+import { FECHA_FIJA } from "./fecha.mjs";
+export { FECHA_FIJA };
 const RAIZ = join(fileURLToPath(import.meta.url), "../../..");
 export const ARCHIVO = join(RAIZ, "tests/determinismo/DEMO.SHA256SUMS");
 
@@ -22,11 +23,13 @@ export function lineasDe(dir) {
   return [`huella_inicial  ${m.huella_inicial}`, ...arch];
 }
 
-/** Construye el paquete en una carpeta temporal con la fecha fija y devuelve sus líneas. */
+/** Construye el paquete en una carpeta temporal SIN variable de fecha (la fija el propio build: FECHA_FIJA) y devuelve sus líneas. */
 export function construirYHuellas() {
   const tmp = mkdtempSync(join(tmpdir(), "bigd-demo-huellas-"));
   try {
-    execFileSync(process.execPath, [join(RAIZ, "scripts/demo/construir.mjs"), "--destino", tmp], { cwd: RAIZ, env: { ...process.env, BIGD_FECHA_CONSULTA: FECHA_FIJA }, stdio: "pipe" });
+    const entorno = { ...process.env };
+    delete entorno.BIGD_FECHA_CONSULTA;
+    execFileSync(process.execPath, [join(RAIZ, "scripts/demo/construir.mjs"), "--destino", tmp], { cwd: RAIZ, env: entorno, stdio: "pipe" });
     return lineasDe(tmp);
   } finally {
     rmSync(tmp, { recursive: true, force: true });
@@ -37,7 +40,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const l = `${construirYHuellas().join("\n")}\n`;
   if (process.argv.includes("--comprobar")) {
     if (readFileSync(ARCHIVO, "utf8") !== l) {
-      console.error("demo: DEMO.SHA256SUMS no es el de un build de hoy; corre `node scripts/demo/huellas.mjs` y revisa el diff");
+      console.error("demo: DEMO.SHA256SUMS no es el de un build con FECHA_FIJA; corre `node scripts/demo/huellas.mjs` y revisa el diff");
       process.exit(1);
     }
     console.log("demo: DEMO.SHA256SUMS al día");

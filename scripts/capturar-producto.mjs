@@ -16,15 +16,16 @@
 // lado a lado (producto | maqueta) para el gate de FIDELIDAD. Las capturas van a --salida, fuera del repo.
 //
 // Con --arbol out-sembrada fotografía el sitio de la base sembrada (D-S3-14; scripts/datos/construir-sembrada.mjs): los
-// estados que el dato real aún no tiene. Solo esos dos árboles del repo; el arnés declara cuál sirve al arrancar.
+// estados que el dato real aún no tiene. Son tres árboles del repo (out, out-sembrada y, solo con --portafolio, out-demo); el arnés declara cuál sirve al arrancar.
 //
-// Con --portafolio (S10, 026-4) toma los 15 encuadres de scripts/capturas-portafolio.mjs (1024×640, DPR 1,5, solo el área visible,
+// Con --portafolio (S10, 026-4) toma los encuadres del árbol elegido de scripts/capturas-portafolio.mjs (21 piezas entre los tres árboles: una corrida por --arbol out, out-sembrada y out-demo; F19 no tiene pantalla) (1024×640, DPR 1,5, solo el área visible,
 // tema claro, español) y sale: son las piezas del Portafolio de CV Viva. Mide en cada una que la página no desborda a 1024 px.
 //
 // Uso: node scripts/capturar-producto.mjs --salida <dir> [--rutas /es/atlas/x,/en] [--anchos 380,1280]
-//      [--temas oscuro,claro] [--maqueta] [--solo-medir] [--arbol out|out-sembrada] [--portafolio]
+//      [--temas oscuro,claro] [--maqueta] [--solo-medir] [--arbol out|out-sembrada|out-demo] [--portafolio]
 import { spawn } from "node:child_process";
-import { existsSync, mkdirSync, readFileSync, readdirSync, statSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync, symlinkSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { createServer } from "node:net";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -36,12 +37,20 @@ const arg = (n, def) => {
   return i < 0 ? def : process.argv[i + 1];
 };
 const nombreArbol = arg("arbol", "out");
-if (!["out", "out-sembrada"].includes(nombreArbol)) {
-  console.error(`capturar-producto: --arbol ${nombreArbol} no es un árbol del producto (out u out-sembrada). Aborto.`);
+if (!["out", "out-sembrada", "out-demo"].includes(nombreArbol)) {
+  console.error(`capturar-producto: --arbol ${nombreArbol} no es un árbol del producto (out, out-sembrada u out-demo). Aborto.`);
   process.exit(1);
 }
 const arbol = join(raiz, nombreArbol);
 const bandera = (n) => process.argv.includes(`--${n}`);
+// S11 (F2): la demo pública (out-demo/) viaja bajo `/piezas/big-d/` en hoja-de-vida; aquí se sirve igual y solo para los encuadres
+// del portafolio (F21): las demás pasadas miden el producto, que la demo no es.
+const esDemo = nombreArbol === "out-demo";
+const BASE_DEMO = "/piezas/big-d";
+if (esDemo && !bandera("portafolio")) {
+  console.error("capturar-producto: --arbol out-demo solo sirve con --portafolio (la demo no es el producto). Aborto.");
+  process.exit(1);
+}
 
 const salida = arg("salida");
 if (!salida && !bandera("solo-medir")) {
@@ -53,7 +62,7 @@ if (salida && resolve(salida).startsWith(raiz + "/")) {
   process.exit(1);
 }
 if (!existsSync(join(arbol, "es.html"))) {
-  console.error(`capturar-producto: no hay export en ${arbol}; corre antes BIGD_FECHA_CONSULTA=… pnpm build. Aborto.`);
+  console.error(`capturar-producto: no hay export en ${arbol}; ${nombreArbol === "out-demo" ? "corre antes pnpm build:demo" : nombreArbol === "out-sembrada" ? "corre antes node scripts/datos/construir-sembrada.mjs" : "corre antes BIGD_FECHA_CONSULTA=… pnpm build"}. Aborto.`);
   process.exit(1);
 }
 
@@ -95,7 +104,21 @@ const puerto = await new Promise((ok) => {
     s.close(() => ok(p));
   });
 });
-const servidor = spawn(join(raiz, "node_modules/.bin/serve"), [arbol, "-l", `tcp://127.0.0.1:${puerto}`, "--config", "../serve.json", "--no-clipboard"], { stdio: "ignore" });
+// La demo se sirve desde una carpeta temporal donde `piezas/big-d` es un enlace al árbol y sin «URLs limpias» (`es.html` es `es.html`).
+let temporal;
+if (esDemo) {
+  temporal = mkdtempSync(join(tmpdir(), "bigd-demo-"));
+  mkdirSync(join(temporal, "pub", "piezas"), { recursive: true });
+  symlinkSync(arbol, join(temporal, "pub", "piezas", "big-d"));
+  writeFileSync(join(temporal, "serve.json"), JSON.stringify({ cleanUrls: false }));
+}
+const servidor = spawn(
+  join(raiz, "node_modules/.bin/serve"),
+  esDemo
+    ? [join(temporal, "pub"), "-l", `tcp://127.0.0.1:${puerto}`, "--config", "../serve.json", "--no-clipboard"]
+    : [arbol, "-l", `tcp://127.0.0.1:${puerto}`, "--config", "../serve.json", "--no-clipboard"],
+  { stdio: "ignore" },
+);
 // Pase lo que pase (una excepción, un Ctrl-C), el servidor y el navegador no quedan vivos (B-22 de la
 // auditoría del S1: al fallar, `serve` y Chromium seguían corriendo).
 let navegador;
@@ -106,6 +129,7 @@ function apagar() {
     /* ya terminó */
   }
   navegador?.close().catch(() => {});
+  if (temporal) rmSync(temporal, { recursive: true, force: true });
 }
 process.on("exit", apagar);
 for (const senal of ["SIGINT", "SIGTERM"])
@@ -123,11 +147,13 @@ process.on("unhandledRejection", (e) => {
   apagar();
   process.exit(1);
 });
-const base = `http://127.0.0.1:${puerto}`;
+const base = `http://127.0.0.1:${puerto}${esDemo ? BASE_DEMO : ""}`;
+// La portada que se compara byte a byte: `/es` del producto, `/es.html` de la demo.
+const portada = esDemo ? "/es.html" : "/es";
 async function esperar() {
   for (let i = 0; i < 100; i++) {
     try {
-      if ((await fetch(`${base}/es`)).ok) return;
+      if ((await fetch(`${base}${portada}`)).ok) return;
     } catch {
       /* todavía no escucha */
     }
@@ -136,10 +162,10 @@ async function esperar() {
   throw new Error("el servidor no respondió");
 }
 await esperar();
-const servida = await (await fetch(`${base}/es`)).text();
+const servida = await (await fetch(`${base}${portada}`)).text();
 if (servida !== readFileSync(join(arbol, "es.html"), "utf8")) {
   servidor.kill();
-  console.error(`capturar-producto: ${base}/es no entrega los bytes de ${relative(raiz, arbol)}/es.html. Aborto.`);
+  console.error(`capturar-producto: ${base}${portada} no entrega los bytes de ${relative(raiz, arbol)}/es.html. Aborto.`);
   process.exit(1);
 }
 console.log(`capturar-producto: árbol ${arbol} servido en ${base} (verificado byte a byte)`);
