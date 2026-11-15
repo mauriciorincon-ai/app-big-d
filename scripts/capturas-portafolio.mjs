@@ -48,7 +48,7 @@ const responderEntrevista = async (p) => {
 };
 
 /**
- * { id, archivo, ruta, paso?, arbol?, contiene? } — `id` es la funcionalidad del manual (F1…F14) o «portada».
+ * { id, archivo, ruta, paso?, arbol?, contiene? } — `id` es la funcionalidad del manual (F1…F21) o «portada».
  * `arbol` (por omisión «out»; también `out-sembrada` y `out-demo`, la demo pública en /piezas/big-d) es el export que fotografía el encuadre: `capturas.yaml` pide F11 de la base sembrada («base de
  * prueba, ficticia»), así que ese encuadre solo se toma con `--arbol out-sembrada` (en el árbol real el perfil es borrador y no
  * hay totales). `contiene` es una expresión que el texto visible debe cumplir: sin ella un encuadre «existe» pero puede estar
@@ -72,9 +72,9 @@ export const ENCUADRES = [
   { id: "F8", archivo: "F8", ruta: "/es/atlas/fabric/versiones" },
   { id: "F12", archivo: "F12", ruta: "/es/instrumento" },
   { id: "F15", archivo: "F15", ruta: "/es/base", arbol: "out-sembrada", paso: bajarATexto("Qué cambió entre instantáneas"), contiene: "Qué cambió entre instantáneas" },
-  { id: "F16", archivo: "F16", ruta: "/es/casos/hospital-futuro", paso: juzgarPares, contiene: "Comparar por pares" },
-  { id: "F17", archivo: "F17", ruta: "/es/casos/hospital-futuro", paso: abrirDetalle("data-duplicar"), contiene: "Duplicar" },
-  { id: "F18", archivo: "F18", ruta: "/es/casos/hospital-futuro", paso: responderEntrevista, contiene: "pregunta" },
+  { id: "F16", archivo: "F16", ruta: "/es/casos/hospital-futuro", paso: juzgarPares, contiene: "[1-9]\\d* de \\d+ pares juzgados" },
+  { id: "F17", archivo: "F17", ruta: "/es/casos/hospital-futuro", paso: abrirDetalle("data-duplicar"), contiene: "Id de la copia" },
+  { id: "F18", archivo: "F18", ruta: "/es/casos/hospital-futuro", paso: responderEntrevista, contiene: "[1-9]\\d* de \\d+ preguntas respondidas" },
   { id: "F20", archivo: "F20", ruta: "/es/comparar?plataformas=bigquery,databricks,snowflake", paso: bajarATexto("Se lee por columnas"), contiene: "Se lee por columnas" },
   { id: "F21", archivo: "F21", ruta: "/es.html", arbol: "out-demo", contiene: "Hospital" },
 ];

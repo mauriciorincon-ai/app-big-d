@@ -16,9 +16,9 @@
 // lado a lado (producto | maqueta) para el gate de FIDELIDAD. Las capturas van a --salida, fuera del repo.
 //
 // Con --arbol out-sembrada fotografía el sitio de la base sembrada (D-S3-14; scripts/datos/construir-sembrada.mjs): los
-// estados que el dato real aún no tiene. Solo esos dos árboles del repo; el arnés declara cuál sirve al arrancar.
+// estados que el dato real aún no tiene. Son tres árboles del repo (out, out-sembrada y, solo con --portafolio, out-demo); el arnés declara cuál sirve al arrancar.
 //
-// Con --portafolio (S10, 026-4) toma los 15 encuadres de scripts/capturas-portafolio.mjs (1024×640, DPR 1,5, solo el área visible,
+// Con --portafolio (S10, 026-4) toma los encuadres del árbol elegido de scripts/capturas-portafolio.mjs (21 piezas entre los tres árboles: una corrida por --arbol out, out-sembrada y out-demo; F19 no tiene pantalla) (1024×640, DPR 1,5, solo el área visible,
 // tema claro, español) y sale: son las piezas del Portafolio de CV Viva. Mide en cada una que la página no desborda a 1024 px.
 //
 // Uso: node scripts/capturar-producto.mjs --salida <dir> [--rutas /es/atlas/x,/en] [--anchos 380,1280]
@@ -62,7 +62,7 @@ if (salida && resolve(salida).startsWith(raiz + "/")) {
   process.exit(1);
 }
 if (!existsSync(join(arbol, "es.html"))) {
-  console.error(`capturar-producto: no hay export en ${arbol}; corre antes BIGD_FECHA_CONSULTA=… pnpm build. Aborto.`);
+  console.error(`capturar-producto: no hay export en ${arbol}; ${nombreArbol === "out-demo" ? "corre antes pnpm build:demo" : nombreArbol === "out-sembrada" ? "corre antes node scripts/datos/construir-sembrada.mjs" : "corre antes BIGD_FECHA_CONSULTA=… pnpm build"}. Aborto.`);
   process.exit(1);
 }
 

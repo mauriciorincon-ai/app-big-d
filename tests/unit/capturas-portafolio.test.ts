@@ -58,9 +58,14 @@ describe("scripts/capturas-portafolio.mjs", () => {
     for (const e of encuadres) if (e.arbol !== undefined) expect(["out", "out-sembrada", "out-demo"]).toContain(e.arbol);
   });
 
-  it("los encuadres con un paso (abrir, juzgar, responder, bajar) declaran qué debe verse", () => {
+  it("los encuadres con un paso (abrir, juzgar, responder, bajar) lo traen y declaran qué debe verse", () => {
+    for (const id of ["F15", "F16", "F17", "F18", "F20"])
+      expect(typeof (ENCUADRES.find((e) => e.id === id) as { paso?: unknown }).paso, `${id} paso`).toBe("function");
     for (const id of ["F15", "F16", "F17", "F18", "F20", "F21"])
       expect(encuadres.find((e) => e.id === id)!.contiene, id).toBeTruthy();
+    // Los textos de F16 y F18 no pueden ser el resumen del <details> cerrado: exigen un conteo con al menos 1 hecho.
+    expect(new RegExp(encuadres.find((e) => e.id === "F16")!.contiene!, "i").test("Comparar por pares")).toBe(false);
+    expect(new RegExp(encuadres.find((e) => e.id === "F18")!.contiene!, "i").test("Armar el perfil con preguntas")).toBe(false);
     expect(encuadres.find((e) => e.id === "F20")!.ruta).toBe(
       "/es/comparar?plataformas=bigquery,databricks,snowflake",
     );
