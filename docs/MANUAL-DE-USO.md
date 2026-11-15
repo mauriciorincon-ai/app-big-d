@@ -365,7 +365,7 @@ a ninguna ni pide cuentas.
   - Es una exploración con tus pesos, no una recomendación: la página no dice «recomendada» ni «aprobada».
   - Si tu navegador no ejecuta su código, ves el resultado con los pesos del autor y un aviso; los controles necesitan que el código corra.
   - El caso es inventado: no se carga ningún dato de una institución real.
-  - La demo se arma con `pnpm build:demo` y viaja a hoja-de-vida por copia; no se publica desde esta app.
+  - La demo se arma con `pnpm build:demo` y viaja a hoja-de-vida por copia; no se publica desde esta app. Sin que le digas nada, cuenta la vigencia de las evidencias hasta el 12 de noviembre de 2026 (una fecha fija, no la de hoy), para que la demo sea la misma en cualquier día; si quieres otra fecha, escríbela antes del comando: `BIGD_FECHA_CONSULTA=AAAA-MM-DD pnpm build:demo`.
 
 ### Preguntas frecuentes
 
@@ -743,7 +743,7 @@ manages and controls; it never operates a platform**: it connects to none and as
   - It is an exploration with your weights, not a recommendation: the page never says “recommended” or “approved”.
   - If your browser does not run its code, you see the result with the author's weights and a notice; the controls need the code to run.
   - The case is made up: no data from a real institution is loaded.
-  - The demo is built with `pnpm build:demo` and travels to hoja-de-vida by copy; it is not published from this app.
+  - The demo is built with `pnpm build:demo` and travels to hoja-de-vida by copy; it is not published from this app. Unless you say otherwise, it counts how up to date the evidence is until 12 November 2026 (a fixed date, not today's), so the demo is the same on any day; for another date, write it before the command: `BIGD_FECHA_CONSULTA=YYYY-MM-DD pnpm build:demo`.
 
 ### Frequently asked questions
 

@@ -1,5 +1,5 @@
 // S10 (F3): la huella de la demo pública, versionada. Construye el paquete en una carpeta temporal con la fecha de consulta
-// fija y escribe `tests/determinismo/DEMO.SHA256SUMS` (una línea `sha256  archivo` por archivo del paquete, y la huella del
+// por omisión del build (FECHA_FIJA, sin variables) y escribe `tests/determinismo/DEMO.SHA256SUMS` (una línea `sha256  archivo` por archivo del paquete, y la huella del
 // resultado del núcleo como `huella_inicial`). Un cambio en la demo cambia esas líneas a la vista de la revisión; el test
 // tests/unit/demo/paquete.test.ts las compara con un build nuevo. Uso: node scripts/demo/huellas.mjs [--comprobar]
 import { execFileSync } from "node:child_process";
@@ -22,11 +22,13 @@ export function lineasDe(dir) {
   return [`huella_inicial  ${m.huella_inicial}`, ...arch];
 }
 
-/** Construye el paquete en una carpeta temporal con la fecha fija y devuelve sus líneas. */
+/** Construye el paquete en una carpeta temporal SIN variable de fecha (la fija el propio build: FECHA_FIJA) y devuelve sus líneas. */
 export function construirYHuellas() {
   const tmp = mkdtempSync(join(tmpdir(), "bigd-demo-huellas-"));
   try {
-    execFileSync(process.execPath, [join(RAIZ, "scripts/demo/construir.mjs"), "--destino", tmp], { cwd: RAIZ, env: { ...process.env, BIGD_FECHA_CONSULTA: FECHA_FIJA }, stdio: "pipe" });
+    const entorno = { ...process.env };
+    delete entorno.BIGD_FECHA_CONSULTA;
+    execFileSync(process.execPath, [join(RAIZ, "scripts/demo/construir.mjs"), "--destino", tmp], { cwd: RAIZ, env: entorno, stdio: "pipe" });
     return lineasDe(tmp);
   } finally {
     rmSync(tmp, { recursive: true, force: true });
