@@ -9,7 +9,8 @@ import { tmpdir } from "node:os";
 import { join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 
-export const FECHA_FIJA = "2026-11-12";
+import { FECHA_FIJA } from "./fecha.mjs";
+export { FECHA_FIJA };
 const RAIZ = join(fileURLToPath(import.meta.url), "../../..");
 export const ARCHIVO = join(RAIZ, "tests/determinismo/DEMO.SHA256SUMS");
 
@@ -39,7 +40,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const l = `${construirYHuellas().join("\n")}\n`;
   if (process.argv.includes("--comprobar")) {
     if (readFileSync(ARCHIVO, "utf8") !== l) {
-      console.error("demo: DEMO.SHA256SUMS no es el de un build de hoy; corre `node scripts/demo/huellas.mjs` y revisa el diff");
+      console.error("demo: DEMO.SHA256SUMS no es el de un build con FECHA_FIJA; corre `node scripts/demo/huellas.mjs` y revisa el diff");
       process.exit(1);
     }
     console.log("demo: DEMO.SHA256SUMS al día");

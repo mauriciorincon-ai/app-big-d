@@ -14,8 +14,8 @@ import { ARCHIVO, FECHA_FIJA, lineasDe } from "../../../scripts/demo/huellas.mjs
 const tmp = mkdtempSync(join(tmpdir(), "bigd-demo-"));
 const a = join(tmp, "a");
 const b = join(tmp, "b");
-// La fecha de consulta es perilla del build (nunca el reloj): se fija aquí para que los dos builds no dependan del día ni de
-// una variable del entorno de quien corre la prueba.
+// La fecha de consulta es perilla del build (nunca el reloj): sin fecha explícita el build usa FECHA_FIJA; aquí se borra la
+// variable del entorno de quien corre la prueba para comprobarlo.
 const construir = (destino: string, fecha?: string) => {
   const entorno = { ...process.env };
   delete entorno.BIGD_FECHA_CONSULTA;
@@ -58,6 +58,15 @@ describe("el paquete de la demo", () => {
   it("las huellas del paquete son las versionadas en tests/determinismo/DEMO.SHA256SUMS (si falla: node scripts/demo/huellas.mjs y revisa el diff)", () => {
     expect(`${lineasDe(a).join("\n")}\n`).toBe(readFileSync(ARCHIVO, "utf8"));
     expect(readFileSync(ARCHIVO, "utf8")).toMatch(/^huella_inicial {2}[0-9a-f]{64}\n/);
+  });
+
+  it("la nota del manual (ES y EN) cita la misma fecha fija que FECHA_FIJA", () => {
+    const [y, m, d] = FECHA_FIJA.split("-").map(Number);
+    const es = `${d} de ${["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"][m - 1]} de ${y}`;
+    const en = `${d} ${["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][m - 1]} ${y}`;
+    const manual = readFileSync("docs/MANUAL-DE-USO.md", "utf8");
+    expect(manual).toContain(es);
+    expect(manual).toContain(en);
   });
 
   it("`pnpm build:demo` sin variables reproduce DEMO.SHA256SUMS: la fecha de omisión es FECHA_FIJA, no el reloj", () => {

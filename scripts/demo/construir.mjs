@@ -15,7 +15,7 @@ import { join, relative, resolve } from "node:path";
 import { build, transform } from "esbuild";
 import { conCSP } from "../csp/inyectar.mjs";
 import { cargarTs, RAIZ_REPO } from "../lib/cargar-ts.mjs";
-import { FECHA_FIJA } from "./huellas.mjs";
+import { FECHA_FIJA } from "./fecha.mjs";
 
 export const BASE_PATH = "/piezas/big-d";
 export const ENTRADAS = ["es.html", "en.html"];
